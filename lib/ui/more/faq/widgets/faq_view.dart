@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/more/faq/widgets/action_card.dart';
+import 'package:notredame/ui/more/faq/widgets/question_card.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/core/ui/need_help_notice_dialog.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
@@ -83,24 +84,10 @@ class _FaqViewState extends State<FaqView> {
         height: 260.0,
       ),
       items: faq.questions.asMap().entries.map((entry) {
-        final int index = entry.key;
-        final question = faq.questions[index];
-
-        return Builder(
-          builder: (BuildContext context) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              decoration: BoxDecoration(
-                color: context.theme.appColors.faqCarouselCard,
-                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-              ),
-              child: getQuestionCard(
-                question.title[model.locale?.languageCode] ?? '',
-                question.description[model.locale?.languageCode] ?? '',
-              ),
-            );
-          },
+        final question = faq.questions[entry.key];
+        return QuestionCard(
+          title: question.title[model.locale?.languageCode] ?? '',
+          description: question.description[model.locale?.languageCode] ?? '',
         );
       }).toList(),
     );
@@ -134,17 +121,30 @@ class _FaqViewState extends State<FaqView> {
         itemCount: faq.actions.length,
         itemBuilder: (context, index) {
           final action = faq.actions[index];
-
-          return getActionCard(
-              action.title[model.locale?.languageCode] ?? '',
-              action.description[model.locale?.languageCode] ?? '',
-              action.type,
-              action.link,
-              action.iconName,
-              action.iconColor,
-              action.circleColor,
-              context,
-              model);
+          return ActionCard(
+            title: action.title[model.locale?.languageCode] ?? '',
+            description: action.description[model.locale?.languageCode] ?? '',
+            type: action.type,
+            link: action.link,
+            iconName: action.iconName,
+            iconColor: action.iconColor,
+            circleColor: action.circleColor,
+            onTap: () {
+              if (action.type == ActionType.webview) {
+                model.launchWebsite(action.link);
+              } else if (action.type == ActionType.email) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return NeedHelpNoticeDialog(
+                      openMail: () => model.openMail(action.link, context),
+                      launchWebsite: () => model.launchWebsite(action.link),
+                    );
+                  },
+                );
+              }
+            },
+          );
         },
       ),
     );
