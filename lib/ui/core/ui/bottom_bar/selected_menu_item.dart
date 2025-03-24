@@ -16,57 +16,124 @@ class SelectedMenuItem extends StatefulWidget {
   State<SelectedMenuItem> createState() => _SelectedMenuItemState();
 }
 
-class _SelectedMenuItemState extends State<SelectedMenuItem> {
+class _SelectedMenuItemState extends State<SelectedMenuItem>
+    with TickerProviderStateMixin {
+  late final AnimationController _paddingController;
+  late final Animation<double> _paddingAnimation;
+
+  late final AnimationController _buttonController;
+  late final Animation<Color?> _buttonColorAnimation;
+
+  late final AnimationController _shadowController;
+  late final Animation<Color?> _shadowColorAnimation;
+
+  late final AnimationController _textController;
+  late final Animation<Color?> _textColorAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _paddingController = _buttonController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _paddingAnimation = Tween<double>(begin: 40, end: 16).animate(
+        CurvedAnimation(parent: _paddingController, curve: Curves.easeOut))
+      ..addListener(() => setState(() {}));
+
+    _buttonColorAnimation = ColorTween(
+      begin: Colors.transparent,
+      end: AppPalette.etsLightRed,
+    ).animate(CurvedAnimation(
+      parent: _buttonController,
+      curve: Curves.easeIn,
+    ))..addListener(() => setState(() {}));
+
+    _shadowController = _textController = AnimationController(
+      duration: const Duration(milliseconds: 250),
+      vsync: this,
+    );
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.transparent,
+      end: AppPalette.etsDarkRed,
+    ).animate(CurvedAnimation(
+      parent: _shadowController,
+      curve: Curves.easeIn,
+    ))..addListener(() => setState(() {}));
+
+    _textColorAnimation = ColorTween(
+      begin: Colors.transparent,
+      end: Colors.white,
+    ).animate(CurvedAnimation(
+      parent: _textController,
+      curve: Curves.easeIn,
+    ))..addListener(() => setState(() {}));
+
+    _buttonController.forward();
+    _paddingController.forward().then((_) => {
+      _shadowController.forward(),
+      _textController.forward()
+    });
+  }
+
+  @override
+  void dispose() {
+    _paddingController.dispose();
+    _shadowController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) => Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 16.0),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 2),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: ClipRect(
-                      clipper: _TopHalfClipper(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppPalette.etsDarkRed,
-                              offset: Offset(0, 3),
-                              spreadRadius: 4,
-                              blurRadius: 8,
-                            ),
-                          ],
+    child: Padding(
+      padding: EdgeInsets.only(top: _paddingAnimation.value),
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              Positioned.fill(
+                child: ClipRect(
+                  clipper: _TopHalfClipper(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: _shadowColorAnimation.value!,
+                          offset: const Offset(0, 3),
+                          spreadRadius: 4,
+                          blurRadius: 8,
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppPalette.etsLightRed,
-                        iconColor: context.theme.appColors.backgroundAlt,
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(10)),
-                    onPressed: () {},
-                    child: Icon(size: 24, color: Colors.white, widget.icon),
-                  ),
-                ],
+                ),
               ),
-            ),
-            FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text(
-                  widget.label,
-                  style: TextStyle(height: 1, fontSize: 13),
-                )),
-          ],
-        ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: _buttonColorAnimation.value,
+                    iconColor: context.theme.appColors.backgroundAlt,
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(10)),
+                onPressed: () {},
+                child: Icon(size: 24, color: Colors.white, widget.icon),
+              ),
+            ],
+          ),
+          FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                widget.label,
+                style: TextStyle(
+                  color: _textColorAnimation.value,
+                    fontSize: 14
+                ),
+              )),
+        ],
       ),
-    );
+    ),
+  );
 }
 
 class _TopHalfClipper extends CustomClipper<Rect> {
