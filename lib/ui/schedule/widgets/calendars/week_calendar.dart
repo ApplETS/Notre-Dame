@@ -39,7 +39,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
     );
   }
 
-  WeekView<Object?> _buildWeekView(
+  Widget _buildWeekView(
       WeekViewModel model, BuildContext context, double heightPerMinute) {
     model.handleDateSelectedChanged(model.weekSelected);
 
@@ -55,68 +55,71 @@ class _WeekCalendarState extends State<WeekCalendar> {
           .then((_) => isAnimating = false);
     };
 
-    return WeekView(
-        key: weekViewKey,
-        weekNumberBuilder: (date) =>
-            Container(color: context.theme.appColors.appBar),
-        controller: model.eventController
-          ..addAll(model.selectedWeekCalendarEvents()),
-        onPageChange: (date, page) => setState(() {
-              model.weekSelected = date;
-            }),
-        backgroundColor: context.theme.scaffoldBackgroundColor,
-        weekTitleHeight:
-            (MediaQuery.of(context).orientation == Orientation.portrait)
-                ? 60
-                : 35,
-        safeAreaOption: const SafeAreaOption(top: false, bottom: false),
-        headerStyle: HeaderStyle(
-            decoration: BoxDecoration(
+    return Padding(
+      padding: EdgeInsets.only(bottom: 96),
+      child: WeekView(
+          key: weekViewKey,
+          weekNumberBuilder: (date) =>
+              Container(color: context.theme.appColors.appBar),
+          controller: model.eventController
+            ..addAll(model.selectedWeekCalendarEvents()),
+          onPageChange: (date, page) => setState(() {
+                model.weekSelected = date;
+              }),
+          backgroundColor: context.theme.scaffoldBackgroundColor,
+          weekTitleHeight:
+              (MediaQuery.of(context).orientation == Orientation.portrait)
+                  ? 60
+                  : 35,
+          safeAreaOption: const SafeAreaOption(top: false, bottom: false),
+          headerStyle: HeaderStyle(
+              decoration: BoxDecoration(
+                color: context.theme.appColors.appBar,
+              ),
+              leftIconConfig: IconDataConfig(
+                color: context.theme.textTheme.bodyMedium!.color!,
+                size: 30,
+              ),
+              rightIconConfig: IconDataConfig(
+                color: context.theme.textTheme.bodyMedium!.color!,
+                size: 30,
+              )),
+          startDay: WeekDays.sunday,
+          weekDays: [
+            if (model.displaySunday) WeekDays.sunday,
+            WeekDays.monday,
+            WeekDays.tuesday,
+            WeekDays.wednesday,
+            WeekDays.thursday,
+            WeekDays.friday,
+            if (model.displaySaturday) WeekDays.saturday
+          ],
+          initialDay: model.weekSelected,
+          heightPerMinute: heightPerMinute,
+          scrollOffset: heightPerMinute * 60 * 7.5,
+          hourIndicatorSettings: HourIndicatorSettings(
+            color: context.theme.appColors.scheduleLine,
+          ),
+          liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
+            color: context.theme.textTheme.bodyMedium!.color!,
+          ),
+          keepScrollOffset: true,
+          timeLineStringBuilder: (date, {secondaryDate}) {
+            return DateFormat('H:mm').format(date);
+          },
+          headerStringBuilder: (date, {secondaryDate}) {
+            final from = AppIntl.of(context)!.schedule_calendar_from;
+            final to = AppIntl.of(context)!.schedule_calendar_to;
+            final locale = AppIntl.of(context)!.localeName;
+            return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
+          },
+          eventTileBuilder:
+              (date, events, boundary, startDuration, endDuration) =>
+                  _buildEventTile(events, context),
+          weekDayBuilder: (DateTime date) => Container(
               color: context.theme.appColors.appBar,
-            ),
-            leftIconConfig: IconDataConfig(
-              color: context.theme.textTheme.bodyMedium!.color!,
-              size: 30,
-            ),
-            rightIconConfig: IconDataConfig(
-              color: context.theme.textTheme.bodyMedium!.color!,
-              size: 30,
-            )),
-        startDay: WeekDays.sunday,
-        weekDays: [
-          if (model.displaySunday) WeekDays.sunday,
-          WeekDays.monday,
-          WeekDays.tuesday,
-          WeekDays.wednesday,
-          WeekDays.thursday,
-          WeekDays.friday,
-          if (model.displaySaturday) WeekDays.saturday
-        ],
-        initialDay: model.weekSelected,
-        heightPerMinute: heightPerMinute,
-        scrollOffset: heightPerMinute * 60 * 7.5,
-        hourIndicatorSettings: HourIndicatorSettings(
-          color: context.theme.appColors.scheduleLine,
-        ),
-        liveTimeIndicatorSettings: LiveTimeIndicatorSettings(
-          color: context.theme.textTheme.bodyMedium!.color!,
-        ),
-        keepScrollOffset: true,
-        timeLineStringBuilder: (date, {secondaryDate}) {
-          return DateFormat('H:mm').format(date);
-        },
-        headerStringBuilder: (date, {secondaryDate}) {
-          final from = AppIntl.of(context)!.schedule_calendar_from;
-          final to = AppIntl.of(context)!.schedule_calendar_to;
-          final locale = AppIntl.of(context)!.localeName;
-          return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
-        },
-        eventTileBuilder:
-            (date, events, boundary, startDuration, endDuration) =>
-                _buildEventTile(events, context),
-        weekDayBuilder: (DateTime date) => Container(
-            color: context.theme.appColors.appBar,
-            child: _buildWeekDay(date, model, context)));
+              child: _buildWeekDay(date, model, context))),
+    );
   }
 
   Widget _buildWeekDay(

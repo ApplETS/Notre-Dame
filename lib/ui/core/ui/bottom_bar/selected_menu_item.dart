@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-
-import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class SelectedMenuItem extends StatefulWidget {
   final String label;
   final IconData icon;
-  final String route;
 
   const SelectedMenuItem(
       {super.key,
         required this.label,
         required this.icon,
-        required this.route
       });
 
   @override
