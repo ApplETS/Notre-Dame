@@ -217,8 +217,7 @@ void main() {
       RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock,
           toReturn: "");
 
-      inAppReviewServiceMock =
-          setupInAppReviewServiceMock();
+      inAppReviewServiceMock = setupInAppReviewServiceMock();
     });
 
     tearDown(() {
