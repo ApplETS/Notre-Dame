@@ -23,6 +23,13 @@
   "youtube_open": "Visiter notre page Youtube",
   "email_send": "Envoyer un commentaire via courriel",
   "discord_join": "Rejoidre notre Discord",
+  
+  "faq_questions_app_alert_title": "Attention",
+  "faq_questions_app_alert_confirmation": "Veuillez noter que si votre question concerne l'accès à votre compte, le club App|ETS ne peut pas vous aider. \n\nAppuyez sur le bouton \"Assistance mot de passe\" pour obtenir de l'aide",
+  "faq_questions_app_alert_password_assistance": "Assistance mot de passe",
+  "continue_to_mail_app": "Continuer vers l'application courriel",
+  "cancel_button_text": "Annuler",
+  "monets_connection_help_page": "https://partage.etsmtl.ca/fs/fr.html", 
 
   "close_button_text": "Fermer",
 
@@ -411,7 +418,6 @@
   "privacy_policy": "Politique de confidentialité",
   "questions_and_answers": "Questions et réponses",
   "actions": "Actions",
-  "forgot_password": "Mot de passe oublié?",
   "universal_code_example": "Ex: AB12345",
   "my_tickets": "Mes billets",
   "no_ticket": "Aucun billet",
