@@ -174,7 +174,7 @@ class _FaqViewState extends State<FaqView> {
                   builder: (BuildContext context) {
                     return NeedHelpNoticeDialog(
                         openMail: () => model.openMail(link, context),
-                        launchWebsite: () => model.launchWebsite(link));
+                        launchWebsite: () => model.launchPasswordReset());
                   });
             }
           },
