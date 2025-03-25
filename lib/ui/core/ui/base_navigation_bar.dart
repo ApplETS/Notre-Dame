@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import '../../../data/services/analytics_service.dart';
 import '../../../data/services/navigation_service.dart';
 import '../../../domain/constants/router_paths.dart';
@@ -17,6 +18,8 @@ enum NavigationView {
   ets,
   more,
 }
+
+ScheduleController _scheduleController = ScheduleController();
 
 abstract class BaseNavigationBar extends StatefulWidget {
   const BaseNavigationBar({super.key});
@@ -99,6 +102,10 @@ abstract class BaseNavigationBarState<T extends BaseNavigationBar>
   }
 
   void _onTap(NavigationView view) {
+    if (view == NavigationView.schedule && _currentView == view) {
+      _scheduleController.returnToToday();
+    }
+
     if (_currentView == view) return;
 
     final routeNames = {
@@ -116,7 +123,12 @@ abstract class BaseNavigationBarState<T extends BaseNavigationBar>
       NavigationView.more: "MoreView clicked"
     };
 
-    _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!);
+    if (view == NavigationView.schedule) {
+      _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!,
+          arguments: _scheduleController);
+    } else {
+      _navigationService.pushNamedAndRemoveDuplicates(routeNames[view]!);
+    }
     _analyticsService.logEvent("NavigationBar", events[view]!);
     setState(() => _currentView = view);
   }
