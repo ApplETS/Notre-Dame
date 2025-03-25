@@ -75,18 +75,15 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     ),
                   ),
                   Expanded(
-                    child: ListTileTheme(
-                      selectedColor:
-                          Theme.of(context).textTheme.bodyLarge!.color,
-                      child: Card(
-                        margin: const EdgeInsets.all(0),
-                        shape: const RoundedRectangleBorder(),
-                        child: ListView(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          controller: scrollController,
-                          key: const ValueKey("SettingsScrollingArea"),
-                          children: _buildSettings(context, model),
-                        ),
+                    child: Card(
+                      color: context.theme.scaffoldBackgroundColor,
+                      margin: const EdgeInsets.all(0),
+                      shape: const RoundedRectangleBorder(),
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        controller: scrollController,
+                        key: const ValueKey("SettingsScrollingArea"),
+                        children: _buildSettings(context, model),
                       ),
                     ),
                   )
@@ -167,7 +164,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     }
 
     return Card(
-        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(
@@ -249,7 +245,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     ];
 
     return Card(
-        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(children: cardContent)));
