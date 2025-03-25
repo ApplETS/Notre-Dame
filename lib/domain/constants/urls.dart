@@ -10,5 +10,5 @@ class Urls {
   static const String clubYoutube =
       "https://youtube.com/channel/UCiSzzfW1bVbE_0KcEZO52ew";
   static const String clubDiscord = "https://discord.gg/adMkWptn6Y";
-  static const String signetsAPI = "etsmobileapi-preprod.etsmtl.ca";
+  static const String signetsAPI = "etsmobileapi.etsmtl.ca";
 }
