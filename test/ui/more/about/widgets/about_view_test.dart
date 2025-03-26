@@ -18,8 +18,7 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has 7 images and 2 texts and 1 row',
-          (WidgetTester tester) async {
+      testWidgets('has 7 images and 2 texts and 1 row', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: AboutView()));
         await tester.pumpAndSettle();
 

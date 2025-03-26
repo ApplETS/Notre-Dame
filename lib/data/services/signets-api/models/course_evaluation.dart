@@ -50,10 +50,9 @@ class CourseEvaluation {
 
   /// Weighted grade of the evaluation
   /// (ex: Mark of 25/50 and 10% weight => 5/10 weighted grade)
-  double? get weightedGrade =>
-      mark == null || correctedEvaluationOutOfFormatted == 0.0 || weight == 0.0
-          ? null
-          : (mark! / correctedEvaluationOutOfFormatted) * weight;
+  double? get weightedGrade => mark == null || correctedEvaluationOutOfFormatted == 0.0 || weight == 0.0
+      ? null
+      : (mark! / correctedEvaluationOutOfFormatted) * weight;
 
   CourseEvaluation(
       {required this.courseGroup,
@@ -70,8 +69,7 @@ class CourseEvaluation {
       this.percentileRank,
       this.targetDate})
       : correctedEvaluationOutOfFormatted = correctedEvaluationOutOf.isNotEmpty
-            ? double.parse(
-                correctedEvaluationOutOf.split("+").first.replaceAll(",", "."))
+            ? double.parse(correctedEvaluationOutOf.split("+").first.replaceAll(",", "."))
             : 0.0;
 
   /// Used to create a new [CourseEvaluation] instance from a [XMLElement].
@@ -79,24 +77,18 @@ class CourseEvaluation {
       courseGroup: node.getElement('coursGroupe')!.innerText,
       title: node.getElement('nom')!.innerText,
       mark: node.getElement('note')!.innerText.isNotEmpty
-          ? double.parse(
-              node.getElement('note')!.innerText.replaceAll(",", "."))
+          ? double.parse(node.getElement('note')!.innerText.replaceAll(",", "."))
           : null,
-      correctedEvaluationOutOf:
-          node.getElement('corrigeSur')!.innerText.replaceAll(",", "."),
-      weight: double.parse(
-          node.getElement('ponderation')!.innerText.replaceAll(",", ".")),
+      correctedEvaluationOutOf: node.getElement('corrigeSur')!.innerText.replaceAll(",", "."),
+      weight: double.parse(node.getElement('ponderation')!.innerText.replaceAll(",", ".")),
       passMark: node.getElement('moyenne')!.innerText.isNotEmpty
-          ? double.parse(
-              node.getElement('moyenne')!.innerText.replaceAll(",", "."))
+          ? double.parse(node.getElement('moyenne')!.innerText.replaceAll(",", "."))
           : null,
       standardDeviation: node.getElement('ecartType')!.innerText.isNotEmpty
-          ? double.parse(
-              node.getElement('ecartType')!.innerText.replaceAll(",", "."))
+          ? double.parse(node.getElement('ecartType')!.innerText.replaceAll(",", "."))
           : null,
       median: node.getElement('mediane')!.innerText.isNotEmpty
-          ? double.parse(
-              node.getElement('mediane')!.innerText.replaceAll(",", "."))
+          ? double.parse(node.getElement('mediane')!.innerText.replaceAll(",", "."))
           : null,
       percentileRank: node.getElement('rangCentile')!.innerText.isNotEmpty
           ? int.parse(node.getElement('rangCentile')!.innerText)
@@ -109,23 +101,20 @@ class CourseEvaluation {
           : null);
 
   /// Used to create [CourseEvaluation] instance from a JSON file
-  factory CourseEvaluation.fromJson(Map<String, dynamic> map) =>
-      CourseEvaluation(
-          courseGroup: map["courseGroup"] as String,
-          title: map["title"] as String,
-          mark: map["mark"] as double?,
-          correctedEvaluationOutOf: map["correctedEvaluationOutOf"] as String,
-          weight: map["weight"] as double,
-          passMark: map["passMark"] as double?,
-          standardDeviation: map["standardDeviation"] as double?,
-          median: map["median"] as double?,
-          percentileRank: map["percentileRank"] as int?,
-          published: map["published"] as bool,
-          teacherMessage: map["teacherMessage"] as String,
-          ignore: map["ignore"] as bool,
-          targetDate: map["targetDate"] == null
-              ? null
-              : DateTime.parse(map["targetDate"] as String));
+  factory CourseEvaluation.fromJson(Map<String, dynamic> map) => CourseEvaluation(
+      courseGroup: map["courseGroup"] as String,
+      title: map["title"] as String,
+      mark: map["mark"] as double?,
+      correctedEvaluationOutOf: map["correctedEvaluationOutOf"] as String,
+      weight: map["weight"] as double,
+      passMark: map["passMark"] as double?,
+      standardDeviation: map["standardDeviation"] as double?,
+      median: map["median"] as double?,
+      percentileRank: map["percentileRank"] as int?,
+      published: map["published"] as bool,
+      teacherMessage: map["teacherMessage"] as String,
+      ignore: map["ignore"] as bool,
+      targetDate: map["targetDate"] == null ? null : DateTime.parse(map["targetDate"] as String));
 
   Map<String, dynamic> toJson() => {
         'courseGroup': courseGroup,
@@ -153,8 +142,7 @@ class CourseEvaluation {
           targetDate == other.targetDate &&
           mark == other.mark &&
           correctedEvaluationOutOf == other.correctedEvaluationOutOf &&
-          correctedEvaluationOutOfFormatted ==
-              other.correctedEvaluationOutOfFormatted &&
+          correctedEvaluationOutOfFormatted == other.correctedEvaluationOutOfFormatted &&
           weight == other.weight &&
           passMark == other.passMark &&
           standardDeviation == other.standardDeviation &&

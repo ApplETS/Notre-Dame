@@ -51,8 +51,7 @@ class _FaqViewState extends State<FaqView> {
                       Flexible(
                         child: Column(
                           children: [
-                            getSubtitle(
-                                AppIntl.of(context)!.questions_and_answers),
+                            getSubtitle(AppIntl.of(context)!.questions_and_answers),
                             Expanded(child: getCarousel(model)),
                           ],
                         ),

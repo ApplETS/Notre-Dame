@@ -20,8 +20,7 @@ class StudentProgram extends StatefulWidget {
   State<StudentProgram> createState() => _StudentProgramState();
 }
 
-class _StudentProgramState extends State<StudentProgram>
-    with TickerProviderStateMixin<StudentProgram> {
+class _StudentProgramState extends State<StudentProgram> with TickerProviderStateMixin<StudentProgram> {
   bool showProgramDetails = false;
   late AnimationController controller;
   late Animation<double> rotateAnimation;
@@ -37,8 +36,7 @@ class _StudentProgramState extends State<StudentProgram>
         ),
         value: 1.0);
 
-    rotateAnimation = Tween(begin: pi, end: 0.0)
-        .animate(CurvedAnimation(parent: controller, curve: Curves.easeIn));
+    rotateAnimation = Tween(begin: pi, end: 0.0).animate(CurvedAnimation(parent: controller, curve: Curves.easeIn));
   }
 
   @override

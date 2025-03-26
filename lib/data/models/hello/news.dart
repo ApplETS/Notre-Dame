@@ -57,9 +57,7 @@ class News {
       content: map['content'] as String,
       imageUrl: map['imageUrl'] as String?,
       state: map['state'] as String,
-      tags: (map['tags'] as List<dynamic>)
-          .map((e) => NewsTags.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      tags: (map['tags'] as List<dynamic>).map((e) => NewsTags.fromJson(e as Map<String, dynamic>)).toList(),
       publicationDate: DateTime.parse(map['publicationDate'] as String),
       eventStartDate: DateTime.parse(map['eventStartDate'] as String),
       eventEndDate: DateTime.parse(map['eventEndDate'] as String),

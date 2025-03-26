@@ -65,10 +65,8 @@ void main() {
   });
 
   group('NewsDetailsView Tests', () {
-    testWidgets('Displays all news details correctly',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(
-          localizedWidget(child: NewsDetailsView(news: sampleNews)));
+    testWidgets('Displays all news details correctly', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: NewsDetailsView(news: sampleNews)));
       await tester.pumpAndSettle();
 
       expect(find.text(sampleNews.title), findsOneWidget);

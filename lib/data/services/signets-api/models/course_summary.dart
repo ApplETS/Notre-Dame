@@ -49,33 +49,26 @@ class CourseSummary {
   /// Used to create a new [CourseSummary] instance from a [XMLElement].
   factory CourseSummary.fromXmlNode(XmlElement node) => CourseSummary(
       currentMark: node.getElement("scoreFinalSur100")!.innerText.isNotEmpty
-          ? double.parse(node
-              .getElement("scoreFinalSur100")!
-              .innerText
-              .replaceAll(",", "."))
+          ? double.parse(node.getElement("scoreFinalSur100")!.innerText.replaceAll(",", "."))
           : null,
       currentMarkInPercent: node.getElement("noteACeJour")!.innerText.isNotEmpty
-          ? double.parse(
-              node.getElement("noteACeJour")!.innerText.replaceAll(",", "."))
+          ? double.parse(node.getElement("noteACeJour")!.innerText.replaceAll(",", "."))
           : 0.0,
       markOutOf: node.getElement("tauxPublication")!.innerText.isNotEmpty
-          ? double.parse(node
-              .getElement("tauxPublication")!
-              .innerText
-              .replaceAll(",", "."))
+          ? double.parse(node.getElement("tauxPublication")!.innerText.replaceAll(",", "."))
           : 0.0,
       passMark: node.getElement("moyenneClasse")!.innerText.isNotEmpty
-          ? double.parse(
-              node.getElement("moyenneClasse")!.innerText.replaceAll(",", "."))
+          ? double.parse(node.getElement("moyenneClasse")!.innerText.replaceAll(",", "."))
           : null,
-      standardDeviation: node
-              .getElement("ecartTypeClasse")!
-              .innerText
-              .isNotEmpty
+      standardDeviation: node.getElement("ecartTypeClasse")!.innerText.isNotEmpty
           ? double.parse(node.getElement("ecartTypeClasse")!.innerText.replaceAll(",", "."))
           : null,
-      median: node.getElement("medianeClasse")!.innerText.isNotEmpty ? double.parse(node.getElement("medianeClasse")!.innerText.replaceAll(",", ".")) : null,
-      percentileRank: node.getElement("rangCentileClasse")!.innerText.isNotEmpty ? int.parse(node.getElement("rangCentileClasse")!.innerText.replaceAll(",0", "")) : null,
+      median: node.getElement("medianeClasse")!.innerText.isNotEmpty
+          ? double.parse(node.getElement("medianeClasse")!.innerText.replaceAll(",", "."))
+          : null,
+      percentileRank: node.getElement("rangCentileClasse")!.innerText.isNotEmpty
+          ? int.parse(node.getElement("rangCentileClasse")!.innerText.replaceAll(",0", ""))
+          : null,
       evaluations: node.findAllElements("ElementEvaluation").map((node) => CourseEvaluation.fromXml(node)).toList());
 
   /// Used to create [CourseSummary] instance from a JSON file
@@ -88,8 +81,7 @@ class CourseSummary {
       median: json["median"] as double?,
       percentileRank: json["percentileRank"] as int?,
       evaluations: (json["evaluations"] as List)
-          .map<CourseEvaluation>(
-              (e) => CourseEvaluation.fromJson(e as Map<String, dynamic>))
+          .map<CourseEvaluation>((e) => CourseEvaluation.fromJson(e as Map<String, dynamic>))
           .toList());
 
   Map<String, dynamic> toJson() => {

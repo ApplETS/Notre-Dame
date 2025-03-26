@@ -29,9 +29,7 @@ class PaginatedNews {
       pageSize: map['pageSize'] as int,
       totalPages: map['totalPages'] as int,
       totalRecords: map['totalRecords'] as int,
-      news: (map['data'] as List<dynamic>)
-          .map((e) => News.fromJson(e as Map<String, dynamic>))
-          .toList());
+      news: (map['data'] as List<dynamic>).map((e) => News.fromJson(e as Map<String, dynamic>)).toList());
 
   Map<String, dynamic> toJson() => {
         'pageNumber': pageNumber,
@@ -54,9 +52,5 @@ class PaginatedNews {
 
   @override
   int get hashCode =>
-      pageNumber.hashCode ^
-      pageSize.hashCode ^
-      totalPages.hashCode ^
-      totalRecords.hashCode ^
-      news.hashCode;
+      pageNumber.hashCode ^ pageSize.hashCode ^ totalPages.hashCode ^ totalRecords.hashCode ^ news.hashCode;
 }

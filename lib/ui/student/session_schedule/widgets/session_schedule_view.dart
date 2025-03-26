@@ -27,8 +27,7 @@ class _ScheduleDefaultViewState extends State<SessionScheduleView> {
     }
 
     return ViewModelBuilder<SessionScheduleViewModel>.reactive(
-      viewModelBuilder: () =>
-          SessionScheduleViewModel(sessionCode: widget.sessionCode),
+      viewModelBuilder: () => SessionScheduleViewModel(sessionCode: widget.sessionCode),
       builder: (context, model, child) => BaseScaffold(
         showBottomBar: false,
         safeArea: false,

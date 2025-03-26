@@ -60,13 +60,10 @@ void main() {
     });
 
     group("UI -", () {
-      testWidgets(
-          "display a circular progress bar, the title, the weight and an icon",
-          (WidgetTester tester) async {
+      testWidgets("display a circular progress bar, the title, the weight and an icon", (WidgetTester tester) async {
         final evaluation = courseSummary.evaluations.first;
 
-        await tester.pumpWidget(localizedWidget(
-            child: GradeEvaluationTile(evaluation, completed: true)));
+        await tester.pumpWidget(localizedWidget(child: GradeEvaluationTile(evaluation, completed: true)));
         await tester.pumpAndSettle();
 
         final circularPercentIndicator = find.byType(GradeCircularProgress);
@@ -79,12 +76,10 @@ void main() {
         expect(label2, findsOneWidget);
       });
 
-      testWidgets("display N/A when the information is null",
-          (WidgetTester tester) async {
+      testWidgets("display N/A when the information is null", (WidgetTester tester) async {
         final evaluation = courseSummary.evaluations.last;
 
-        final widget = localizedWidget(
-            child: GradeEvaluationTile(evaluation, completed: true));
+        final widget = localizedWidget(child: GradeEvaluationTile(evaluation, completed: true));
 
         await tester.pumpWidget(widget);
 

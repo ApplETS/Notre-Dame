@@ -39,20 +39,15 @@ void main() {
         activityName: 'PRE011',
         activityDescription: 'PRE011',
         activityLocation: 'PRE011',
-        startDateTime: Utils.getFirstdayOfWeek(DateTime.now())
-            .add(Duration(days: 6, hours: 12)),
-        endDateTime: Utils.getFirstdayOfWeek(DateTime.now())
-            .add(Duration(days: 6, hours: 16)),
+        startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
+        endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 16)),
       );
 
       // Mocking the class to get our list of data back like a "real" request
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: [saturdayCourse]);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [saturdayCourse]);
       // Map the list of CourseActivity to add them in the viewModel
       final Map<DateTime, List<CourseActivity>> coursesMapped = {};
-      final DateTime saturday = Utils.getFirstdayOfWeek(DateTime.now())
-          .add(Duration(days: 6, hours: 1))
-          .withoutTime;
+      final DateTime saturday = Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 1)).withoutTime;
       coursesMapped[saturday]?.add(saturdayCourse);
 
       viewModel.coursesActivities.addAll(coursesMapped);

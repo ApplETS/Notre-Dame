@@ -52,16 +52,11 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   CalendarViewModel({required AppIntl intl}) : appIntl = intl;
 
   CalendarEventData<Object> calendarEventData(CourseActivity eventData) {
-    final courseLocation = eventData.activityLocation == "Non assign"
-        ? "N/A"
-        : eventData.activityLocation;
-    final associatedCourses = _courses?.where(
-        (element) => element.acronym == eventData.courseGroup.split('-')[0]);
-    final associatedCourse =
-        associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
+    final courseLocation = eventData.activityLocation == "Non assign" ? "N/A" : eventData.activityLocation;
+    final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
+    final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
     return CalendarEventData(
-        title:
-            "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
+        title: "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
         description:
             "${eventData.courseGroup};$courseLocation;${eventData.activityName};${associatedCourse?.teacherName}",
         date: eventData.startDateTime,
@@ -81,12 +76,10 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   @override
   Future<List<CourseActivity>> futureToRun() async {
-    List<CourseActivity>? activities =
-        await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+    List<CourseActivity>? activities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
     try {
       setBusyForObject(isLoadingEvents, true);
-      final fetchedCourseActivities =
-          await _courseRepository.getCoursesActivities();
+      final fetchedCourseActivities = await _courseRepository.getCoursesActivities();
 
       if (fetchedCourseActivities != null) {
         activities = fetchedCourseActivities;
@@ -95,8 +88,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
         _courses = await _courseRepository.getCourses(fromCacheOnly: true);
       }
-      final scheduleActivities =
-          await _courseRepository.getScheduleActivities();
+      final scheduleActivities = await _courseRepository.getScheduleActivities();
       await _assignScheduleActivities(scheduleActivities);
     } catch (e) {
       onError(e);
@@ -106,21 +98,17 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return activities ?? [];
   }
 
-  Future _assignScheduleActivities(
-      List<ScheduleActivity> listOfSchedules) async {
+  Future _assignScheduleActivities(List<ScheduleActivity> listOfSchedules) async {
     if (listOfSchedules.isEmpty ||
-        !listOfSchedules.any((element) => [
-              ActivityCode.labGroupA,
-              ActivityCode.labGroupB
-            ].contains(element.activityCode))) {
+        !listOfSchedules
+            .any((element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode))) {
       return;
     }
 
     setBusy(true);
     scheduleActivitiesByCourse.clear();
     for (final activity in listOfSchedules) {
-      if (activity.activityCode == ActivityCode.labGroupA ||
-          activity.activityCode == ActivityCode.labGroupB) {
+      if (activity.activityCode == ActivityCode.labGroupA || activity.activityCode == ActivityCode.labGroupB) {
         // Create the list with the new activity inside or add the activity to an existing group
         if (!scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
           scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
@@ -140,17 +128,15 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Future loadSettingsScheduleActivities() async {
     for (final courseAcronym in scheduleActivitiesByCourse.keys) {
-      final String? activityCodeToUse = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
+      final String? activityCodeToUse =
+          await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
-          ?.firstWhereOrNull(
-              (element) => element.activityCode == activityCodeToUse);
+          ?.firstWhereOrNull((element) => element.activityCode == activityCodeToUse);
       if (scheduleActivityToSet != null) {
         settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
       } else {
         // All group selected
-        settingsScheduleActivities
-            .removeWhere((key, value) => key == courseAcronym);
+        settingsScheduleActivities.removeWhere((key, value) => key == courseAcronym);
       }
 
       coursesActivities;
@@ -163,8 +149,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
     // Build the map
     if (_courseRepository.coursesActivities != null) {
-      for (final CourseActivity course
-          in _courseRepository.coursesActivities!) {
+      for (final CourseActivity course in _courseRepository.coursesActivities!) {
         final DateTime dateOnly = course.startDateTime.withoutTime;
 
         if (!_coursesActivities.containsKey(dateOnly)) {
@@ -172,8 +157,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         }
 
         _coursesActivities.update(dateOnly, (value) {
-          final scheduleActivitiesContainsGroup = settingsScheduleActivities
-              .containsKey(course.courseGroup.split("-").first);
+          final scheduleActivitiesContainsGroup =
+              settingsScheduleActivities.containsKey(course.courseGroup.split("-").first);
 
           if (scheduleActivitiesContainsGroup) {
             if (_scheduleActivityIsSelected(course)) {
@@ -203,17 +188,13 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       return true;
     }
 
-    final activityNameSelected =
-        settingsScheduleActivities[course.courseGroup.split("-").first];
+    final activityNameSelected = settingsScheduleActivities[course.courseGroup.split("-").first];
 
     return activityNameSelected == course.activityDescription;
   }
 
   List<CalendarEventData> calendarEventsFromDate(DateTime date) {
-    return _coursesActivities[date.withoutTime]
-            ?.map((eventData) => calendarEventData(eventData))
-            .toList() ??
-        [];
+    return _coursesActivities[date.withoutTime]?.map((eventData) => calendarEventData(eventData)).toList() ?? [];
   }
 
   bool returnToCurrentDate();

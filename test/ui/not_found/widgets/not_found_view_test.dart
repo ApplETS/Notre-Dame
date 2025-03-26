@@ -19,10 +19,8 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has a go back to dashboard button',
-          (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(
-            child: const NotFoundView(pageName: pageNotFoundPassed)));
+      testWidgets('has a go back to dashboard button', (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(child: const NotFoundView(pageName: pageNotFoundPassed)));
         await tester.pumpAndSettle();
 
         expect(find.byType(ElevatedButton), findsOneWidget);

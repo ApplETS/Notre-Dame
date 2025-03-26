@@ -25,10 +25,8 @@ void main() {
   List<CourseActivity> activites = [
     CourseActivity(
       courseName: 'Lab',
-      startDateTime:
-          Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
-      endDateTime:
-          Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
+      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
+      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
       courseGroup: 'LOG100',
       activityLocation: 'Room 102',
       activityName: 'Lab Session',
@@ -36,10 +34,8 @@ void main() {
     ),
     CourseActivity(
       courseName: 'Lecture',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now())
-          .add(Duration(days: 6, hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now())
-          .add(Duration(days: 6, hours: 12)),
+      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
+      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
       courseGroup: 'ING150-01',
       activityLocation: 'Room 101',
       activityName: 'Lecture 1',
@@ -70,12 +66,10 @@ void main() {
 
     testWidgets("displays saturday and sunday", (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: activites);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
 
       await tester.runAsync(() async {
-        await tester.pumpWidget(localizedWidget(
-            child: WeekCalendar(controller: ScheduleController())));
+        await tester.pumpWidget(localizedWidget(child: WeekCalendar(controller: ScheduleController())));
         await tester.pumpAndSettle();
       });
 
@@ -86,15 +80,12 @@ void main() {
       expect(find.text("D"), findsOneWidget);
     });
 
-    testWidgets("does not display saturday and sunday",
-        (WidgetTester tester) async {
+    testWidgets("does not display saturday and sunday", (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: []);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: []);
 
       await tester.runAsync(() async {
-        await tester.pumpWidget(localizedWidget(
-            child: WeekCalendar(controller: ScheduleController())));
+        await tester.pumpWidget(localizedWidget(child: WeekCalendar(controller: ScheduleController())));
         await tester.pumpAndSettle();
       });
 

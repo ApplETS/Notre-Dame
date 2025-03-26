@@ -44,16 +44,14 @@ class ProgramCompletionCard extends StatelessWidget {
                         strokeWidth: 10,
                         strokeCap: StrokeCap.round,
                         backgroundColor: Colors.grey[300],
-                        valueColor: AlwaysStoppedAnimation(
-                            context.theme.appColors.positive),
+                        valueColor: AlwaysStoppedAnimation(context.theme.appColors.positive),
                       ),
                     ),
                   ),
                   Text(
                     model.programProgression > 0
                         ? '${model.programProgression}%'
-                        : AppIntl.of(context)!
-                            .profile_program_completion_not_available,
+                        : AppIntl.of(context)!.profile_program_completion_not_available,
                     style: const TextStyle(fontSize: 20),
                   ),
                 ],
