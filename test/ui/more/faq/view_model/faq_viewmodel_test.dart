@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
 import '../../../../data/mocks/services/launch_url_service_mock.dart';
 import '../../../../helpers.dart';
@@ -18,6 +19,7 @@ void main() {
     setUp(() async {
       launchUrlServiceMock = setupLaunchUrlServiceMock();
       setupSettingsManagerMock();
+      setupRemoteConfigServiceMock();
 
       viewModel = FaqViewModel();
     });
@@ -25,6 +27,7 @@ void main() {
     tearDown(() {
       unregister<SettingsRepository>();
       unregister<LaunchUrlService>();
+      unregister<RemoteConfigService>();
     });
 
     group('Webview - ', () {
