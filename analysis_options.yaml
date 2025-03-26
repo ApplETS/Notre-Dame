@@ -10,3 +10,5 @@ analyzer:
   exclude:
     - "lib/generated"
     - "*.mocks.dart"
+formatter:
+  page_width: 120
