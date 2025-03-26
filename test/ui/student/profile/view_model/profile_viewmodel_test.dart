@@ -51,11 +51,8 @@ void main() {
 
   final List<Program> programs = [program1, program2, program3];
 
-  final ProfileStudent info = ProfileStudent(
-      balance: '99.99',
-      firstName: 'John',
-      lastName: 'Doe',
-      permanentCode: 'DOEJ00000000');
+  final ProfileStudent info =
+      ProfileStudent(balance: '99.99', firstName: 'John', lastName: 'Doe', permanentCode: 'DOEJ00000000');
 
   group("ProfileViewModel - ", () {
     setUp(() async {
@@ -71,9 +68,7 @@ void main() {
     });
 
     group("futureToRun - ", () {
-      test(
-          "first load from cache then call SignetsAPI to get the latest events",
-          () async {
+      test("first load from cache then call SignetsAPI to get the latest events", () async {
         UserRepositoryMock.stubGetInfo(userRepositoryMock, toReturn: info);
         UserRepositoryMock.stubGetPrograms(userRepositoryMock);
 
@@ -91,17 +86,12 @@ void main() {
 
       test("Signets throw an error while trying to get new events", () async {
         setupFlutterToastMock();
-        UserRepositoryMock.stubGetInfo(userRepositoryMock,
-            fromCacheOnly: true, toReturn: info);
-        UserRepositoryMock.stubGetInfoException(userRepositoryMock,
-            fromCacheOnly: false);
-        UserRepositoryMock.stubGetPrograms(userRepositoryMock,
-            fromCacheOnly: true);
-        UserRepositoryMock.stubGetProgramsException(userRepositoryMock,
-            fromCacheOnly: false);
+        UserRepositoryMock.stubGetInfo(userRepositoryMock, fromCacheOnly: true, toReturn: info);
+        UserRepositoryMock.stubGetInfoException(userRepositoryMock, fromCacheOnly: false);
+        UserRepositoryMock.stubGetPrograms(userRepositoryMock, fromCacheOnly: true);
+        UserRepositoryMock.stubGetProgramsException(userRepositoryMock, fromCacheOnly: false);
 
-        expect(await viewModel.futureToRun(), [],
-            reason: "Even if SignetsAPI fails we should receives a list.");
+        expect(await viewModel.futureToRun(), [], reason: "Even if SignetsAPI fails we should receives a list.");
 
         verifyInOrder([
           userRepositoryMock.getInfo(fromCacheOnly: true),
@@ -116,8 +106,7 @@ void main() {
 
     group("info - ", () {
       test("build the info", () async {
-        UserRepositoryMock.stubProfileStudent(userRepositoryMock,
-            toReturn: info);
+        UserRepositoryMock.stubProfileStudent(userRepositoryMock, toReturn: info);
 
         expect(viewModel.profileStudent, info);
 
@@ -167,8 +156,7 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock,
-            toReturn: testPrograms);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
 
         // Create an instance of ProgramCredits
         final ProgramCredits programCredits = ProgramCredits();
@@ -177,8 +165,7 @@ void main() {
         final int progression = viewModel.programProgression;
 
         // Calculate the expected progression based on the defined ProgramCredits
-        final int expectedProgression =
-            (45 / programCredits.programsCredits['7694']! * 100).round();
+        final int expectedProgression = (45 / programCredits.programsCredits['7694']! * 100).round();
 
         // Verify that the calculated progression matches the expected value
         expect(progression, expectedProgression);
@@ -189,8 +176,7 @@ void main() {
         final List<Program> testPrograms = [
           Program(
             name: 'Program X',
-            code:
-                '9999', // Program code with no matching entry in ProgramCredits
+            code: '9999', // Program code with no matching entry in ProgramCredits
             average: '3.00',
             accumulatedCredits: '20',
             registeredCredits: '40',
@@ -201,8 +187,7 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock,
-            toReturn: testPrograms);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
 
         // Calculate the program progression
         final int progression = viewModel.programProgression;
@@ -214,8 +199,7 @@ void main() {
 
     group('refresh -', () {
       test('Call SignetsAPI to get the user info and programs', () async {
-        UserRepositoryMock.stubProfileStudent(userRepositoryMock,
-            toReturn: info);
+        UserRepositoryMock.stubProfileStudent(userRepositoryMock, toReturn: info);
         UserRepositoryMock.stubGetInfo(userRepositoryMock, toReturn: info);
         UserRepositoryMock.stubGetPrograms(userRepositoryMock);
 

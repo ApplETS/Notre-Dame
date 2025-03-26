@@ -4,10 +4,7 @@ class AnimationException implements Exception {
   final String _prefix;
   final Exception? _nestedException;
 
-  const AnimationException(
-      {required String prefix,
-      required String message,
-      Exception? nestedException})
+  const AnimationException({required String prefix, required String message, Exception? nestedException})
       : _message = message,
         _prefix = prefix,
         _nestedException = nestedException;

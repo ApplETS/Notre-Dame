@@ -18,16 +18,14 @@ import 'package:notredame/locator.dart';
 class NavigationService {
   static const String tag = "NavigationService";
 
-  final RemoteConfigService remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   /// Will be used to report event and error.
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   /// Will be used to remove duplicate routes.
-  final NavigationHistoryObserver _navigationHistoryObserver =
-      NavigationHistoryObserver();
+  final NavigationHistoryObserver _navigationHistoryObserver = NavigationHistoryObserver();
 
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
 
@@ -52,16 +50,14 @@ class NavigationService {
     }
 
     if (remoteConfigService.outage) {
-      return currentState.pushNamedAndRemoveUntil(
-          RouterPaths.serviceOutage, (route) => false);
+      return currentState.pushNamedAndRemoveUntil(RouterPaths.serviceOutage, (route) => false);
     }
     return currentState.pushNamed(routeName, arguments: arguments);
   }
 
   /// Push a named route [routeName] onto the navigator
   /// and remove existing routes with the same [routeName]
-  Future<dynamic> pushNamedAndRemoveDuplicates(String routeName,
-      {dynamic arguments}) {
+  Future<dynamic> pushNamedAndRemoveDuplicates(String routeName, {dynamic arguments}) {
     final currentState = _navigatorKey.currentState;
 
     if (currentState == null) {
@@ -70,13 +66,10 @@ class NavigationService {
     }
 
     if (remoteConfigService.outage) {
-      return currentState.pushNamedAndRemoveUntil(
-          RouterPaths.serviceOutage, (route) => false);
+      return currentState.pushNamedAndRemoveUntil(RouterPaths.serviceOutage, (route) => false);
     }
 
-    final route = _navigationHistoryObserver.history
-        .where((r) => r.settings.name == routeName)
-        .firstOrNull;
+    final route = _navigationHistoryObserver.history.where((r) => r.settings.name == routeName).firstOrNull;
 
     if (route != null) {
       currentState.removeRoute(route);
@@ -87,8 +80,7 @@ class NavigationService {
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then delete the stack of previous routes
   Future<dynamic> pushNamedAndRemoveUntil(String routeName,
-      [String removeUntilRouteNamed = RouterPaths.dashboard,
-      Object? arguments]) {
+      [String removeUntilRouteNamed = RouterPaths.dashboard, Object? arguments]) {
     final currentState = _navigatorKey.currentState;
     if (currentState == null) {
       _analyticsService.logError(tag, "Navigator state is null");
@@ -96,11 +88,9 @@ class NavigationService {
     }
 
     if (remoteConfigService.outage) {
-      return currentState.pushNamedAndRemoveUntil(
-          RouterPaths.serviceOutage, (route) => false);
+      return currentState.pushNamedAndRemoveUntil(RouterPaths.serviceOutage, (route) => false);
     }
-    return currentState.pushNamedAndRemoveUntil(
-        routeName, ModalRoute.withName(removeUntilRouteNamed),
+    return currentState.pushNamedAndRemoveUntil(routeName, ModalRoute.withName(removeUntilRouteNamed),
         arguments: arguments);
   }
 }

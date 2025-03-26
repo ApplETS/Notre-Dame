@@ -32,14 +32,10 @@ void main() {
       unregister<NetworkingService>();
     });
 
-    testWidgets('ScheduleDefaultView has a title and shows schedule',
-        (WidgetTester tester) async {
+    testWidgets('ScheduleDefaultView has a title and shows schedule', (WidgetTester tester) async {
       mockCourseRepository = MockCourseRepository();
-      when(mockCourseRepository.getDefaultScheduleActivities(
-              session: "valid_session"))
-          .thenAnswer((_) async => []);
-      await tester.pumpWidget(localizedWidget(
-          child: const SessionScheduleView(sessionCode: "A2023")));
+      when(mockCourseRepository.getDefaultScheduleActivities(session: "valid_session")).thenAnswer((_) async => []);
+      await tester.pumpWidget(localizedWidget(child: const SessionScheduleView(sessionCode: "A2023")));
       await tester.pumpAndSettle(const Duration(seconds: 1));
       final fallSessionText = find.text("${intl.session_fall} 2023");
       expect(fallSessionText, findsOneWidget);

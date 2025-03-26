@@ -10,11 +10,7 @@ class ActivityArea {
   final DateTime updatedAt;
 
   ActivityArea(
-      {required this.id,
-      required this.nameFr,
-      required this.nameEn,
-      required this.createdAt,
-      required this.updatedAt});
+      {required this.id, required this.nameFr, required this.nameEn, required this.createdAt, required this.updatedAt});
 
   /// Used to create [ActivityArea] instance from a JSON file
   factory ActivityArea.fromJson(Map<String, dynamic> map) => ActivityArea(
@@ -44,10 +40,5 @@ class ActivityArea {
           updatedAt == other.updatedAt;
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      nameFr.hashCode ^
-      nameEn.hashCode ^
-      createdAt.hashCode ^
-      updatedAt.hashCode;
+  int get hashCode => id.hashCode ^ nameFr.hashCode ^ nameEn.hashCode ^ createdAt.hashCode ^ updatedAt.hashCode;
 }

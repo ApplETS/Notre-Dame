@@ -52,8 +52,7 @@ void main() {
 
     group("setter theme - ", () {
       test("can set system theme option", () async {
-        SettingsRepositoryMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.theme);
+        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.system;
@@ -68,8 +67,7 @@ void main() {
       });
 
       test("can set dark theme option", () async {
-        SettingsRepositoryMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.theme);
+        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.dark;
@@ -84,8 +82,7 @@ void main() {
       });
 
       test("can set light theme option", () async {
-        SettingsRepositoryMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.theme);
+        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
         viewModel.selectedTheme = ThemeMode.light;

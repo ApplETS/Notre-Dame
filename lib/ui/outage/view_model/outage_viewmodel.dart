@@ -45,8 +45,7 @@ class OutageViewModel extends BaseViewModel {
   }
 
   void refreshOutageConfig() {
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
+    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     if (!remoteConfigService.outage) {
       _timer?.cancel();
       final NavigationService navigationService = locator<NavigationService>();

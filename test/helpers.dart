@@ -56,10 +56,7 @@ void unregister<T extends Object>() {
 
 /// Load the l10n classes. Take the [child] widget to test
 Widget localizedWidget(
-        {required Widget child,
-        bool useScaffold = true,
-        String locale = 'en',
-        double textScaleFactor = 0.9}) =>
+        {required Widget child, bool useScaffold = true, String locale = 'en', double textScaleFactor = 0.9}) =>
     RepaintBoundary(
       child: MaterialApp(
         localizationsDelegates: const [
@@ -151,8 +148,7 @@ void setupFlutterToastMock([WidgetTester? tester]) {
   if (tester != null) {
     messenger = tester.binding.defaultBinaryMessenger;
   } else {
-    messenger =
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   }
 
   messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
@@ -271,8 +267,7 @@ void setupInAppReviewMock([WidgetTester? tester]) {
   if (tester != null) {
     messenger = tester.binding.defaultBinaryMessenger;
   } else {
-    messenger =
-        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+    messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   }
 
   messenger.setMockMethodCallHandler(channel, (MethodCall methodCall) async {
@@ -314,7 +309,6 @@ QuickLinkRepositoryMock setupQuickLinkRepositoryMock() {
 }
 
 bool getCalendarViewEnabled() {
-  final RemoteConfigService remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   return remoteConfigService.scheduleListViewDefault;
 }

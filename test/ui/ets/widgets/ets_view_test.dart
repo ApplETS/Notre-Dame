@@ -117,8 +117,8 @@ void main() {
       updatedAt: DateTime.now().subtract(const Duration(days: 5)),
     ),
   ];
-  final PaginatedNews paginatedNews = PaginatedNews(
-      news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
+  final PaginatedNews paginatedNews =
+      PaginatedNews(news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
 
   group('ETSView -', () {
     setUp(() async {
@@ -146,8 +146,7 @@ void main() {
       unregister<RemoteConfigService>();
     });
 
-    testWidgets('has Tab bar and sliverAppBar and BaseScaffold',
-        (WidgetTester tester) async {
+    testWidgets('has Tab bar and sliverAppBar and BaseScaffold', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: ETSView()));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 

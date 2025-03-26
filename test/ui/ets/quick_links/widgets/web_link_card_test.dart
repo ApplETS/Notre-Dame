@@ -15,8 +15,7 @@ import '../../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../../data/mocks/services/launch_url_service_mock.dart';
 import '../../../../helpers.dart';
 
-final _quickLink = QuickLink(
-    id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
+final _quickLink = QuickLink(id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;

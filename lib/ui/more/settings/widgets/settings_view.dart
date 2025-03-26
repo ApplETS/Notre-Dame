@@ -19,8 +19,7 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<SettingsViewModel>.reactive(
+  Widget build(BuildContext context) => ViewModelBuilder<SettingsViewModel>.reactive(
         viewModelBuilder: () => SettingsViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
@@ -38,15 +37,13 @@ class _SettingsViewState extends State<SettingsView> {
               ),
               PopupMenuButton(
                 offset: Offset(MediaQuery.of(context).size.width, 20),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 onSelected: (ThemeMode value) {
                   setState(() {
                     model.selectedTheme = value;
                   });
                 },
-                itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<ThemeMode>>[
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<ThemeMode>>[
                   PopupMenuItem(
                     value: ThemeMode.light,
                     child: ListTile(
@@ -97,8 +94,7 @@ class _SettingsViewState extends State<SettingsView> {
               ),
               PopupMenuButton(
                 offset: Offset(MediaQuery.of(context).size.width, 20),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 onSelected: (String value) {
                   setState(() {
                     model.currentLocale = value;

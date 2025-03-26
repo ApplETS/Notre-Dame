@@ -27,9 +27,7 @@ class _LoginFooterState extends State<LoginFooter> {
           child: InkWell(
             child: Text(
               AppIntl.of(context)!.need_help,
-              style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: AppPalette.grey.white),
+              style: TextStyle(decoration: TextDecoration.underline, color: AppPalette.grey.white),
             ),
             onTap: () async {
               _navigationService.pushNamed(RouterPaths.faq);

@@ -44,26 +44,18 @@ void main() {
     });
 
     group('UI - ', () {
-      testWidgets('has universal code and password text field',
-          (WidgetTester tester) async {
+      testWidgets('has universal code and password text field', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: LoginView()));
         await tester.pumpAndSettle();
 
         expect(
-            find.widgetWithText(TextFormField, intl.login_prompt_universal_code,
-                skipOffstage: false),
-            findsOneWidget);
-        expect(
-            find.widgetWithText(PasswordFormField, intl.login_prompt_password),
-            findsOneWidget);
+            find.widgetWithText(TextFormField, intl.login_prompt_universal_code, skipOffstage: false), findsOneWidget);
+        expect(find.widgetWithText(PasswordFormField, intl.login_prompt_password), findsOneWidget);
 
-        final Finder signInButton =
-            find.widgetWithText(ElevatedButton, intl.login_action_sign_in);
+        final Finder signInButton = find.widgetWithText(ElevatedButton, intl.login_action_sign_in);
         expect(signInButton, findsOneWidget);
-        expect(
-            tester.widget(signInButton),
-            isA<ElevatedButton>()
-                .having((source) => source.onPressed, 'onPressed', isNull));
+        expect(tester.widget(signInButton),
+            isA<ElevatedButton>().having((source) => source.onPressed, 'onPressed', isNull));
       });
     });
   });

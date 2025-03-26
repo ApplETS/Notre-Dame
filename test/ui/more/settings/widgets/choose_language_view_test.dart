@@ -26,8 +26,7 @@ void main() {
     });
 
     group('UI - ', () {
-      testWidgets('has an icon, title and subtitle',
-          (WidgetTester tester) async {
+      testWidgets('has an icon, title and subtitle', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: ChooseLanguageView()));
         await tester.pumpAndSettle();
 

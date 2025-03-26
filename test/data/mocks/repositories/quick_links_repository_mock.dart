@@ -12,23 +12,19 @@ import 'quick_links_repository_mock.mocks.dart';
 @GenerateNiceMocks([MockSpec<QuickLinkRepository>()])
 class QuickLinkRepositoryMock extends MockQuickLinkRepository {
   /// Stub the function [getQuickLinkDataFromCache] of [mock] when called will return [toReturn].
-  static void stubGetQuickLinkDataFromCache(QuickLinkRepositoryMock mock,
-      {List<QuickLinkData> toReturn = const []}) {
+  static void stubGetQuickLinkDataFromCache(QuickLinkRepositoryMock mock, {List<QuickLinkData> toReturn = const []}) {
     when(mock.getQuickLinkDataFromCache()).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the function [getQuickLinkDataFromCache] of [mock] when called will throw [toThrow].
-  static void stubGetQuickLinkDataFromCacheException(
-      QuickLinkRepositoryMock mock,
+  static void stubGetQuickLinkDataFromCacheException(QuickLinkRepositoryMock mock,
       {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
-    when(mock.getQuickLinkDataFromCache()).thenAnswer((_) =>
-        Future.delayed(const Duration(milliseconds: 50))
-            .then((value) => throw toThrow));
+    when(mock.getQuickLinkDataFromCache())
+        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 
   /// Stub the function [getDefaultQuickLinks] of [mock] when called will return [toReturn].
-  static void stubGetDefaultQuickLinks(QuickLinkRepositoryMock mock,
-      {List<QuickLink> toReturn = const []}) {
+  static void stubGetDefaultQuickLinks(QuickLinkRepositoryMock mock, {List<QuickLink> toReturn = const []}) {
     when(mock.getDefaultQuickLinks(any)).thenAnswer((_) => toReturn);
   }
 
@@ -38,11 +34,9 @@ class QuickLinkRepositoryMock extends MockQuickLinkRepository {
   }
 
   /// Stub the function [updateQuickLinkDataToCache] of [mock] when called will throw [toThrow].
-  static void stubUpdateQuickLinkDataToCacheException(
-      QuickLinkRepositoryMock mock,
+  static void stubUpdateQuickLinkDataToCacheException(QuickLinkRepositoryMock mock,
       {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
-    when(mock.updateQuickLinkDataToCache(any)).thenAnswer((_) =>
-        Future.delayed(const Duration(milliseconds: 50))
-            .then((value) => throw toThrow));
+    when(mock.updateQuickLinkDataToCache(any))
+        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 }

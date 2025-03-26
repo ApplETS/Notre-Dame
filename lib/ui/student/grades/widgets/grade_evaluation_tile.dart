@@ -19,15 +19,13 @@ class GradeEvaluationTile extends StatefulWidget {
   final bool completed;
   final CourseEvaluation evaluation;
 
-  const GradeEvaluationTile(this.evaluation,
-      {super.key, this.completed = false});
+  const GradeEvaluationTile(this.evaluation, {super.key, this.completed = false});
 
   @override
   State<GradeEvaluationTile> createState() => _GradeEvaluationTileState();
 }
 
-class _GradeEvaluationTileState extends State<GradeEvaluationTile>
-    with TickerProviderStateMixin<GradeEvaluationTile> {
+class _GradeEvaluationTileState extends State<GradeEvaluationTile> with TickerProviderStateMixin<GradeEvaluationTile> {
   bool showEvaluationDetails = false;
   late AnimationController controller;
   late Animation<double> rotateAnimation;
@@ -43,8 +41,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
         ),
         value: 1.0);
 
-    rotateAnimation = Tween(begin: pi, end: 0.0)
-        .animate(CurvedAnimation(parent: controller, curve: Curves.easeIn));
+    rotateAnimation = Tween(begin: pi, end: 0.0).animate(CurvedAnimation(parent: controller, curve: Curves.easeIn));
   }
 
   @override
@@ -80,8 +77,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                     builder: (context, constraints) => GradeCircularProgress(
                       constraints.maxHeight / 100,
                       completed: widget.completed,
-                      key: Key(
-                          "GradeCircularProgress_${widget.evaluation.title}"),
+                      key: Key("GradeCircularProgress_${widget.evaluation.title}"),
                       studentGrade: Utils.getGradeInPercentage(
                         widget.evaluation.mark,
                         widget.evaluation.correctedEvaluationOutOfFormatted,
@@ -100,13 +96,10 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
                     children: <Widget>[
                       Text(
                         widget.evaluation.title,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: context.theme.textTheme.bodyMedium!.color),
+                        style: TextStyle(fontSize: 16, color: context.theme.textTheme.bodyMedium!.color),
                       ),
                       Text(
-                        AppIntl.of(context)!
-                            .grades_weight(widget.evaluation.weight),
+                        AppIntl.of(context)!.grades_weight(widget.evaluation.weight),
                         style: TextStyle(
                           fontSize: 14,
                           color: context.theme.textTheme.bodyMedium!.color,
@@ -140,8 +133,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
         ],
       );
 
-  Widget _buildEvaluationSummary(
-      BuildContext context, CourseEvaluation evaluation) {
+  Widget _buildEvaluationSummary(BuildContext context, CourseEvaluation evaluation) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 15.0, bottom: 20.0),
       child: Column(
@@ -151,8 +143,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
             AppIntl.of(context)!.grades_grade_with_percentage(
               evaluation.mark ?? 0.0,
               evaluation.correctedEvaluationOutOf,
-              Utils.getGradeInPercentage(evaluation.mark,
-                  evaluation.correctedEvaluationOutOfFormatted),
+              Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted),
             ),
           ),
           _buildSummary(
@@ -160,8 +151,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
             AppIntl.of(context)!.grades_grade_with_percentage(
               evaluation.passMark ?? 0.0,
               evaluation.correctedEvaluationOutOf,
-              Utils.getGradeInPercentage(evaluation.passMark,
-                  evaluation.correctedEvaluationOutOfFormatted),
+              Utils.getGradeInPercentage(evaluation.passMark, evaluation.correctedEvaluationOutOfFormatted),
             ),
           ),
           _buildSummary(
@@ -169,24 +159,18 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
             AppIntl.of(context)!.grades_grade_with_percentage(
               evaluation.median ?? 0.0,
               evaluation.correctedEvaluationOutOf,
-              Utils.getGradeInPercentage(evaluation.median,
-                  evaluation.correctedEvaluationOutOfFormatted),
+              Utils.getGradeInPercentage(evaluation.median, evaluation.correctedEvaluationOutOfFormatted),
             ),
           ),
           _buildSummary(
               AppIntl.of(context)!.grades_weighted,
-              validateResultWithPercentage(
-                  context,
-                  evaluation.weightedGrade,
-                  evaluation.weight,
-                  Utils.getGradeInPercentage(evaluation.mark,
-                      evaluation.correctedEvaluationOutOfFormatted))),
+              validateResultWithPercentage(context, evaluation.weightedGrade, evaluation.weight,
+                  Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted))),
           _buildSummary(AppIntl.of(context)!.grades_standard_deviation,
               validateResult(context, evaluation.standardDeviation.toString())),
           _buildSummary(AppIntl.of(context)!.grades_percentile_rank,
               validateResult(context, evaluation.percentileRank.toString())),
-          _buildSummary(AppIntl.of(context)!.grades_target_date,
-              getDate(evaluation.targetDate, context)),
+          _buildSummary(AppIntl.of(context)!.grades_target_date, getDate(evaluation.targetDate, context)),
         ],
       ),
     );
@@ -194,8 +178,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
 
   String getDate(DateTime? targetDate, BuildContext context) {
     if (targetDate != null) {
-      return DateFormat('d MMMM yyyy', AppIntl.of(context)!.localeName)
-          .format(targetDate);
+      return DateFormat('d MMMM yyyy', AppIntl.of(context)!.localeName).format(targetDate);
     }
 
     return AppIntl.of(context)!.grades_not_available;
@@ -224,14 +207,12 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile>
     return AppIntl.of(context)!.grades_not_available;
   }
 
-  String validateResultWithPercentage(BuildContext context, double? result,
-      double maxGrade, double percentage) {
+  String validateResultWithPercentage(BuildContext context, double? result, double maxGrade, double percentage) {
     if (result == null) {
       return AppIntl.of(context)!.grades_not_available;
     }
 
     final String formattedResult = result.toStringAsFixed(2);
-    return AppIntl.of(context)!.grades_grade_with_percentage(
-        double.parse(formattedResult), maxGrade, percentage);
+    return AppIntl.of(context)!.grades_grade_with_percentage(double.parse(formattedResult), maxGrade, percentage);
   }
 }

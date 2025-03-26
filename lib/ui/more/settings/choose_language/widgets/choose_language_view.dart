@@ -29,8 +29,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
             child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
           ListTile(
             title: Text(model.languages[index]),
-            trailing:
-                Icon(model.languageSelectedIndex == index ? Icons.check : null),
+            trailing: Icon(model.languageSelectedIndex == index ? Icons.check : null),
             onTap: () {
               model.changeLanguage(index);
             },
@@ -43,8 +42,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ChooseLanguageViewModel>.reactive(
-        viewModelBuilder: () =>
-            ChooseLanguageViewModel(intl: AppIntl.of(context)!),
+        viewModelBuilder: () => ChooseLanguageViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
               backgroundColor: context.theme.appColors.backgroundVibrant,
               body: Center(
@@ -62,22 +60,17 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           AppIntl.of(context)!.choose_language_title,
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppPalette.grey.white),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppPalette.grey.white),
                         ),
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, top: 10, bottom: 30),
+                      padding: const EdgeInsets.only(left: 20, top: 10, bottom: 30),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           AppIntl.of(context)!.choose_language_subtitle,
-                          style: TextStyle(
-                              fontSize: 16, color: AppPalette.grey.white),
+                          style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
                         ),
                       ),
                     ),

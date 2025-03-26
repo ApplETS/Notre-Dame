@@ -41,8 +41,7 @@ enum Menu { share, export, report }
 class _NewsDetailsViewState extends State<NewsDetailsView> {
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   @override
   void initState() {
@@ -52,8 +51,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<NewsDetailsViewModel>.reactive(
+  Widget build(BuildContext context) => ViewModelBuilder<NewsDetailsViewModel>.reactive(
         viewModelBuilder: () => NewsDetailsViewModel(news: widget.news),
         builder: (context, model, child) => BaseScaffold(
           showBottomBar: false,
@@ -64,8 +62,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 child: CustomScrollView(
                   slivers: <Widget>[
                     SliverAppBar(
-                      backgroundColor:
-                          context.theme.appColors.newsBackgroundVibrant,
+                      backgroundColor: context.theme.appColors.newsBackgroundVibrant,
                       pinned: true,
                       titleSpacing: 0,
                       leading: IconButton(
@@ -76,23 +73,20 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                       ),
                       title: Text(
                         AppIntl.of(context)!.news_details_title,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: AppPalette.grey.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: AppPalette.grey.white, fontSize: 25, fontWeight: FontWeight.bold),
                       ),
                       actions: <Widget>[
                         PopupMenuButton<Menu>(
                           padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                           position: PopupMenuPosition.under,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                           color: context.theme.appColors.backgroundAlt,
                           icon: const Icon(Icons.more_vert),
-                          onSelected: (Menu menu) =>
-                              handleClick(menu, model.news),
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<Menu>>[
+                          onSelected: (Menu menu) => handleClick(menu, model.news),
+                          itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
                             PopupMenuItem<Menu>(
                               value: Menu.share,
                               child: ListTile(
@@ -112,14 +106,12 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                               child: ListTile(
                                 leading: SvgPicture.asset(
                                   'assets/images/report.svg',
-                                  colorFilter: const ColorFilter.mode(
-                                      AppPalette.etsLightRed, BlendMode.srcIn),
+                                  colorFilter: const ColorFilter.mode(AppPalette.etsLightRed, BlendMode.srcIn),
                                   width: 26,
                                 ),
                                 title: Text(
                                   AppIntl.of(context)!.report,
-                                  style: const TextStyle(
-                                      color: AppPalette.etsLightRed),
+                                  style: const TextStyle(color: AppPalette.etsLightRed),
                                 ),
                               ),
                             ),
@@ -132,17 +124,11 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           _buildTitle(widget.news.title),
-                          _buildDate(
-                              context,
-                              widget.news.publicationDate,
-                              widget.news.eventStartDate,
+                          _buildDate(context, widget.news.publicationDate, widget.news.eventStartDate,
                               widget.news.eventEndDate),
                           _buildImage(widget.news),
-                          _buildAuthor(
-                              widget.news.organizer.avatarUrl ?? "",
-                              widget.news.organizer.organization ?? "",
-                              widget.news.organizer.activityArea,
-                              widget.news.organizer.id),
+                          _buildAuthor(widget.news.organizer.avatarUrl ?? "", widget.news.organizer.organization ?? "",
+                              widget.news.organizer.activityArea, widget.news.organizer.id),
                           _buildContent(widget.news.content),
                         ],
                       ),
@@ -159,12 +145,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   void handleClick(Menu menu, News news) {
     switch (menu) {
       case Menu.share:
-        Share.share(
-            "${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}");
+        Share.share("${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}");
       case Menu.export:
         final translations = AppIntl.of(context)!;
-        final viewModel =
-            CalendarSelectionViewModel(translations: translations);
+        final viewModel = CalendarSelectionViewModel(translations: translations);
         viewModel.news = news;
         showDialog(
           context: context,
@@ -174,9 +158,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         showModalBottomSheet(
             context: context,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10))),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
             builder: (context) => ReportNews(
                   newsId: news.id,
                 ));
@@ -201,10 +183,10 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: context.theme.textTheme.bodyMedium!.color,
-            fontSize: 25,
-            fontWeight: FontWeight.bold),
+        style: Theme.of(context)
+            .textTheme
+            .bodySmall!
+            .copyWith(color: context.theme.textTheme.bodyMedium!.color, fontSize: 25, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -233,14 +215,12 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
     );
   }
 
-  Widget _buildAuthor(
-      String avatar, String author, ActivityArea? activity, String authorId) {
+  Widget _buildAuthor(String avatar, String author, ActivityArea? activity, String authorId) {
     return ColoredBox(
       color: context.theme.appColors.newsBackgroundVibrant,
       child: ListTile(
         leading: GestureDetector(
-            onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor,
-                arguments: authorId),
+            onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor, arguments: authorId),
             child: Hero(
                 tag: 'news_author_avatar',
                 child: CircleAvatar(
@@ -256,10 +236,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                               return Center(
                                 child: Text(
                                   author.substring(0, 1),
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      color: context
-                                          .theme.textTheme.bodyMedium!.color),
+                                  style: TextStyle(fontSize: 24, color: context.theme.textTheme.bodyMedium!.color),
                                 ),
                               );
                             },
@@ -269,10 +246,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                           children: [
                             Center(
                               child: Text(author.substring(0, 1),
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      color: context
-                                          .theme.textTheme.bodyMedium!.color)),
+                                  style: TextStyle(fontSize: 24, color: context.theme.textTheme.bodyMedium!.color)),
                             ),
                           ],
                         ),
@@ -288,10 +262,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
-            activity != null
-                ? Utils.getMessageByLocale(
-                    context, activity.nameFr, activity.nameEn)
-                : "",
+            activity != null ? Utils.getMessageByLocale(context, activity.nameFr, activity.nameEn) : "",
             style: TextStyle(
               color: context.theme.appColors.fadedInvertText,
               fontSize: 16,
@@ -302,22 +273,18 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
     );
   }
 
-  Widget _buildDate(BuildContext context, DateTime publishedDate,
-      DateTime eventStartDate, DateTime? eventEndDate) {
+  Widget _buildDate(BuildContext context, DateTime publishedDate, DateTime eventStartDate, DateTime? eventEndDate) {
     final String locale = Localizations.localeOf(context).toString();
-    final String formattedPublishedDate =
-        DateFormat('d MMMM yyyy', locale).format(publishedDate);
+    final String formattedPublishedDate = DateFormat('d MMMM yyyy', locale).format(publishedDate);
 
     late String formattedEventDate;
 
-    final bool sameMonthAndYear = eventEndDate?.month == eventStartDate.month &&
-        eventEndDate?.year == eventStartDate.year;
-    final bool sameDayMonthAndYear =
-        eventEndDate?.day == eventStartDate.day && sameMonthAndYear;
+    final bool sameMonthAndYear =
+        eventEndDate?.month == eventStartDate.month && eventEndDate?.year == eventStartDate.year;
+    final bool sameDayMonthAndYear = eventEndDate?.day == eventStartDate.day && sameMonthAndYear;
 
     if (eventEndDate == null || sameDayMonthAndYear) {
-      formattedEventDate =
-          DateFormat('d MMMM yyyy', locale).format(eventStartDate);
+      formattedEventDate = DateFormat('d MMMM yyyy', locale).format(eventStartDate);
     } else {
       if (sameMonthAndYear) {
         formattedEventDate =
@@ -338,8 +305,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
             children: [
               Text(
                 formattedPublishedDate,
-                style:
-                    TextStyle(color: context.theme.textTheme.bodyMedium!.color),
+                style: TextStyle(color: context.theme.textTheme.bodyMedium!.color),
               ),
               const SizedBox(height: 12.0),
             ],
@@ -354,9 +320,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                     color: context.theme.appColors.backgroundAlt,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.event,
-                      size: 20.0,
-                      color: context.theme.textTheme.bodyMedium!.color),
+                  child: Icon(Icons.event, size: 20.0, color: context.theme.textTheme.bodyMedium!.color),
                 ),
                 Flexible(
                     child: Padding(
@@ -366,14 +330,12 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                     children: [
                       Text(
                         AppIntl.of(context)!.news_event_date,
-                        style:
-                            TextStyle(color: context.theme.appColors.fadedText),
+                        style: TextStyle(color: context.theme.appColors.fadedText),
                         textAlign: TextAlign.right,
                       ),
                       Text(
                         formattedEventDate,
-                        style: TextStyle(
-                            color: context.theme.textTheme.bodyMedium!.color),
+                        style: TextStyle(color: context.theme.textTheme.bodyMedium!.color),
                         textAlign: TextAlign.right,
                       ),
                     ],

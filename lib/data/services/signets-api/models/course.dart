@@ -51,8 +51,7 @@ class Course {
 
     final now = DateTime.now();
 
-    return now.isAfter(reviews!.first.startAt) &&
-        now.isBefore(reviews!.first.endAt);
+    return now.isAfter(reviews!.first.startAt) && now.isBefore(reviews!.first.endAt);
   }
 
   /// Determine if all the reviews of this course are completed.
@@ -82,9 +81,7 @@ class Course {
       session: node.getElement('session')!.innerText,
       programCode: node.getElement('programmeEtudes')!.innerText,
       numberOfCredits: int.parse(node.getElement('nbCredits')!.innerText),
-      grade: node.getElement('cote')!.innerText.isEmpty
-          ? null
-          : node.getElement('cote')!.innerText);
+      grade: node.getElement('cote')!.innerText.isEmpty ? null : node.getElement('cote')!.innerText);
 
   /// Used to create [Course] instance from a JSON file
   factory Course.fromJson(Map<String, dynamic> map) => Course(
@@ -95,14 +92,9 @@ class Course {
       programCode: map['programCode'] as String,
       numberOfCredits: map['numberOfCredits'] as int,
       grade: map['grade'] as String?,
-      summary: map["summary"] != null
-          ? CourseSummary.fromJson(map["summary"] as Map<String, dynamic>)
-          : null,
+      summary: map["summary"] != null ? CourseSummary.fromJson(map["summary"] as Map<String, dynamic>) : null,
       reviews: map["review"] != null
-          ? (map["review"] as List)
-              .map(
-                  (item) => CourseReview.fromJson(item as Map<String, dynamic>))
-              .toList()
+          ? (map["review"] as List).map((item) => CourseReview.fromJson(item as Map<String, dynamic>)).toList()
           : null);
 
   Map<String, dynamic> toJson() => {

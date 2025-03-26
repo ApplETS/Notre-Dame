@@ -4,8 +4,7 @@ class ApiException implements Exception {
   final String prefix;
   final String errorCode;
 
-  const ApiException(
-      {this.prefix = "", this.message = "", this.errorCode = ""});
+  const ApiException({this.prefix = "", this.message = "", this.errorCode = ""});
 
   @override
   String toString() {

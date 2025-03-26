@@ -13,11 +13,7 @@ class LoginButton extends StatefulWidget {
   final bool canSubmit;
   final ValueGetter<Future<String>> authenticate;
 
-  const LoginButton(
-      {super.key,
-      required this.formKey,
-      required this.canSubmit,
-      required this.authenticate});
+  const LoginButton({super.key, required this.formKey, required this.canSubmit, required this.authenticate});
 
   @override
   State<LoginButton> createState() => _LoginButtonState();
@@ -41,19 +37,14 @@ class _LoginButtonState extends State<LoginButton> {
                   });
                 },
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(widget.canSubmit
-                ? context.theme.appColors.loginAccent
-                : Colors.white38),
-            padding: WidgetStateProperty.all(
-                const EdgeInsets.symmetric(vertical: 16)),
+            backgroundColor:
+                WidgetStateProperty.all(widget.canSubmit ? context.theme.appColors.loginAccent : Colors.white38),
+            padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 16)),
           ),
           child: Text(
             AppIntl.of(context)!.login_action_sign_in,
-            style: TextStyle(
-                color: widget.canSubmit
-                    ? context.theme.appColors.loginMain
-                    : Colors.white60,
-                fontSize: 18),
+            style:
+                TextStyle(color: widget.canSubmit ? context.theme.appColors.loginMain : Colors.white60, fontSize: 18),
           ),
         ),
       );

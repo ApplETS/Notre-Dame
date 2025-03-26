@@ -20,8 +20,7 @@ class ETSView extends StatefulWidget {
 }
 
 class _ETSViewState extends State<ETSView> {
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
   List<Widget> tabsView = [NewsView(), QuickLinksView()];
 
   @override
@@ -33,10 +32,7 @@ class _ETSViewState extends State<ETSView> {
       );
     }
 
-    final List<String> tabs = [
-      AppIntl.of(context)!.news_title,
-      AppIntl.of(context)!.useful_link_title
-    ];
+    final List<String> tabs = [AppIntl.of(context)!.news_title, AppIntl.of(context)!.useful_link_title];
 
     return BaseScaffold(
       isInteractionLimitedWhileLoading: false,

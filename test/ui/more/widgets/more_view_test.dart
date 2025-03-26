@@ -36,19 +36,14 @@ void main() {
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupFlutterToastMock();
-      inAppReviewServiceMock =
-          setupInAppReviewServiceMock() as InAppReviewServiceMock;
+      inAppReviewServiceMock = setupInAppReviewServiceMock() as InAppReviewServiceMock;
 
-      RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-          remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock);
     });
 
     group('UI - ', () {
-      testWidgets('has 1 listView and 8 listTiles when privacy policy disabled',
-          (WidgetTester tester) async {
-        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-            remoteConfigServiceMock,
-            toReturn: false);
+      testWidgets('has 1 listView and 8 listTiles when privacy policy disabled', (WidgetTester tester) async {
+        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
         await tester.pumpWidget(localizedWidget(child: MoreView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -59,8 +54,7 @@ void main() {
         expect(listTile, findsNWidgets(7));
       });
 
-      testWidgets('has 1 listView and 9 listTiles when privacy policy enabled',
-          (WidgetTester tester) async {
+      testWidgets('has 1 listView and 9 listTiles when privacy policy enabled', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: MoreView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -73,15 +67,12 @@ void main() {
 
       group('navigation - ', () {
         testWidgets('about', (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
-          await tester.tap(
-              find.widgetWithText(ListTile, intl.more_about_applets_title));
+          await tester.tap(find.widgetWithText(ListTile, intl.more_about_applets_title));
 
           // Rebuild the widget after the state has changed.
           await tester.pump();
@@ -90,18 +81,14 @@ void main() {
         });
 
         testWidgets('rate us is not available', (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
-          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock,
-              toReturn: false);
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
+          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock, toReturn: false);
 
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester
-              .tap(find.widgetWithText(ListTile, intl.in_app_review_title));
+          await tester.tap(find.widgetWithText(ListTile, intl.in_app_review_title));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
@@ -111,17 +98,14 @@ void main() {
         });
 
         testWidgets('rate us is available', (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
 
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester
-              .tap(find.widgetWithText(ListTile, intl.in_app_review_title));
+          await tester.tap(find.widgetWithText(ListTile, intl.in_app_review_title));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
@@ -132,33 +116,26 @@ void main() {
         });
 
         testWidgets('contributors', (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
-          await tester
-              .tap(find.widgetWithText(ListTile, intl.more_contributors));
+          await tester.tap(find.widgetWithText(ListTile, intl.more_contributors));
 
           // Rebuild the widget after the state has changed.
           await tester.pump();
 
-          verify(navigationServiceMock.pushNamed(RouterPaths.contributors))
-              .called(1);
+          verify(navigationServiceMock.pushNamed(RouterPaths.contributors)).called(1);
         });
 
         testWidgets('licenses', (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
-          await tester.tap(
-              find.widgetWithText(ListTile, intl.more_open_source_licenses));
+          await tester.tap(find.widgetWithText(ListTile, intl.more_open_source_licenses));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -169,9 +146,7 @@ void main() {
         });
 
         testWidgets('need help', (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -185,9 +160,7 @@ void main() {
         });
 
         testWidgets('settings', (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
@@ -197,14 +170,11 @@ void main() {
           // Rebuild the widget after the state has changed.
           await tester.pump();
 
-          verify(navigationServiceMock.pushNamed(RouterPaths.settings))
-              .called(1);
+          verify(navigationServiceMock.pushNamed(RouterPaths.settings)).called(1);
         });
 
         testWidgets('logout', (WidgetTester tester) async {
-          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-              remoteConfigServiceMock,
-              toReturn: false);
+          RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           await tester.pumpWidget(localizedWidget(child: MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 

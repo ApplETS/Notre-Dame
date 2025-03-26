@@ -27,8 +27,7 @@ void main() {
     testWidgets('tapping "Cancel" closes dialog', (WidgetTester tester) async {
       SettingsRepositoryMock.stubLocale(settingsManagerMock);
 
-      NeedHelpNoticeDialog dialog =
-          NeedHelpNoticeDialog(openMail: () {}, launchWebsite: () {});
+      NeedHelpNoticeDialog dialog = NeedHelpNoticeDialog(openMail: () {}, launchWebsite: () {});
 
       await tester.pumpWidget(localizedWidget(child: dialog));
       await tester.pumpAndSettle();

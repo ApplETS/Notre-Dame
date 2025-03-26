@@ -30,32 +30,28 @@ class OutageSocialSection extends StatelessWidget {
                   color: AppPalette.grey.white,
                 ),
                 tooltip: AppIntl.of(context)!.website_club_open,
-                onPressed: () =>
-                    _launchUrlService.launchInBrowser(Urls.clubWebsite)),
+                onPressed: () => _launchUrlService.launchInBrowser(Urls.clubWebsite)),
             IconButton(
                 icon: FaIcon(
                   FontAwesomeIcons.github,
                   color: AppPalette.grey.white,
                 ),
                 tooltip: AppIntl.of(context)!.github_open,
-                onPressed: () =>
-                    _launchUrlService.launchInBrowser(Urls.clubGithub)),
+                onPressed: () => _launchUrlService.launchInBrowser(Urls.clubGithub)),
             IconButton(
                 icon: FaIcon(
                   Icons.mail_outline,
                   color: AppPalette.grey.white,
                 ),
                 tooltip: AppIntl.of(context)!.email_send,
-                onPressed: () =>
-                    _launchUrlService.writeEmail(Urls.clubEmail, "")),
+                onPressed: () => _launchUrlService.writeEmail(Urls.clubEmail, "")),
             IconButton(
                 icon: FaIcon(
                   FontAwesomeIcons.discord,
                   color: AppPalette.grey.white,
                 ),
                 tooltip: AppIntl.of(context)!.discord_join,
-                onPressed: () =>
-                    _launchUrlService.launchInBrowser(Urls.clubDiscord))
+                onPressed: () => _launchUrlService.launchInBrowser(Urls.clubDiscord))
           ],
         ),
       ],

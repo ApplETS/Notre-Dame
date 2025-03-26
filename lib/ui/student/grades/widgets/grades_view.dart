@@ -41,24 +41,18 @@ class _GradesViewState extends State<GradesView> {
                 if (model.coursesBySession.isEmpty)
                   Center(
                       child: Text(AppIntl.of(context)!.grades_msg_no_grades,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleLarge))
+                          textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge))
                 else
                   ListView.builder(
                     padding: const EdgeInsets.only(top: 8.0),
                     itemCount: model.coursesBySession.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        _buildSessionCourses(
-                            index,
-                            _sessionName(model.sessionOrder[index],
-                                AppIntl.of(context)!),
-                            model.coursesBySession[model.sessionOrder[index]]!,
-                            model),
+                    itemBuilder: (BuildContext context, int index) => _buildSessionCourses(
+                        index,
+                        _sessionName(model.sessionOrder[index], AppIntl.of(context)!),
+                        model.coursesBySession[model.sessionOrder[index]]!,
+                        model),
                   ),
-                if (model.isBusy)
-                  buildLoading(isInteractionLimitedWhileLoading: false)
-                else
-                  const SizedBox()
+                if (model.isBusy) buildLoading(isInteractionLimitedWhileLoading: false) else const SizedBox()
               ],
             ),
           );
@@ -67,9 +61,7 @@ class _GradesViewState extends State<GradesView> {
 
   /// Build a session which is the name of the session and one [GradeButton] for
   /// each [Course] in [courses]
-  Widget _buildSessionCourses(int index, String sessionName,
-          List<Course> courses, GradesViewModel model) =>
-      Padding(
+  Widget _buildSessionCourses(int index, String sessionName, List<Course> courses, GradesViewModel model) => Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,9 +79,8 @@ class _GradesViewState extends State<GradesView> {
                 IconButton(
                   icon: Icon(Icons.today, color: AppPalette.grey.darkGrey),
                   tooltip: AppIntl.of(context)!.grades_in_schedule(sessionName),
-                  onPressed: () => _navigationService.pushNamed(
-                      RouterPaths.defaultSchedule,
-                      arguments: model.sessionOrder[index]),
+                  onPressed: () =>
+                      _navigationService.pushNamed(RouterPaths.defaultSchedule, arguments: model.sessionOrder[index]),
                 ),
               ],
             ),

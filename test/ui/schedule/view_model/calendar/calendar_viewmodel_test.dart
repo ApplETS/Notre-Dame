@@ -46,15 +46,13 @@ void main() {
         activityDescription: '',
       );
 
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: [activity]);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [activity]);
 
       final activitiesByDate = viewModel.coursesActivities;
       expect(activitiesByDate[DateTime(2023, 10, 1)]?.length, 1);
     });
 
-    test('calendarEventData returns correct event data with valid location',
-        () async {
+    test('calendarEventData returns correct event data with valid location', () async {
       // Arrange: create a dummy Course that will be picked up by calendarEventData.
       final dummyCourse = Course(
           acronym: 'GEN101',
@@ -64,8 +62,7 @@ void main() {
           numberOfCredits: 3,
           title: 'Cours générique');
       // Stub the getCourses call to return the dummy course.
-      CourseRepositoryMock.stubCourses(courseRepositoryMock,
-          toReturn: [dummyCourse]);
+      CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: [dummyCourse]);
 
       final activity = CourseActivity(
         courseName: 'Lecture',
@@ -77,8 +74,7 @@ void main() {
         activityDescription: 'Regular lecture',
       );
       // Ensure that the repository returns the activity.
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: [activity]);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [activity]);
       // Call futureToRun to initialize _courses.
       await viewModel.futureToRun();
 
@@ -90,14 +86,11 @@ void main() {
       expect(eventData.description, equals("ING150-01;Room 202;Lecture;null"));
       expect(eventData.date, equals(activity.startDateTime.withoutTime));
       expect(eventData.startTime, equals(activity.startDateTime));
-      expect(eventData.endTime,
-          equals(activity.endDateTime.subtract(const Duration(minutes: 1))));
+      expect(eventData.endTime, equals(activity.endDateTime.subtract(const Duration(minutes: 1))));
       expect(eventData.color, equals(viewModel.getCourseColor('ING150')));
     });
 
-    test(
-        'calendarEventData returns correct event data with "Non assign" location',
-        () async {
+    test('calendarEventData returns correct event data with "Non assign" location', () async {
       final dummyCourse = Course(
           acronym: 'GEN101',
           group: '02',
@@ -105,8 +98,7 @@ void main() {
           programCode: '999',
           numberOfCredits: 3,
           title: 'Cours générique');
-      CourseRepositoryMock.stubCourses(courseRepositoryMock,
-          toReturn: [dummyCourse]);
+      CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: [dummyCourse]);
 
       final activity = CourseActivity(
         courseName: 'Tutorial',
@@ -117,8 +109,7 @@ void main() {
         activityName: 'Tutorial',
         activityDescription: 'Session',
       );
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: [activity]);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [activity]);
       await viewModel.futureToRun();
 
       final eventData = viewModel.calendarEventData(activity);
@@ -145,8 +136,7 @@ void main() {
         activityName: 'Lab Session',
         activityDescription: 'Regular',
       );
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: [activity1, activity2]);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [activity1, activity2]);
 
       // Directly invoke the getter.
       viewModel.coursesActivities;
@@ -159,8 +149,7 @@ void main() {
       expect(noEvents, isEmpty);
     });
 
-    test('futureToRun returns activities and updates courses from repository',
-        () async {
+    test('futureToRun returns activities and updates courses from repository', () async {
       final activity = CourseActivity(
         courseName: 'Lecture',
         startDateTime: DateTime(2025, 3, 6, 8),
@@ -178,12 +167,9 @@ void main() {
           numberOfCredits: 3,
           title: 'Cours générique');
       // Arrange repository stubs.
-      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-          fromCacheOnly: true, toReturn: [activity]);
-      CourseRepositoryMock.stubCourses(courseRepositoryMock,
-          toReturn: [dummyCourse]);
-      CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock,
-          toReturn: []);
+      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, fromCacheOnly: true, toReturn: [activity]);
+      CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: [dummyCourse]);
+      CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock, toReturn: []);
       final result = await viewModel.futureToRun();
       expect(result, isNotEmpty);
       expect(result.first.courseName, equals('Lecture'));
@@ -195,18 +181,14 @@ void main() {
         intl: await setupAppIntl(),
       );
       // Arrange: stub getCoursesActivities to throw an exception.
-      CourseRepositoryMock.stubGetCoursesActivitiesException(
-          courseRepositoryMock,
-          toThrow: Exception("Test error"));
+      CourseRepositoryMock.stubGetCoursesActivitiesException(courseRepositoryMock, toThrow: Exception("Test error"));
       final result = await errorViewModel.futureToRun();
       expect(result, isEmpty);
       expect(errorViewModel.errorMessage, isNotNull);
       expect(errorViewModel.errorMessage, contains("Test error"));
     });
 
-    test(
-        'loadSettingsScheduleActivities updates settingsScheduleActivities when matching activity found',
-        () async {
+    test('loadSettingsScheduleActivities updates settingsScheduleActivities when matching activity found', () async {
       // Arrange: create a dummy schedule activity.
       final scheduleActivity = ScheduleActivity(
           courseAcronym: "XYZ321",
@@ -223,18 +205,15 @@ void main() {
       // Set the scheduleActivitiesByCourse manually.
       viewModel.scheduleActivitiesByCourse['XYZ321'] = [scheduleActivity];
       // Stub settingsManager to return the matching activity code.
-      SettingsRepositoryMock.stubGetDynamicString(settingsManagerMock,
-          PreferencesFlag.scheduleLaboratoryGroup, "XYZ321",
+      SettingsRepositoryMock.stubGetDynamicString(
+          settingsManagerMock, PreferencesFlag.scheduleLaboratoryGroup, "XYZ321",
           toReturn: ActivityCode.labGroupA);
 
       await viewModel.loadSettingsScheduleActivities();
-      expect(viewModel.settingsScheduleActivities['XYZ321'],
-          equals('Laboratoire (Groupe A)'));
+      expect(viewModel.settingsScheduleActivities['XYZ321'], equals('Laboratoire (Groupe A)'));
     });
 
-    test(
-        'loadSettingsScheduleActivities removes settings when no matching activity found',
-        () async {
+    test('loadSettingsScheduleActivities removes settings when no matching activity found', () async {
       final scheduleActivity = ScheduleActivity(
           courseAcronym: "XYZ321",
           courseGroup: "01",
@@ -250,12 +229,10 @@ void main() {
       viewModel.scheduleActivitiesByCourse['XYZ321'] = [scheduleActivity];
       // Stub settingsManager to return a non-matching activity code (for example, labGroupB).
       await viewModel.loadSettingsScheduleActivities();
-      expect(
-          viewModel.settingsScheduleActivities.containsKey('XYZ321'), isFalse);
+      expect(viewModel.settingsScheduleActivities.containsKey('XYZ321'), isFalse);
     });
 
-    test('coursesActivities respects schedule filtering for lab activities',
-        () {
+    test('coursesActivities respects schedule filtering for lab activities', () {
       // Arrange: create two activities on the same day, one with a lab description and one regular.
       final date = DateTime(2023, 10, 7, 8);
       final nonLabActivity = CourseActivity(
@@ -277,11 +254,9 @@ void main() {
         activityDescription: ActivityDescriptionName.labA,
       );
       // Stub the repository to return both activities.
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: [nonLabActivity, labActivity]);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [nonLabActivity, labActivity]);
       // Simulate that the settings select the lab activity.
-      viewModel.settingsScheduleActivities['ING150'] =
-          ActivityDescriptionName.labA;
+      viewModel.settingsScheduleActivities['ING150'] = ActivityDescriptionName.labA;
       final activitiesByDate = viewModel.coursesActivities;
       final events = activitiesByDate[DateTime(2023, 10, 7)];
       // Expect both activities are added since the lab activity matches the selected setting.

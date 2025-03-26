@@ -16,11 +16,7 @@ class ProfileStudent {
   /// Permanent code of the student (XXXX00000000)
   final String permanentCode;
 
-  ProfileStudent(
-      {required this.balance,
-      required this.firstName,
-      required this.lastName,
-      required this.permanentCode});
+  ProfileStudent({required this.balance, required this.firstName, required this.lastName, required this.permanentCode});
 
   /// Used to create a new [ProfileStudent] instance from a [XMLElement].
   factory ProfileStudent.fromXmlNode(XmlElement node) => ProfileStudent(
@@ -36,12 +32,8 @@ class ProfileStudent {
       permanentCode: map['codePerm'] as String,
       balance: map['soldeTotal'] as String);
 
-  Map<String, dynamic> toJson() => {
-        'nom': lastName.trimRight(),
-        'prenom': firstName.trimRight(),
-        'codePerm': permanentCode,
-        'soldeTotal': balance
-      };
+  Map<String, dynamic> toJson() =>
+      {'nom': lastName.trimRight(), 'prenom': firstName.trimRight(), 'codePerm': permanentCode, 'soldeTotal': balance};
 
   @override
   bool operator ==(Object other) =>
@@ -54,9 +46,5 @@ class ProfileStudent {
           balance == other.balance;
 
   @override
-  int get hashCode =>
-      lastName.hashCode ^
-      firstName.hashCode ^
-      permanentCode.hashCode ^
-      balance.hashCode;
+  int get hashCode => lastName.hashCode ^ firstName.hashCode ^ permanentCode.hashCode ^ balance.hashCode;
 }

@@ -24,8 +24,7 @@ class SettingsRepository with ChangeNotifier {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   /// current ThemeMode
   ThemeMode? _themeMode;
@@ -39,11 +38,7 @@ class SettingsRepository with ChangeNotifier {
   /// Get ThemeMode
   ThemeMode? get themeMode {
     _preferencesService.getString(PreferencesFlag.theme).then((value) => {
-          if (value != null)
-            {
-              _themeMode =
-                  ThemeMode.values.firstWhere((e) => e.toString() == value)
-            }
+          if (value != null) {_themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value)}
         });
 
     return _themeMode;
@@ -64,8 +59,7 @@ class SettingsRepository with ChangeNotifier {
     }
     final lang = await _preferencesService.getString(PreferencesFlag.locale);
     if (lang != null) {
-      _locale =
-          AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
+      _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
     }
   }
 
@@ -73,8 +67,7 @@ class SettingsRepository with ChangeNotifier {
   Locale? get locale {
     _preferencesService.getString(PreferencesFlag.locale).then((value) {
       if (value != null) {
-        _locale =
-            AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
+        _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
       }
     });
     // When the locale isn't defined, set a default locale
@@ -92,29 +85,23 @@ class SettingsRepository with ChangeNotifier {
   /// Get Dashboard
   Future<Map<PreferencesFlag, int>> getDashboard() async {
     final Map<PreferencesFlag, int> dashboard = {};
-    final aboutUsIndex =
-        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
-            getDefaultCardIndex(PreferencesFlag.aboutUsCard);
+    final aboutUsIndex = await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
+        getDefaultCardIndex(PreferencesFlag.aboutUsCard);
 
     dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
 
-    final scheduleCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
-            getDefaultCardIndex(PreferencesFlag.scheduleCard);
+    final scheduleCardIndex = await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
+        getDefaultCardIndex(PreferencesFlag.scheduleCard);
 
-    dashboard.putIfAbsent(
-        PreferencesFlag.scheduleCard, () => scheduleCardIndex);
+    dashboard.putIfAbsent(PreferencesFlag.scheduleCard, () => scheduleCardIndex);
 
-    final progressBarCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
-            getDefaultCardIndex(PreferencesFlag.progressBarCard);
+    final progressBarCardIndex = await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
+        getDefaultCardIndex(PreferencesFlag.progressBarCard);
 
-    dashboard.putIfAbsent(
-        PreferencesFlag.progressBarCard, () => progressBarCardIndex);
+    dashboard.putIfAbsent(PreferencesFlag.progressBarCard, () => progressBarCardIndex);
 
     final gradesCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.gradesCard) ??
-            getDefaultCardIndex(PreferencesFlag.gradesCard);
+        await _preferencesService.getInt(PreferencesFlag.gradesCard) ?? getDefaultCardIndex(PreferencesFlag.gradesCard);
 
     dashboard.putIfAbsent(PreferencesFlag.gradesCard, () => gradesCardIndex);
 
@@ -127,8 +114,7 @@ class SettingsRepository with ChangeNotifier {
   void setThemeMode(ThemeMode value) {
     _preferencesService.setString(PreferencesFlag.theme, value.toString());
 
-    _analyticsService.logEvent(
-        "${tag}_${PreferencesFlag.theme.name}", value.name);
+    _analyticsService.logEvent("${tag}_${PreferencesFlag.theme.name}", value.name);
     _themeMode = value;
     notifyListeners();
   }
@@ -136,12 +122,10 @@ class SettingsRepository with ChangeNotifier {
   void setLocale(String value) {
     _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
 
-    _analyticsService.logEvent("${tag}_${PreferencesFlag.locale.name}",
-        _locale?.languageCode ?? 'Not found');
+    _analyticsService.logEvent("${tag}_${PreferencesFlag.locale.name}", _locale?.languageCode ?? 'Not found');
 
     if (_locale != null) {
-      _preferencesService.setString(
-          PreferencesFlag.locale, _locale!.languageCode);
+      _preferencesService.setString(PreferencesFlag.locale, _locale!.languageCode);
       _locale = Locale(_locale!.languageCode);
       notifyListeners();
     }
@@ -153,26 +137,17 @@ class SettingsRepository with ChangeNotifier {
 
     final calendarFormat = await _preferencesService
         .getString(PreferencesFlag.scheduleCalendarFormat)
-        .then((value) => value == null
-            ? CalendarTimeFormat.week
-            : CalendarTimeFormat.values.byName(value))
+        .then((value) => value == null ? CalendarTimeFormat.week : CalendarTimeFormat.values.byName(value))
         .catchError((error) {
       return CalendarTimeFormat.week;
     });
-    settings.putIfAbsent(
-        PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
+    settings.putIfAbsent(PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
-    final showTodayBtn = await _preferencesService
-            .getBool(PreferencesFlag.scheduleShowTodayBtn) ??
-        true;
-    settings.putIfAbsent(
-        PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
+    final showTodayBtn = await _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
+    settings.putIfAbsent(PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
 
-    final scheduleListView =
-        await _preferencesService.getBool(PreferencesFlag.scheduleListView) ??
-            calendarViewSetting;
-    settings.putIfAbsent(
-        PreferencesFlag.scheduleListView, () => scheduleListView);
+    final scheduleListView = await _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? calendarViewSetting;
+    settings.putIfAbsent(PreferencesFlag.scheduleListView, () => scheduleListView);
 
     _logger.i("$tag - getScheduleSettings - Settings loaded: $settings");
 
@@ -191,8 +166,7 @@ class SettingsRepository with ChangeNotifier {
   }
 
   /// Add/update the value of [flag]
-  Future<bool> setDynamicString(
-      PreferencesFlag flag, String key, String? value) async {
+  Future<bool> setDynamicString(PreferencesFlag flag, String key, String? value) async {
     if (value == null) {
       return _preferencesService.removeDynamicPreferencesFlag(flag, key);
     }
@@ -240,8 +214,7 @@ class SettingsRepository with ChangeNotifier {
   }
 
   /// Get the default index of each card
-  int getDefaultCardIndex(PreferencesFlag flag) =>
-      flag.index - PreferencesFlag.aboutUsCard.index;
+  int getDefaultCardIndex(PreferencesFlag flag) => flag.index - PreferencesFlag.aboutUsCard.index;
 
   bool get calendarViewSetting => _remoteConfigService.scheduleListViewDefault;
 }

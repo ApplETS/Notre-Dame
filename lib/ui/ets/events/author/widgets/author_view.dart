@@ -32,75 +32,64 @@ class _AuthorViewState extends State<AuthorView> {
   late String notifyBtnText;
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<AuthorViewModel>.reactive(
-          viewModelBuilder: () => AuthorViewModel(
-              authorId: widget.authorId, appIntl: AppIntl.of(context)!),
-          onViewModelReady: (model) {
-            model.fetchAuthorData();
-            model.pagingController.addStatusListener((status) {
-              if (status == PagingStatus.subsequentPageError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      AppIntl.of(context)!.news_error_not_found,
+  Widget build(BuildContext context) => ViewModelBuilder<AuthorViewModel>.reactive(
+      viewModelBuilder: () => AuthorViewModel(authorId: widget.authorId, appIntl: AppIntl.of(context)!),
+      onViewModelReady: (model) {
+        model.fetchAuthorData();
+        model.pagingController.addStatusListener((status) {
+          if (status == PagingStatus.subsequentPageError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppIntl.of(context)!.news_error_not_found,
+                ),
+                action: SnackBarAction(
+                  label: AppIntl.of(context)!.retry,
+                  onPressed: () => model.pagingController.retryLastFailedRequest(),
+                ),
+              ),
+            );
+          }
+        });
+      },
+      builder: (context, model, child) => BaseScaffold(
+            showBottomBar: false,
+            body: RefreshIndicator(
+                onRefresh: () => Future.sync(
+                      () => model.pagingController.refresh(),
                     ),
-                    action: SnackBarAction(
-                      label: AppIntl.of(context)!.retry,
-                      onPressed: () =>
-                          model.pagingController.retryLastFailedRequest(),
-                    ),
-                  ),
-                );
-              }
-            });
-          },
-          builder: (context, model, child) => BaseScaffold(
-                showBottomBar: false,
-                body: RefreshIndicator(
-                    onRefresh: () => Future.sync(
-                          () => model.pagingController.refresh(),
-                        ),
-                    child: Theme(
-                      data: Theme.of(context)
-                          .copyWith(canvasColor: Colors.transparent),
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                child: Theme(
+                  data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
                             children: [
-                              Stack(
-                                children: [
-                                  _buildBackButton(),
-                                  _buildAuthorInfo(model),
-                                  _buildAvatar(model, widget.authorId),
-                                ],
-                              ),
-                              Expanded(
-                                child: PagedListView<int, News>(
-                                  key: const Key("pagedListView"),
-                                  pagingController: model.pagingController,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                                  builderDelegate:
-                                      PagedChildBuilderDelegate<News>(
-                                    itemBuilder: (context, item, index) =>
-                                        NewsCard(item),
-                                    firstPageProgressIndicatorBuilder:
-                                        (context) => _buildSkeletonLoader(),
-                                    newPageProgressIndicatorBuilder:
-                                        (context) => NewsCardSkeleton(),
-                                    noMoreItemsIndicatorBuilder: (context) =>
-                                        _buildNoMoreNewsCard(),
-                                    firstPageErrorIndicatorBuilder: (context) =>
-                                        _buildError(model.pagingController),
-                                  ),
-                                ),
-                              ),
+                              _buildBackButton(),
+                              _buildAuthorInfo(model),
+                              _buildAvatar(model, widget.authorId),
                             ],
-                          )),
-                    )),
-              ));
+                          ),
+                          Expanded(
+                            child: PagedListView<int, News>(
+                              key: const Key("pagedListView"),
+                              pagingController: model.pagingController,
+                              padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                              builderDelegate: PagedChildBuilderDelegate<News>(
+                                itemBuilder: (context, item, index) => NewsCard(item),
+                                firstPageProgressIndicatorBuilder: (context) => _buildSkeletonLoader(),
+                                newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
+                                noMoreItemsIndicatorBuilder: (context) => _buildNoMoreNewsCard(),
+                                firstPageErrorIndicatorBuilder: (context) => _buildError(model.pagingController),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                )),
+          ));
 
   Widget _buildBackButton() {
     return IconButton(
@@ -118,22 +107,14 @@ class _AuthorViewState extends State<AuthorView> {
     List<SocialLink> socialLinks = [];
     if (author != null) {
       socialLinks = [
-        if (author.email != null)
-          SocialLink(id: 0, name: 'Email', link: author.email!),
-        if (author.facebookLink != null)
-          SocialLink(id: 1, name: 'Facebook', link: author.facebookLink!),
-        if (author.instagramLink != null)
-          SocialLink(id: 2, name: 'Instagram', link: author.instagramLink!),
-        if (author.tikTokLink != null)
-          SocialLink(id: 3, name: 'TikTok', link: author.tikTokLink!),
-        if (author.xLink != null)
-          SocialLink(id: 4, name: 'X', link: author.xLink!),
-        if (author.redditLink != null)
-          SocialLink(id: 5, name: 'Reddit', link: author.redditLink!),
-        if (author.discordLink != null)
-          SocialLink(id: 6, name: 'Discord', link: author.discordLink!),
-        if (author.linkedInLink != null)
-          SocialLink(id: 7, name: 'LinkedIn', link: author.linkedInLink!),
+        if (author.email != null) SocialLink(id: 0, name: 'Email', link: author.email!),
+        if (author.facebookLink != null) SocialLink(id: 1, name: 'Facebook', link: author.facebookLink!),
+        if (author.instagramLink != null) SocialLink(id: 2, name: 'Instagram', link: author.instagramLink!),
+        if (author.tikTokLink != null) SocialLink(id: 3, name: 'TikTok', link: author.tikTokLink!),
+        if (author.xLink != null) SocialLink(id: 4, name: 'X', link: author.xLink!),
+        if (author.redditLink != null) SocialLink(id: 5, name: 'Reddit', link: author.redditLink!),
+        if (author.discordLink != null) SocialLink(id: 6, name: 'Discord', link: author.discordLink!),
+        if (author.linkedInLink != null) SocialLink(id: 7, name: 'LinkedIn', link: author.linkedInLink!),
       ];
     }
 
@@ -145,35 +126,28 @@ class _AuthorViewState extends State<AuthorView> {
               width: double.infinity,
               child: Card(
                 color: context.theme.appColors.newsAuthorProfile,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 key: UniqueKey(),
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(32, 64, 32, 16),
                   child: Column(
                     children: [
-                      if (author?.organization != null ||
-                          author?.organization != "")
+                      if (author?.organization != null || author?.organization != "")
                         Text(
                           author?.organization ?? "",
                           style: const TextStyle(fontSize: 26),
                         ),
-                      if (author?.organization != null &&
-                          author?.organization != "")
-                        const SizedBox(height: 8),
-                      if (author?.profileDescription != null &&
-                          author?.profileDescription != "")
+                      if (author?.organization != null && author?.organization != "") const SizedBox(height: 8),
+                      if (author?.profileDescription != null && author?.profileDescription != "")
                         Text(
                           author?.profileDescription ?? "",
                           style: TextStyle(
-                            color: context
-                                .theme.appColors.newsAuthorProfileDescription,
+                            color: context.theme.appColors.newsAuthorProfileDescription,
                             fontSize: 16,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                      if (author?.profileDescription != null &&
-                          author?.profileDescription != "")
+                      if (author?.profileDescription != null && author?.profileDescription != "")
                         const SizedBox(height: 8),
                       IconButton(
                         tooltip: AppIntl.of(context)!.social_links,
@@ -191,17 +165,14 @@ class _AuthorViewState extends State<AuthorView> {
                             ),
                           );
                         },
-                        icon: FaIcon(FontAwesomeIcons.link,
-                            color: context.theme.appColors.newsAccent),
+                        icon: FaIcon(FontAwesomeIcons.link, color: context.theme.appColors.newsAccent),
                         style: ButtonStyle(
-                          shape:
-                              WidgetStateProperty.all<RoundedRectangleBorder>(
+                          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          backgroundColor: WidgetStateProperty.all<Color>(
-                              context.theme.appColors.backgroundAlt),
+                          backgroundColor: WidgetStateProperty.all<Color>(context.theme.appColors.backgroundAlt),
                         ),
                       ),
                     ],
@@ -235,8 +206,7 @@ class _AuthorViewState extends State<AuthorView> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: [
-                        if (model.author?.avatarUrl != null &&
-                            model.author!.avatarUrl != "")
+                        if (model.author?.avatarUrl != null && model.author!.avatarUrl != "")
                           ClipRRect(
                               borderRadius: BorderRadius.circular(120),
                               child: Image.network(
@@ -245,26 +215,17 @@ class _AuthorViewState extends State<AuthorView> {
                                 errorBuilder: (context, error, stackTrace) {
                                   return Center(
                                     child: Text(
-                                      model.author?.organization
-                                              ?.substring(0, 1) ??
-                                          '',
-                                      style: TextStyle(
-                                          fontSize: 56,
-                                          color: context.theme.textTheme
-                                              .bodyMedium!.color),
+                                      model.author?.organization?.substring(0, 1) ?? '',
+                                      style: TextStyle(fontSize: 56, color: context.theme.textTheme.bodyMedium!.color),
                                     ),
                                   );
                                 },
                               )),
-                        if (model.author?.avatarUrl == null ||
-                            model.author!.avatarUrl == "")
+                        if (model.author?.avatarUrl == null || model.author!.avatarUrl == "")
                           Center(
                             child: Text(
                               model.author?.organization?.substring(0, 1) ?? '',
-                              style: TextStyle(
-                                  fontSize: 56,
-                                  color: context
-                                      .theme.textTheme.bodyMedium!.color),
+                              style: TextStyle(fontSize: 56, color: context.theme.textTheme.bodyMedium!.color),
                             ),
                           ),
                       ],
@@ -293,8 +254,7 @@ class _AuthorViewState extends State<AuthorView> {
         ),
         const SizedBox(height: 16),
         Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
             child: Column(
@@ -305,15 +265,13 @@ class _AuthorViewState extends State<AuthorView> {
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                   child: Row(
                     children: [
-                      Icon(Icons.check,
-                          color: context.theme.appColors.newsAccent, size: 40),
+                      Icon(Icons.check, color: context.theme.appColors.newsAccent, size: 40),
                       const SizedBox(width: 16),
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(AppIntl.of(context)!.news_no_more_card_title,
-                                style: const TextStyle(fontSize: 24)),
+                            Text(AppIntl.of(context)!.news_no_more_card_title, style: const TextStyle(fontSize: 24)),
                             const SizedBox(height: 16),
                             Text(
                               AppIntl.of(context)!.news_no_more_card,
@@ -347,8 +305,7 @@ class _AuthorViewState extends State<AuthorView> {
                 ),
                 child: Text(
                   AppIntl.of(context)!.news_error_not_found_title,
-                  style: const TextStyle(
-                      fontSize: 40, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(

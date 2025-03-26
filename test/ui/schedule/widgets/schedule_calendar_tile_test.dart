@@ -40,8 +40,7 @@ void main() {
   });
 
   // Test that tapping the tile shows the dialog with the expected course info.
-  testWidgets('Tapping tile shows dialog with course info',
-      (WidgetTester tester) async {
+  testWidgets('Tapping tile shows dialog with course info', (WidgetTester tester) async {
     // Define start and end times.
     final start = DateTime(2025, 3, 1, 9, 5);
     final end = DateTime(2025, 3, 1, 10, 0);
@@ -78,15 +77,12 @@ void main() {
     expect(find.textContaining('By John Doe'), findsOneWidget);
     // And the time info should be formatted correctly.
     // Note: The end time is computed by adding one minute to the provided end time.
-    expect(
-        find.textContaining(
-            '${intl.schedule_calendar_from_time} 9:05 ${intl.schedule_calendar_to_time} 10:01'),
+    expect(find.textContaining('${intl.schedule_calendar_from_time} 9:05 ${intl.schedule_calendar_to_time} 10:01'),
         findsOneWidget);
   });
 
   // Test that when start and end times are null, the dialog shows the "not available" text.
-  testWidgets('Displays N/A for null start and end times',
-      (WidgetTester tester) async {
+  testWidgets('Displays N/A for null start and end times', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
         home: localizedWidget(
@@ -115,8 +111,7 @@ void main() {
   });
 
   // Test that when teacherName equals the literal "null", no teacher info is displayed.
-  testWidgets('Does not display teacher info if teacherName is "null"',
-      (WidgetTester tester) async {
+  testWidgets('Does not display teacher info if teacherName is "null"', (WidgetTester tester) async {
     final start = DateTime(2025, 3, 1, 11, 30);
     final end = DateTime(2025, 3, 1, 12, 30);
 

@@ -16,8 +16,7 @@ class Faq {
       description: {
         "fr":
             "Le mot de passe à utiliser correspond à celui utilisé pour la connexion à MonÉTS et les autres systèmes informatiques de l’ÉTS.",
-        "en":
-            "The password is the one you use for logging into MonÉTS and other ÉTS computer systems."
+        "en": "The password is the one you use for logging into MonÉTS and other ÉTS computer systems."
       },
     ),
     QuestionItem(
@@ -34,8 +33,7 @@ class Faq {
     ),
     QuestionItem(
       title: {
-        "fr":
-            "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
+        "fr": "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
         "en": "I am an ÉTS graduate, and I want to reactivate my account."
       },
       description: {
@@ -44,10 +42,7 @@ class Faq {
       },
     ),
     QuestionItem(
-      title: {
-        "fr": "Je ne vois plus mes notes de contrôle",
-        "en": "I can't see my grades anymore."
-      },
+      title: {"fr": "Je ne vois plus mes notes de contrôle", "en": "I can't see my grades anymore."},
       description: {
         "fr":
             "Il est possible qu’il s’agit de la période d'évaluation des cours. Vous devez compléter les évaluations sur SignETS. Les notes seront disponibles après avoir répondu aux évaluations.",
@@ -59,15 +54,10 @@ class Faq {
 
   List<ActionItem> actions = [
     ActionItem(
-      title: {
-        "fr": "Où trouver mon code universel ?",
-        "en": "Where can I find my universal code?"
-      },
+      title: {"fr": "Où trouver mon code universel ?", "en": "Where can I find my universal code?"},
       description: {
-        "fr":
-            "Le code universel se trouve dans la décision d’admission sur le portail de monÉTS.",
-        "en":
-            "The universal code can be found in the admission decision on the MonÉTS portal."
+        "fr": "Le code universel se trouve dans la décision d’admission sur le portail de monÉTS.",
+        "en": "The universal code can be found in the admission decision on the MonÉTS portal."
       },
       type: ActionType.webview,
       link: "https://portail.etsmtl.ca/home/Admission",
@@ -77,8 +67,7 @@ class Faq {
     ),
     ActionItem(
       title: {
-        "fr":
-            "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
+        "fr": "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
         "en": "I am an ÉTS graduate, and I want to reactivate my account."
       },
       description: {
@@ -95,8 +84,7 @@ class Faq {
       title: {
         "fr":
             "Questions concernant vos conditions d'admission, des inscriptions et des conditions relatives à la poursuite de vos études",
-        "en":
-            "Questions about your admission conditions, registrations, and conditions for continuing your studies"
+        "en": "Questions about your admission conditions, registrations, and conditions for continuing your studies"
       },
       description: {
         "fr": "Veuillez contacter le Bureau de la registraire.",
@@ -109,14 +97,8 @@ class Faq {
       circleColor: const Color(0xFFDA4444),
     ),
     ActionItem(
-      title: {
-        "fr": "Questions concernant l’application ÉTSMobile",
-        "en": "Questions about the ÉTSMobile app"
-      },
-      description: {
-        "fr": "Veuillez contacter App|ETS.",
-        "en": "Please contact App|ETS."
-      },
+      title: {"fr": "Questions concernant l’application ÉTSMobile", "en": "Questions about the ÉTSMobile app"},
+      description: {"fr": "Veuillez contacter App|ETS.", "en": "Please contact App|ETS."},
       type: ActionType.email,
       link: AppInfo.email,
       iconName: Icons.install_mobile,

@@ -39,13 +39,8 @@ void main() {
           'pageSize': 10.toString(),
         };
         final uri = Uri.https(helloNewsAPI, '/api/events', query);
-        mockClient = HttpClientMockHelper.stubJsonGet(uri.toString(), {
-          'data': [],
-          'pageNumber': 1,
-          'pageSize': 10,
-          'totalPages': 1,
-          'totalRecords': 0
-        });
+        mockClient = HttpClientMockHelper.stubJsonGet(
+            uri.toString(), {'data': [], 'pageNumber': 1, 'pageSize': 10, 'totalPages': 1, 'totalRecords': 0});
         service = buildService(mockClient);
 
         final result = await service.getEvents();
@@ -105,8 +100,7 @@ void main() {
         const int statusCode = 500;
         const String message = "An error has occurred.";
 
-        mockClient = HttpClientMockHelper.stubJsonPost(
-            helloNewsAPI, {"Message": message}, statusCode);
+        mockClient = HttpClientMockHelper.stubJsonPost(helloNewsAPI, {"Message": message}, statusCode);
         service = buildService(mockClient);
 
         expect(service.getEvents(), throwsA(isA<HttpException>()));
@@ -145,8 +139,8 @@ void main() {
       final apiResponse = ApiResponse<Organizer>(data: organizer);
 
       final uri = Uri.https(helloNewsAPI, '/api/organizers/$organizerId');
-      mockClient = HttpClientMockHelper.stubJsonGet(uri.toString(),
-          apiResponse.toJson((organizer) => organizer.toJson()));
+      mockClient =
+          HttpClientMockHelper.stubJsonGet(uri.toString(), apiResponse.toJson((organizer) => organizer.toJson()));
       service = buildService(mockClient);
 
       final result = await service.getOrganizer(organizerId);
@@ -161,10 +155,8 @@ void main() {
       const int statusCode = 404;
       const String message = "Organizer not found.";
 
-      final uri =
-          Uri.https(helloNewsAPI, '/api/moderator/organizer/$organizerId');
-      mockClient = HttpClientMockHelper.stubJsonGet(
-          uri.toString(), {"Message": message}, statusCode);
+      final uri = Uri.https(helloNewsAPI, '/api/moderator/organizer/$organizerId');
+      mockClient = HttpClientMockHelper.stubJsonGet(uri.toString(), {"Message": message}, statusCode);
       service = buildService(mockClient);
 
       expect(service.getOrganizer(organizerId), throwsA(isA<HttpException>()));
@@ -191,8 +183,7 @@ void main() {
       const String message = "Error reporting news.";
 
       final uri = Uri.https(helloNewsAPI, '/api/events/$newsId/reports');
-      mockClient = HttpClientMockHelper.stubJsonPost(
-          uri.toString(), {"Message": message}, statusCode);
+      mockClient = HttpClientMockHelper.stubJsonPost(uri.toString(), {"Message": message}, statusCode);
       service = buildService(mockClient);
 
       expect(service.reportNews(newsId, report), throwsA(isA<HttpException>()));

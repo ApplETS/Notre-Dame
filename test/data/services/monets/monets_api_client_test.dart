@@ -34,22 +34,14 @@ void main() {
         const String password = "password";
 
         mockClient = HttpClientMockHelper.stubJsonPost(
-            Urls.authenticationMonETS,
-            {'Domaine': 'domaine', 'TypeUsagerId': 1, 'Username': username});
+            Urls.authenticationMonETS, {'Domaine': 'domaine', 'TypeUsagerId': 1, 'Username': username});
         service = buildService(mockClient);
 
         mockClient = MockClient((request) async {
-          return Response(
-              jsonEncode({
-                "Domaine": "domaine",
-                "TypeUsagerId": 1,
-                "Username": username
-              }),
-              200);
+          return Response(jsonEncode({"Domaine": "domaine", "TypeUsagerId": 1, "Username": username}), 200);
         });
 
-        final result =
-            await service.authenticate(username: username, password: password);
+        final result = await service.authenticate(username: username, password: password);
 
         expect(result, isA<MonETSUser>());
         expect(result.username, username);
@@ -59,16 +51,13 @@ void main() {
         const int statusCode = 500;
         const String message = "An error has occurred.";
 
-        mockClient = HttpClientMockHelper.stubJsonPost(
-            Urls.authenticationMonETS, {"Message": message}, statusCode);
+        mockClient = HttpClientMockHelper.stubJsonPost(Urls.authenticationMonETS, {"Message": message}, statusCode);
         service = buildService(mockClient);
 
-        expect(service.authenticate(username: "", password: ""),
-            throwsA(isA<HttpException>()));
+        expect(service.authenticate(username: "", password: ""), throwsA(isA<HttpException>()));
       });
     });
   });
 }
 
-MonETSAPIClient buildService(MockClient client) =>
-    MonETSAPIClient(client: client);
+MonETSAPIClient buildService(MockClient client) => MonETSAPIClient(client: client);

@@ -31,8 +31,7 @@ class SignetsAPIClient {
 
   final http.Client _httpClient;
 
-  SignetsAPIClient({http.Client? client})
-      : _httpClient = client ?? IOClient(HttpClient());
+  SignetsAPIClient({http.Client? client}) : _httpClient = client ?? IOClient(HttpClient());
 
   /// Expression to validate the format of a session short name (ex: A2020)
   final RegExp _sessionShortNameRegExp = RegExp("^([A-É-H][0-9]{4})");
@@ -42,10 +41,8 @@ class SignetsAPIClient {
 
   /// Returns whether the user is logged in or not throught the SignetsAPI.
   /// Deprecated('This function is deprecated in favor of `MonETSAPIClient.authenticate()`')
-  Future<bool> authenticate(
-      {required String username, required String password}) {
-    final command = AuthenticateCommand(this, _httpClient,
-        username: username, password: password);
+  Future<bool> authenticate({required String username, required String password}) {
+    final command = AuthenticateCommand(this, _httpClient, username: username, password: password);
     return command.execute();
   }
 
@@ -100,8 +97,7 @@ class SignetsAPIClient {
     required String username,
     required String password,
   }) {
-    final command = GetCoursesCommand(this, _httpClient,
-        username: username, password: password);
+    final command = GetCoursesCommand(this, _httpClient, username: username, password: password);
     return command.execute();
   }
 
@@ -127,8 +123,7 @@ class SignetsAPIClient {
     required String username,
     required String password,
   }) {
-    final command = GetSessionsCommand(this, _httpClient,
-        username: username, password: password);
+    final command = GetSessionsCommand(this, _httpClient, username: username, password: password);
     return command.execute();
   }
 
@@ -137,8 +132,7 @@ class SignetsAPIClient {
     required String username,
     required String password,
   }) {
-    final command = GetStudentInfoCommand(this, _httpClient,
-        username: username, password: password);
+    final command = GetStudentInfoCommand(this, _httpClient, username: username, password: password);
     return command.execute();
   }
 
@@ -147,8 +141,7 @@ class SignetsAPIClient {
     required String username,
     required String password,
   }) {
-    final command = GetProgramsCommand(this, _httpClient,
-        username: username, password: password);
+    final command = GetProgramsCommand(this, _httpClient, username: username, password: password);
     return command.execute();
   }
 

@@ -36,8 +36,7 @@ class CourseRepository {
   static const String scheduleActivitiesCacheKey = "scheduleActivitiesCache";
 
   @visibleForTesting
-  static const String scheduleDefaultActivitiesCacheKey =
-      "scheduleDefaultActivitiesCache";
+  static const String scheduleDefaultActivitiesCacheKey = "scheduleDefaultActivitiesCache";
 
   @visibleForTesting
   static const String sessionsCacheKey = "sessionsCache";
@@ -94,9 +93,7 @@ class CourseRepository {
     now = DateTime(now.year, now.month, now.day);
 
     return _sessions
-            ?.where((session) =>
-                session.endDate.isAfter(now) ||
-                session.endDate.isAtSameMomentAs(now))
+            ?.where((session) => session.endDate.isAfter(now) || session.endDate.isAtSameMomentAs(now))
             .toList() ??
         [];
   }
@@ -104,8 +101,7 @@ class CourseRepository {
   /// Get and update the list of courses activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheService]
   /// is updated with the latest version of the activities.
-  Future<List<CourseActivity>?> getCoursesActivities(
-      {bool fromCacheOnly = false}) async {
+  Future<List<CourseActivity>?> getCoursesActivities({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
@@ -116,19 +112,13 @@ class CourseRepository {
     if (_coursesActivities == null) {
       _coursesActivities = [];
       try {
-        final List responseCache =
-            jsonDecode(await _cacheManager.get(coursesActivitiesCacheKey))
-                as List<dynamic>;
+        final List responseCache = jsonDecode(await _cacheManager.get(coursesActivitiesCacheKey)) as List<dynamic>;
 
         // Build list of activities loaded from the cache.
-        _coursesActivities = responseCache
-            .map((e) => CourseActivity.fromJson(e as Map<String, dynamic>))
-            .toList();
-        _logger.d(
-            "$tag - getCoursesActivities: ${_coursesActivities?.length ?? 0} activities loaded from cache");
+        _coursesActivities = responseCache.map((e) => CourseActivity.fromJson(e as Map<String, dynamic>)).toList();
+        _logger.d("$tag - getCoursesActivities: ${_coursesActivities?.length ?? 0} activities loaded from cache");
       } on CacheException catch (_) {
-        _logger.e(
-            "$tag - getCoursesActivities: exception raised while trying to load activities from cache.");
+        _logger.e("$tag - getCoursesActivities: exception raised while trying to load activities from cache.");
       }
     }
 
@@ -147,18 +137,13 @@ class CourseRepository {
       if (_userRepository.monETSUser != null) {
         final String password = await _userRepository.getPassword();
         for (final Session session in activeSessions) {
-          fetchedCoursesActivities.addAll(
-              await _signetsApiClient.getCoursesActivities(
-                  username: _userRepository.monETSUser!.universalCode,
-                  password: password,
-                  session: session.shortName));
-          _logger.d(
-              "$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
+          fetchedCoursesActivities.addAll(await _signetsApiClient.getCoursesActivities(
+              username: _userRepository.monETSUser!.universalCode, password: password, session: session.shortName));
+          _logger.d("$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
         }
       }
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(tag,
-          "Exception raised during getCoursesActivities: $e", e, stacktrace);
+      _analyticsService.logError(tag, "Exception raised during getCoursesActivities: $e", e, stacktrace);
       _logger.d("$tag - getCoursesActivities: Exception raised $e");
       rethrow;
     }
@@ -170,25 +155,21 @@ class CourseRepository {
         activeSessionStartDate = element.startDate;
       }
     }
-    _coursesActivities?.removeWhere(
-        (element) => element.startDateTime.isAfter(activeSessionStartDate));
+    _coursesActivities?.removeWhere((element) => element.startDateTime.isAfter(activeSessionStartDate));
 
     // Update the list of activities to avoid duplicate activities
     for (final CourseActivity activity in fetchedCoursesActivities) {
-      if (_coursesActivities != null &&
-          !_coursesActivities!.contains(activity)) {
+      if (_coursesActivities != null && !_coursesActivities!.contains(activity)) {
         _coursesActivities!.add(activity);
       }
     }
 
     try {
       // Update cache
-      _cacheManager.update(
-          coursesActivitiesCacheKey, jsonEncode(_coursesActivities));
+      _cacheManager.update(coursesActivitiesCacheKey, jsonEncode(_coursesActivities));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
-      _logger.e(
-          "$tag - getCoursesActivities: exception raised while trying to update the cache.");
+      _logger.e("$tag - getCoursesActivities: exception raised while trying to update the cache.");
     }
 
     return _coursesActivities;
@@ -208,26 +189,23 @@ class CourseRepository {
     }
 
     if (session == null || session == SemesterCodes.noActiveSemester) {
-      _logger.d(
-          "$tag - getScheduleDefaultActivities: Session is null, returning empty list.");
+      _logger.d("$tag - getScheduleDefaultActivities: Session is null, returning empty list.");
       return [];
     }
 
     // Load the activities from the cache if the list doesn't exist or if another session is provided
     _scheduleDefaultActivities = [];
     try {
-      final List responseCache = jsonDecode(await _cacheManager
-          .get(scheduleDefaultActivitiesCacheKey + session)) as List<dynamic>;
+      final List responseCache =
+          jsonDecode(await _cacheManager.get(scheduleDefaultActivitiesCacheKey + session)) as List<dynamic>;
 
       // Build list of activities loaded from the cache.
-      _scheduleDefaultActivities = responseCache
-          .map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>))
-          .toList();
-      _logger.d(
-          "$tag - getScheduleDefaultActivities: ${_scheduleDefaultActivities.length} activities loaded from cache");
+      _scheduleDefaultActivities =
+          responseCache.map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>)).toList();
+      _logger
+          .d("$tag - getScheduleDefaultActivities: ${_scheduleDefaultActivities.length} activities loaded from cache");
     } on CacheException catch (_) {
-      _logger.e(
-          "$tag - getDefaultScheduleActivities: exception raised while trying to load activities from cache.");
+      _logger.e("$tag - getDefaultScheduleActivities: exception raised while trying to load activities from cache.");
     }
 
     if (fromCacheOnly) {
@@ -238,16 +216,11 @@ class CourseRepository {
     try {
       final String password = await _userRepository.getPassword();
 
-      fetchedScheduleActivities.addAll(
-          await _signetsApiClient.getScheduleActivities(
-              username: _userRepository.monETSUser?.universalCode ?? '',
-              password: password,
-              session: session));
-      _logger.d(
-          "$tag - getDefaultScheduleActivities: fetched ${fetchedScheduleActivities.length} default activities.");
+      fetchedScheduleActivities.addAll(await _signetsApiClient.getScheduleActivities(
+          username: _userRepository.monETSUser?.universalCode ?? '', password: password, session: session));
+      _logger.d("$tag - getDefaultScheduleActivities: fetched ${fetchedScheduleActivities.length} default activities.");
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(tag,
-          "Exception raised during getScheduleActivities: $e", e, stacktrace);
+      _analyticsService.logError(tag, "Exception raised during getScheduleActivities: $e", e, stacktrace);
       _logger.d("$tag - getScheduleActivities: Exception raised $e");
       rethrow;
     }
@@ -256,12 +229,10 @@ class CourseRepository {
 
     try {
       // Update cache
-      _cacheManager.update(scheduleDefaultActivitiesCacheKey + session,
-          jsonEncode(_scheduleDefaultActivities));
+      _cacheManager.update(scheduleDefaultActivitiesCacheKey + session, jsonEncode(_scheduleDefaultActivities));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
-      _logger.e(
-          "$tag - getScheduleActivities: exception raised while trying to update the cache.");
+      _logger.e("$tag - getScheduleActivities: exception raised while trying to update the cache.");
     }
 
     return _scheduleDefaultActivities;
@@ -270,8 +241,7 @@ class CourseRepository {
   /// Get and update the list of schedule activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheService]
   /// is updated with the latest version of the schedule activities.
-  Future<List<ScheduleActivity>> getScheduleActivities(
-      {bool fromCacheOnly = false}) async {
+  Future<List<ScheduleActivity>> getScheduleActivities({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
@@ -282,19 +252,13 @@ class CourseRepository {
     if (_scheduleActivities == null) {
       _scheduleActivities = [];
       try {
-        final List responseCache =
-            jsonDecode(await _cacheManager.get(scheduleActivitiesCacheKey))
-                as List<dynamic>;
+        final List responseCache = jsonDecode(await _cacheManager.get(scheduleActivitiesCacheKey)) as List<dynamic>;
 
         // Build list of activities loaded from the cache.
-        _scheduleActivities = responseCache
-            .map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>))
-            .toList();
-        _logger.d(
-            "$tag - getScheduleActivities: ${_scheduleActivities!.length} activities loaded from cache");
+        _scheduleActivities = responseCache.map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>)).toList();
+        _logger.d("$tag - getScheduleActivities: ${_scheduleActivities!.length} activities loaded from cache");
       } on CacheException catch (_) {
-        _logger.e(
-            "$tag - getScheduleActivities: exception raised while trying to load activities from cache.");
+        _logger.e("$tag - getScheduleActivities: exception raised while trying to load activities from cache.");
       }
     }
 
@@ -314,38 +278,32 @@ class CourseRepository {
         final String password = await _userRepository.getPassword();
 
         for (final Session oneSession in activeSessions) {
-          fetchedScheduleActivities.addAll(
-              await _signetsApiClient.getScheduleActivities(
-                  username: _userRepository.monETSUser?.universalCode ?? '',
-                  password: password,
-                  session: oneSession.shortName));
-          _logger.d(
-              "$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
+          fetchedScheduleActivities.addAll(await _signetsApiClient.getScheduleActivities(
+              username: _userRepository.monETSUser?.universalCode ?? '',
+              password: password,
+              session: oneSession.shortName));
+          _logger.d("$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
         }
       }
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(tag,
-          "Exception raised during getScheduleActivities: $e", e, stacktrace);
+      _analyticsService.logError(tag, "Exception raised during getScheduleActivities: $e", e, stacktrace);
       _logger.d("$tag - getScheduleActivities: Exception raised $e");
       rethrow;
     }
 
     // Update the list of activities to avoid duplicate activities
     for (final ScheduleActivity activity in fetchedScheduleActivities) {
-      if (_scheduleActivities != null &&
-          !_scheduleActivities!.contains(activity)) {
+      if (_scheduleActivities != null && !_scheduleActivities!.contains(activity)) {
         _scheduleActivities!.add(activity);
       }
     }
 
     try {
       // Update cache
-      _cacheManager.update(
-          scheduleActivitiesCacheKey, jsonEncode(_scheduleActivities));
+      _cacheManager.update(scheduleActivitiesCacheKey, jsonEncode(_scheduleActivities));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
-      _logger.e(
-          "$tag - getScheduleActivities: exception raised while trying to update the cache.");
+      _logger.e("$tag - getScheduleActivities: exception raised while trying to update the cache.");
     }
 
     return _scheduleActivities!;
@@ -363,14 +321,10 @@ class CourseRepository {
         final List sessionsCached = jsonDecode(res) as List<dynamic>;
 
         // Build list of activities loaded from the cache.
-        _sessions = sessionsCached
-            .map((e) => Session.fromJson(e as Map<String, dynamic>))
-            .toList();
-        _logger.d(
-            "$tag - getSessions: ${_sessions?.length ?? 0} sessions loaded from cache.");
+        _sessions = sessionsCached.map((e) => Session.fromJson(e as Map<String, dynamic>)).toList();
+        _logger.d("$tag - getSessions: ${_sessions?.length ?? 0} sessions loaded from cache.");
       } on CacheException catch (_) {
-        _logger.e(
-            "$tag - getSessions: exception raised while trying to load the sessions from cache.");
+        _logger.e("$tag - getSessions: exception raised while trying to load the sessions from cache.");
       }
     }
 
@@ -384,12 +338,9 @@ class CourseRepository {
         // getPassword will try to authenticate the user if not authenticated.
         final String password = await _userRepository.getPassword();
 
-        final List<Session> fetchedSession =
-            await _signetsApiClient.getSessions(
-                username: _userRepository.monETSUser!.universalCode,
-                password: password);
-        _logger.d(
-            "$tag - getSessions: ${fetchedSession.length} sessions fetched.");
+        final List<Session> fetchedSession = await _signetsApiClient.getSessions(
+            username: _userRepository.monETSUser!.universalCode, password: password);
+        _logger.d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
         for (final Session session in fetchedSession) {
           if (!_sessions!.contains(session)) {
             _sessions!.add(session);
@@ -400,12 +351,10 @@ class CourseRepository {
         _cacheManager.update(sessionsCacheKey, jsonEncode(_sessions));
       }
     } on CacheException catch (_) {
-      _logger.e(
-          "$tag - getSessions: exception raised while trying to update the cache.");
+      _logger.e("$tag - getSessions: exception raised while trying to update the cache.");
       return _sessions!;
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
-          tag, "Exception raised during getSessions: $e", e, stacktrace);
+      _analyticsService.logError(tag, "Exception raised during getSessions: $e", e, stacktrace);
       rethrow;
     }
 
@@ -425,19 +374,13 @@ class CourseRepository {
     if (_courses == null) {
       _courses = [];
       try {
-        final List responseCache =
-            jsonDecode(await _cacheManager.get(coursesCacheKey))
-                as List<dynamic>;
+        final List responseCache = jsonDecode(await _cacheManager.get(coursesCacheKey)) as List<dynamic>;
 
         // Build list of activities loaded from the cache.
-        _courses = responseCache
-            .map((e) => Course.fromJson(e as Map<String, dynamic>))
-            .toList();
-        _logger.d(
-            "$tag - getCourses: ${_courses!.length} courses loaded from cache");
+        _courses = responseCache.map((e) => Course.fromJson(e as Map<String, dynamic>)).toList();
+        _logger.d("$tag - getCourses: ${_courses!.length} courses loaded from cache");
       } on CacheException catch (_) {
-        _logger.e(
-            "$tag - getCourses: exception raised while trying to load courses from cache.");
+        _logger.e("$tag - getCourses: exception raised while trying to load courses from cache.");
       }
     }
 
@@ -453,14 +396,11 @@ class CourseRepository {
         final String password = await _userRepository.getPassword();
 
         fetchedCourses.addAll(await _signetsApiClient.getCourses(
-            username: _userRepository.monETSUser!.universalCode,
-            password: password));
-        _logger
-            .d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
+            username: _userRepository.monETSUser!.universalCode, password: password));
+        _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
       }
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
-          tag, "Exception raised during getCourses: $e", e, stacktrace);
+      _analyticsService.logError(tag, "Exception raised during getCourses: $e", e, stacktrace);
       _logger.e("$tag - getCourses: Exception raised $e");
       rethrow;
     }
@@ -481,8 +421,7 @@ class CourseRepository {
         try {
           await getCourseSummary(course);
         } on ApiException catch (_) {
-          _logger.e(
-              "$tag - getCourses: Exception raised while trying to get summary "
+          _logger.e("$tag - getCourses: Exception raised while trying to get summary "
               "of ${course.acronym}.");
           _courses!.add(course);
         }
@@ -496,8 +435,7 @@ class CourseRepository {
       _cacheManager.update(coursesCacheKey, jsonEncode(_courses));
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
-      _logger.e(
-          "$tag - getCourses: exception raised while trying to update the cache.");
+      _logger.e("$tag - getCourses: exception raised while trying to update the cache.");
     }
 
     return _courses!;
@@ -519,18 +457,13 @@ class CourseRepository {
         final String password = await _userRepository.getPassword();
 
         summary = await _signetsApiClient.getCourseSummary(
-            username: _userRepository.monETSUser!.universalCode,
-            password: password,
-            course: course);
-        _logger
-            .d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
+            username: _userRepository.monETSUser!.universalCode, password: password, course: course);
+        _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
       }
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
-        if (e.errorCode == SignetsError.gradesEmpty ||
-            e.message.startsWith(SignetsError.gradesNotAvailable)) {
-          _logger.e(
-              "$tag - getCourseSummary: Summary is empty for ${course.acronym}.");
+        if (e.errorCode == SignetsError.gradesEmpty || e.message.startsWith(SignetsError.gradesNotAvailable)) {
+          _logger.e("$tag - getCourseSummary: Summary is empty for ${course.acronym}.");
           rethrow;
         }
       }
@@ -543,8 +476,7 @@ class CourseRepository {
     _courses ??= [];
 
     // Update courses list
-    _courses!.removeWhere((element) =>
-        course.acronym == element.acronym && course.session == element.session);
+    _courses!.removeWhere((element) => course.acronym == element.acronym && course.session == element.session);
     course.summary = summary;
     _courses!.add(course);
 
@@ -554,8 +486,7 @@ class CourseRepository {
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and
       // the error has been logged by the [CacheManager]
-      _logger.e(
-          "$tag - getCourseSummary: exception raised while trying to update the cache.");
+      _logger.e("$tag - getCourseSummary: exception raised while trying to update the cache.");
     }
 
     return course;
@@ -577,12 +508,9 @@ class CourseRepository {
       if (_userRepository.monETSUser != null) {
         for (final Session session in _sessions!) {
           sessionReviews = await _signetsApiClient.getCourseReviews(
-              username: _userRepository.monETSUser!.universalCode,
-              password: password,
-              session: session);
+              username: _userRepository.monETSUser!.universalCode, password: password, session: session);
           reviews.putIfAbsent(session.shortName, () => sessionReviews);
-          _logger.d(
-              "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "
+          _logger.d("$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "
               "evaluations for session ${session.shortName}.");
         }
       }
@@ -596,11 +524,9 @@ class CourseRepository {
   }
 
   /// Get the evaluation for a course or null if not found.
-  List<CourseReview>? _getReviewsForCourse(
-      Course course, Map<String, List<CourseReview>> reviews) {
+  List<CourseReview>? _getReviewsForCourse(Course course, Map<String, List<CourseReview>> reviews) {
     final reviewsList = reviews[course.session]
-        ?.where((element) =>
-            element.acronym == course.acronym && element.group == course.group)
+        ?.where((element) => element.acronym == course.acronym && element.group == course.group)
         .toList();
 
     return reviewsList == null || reviewsList.isEmpty ? null : reviewsList;

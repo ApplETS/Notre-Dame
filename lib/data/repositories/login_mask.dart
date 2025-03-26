@@ -10,23 +10,19 @@ class LoginMask extends TextInputFormatter {
   LoginMask();
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     final int newTextLength = newValue.text.length;
     final StringBuffer newText = StringBuffer();
 
-    if (newTextLength <= numberOfLetters &&
-        RegExp("[a-zA-Z]").hasMatch(newValue.text)) {
+    if (newTextLength <= numberOfLetters && RegExp("[a-zA-Z]").hasMatch(newValue.text)) {
       newText.write(newValue.text.toUpperCase());
     }
 
     if (newTextLength > numberOfLetters &&
-        RegExp("^[0-9]*\$")
-            .hasMatch(newValue.text.substring(2, newTextLength)) &&
+        RegExp("^[0-9]*\$").hasMatch(newValue.text.substring(2, newTextLength)) &&
         newTextLength < maxCharacters) {
       newText.write(newValue.text.toUpperCase());
-    } else if (newTextLength > numberOfLetters &&
-        newTextLength < maxCharacters) {
+    } else if (newTextLength > numberOfLetters && newTextLength < maxCharacters) {
       newText.write(newValue.text.substring(0, newTextLength - 1));
     }
 
