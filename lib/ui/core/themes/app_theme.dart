@@ -92,7 +92,7 @@ class AppTheme with ChangeNotifier {
       tabBarTheme: TabBarTheme(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
       cardTheme: defaultTheme.cardTheme.copyWith(
-        color: Color(0xff1D1B20),
+        color: Color(0xff242326),
       ),
       bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
           selectedItemColor: AppPalette.etsLightRed,

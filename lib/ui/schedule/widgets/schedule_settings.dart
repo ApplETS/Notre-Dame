@@ -10,12 +10,12 @@ import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 
 class ScheduleSettings extends StatefulWidget {
-  final bool showHandle;
-
-  const ScheduleSettings({super.key, this.showHandle = true});
+  final ScheduleController controller;
+  const ScheduleSettings({super.key, required this.controller});
 
   @override
   State<ScheduleSettings> createState() => _ScheduleSettingsState();
@@ -26,7 +26,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
-      viewModelBuilder: () => ScheduleSettingsViewModel(),
+      viewModelBuilder: () =>
+          ScheduleSettingsViewModel(controller: widget.controller),
       builder: (context, model, child) {
         return ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
@@ -42,25 +43,24 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
               ],
               builder: (context, ScrollController scrollController) {
                 return Column(children: [
-                  if (widget.showHandle)
-                    Container(
-                      decoration: BoxDecoration(
-                        color: context.theme.appColors.modalTitle,
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
-                            height: 5,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                color: context.theme.appColors.modalHandle,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0))),
-                          ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: context.theme.appColors.modalTitle,
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+                          height: 5,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: context.theme.appColors.modalHandle,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0))),
                         ),
                       ),
                     ),
+                  ),
                   Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -75,18 +75,15 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     ),
                   ),
                   Expanded(
-                    child: ListTileTheme(
-                      selectedColor:
-                          Theme.of(context).textTheme.bodyLarge!.color,
-                      child: Card(
-                        margin: const EdgeInsets.all(0),
-                        shape: const RoundedRectangleBorder(),
-                        child: ListView(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          controller: scrollController,
-                          key: const ValueKey("SettingsScrollingArea"),
-                          children: _buildSettings(context, model),
-                        ),
+                    child: Card(
+                      color: context.theme.scaffoldBackgroundColor,
+                      margin: const EdgeInsets.all(0),
+                      shape: const RoundedRectangleBorder(),
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        controller: scrollController,
+                        key: const ValueKey("SettingsScrollingArea"),
+                        children: _buildSettings(context, model),
                       ),
                     ),
                   )
@@ -167,7 +164,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     }
 
     return Card(
-        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(
@@ -249,7 +245,6 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     ];
 
     return Card(
-        color: context.theme.appColors.backgroundAlt,
         child: Padding(
             padding: const EdgeInsets.only(top: 16.0, bottom: 8),
             child: Column(children: cardContent)));
