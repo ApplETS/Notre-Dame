@@ -113,7 +113,7 @@ void main() {
       [];
   group("ScheduleSettingsViewModel - ", () {
     setUp(() {
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       viewModel = ScheduleSettingsViewModel(controller: controller);
 

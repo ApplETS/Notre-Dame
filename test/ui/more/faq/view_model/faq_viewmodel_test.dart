@@ -18,7 +18,7 @@ void main() {
   group('FaqViewModel - ', () {
     setUp(() async {
       launchUrlServiceMock = setupLaunchUrlServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       setupRemoteConfigServiceMock();
 
       viewModel = FaqViewModel();

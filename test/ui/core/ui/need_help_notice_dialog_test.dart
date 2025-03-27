@@ -13,19 +13,19 @@ import '../../../helpers.dart';
 void main() {
   SharedPreferences.setMockInitialValues({});
   group('NeedHelpNoticeDialog - ', () {
-    late SettingsRepositoryMock settingsManagerMock;
+    late SettingsRepositoryMock settingsRepositoryMock;
 
     setUp(() async {
       setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
 
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsRepositoryMock = setupSettingsRepositoryMock();
     });
 
     tearDown(() {});
 
     testWidgets('tapping "Cancel" closes dialog', (WidgetTester tester) async {
-      SettingsRepositoryMock.stubLocale(settingsManagerMock);
+      SettingsRepositoryMock.stubLocale(settingsRepositoryMock);
 
       NeedHelpNoticeDialog dialog =
           NeedHelpNoticeDialog(openMail: () {}, launchWebsite: () {});

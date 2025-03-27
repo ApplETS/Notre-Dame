@@ -30,7 +30,7 @@ void main() {
     setUp(() async {
       setupAnalyticsServiceMock();
       navigationServiceMock = setupNavigationServiceMock();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       userRepositoryMock = setupUserRepositoryMock();
       networkingServiceMock = setupNetworkingServiceMock();
       internalInfoServiceMock = setupInternalInfoServiceMock();

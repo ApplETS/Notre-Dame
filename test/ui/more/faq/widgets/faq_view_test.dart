@@ -23,8 +23,7 @@ void main() {
       setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
       setupRemoteConfigServiceMock();
-
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       appIntl = await setupAppIntl();
     });
 

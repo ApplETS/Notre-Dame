@@ -25,7 +25,7 @@ void main() {
       intl = await setupAppIntl();
       setupUserRepositoryMock();
       setupNavigationServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       setupFlutterSecureStorageMock();
       setupPreferencesServiceMock();
       setupLaunchUrlServiceMock();
