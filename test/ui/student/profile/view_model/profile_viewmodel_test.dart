@@ -55,7 +55,8 @@ void main() {
       balance: '99.99',
       firstName: 'John',
       lastName: 'Doe',
-      permanentCode: 'DOEJ00000000');
+      permanentCode: 'DOEJ00000000',
+      universalCode: 'AA000000');
 
   group("ProfileViewModel - ", () {
     setUp(() async {

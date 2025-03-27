@@ -10,18 +10,6 @@ class Faq {
   List<QuestionItem> questions = [
     QuestionItem(
       title: {
-        "fr": "Quel mot de passe dois-je utiliser pour me connecter ?",
-        "en": "What password should I use to log in?"
-      },
-      description: {
-        "fr":
-            "Le mot de passe à utiliser correspond à celui utilisé pour la connexion à MonÉTS et les autres systèmes informatiques de l’ÉTS.",
-        "en":
-            "The password is the one you use for logging into MonÉTS and other ÉTS computer systems."
-      },
-    ),
-    QuestionItem(
-      title: {
         "fr": "Je n’ai pas accès au cours et au programme.",
         "en": "I don't have access to the courses and program."
       },
@@ -30,17 +18,6 @@ class Faq {
             "Les nouveaux étudiants pourraient ne pas voir l’horaire et les cours inscrits avant le début de la première session de cours. Cependant, ces informations apparaissent dès le début de la première session de cours.",
         "en":
             "New students may not see the schedule and courses before the start of the first course session. However, this information becomes available at the beginning of the first course session."
-      },
-    ),
-    QuestionItem(
-      title: {
-        "fr":
-            "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
-        "en": "I am an ÉTS graduate, and I want to reactivate my account."
-      },
-      description: {
-        "fr": "Vous pouvez demander de réactiver votre compte",
-        "en": "You can request to reactivate your account."
       },
     ),
     QuestionItem(
@@ -58,23 +35,6 @@ class Faq {
   ];
 
   List<ActionItem> actions = [
-    ActionItem(
-      title: {
-        "fr": "Où trouver mon code universel ?",
-        "en": "Where can I find my universal code?"
-      },
-      description: {
-        "fr":
-            "Le code universel se trouve dans la décision d’admission sur le portail de monÉTS.",
-        "en":
-            "The universal code can be found in the admission decision on the MonÉTS portal."
-      },
-      type: ActionType.webview,
-      link: "https://portail.etsmtl.ca/home/Admission",
-      iconName: Icons.person,
-      iconColor: const Color(0xFFD5A8F8),
-      circleColor: const Color(0xFF6939B7),
-    ),
     ActionItem(
       title: {
         "fr":

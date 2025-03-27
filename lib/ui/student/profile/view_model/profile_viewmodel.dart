@@ -25,16 +25,16 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   /// Student's profile
   final ProfileStudent _student = ProfileStudent(
-      balance: "", firstName: "", lastName: "", permanentCode: "");
+      balance: "",
+      firstName: "",
+      lastName: "",
+      permanentCode: "",
+      universalCode: "");
 
   /// Return the profileStudent
   ProfileStudent get profileStudent {
     return _userRepository.info ?? _student;
   }
-
-  /// Return the universal access code of the student
-  String get universalAccessCode =>
-      _userRepository.monETSUser?.universalCode ?? '';
 
   ProfileViewModel({required AppIntl intl}) : _appIntl = intl;
 

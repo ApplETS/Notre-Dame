@@ -45,7 +45,7 @@ class SettingsRepositoryMock extends MockSettingsRepository {
 
   /// Stub the [getBool] function of [mock], when called with [flag] return [toReturn].
   static void stubGetBool(SettingsRepositoryMock mock, PreferencesFlag flag,
-      {bool toReturn = false}) {
+      {bool? toReturn = false}) {
     when(mock.getBool(flag)).thenAnswer((_) async => toReturn);
   }
 
