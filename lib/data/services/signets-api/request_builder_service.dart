@@ -34,7 +34,10 @@ mixin RequestBuilderService {
       RequestBuilderService.retries++;
       if (retries > maxRetry) {
         retries = 0;
-        throw ApiException(prefix: tagError, message: "Token invalide. Veuillez vous déconnecter et vous reconnecter.");
+        throw ApiException(
+            prefix: tagError,
+            message:
+                "Token invalide. Veuillez vous déconnecter et vous reconnecter.");
       }
       final authService = locator<AuthService>();
       await authService.acquireTokenSilent();
@@ -56,12 +59,11 @@ mixin RequestBuilderService {
             .first
             .innerText
             .isNotEmpty) {
-
       final errorMessage = responseBody
           .findElements(SignetsError.signetsErrorSoapTag)
           .first
           .innerText;
-      if(!errorMessage.startsWith(SignetsError.scheduleNotAvailable)) {
+      if (!errorMessage.startsWith(SignetsError.scheduleNotAvailable)) {
         throw ApiException(
             prefix: tagError,
             message: responseBody

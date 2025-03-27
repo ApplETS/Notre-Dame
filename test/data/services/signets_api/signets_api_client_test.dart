@@ -230,7 +230,8 @@ void main() {
 
         final uri = Uri.https(Urls.signetsAPI,
             GetCoursesActivitiesCommand.endpoint, queryParameters);
-        clientMock = HttpClientMockHelper.stubGet(uri.toString(), "", StatusCodes.UNAUTHORIZED);
+        clientMock = HttpClientMockHelper.stubGet(
+            uri.toString(), "", StatusCodes.UNAUTHORIZED);
         service = buildService(clientMock);
 
         try {
