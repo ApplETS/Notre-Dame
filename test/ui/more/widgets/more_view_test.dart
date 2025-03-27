@@ -36,9 +36,7 @@ void main() {
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
       setupFlutterToastMock();
-      setupAuthServiceMock();
-      inAppReviewServiceMock =
-          setupInAppReviewServiceMock() as InAppReviewServiceMock;
+      inAppReviewServiceMock = setupInAppReviewServiceMock();
 
       RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
           remoteConfigServiceMock);

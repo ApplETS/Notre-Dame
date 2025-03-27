@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/author_repository.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/repositories/quick_link_repository.dart';
@@ -44,6 +45,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => QuickLinkRepository());
   locator.registerLazySingleton(() => NewsRepository());
   locator.registerLazySingleton(() => AuthorRepository());
+  locator.registerLazySingleton(() => BroadcastMessageRepository());
 
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());
