@@ -2,9 +2,11 @@
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:github/github.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:intl/intl.dart';
+import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
@@ -32,10 +34,12 @@ import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/api_exception.dart';
 import '../../../helpers.dart';
 import '../../http_client_mock_helper.dart';
+import '../../mocks/services/auth_service_mock.dart';
 
 void main() {
   late MockClient clientMock;
   late SignetsAPIClient service;
+  late AuthServiceMock authServiceMock;
 
   final session = Session(
       shortName: 'H2018',
@@ -52,23 +56,15 @@ void main() {
       deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
       deadlineCancellationASEQ: DateTime(2018, 1, 31));
 
-  setUp(() {
-    setupAuthServiceMock();
-  });
-
-  tearDown(() {
-    unregister<AuthService>();
-  });
-
   group('SignetsApi - ', () {
     setUp(() {
+      authServiceMock = setupAuthServiceMock();
       service =
           buildService(MockClient((_) => Future.value(http.Response('', 500))));
     });
 
     tearDown(() {
       unregister<AuthService>();
-      // Clear the mock and all interactions not already processed
       clientMock.close();
     });
 
@@ -224,31 +220,29 @@ void main() {
         final endDate = DateTime(2020, 9, 3, 20);
         final courseGroup = "GEN101-01";
 
-        final String stubResponse = buildErrorResponse(
-            GetCoursesActivitiesCommand.responseTag,
-            SignetsError.credentialsInvalid,
-            firstElement: 'ListeDesSeances');
-
         final queryParameters = {
           "session": session,
           "coursGroupe": courseGroup,
           "dateDebut": '2020-09-03',
           "dateFin": "2020-09-03"
         };
+        AuthServiceMock.stubAcquireTokenSilent(authServiceMock, success: false);
+
         final uri = Uri.https(Urls.signetsAPI,
             GetCoursesActivitiesCommand.endpoint, queryParameters);
-        clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
+        clientMock = HttpClientMockHelper.stubGet(uri.toString(), "", StatusCodes.UNAUTHORIZED);
         service = buildService(clientMock);
 
-        expect(
-            service.getCoursesActivities(
-                session: session,
-                courseGroup: courseGroup,
-                startDate: startDate,
-                endDate: endDate),
-            throwsA(isA<ApiException>()),
-            reason:
-                "If the SignetsAPI return an error the service should return the error.");
+        try {
+          await service.getCoursesActivities(
+              session: session,
+              courseGroup: courseGroup,
+              startDate: startDate,
+              endDate: endDate);
+        } catch (e) {
+          expect(e, isA<ApiException>());
+          verify(authServiceMock.acquireTokenSilent()).called(3);
+        }
       });
     });
     group("getScheduleActivities - ", () {

@@ -291,7 +291,6 @@ QuickLinkRepositoryMock setupQuickLinkRepositoryMock() {
   return repository;
 }
 
-/// Load a mock of the [QuickLinkRepository]
 AuthServiceMock setupAuthServiceMock() {
   unregister<AuthService>();
   final repository = AuthServiceMock();
