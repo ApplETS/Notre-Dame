@@ -62,7 +62,7 @@ void main() {
   group("ScheduleView - ", () {
     setUp(() async {
       setupNavigationServiceMock();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       setupNetworkingServiceMock();

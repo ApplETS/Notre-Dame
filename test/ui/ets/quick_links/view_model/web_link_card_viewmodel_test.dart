@@ -40,7 +40,7 @@ void main() {
       analyticsServiceMock = setupAnalyticsServiceMock();
       internalInfoServiceMock = setupInternalInfoServiceMock();
       launchUrlServiceMock = setupLaunchUrlServiceMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
 
       setupLogger();
 

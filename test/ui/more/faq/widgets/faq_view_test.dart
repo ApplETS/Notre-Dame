@@ -22,8 +22,7 @@ void main() {
     setUp(() async {
       setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
-
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       appIntl = await setupAppIntl();
     });
 

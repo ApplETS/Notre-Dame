@@ -20,7 +20,7 @@ void main() {
       setupNavigationServiceMock();
       setupNetworkingServiceMock();
       setupCacheManagerMock();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       setupAnalyticsServiceMock();
     });
 
