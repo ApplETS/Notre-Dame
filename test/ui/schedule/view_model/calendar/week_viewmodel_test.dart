@@ -18,7 +18,7 @@ void main() {
   setUp(() async {
     setupSettingsRepositoryMock();
     courseRepositoryMock = setupCourseRepositoryMock();
-    setupSettingsManagerMock();
+    setupSettingsRepositoryMock();
     setupFlutterToastMock();
 
     viewModel = WeekViewModel(
