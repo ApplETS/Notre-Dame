@@ -12,4 +12,3 @@ key.properties
 debug_keystore.properties
 **/*.keystore
 **/*.jks
-app/.cxx
