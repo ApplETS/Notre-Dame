@@ -43,7 +43,7 @@ dependencies:
   animations: ^2.0.11
 
   # Google
-  google_maps_flutter: ^2.11.0
+  google_maps_flutter: ^2.12.0
   shared_preferences: ^2.5.2
   flutter_markdown: ^0.7.6+2
 
