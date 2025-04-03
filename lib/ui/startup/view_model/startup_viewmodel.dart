@@ -55,13 +55,14 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = (await _authService.acquireTokenSilent()).$2 == null;
 
     if (isLogin) {
+      _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
       AuthenticationResult? token;
       while (token == null) {
         token = (await _authService.acquireToken()).$1;
       }
-
+      _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     }
   }
@@ -72,7 +73,7 @@ class StartUpViewModel extends BaseViewModel {
   /// with the cached data
   Future<bool> handleConnectivityIssues() async {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
-    final wasLoggedIn = (await _authService.getCurrentAccount()).$1 != null;
+    final wasLoggedIn = (await _settingsManager.getBool(PreferencesFlag.isLoggedIn)) ?? false;
     if (hasConnectivityIssues && wasLoggedIn) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       return true;

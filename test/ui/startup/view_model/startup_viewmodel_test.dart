@@ -66,6 +66,8 @@ void main() {
         verify(authServiceMock.acquireTokenSilent()).called(1);
         verify(navigationServiceMock
             .pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true))
+            .called(1);
       });
 
       test('silent sign in failed redirect to login', () async {
@@ -83,6 +85,8 @@ void main() {
         verify(authServiceMock.acquireToken()).called(1);
         verify(navigationServiceMock
             .pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true))
+            .called(1);
       });
 
       test('navigates to chooseLanguage if language not chosen', () async {

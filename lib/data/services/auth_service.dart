@@ -105,17 +105,6 @@ class AuthService {
     }
   }
 
-  Future<(Account?, MsalException?)> getCurrentAccount() async {
-    try {
-      final result = await singleAccountPca?.currentAccount;
-      _logger.d('Current account => ${result?.toJson()}');
-      return (result, null);
-    } on MsalException catch (e) {
-      _logger.e('Current account failed => $e');
-      return (null, e);
-    }
-  }
-
   Future<(bool, MsalException?)> signOut() async {
     try {
       _token = null;
