@@ -23,6 +23,7 @@ test/**/failures/
 # Certificates and secrets
 assets/certificates/
 **/env_variables.sh
+**/msal_config.json
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -37,6 +38,7 @@ assets/certificates/
 **/keystore.properties
 **/*.jks
 **/service_account_credentials.json
+**/config.properties
 
 # VS Code related
 .vscode/

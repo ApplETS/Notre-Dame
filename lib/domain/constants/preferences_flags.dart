@@ -25,8 +25,8 @@ enum PreferencesFlag {
   ratingTimer,
   hasRatingBeenRequested,
 
-  // Issues flag
-  ghIssues,
+  // Authentication flags
+  isLoggedIn,
 }
 
 /// This class can be used instead of the conventional enum to save data to shared Prefs,

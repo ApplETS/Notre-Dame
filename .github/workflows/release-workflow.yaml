@@ -37,12 +37,14 @@ jobs:
           encrypted-android-service-account-credentials-password: ${{ secrets.ENCRYPTED_ANDROID_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
           encrypted-ios-service-account-credentials-password: ${{ secrets.ENCRYPTED_IOS_SERVICE_ACCOUNT_CREDENTIALS_PASSWORD }}
           encrypted-ios-matchfile-password: ${{ secrets.ENCRYPTED_IOS_MATCHFILE_PASSWORD }}
+          encrypted-msal-config-password: ${{ secrets.ENCRYPTED_MSAL_CONFIG_PASSWORD }}
           target: ${{ matrix.target }}
 
       - name: Build the application
-        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release --dart-define=GH_API_TOKEN=${{ secrets.GH_API_TOKEN }}
+        run: flutter build -v ${{ matrix.build_target }} ${{ matrix.build_args }} --build-number=$(date '+%s') --release
         env:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+          APP_HASH: ${{ secrets.APP_HASH }}
 
       - name: Set changelog for each platform
         run: |
