@@ -73,7 +73,8 @@ class StartUpViewModel extends BaseViewModel {
   /// with the cached data
   Future<bool> handleConnectivityIssues() async {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
-    final wasLoggedIn = (await _settingsManager.getBool(PreferencesFlag.isLoggedIn)) ?? false;
+    final wasLoggedIn =
+        (await _settingsManager.getBool(PreferencesFlag.isLoggedIn)) ?? false;
     if (hasConnectivityIssues && wasLoggedIn) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       return true;
