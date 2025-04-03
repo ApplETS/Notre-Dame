@@ -18,14 +18,14 @@ dependencies:
 
   # Architecture
   get_it: ^8.0.3
-  provider: ^6.1.2
+  provider: ^6.1.4
   stacked: ^3.4.4
 
   # Firebase
-  firebase_core: ^3.12.1
-  firebase_analytics: ^11.4.4
-  firebase_crashlytics: ^4.3.4
-  firebase_remote_config: ^5.4.2
+  firebase_core: ^3.13.0
+  firebase_analytics: ^11.4.5
+  firebase_crashlytics: ^4.3.5
+  firebase_remote_config: ^5.4.3
 
   # Web
   flutter_inappwebview: ^6.1.5
@@ -43,8 +43,8 @@ dependencies:
   animations: ^2.0.11
 
   # Google
-  google_maps_flutter: ^2.11.0
-  shared_preferences: ^2.5.2
+  google_maps_flutter: ^2.12.1
+  shared_preferences: ^2.5.3
   flutter_markdown: ^0.7.6+2
 
   # flutter community
