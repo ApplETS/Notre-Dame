@@ -16,16 +16,23 @@ class GetSessionsCommand implements Command<List<Session>> {
   final String username;
   final String password;
 
-  GetSessionsCommand(this.client, this._httpClient, {required this.username, required this.password});
+  GetSessionsCommand(this.client, this._httpClient,
+      {required this.username, required this.password});
 
   @override
   Future<List<Session>> execute() async {
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(Urls.listSessionsOperation, username, password).buildDocument();
+    final body = SoapService.buildBasicSOAPBody(
+            Urls.listSessionsOperation, username, password)
+        .buildDocument();
 
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.listSessionsOperation);
+    final responseBody = await SoapService.sendSOAPRequest(
+        _httpClient, body, Urls.listSessionsOperation);
 
     /// Build and return the list of Session
-    return responseBody.findAllElements("Trimestre").map((node) => Session.fromXmlNode(node)).toList();
+    return responseBody
+        .findAllElements("Trimestre")
+        .map((node) => Session.fromXmlNode(node))
+        .toList();
   }
 }

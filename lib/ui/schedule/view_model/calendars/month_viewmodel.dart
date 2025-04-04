@@ -46,7 +46,8 @@ class MonthViewModel extends CalendarViewModel {
     final bool isThisMonthSelected = currentMonth == monthSelected;
 
     isThisMonthSelected
-        ? Fluttertoast.showToast(msg: super.appIntl.schedule_already_today_toast)
+        ? Fluttertoast.showToast(
+            msg: super.appIntl.schedule_already_today_toast)
         : monthSelected = currentMonth;
 
     return !isThisMonthSelected;

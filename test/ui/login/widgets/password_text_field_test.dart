@@ -24,7 +24,8 @@ void main() {
       );
     });
 
-    testWidgets('has a label, the visibility icon and obscure text', (WidgetTester tester) async {
+    testWidgets('has a label, the visibility icon and obscure text',
+        (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: passwordFormField));
       await tester.pumpAndSettle();
 
@@ -36,7 +37,8 @@ void main() {
     });
 
     group('visibility button', () {
-      testWidgets('toggling the visibility button should disable the obscureText property',
+      testWidgets(
+          'toggling the visibility button should disable the obscureText property',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: passwordFormField));
         await tester.pumpAndSettle();
@@ -47,11 +49,14 @@ void main() {
         await tester.pump();
 
         expect(find.byIcon(Icons.visibility_off), findsOneWidget);
-        expect(tester.widget(find.byType(TextField)),
-            isA<TextField>().having((source) => source.obscureText, 'obscureText', isFalse));
+        expect(
+            tester.widget(find.byType(TextField)),
+            isA<TextField>().having(
+                (source) => source.obscureText, 'obscureText', isFalse));
       });
 
-      testWidgets('toggling the visibility button two times should enable the obscureText property',
+      testWidgets(
+          'toggling the visibility button two times should enable the obscureText property',
           (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: passwordFormField));
         await tester.pumpAndSettle();
@@ -64,8 +69,10 @@ void main() {
         await tester.pump();
 
         expect(find.byIcon(Icons.visibility), findsOneWidget);
-        expect(tester.widget(find.byType(TextField)),
-            isA<TextField>().having((source) => source.obscureText, 'obscureText', isTrue));
+        expect(
+            tester.widget(find.byType(TextField)),
+            isA<TextField>()
+                .having((source) => source.obscureText, 'obscureText', isTrue));
       });
     });
   });

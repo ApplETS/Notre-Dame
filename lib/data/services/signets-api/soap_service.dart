@@ -13,7 +13,8 @@ mixin SoapService {
 
   /// Build the default body for communicate with the SignetsAPI.
   /// [firstElementName] should be the SOAP operation of the request.
-  static XmlBuilder buildBasicSOAPBody(String firstElementName, String username, String password) {
+  static XmlBuilder buildBasicSOAPBody(
+      String firstElementName, String username, String password) {
     final builder = XmlBuilder();
 
     builder.processing('xml', 'version="1.0" encoding="utf-8"');
@@ -36,24 +37,38 @@ mixin SoapService {
   }
 
   /// Build the basic headers for a SOAP request on.
-  static Map<String, String> _buildHeaders(String soapAction) => {"Content-Type": "text/xml", "SOAPAction": soapAction};
+  static Map<String, String> _buildHeaders(String soapAction) =>
+      {"Content-Type": "text/xml", "SOAPAction": soapAction};
 
   static String _operationResponseTag(String operation) => "${operation}Result";
 
   /// Send a SOAP request to SignetsAPI using [body] as envelope then return
   /// the response.
   /// Will throw a [ApiException] if an error is returned by the api.
-  static Future<XmlElement> sendSOAPRequest(http.Client client, XmlDocument body, String operation) async {
+  static Future<XmlElement> sendSOAPRequest(
+      http.Client client, XmlDocument body, String operation) async {
     // Send the envelope
     final response = await client.post(Uri.parse(Urls.signetsAPI),
-        headers: _buildHeaders(Urls.signetsOperationBase + operation), body: body.toXmlString());
+        headers: _buildHeaders(Urls.signetsOperationBase + operation),
+        body: body.toXmlString());
 
-    final responseBody = XmlDocument.parse(response.body).findAllElements(_operationResponseTag(operation)).first;
+    final responseBody = XmlDocument.parse(response.body)
+        .findAllElements(_operationResponseTag(operation))
+        .first;
 
     // Throw exception if the error tag contains a blocking error
-    if (responseBody.findElements(SignetsError.signetsErrorSoapTag).isNotEmpty &&
-        responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText.isNotEmpty) {
-      switch (responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText) {
+    if (responseBody
+            .findElements(SignetsError.signetsErrorSoapTag)
+            .isNotEmpty &&
+        responseBody
+            .findElements(SignetsError.signetsErrorSoapTag)
+            .first
+            .innerText
+            .isNotEmpty) {
+      switch (responseBody
+          .findElements(SignetsError.signetsErrorSoapTag)
+          .first
+          .innerText) {
         case SignetsError.scheduleNotAvailable:
         case SignetsError.scheduleNotAvailableF:
           // Don't do anything.
@@ -61,7 +76,11 @@ mixin SoapService {
         case SignetsError.credentialsInvalid:
         default:
           throw ApiException(
-              prefix: tagError, message: responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText);
+              prefix: tagError,
+              message: responseBody
+                  .findElements(SignetsError.signetsErrorSoapTag)
+                  .first
+                  .innerText);
       }
     }
 

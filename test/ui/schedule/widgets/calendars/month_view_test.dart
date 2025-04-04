@@ -66,10 +66,12 @@ void main() {
 
     testWidgets("displays events", (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
+          toReturn: activites);
 
       await tester.runAsync(() async {
-        await tester.pumpWidget(localizedWidget(child: MonthCalendar(controller: ScheduleController())));
+        await tester.pumpWidget(localizedWidget(
+            child: MonthCalendar(controller: ScheduleController())));
         await tester.pumpAndSettle();
       });
 

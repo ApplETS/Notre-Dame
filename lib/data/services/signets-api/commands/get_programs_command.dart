@@ -16,16 +16,23 @@ class GetProgramsCommand implements Command<List<Program>> {
   final String username;
   final String password;
 
-  GetProgramsCommand(this.client, this._httpClient, {required this.username, required this.password});
+  GetProgramsCommand(this.client, this._httpClient,
+      {required this.username, required this.password});
 
   @override
   Future<List<Program>> execute() async {
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(Urls.listProgramsOperation, username, password).buildDocument();
+    final body = SoapService.buildBasicSOAPBody(
+            Urls.listProgramsOperation, username, password)
+        .buildDocument();
 
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.listProgramsOperation);
+    final responseBody = await SoapService.sendSOAPRequest(
+        _httpClient, body, Urls.listProgramsOperation);
 
     /// Build and return the list of Program
-    return responseBody.findAllElements("Programme").map((node) => Program.fromXmlNode(node)).toList();
+    return responseBody
+        .findAllElements("Programme")
+        .map((node) => Program.fromXmlNode(node))
+        .toList();
   }
 }

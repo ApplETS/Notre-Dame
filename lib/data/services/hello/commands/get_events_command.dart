@@ -85,6 +85,7 @@ class GetEventsCommand implements Command<PaginatedNews> {
       );
     }
 
-    return PaginatedNews.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    return PaginatedNews.fromJson(
+        jsonDecode(response.body) as Map<String, dynamic>);
   }
 }

@@ -3,5 +3,6 @@ class ReportNews {
   String description;
   String category;
 
-  ReportNews({required this.title, required this.description, required this.category});
+  ReportNews(
+      {required this.title, required this.description, required this.category});
 }

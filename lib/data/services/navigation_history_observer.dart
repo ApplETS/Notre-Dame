@@ -8,10 +8,12 @@ class NavigationHistoryObserver extends NavigatorObserver {
   final List<Route<dynamic>?> _history = <Route<dynamic>?>[];
 
   /// Gets a clone of the navigation history as an immutable list.
-  BuiltList<Route<dynamic>> get history => BuiltList<Route<dynamic>>.from(_history);
+  BuiltList<Route<dynamic>> get history =>
+      BuiltList<Route<dynamic>>.from(_history);
 
   /// Implements a singleton pattern for NavigationHistoryObserver.
-  static final NavigationHistoryObserver _singleton = NavigationHistoryObserver._internal();
+  static final NavigationHistoryObserver _singleton =
+      NavigationHistoryObserver._internal();
   factory NavigationHistoryObserver() {
     return _singleton;
   }

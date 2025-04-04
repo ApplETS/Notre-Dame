@@ -32,7 +32,8 @@ class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<LoginViewModel>.reactive(
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<LoginViewModel>.reactive(
         viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
           backgroundColor: context.theme.appColors.backgroundVibrant,
@@ -71,7 +72,9 @@ class _LoginViewState extends State<LoginView> {
                                       height: 16,
                                     ),
                                     PasswordFormField(
-                                        validator: model.validatePassword, onEditionComplete: _focusNode.nextFocus),
+                                        validator: model.validatePassword,
+                                        onEditionComplete:
+                                            _focusNode.nextFocus),
                                     const ForgotPassword(),
                                     const SizedBox(
                                       height: 24,

@@ -68,7 +68,9 @@ class CalendarSelectionViewModel {
   }
 
   void _exportCourses(String selectedCalendarId) {
-    CalendarService.export(courseRepository.coursesActivities!, selectedCalendarId).then((value) {
+    CalendarService.export(
+            courseRepository.coursesActivities!, selectedCalendarId)
+        .then((value) {
       if (value) {
         _showToast(translations.calendar_export_success);
       } else {

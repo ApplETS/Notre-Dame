@@ -18,7 +18,9 @@ mixin Utils {
   }
 
   static DateTime getFirstdayOfWeek(DateTime currentDate) {
-    return currentDate.subtract(Duration(days: currentDate.weekday % 7)).withoutTime;
+    return currentDate
+        .subtract(Duration(days: currentDate.weekday % 7))
+        .withoutTime;
   }
 
   static DateTime getFirstDayOfMonth(DateTime date) {

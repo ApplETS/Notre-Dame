@@ -36,12 +36,14 @@ class _MoreViewState extends State<MoreView> {
       RichText(
         text: TextSpan(
           children: <TextSpan>[
-            TextSpan(style: textStyle, text: AppIntl.of(context)!.flutter_license),
+            TextSpan(
+                style: textStyle, text: AppIntl.of(context)!.flutter_license),
             TextSpan(
                 style: textStyle.copyWith(color: context.theme.appColors.link),
                 text: AppIntl.of(context)!.flutter_website,
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => _launchUrlService.launchInBrowser(AppIntl.of(context)!.flutter_website)),
+                  ..onTap = () => _launchUrlService
+                      .launchInBrowser(AppIntl.of(context)!.flutter_website)),
             TextSpan(style: textStyle, text: '.'),
           ],
         ),
@@ -88,7 +90,8 @@ class _MoreViewState extends State<MoreView> {
                     leading: const Icon(Icons.people_outline),
                     onTap: () {
                       _analyticsService.logEvent(tag, "Contributors clicked");
-                      model.navigationService.pushNamed(RouterPaths.contributors);
+                      model.navigationService
+                          .pushNamed(RouterPaths.contributors);
                     }),
                 ListTile(
                     title: Text(AppIntl.of(context)!.more_open_source_licenses),
@@ -99,11 +102,16 @@ class _MoreViewState extends State<MoreView> {
                         pageBuilder: (context, _, __) => AboutDialog(
                           applicationIcon: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(width: 75, child: Image.asset('assets/images/favicon_applets.png')),
+                            child: SizedBox(
+                                width: 75,
+                                child: Image.asset(
+                                    'assets/images/favicon_applets.png')),
                           ),
-                          applicationName: AppIntl.of(context)!.more_open_source_licenses,
+                          applicationName:
+                              AppIntl.of(context)!.more_open_source_licenses,
                           applicationVersion: model.appVersion,
-                          applicationLegalese: '\u{a9} ${DateTime.now().year} App|ETS',
+                          applicationLegalese:
+                              '\u{a9} ${DateTime.now().year} App|ETS',
                           children: aboutBoxChildren(context),
                         ),
                         opaque: false,
@@ -114,7 +122,8 @@ class _MoreViewState extends State<MoreView> {
                       title: Text(AppIntl.of(context)!.privacy_policy),
                       leading: const Icon(Icons.privacy_tip_outlined),
                       onTap: () {
-                        _analyticsService.logEvent(tag, "Confidentiality clicked");
+                        _analyticsService.logEvent(
+                            tag, "Confidentiality clicked");
                         MoreViewModel.launchPrivacyPolicy();
                       }),
                 ListTile(
@@ -141,15 +150,19 @@ class _MoreViewState extends State<MoreView> {
                           AppIntl.of(context)!.more_log_out,
                           style: const TextStyle(color: AppPalette.etsLightRed),
                         ),
-                        content: Text(AppIntl.of(context)!.more_prompt_log_out_confirmation),
+                        content: Text(AppIntl.of(context)!
+                            .more_prompt_log_out_confirmation),
                         actions: [
                           TextButton(
                               onPressed: () async {
-                                _analyticsService.logEvent(tag, "Log out clicked");
+                                _analyticsService.logEvent(
+                                    tag, "Log out clicked");
                                 model.logout();
                               },
                               child: Text(AppIntl.of(context)!.yes)),
-                          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppIntl.of(context)!.no))
+                          TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(AppIntl.of(context)!.no))
                         ],
                       ),
                       opaque: false,

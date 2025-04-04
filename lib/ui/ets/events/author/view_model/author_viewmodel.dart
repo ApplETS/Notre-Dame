@@ -26,7 +26,8 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
   /// Return the author
   Organizer? get author => _author;
 
-  final PagingController<int, News> pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, News> pagingController =
+      PagingController(firstPageKey: 1);
 
   AuthorViewModel({required this.authorId, required this.appIntl});
 
@@ -43,7 +44,8 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
 
   Future<void> fetchPage(int pageNumber) async {
     try {
-      final pagination = await _newsRepository.getNews(pageNumber: pageNumber, organizerId: authorId);
+      final pagination = await _newsRepository.getNews(
+          pageNumber: pageNumber, organizerId: authorId);
       final isLastPage = pagination?.totalPages == pageNumber;
       if (isLastPage) {
         pagingController.appendLastPage(pagination?.news ?? []);
@@ -60,10 +62,12 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
     isNotified = !isNotified;
     if (isNotified) {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_notified_for(author?.organization ?? ""), toastLength: Toast.LENGTH_LONG);
+          msg: appIntl.news_author_notified_for(author?.organization ?? ""),
+          toastLength: Toast.LENGTH_LONG);
     } else {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_not_notified_for(author?.organization ?? ""), toastLength: Toast.LENGTH_LONG);
+          msg: appIntl.news_author_not_notified_for(author?.organization ?? ""),
+          toastLength: Toast.LENGTH_LONG);
     }
   }
 

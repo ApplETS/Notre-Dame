@@ -11,7 +11,8 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
   /// Load the events
   final NewsRepository _newsRepository = locator<NewsRepository>();
 
-  final PagingController<int, News> pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, News> pagingController =
+      PagingController(firstPageKey: 1);
 
   bool isLoadingEvents = false;
   String title = "";

@@ -7,7 +7,11 @@ class NewsTags {
 
   final DateTime updatedAt;
 
-  NewsTags({required this.id, required this.name, required this.createdAt, required this.updatedAt});
+  NewsTags(
+      {required this.id,
+      required this.name,
+      required this.createdAt,
+      required this.updatedAt});
 
   /// Used to create [NewsTags] instance from a JSON file
   factory NewsTags.fromJson(Map<String, dynamic> map) => NewsTags(
@@ -34,5 +38,6 @@ class NewsTags {
           updatedAt == other.updatedAt;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ createdAt.hashCode ^ updatedAt.hashCode;
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ createdAt.hashCode ^ updatedAt.hashCode;
 }

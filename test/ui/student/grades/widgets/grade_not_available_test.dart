@@ -19,7 +19,8 @@ void main() {
 
     group("UI -", () {
       testWidgets('has one icon and one text', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: const GradeNotAvailable()));
+        await tester
+            .pumpWidget(localizedWidget(child: const GradeNotAvailable()));
         await tester.pumpAndSettle();
 
         final label = find.text(intl.grades_msg_no_grades.split('\n')[0]);

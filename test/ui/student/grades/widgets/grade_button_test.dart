@@ -64,44 +64,57 @@ void main() {
     });
 
     group("UI -", () {
-      testWidgets("Display acronym of the course and the current grade", (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
+      testWidgets("Display acronym of the course and the current grade",
+          (WidgetTester tester) async {
+        await tester
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
         expect(find.text(courseWithGrade.grade!), findsOneWidget);
       });
 
-      testWidgets("Grade not available and summary is loaded.", (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: GradeButton(courseWithSummary)));
+      testWidgets("Grade not available and summary is loaded.",
+          (WidgetTester tester) async {
+        await tester
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithSummary)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
-        expect(find.text(intl.grades_grade_in_percentage(courseWithSummary.summary!.currentMarkInPercent.round())),
+        expect(
+            find.text(intl.grades_grade_in_percentage(
+                courseWithSummary.summary!.currentMarkInPercent.round())),
             findsOneWidget,
-            reason: 'There is no grade available and the course summary exists so the '
+            reason:
+                'There is no grade available and the course summary exists so the '
                 'current mark in percentage should be displayed');
       });
 
-      testWidgets("Grade and summary not available.", (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: GradeButton(gradesNotAvailable)));
+      testWidgets("Grade and summary not available.",
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+            localizedWidget(child: GradeButton(gradesNotAvailable)));
         await tester.pumpAndSettle();
 
         expect(find.text(courseWithGrade.acronym), findsOneWidget);
         expect(find.text(intl.grades_not_available), findsOneWidget,
-            reason: 'There is no grade available and the course summary doesnt exists '
+            reason:
+                'There is no grade available and the course summary doesnt exists '
                 'so "N/A" should be displayed');
       });
     });
 
     group('Interactions - ', () {
-      testWidgets('Grade button redirects to grades view when tapped ', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
+      testWidgets('Grade button redirects to grades view when tapped ',
+          (WidgetTester tester) async {
+        await tester
+            .pumpWidget(localizedWidget(child: GradeButton(courseWithGrade)));
         await tester.pumpAndSettle();
 
         await tester.tap(find.text(courseWithGrade.acronym));
 
-        verify(navigationServiceMock.pushNamed(RouterPaths.gradeDetails, arguments: courseWithGrade));
+        verify(navigationServiceMock.pushNamed(RouterPaths.gradeDetails,
+            arguments: courseWithGrade));
       });
     });
   });

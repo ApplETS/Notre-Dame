@@ -28,7 +28,8 @@ class _NewsCardState extends State<NewsCard> {
   Widget build(BuildContext context) {
     timeago.setLocaleMessages('fr', timeago.FrShortMessages());
     return GestureDetector(
-      onTap: () => _navigationService.pushNamed(RouterPaths.newsDetails, arguments: widget.news),
+      onTap: () => _navigationService.pushNamed(RouterPaths.newsDetails,
+          arguments: widget.news),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         key: UniqueKey(),
@@ -41,7 +42,9 @@ class _NewsCardState extends State<NewsCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Hero(tag: 'news_image_id_${widget.news.id}', child: _buildImage(widget.news.imageUrl)),
+                  Hero(
+                      tag: 'news_image_id_${widget.news.id}',
+                      child: _buildImage(widget.news.imageUrl)),
                   const SizedBox(height: 8),
                   _buildTitleAndTime(widget.news, context),
                 ],
@@ -94,7 +97,8 @@ class _NewsCardState extends State<NewsCard> {
   }
 
   Widget _buildTitleAndTime(News news, BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16);
+    final TextStyle textStyle =
+        Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,7 +112,8 @@ class _NewsCardState extends State<NewsCard> {
         ),
         const SizedBox(width: 10),
         Text(
-          timeago.format(news.publicationDate, locale: AppIntl.of(context)!.localeName),
+          timeago.format(news.publicationDate,
+              locale: AppIntl.of(context)!.localeName),
           style: textStyle,
         ),
       ],

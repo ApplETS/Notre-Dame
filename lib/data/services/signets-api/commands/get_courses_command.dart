@@ -16,15 +16,22 @@ class GetCoursesCommand implements Command<List<Course>> {
   final String username;
   final String password;
 
-  GetCoursesCommand(this.client, this._httpClient, {required this.username, required this.password});
+  GetCoursesCommand(this.client, this._httpClient,
+      {required this.username, required this.password});
 
   @override
   Future<List<Course>> execute() async {
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(Urls.listCourseOperation, username, password).buildDocument();
+    final body = SoapService.buildBasicSOAPBody(
+            Urls.listCourseOperation, username, password)
+        .buildDocument();
 
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.listCourseOperation);
+    final responseBody = await SoapService.sendSOAPRequest(
+        _httpClient, body, Urls.listCourseOperation);
 
-    return responseBody.findAllElements("Cours").map((node) => Course.fromXmlNode(node)).toList();
+    return responseBody
+        .findAllElements("Cours")
+        .map((node) => Course.fromXmlNode(node))
+        .toList();
   }
 }

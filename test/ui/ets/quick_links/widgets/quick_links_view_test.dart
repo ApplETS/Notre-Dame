@@ -29,9 +29,11 @@ void main() {
       setupNetworkingServiceMock();
       setupLaunchUrlServiceMock();
       quickLinkRepositoryMock = setupQuickLinkRepositoryMock();
-      QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: quickLinks(intl));
+      QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock,
+          toReturn: quickLinks(intl));
 
-      QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(quickLinkRepositoryMock);
+      QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(
+          quickLinkRepositoryMock);
     });
 
     tearDown(() {
@@ -45,10 +47,12 @@ void main() {
 
     group('UI - ', () {
       testWidgets('has X cards', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: QuickLinksView(), useScaffold: false));
+        await tester.pumpWidget(
+            localizedWidget(child: QuickLinksView(), useScaffold: false));
         await tester.pumpAndSettle();
 
-        expect(find.byType(WebLinkCard, skipOffstage: false), findsNWidgets(quickLinks(intl).length));
+        expect(find.byType(WebLinkCard, skipOffstage: false),
+            findsNWidgets(quickLinks(intl).length));
       });
     });
   });

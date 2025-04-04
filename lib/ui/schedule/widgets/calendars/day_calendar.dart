@@ -22,15 +22,18 @@ class DayCalendar extends StatefulWidget {
   final bool listView;
   final ScheduleController controller;
 
-  const DayCalendar({super.key, required this.listView, required this.controller});
+  const DayCalendar(
+      {super.key, required this.listView, required this.controller});
 
   @override
   State<DayCalendar> createState() => _DayCalendarState();
 }
 
-class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin {
+class _DayCalendarState extends State<DayCalendar>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
-  final GlobalKey<calendar_view.DayViewState> dayViewKey = GlobalKey<calendar_view.DayViewState>();
+  final GlobalKey<calendar_view.DayViewState> dayViewKey =
+      GlobalKey<calendar_view.DayViewState>();
 
   @override
   void initState() {
@@ -76,14 +79,16 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   }
 
   Widget _buildCalendar(DayViewModel model) {
-    final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+    final double heightPerMinute =
+        (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
 
     return Expanded(
         child: calendar_view.DayView(
             showVerticalLine: false,
             dayTitleBuilder: calendar_view.DayHeader.hidden,
             key: dayViewKey,
-            controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+            controller: model.eventController
+              ..addAll(model.selectedDayCalendarEvents()),
             onPageChange: (date, _) => ({
                   setState(() {
                     model.handleDateSelectedChanged(date);
@@ -107,7 +112,9 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             timeStringBuilder: (date, {secondaryDate}) {
               return DateFormat('H:mm').format(date);
             },
-            eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events)));
+            eventTileBuilder:
+                (date, events, boundary, startDuration, endDuration) =>
+                    _buildEventTile(events)));
   }
 
   Widget _buildListView(DayViewModel model) {
@@ -122,7 +129,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       // Otherwise, the experience will be choppy
       if (page == page.floorToDouble() && daysToAdd != 0) {
         setState(() {
-          model.handleDateSelectedChanged(model.daySelected.add(Duration(days: daysToAdd)));
+          model.handleDateSelectedChanged(
+              model.daySelected.add(Duration(days: daysToAdd)));
         });
         // Same principle as a recycler view; displayed elements of the list are reused to reduce ressource usage
         // For each page change, we move the elements in the page we were previously on and go back to that page
@@ -160,7 +168,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     );
   }
 
-  Widget _buildEventTile(List<calendar_view.CalendarEventData<dynamic>> events) {
+  Widget _buildEventTile(
+      List<calendar_view.CalendarEventData<dynamic>> events) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,
@@ -187,9 +196,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     return ListView.separated(
         physics: const ScrollPhysics(),
         shrinkWrap: true,
-        itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
-        separatorBuilder: (_, index) =>
-            (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
+        itemBuilder: (_, index) =>
+            CourseActivityTile(events[index] as CourseActivity),
+        separatorBuilder: (_, index) => (index < events.length)
+            ? const Divider(thickness: 1, indent: 30, endIndent: 30)
+            : const SizedBox(),
         itemCount: events.length);
   }
 
@@ -208,19 +219,25 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           return isSameDay(model.daySelected, day);
         },
         headerStyle: HeaderStyle(
-            titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
+            titleTextFormatter: (_, locale) =>
+                DateFormat.MMMMEEEEd(locale).format(model.daySelected),
             titleCentered: true,
             formatButtonVisible: false),
         eventLoader: model.coursesActivitiesFor,
         calendarFormat: CalendarFormat.week,
         focusedDay: model.daySelected,
         calendarBuilders: CalendarBuilders(
-            defaultBuilder: (_, date, __) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-            outsideBuilder: (_, date, __) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-            todayBuilder: (_, date, __) => _buildHeaderDay(date, todayColor, model, dayViewKey),
+            defaultBuilder: (_, date, __) =>
+                _buildHeaderDay(date, defaultColor, model, dayViewKey),
+            outsideBuilder: (_, date, __) =>
+                _buildHeaderDay(date, defaultColor, model, dayViewKey),
+            todayBuilder: (_, date, __) =>
+                _buildHeaderDay(date, todayColor, model, dayViewKey),
             selectedBuilder: (_, date, __) => FadeTransition(
-                  opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-                  child: _buildHeaderDay(date, selectedColor, model, dayViewKey),
+                  opacity:
+                      Tween(begin: 0.0, end: 1.0).animate(_animationController),
+                  child:
+                      _buildHeaderDay(date, selectedColor, model, dayViewKey),
                 ),
             markerBuilder: (_, date, events) {
               final bool isSelected = isSameDay(date, model.daySelected);
@@ -246,11 +263,13 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     );
   }
 
-  Widget _buildHeaderDay(
-          DateTime date, Color color, DayViewModel model, GlobalKey<calendar_view.DayViewState> dayViewKey) =>
+  Widget _buildHeaderDay(DateTime date, Color color, DayViewModel model,
+          GlobalKey<calendar_view.DayViewState> dayViewKey) =>
       Container(
         margin: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: color)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: color)),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -261,7 +280,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
                 model.handleDateSelectedChanged(date);
               });
 
-              if (model.daySelected.difference(startingDate).inDays.abs() == 1) {
+              if (model.daySelected.difference(startingDate).inDays.abs() ==
+                  1) {
                 dayViewKey.currentState?.animateToDate(model.daySelected);
               } else {
                 dayViewKey.currentState?.jumpToDate(model.daySelected);
@@ -281,8 +301,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
                       height: 1.2,
                     ),
                   ),
-                  if (date.month != DateTime.now().month || date.year != DateTime.now().year)
-                    Text(DateFormat.MMM(AppIntl.of(context)!.localeName).format(date),
+                  if (date.month != DateTime.now().month ||
+                      date.year != DateTime.now().year)
+                    Text(
+                        DateFormat.MMM(AppIntl.of(context)!.localeName)
+                            .format(date),
                         style: const TextStyle(fontSize: 10.0)),
                 ],
               ),
@@ -298,7 +321,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         bottom: 1,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: color),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5), color: color),
           width: 16.0,
           height: 16.0,
           child: Text(

@@ -27,13 +27,15 @@ class ScheduleView extends StatefulWidget {
   State<ScheduleView> createState() => _ScheduleViewState();
 }
 
-class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMixin {
+class _ScheduleViewState extends State<ScheduleView>
+    with TickerProviderStateMixin {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<ScheduleViewModel>.reactive(
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(),
         onViewModelReady: (model) {
           if (model.settings.isEmpty) {
@@ -47,9 +49,12 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions: model.busy(model.settings) ? [] : _buildActionButtons(model),
+              actions:
+                  model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
-            body: model.busy(model.settings) ? const SizedBox() : displaySchedule(model)),
+            body: model.busy(model.settings)
+                ? const SizedBox()
+                : displaySchedule(model)),
       );
 
   Widget displaySchedule(ScheduleViewModel model) {
@@ -100,7 +105,8 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
                 ),
                 context: context,
                 isScrollControlled: true,
-                builder: (context) => ScheduleSettings(controller: widget.controller));
+                builder: (context) =>
+                    ScheduleSettings(controller: widget.controller));
           })
     ];
   }

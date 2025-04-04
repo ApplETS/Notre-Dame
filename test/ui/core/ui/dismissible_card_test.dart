@@ -11,9 +11,12 @@ import '../../../helpers.dart';
 void main() {
   const String cardText = "I'm a dismissible card !";
   group("DismissibleCard - ", () {
-    testWidgets("Display the card and the child widget", (WidgetTester tester) async {
+    testWidgets("Display the card and the child widget",
+        (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
-          child: DismissibleCard(onDismissed: (DismissDirection direction) {}, child: const Text(cardText))));
+          child: DismissibleCard(
+              onDismissed: (DismissDirection direction) {},
+              child: const Text(cardText))));
 
       await tester.pumpAndSettle();
 
@@ -22,7 +25,9 @@ void main() {
     testWidgets("isBusy", (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
           child: DismissibleCard(
-              isBusy: true, onDismissed: (DismissDirection direction) {}, child: const Text(cardText))));
+              isBusy: true,
+              onDismissed: (DismissDirection direction) {},
+              child: const Text(cardText))));
 
       expect(find.text(cardText), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);

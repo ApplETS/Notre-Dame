@@ -26,7 +26,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder.reactive(
-      viewModelBuilder: () => ScheduleSettingsViewModel(controller: widget.controller),
+      viewModelBuilder: () =>
+          ScheduleSettingsViewModel(controller: widget.controller),
       builder: (context, model, child) {
         return ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
@@ -54,7 +55,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                           width: 50,
                           decoration: BoxDecoration(
                               color: context.theme.appColors.modalHandle,
-                              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8.0))),
                         ),
                       ),
                     ),
@@ -67,7 +69,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     child: Center(
                       child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Text(AppIntl.of(context)!.schedule_settings_title,
+                          child: Text(
+                              AppIntl.of(context)!.schedule_settings_title,
                               style: Theme.of(context).textTheme.titleLarge)),
                     ),
                   ),
@@ -89,7 +92,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         );
       });
 
-  List<Widget> _buildSettings(BuildContext context, ScheduleSettingsViewModel model) {
+  List<Widget> _buildSettings(
+      BuildContext context, ScheduleSettingsViewModel model) {
     final list = _buildShowTodayButtonSection(context, model);
 
     list.add(_buildCalendarFormatSection(context, model));
@@ -101,7 +105,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return list;
   }
 
-  Widget _buildSelectCoursesActivitiesSection(BuildContext context, ScheduleSettingsViewModel model) {
+  Widget _buildSelectCoursesActivitiesSection(
+      BuildContext context, ScheduleSettingsViewModel model) {
     final cardContent = <Widget>[
       Text(
         AppIntl.of(context)!.schedule_select_course_activity,
@@ -113,7 +118,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       const Divider(thickness: 0.5)
     ];
 
-    for (final courseActivitiesAcronym in model.scheduleActivitiesByCourse.keys) {
+    for (final courseActivitiesAcronym
+        in model.scheduleActivitiesByCourse.keys) {
       cardContent.add(Padding(
         padding: const EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
         child: Text(
@@ -128,19 +134,24 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
       chips.add(InputChip(
           label: Text(AppIntl.of(context)!.course_activity_group_both),
-          selected: model.selectedScheduleActivity[courseActivitiesAcronym] == null,
+          selected:
+              model.selectedScheduleActivity[courseActivitiesAcronym] == null,
           selectedColor: selectedColor,
           showCheckmark: false,
-          onPressed: () => model.selectScheduleActivity(courseActivitiesAcronym, null)));
+          onPressed: () =>
+              model.selectScheduleActivity(courseActivitiesAcronym, null)));
 
       if (model.scheduleActivitiesByCourse[courseActivitiesAcronym] != null) {
-        for (final course in model.scheduleActivitiesByCourse[courseActivitiesAcronym]!) {
+        for (final course
+            in model.scheduleActivitiesByCourse[courseActivitiesAcronym]!) {
           chips.add(InputChip(
             label: Text(getActivityTitle(course.activityCode)),
-            selected: model.selectedScheduleActivity[course.courseAcronym] == course,
+            selected:
+                model.selectedScheduleActivity[course.courseAcronym] == course,
             selectedColor: selectedColor,
             showCheckmark: false,
-            onPressed: () => model.selectScheduleActivity(course.courseAcronym, course),
+            onPressed: () =>
+                model.selectScheduleActivity(course.courseAcronym, course),
           ));
         }
       }
@@ -170,7 +181,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     return "";
   }
 
-  List<Widget> _buildShowTodayButtonSection(BuildContext context, ScheduleSettingsViewModel model) => [
+  List<Widget> _buildShowTodayButtonSection(
+          BuildContext context, ScheduleSettingsViewModel model) =>
+      [
         ListTile(
           trailing: Switch(
             value: model.showTodayBtn,
@@ -183,7 +196,9 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
         )
       ];
 
-  Widget _buildToggleCalendarView(BuildContext context, ScheduleSettingsViewModel model) => ListTile(
+  Widget _buildToggleCalendarView(
+          BuildContext context, ScheduleSettingsViewModel model) =>
+      ListTile(
         trailing: Switch(
           value: model.toggleCalendarView,
           onChanged: (value) => {
@@ -191,10 +206,13 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
           },
           activeColor: AppPalette.etsLightRed,
         ),
-        title: Text(style: Theme.of(context).textTheme.bodyMedium, AppIntl.of(context)!.schedule_settings_list_view),
+        title: Text(
+            style: Theme.of(context).textTheme.bodyMedium,
+            AppIntl.of(context)!.schedule_settings_list_view),
       );
 
-  Widget _buildCalendarFormatSection(BuildContext context, ScheduleSettingsViewModel model) {
+  Widget _buildCalendarFormatSection(
+      BuildContext context, ScheduleSettingsViewModel model) {
     final chips = <Widget>[];
 
     for (final CalendarTimeFormat format in CalendarTimeFormat.values) {
@@ -222,11 +240,14 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       ),
       const Divider(thickness: 0.5),
       chipsWrapper,
-      if (model.calendarFormat == CalendarTimeFormat.day) _buildToggleCalendarView(context, model)
+      if (model.calendarFormat == CalendarTimeFormat.day)
+        _buildToggleCalendarView(context, model)
     ];
 
     return Card(
-        child: Padding(padding: const EdgeInsets.only(top: 16.0, bottom: 8), child: Column(children: cardContent)));
+        child: Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+            child: Column(children: cardContent)));
   }
 
   String getTextForFormat(BuildContext context, CalendarTimeFormat format) {

@@ -15,14 +15,17 @@ class AuthenticateCommand implements Command<bool> {
   final String username;
   final String password;
 
-  AuthenticateCommand(this.client, this._httpClient, {required this.username, required this.password});
+  AuthenticateCommand(this.client, this._httpClient,
+      {required this.username, required this.password});
 
   @override
   Future<bool> execute() async {
     // Generate initial soap envelope
-    final body =
-        SoapService.buildBasicSOAPBody(Urls.donneesAuthentificationValides, username, password).buildDocument();
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.donneesAuthentificationValides);
+    final body = SoapService.buildBasicSOAPBody(
+            Urls.donneesAuthentificationValides, username, password)
+        .buildDocument();
+    final responseBody = await SoapService.sendSOAPRequest(
+        _httpClient, body, Urls.donneesAuthentificationValides);
 
     /// Build and return the authentication status
     return responseBody.innerText == "true";

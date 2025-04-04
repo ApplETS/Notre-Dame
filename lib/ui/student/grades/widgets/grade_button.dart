@@ -27,7 +27,8 @@ class GradeButton extends StatelessWidget {
         color: color,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails, arguments: course),
+          onTap: () => _navigationService.pushNamed(RouterPaths.gradeDetails,
+              arguments: course),
           child: _buildGradeButton(context),
         ),
       );
@@ -40,7 +41,8 @@ class GradeButton extends StatelessWidget {
     } else if (course.summary != null &&
         course.summary!.markOutOf > 0 &&
         !(course.inReviewPeriod && !(course.allReviewsCompleted ?? false))) {
-      return intl.grades_grade_in_percentage(course.summary!.currentMarkInPercent.round());
+      return intl.grades_grade_in_percentage(
+          course.summary!.currentMarkInPercent.round());
     }
 
     return intl.grades_not_available;
@@ -61,8 +63,9 @@ class GradeButton extends StatelessWidget {
                     child: DecoratedBox(
                         decoration: const BoxDecoration(
                             color: AppPalette.etsLightRed,
-                            borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(2.5), topRight: Radius.circular(2.5))),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(2.5),
+                                topRight: Radius.circular(2.5))),
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
@@ -71,7 +74,10 @@ class GradeButton extends StatelessWidget {
                               child: Skeleton.keep(
                                 child: Text(
                                   course.acronym,
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppPalette.grey.white),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(color: AppPalette.grey.white),
                                 ),
                               ),
                             ),

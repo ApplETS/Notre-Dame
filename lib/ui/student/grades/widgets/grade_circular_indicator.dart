@@ -42,5 +42,6 @@ class GradeCircularIndicator extends StatelessWidget {
     );
   }
 
-  double _getGradeInDecimals(double grade) => (grade / 100) > 1.0 ? 1.0 : (grade / 100);
+  double _getGradeInDecimals(double grade) =>
+      (grade / 100) > 1.0 ? 1.0 : (grade / 100);
 }

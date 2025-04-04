@@ -35,7 +35,9 @@ class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
     }
 
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(Urls.listeHoraireEtProf, username, password).buildDocument();
+    final body = SoapService.buildBasicSOAPBody(
+            Urls.listeHoraireEtProf, username, password)
+        .buildDocument();
     final operationContent = XmlBuilder();
 
     // Add the content needed by the operation
@@ -45,14 +47,19 @@ class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
 
     // Add the parameters needed inside the request.
     body
-        .findAllElements(Urls.listeHoraireEtProf, namespace: Urls.signetsOperationBase)
+        .findAllElements(Urls.listeHoraireEtProf,
+            namespace: Urls.signetsOperationBase)
         .first
         .children
         .add(operationContent.buildFragment());
 
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.listeHoraireEtProf);
+    final responseBody = await SoapService.sendSOAPRequest(
+        _httpClient, body, Urls.listeHoraireEtProf);
 
     /// Build and return the list of CourseActivity
-    return responseBody.findAllElements("HoraireActivite").map((node) => ScheduleActivity.fromXmlNode(node)).toList();
+    return responseBody
+        .findAllElements("HoraireActivite")
+        .map((node) => ScheduleActivity.fromXmlNode(node))
+        .toList();
   }
 }

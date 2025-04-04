@@ -32,7 +32,8 @@ class StartUpViewModel extends BaseViewModel {
     if (isLogin) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
-      if (await _settingsManager.getBool(PreferencesFlag.languageChoice) == null) {
+      if (await _settingsManager.getBool(PreferencesFlag.languageChoice) ==
+          null) {
         _navigationService.pushNamed(RouterPaths.chooseLanguage);
         _settingsManager.setBool(PreferencesFlag.languageChoice, true);
       } else {

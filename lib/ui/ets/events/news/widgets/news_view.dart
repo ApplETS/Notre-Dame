@@ -48,7 +48,8 @@ class _NewsViewState extends State<NewsView> {
   }
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<NewsViewModel>.reactive(
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<NewsViewModel>.reactive(
         viewModelBuilder: () => NewsViewModel(),
         onViewModelReady: (model) {
           model.pagingController.addStatusListener((status) {
@@ -60,7 +61,8 @@ class _NewsViewState extends State<NewsView> {
                   ),
                   action: SnackBarAction(
                     label: AppIntl.of(context)!.retry,
-                    onPressed: () => model.pagingController.retryLastFailedRequest(),
+                    onPressed: () =>
+                        model.pagingController.retryLastFailedRequest(),
                   ),
                 ),
               );
@@ -89,11 +91,13 @@ class _NewsViewState extends State<NewsView> {
                         () => model.pagingController.refresh(),
                       ),
                   child: Theme(
-                    data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+                    data: Theme.of(context)
+                        .copyWith(canvasColor: Colors.transparent),
                     child: Column(
                       children: [
                         Padding(
-                            padding: const EdgeInsets.only(top: 8, left: 4, right: 4),
+                            padding: const EdgeInsets.only(
+                                top: 8, left: 4, right: 4),
                             child: Row(
                               children: [
                                 Expanded(
@@ -101,15 +105,20 @@ class _NewsViewState extends State<NewsView> {
                                       height: 52,
                                       child: TextField(
                                         decoration: InputDecoration(
-                                            hintText: AppIntl.of(context)!.search,
+                                            hintText:
+                                                AppIntl.of(context)!.search,
                                             filled: true,
                                             border: OutlineInputBorder(
                                               borderSide: BorderSide.none,
-                                              borderRadius: BorderRadius.circular(8.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
                                             ),
-                                            contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 0)),
+                                            contentPadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    16, 8, 16, 0)),
                                         style: const TextStyle(fontSize: 18),
-                                        onEditingComplete: () => {model.searchNews(_query)},
+                                        onEditingComplete: () =>
+                                            {model.searchNews(_query)},
                                         onChanged: (query) {
                                           _query = query;
                                         },
@@ -124,11 +133,16 @@ class _NewsViewState extends State<NewsView> {
                             scrollController: _scrollController,
                             padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
                             builderDelegate: PagedChildBuilderDelegate<News>(
-                              itemBuilder: (context, item, index) => NewsCard(item),
-                              firstPageProgressIndicatorBuilder: (context) => _buildSkeletonLoader(),
-                              newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
-                              noMoreItemsIndicatorBuilder: (context) => _buildNoMoreNewsCard(),
-                              firstPageErrorIndicatorBuilder: (context) => _buildError(model.pagingController),
+                              itemBuilder: (context, item, index) =>
+                                  NewsCard(item),
+                              firstPageProgressIndicatorBuilder: (context) =>
+                                  _buildSkeletonLoader(),
+                              newPageProgressIndicatorBuilder: (context) =>
+                                  NewsCardSkeleton(),
+                              noMoreItemsIndicatorBuilder: (context) =>
+                                  _buildNoMoreNewsCard(),
+                              firstPageErrorIndicatorBuilder: (context) =>
+                                  _buildError(model.pagingController),
                             ),
                           ),
                         ),
@@ -155,7 +169,8 @@ class _NewsViewState extends State<NewsView> {
         ),
         const SizedBox(height: 16),
         Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
             child: Column(
@@ -166,13 +181,15 @@ class _NewsViewState extends State<NewsView> {
                   padding: const EdgeInsets.fromLTRB(0, 8, 8, 8),
                   child: Row(
                     children: [
-                      Icon(Icons.check, color: context.theme.appColors.newsAccent, size: 40),
+                      Icon(Icons.check,
+                          color: context.theme.appColors.newsAccent, size: 40),
                       const SizedBox(width: 16),
                       Flexible(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(AppIntl.of(context)!.news_no_more_card_title, style: const TextStyle(fontSize: 24)),
+                            Text(AppIntl.of(context)!.news_no_more_card_title,
+                                style: const TextStyle(fontSize: 24)),
                             const SizedBox(height: 16),
                             Text(
                               AppIntl.of(context)!.news_no_more_card,
@@ -206,7 +223,8 @@ class _NewsViewState extends State<NewsView> {
                 ),
                 child: Text(
                   AppIntl.of(context)!.news_error_not_found_title,
-                  style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 40, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(

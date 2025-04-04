@@ -29,12 +29,15 @@ class WeekViewModel extends CalendarViewModel {
       if (DateTime.now().weekday == DateTime.saturday &&
           Utils.getFirstdayOfWeek(DateTime.now()) == weekSelected &&
           calendarEventsFromDate(DateTime.now()).isEmpty) {
-        handleDateSelectedChanged(weekSelected.add(Duration(days: 7, hours: 1)));
+        handleDateSelectedChanged(
+            weekSelected.add(Duration(days: 7, hours: 1)));
       }
     }
 
     displaySunday = calendarEventsFromDate(weekSelected).isNotEmpty;
-    displaySaturday = calendarEventsFromDate(weekSelected.add(const Duration(days: 6, hours: 1))).isNotEmpty;
+    displaySaturday = calendarEventsFromDate(
+            weekSelected.add(const Duration(days: 6, hours: 1)))
+        .isNotEmpty;
 
     eventController.removeWhere((event) => true);
     eventController.addAll(selectedWeekCalendarEvents());
@@ -44,14 +47,17 @@ class WeekViewModel extends CalendarViewModel {
   bool returnToCurrentDate() {
     DateTime dateToReturnTo = Utils.getFirstdayOfWeek(DateTime.now());
     if (DateTime.now().weekday == DateTime.saturday &&
-        calendarEventsFromDate(dateToReturnTo.add(Duration(days: 6, hours: 1))).isEmpty) {
-      dateToReturnTo = dateToReturnTo.add(Duration(days: 7, hours: 1)).withoutTime;
+        calendarEventsFromDate(dateToReturnTo.add(Duration(days: 6, hours: 1)))
+            .isEmpty) {
+      dateToReturnTo =
+          dateToReturnTo.add(Duration(days: 7, hours: 1)).withoutTime;
     }
 
     final bool isThisWeekSelected = dateToReturnTo == weekSelected;
 
     isThisWeekSelected
-        ? Fluttertoast.showToast(msg: super.appIntl.schedule_already_today_toast)
+        ? Fluttertoast.showToast(
+            msg: super.appIntl.schedule_already_today_toast)
         : handleDateSelectedChanged(dateToReturnTo);
 
     return !isThisWeekSelected;

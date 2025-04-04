@@ -20,16 +20,19 @@ final CourseActivity course = CourseActivity(
 
 void main() {
   group("CourseActivityTile - ", () {
-    testWidgets("display the short title, entire title, type of activity, hours and local of the course",
+    testWidgets(
+        "display the short title, entire title, type of activity, hours and local of the course",
         (WidgetTester tester) async {
       // Set the textScaleFactor to 0.5 otherwise the row overflow, only happen in test.
       await tester.pumpWidget(localizedWidget(
           child: MediaQuery(
-              data: const MediaQueryData(textScaler: TextScaler.linear(0.5)), child: CourseActivityTile(course))));
+              data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
+              child: CourseActivityTile(course))));
       await tester.pumpAndSettle();
 
       expect(find.text(course.courseGroup), findsOneWidget);
-      expect(find.text("${course.courseName}\n${course.activityDescription}"), findsOneWidget);
+      expect(find.text("${course.courseName}\n${course.activityDescription}"),
+          findsOneWidget);
       expect(find.text(course.activityLocation), findsOneWidget);
 
       expect(find.text("18:00"), findsOneWidget);

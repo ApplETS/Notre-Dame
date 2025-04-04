@@ -9,7 +9,10 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 // CONSTANT
 
 class PreferencesService {
-  final persistentsKey = [PreferencesFlag.ratingTimer, PreferencesFlag.hasRatingBeenRequested];
+  final persistentsKey = [
+    PreferencesFlag.ratingTimer,
+    PreferencesFlag.hasRatingBeenRequested
+  ];
 
   Future<bool> setBool(PreferencesFlag flag, {required bool value}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,7 +26,8 @@ class PreferencesService {
     return prefs.setString(flag.toString(), value);
   }
 
-  Future<bool> setDynamicString(PreferencesFlag flag, String key, String value) async {
+  Future<bool> setDynamicString(
+      PreferencesFlag flag, String key, String value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.setString('${flag}_$key', value);
@@ -71,7 +75,8 @@ class PreferencesService {
     return prefs.remove(flag.toString());
   }
 
-  Future<bool> removeDynamicPreferencesFlag(PreferencesFlag flag, String key) async {
+  Future<bool> removeDynamicPreferencesFlag(
+      PreferencesFlag flag, String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.remove('${flag}_$key');
   }

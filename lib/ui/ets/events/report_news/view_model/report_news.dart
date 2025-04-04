@@ -11,7 +11,8 @@ List<ReportNews> getLocalizedReportNewsItems(BuildContext context) {
   return [
     ReportNews(
         title: AppIntl.of(context)!.report_inappropriate_content,
-        description: AppIntl.of(context)!.report_inappropriate_content_description,
+        description:
+            AppIntl.of(context)!.report_inappropriate_content_description,
         category: "1"),
     ReportNews(
         title: AppIntl.of(context)!.report_false_information,
@@ -19,7 +20,8 @@ List<ReportNews> getLocalizedReportNewsItems(BuildContext context) {
         category: "2"),
     ReportNews(
         title: AppIntl.of(context)!.report_harassment_or_abuse,
-        description: AppIntl.of(context)!.report_harassment_or_abuse_description,
+        description:
+            AppIntl.of(context)!.report_harassment_or_abuse_description,
         category: "3"),
     ReportNews(
         title: AppIntl.of(context)!.report_outdated_content,

@@ -88,7 +88,8 @@ void main() {
       intl = await setupAppIntl();
       setupSettingsManagerMock();
 
-      viewModel = GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);
+      viewModel =
+          GradesDetailsViewModel(course: courseWithoutSummary, intl: intl);
     });
 
     tearDown(() {
@@ -98,7 +99,8 @@ void main() {
 
     group('FutureToRun - -', () {
       test('SignetsAPI gets the summary', () async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
         await viewModel.futureToRun();
@@ -106,9 +108,11 @@ void main() {
         expect(viewModel.course, courseWithSummary);
       });
 
-      test('Signets raised an exception while trying to recover course', () async {
+      test('Signets raised an exception while trying to recover course',
+          () async {
         setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCourseSummaryException(courseRepositoryMock, courseWithoutSummary);
+        CourseRepositoryMock.stubGetCourseSummaryException(
+            courseRepositoryMock, courseWithoutSummary);
         await viewModel.futureToRun();
 
         expect(viewModel.course, courseWithoutSummary);
@@ -116,9 +120,11 @@ void main() {
     });
 
     group('refresh -', () {
-      test('Call SignetsAPI to get the summary of the course selected', () async {
+      test('Call SignetsAPI to get the summary of the course selected',
+          () async {
         setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithSummary);
 
         await viewModel.refresh();
@@ -127,7 +133,8 @@ void main() {
       });
 
       test('Signets throw an error', () async {
-        CourseRepositoryMock.stubGetCourseSummaryException(courseRepositoryMock, courseWithoutSummary);
+        CourseRepositoryMock.stubGetCourseSummaryException(
+            courseRepositoryMock, courseWithoutSummary);
         setupFlutterToastMock();
         await viewModel.refresh();
 
