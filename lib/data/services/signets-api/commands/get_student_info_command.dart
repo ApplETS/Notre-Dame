@@ -15,14 +15,18 @@ class GetStudentInfoCommand implements Command<ProfileStudent> {
   final String username;
   final String password;
 
-  GetStudentInfoCommand(this.client, this._httpClient, {required this.username, required this.password});
+  GetStudentInfoCommand(this.client, this._httpClient,
+      {required this.username, required this.password});
 
   @override
   Future<ProfileStudent> execute() async {
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(Urls.infoStudentOperation, username, password).buildDocument();
+    final body = SoapService.buildBasicSOAPBody(
+            Urls.infoStudentOperation, username, password)
+        .buildDocument();
 
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.infoStudentOperation);
+    final responseBody = await SoapService.sendSOAPRequest(
+        _httpClient, body, Urls.infoStudentOperation);
 
     // Build and return the info
     return ProfileStudent.fromXmlNode(responseBody);

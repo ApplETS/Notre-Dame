@@ -37,10 +37,14 @@ void main() {
 
         final Faq faq = Faq();
 
-        final action1 = find.text(faq.actions[0].title["en"]!, skipOffstage: false);
-        final action2 = find.text(faq.actions[1].title["en"]!, skipOffstage: false);
-        final action3 = find.text(faq.actions[2].title["en"]!, skipOffstage: false);
-        final action4 = find.text(faq.actions[3].title["en"]!, skipOffstage: false);
+        final action1 =
+            find.text(faq.actions[0].title["en"]!, skipOffstage: false);
+        final action2 =
+            find.text(faq.actions[1].title["en"]!, skipOffstage: false);
+        final action3 =
+            find.text(faq.actions[2].title["en"]!, skipOffstage: false);
+        final action4 =
+            find.text(faq.actions[3].title["en"]!, skipOffstage: false);
 
         await tester.drag(find.byType(ListView), const Offset(0.0, -300));
         await tester.pump();
@@ -51,7 +55,8 @@ void main() {
         expect(action4, findsOneWidget);
       });
 
-      testWidgets('tapping "Questions About ETS Button" shows dialog', (WidgetTester tester) async {
+      testWidgets('tapping "Questions About ETS Button" shows dialog',
+          (WidgetTester tester) async {
         SettingsRepositoryMock.stubLocale(settingsManagerMock);
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
@@ -61,7 +66,8 @@ void main() {
         await tester.drag(find.byType(ListView), const Offset(0.0, -500));
         await tester.pumpAndSettle();
 
-        final questionsAbtETSMobileBtn = find.widgetWithText(Card, faq.actions[3].title["en"]!);
+        final questionsAbtETSMobileBtn =
+            find.widgetWithText(Card, faq.actions[3].title["en"]!);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
 
         await tester.tap(questionsAbtETSMobileBtn);

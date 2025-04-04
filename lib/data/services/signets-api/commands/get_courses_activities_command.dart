@@ -46,14 +46,17 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
       throw FormatException("Session $session isn't a correctly formatted");
     }
     if (courseGroup.isNotEmpty && !_courseGroupRegExp.hasMatch(courseGroup)) {
-      throw FormatException("CourseGroup $courseGroup isn't a correctly formatted");
+      throw FormatException(
+          "CourseGroup $courseGroup isn't a correctly formatted");
     }
     if (startDate != null && endDate != null && startDate!.isAfter(endDate!)) {
       throw ArgumentError("The startDate can't be after endDate.");
     }
 
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(Urls.listClassScheduleOperation, username, password).buildDocument();
+    final body = SoapService.buildBasicSOAPBody(
+            Urls.listClassScheduleOperation, username, password)
+        .buildDocument();
     final operationContent = XmlBuilder();
 
     // Add the content needed by the operation
@@ -65,22 +68,31 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     });
 
     operationContent.element("pDateDebut", nest: () {
-      operationContent.text(startDate == null ? "" : "${startDate!.year}-${startDate!.month}-${startDate!.day}");
+      operationContent.text(startDate == null
+          ? ""
+          : "${startDate!.year}-${startDate!.month}-${startDate!.day}");
     });
     operationContent.element("pDateFin", nest: () {
-      operationContent.text(endDate == null ? "" : "${endDate!.year}-${endDate!.month}-${endDate!.day}");
+      operationContent.text(endDate == null
+          ? ""
+          : "${endDate!.year}-${endDate!.month}-${endDate!.day}");
     });
 
     // Add the parameters needed inside the request.
     body
-        .findAllElements(Urls.listClassScheduleOperation, namespace: Urls.signetsOperationBase)
+        .findAllElements(Urls.listClassScheduleOperation,
+            namespace: Urls.signetsOperationBase)
         .first
         .children
         .add(operationContent.buildFragment());
 
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.listClassScheduleOperation);
+    final responseBody = await SoapService.sendSOAPRequest(
+        _httpClient, body, Urls.listClassScheduleOperation);
 
     /// Build and return the list of CourseActivity
-    return responseBody.findAllElements("Seances").map((node) => CourseActivity.fromXmlNode(node)).toList();
+    return responseBody
+        .findAllElements("Seances")
+        .map((node) => CourseActivity.fromXmlNode(node))
+        .toList();
   }
 }

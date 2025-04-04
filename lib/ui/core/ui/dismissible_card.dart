@@ -35,7 +35,10 @@ class DismissibleCard extends StatelessWidget {
                 alignment: Alignment.topRight,
                 child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: SizedBox(height: 15.0, width: 15.0, child: CircularProgressIndicator(strokeWidth: 3.0)),
+                  child: SizedBox(
+                      height: 15.0,
+                      width: 15.0,
+                      child: CircularProgressIndicator(strokeWidth: 3.0)),
                 ))
         ]),
       ));

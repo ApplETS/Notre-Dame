@@ -23,7 +23,8 @@ void main() {
           '</soap:Body>'
           '</soap:Envelope>';
 
-      final result = SoapService.buildBasicSOAPBody("testOperation", username, password);
+      final result =
+          SoapService.buildBasicSOAPBody("testOperation", username, password);
 
       expect(result.buildDocument().toString(), expectedResult);
     });

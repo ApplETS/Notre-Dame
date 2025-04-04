@@ -10,12 +10,14 @@ import 'in_app_review_service_mock.mocks.dart';
 @GenerateNiceMocks([MockSpec<InAppReviewService>()])
 class InAppReviewServiceMock extends MockInAppReviewService {
   /// Stub the answer of [isAvailable]
-  static void stubIsAvailable(InAppReviewServiceMock mock, {bool toReturn = true}) {
+  static void stubIsAvailable(InAppReviewServiceMock mock,
+      {bool toReturn = true}) {
     when(mock.isAvailable()).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the answer of [requestReview]
-  static void stubRequestReview(InAppReviewServiceMock mock, {bool toReturn = true}) {
+  static void stubRequestReview(InAppReviewServiceMock mock,
+      {bool toReturn = true}) {
     when(mock.requestReview()).thenAnswer((_) async => toReturn);
   }
 }

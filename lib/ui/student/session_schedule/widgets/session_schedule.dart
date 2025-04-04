@@ -49,7 +49,8 @@ class _SessionScheduleState extends State<SessionSchedule> {
         ),
       );
     }
-    final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+    final double heightPerMinute =
+        (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     // If there are events, display the calendar
     return Scaffold(
         body: WeekView(
@@ -69,7 +70,8 @@ class _SessionScheduleState extends State<SessionSchedule> {
         WeekDays.friday,
         if (widget.displaySaturday) WeekDays.saturday
       ],
-      hourIndicatorSettings: HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
+      hourIndicatorSettings:
+          HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
       scrollOffset: heightPerMinute * 60 * 7.5,
       timeLineStringBuilder: (date, {secondaryDate}) {
         return DateFormat('H:mm').format(date);
@@ -82,12 +84,14 @@ class _SessionScheduleState extends State<SessionSchedule> {
           rightIconConfig: null,
           decoration: BoxDecoration(color: Colors.transparent)),
       heightPerMinute: heightPerMinute,
-      eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events, context),
+      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+          _buildEventTile(events, context),
       weekDayBuilder: (DateTime date) => _buildWeekDay(date),
     ));
   }
 
-  Widget _buildEventTile(List<CalendarEventData<dynamic>> events, BuildContext context) {
+  Widget _buildEventTile(
+      List<CalendarEventData<dynamic>> events, BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,

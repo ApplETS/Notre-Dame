@@ -121,24 +121,29 @@ void main() {
           'has a RefreshIndicator, GradeCircularProgress, three cards and evaluation tiles when a course is valid',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course, toReturn: course);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course,
+            toReturn: course);
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course)));
+          await tester.pumpWidget(
+              localizedWidget(child: GradesDetailsView(course: course)));
           await tester.pumpAndSettle(const Duration(seconds: 2));
         }).then(
           (value) {
             expect(find.byType(RefreshIndicator), findsOneWidget);
 
             // Find all the grade circular progress
-            expect(find.byKey(const Key("GradeCircularProgress_summary")), findsOneWidget);
+            expect(find.byKey(const Key("GradeCircularProgress_summary")),
+                findsOneWidget);
             for (final eval in courseSummary.evaluations) {
-              expect(find.byKey(Key("GradeCircularProgress_${eval.title}")), findsOneWidget);
+              expect(find.byKey(Key("GradeCircularProgress_${eval.title}")),
+                  findsOneWidget);
             }
 
             expect(find.byType(Card), findsNWidgets(5));
 
             for (final eval in courseSummary.evaluations) {
-              expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")), findsOneWidget);
+              expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")),
+                  findsOneWidget);
             }
           },
         );
@@ -148,9 +153,12 @@ void main() {
           'when the page is at the top, it displays the course title, acronym, group, professor name and number of credits',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithoutSummary, toReturn: course);
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepositoryMock, courseWithoutSummary,
+            toReturn: course);
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
+          await tester.pumpWidget(localizedWidget(
+              child: GradesDetailsView(course: courseWithoutSummary)));
           await tester.pumpAndSettle();
         }).then((value) {
           expect(find.byType(SliverAppBar), findsOneWidget);
@@ -163,16 +171,21 @@ void main() {
         });
       });
 
-      testWidgets('when the page is scrolled at the bottom, it does not display the SliverToBoxAdapter',
+      testWidgets(
+          'when the page is scrolled at the bottom, it does not display the SliverToBoxAdapter',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithoutSummary, toReturn: course);
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepositoryMock, courseWithoutSummary,
+            toReturn: course);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
+          await tester.pumpWidget(localizedWidget(
+              child: GradesDetailsView(course: courseWithoutSummary)));
           await tester.pumpAndSettle();
         }).then((value) async {
-          final gesture = await tester.startGesture(const Offset(0, 300)); //Position of the scrollview
+          final gesture = await tester
+              .startGesture(const Offset(0, 300)); //Position of the scrollview
           await gesture.moveBy(const Offset(0, -300)); //How much to scroll by
           await tester.pump();
 
@@ -182,24 +195,31 @@ void main() {
         });
       });
 
-      testWidgets("display GradeNotAvailable when a course summary is null", (WidgetTester tester) async {
+      testWidgets("display GradeNotAvailable when a course summary is null",
+          (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithoutSummary,
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepositoryMock, courseWithoutSummary,
             toReturn: courseWithoutSummary);
 
-        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
+        await tester.pumpWidget(localizedWidget(
+            child: GradesDetailsView(course: courseWithoutSummary)));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("GradeNotAvailable")), findsOneWidget);
       });
 
-      testWidgets("display GradeNotAvailable when in the evaluation period and the evaluation isn't completed",
+      testWidgets(
+          "display GradeNotAvailable when in the evaluation period and the evaluation isn't completed",
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithEvaluationNotCompleted,
+        CourseRepositoryMock.stubGetCourseSummary(
+            courseRepositoryMock, courseWithEvaluationNotCompleted,
             toReturn: courseWithEvaluationNotCompleted);
 
-        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithEvaluationNotCompleted)));
+        await tester.pumpWidget(localizedWidget(
+            child:
+                GradesDetailsView(course: courseWithEvaluationNotCompleted)));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("EvaluationNotCompleted")), findsOneWidget);

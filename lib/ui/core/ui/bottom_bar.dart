@@ -8,7 +8,8 @@ class BottomBar extends BaseNavigationBar {
   const BottomBar({super.key});
 
   @override
-  Widget buildNavigationBar(BuildContext context, NavigationView currentView, Function(NavigationView) onTap) {
+  Widget buildNavigationBar(BuildContext context, NavigationView currentView,
+      Function(NavigationView) onTap) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       elevation: 0,

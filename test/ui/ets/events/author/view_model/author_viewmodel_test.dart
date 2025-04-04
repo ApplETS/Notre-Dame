@@ -82,8 +82,8 @@ void main() {
     ),
   ];
 
-  final PaginatedNews paginatedNews =
-      PaginatedNews(news: news, pageNumber: 1, pageSize: 3, totalRecords: 0, totalPages: 1);
+  final PaginatedNews paginatedNews = PaginatedNews(
+      news: news, pageNumber: 1, pageSize: 3, totalRecords: 0, totalPages: 1);
 
   group('AuthorViewModel tests', () {
     setUp(() async {
@@ -91,7 +91,8 @@ void main() {
       newsRepository = setupNewsRepositoryMock();
       appIntl = await setupAppIntl();
       setupLogger();
-      AuthorRepositoryMock.stubGetOrganizer(authorRepository, organizerId, organizer);
+      AuthorRepositoryMock.stubGetOrganizer(
+          authorRepository, organizerId, organizer);
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
       viewModel = AuthorViewModel(authorId: organizerId, appIntl: appIntl);
     });

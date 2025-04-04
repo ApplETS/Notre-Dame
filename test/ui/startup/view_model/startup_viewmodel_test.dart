@@ -51,19 +51,24 @@ void main() {
         UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock, version: "4.0.0");
+        InternalInfoServiceMock.stubGetPackageInfo(internalInfoServiceMock,
+            version: "4.0.0");
 
         await viewModel.handleStartUp();
 
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock
+            .pushNamedAndRemoveUntil(RouterPaths.dashboard));
       });
 
       test('sign in failed redirect to login', () async {
-        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock, toReturn: false);
+        UserRepositoryMock.stubSilentAuthenticate(userRepositoryMock,
+            toReturn: false);
         UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock);
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
-        SettingsRepositoryMock.stubGetBool(settingsManagerMock, PreferencesFlag.languageChoice, toReturn: true);
+        SettingsRepositoryMock.stubGetBool(
+            settingsManagerMock, PreferencesFlag.languageChoice,
+            toReturn: true);
 
         await viewModel.handleStartUp();
 

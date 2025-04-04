@@ -36,7 +36,10 @@ class DynamicPreferencesFlag {
   String uniqueKey;
   PreferencesFlag groupAssociationFlag;
 
-  DynamicPreferencesFlag({required this.groupAssociationFlag, required this.uniqueKey, this.separator = "_"});
+  DynamicPreferencesFlag(
+      {required this.groupAssociationFlag,
+      required this.uniqueKey,
+      this.separator = "_"});
 
   String get data => groupAssociationFlag.toString() + separator + uniqueKey;
 
@@ -53,5 +56,6 @@ class DynamicPreferencesFlag {
       uniqueKey == other.uniqueKey;
 
   @override
-  int get hashCode => groupAssociationFlag.hashCode ^ separator.hashCode ^ uniqueKey.hashCode;
+  int get hashCode =>
+      groupAssociationFlag.hashCode ^ separator.hashCode ^ uniqueKey.hashCode;
 }

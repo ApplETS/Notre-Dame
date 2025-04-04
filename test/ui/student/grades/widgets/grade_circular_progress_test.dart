@@ -18,7 +18,8 @@ void main() {
     });
 
     group("UI -", () {
-      testWidgets('has two CircularProgressIndicator', (WidgetTester tester) async {
+      testWidgets('has two CircularProgressIndicator',
+          (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
           1.0,
@@ -33,7 +34,8 @@ void main() {
         expect(circularPercentIndicator, findsNWidgets(2));
       });
 
-      testWidgets("display the final grade if it is not null", (WidgetTester tester) async {
+      testWidgets("display the final grade if it is not null",
+          (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
           1.0,
@@ -46,7 +48,8 @@ void main() {
         expect(label, findsOneWidget);
       });
 
-      testWidgets("display the student grade if there is no final grade", (WidgetTester tester) async {
+      testWidgets("display the student grade if there is no final grade",
+          (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
           1.0,
@@ -59,7 +62,8 @@ void main() {
         expect(label, findsOneWidget);
       });
 
-      testWidgets("display the student grade if there is no final grade", (WidgetTester tester) async {
+      testWidgets("display the student grade if there is no final grade",
+          (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
           1.0,
@@ -72,7 +76,8 @@ void main() {
         expect(label, findsOneWidget);
       });
 
-      testWidgets("display the student grade if there is no final grade", (WidgetTester tester) async {
+      testWidgets("display the student grade if there is no final grade",
+          (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(
             child: const GradeCircularProgress(
           1.0,
@@ -85,8 +90,10 @@ void main() {
         expect(label, findsOneWidget);
       });
 
-      testWidgets("display N/A when no grade is available", (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: const GradeCircularProgress(1.0, completed: true)));
+      testWidgets("display N/A when no grade is available",
+          (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(
+            child: const GradeCircularProgress(1.0, completed: true)));
         await tester.pumpAndSettle();
 
         final label = find.text(intl.grades_not_available);

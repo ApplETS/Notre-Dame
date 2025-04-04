@@ -11,7 +11,8 @@ class AuthorRepository {
 
   /// Get the organizer by id.
   Future<Organizer?> getOrganizer(String organizerId) async {
-    final Organizer? organizer = await _helloApiClient.getOrganizer(organizerId);
+    final Organizer? organizer =
+        await _helloApiClient.getOrganizer(organizerId);
     return organizer;
   }
 }

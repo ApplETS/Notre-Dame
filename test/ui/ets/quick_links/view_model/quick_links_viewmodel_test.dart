@@ -38,19 +38,27 @@ void main() {
 
     group('getQuickLinks -', () {
       test('Should get quick links from cache', () async {
-        QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(quickLinkRepositoryMock, toReturn: [quickLinkDataSample]);
+        QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(
+            quickLinkRepositoryMock,
+            toReturn: [quickLinkDataSample]);
 
-        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample]);
+        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
+            quickLinkRepositoryMock,
+            toReturn: [quickLinkSample]);
 
         final result = await viewModel.getQuickLinks();
 
         expect(result, [quickLinkSample]);
       });
 
-      test('Should return default quick links if cache is not initialized', () async {
-        QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(quickLinkRepositoryMock);
+      test('Should return default quick links if cache is not initialized',
+          () async {
+        QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(
+            quickLinkRepositoryMock);
 
-        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample]);
+        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
+            quickLinkRepositoryMock,
+            toReturn: [quickLinkSample]);
 
         final result = await viewModel.getQuickLinks();
 
@@ -93,9 +101,13 @@ void main() {
 
     group('futureToRun -', () {
       test('Should fetch and set quick links', () async {
-        QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(quickLinkRepositoryMock, toReturn: [quickLinkDataSample]);
+        QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(
+            quickLinkRepositoryMock,
+            toReturn: [quickLinkDataSample]);
 
-        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample]);
+        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(
+            quickLinkRepositoryMock,
+            toReturn: [quickLinkSample]);
 
         final result = await viewModel.futureToRun();
 

@@ -20,7 +20,8 @@ class QuickLinksView extends StatefulWidget {
   State<QuickLinksView> createState() => _QuickLinksViewState();
 }
 
-class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProviderStateMixin {
+class _QuickLinksViewState extends State<QuickLinksView>
+    with SingleTickerProviderStateMixin {
   // Enable/Disable the edit state
   bool _editMode = false;
 
@@ -41,7 +42,8 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
   }
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<QuickLinksViewModel>.reactive(
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<QuickLinksViewModel>.reactive(
         viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
         builder: (context, model, child) => Scaffold(
           body: _buildBody(context, model),
@@ -61,7 +63,9 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
       child: Column(
         children: [
           Expanded(
-            child: _buildReorderableGridView(model, model.quickLinkList, _buildDeleteButton, blockReorder: false),
+            child: _buildReorderableGridView(
+                model, model.quickLinkList, _buildDeleteButton,
+                blockReorder: false),
           ),
           if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
             const Divider(
@@ -70,7 +74,9 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
               endIndent: 10,
             ),
             Expanded(
-              child: _buildReorderableGridView(model, model.deletedQuickLinks, _buildAddButton, blockReorder: true),
+              child: _buildReorderableGridView(
+                  model, model.deletedQuickLinks, _buildAddButton,
+                  blockReorder: true),
             ),
           ],
         ],
@@ -78,7 +84,9 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
     );
   }
 
-  ReorderableGridView _buildReorderableGridView(QuickLinksViewModel model, List<QuickLink> quickLinks,
+  ReorderableGridView _buildReorderableGridView(
+      QuickLinksViewModel model,
+      List<QuickLink> quickLinks,
       Widget Function(QuickLinksViewModel, int) buildButtonFunction,
       {required bool blockReorder}) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -87,7 +95,8 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
     if (screenWidth > 310 && screenWidth < 440) {
       crossAxisCount = 3;
     } else {
-      crossAxisCount = (screenWidth / 110).floor().clamp(1, double.infinity).toInt();
+      crossAxisCount =
+          (screenWidth / 110).floor().clamp(1, double.infinity).toInt();
     }
 
     return ReorderableGridView.count(
@@ -96,13 +105,15 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
       crossAxisCount: crossAxisCount,
-      dragWidgetBuilder: (index, widget) => _buildGridChild(model, index, quickLinks, buildButtonFunction),
+      dragWidgetBuilder: (index, widget) =>
+          _buildGridChild(model, index, quickLinks, buildButtonFunction),
       children: List.generate(
         quickLinks.length,
         (index) {
           return KeyedSubtree(
             key: ValueKey(quickLinks[index].id),
-            child: _buildGridChild(model, index, quickLinks, buildButtonFunction),
+            child:
+                _buildGridChild(model, index, quickLinks, buildButtonFunction),
           );
         },
       ),
@@ -114,7 +125,10 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
     );
   }
 
-  Widget _buildGridChild(QuickLinksViewModel model, int index, List<QuickLink> quickLinks,
+  Widget _buildGridChild(
+      QuickLinksViewModel model,
+      int index,
+      List<QuickLink> quickLinks,
       Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
     return GestureDetector(
       onLongPress: _editMode
@@ -136,7 +150,9 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
         child: Stack(
           children: [
             WebLinkCard(quickLinks[index]),
-            if (_editMode && quickLinks[index].id != 1) // Don't show delete button for Security QuickLink
+            if (_editMode &&
+                quickLinks[index].id !=
+                    1) // Don't show delete button for Security QuickLink
               Positioned(
                 top: 0,
                 left: 0,
@@ -159,7 +175,8 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
       child: IconButton(
         padding: EdgeInsets.zero,
         icon: Icon(Icons.close, color: AppPalette.grey.white, size: 16),
-        tooltip: AppIntl.of(context)!.ets_hide_quick_link(model.quickLinkList[index].name),
+        tooltip: AppIntl.of(context)!
+            .ets_hide_quick_link(model.quickLinkList[index].name),
         onPressed: () {
           setState(() {
             model.deleteQuickLink(index);
@@ -180,7 +197,8 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
       child: IconButton(
         padding: EdgeInsets.zero,
         icon: Icon(Icons.add, color: AppPalette.grey.white, size: 20),
-        tooltip: AppIntl.of(context)!.ets_add_quick_link(model.deletedQuickLinks[index].name),
+        tooltip: AppIntl.of(context)!
+            .ets_add_quick_link(model.deletedQuickLinks[index].name),
         onPressed: () {
           setState(() {
             model.restoreQuickLink(index);

@@ -11,7 +11,8 @@ import 'package:notredame/data/services/signets-api/models/schedule_activity.dar
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Object>>> {
+class SessionScheduleViewModel
+    extends FutureViewModel<List<CalendarEventData<Object>>> {
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -40,28 +41,34 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
   }
 
   CalendarEventData<Object> calendarEventData(ScheduleActivity eventData) {
-    final courseLocation = eventData.activityLocation == "Non assign" ? "N/A" : eventData.activityLocation;
+    final courseLocation = eventData.activityLocation == "Non assign"
+        ? "N/A"
+        : eventData.activityLocation;
 
     final DateTime now = DateTime.now();
     final int daysToAdd = eventData.dayOfTheWeek - (now.weekday % 7);
     final DateTime targetDate = now.add(Duration(days: daysToAdd));
-    final DateTime newStartTime = DateTime(
-        targetDate.year, targetDate.month, targetDate.day, eventData.startTime.hour, eventData.startTime.minute);
-    final DateTime newEndTime =
-        DateTime(targetDate.year, targetDate.month, targetDate.day, eventData.endTime.hour, eventData.endTime.minute)
-            .subtract(const Duration(minutes: 1));
+    final DateTime newStartTime = DateTime(targetDate.year, targetDate.month,
+        targetDate.day, eventData.startTime.hour, eventData.startTime.minute);
+    final DateTime newEndTime = DateTime(targetDate.year, targetDate.month,
+            targetDate.day, eventData.endTime.hour, eventData.endTime.minute)
+        .subtract(const Duration(minutes: 1));
 
     final durationInHours = newEndTime.difference(newStartTime).inHours;
 
-    final String title = durationInHours == 0 ? eventData.courseAcronym : "${eventData.courseAcronym}\n$courseLocation";
+    final String title = durationInHours == 0
+        ? eventData.courseAcronym
+        : "${eventData.courseAcronym}\n$courseLocation";
 
     return CalendarEventData(
         title: title,
-        description: "${eventData.courseAcronym};$courseLocation;${eventData.courseTitle};null",
+        description:
+            "${eventData.courseAcronym};$courseLocation;${eventData.courseTitle};null",
         date: targetDate,
         startTime: newStartTime,
         endTime: newEndTime,
-        color: getCourseColor(eventData.courseAcronym.split('-')[0]) ?? AppPalette.grey.darkGrey);
+        color: getCourseColor(eventData.courseAcronym.split('-')[0]) ??
+            AppPalette.grey.darkGrey);
   }
 
   Color? getCourseColor(String courseName) {
@@ -76,9 +83,11 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
       setBusyForObject(isLoadingEvents, true);
 
       if (_sessionCode != null) {
-        final defaultScheduleActivities = await _courseRepository.getDefaultScheduleActivities(session: _sessionCode);
-        final filteredScheduleActivities =
-            defaultScheduleActivities.where((activity) => activity.activityCode.toLowerCase() != "exam").toList();
+        final defaultScheduleActivities = await _courseRepository
+            .getDefaultScheduleActivities(session: _sessionCode);
+        final filteredScheduleActivities = defaultScheduleActivities
+            .where((activity) => activity.activityCode.toLowerCase() != "exam")
+            .toList();
 
         for (final activity in filteredScheduleActivities) {
           final event = calendarEventData(activity);

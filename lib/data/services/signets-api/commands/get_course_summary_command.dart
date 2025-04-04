@@ -32,7 +32,9 @@ class GetCourseSummaryCommand implements Command<CourseSummary> {
   @override
   Future<CourseSummary> execute() async {
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(Urls.listEvaluationsOperation, username, password).buildDocument();
+    final body = SoapService.buildBasicSOAPBody(
+            Urls.listEvaluationsOperation, username, password)
+        .buildDocument();
     final operationContent = XmlBuilder();
 
     // Add the content needed by the operation
@@ -47,17 +49,22 @@ class GetCourseSummaryCommand implements Command<CourseSummary> {
     });
 
     body
-        .findAllElements(Urls.listEvaluationsOperation, namespace: Urls.signetsOperationBase)
+        .findAllElements(Urls.listEvaluationsOperation,
+            namespace: Urls.signetsOperationBase)
         .first
         .children
         .add(operationContent.buildFragment());
 
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.listEvaluationsOperation);
+    final responseBody = await SoapService.sendSOAPRequest(
+        _httpClient, body, Urls.listEvaluationsOperation);
     final errorTag = responseBody.getElement(SignetsError.signetsErrorSoapTag);
-    if (errorTag != null && errorTag.innerText.contains(SignetsError.gradesNotAvailable) ||
+    if (errorTag != null &&
+            errorTag.innerText.contains(SignetsError.gradesNotAvailable) ||
         responseBody.findAllElements('ElementEvaluation').isEmpty) {
       throw const ApiException(
-          prefix: SignetsAPIClient.tag, message: "No grades available", errorCode: SignetsError.gradesEmpty);
+          prefix: SignetsAPIClient.tag,
+          message: "No grades available",
+          errorCode: SignetsError.gradesEmpty);
     }
 
     return CourseSummary.fromXmlNode(responseBody);

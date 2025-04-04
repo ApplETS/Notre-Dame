@@ -62,14 +62,18 @@ class ScheduleActivity {
         day: node.getElement('journee')!.innerText,
         activityCode: node.getElement('codeActivite')!.innerText,
         name: node.getElement('nomActivite')!.innerText,
-        isPrincipalActivity: node.getElement('activitePrincipale')!.innerText == "Oui",
-        startTime: DateFormat('HH:mm').parse(node.getElement('heureDebut')!.innerText),
-        endTime: DateFormat('HH:mm').parse(node.getElement('heureFin')!.innerText),
+        isPrincipalActivity:
+            node.getElement('activitePrincipale')!.innerText == "Oui",
+        startTime:
+            DateFormat('HH:mm').parse(node.getElement('heureDebut')!.innerText),
+        endTime:
+            DateFormat('HH:mm').parse(node.getElement('heureFin')!.innerText),
         activityLocation: node.getElement('local')!.innerText,
       );
 
   /// Used to create [CourseActivity] instance from a JSON file
-  factory ScheduleActivity.fromJson(Map<String, dynamic> map) => ScheduleActivity(
+  factory ScheduleActivity.fromJson(Map<String, dynamic> map) =>
+      ScheduleActivity(
         courseAcronym: map['courseAcronym'] as String,
         courseGroup: map['courseGroup'] as String,
         courseTitle: map['courseTitle'] as String,
@@ -77,7 +81,8 @@ class ScheduleActivity {
         day: map['day'] as String,
         activityCode: map['activityCode'] as String,
         name: map['name'] as String,
-        isPrincipalActivity: (map['isPrincipalActivity'] as String) == true.toString(),
+        isPrincipalActivity:
+            (map['isPrincipalActivity'] as String) == true.toString(),
         startTime: DateFormat('HH:mm').parse(map['startTime'] as String),
         endTime: DateFormat('HH:mm').parse(map['endTime'] as String),
         activityLocation: map['activityLocation'] as String,

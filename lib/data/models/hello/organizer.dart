@@ -82,7 +82,8 @@ class Organizer {
         avatarUrl: map['avatarUrl'] as String?,
         type: map['type'] as String?,
         organization: map['organization'] as String?,
-        activityArea: ActivityArea.fromJson(map['activityArea'] as Map<String, dynamic>),
+        activityArea:
+            ActivityArea.fromJson(map['activityArea'] as Map<String, dynamic>),
         isActive: map['isActive'] as bool?,
         profileDescription: map['profileDescription'] as String?,
         facebookLink: map['facebookLink'] as String?,

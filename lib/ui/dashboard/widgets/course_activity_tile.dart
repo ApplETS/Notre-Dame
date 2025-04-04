@@ -24,9 +24,12 @@ class CourseActivityTile extends StatelessWidget {
         child: ListTile(
           leading: _buildLeading(context),
           dense: false,
-          title: Text(activity.courseGroup, style: Theme.of(context).textTheme.titleSmall),
-          subtitle: Text("${activity.courseName}\n${activity.activityDescription}"),
-          trailing: Text(activity.activityLocation, style: Theme.of(context).textTheme.bodySmall),
+          title: Text(activity.courseGroup,
+              style: Theme.of(context).textTheme.titleSmall),
+          subtitle:
+              Text("${activity.courseName}\n${activity.activityDescription}"),
+          trailing: Text(activity.activityLocation,
+              style: Theme.of(context).textTheme.bodySmall),
         ),
       );
 
@@ -43,11 +46,15 @@ class CourseActivityTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(timeFormat.format(activity.startDateTime), style: Theme.of(context).textTheme.bodySmall),
-                Text(timeFormat.format(activity.endDateTime), style: Theme.of(context).textTheme.bodySmall),
+                Text(timeFormat.format(activity.startDateTime),
+                    style: Theme.of(context).textTheme.bodySmall),
+                Text(timeFormat.format(activity.endDateTime),
+                    style: Theme.of(context).textTheme.bodySmall),
               ],
             ),
-            Skeleton.shade(child: VerticalDivider(color: colorFor(activity.courseName), thickness: 2))
+            Skeleton.shade(
+                child: VerticalDivider(
+                    color: colorFor(activity.courseName), thickness: 2))
           ],
         ),
       );

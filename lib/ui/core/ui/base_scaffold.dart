@@ -89,11 +89,17 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Scaffold(
-          appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
-          body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-          bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait && widget._showBottomBar)
-              ? BottomBar()
+          appBar: (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? widget.appBar
               : null,
+          body: (MediaQuery.of(context).orientation == Orientation.portrait)
+              ? bodyPortraitMode()
+              : bodyLandscapeMode(),
+          bottomNavigationBar:
+              (MediaQuery.of(context).orientation == Orientation.portrait &&
+                      widget._showBottomBar)
+                  ? BottomBar()
+                  : null,
           floatingActionButton: widget.fab,
           floatingActionButtonLocation: widget.fabPosition,
         ),
@@ -110,7 +116,9 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         children: [
           widget.body!,
           if (widget._isLoading)
-            buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
+            buildLoading(
+                isInteractionLimitedWhileLoading:
+                    widget._isInteractionLimitedWhileLoading)
           else
             const SizedBox()
         ],
@@ -128,14 +136,18 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             if (widget._showBottomBar)
               ColoredBox(
                 color: context.theme.appColors.navBar,
-                child: SafeArea(top: false, bottom: false, right: false, child: NavRail()),
+                child: SafeArea(
+                    top: false, bottom: false, right: false, child: NavRail()),
               ),
             Expanded(
               child: Column(
                 children: [
                   if (widget.appBar != null) widget.appBar!,
                   Expanded(
-                    child: widget._safeArea ? SafeArea(bottom: false, top: false, child: widget.body!) : widget.body!,
+                    child: widget._safeArea
+                        ? SafeArea(
+                            bottom: false, top: false, child: widget.body!)
+                        : widget.body!,
                   )
                 ],
               ),
@@ -143,7 +155,9 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           ],
         ),
         if (widget._isLoading)
-          buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
+          buildLoading(
+              isInteractionLimitedWhileLoading:
+                  widget._isInteractionLimitedWhileLoading)
         else
           const SizedBox()
       ],

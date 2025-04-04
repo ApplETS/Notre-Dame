@@ -34,9 +34,11 @@ class _EmergencyViewState extends State<EmergencyView> {
       fab: FloatingActionButton.extended(
         onPressed: () {
           try {
-            _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
+            _launchUrlService
+                .call(AppIntl.of(context)!.security_emergency_number);
           } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(e.toString())));
           }
         },
         label: Text(
@@ -55,7 +57,8 @@ class _EmergencyViewState extends State<EmergencyView> {
                   bottom: false,
                   child: Scrollbar(
                     child: Markdown(
-                        padding: const EdgeInsets.only(bottom: 120, top: 12, left: 12, right: 12),
+                        padding: const EdgeInsets.only(
+                            bottom: 120, top: 12, left: 12, right: 12),
                         data: fileContent.data!),
                   ));
             }

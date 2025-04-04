@@ -33,7 +33,8 @@ void main() {
 
     group('has all categories - ', () {
       testWidgets('contains one expansion tile', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: StudentProgram(_program)));
+        await tester
+            .pumpWidget(localizedWidget(child: StudentProgram(_program)));
         await tester.pumpAndSettle();
 
         expect(find.byType(ExpansionTile), findsOneWidget);
@@ -42,7 +43,8 @@ void main() {
       });
 
       testWidgets('contains infos', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: StudentProgram(_program)));
+        await tester
+            .pumpWidget(localizedWidget(child: StudentProgram(_program)));
         await tester.pumpAndSettle();
 
         // Find the ExpansionTile and tap it to expand
@@ -53,16 +55,22 @@ void main() {
 
         expect(find.text(intl.profile_code_program), findsOneWidget);
         expect(find.text(intl.profile_average_program), findsOneWidget);
-        expect(find.text(intl.profile_number_accumulated_credits_program), findsOneWidget);
-        expect(find.text(intl.profile_number_registered_credits_program), findsOneWidget);
-        expect(find.text(intl.profile_number_completed_courses_program), findsOneWidget);
-        expect(find.text(intl.profile_number_failed_courses_program), findsOneWidget);
-        expect(find.text(intl.profile_number_equivalent_courses_program), findsOneWidget);
+        expect(find.text(intl.profile_number_accumulated_credits_program),
+            findsOneWidget);
+        expect(find.text(intl.profile_number_registered_credits_program),
+            findsOneWidget);
+        expect(find.text(intl.profile_number_completed_courses_program),
+            findsOneWidget);
+        expect(find.text(intl.profile_number_failed_courses_program),
+            findsOneWidget);
+        expect(find.text(intl.profile_number_equivalent_courses_program),
+            findsOneWidget);
         expect(find.text(intl.profile_status_program), findsOneWidget);
       });
 
       testWidgets('contains 17 Text fields', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: StudentProgram(_program)));
+        await tester
+            .pumpWidget(localizedWidget(child: StudentProgram(_program)));
         await tester.pumpAndSettle();
 
         // Find the ExpansionTile and tap it to expand

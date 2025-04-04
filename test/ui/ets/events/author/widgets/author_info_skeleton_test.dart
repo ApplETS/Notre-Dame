@@ -12,7 +12,8 @@ void main() {
       await setupAppIntl();
     });
 
-    testWidgets('Displays an author info skeleton', (WidgetTester tester) async {
+    testWidgets('Displays an author info skeleton',
+        (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: AuthorInfoSkeleton()));
 
       // Verify that the widget contains shimmer effects for text and icon button

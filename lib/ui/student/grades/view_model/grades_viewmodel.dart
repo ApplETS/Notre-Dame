@@ -28,7 +28,8 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   @override
   Future<Map<String, List<Course>>> futureToRun() async {
     try {
-      final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
+      final coursesCached =
+          await _courseRepository.getCourses(fromCacheOnly: true);
       setBusy(true);
       _buildCoursesBySession(coursesCached);
       await _courseRepository.getCourses();

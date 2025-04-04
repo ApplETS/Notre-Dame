@@ -15,7 +15,10 @@ class UniversalCodeFormField extends StatefulWidget {
   final String universalCode;
 
   const UniversalCodeFormField(
-      {super.key, required this.validator, required this.onEditionComplete, required this.universalCode});
+      {super.key,
+      required this.validator,
+      required this.onEditionComplete,
+      required this.universalCode});
 
   @override
   State<UniversalCodeFormField> createState() => _UniversalCodeFormFieldState();
@@ -34,13 +37,19 @@ class _UniversalCodeFormFieldState extends State<UniversalCodeFormField> {
         cursorColor: AppPalette.grey.white,
         keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
-          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
-          focusedBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: AppPalette.grey.white, width: borderRadiusOnFocus)),
+          enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white70)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: AppPalette.grey.white, width: borderRadiusOnFocus)),
           focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.theme.appColors.inputError, width: borderRadiusOnFocus)),
+              borderSide: BorderSide(
+                  color: context.theme.appColors.inputError,
+                  width: borderRadiusOnFocus)),
           errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.theme.appColors.inputError, width: borderRadiusOnFocus)),
+              borderSide: BorderSide(
+                  color: context.theme.appColors.inputError,
+                  width: borderRadiusOnFocus)),
           labelText: AppIntl.of(context)!.login_prompt_universal_code,
           labelStyle: const TextStyle(color: Colors.white54),
           errorStyle: TextStyle(color: context.theme.appColors.inputError),

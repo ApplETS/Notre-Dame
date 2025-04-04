@@ -22,7 +22,8 @@ class HelloService {
 
   String? apiLink;
 
-  HelloService({http.Client? client}) : _httpClient = client ?? IOClient(HttpClient());
+  HelloService({http.Client? client})
+      : _httpClient = client ?? IOClient(HttpClient());
 
   /// Call the Hello API to get the news
   /// [startDate] The start date of the news (optional)

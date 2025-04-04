@@ -18,7 +18,8 @@ class ContributorsView extends StatelessWidget {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<ContributorsViewModel>.reactive(
+  Widget build(BuildContext context) =>
+      ViewModelBuilder<ContributorsViewModel>.reactive(
         viewModelBuilder: () => ContributorsViewModel(),
         builder: (context, model, child) {
           return BaseScaffold(
@@ -32,7 +33,8 @@ class ContributorsView extends StatelessWidget {
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   // Populate the skeleton
-                  final fakeContributors = List.filled(30, Contributor(login: "Username"));
+                  final fakeContributors =
+                      List.filled(30, Contributor(login: "Username"));
                   return Skeletonizer(
                     child: contributorsList(fakeContributors),
                   );
@@ -52,8 +54,10 @@ class ContributorsView extends StatelessWidget {
       itemBuilder: (context, index) => ListTile(
         title: Text(contributors[index].login ?? ''),
         leading: CircleAvatar(
-            backgroundColor: Colors.grey, backgroundImage: NetworkImage(contributors[index].avatarUrl ?? '')),
-        onTap: () => _launchUrlService.launchInBrowser(contributors[index].htmlUrl ?? ''),
+            backgroundColor: Colors.grey,
+            backgroundImage: NetworkImage(contributors[index].avatarUrl ?? '')),
+        onTap: () => _launchUrlService
+            .launchInBrowser(contributors[index].htmlUrl ?? ''),
       ),
     );
   }
