@@ -19,8 +19,7 @@ class NotFoundViewModel extends BaseViewModel {
   final String notFoundPageName;
 
   NotFoundViewModel({required String pageName}) : notFoundPageName = pageName {
-    _analyticsService.logEvent(
-        tag, "An unknown page ($pageName) has been access from the app.");
+    _analyticsService.logEvent(tag, "An unknown page ($pageName) has been access from the app.");
   }
 
   void navigateToDashboard() {

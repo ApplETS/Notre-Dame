@@ -23,19 +23,13 @@ class ScheduleCard extends StatelessWidget {
   final List<CourseActivity> events;
   final bool loading;
 
-  ScheduleCard(
-      {super.key,
-      required this.onDismissed,
-      required this.events,
-      required this.loading});
+  ScheduleCard({super.key, required this.onDismissed, required this.events, required this.loading});
 
   @override
   Widget build(BuildContext context) {
     var title = AppIntl.of(context)!.title_schedule;
-    var tomorrowDate =
-        _settingsRepository.dateTimeNow.add(Duration(days: 1)).withoutTime;
-    if (events.isNotEmpty &&
-        events.first.startDateTime.withoutTime == tomorrowDate) {
+    var tomorrowDate = _settingsRepository.dateTimeNow.add(Duration(days: 1)).withoutTime;
+    if (events.isNotEmpty && events.first.startDateTime.withoutTime == tomorrowDate) {
       title += AppIntl.of(context)!.card_schedule_tomorrow;
     }
 
@@ -66,20 +60,14 @@ class ScheduleCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                 child: GestureDetector(
-                  onTap: () => _navigationService
-                      .pushNamedAndRemoveUntil(RouterPaths.schedule),
-                  child: Text(title,
-                      style: Theme.of(context).textTheme.titleLarge),
+                  onTap: () => _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule),
+                  child: Text(title, style: Theme.of(context).textTheme.titleLarge),
                 ),
               )),
           if (courseActivities.isNotEmpty)
-            Skeletonizer(
-                enabled: loading, child: _buildEventList(courseActivities))
+            Skeletonizer(enabled: loading, child: _buildEventList(courseActivities))
           else
-            SizedBox(
-                height: 100,
-                child:
-                    Center(child: Text(AppIntl.of(context)!.schedule_no_event)))
+            SizedBox(height: 100, child: Center(child: Text(AppIntl.of(context)!.schedule_no_event)))
         ]),
       ),
     );
@@ -90,11 +78,9 @@ class ScheduleCard extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        itemBuilder: (_, index) =>
-            CourseActivityTile(events[index] as CourseActivity),
-        separatorBuilder: (_, index) => (index < events.length)
-            ? const Divider(thickness: 1, indent: 30, endIndent: 30)
-            : const SizedBox(),
+        itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
+        separatorBuilder: (_, index) =>
+            (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
         itemCount: events.length);
   }
 }

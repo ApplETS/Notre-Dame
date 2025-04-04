@@ -12,8 +12,7 @@ import 'author_repository_mock.mocks.dart';
 @GenerateNiceMocks([MockSpec<AuthorRepository>()])
 class AuthorRepositoryMock extends MockAuthorRepository {
   /// Stub the getter [author] of [mock] when called will return [toReturn].
-  static void stubGetOrganizer(
-      AuthorRepositoryMock mock, String organizerId, Organizer toReturn) {
+  static void stubGetOrganizer(AuthorRepositoryMock mock, String organizerId, Organizer toReturn) {
     when(mock.getOrganizer(organizerId)).thenAnswer((_) async => toReturn);
   }
 }

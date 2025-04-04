@@ -12,8 +12,7 @@ class GradeNotAvailable extends StatelessWidget {
 
   final bool isEvaluationPeriod;
 
-  const GradeNotAvailable(
-      {super.key, this.onPressed, this.isEvaluationPeriod = false});
+  const GradeNotAvailable({super.key, this.onPressed, this.isEvaluationPeriod = false});
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +30,16 @@ class GradeNotAvailable extends StatelessWidget {
           const SizedBox(height: 25),
           Text(
             isEvaluationPeriod
-                ? AppIntl.of(context)!
-                    .grades_error_course_evaluations_not_completed
+                ? AppIntl.of(context)!.grades_error_course_evaluations_not_completed
                 : AppIntl.of(context)!.grades_msg_no_grade,
             textAlign: TextAlign.center,
             softWrap: true,
-            style: isEvaluationPeriod
-                ? Theme.of(context).textTheme.bodyLarge
-                : Theme.of(context).textTheme.titleLarge,
+            style: isEvaluationPeriod ? Theme.of(context).textTheme.bodyLarge : Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 25),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: AppPalette.etsLightRed,
-                  foregroundColor: AppPalette.grey.white),
+                  backgroundColor: AppPalette.etsLightRed, foregroundColor: AppPalette.grey.white),
               onPressed: onPressed,
               child: Text(AppIntl.of(context)!.retry))
         ],

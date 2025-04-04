@@ -38,59 +38,43 @@ void main() {
       test("QuickLinkData is loaded from cache.", () async {
         // Stub the cache to return some QuickLinkData
         final quickLinkData = QuickLinkData(id: 1, index: 0);
-        CacheServiceMock.stubGet(
-            cacheManagerMock,
-            QuickLinkRepository.quickLinksCacheKey,
-            jsonEncode([quickLinkData]));
+        CacheServiceMock.stubGet(cacheManagerMock, QuickLinkRepository.quickLinksCacheKey, jsonEncode([quickLinkData]));
 
-        final List<QuickLinkData> results =
-            await quickLinkRepository.getQuickLinkDataFromCache();
+        final List<QuickLinkData> results = await quickLinkRepository.getQuickLinkDataFromCache();
 
         expect(results, isInstanceOf<List<QuickLinkData>>());
         expect(results[0].id, quickLinkData.id);
         expect(results[0].index, quickLinkData.index);
 
-        verify(cacheManagerMock.get(QuickLinkRepository.quickLinksCacheKey))
-            .called(1);
+        verify(cacheManagerMock.get(QuickLinkRepository.quickLinksCacheKey)).called(1);
       });
 
-      test(
-          "Trying to recover QuickLinkData from cache but an exception is raised.",
-          () async {
+      test("Trying to recover QuickLinkData from cache but an exception is raised.", () async {
         // Stub the cache to throw an exception
-        CacheServiceMock.stubGetException(
-            cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
+        CacheServiceMock.stubGetException(cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
 
-        expect(quickLinkRepository.getQuickLinkDataFromCache(),
-            throwsA(isInstanceOf<Exception>()));
+        expect(quickLinkRepository.getQuickLinkDataFromCache(), throwsA(isInstanceOf<Exception>()));
       });
     });
 
     group("updateQuickLinkDataToCache - ", () {
       test("Updating QuickLinkData to cache.", () async {
         // Prepare some QuickLinkData to be cached
-        final quickLink =
-            QuickLink(id: 1, image: const Text(""), name: 'name', link: 'url');
+        final quickLink = QuickLink(id: 1, image: const Text(""), name: 'name', link: 'url');
         final quickLinkData = QuickLinkData(id: quickLink.id, index: 0);
 
         await quickLinkRepository.updateQuickLinkDataToCache([quickLink]);
 
-        verify(cacheManagerMock.update(QuickLinkRepository.quickLinksCacheKey,
-            jsonEncode([quickLinkData]))).called(1);
+        verify(cacheManagerMock.update(QuickLinkRepository.quickLinksCacheKey, jsonEncode([quickLinkData]))).called(1);
       });
 
-      test(
-          "Trying to update QuickLinkData to cache but an exception is raised.",
-          () async {
+      test("Trying to update QuickLinkData to cache but an exception is raised.", () async {
         // Stub the cache to throw an exception
-        CacheServiceMock.stubUpdateException(
-            cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
+        CacheServiceMock.stubUpdateException(cacheManagerMock, QuickLinkRepository.quickLinksCacheKey);
 
-        final quickLink =
-            QuickLink(id: 1, image: const Text(""), name: 'name', link: 'url');
+        final quickLink = QuickLink(id: 1, image: const Text(""), name: 'name', link: 'url');
 
-        expect(quickLinkRepository.updateQuickLinkDataToCache([quickLink]),
-            throwsA(isInstanceOf<Exception>()));
+        expect(quickLinkRepository.updateQuickLinkDataToCache([quickLink]), throwsA(isInstanceOf<Exception>()));
       });
     });
   });

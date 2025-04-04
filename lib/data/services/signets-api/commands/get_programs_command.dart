@@ -21,13 +21,9 @@ class GetProgramsCommand implements Command<List<Program>> {
 
   @override
   Future<List<Program>> execute() async {
-    final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag);
+    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag);
 
     /// Build and return the list of Program
-    return responseBody
-        .findAllElements("Programme")
-        .map((node) => Program.fromXmlNode(node))
-        .toList();
+    return responseBody.findAllElements("Programme").map((node) => Program.fromXmlNode(node)).toList();
   }
 }

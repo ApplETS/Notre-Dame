@@ -14,8 +14,7 @@ class SocialLinks extends StatefulWidget {
   final bool showHandle;
   final List<SocialLink> socialLinks;
 
-  const SocialLinks(
-      {super.key, required this.socialLinks, this.showHandle = true});
+  const SocialLinks({super.key, required this.socialLinks, this.showHandle = true});
 
   @override
   State<SocialLinks> createState() => _SocialLinksState();
@@ -23,27 +22,26 @@ class SocialLinks extends StatefulWidget {
 
 class _SocialLinksState extends State<SocialLinks> {
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<WebLinkCardViewModel>.reactive(
-          viewModelBuilder: () => WebLinkCardViewModel(),
-          builder: (context, model, child) {
-            return IntrinsicHeight(
-                child: Container(
-                    decoration: BoxDecoration(
-                      color: context.theme.appColors.backgroundAlt,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        if (widget.showHandle) _buildHandle(context),
-                        _buildTitle(context),
-                        _buildSocialButtons(widget.socialLinks, model),
-                      ],
-                    )));
-          });
+  Widget build(BuildContext context) => ViewModelBuilder<WebLinkCardViewModel>.reactive(
+      viewModelBuilder: () => WebLinkCardViewModel(),
+      builder: (context, model, child) {
+        return IntrinsicHeight(
+            child: Container(
+                decoration: BoxDecoration(
+                  color: context.theme.appColors.backgroundAlt,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(40.0),
+                    topRight: Radius.circular(40.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    if (widget.showHandle) _buildHandle(context),
+                    _buildTitle(context),
+                    _buildSocialButtons(widget.socialLinks, model),
+                  ],
+                )));
+      });
 
   Widget _buildHandle(BuildContext context) {
     return Container(
@@ -61,8 +59,7 @@ class _SocialLinksState extends State<SocialLinks> {
             height: 5,
             width: 50,
             decoration: BoxDecoration(
-                color: context.theme.appColors.modalHandle,
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                color: context.theme.appColors.modalHandle, borderRadius: BorderRadius.all(Radius.circular(8.0))),
           ),
         ),
       ),
@@ -88,8 +85,7 @@ class _SocialLinksState extends State<SocialLinks> {
     );
   }
 
-  Widget _buildSocialButtons(
-      List<SocialLink> socialLinks, WebLinkCardViewModel model) {
+  Widget _buildSocialButtons(List<SocialLink> socialLinks, WebLinkCardViewModel model) {
     // Define the desired order of social links
     final List<String> desiredOrder = [
       'email',
@@ -103,9 +99,8 @@ class _SocialLinksState extends State<SocialLinks> {
     ];
 
     // Sort the socialLinks list based on the desired order
-    socialLinks.sort((link, otherLink) => desiredOrder
-        .indexOf(link.name)
-        .compareTo(desiredOrder.indexOf(otherLink.name)));
+    socialLinks
+        .sort((link, otherLink) => desiredOrder.indexOf(link.name).compareTo(desiredOrder.indexOf(otherLink.name)));
 
     final List<Widget> socialButtons = [];
 
@@ -118,8 +113,8 @@ class _SocialLinksState extends State<SocialLinks> {
     // Build rows of buttons with a maximum of 4 buttons per row
     final List<Widget> rows = [];
     for (int i = 0; i < socialButtons.length; i += 4) {
-      final List<Widget> rowChildren = socialButtons.sublist(
-          i, i + 4 < socialButtons.length ? i + 4 : socialButtons.length);
+      final List<Widget> rowChildren =
+          socialButtons.sublist(i, i + 4 < socialButtons.length ? i + 4 : socialButtons.length);
       rows.add(
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

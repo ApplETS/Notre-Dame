@@ -65,8 +65,7 @@ class UserRepository {
       await _secureStorage.delete(key: passwordSecureKey);
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
-      _analyticsService.logError(
-          tag, "Authenticate - PlatformException - $e", e, stacktrace);
+      _analyticsService.logError(tag, "Authenticate - PlatformException - $e", e, stacktrace);
       return false;
     }
     return true;
@@ -82,8 +81,7 @@ class UserRepository {
       }
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
-      _analyticsService.logError(
-          tag, "getPassword - PlatformException - $e", e, stacktrace);
+      _analyticsService.logError(tag, "getPassword - PlatformException - $e", e, stacktrace);
     }
     return false;
   }
@@ -104,19 +102,13 @@ class UserRepository {
       try {
         _programs = [];
 
-        final List programsCached =
-            jsonDecode(await _cacheManager.get(programsCacheKey))
-                as List<dynamic>;
+        final List programsCached = jsonDecode(await _cacheManager.get(programsCacheKey)) as List<dynamic>;
 
         // Build list of programs loaded from the cache.
-        _programs = programsCached
-            .map((e) => Program.fromJson(e as Map<String, dynamic>))
-            .toList();
-        _logger.d(
-            "$tag - getPrograms: ${_programs!.length} programs loaded from cache.");
+        _programs = programsCached.map((e) => Program.fromJson(e as Map<String, dynamic>)).toList();
+        _logger.d("$tag - getPrograms: ${_programs!.length} programs loaded from cache.");
       } on CacheException catch (_) {
-        _logger.e(
-            "$tag - getPrograms: exception raised while trying to load the programs from cache.");
+        _logger.e("$tag - getPrograms: exception raised while trying to load the programs from cache.");
       }
     }
 
@@ -131,12 +123,10 @@ class UserRepository {
       // Update cache
       _cacheManager.update(programsCacheKey, jsonEncode(_programs));
     } on CacheException catch (_) {
-      _logger.e(
-          "$tag - getPrograms: exception raised while trying to update the cache.");
+      _logger.e("$tag - getPrograms: exception raised while trying to update the cache.");
       return _programs!;
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
-          tag, "Exception raised during getPrograms: $e", e, stacktrace);
+      _analyticsService.logError(tag, "Exception raised during getPrograms: $e", e, stacktrace);
       rethrow;
     }
 
@@ -156,16 +146,13 @@ class UserRepository {
     // Load the student profile from the cache if the information doesn't exist
     if (_info == null) {
       try {
-        final infoCached = jsonDecode(await _cacheManager.get(infoCacheKey))
-            as Map<String, dynamic>;
+        final infoCached = jsonDecode(await _cacheManager.get(infoCacheKey)) as Map<String, dynamic>;
 
         // Build info loaded from the cache.
         _info = ProfileStudent.fromJson(infoCached);
         _logger.d("$tag - getInfo: $_info info loaded from cache.");
       } on CacheException catch (e) {
-        _logger.e(
-            "$tag - getInfo: exception raised while trying to load the info from cache.",
-            error: e);
+        _logger.e("$tag - getInfo: exception raised while trying to load the info from cache.", error: e);
       }
     }
 
@@ -185,12 +172,10 @@ class UserRepository {
         _cacheManager.update(infoCacheKey, jsonEncode(_info));
       }
     } on CacheException catch (_) {
-      _logger.e(
-          "$tag - getInfo: exception raised while trying to update the cache.");
+      _logger.e("$tag - getInfo: exception raised while trying to update the cache.");
       return _info!;
     } on Exception catch (e, stacktrace) {
-      _analyticsService.logError(
-          tag, "Exception raised during getInfo: $e", e, stacktrace);
+      _analyticsService.logError(tag, "Exception raised during getInfo: $e", e, stacktrace);
       rethrow;
     }
 

@@ -28,8 +28,7 @@ class DayViewModel extends CalendarViewModel {
   handleDateSelectedChanged(DateTime newDate) {
     daySelected = newDate.withoutTime;
 
-    eventController.removeWhere((event) =>
-        event.date.withoutTime.difference(daySelected).inDays.abs() > 1);
+    eventController.removeWhere((event) => event.date.withoutTime.difference(daySelected).inDays.abs() > 1);
 
     List<CalendarEventData> eventsToAdd = selectedDayCalendarEvents();
 

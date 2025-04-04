@@ -35,14 +35,10 @@ class GetScheduleActivitiesCommand implements Command<List<ScheduleActivity>> {
     }
 
     final queryParams = {"session": session};
-    final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag,
+    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag,
         queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
-    return responseBody
-        .findAllElements("HoraireActivite")
-        .map((node) => ScheduleActivity.fromXmlNode(node))
-        .toList();
+    return responseBody.findAllElements("HoraireActivite").map((node) => ScheduleActivity.fromXmlNode(node)).toList();
   }
 }

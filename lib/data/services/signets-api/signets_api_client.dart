@@ -33,8 +33,7 @@ class SignetsAPIClient {
   final http.Client _httpClient;
   final _authService = locator<AuthService>();
 
-  SignetsAPIClient({http.Client? client})
-      : _httpClient = client ?? IOClient(HttpClient());
+  SignetsAPIClient({http.Client? client}) : _httpClient = client ?? IOClient(HttpClient());
 
   /// Expression to validate the format of a session short name (ex: A2020)
   final RegExp _sessionShortNameRegExp = RegExp("^([A-É-H][0-9]{4})");
@@ -48,10 +47,7 @@ class SignetsAPIClient {
   /// If the [startDate] and/or [endDate] are specified the results will contains
   /// all the activities between these dates
   Future<List<CourseActivity>> getCoursesActivities(
-      {String session = "",
-      String courseGroup = "",
-      DateTime? startDate,
-      DateTime? endDate}) async {
+      {String session = "", String courseGroup = "", DateTime? startDate, DateTime? endDate}) async {
     final command = GetCoursesActivitiesCommand(
       this,
       _httpClient,
@@ -68,8 +64,7 @@ class SignetsAPIClient {
 
   /// Call the SignetsAPI to get the courses activities for the [session] for
   /// the student.
-  Future<List<ScheduleActivity>> getScheduleActivities(
-      {String session = ""}) async {
+  Future<List<ScheduleActivity>> getScheduleActivities({String session = ""}) async {
     final command = GetScheduleActivitiesCommand(
       this,
       _httpClient,
@@ -82,17 +77,14 @@ class SignetsAPIClient {
 
   /// Call the SignetsAPI to get the courses of the student.
   Future<List<Course>> getCourses() async {
-    final command = GetCoursesCommand(this, _httpClient,
-        token: await _authService.getToken());
+    final command = GetCoursesCommand(this, _httpClient, token: await _authService.getToken());
     return command.execute();
   }
 
   /// Call the SignetsAPI to get all the evaluations (exams) and the summary
   /// of [course] for the student.
   Future<CourseSummary> getCourseSummary(
-      {required String session,
-      required String acronym,
-      required String group}) async {
+      {required String session, required String acronym, required String group}) async {
     final command = GetCourseSummaryCommand(
       this,
       _httpClient,
@@ -106,22 +98,19 @@ class SignetsAPIClient {
 
   /// Call the SignetsAPI to get the list of all the [Session] for the student.
   Future<List<Session>> getSessions() async {
-    final command = GetSessionsCommand(this, _httpClient,
-        token: await _authService.getToken());
+    final command = GetSessionsCommand(this, _httpClient, token: await _authService.getToken());
     return command.execute();
   }
 
   /// Call the SignetsAPI to get the [ProfileStudent] for the student.
   Future<ProfileStudent> getStudentInfo() async {
-    final command = GetStudentInfoCommand(this, _httpClient,
-        token: await _authService.getToken());
+    final command = GetStudentInfoCommand(this, _httpClient, token: await _authService.getToken());
     return command.execute();
   }
 
   /// Call the SignetsAPI to get the list of all the [Program] for the student.
   Future<List<Program>> getPrograms() async {
-    final command = GetProgramsCommand(this, _httpClient,
-        token: await _authService.getToken());
+    final command = GetProgramsCommand(this, _httpClient, token: await _authService.getToken());
     return command.execute();
   }
 

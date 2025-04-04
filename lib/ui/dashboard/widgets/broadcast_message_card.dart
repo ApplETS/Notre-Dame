@@ -15,16 +15,13 @@ class BroadcastMessageCard extends StatelessWidget {
   final BroadcastMessage? broadcastMessage;
   final bool loading;
 
-  const BroadcastMessageCard(
-      {super.key, required this.loading, this.broadcastMessage});
+  const BroadcastMessageCard({super.key, required this.loading, this.broadcastMessage});
 
   @override
   Widget build(BuildContext context) {
     return Card(
         key: UniqueKey(),
-        color: broadcastMessage == null
-            ? AppPalette.appletsPurple
-            : broadcastMessage!.color,
+        color: broadcastMessage == null ? AppPalette.appletsPurple : broadcastMessage!.color,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
           child: loading || broadcastMessage == null
@@ -36,30 +33,24 @@ class BroadcastMessageCard extends StatelessWidget {
                       Expanded(
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Text(broadcastMessage!.title,
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .titleLarge),
+                          child: Text(broadcastMessage!.title, style: Theme.of(context).primaryTextTheme.titleLarge),
                         ),
                       ),
                       Align(
                         alignment: Alignment.centerRight,
                         child: InkWell(
-                          child: getBroadcastIcon(broadcastMessage!.type,
-                              broadcastMessage!.url, context),
+                          child: getBroadcastIcon(broadcastMessage!.type, broadcastMessage!.url, context),
                         ),
                       ),
                     ],
                   ),
                   // main text
-                  Text(broadcastMessage!.message,
-                      style: Theme.of(context).primaryTextTheme.bodyMedium)
+                  Text(broadcastMessage!.message, style: Theme.of(context).primaryTextTheme.bodyMedium)
                 ]),
         ));
   }
 
-  Widget getBroadcastIcon(
-      BroadcastIconType type, String url, BuildContext context) {
+  Widget getBroadcastIcon(BroadcastIconType type, String url, BuildContext context) {
     switch (type) {
       case BroadcastIconType.warning:
         return Icon(

@@ -24,8 +24,7 @@ class DashboardView extends StatefulWidget {
   State<DashboardView> createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends State<DashboardView>
-    with TickerProviderStateMixin {
+class _DashboardViewState extends State<DashboardView> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -45,8 +44,7 @@ class _DashboardViewState extends State<DashboardView>
                   actions: [
                     IconButton(
                       icon: const Icon(Icons.restore),
-                      tooltip: AppIntl.of(context)!
-                          .dashboard_restore_all_cards_title,
+                      tooltip: AppIntl.of(context)!.dashboard_restore_all_cards_title,
                       onPressed: () => model.setAllCardsVisible(),
                     )
                   ],
@@ -55,18 +53,15 @@ class _DashboardViewState extends State<DashboardView>
                   ? buildLoading()
                   : RefreshIndicator(
                       child: Theme(
-                        data: Theme.of(context)
-                            .copyWith(canvasColor: Colors.transparent),
+                        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
                         child: ReorderableListView(
-                          header: model
-                                  .remoteConfigService.dashboardMessageActive
+                          header: model.remoteConfigService.dashboardMessageActive
                               ? BroadcastMessageCard(
                                   key: UniqueKey(),
                                   loading: model.busy(model.broadcastMessage),
                                   broadcastMessage: model.broadcastMessage)
                               : null,
-                          onReorder: (oldIndex, newIndex) =>
-                              model.onCardReorder(oldIndex, newIndex),
+                          onReorder: (oldIndex, newIndex) => model.onCardReorder(oldIndex, newIndex),
                           padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
                           children: _buildCards(model),
                           proxyDecorator: (child, _, __) {
@@ -85,9 +80,7 @@ class _DashboardViewState extends State<DashboardView>
     for (final PreferencesFlag element in model.cardsToDisplay ?? []) {
       switch (element) {
         case PreferencesFlag.aboutUsCard:
-          cards.add(AboutUsCard(
-              key: UniqueKey(),
-              onDismissed: () => model.hideCard(PreferencesFlag.aboutUsCard)));
+          cards.add(AboutUsCard(key: UniqueKey(), onDismissed: () => model.hideCard(PreferencesFlag.aboutUsCard)));
         case PreferencesFlag.scheduleCard:
           cards.add(ScheduleCard(
               key: UniqueKey(),
@@ -97,8 +90,7 @@ class _DashboardViewState extends State<DashboardView>
         case PreferencesFlag.progressBarCard:
           cards.add(ProgressBarCard(
               key: UniqueKey(),
-              onDismissed: () =>
-                  model.hideCard(PreferencesFlag.progressBarCard),
+              onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
               changeProgressBarText: model.changeProgressBarText,
               progressBarText: model.getProgressBarText(context),
               progress: model.progress,

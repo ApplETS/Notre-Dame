@@ -33,8 +33,7 @@ class ProgressBarCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context)!.progress_bar_title,
-                    style: Theme.of(context).textTheme.titleLarge),
+                child: Text(AppIntl.of(context)!.progress_bar_title, style: Theme.of(context).textTheme.titleLarge),
               )),
           if (loading || progress >= 0.0)
             Skeletonizer(
@@ -50,8 +49,7 @@ class ProgressBarCard extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: progress,
                         minHeight: 30,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                            AppPalette.gradeGoodMax),
+                        valueColor: const AlwaysStoppedAnimation<Color>(AppPalette.gradeGoodMax),
                         backgroundColor: AppPalette.grey.darkGrey,
                       ),
                     ),

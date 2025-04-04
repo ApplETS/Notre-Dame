@@ -22,12 +22,8 @@ class GetCoursesCommand implements Command<List<Course>> {
   @override
   Future<List<Course>> execute() async {
     // Generate initial soap envelope
-    final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag);
+    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag);
 
-    return responseBody
-        .findAllElements("Cours")
-        .map((node) => Course.fromXmlNode(node))
-        .toList();
+    return responseBody.findAllElements("Cours").map((node) => Course.fromXmlNode(node)).toList();
   }
 }

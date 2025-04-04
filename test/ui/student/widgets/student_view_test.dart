@@ -27,8 +27,7 @@ void main() {
 
       CourseRepositoryMock.stubCourses(courseRepositoryMock);
       CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-      CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-          fromCacheOnly: true);
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock, fromCacheOnly: true);
     });
 
     tearDown(() {
@@ -39,8 +38,7 @@ void main() {
     });
 
     group('UI - ', () {
-      testWidgets('has Tab bar and sliverAppBar and BaseScaffold',
-          (WidgetTester tester) async {
+      testWidgets('has Tab bar and sliverAppBar and BaseScaffold', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: StudentView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 

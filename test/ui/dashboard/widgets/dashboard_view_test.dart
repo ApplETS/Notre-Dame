@@ -47,19 +47,15 @@ void main() {
     broadcastMessageRepositoryMock = setupBroadcastMessageRepositoryMock();
 
     final inAppReviewServiceMock = setupInAppReviewServiceMock();
-    InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock,
-        toReturn: false);
+    InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock, toReturn: false);
 
     CourseRepositoryMock.stubCourses(courseRepositoryMock);
-    CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-        fromCacheOnly: true);
+    CourseRepositoryMock.stubGetCourses(courseRepositoryMock, fromCacheOnly: true);
     CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
     CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
-    CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock,
-        fromCacheOnly: true);
+    CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, fromCacheOnly: true);
 
-    RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
-        toReturn: false);
+    RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock, toReturn: false);
 
     for (var flag in [
       PreferencesFlag.aboutUsCard,
@@ -70,15 +66,12 @@ void main() {
       SettingsRepositoryMock.stubSetInt(settingsManagerMock, flag);
     }
 
-    SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock,
-        toReturn: DateTime.now());
-    SettingsRepositoryMock.stubGetDashboard(settingsManagerMock,
-        toReturn: dashboard);
+    SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime.now());
+    SettingsRepositoryMock.stubGetDashboard(settingsManagerMock, toReturn: dashboard);
   });
 
   group('UI - ', () {
-    testWidgets('Has view title restore button and cards, displayed',
-        (WidgetTester tester) async {
+    testWidgets('Has view title restore button and cards, displayed', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: const DashboardView()));
       await tester.pumpAndSettle();
 
@@ -94,76 +87,59 @@ void main() {
       expect(restoreCardsIcon, findsOneWidget);
 
       // Find cards
-      expect(
-          find.byType(Card, skipOffstage: false), findsNWidgets(numberOfCards));
+      expect(find.byType(Card, skipOffstage: false), findsNWidgets(numberOfCards));
     });
   });
 
   Future dragWidget(WidgetTester tester, String cardTitle) async {
-    final finder =
-        find.widgetWithText(Dismissible, cardTitle, skipOffstage: false);
+    final finder = find.widgetWithText(Dismissible, cardTitle, skipOffstage: false);
     await tester.scrollUntilVisible(finder, 100);
     await tester.pumpAndSettle();
   }
 
   group("Dismiss and restore - ", () {
-    Future<void> swipeAndRestore(
-        WidgetTester tester, String cardTitle, int index,
+    Future<void> swipeAndRestore(WidgetTester tester, String cardTitle, int index,
         {bool dragUntilVisible = false}) async {
       await tester.pumpWidget(localizedWidget(child: const DashboardView()));
       await tester.pumpAndSettle();
 
       if (dragUntilVisible) await dragWidget(tester, cardTitle);
 
-      expect(find.byType(Dismissible, skipOffstage: false),
-          findsNWidgets(numberOfCards));
+      expect(find.byType(Dismissible, skipOffstage: false), findsNWidgets(numberOfCards));
       expect(find.widgetWithText(Dismissible, cardTitle), findsOneWidget);
 
-      await tester.drag(find.byType(Dismissible, skipOffstage: false).at(index),
-          const Offset(1000.0, 0.0));
+      await tester.drag(find.byType(Dismissible, skipOffstage: false).at(index), const Offset(1000.0, 0.0));
       await tester.pumpAndSettle();
 
-      expect(find.byType(Dismissible, skipOffstage: false),
-          findsNWidgets(numberOfCards - 1));
+      expect(find.byType(Dismissible, skipOffstage: false), findsNWidgets(numberOfCards - 1));
       expect(find.widgetWithText(Dismissible, cardTitle), findsNothing);
 
       await tester.tap(find.byIcon(Icons.restore));
       await tester.pumpAndSettle();
 
-      expect(find.byType(Dismissible, skipOffstage: false),
-          findsNWidgets(numberOfCards));
+      expect(find.byType(Dismissible, skipOffstage: false), findsNWidgets(numberOfCards));
       expect(find.widgetWithText(Dismissible, cardTitle), findsOneWidget);
     }
 
-    testWidgets('AboutUsCard is dismissible and can be restored',
-        (tester) async {
-      await swipeAndRestore(tester, intl.card_applets_title,
-          dashboard[PreferencesFlag.aboutUsCard]!);
+    testWidgets('AboutUsCard is dismissible and can be restored', (tester) async {
+      await swipeAndRestore(tester, intl.card_applets_title, dashboard[PreferencesFlag.aboutUsCard]!);
     });
 
-    testWidgets('ScheduleCard is dismissible and can be restored',
-        (tester) async {
-      await swipeAndRestore(tester, intl.title_schedule,
-          dashboard[PreferencesFlag.scheduleCard]!);
+    testWidgets('ScheduleCard is dismissible and can be restored', (tester) async {
+      await swipeAndRestore(tester, intl.title_schedule, dashboard[PreferencesFlag.scheduleCard]!);
     });
 
-    testWidgets('ProgressBarCard is dismissible and can be restored',
-        (tester) async {
-      await swipeAndRestore(tester, intl.progress_bar_title,
-          dashboard[PreferencesFlag.progressBarCard]!);
+    testWidgets('ProgressBarCard is dismissible and can be restored', (tester) async {
+      await swipeAndRestore(tester, intl.progress_bar_title, dashboard[PreferencesFlag.progressBarCard]!);
     });
 
-    testWidgets('GradesCard is dismissible and can be restored',
-        (tester) async {
-      await swipeAndRestore(
-          tester, intl.grades_title, dashboard[PreferencesFlag.gradesCard]!,
-          dragUntilVisible: true);
+    testWidgets('GradesCard is dismissible and can be restored', (tester) async {
+      await swipeAndRestore(tester, intl.grades_title, dashboard[PreferencesFlag.gradesCard]!, dragUntilVisible: true);
     });
   });
 
   group("Reorder and restore - ", () {
-    Future<void> longPressDrag(
-        WidgetTester tester, Offset start, Offset end) async {
+    Future<void> longPressDrag(WidgetTester tester, Offset start, Offset end) async {
       final TestGesture drag = await tester.startGesture(start);
       await tester.pump(const Duration(seconds: 1));
       await drag.moveTo(end);
@@ -183,50 +159,39 @@ void main() {
       if (dragUntilVisible) await dragWidget(tester, initialCardTitle);
 
       final initialCard = find.widgetWithText(Dismissible, initialCardTitle);
-      final destinationCard =
-          find.widgetWithText(Dismissible, destinationCardTitle);
+      final destinationCard = find.widgetWithText(Dismissible, destinationCardTitle);
 
-      await longPressDrag(tester, tester.getCenter(initialCard),
-          tester.getCenter(destinationCard) + const Offset(0.0, 1000));
+      await longPressDrag(
+          tester, tester.getCenter(initialCard), tester.getCenter(destinationCard) + const Offset(0.0, 1000));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byIcon(Icons.restore));
       await tester.pumpAndSettle();
     }
 
-    testWidgets('AboutUsCard is reorderable and can be restored',
-        (tester) async {
+    testWidgets('AboutUsCard is reorderable and can be restored', (tester) async {
       await reorderAndRestore(tester,
-          initialCardTitle: intl.card_applets_title,
-          destinationCardTitle: intl.progress_bar_title);
+          initialCardTitle: intl.card_applets_title, destinationCardTitle: intl.progress_bar_title);
     });
 
-    testWidgets('ScheduleCard is reorderable and can be restored',
-        (tester) async {
+    testWidgets('ScheduleCard is reorderable and can be restored', (tester) async {
       await reorderAndRestore(tester,
-          initialCardTitle: intl.title_schedule,
-          destinationCardTitle: intl.card_applets_title);
+          initialCardTitle: intl.title_schedule, destinationCardTitle: intl.card_applets_title);
     });
 
-    testWidgets('ProgressBarCard is reorderable and can be restored',
-        (tester) async {
+    testWidgets('ProgressBarCard is reorderable and can be restored', (tester) async {
       await reorderAndRestore(tester,
-          initialCardTitle: intl.progress_bar_title,
-          destinationCardTitle: intl.title_schedule);
+          initialCardTitle: intl.progress_bar_title, destinationCardTitle: intl.title_schedule);
     });
 
-    testWidgets('GradesCard is reorderable and can be restored',
-        (tester) async {
+    testWidgets('GradesCard is reorderable and can be restored', (tester) async {
       await reorderAndRestore(tester,
-          initialCardTitle: intl.progress_bar_title,
-          destinationCardTitle: intl.title_schedule);
+          initialCardTitle: intl.progress_bar_title, destinationCardTitle: intl.title_schedule);
     });
   });
 
-  testWidgets('Broadcast message displays BroadcastMessageCard when not empty',
-      (tester) async {
-    RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock,
-        toReturn: true);
+  testWidgets('Broadcast message displays BroadcastMessageCard when not empty', (tester) async {
+    RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock, toReturn: true);
     BroadcastMessageRepositoryMock.stubGetBroadcastMessage(
         broadcastMessageRepositoryMock,
         "en",

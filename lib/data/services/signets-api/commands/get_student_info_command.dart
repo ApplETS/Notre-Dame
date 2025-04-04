@@ -20,8 +20,7 @@ class GetStudentInfoCommand implements Command<ProfileStudent> {
 
   @override
   Future<ProfileStudent> execute() async {
-    final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag);
+    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag);
 
     // Build and return the info
     return ProfileStudent.fromXmlNode(responseBody);

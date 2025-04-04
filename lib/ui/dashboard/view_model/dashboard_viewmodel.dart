@@ -35,10 +35,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  final RemoteConfigService remoteConfigService =
-      locator<RemoteConfigService>();
-  final BroadcastMessageRepository _broadcastMessageRepository =
-      locator<BroadcastMessageRepository>();
+  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+  final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
@@ -76,8 +74,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
 
-  ProgressBarText _currentProgressBarText =
-      ProgressBarText.daysElapsedWithTotalDays;
+  ProgressBarText _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -92,18 +89,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     final PreferencesService preferencesService = locator<PreferencesService>();
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
-    DateTime? ratingTimerFlagDate =
-        await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+    DateTime? ratingTimerFlagDate = await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
 
-    final hasRatingBeenRequested = await preferencesService
-            .getBool(PreferencesFlag.hasRatingBeenRequested) ??
-        false;
+    final hasRatingBeenRequested = await preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
     if (ratingTimerFlagDate == null) {
       final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
-      preferencesService.setDateTime(
-          PreferencesFlag.ratingTimer, sevenDaysLater);
+      preferencesService.setDateTime(PreferencesFlag.ratingTimer, sevenDaysLater);
       ratingTimerFlagDate = sevenDaysLater;
     }
 
@@ -112,8 +105,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         DateTime.now().isAfter(ratingTimerFlagDate)) {
       await Future.delayed(const Duration(seconds: 2), () async {
         await inAppReviewService.requestReview();
-        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
-            value: true);
+        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
       });
 
       return true;
@@ -128,15 +120,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   void changeProgressBarText() {
     if (_currentProgressBarText.index <= 1) {
-      _currentProgressBarText =
-          ProgressBarText.values[_currentProgressBarText.index + 1];
+      _currentProgressBarText = ProgressBarText.values[_currentProgressBarText.index + 1];
     } else {
       _currentProgressBarText = ProgressBarText.values[0];
     }
 
     notifyListeners();
-    _settingsManager.setString(
-        PreferencesFlag.progressBarText, _currentProgressBarText.toString());
+    _settingsManager.setString(PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
 
   /// Returns a list containing the number of elapsed days in the active session
@@ -145,9 +135,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     if (_courseRepository.activeSessions.isEmpty) {
       return [0, 0];
     } else {
-      int dayCompleted = _settingsManager.dateTimeNow
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
+      int dayCompleted =
+          _settingsManager.dateTimeNow.difference(_courseRepository.activeSessions.first.startDate).inDays;
       final dayInTheSession = _courseRepository.activeSessions.first.endDate
           .difference(_courseRepository.activeSessions.first.startDate)
           .inDays;
@@ -179,12 +168,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait([
-      futureToRunBroadcast(),
-      futureToRunGrades(),
-      futureToRunSessionProgressBar(),
-      futureToRunSchedule()
-    ]);
+    return Future.wait(
+        [futureToRunBroadcast(), futureToRunGrades(), futureToRunSessionProgressBar(), futureToRunSchedule()]);
   }
 
   @override
@@ -221,9 +206,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Reset all card indexes to their default values
   void setAllCardsVisible() {
     _cards?.updateAll((key, value) {
-      _settingsManager
-          .setInt(key, key.index - PreferencesFlag.aboutUsCard.index)
-          .then((value) {
+      _settingsManager.setInt(key, key.index - PreferencesFlag.aboutUsCard.index).then((value) {
         if (!value) {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
@@ -243,8 +226,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     _cardsToDisplay = [];
 
     if (_cards != null) {
-      final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
-          _cards!, (a, b) => _cards![a]!.compareTo(_cards![b]!));
+      final orderedCards =
+          SplayTreeMap<PreferencesFlag, int>.from(_cards!, (a, b) => _cards![a]!.compareTo(_cards![b]!));
 
       orderedCards.forEach((key, value) {
         if (value >= 0) {
@@ -258,12 +241,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
     try {
-      final progressBarText =
-          await _settingsManager.getString(PreferencesFlag.progressBarText) ??
-              ProgressBarText.daysElapsedWithTotalDays.toString();
+      final progressBarText = await _settingsManager.getString(PreferencesFlag.progressBarText) ??
+          ProgressBarText.daysElapsedWithTotalDays.toString();
 
-      _currentProgressBarText = ProgressBarText.values
-          .firstWhere((e) => e.toString() == progressBarText);
+      _currentProgressBarText = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
 
       setBusyForObject(progress, true);
       final sessions = await _courseRepository.getSessions();
@@ -289,9 +270,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final twoDaysFromNow = now.add(const Duration(days: 2)).withoutTime;
 
       final courseActivities = _courseRepository.coursesActivities
-              ?.where((activity) =>
-                  activity.endDateTime.isAfter(now) &&
-                  activity.endDateTime.isBefore(twoDaysFromNow))
+              ?.where((activity) => activity.endDateTime.isAfter(now) && activity.endDateTime.isBefore(twoDaysFromNow))
               .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
               .toList() ??
           [];
@@ -300,11 +279,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final isToday = now.compareWithoutTime(activity.startDateTime);
         final isTomorrow = activity.startDateTime.withoutTime == tomorrow;
 
-        if ((isToday || isTomorrow) &&
-            await _isLaboratoryGroupToAdd(activity)) {
-          if (isTomorrow &&
-              scheduleEvents.isNotEmpty &&
-              scheduleEvents.first.startDateTime.compareWithoutTime(now)) {
+        if ((isToday || isTomorrow) && await _isLaboratoryGroupToAdd(activity)) {
+          if (isTomorrow && scheduleEvents.isNotEmpty && scheduleEvents.first.startDateTime.compareWithoutTime(now)) {
             return scheduleEvents;
           }
           scheduleEvents.add(activity);
@@ -322,8 +298,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<bool> _isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
     final courseKey = courseActivity.courseGroup.split('-').first;
 
-    final activityCodeToUse = await _settingsManager.getDynamicString(
-        PreferencesFlag.scheduleLaboratoryGroup, courseKey);
+    final activityCodeToUse =
+        await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseKey);
 
     return activityCodeToUse == ActivityCode.labGroupA
         ? courseActivity.activityDescription != ActivityDescriptionName.labB
@@ -339,9 +315,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
     for (final MapEntry<PreferencesFlag, int> element in _cards!.entries) {
       _cards![element.key] = _cardsToDisplay!.indexOf(element.key);
-      _settingsManager
-          .setInt(element.key, _cardsToDisplay!.indexOf(element.key))
-          .then((value) {
+      _settingsManager.setInt(element.key, _cardsToDisplay!.indexOf(element.key)).then((value) {
         if (!value) {
           Fluttertoast.showToast(msg: _appIntl.error);
         }
@@ -350,16 +324,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   /// Returns true if dates [a] and [b] are on the same day
-  bool isSameDay(DateTime a, DateTime b) =>
-      a.year == b.year && a.month == b.month && a.day == b.day;
+  bool isSameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
     if (!busy(courses)) {
       try {
         setBusyForObject(courses, true);
-        if (_courseRepository.sessions == null ||
-            _courseRepository.sessions!.isEmpty) {
+        if (_courseRepository.sessions == null || _courseRepository.sessions!.isEmpty) {
           await _courseRepository.getSessions();
         }
 
@@ -369,8 +341,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
         final currentSession = _courseRepository.activeSessions.first;
 
-        final coursesCached =
-            await _courseRepository.getCourses(fromCacheOnly: true);
+        final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
         courses.clear();
         for (final Course course in coursesCached) {
           if (course.session == currentSession.shortName) {
@@ -402,8 +373,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setBusyForObject(broadcastMessage, true);
 
     try {
-      broadcastMessage =
-          _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
+      broadcastMessage = _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
     } catch (error) {
       onError(error);
     } finally {
@@ -423,8 +393,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       throw Exception("Cards is null");
     }
 
-    final PreferencesFlag elementMoved =
-        cards!.keys.firstWhere((element) => cards![element] == oldIndex);
+    final PreferencesFlag elementMoved = cards!.keys.firstWhere((element) => cards![element] == oldIndex);
 
     setOrder(elementMoved, newIndex);
   }
@@ -433,18 +402,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     switch (_currentProgressBarText) {
       case ProgressBarText.daysElapsedWithTotalDays:
         _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-        return AppIntl.of(context)!
-            .progress_bar_message(sessionDays[0], sessionDays[1]);
+        return AppIntl.of(context)!.progress_bar_message(sessionDays[0], sessionDays[1]);
       case ProgressBarText.percentage:
         _currentProgressBarText = ProgressBarText.percentage;
-        final percentage = sessionDays[1] == 0
-            ? 0
-            : ((sessionDays[0] / sessionDays[1]) * 100).round();
+        final percentage = sessionDays[1] == 0 ? 0 : ((sessionDays[0] / sessionDays[1]) * 100).round();
         return AppIntl.of(context)!.progress_bar_message_percentage(percentage);
       default:
         _currentProgressBarText = ProgressBarText.remainingDays;
-        return AppIntl.of(context)!.progress_bar_message_remaining_days(
-            sessionDays[1] - sessionDays[0]);
+        return AppIntl.of(context)!.progress_bar_message_remaining_days(sessionDays[1] - sessionDays[0]);
     }
   }
 }

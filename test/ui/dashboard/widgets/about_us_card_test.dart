@@ -24,10 +24,8 @@ void main() {
       unregister<LaunchUrlService>();
     });
 
-    testWidgets('Has card aboutUs displayed properly',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(
-          child: AboutUsCard(key: UniqueKey(), onDismissed: () {})));
+    testWidgets('Has card aboutUs displayed properly', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: AboutUsCard(key: UniqueKey(), onDismissed: () {})));
       await tester.pumpAndSettle();
 
       // Find aboutUs card

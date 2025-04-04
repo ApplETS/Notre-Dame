@@ -16,8 +16,7 @@ class FaqViewModel extends BaseViewModel {
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   Locale? get locale => _settingsManager.locale;
 
@@ -26,8 +25,7 @@ class FaqViewModel extends BaseViewModel {
   }
 
   void launchPasswordReset() {
-    _launchUrlService
-        .launchInBrowser(_remoteConfigService.signetsPasswordResetUrl);
+    _launchUrlService.launchInBrowser(_remoteConfigService.signetsPasswordResetUrl);
   }
 
   Future<void> openMail(String addressEmail, BuildContext context) async {

@@ -45,15 +45,12 @@ main() {
       unregister<NavigationService>();
     });
 
-    testWidgets('Has card grades displayed - with no courses',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(
-          child: GradesCard(courses: [], onDismissed: () {}, loading: false)));
+    testWidgets('Has card grades displayed - with no courses', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: GradesCard(courses: [], onDismissed: () {}, loading: false)));
       await tester.pumpAndSettle();
 
       // Find grades card
-      final gradesCard =
-          find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
+      final gradesCard = find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
       expect(gradesCard, findsOneWidget);
 
       // Find grades card Title
@@ -61,22 +58,16 @@ main() {
       expect(gradesTitle, findsOneWidget);
 
       // Find empty grades card
-      final gradesEmptyTitle = find.text(
-          intl.grades_msg_no_grades.split("\n").first,
-          skipOffstage: false);
+      final gradesEmptyTitle = find.text(intl.grades_msg_no_grades.split("\n").first, skipOffstage: false);
       expect(gradesEmptyTitle, findsOneWidget);
     });
 
-    testWidgets('Has card grades displayed - with courses',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(
-          child: GradesCard(
-              courses: courses, onDismissed: () {}, loading: false)));
+    testWidgets('Has card grades displayed - with courses', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: GradesCard(courses: courses, onDismissed: () {}, loading: false)));
       await tester.pumpAndSettle();
 
       // Find grades card
-      final gradesCard =
-          find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
+      final gradesCard = find.widgetWithText(Card, intl.grades_title, skipOffstage: false);
       expect(gradesCard, findsOneWidget);
 
       // Find grades card Title
