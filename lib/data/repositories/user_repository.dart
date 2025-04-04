@@ -10,18 +10,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
-import 'package:notredame/data/models/mon_ets_user.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
-import 'package:notredame/data/services/monets/monets_api_client.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/cache_exception.dart';
-import 'package:notredame/utils/http_exception.dart';
 
 class UserRepository {
   static const String tag = "UserRepository";
@@ -50,14 +46,6 @@ class UserRepository {
   /// Used to access the Signets API
   final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
-  /// Used to access the MonÉTS API
-  final MonETSAPIClient _monEtsApiClient = locator<MonETSAPIClient>();
-
-  /// Mon ETS user for the student
-  MonETSUser? _monETSUser;
-
-  MonETSUser? get monETSUser => _monETSUser;
-
   /// Information for the student profile
   ProfileStudent? _info;
 
@@ -68,93 +56,9 @@ class UserRepository {
 
   List<Program>? get programs => _programs;
 
-  /// Authenticate the user using the [username] (for a student should be the
-  /// universal code like AAXXXXX).
-  /// If the authentication is successful the credentials ([username] and [password])
-  /// will be saved in the secure storage of the device to authorize a silent
-  /// authentication next time.
-  Future<bool> authenticate(
-      {required String username,
-      required String password,
-      bool isSilent = false}) async {
-    try {
-      _monETSUser = await _monEtsApiClient.authenticate(
-          username: username, password: password);
-    } on Exception catch (e, stacktrace) {
-      // Try login in from signets if monETS failed
-      if (e is HttpException) {
-        try {
-          // ignore: deprecated_member_use
-          if (await _signetsApiClient.authenticate(
-              username: username, password: password)) {
-            _monETSUser = MonETSUser(
-                domain: MonETSUser.mainDomain,
-                typeUsagerId: MonETSUser.studentRoleId,
-                username: username);
-          } else {
-            _analyticsService.logError(tag, "Authenticate - $e", e, stacktrace);
-            return false;
-          }
-        } on Exception catch (e, stacktrace) {
-          _analyticsService.logError(tag, "Authenticate - $e", e, stacktrace);
-          return false;
-        }
-      } else {
-        _analyticsService.logError(tag, "Authenticate - $e", e, stacktrace);
-        return false;
-      }
-    }
-
-    await _analyticsService.setUserProperties(
-        userId: username, domain: _monETSUser!.domain);
-
-    // Save the credentials in the secure storage
-    if (!isSilent) {
-      try {
-        await _secureStorage.write(key: usernameSecureKey, value: username);
-        await _secureStorage.write(key: passwordSecureKey, value: password);
-      } on PlatformException catch (e, stacktrace) {
-        await _secureStorage.deleteAll();
-        _analyticsService.logError(
-            tag, "Authenticate - PlatformException - $e", e, stacktrace);
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  /// Check if there are credentials saved and so authenticate the user, otherwise
-  /// return false
-  Future<bool> silentAuthenticate() async {
-    try {
-      final username = await _secureStorage.read(key: usernameSecureKey);
-      if (username != null) {
-        final password = await _secureStorage.read(key: passwordSecureKey);
-        if (password == null) {
-          await _secureStorage.deleteAll();
-          _analyticsService.logError(tag,
-              "SilentAuthenticate - PlatformException(Handled) - $passwordSecureKey not found");
-          return false;
-        }
-        return await authenticate(
-            username: username, password: password, isSilent: true);
-      }
-    } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(
-          tag,
-          "SilentAuthenticate - PlatformException(Handled) - $e",
-          e,
-          stacktrace);
-    }
-    return false;
-  }
-
+  //TODO: remove when all users are on 4.58.0 or more
   /// Log out the user
   Future<bool> logOut() async {
-    _monETSUser = null;
-
     // Delete the credentials from the secure storage
     try {
       await _secureStorage.delete(key: usernameSecureKey);
@@ -168,33 +72,22 @@ class UserRepository {
     return true;
   }
 
-  /// Retrieve and get the password for the current authenticated user.
-  /// WARNING This isn't a good practice but currently the password has to be sent in clear.
-  Future<String> getPassword() async {
-    if (_monETSUser == null) {
-      _analyticsService.logEvent(
-          tag, "Trying to acquire password but not authenticated");
-      final result = await silentAuthenticate();
-
-      if (!result) {
-        throw const ApiException(prefix: tag, message: "Not authenticated");
-      }
-    }
+  /// Check whether the user was previously authenticated.
+  Future<bool> wasPreviouslyLoggedIn() async {
     try {
-      final password = await _secureStorage.read(key: passwordSecureKey);
-      if (password == null) {
-        _analyticsService.logEvent(
-            tag, "Trying to acquire password but not authenticated");
-        throw const ApiException(prefix: tag, message: "Not authenticated");
+      final username = await _secureStorage.read(key: usernameSecureKey);
+      if (username != null) {
+        final password = await _secureStorage.read(key: passwordSecureKey);
+        return password != null && password.isNotEmpty;
       }
-      return password;
     } on PlatformException catch (e, stacktrace) {
       await _secureStorage.deleteAll();
       _analyticsService.logError(
           tag, "getPassword - PlatformException - $e", e, stacktrace);
-      throw const ApiException(prefix: tag, message: "Not authenticated");
     }
+    return false;
   }
+  //TODO END: remove when all users are on 4.58.0 or more
 
   /// Get the list of programs on which the student was active.
   /// The list from the [CacheService] is loaded than updated with the results
@@ -232,18 +125,11 @@ class UserRepository {
     }
 
     try {
-      // getPassword will try to authenticate the user if not authenticated.
-      final String password = await getPassword();
+      _programs = await _signetsApiClient.getPrograms();
+      _logger.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
 
-      if (_monETSUser != null) {
-        _programs = await _signetsApiClient.getPrograms(
-            username: _monETSUser!.universalCode, password: password);
-
-        _logger.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
-
-        // Update cache
-        _cacheManager.update(programsCacheKey, jsonEncode(_programs));
-      }
+      // Update cache
+      _cacheManager.update(programsCacheKey, jsonEncode(_programs));
     } on CacheException catch (_) {
       _logger.e(
           "$tag - getPrograms: exception raised while trying to update the cache.");
@@ -288,21 +174,15 @@ class UserRepository {
     }
 
     try {
-      // getPassword will try to authenticate the user if not authenticated.
-      final String password = await getPassword();
+      final fetchedInfo = await _signetsApiClient.getStudentInfo();
 
-      if (_monETSUser != null) {
-        final fetchedInfo = await _signetsApiClient.getStudentInfo(
-            username: _monETSUser!.universalCode, password: password);
+      _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 
-        _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
+      if (_info != fetchedInfo) {
+        _info = fetchedInfo;
 
-        if (_info != fetchedInfo) {
-          _info = fetchedInfo;
-
-          // Update cache
-          _cacheManager.update(infoCacheKey, jsonEncode(_info));
-        }
+        // Update cache
+        _cacheManager.update(infoCacheKey, jsonEncode(_info));
       }
     } on CacheException catch (_) {
       _logger.e(
@@ -315,21 +195,5 @@ class UserRepository {
     }
 
     return _info!;
-  }
-
-  /// Check whether the user was previously authenticated.
-  Future<bool> wasPreviouslyLoggedIn() async {
-    try {
-      final username = await _secureStorage.read(key: passwordSecureKey);
-      if (username != null) {
-        final password = await _secureStorage.read(key: passwordSecureKey);
-        return password != null && password.isNotEmpty;
-      }
-    } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(
-          tag, "getPassword - PlatformException - $e", e, stacktrace);
-    }
-    return false;
   }
 }

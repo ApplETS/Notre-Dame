@@ -22,8 +22,8 @@ void main() {
     setUp(() async {
       setupLaunchUrlServiceMock();
       setupNetworkingServiceMock();
-
-      settingsManagerMock = setupSettingsManagerMock();
+      setupRemoteConfigServiceMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       appIntl = await setupAppIntl();
     });
 
@@ -43,16 +43,12 @@ void main() {
             find.text(faq.actions[1].title["en"]!, skipOffstage: false);
         final action3 =
             find.text(faq.actions[2].title["en"]!, skipOffstage: false);
-        final action4 =
-            find.text(faq.actions[3].title["en"]!, skipOffstage: false);
 
-        await tester.drag(find.byType(ListView), const Offset(0.0, -300));
         await tester.pump();
 
         expect(action1, findsOneWidget);
         expect(action2, findsOneWidget);
         expect(action3, findsOneWidget);
-        expect(action4, findsOneWidget);
       });
 
       testWidgets('tapping "Questions About ETS Button" shows dialog',
@@ -67,7 +63,7 @@ void main() {
         await tester.pumpAndSettle();
 
         final questionsAbtETSMobileBtn =
-            find.widgetWithText(Card, faq.actions[3].title["en"]!);
+            find.widgetWithText(Card, faq.actions[2].title["en"]!);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
 
         await tester.tap(questionsAbtETSMobileBtn);

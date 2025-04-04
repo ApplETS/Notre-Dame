@@ -87,7 +87,7 @@ void main() {
     setUp(() async {
       courseRepositoryMock = setupCourseRepositoryMock();
       intl = await setupAppIntl();
-      setupSettingsManagerMock();
+      setupSettingsRepositoryMock();
       setupNavigationServiceMock();
 
       viewModel = GradesViewModel(intl: intl);

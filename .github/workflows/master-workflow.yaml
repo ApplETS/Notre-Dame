@@ -46,6 +46,7 @@ jobs:
           encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
           encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
           encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          encrypted-msal-config-password: ${{ secrets.ENCRYPTED_MSAL_CONFIG_PASSWORD }}
       - uses: ./.github/composite/tests
         with:
           format: false
@@ -106,6 +107,7 @@ jobs:
           encrypted-google-service-password: ${{ secrets.ENCRYPTED_GOOGLE_SERVICE_PASSWORD }}
           encrypted-etsmobile-keystore-password: ${{ secrets.ENCRYPTED_ETSMOBILE_KEYSTORE_PASSWORD }}
           encrypted-keystore-properties-password: ${{ secrets.ENCRYPTED_KEYSTORE_PROPERTIES_PASSWORD }}
+          encrypted-msal-config-password: ${{ secrets.ENCRYPTED_MSAL_CONFIG_PASSWORD }}
           target: ${{ matrix.target }}
 
       - uses: ./.github/composite/ci-build
@@ -119,6 +121,7 @@ jobs:
           app-name: ${{ env.APP_NAME }}
           app-path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
           maps-api-key: ${{ secrets.MAPS_API_KEY }}
+          app-hash: ${{ secrets.APP_HASH }}
 
   ##############################################################
   # Post-build
