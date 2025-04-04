@@ -23,8 +23,7 @@ class CalendarSelectionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: CalendarService.nativeCalendars,
-      builder:
-          (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
+      builder: (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
         if (calendars.error != null) {
           return lackingPermissionsDialog(context);
         }
@@ -98,8 +97,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                     }
                     Navigator.of(context).pop();
 
-                    final CourseRepository courseRepository =
-                        locator<CourseRepository>();
+                    final CourseRepository courseRepository = locator<CourseRepository>();
 
                     final result = CalendarService.export(
                       courseRepository.coursesActivities!,

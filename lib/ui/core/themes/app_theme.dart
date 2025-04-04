@@ -29,12 +29,10 @@ class AppTheme with ChangeNotifier {
         surfaceTintColor: Color(0xffffe6e6),
         elevation: 2,
       ),
-      inputDecorationTheme: InputDecorationTheme(
-          fillColor: Color(0xfffffdfd),
-          labelStyle: TextStyle(color: AppPalette.grey.black)),
-      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
-          selectedItemColor: AppPalette.etsLightRed,
-          backgroundColor: _lightAppColors.navBar),
+      inputDecorationTheme:
+          InputDecorationTheme(fillColor: Color(0xfffffdfd), labelStyle: TextStyle(color: AppPalette.grey.black)),
+      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme
+          .copyWith(selectedItemColor: AppPalette.etsLightRed, backgroundColor: _lightAppColors.navBar),
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: _lightAppColors.navBar,
         groupAlignment: 0,
@@ -94,9 +92,8 @@ class AppTheme with ChangeNotifier {
       cardTheme: defaultTheme.cardTheme.copyWith(
         color: Color(0xff242326),
       ),
-      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
-          selectedItemColor: AppPalette.etsLightRed,
-          backgroundColor: _darkAppColors.navBar),
+      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme
+          .copyWith(selectedItemColor: AppPalette.etsLightRed, backgroundColor: _darkAppColors.navBar),
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: _darkAppColors.navBar,
         groupAlignment: 0,
@@ -146,8 +143,7 @@ class AppTheme with ChangeNotifier {
 }
 
 extension AppThemeExtension on ThemeData {
-  AppColorsExtension get appColors =>
-      extension<AppColorsExtension>() ?? AppTheme._lightAppColors;
+  AppColorsExtension get appColors => extension<AppColorsExtension>() ?? AppTheme._lightAppColors;
 }
 
 extension ThemeGetter on BuildContext {

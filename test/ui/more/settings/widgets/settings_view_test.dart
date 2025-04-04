@@ -30,8 +30,7 @@ void main() {
     });
 
     group('UI - ', () {
-      testWidgets('has 1 listView and 4 listTiles and 1 divider',
-          (WidgetTester tester) async {
+      testWidgets('has 1 listView and 4 listTiles and 1 divider', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: SettingsView()));
         await tester.pumpAndSettle();
 
@@ -51,8 +50,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester.tap(
-              find.widgetWithText(ListTile, intl.settings_dark_theme_pref));
+          await tester.tap(find.widgetWithText(ListTile, intl.settings_dark_theme_pref));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
@@ -73,8 +71,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester.tap(
-              find.widgetWithText(ListTile, intl.settings_dark_theme_pref));
+          await tester.tap(find.widgetWithText(ListTile, intl.settings_dark_theme_pref));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
@@ -95,8 +92,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester.tap(
-              find.widgetWithText(ListTile, intl.settings_dark_theme_pref));
+          await tester.tap(find.widgetWithText(ListTile, intl.settings_dark_theme_pref));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
@@ -119,8 +115,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester
-              .tap(find.widgetWithText(ListTile, intl.settings_language_pref));
+          await tester.tap(find.widgetWithText(ListTile, intl.settings_language_pref));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
@@ -141,8 +136,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester
-              .tap(find.widgetWithText(ListTile, intl.settings_language_pref));
+          await tester.tap(find.widgetWithText(ListTile, intl.settings_language_pref));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();

@@ -16,18 +16,13 @@ class GradeCircularProgress extends StatefulWidget {
   final double ratio;
 
   const GradeCircularProgress(this.ratio,
-      {super.key,
-      this.completed = false,
-      this.finalGrade,
-      this.studentGrade,
-      this.averageGrade});
+      {super.key, this.completed = false, this.finalGrade, this.studentGrade, this.averageGrade});
 
   @override
   State<GradeCircularProgress> createState() => _GradeCircularProgressState();
 }
 
-class _GradeCircularProgressState extends State<GradeCircularProgress>
-    with TickerProviderStateMixin {
+class _GradeCircularProgressState extends State<GradeCircularProgress> with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Color?> animation;
 
@@ -92,8 +87,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
     }
 
     if (widget.studentGrade != null) {
-      return AppIntl.of(context)!
-          .grades_grade_in_percentage(widget.studentGrade!.round());
+      return AppIntl.of(context)!.grades_grade_in_percentage(widget.studentGrade!.round());
     }
 
     return AppIntl.of(context)!.grades_not_available;
@@ -112,8 +106,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress>
       startColor = AppPalette.gradeFailureMin;
       endColor = AppPalette.gradeFailureMax;
       colorProportion /= passingGrade;
-    } else if (gradePercentage > passingGrade &&
-        gradePercentage <= minGoodGrade) {
+    } else if (gradePercentage > passingGrade && gradePercentage <= minGoodGrade) {
       startColor = AppPalette.gradePassing;
       endColor = AppPalette.gradeGoodMin;
       colorProportion -= passingGrade;

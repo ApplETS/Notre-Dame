@@ -17,28 +17,24 @@ class QuickLinksViewModel extends FutureViewModel<List<QuickLink>> {
 
   List<QuickLink> deletedQuickLinks = [];
 
-  final QuickLinkRepository _quickLinkRepository =
-      locator<QuickLinkRepository>();
+  final QuickLinkRepository _quickLinkRepository = locator<QuickLinkRepository>();
 
   QuickLinksViewModel(AppIntl intl) : _appIntl = intl;
 
   Future<List<QuickLink>> getQuickLinks() async {
     List<QuickLinkData> quickLinkDataList = [];
     try {
-      quickLinkDataList =
-          await _quickLinkRepository.getQuickLinkDataFromCache();
+      quickLinkDataList = await _quickLinkRepository.getQuickLinkDataFromCache();
     } catch (e) {
       // if cache is not initialized, return default list
       return _quickLinkRepository.getDefaultQuickLinks(_appIntl);
     }
 
     // otherwise, return quickLinks according to the cache
-    final defaultQuickLinks =
-        _quickLinkRepository.getDefaultQuickLinks(_appIntl);
+    final defaultQuickLinks = _quickLinkRepository.getDefaultQuickLinks(_appIntl);
     quickLinkDataList.sort((a, b) => a.index.compareTo(b.index));
     return quickLinkDataList
-        .map((data) => defaultQuickLinks
-            .firstWhere((quickLink) => quickLink.id == data.id))
+        .map((data) => defaultQuickLinks.firstWhere((quickLink) => quickLink.id == data.id))
         .toList();
   }
 

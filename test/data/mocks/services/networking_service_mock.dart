@@ -11,8 +11,7 @@ import 'networking_service_mock.mocks.dart';
 @GenerateNiceMocks([MockSpec<NetworkingService>()])
 class NetworkingServiceMock extends MockNetworkingService {
   /// Stub the user connection state
-  static void stubHasConnectivity(NetworkingServiceMock service,
-      {bool hasConnectivity = true}) {
+  static void stubHasConnectivity(NetworkingServiceMock service, {bool hasConnectivity = true}) {
     when(service.hasConnectivity()).thenAnswer((_) async => hasConnectivity);
   }
 

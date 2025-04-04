@@ -26,16 +26,14 @@ class GradesDetailsView extends StatefulWidget {
   State<GradesDetailsView> createState() => _GradesDetailsViewState();
 }
 
-class _GradesDetailsViewState extends State<GradesDetailsView>
-    with TickerProviderStateMixin {
+class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProviderStateMixin {
   late AnimationController _controller;
   bool _completed = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 600));
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
     _controller.forward();
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -47,10 +45,8 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   }
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<GradesDetailsViewModel>.reactive(
-        viewModelBuilder: () => GradesDetailsViewModel(
-            course: widget.course, intl: AppIntl.of(context)!),
+  Widget build(BuildContext context) => ViewModelBuilder<GradesDetailsViewModel>.reactive(
+        viewModelBuilder: () => GradesDetailsViewModel(course: widget.course, intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
           safeArea: false,
           showBottomBar: false,
@@ -69,16 +65,15 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 title: Hero(
-                  tag:
-                      'course_acronym_${model.course.acronym}_${model.course.session}',
+                  tag: 'course_acronym_${model.course.acronym}_${model.course.session}',
                   child: Text(
                     model.course.acronym,
                     softWrap: false,
                     overflow: TextOverflow.visible,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: AppPalette.grey.white,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: AppPalette.grey.white, fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -101,12 +96,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                           children: <Widget>[
                             _buildClassInfo(model.course.title),
                             if (model.course.teacherName != null)
-                              _buildClassInfo(AppIntl.of(context)!
-                                  .grades_teacher(model.course.teacherName!)),
-                            _buildClassInfo(AppIntl.of(context)!
-                                .grades_group_number(model.course.group)),
-                            _buildClassInfo(AppIntl.of(context)!
-                                .credits_number(model.course.numberOfCredits)),
+                              _buildClassInfo(AppIntl.of(context)!.grades_teacher(model.course.teacherName!)),
+                            _buildClassInfo(AppIntl.of(context)!.grades_group_number(model.course.group)),
+                            _buildClassInfo(AppIntl.of(context)!.credits_number(model.course.numberOfCredits)),
                           ],
                         ),
                       ),
@@ -127,13 +119,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
   Widget _buildGradeEvaluations(GradesDetailsViewModel model) {
     if (model.isBusy) {
       return const Center(child: CircularProgressIndicator());
-    } else if (model.course.inReviewPeriod &&
-        !(model.course.allReviewsCompleted ?? true)) {
+    } else if (model.course.inReviewPeriod && !(model.course.allReviewsCompleted ?? true)) {
       return Center(
         child: GradeNotAvailable(
-            key: const Key("EvaluationNotCompleted"),
-            onPressed: model.refresh,
-            isEvaluationPeriod: true),
+            key: const Key("EvaluationNotCompleted"), onPressed: model.refresh, isEvaluationPeriod: true),
       );
     } else if (model.course.summary != null) {
       return RefreshIndicator(
@@ -196,55 +185,48 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   ),
                 ),
                 IntrinsicHeight(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 3,
-                          child: _buildCourseGradeSummary(
-                            AppIntl.of(context)!.grades_median,
-                            validateGrade(
-                              context,
-                              model.course.summary?.median.toString(),
-                              AppIntl.of(context)!.grades_grade_in_percentage(
-                                  Utils.getGradeInPercentage(
-                                      model.course.summary?.median,
-                                      model.course.summary?.markOutOf)),
-                            ),
-                          ),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: _buildCourseGradeSummary(
+                        AppIntl.of(context)!.grades_median,
+                        validateGrade(
+                          context,
+                          model.course.summary?.median.toString(),
+                          AppIntl.of(context)!.grades_grade_in_percentage(Utils.getGradeInPercentage(
+                              model.course.summary?.median, model.course.summary?.markOutOf)),
                         ),
-                        Expanded(
-                          flex: 3,
-                          child: _buildCourseGradeSummary(
-                            AppIntl.of(context)!.grades_standard_deviation,
-                            validateGrade(
-                              context,
-                              model.course.summary?.standardDeviation
-                                  .toString(),
-                              model.course.summary?.standardDeviation
-                                  .toString(),
-                            ),
-                          ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: _buildCourseGradeSummary(
+                        AppIntl.of(context)!.grades_standard_deviation,
+                        validateGrade(
+                          context,
+                          model.course.summary?.standardDeviation.toString(),
+                          model.course.summary?.standardDeviation.toString(),
                         ),
-                        Expanded(
-                          flex: 3,
-                          child: _buildCourseGradeSummary(
-                            AppIntl.of(context)!.grades_percentile_rank,
-                            validateGrade(
-                              context,
-                              model.course.summary?.percentileRank.toString(),
-                              model.course.summary?.percentileRank.toString(),
-                            ),
-                          ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: _buildCourseGradeSummary(
+                        AppIntl.of(context)!.grades_percentile_rank,
+                        validateGrade(
+                          context,
+                          model.course.summary?.percentileRank.toString(),
+                          model.course.summary?.percentileRank.toString(),
                         ),
-                      ]),
+                      ),
+                    ),
+                  ]),
                 ),
                 const SizedBox(
                   height: 8.0,
                 ),
                 Column(children: <Widget>[
-                  for (final CourseEvaluation evaluation
-                      in model.course.summary?.evaluations ?? [])
+                  for (final CourseEvaluation evaluation in model.course.summary?.evaluations ?? [])
                     GradeEvaluationTile(
                       evaluation,
                       completed: _completed,
@@ -259,8 +241,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
       );
     } else {
       return Center(
-        child: GradeNotAvailable(
-            key: const Key("GradeNotAvailable"), onPressed: model.refresh),
+        child: GradeNotAvailable(key: const Key("GradeNotAvailable"), onPressed: model.refresh),
       );
     }
   }
@@ -271,18 +252,15 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
           padding: const EdgeInsets.only(left: 15.0),
           child: Text(
             info,
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge!
-                .copyWith(color: AppPalette.grey.white, fontSize: 16),
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppPalette.grey.white, fontSize: 16),
             overflow: TextOverflow.ellipsis,
           ),
         ),
       );
 
   /// Build the student grade or the average grade with their title
-  Column _buildGradesSummary(double? currentGrade, double? maxGrade,
-      String recipient, Color color, BuildContext context) {
+  Column _buildGradesSummary(
+      double? currentGrade, double? maxGrade, String recipient, Color color, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -297,14 +275,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView>
                   maxGrade,
                 ),
               ),
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(color: color)),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: color)),
         ),
-        Text(recipient,
-            style:
-                Theme.of(context).textTheme.bodyLarge!.copyWith(color: color)),
+        Text(recipient, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: color)),
       ],
     );
   }
