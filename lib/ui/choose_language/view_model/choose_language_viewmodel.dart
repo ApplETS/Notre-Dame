@@ -38,8 +38,7 @@ class ChooseLanguageViewModel extends BaseViewModel {
         _settingsManager.setLocale('fr');
         languageSelectedIndex = french;
       default:
-        throw Exception(
-            'No valid language for the index $index passed in parameters');
+        throw Exception('No valid language for the index $index passed in parameters');
     }
 
     _navigationService.pop();

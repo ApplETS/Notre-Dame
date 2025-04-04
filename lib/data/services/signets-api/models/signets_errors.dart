@@ -5,8 +5,7 @@ class SignetsError {
   static const String scheduleNotAvailable = "Aucune donnée";
 
   static const String gradesEmpty = "GRADES_NOT_AVAILABLE";
-  static const String gradesNotAvailable =
-      "Cours ou bordereau de notes inexistant pour";
+  static const String gradesNotAvailable = "Cours ou bordereau de notes inexistant pour";
 
   static const String signetsErrorSoapTag = "erreur";
 }

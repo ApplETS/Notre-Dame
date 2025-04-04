@@ -54,16 +54,12 @@ void main() {
       updatedAt: DateTime.now().subtract(const Duration(days: 5)),
     ),
   ];
-  final PaginatedNews paginatedNews = PaginatedNews(
-      news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
+  final PaginatedNews paginatedNews =
+      PaginatedNews(news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
 
   final List<News> emptyNews = List<News>.empty();
-  final PaginatedNews paginatedEmptyNews = PaginatedNews(
-      news: emptyNews,
-      pageNumber: 1,
-      pageSize: 3,
-      totalRecords: 0,
-      totalPages: 1);
+  final PaginatedNews paginatedEmptyNews =
+      PaginatedNews(news: emptyNews, pageNumber: 1, pageSize: 3, totalRecords: 0, totalPages: 1);
 
   group('NewsView -', () {
     setUp(() async {
@@ -87,8 +83,7 @@ void main() {
     });
 
     testWidgets('Empty news', (WidgetTester tester) async {
-      NewsRepositoryMock.stubGetNews(newsRepository,
-          toReturn: paginatedEmptyNews);
+      NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedEmptyNews);
 
       await tester.pumpWidget(localizedWidget(child: NewsView()));
       await tester.pumpAndSettle(const Duration(seconds: 1));

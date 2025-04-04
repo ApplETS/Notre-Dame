@@ -39,9 +39,7 @@ class ProfileStudent {
       lastName: map['nom'] as String,
       firstName: map['prenom'] as String,
       permanentCode: map['codePerm'] as String,
-      universalCode: map.containsKey("codeUniversel")
-          ? map['codeUniversel'] as String
-          : '',
+      universalCode: map.containsKey("codeUniversel") ? map['codeUniversel'] as String : '',
       balance: map['soldeTotal'] as String);
 
   Map<String, dynamic> toJson() => {
@@ -64,9 +62,5 @@ class ProfileStudent {
           balance == other.balance;
 
   @override
-  int get hashCode =>
-      lastName.hashCode ^
-      firstName.hashCode ^
-      permanentCode.hashCode ^
-      balance.hashCode;
+  int get hashCode => lastName.hashCode ^ firstName.hashCode ^ permanentCode.hashCode ^ balance.hashCode;
 }

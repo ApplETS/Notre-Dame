@@ -21,10 +21,7 @@ class Faq {
       },
     ),
     QuestionItem(
-      title: {
-        "fr": "Je ne vois plus mes notes de contrôle",
-        "en": "I can't see my grades anymore."
-      },
+      title: {"fr": "Je ne vois plus mes notes de contrôle", "en": "I can't see my grades anymore."},
       description: {
         "fr":
             "Il est possible qu’il s’agit de la période d'évaluation des cours. Vous devez compléter les évaluations sur SignETS. Les notes seront disponibles après avoir répondu aux évaluations.",
@@ -37,8 +34,7 @@ class Faq {
   List<ActionItem> actions = [
     ActionItem(
       title: {
-        "fr":
-            "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
+        "fr": "Je suis diplômé de l’ÉTS et je souhaite faire réactiver mon compte.",
         "en": "I am an ÉTS graduate, and I want to reactivate my account."
       },
       description: {
@@ -55,8 +51,7 @@ class Faq {
       title: {
         "fr":
             "Questions concernant vos conditions d'admission, des inscriptions et des conditions relatives à la poursuite de vos études",
-        "en":
-            "Questions about your admission conditions, registrations, and conditions for continuing your studies"
+        "en": "Questions about your admission conditions, registrations, and conditions for continuing your studies"
       },
       description: {
         "fr": "Veuillez contacter le Bureau de la registraire.",
@@ -69,14 +64,8 @@ class Faq {
       circleColor: const Color(0xFFDA4444),
     ),
     ActionItem(
-      title: {
-        "fr": "Questions concernant l’application ÉTSMobile",
-        "en": "Questions about the ÉTSMobile app"
-      },
-      description: {
-        "fr": "Veuillez contacter App|ETS.",
-        "en": "Please contact App|ETS."
-      },
+      title: {"fr": "Questions concernant l’application ÉTSMobile", "en": "Questions about the ÉTSMobile app"},
+      description: {"fr": "Veuillez contacter App|ETS.", "en": "Please contact App|ETS."},
       type: ActionType.email,
       link: AppInfo.email,
       iconName: Icons.install_mobile,

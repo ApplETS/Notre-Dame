@@ -34,8 +34,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _controller.forward();
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -77,13 +76,9 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
             minWidth: 0,
             child: AnimatedContainer(
               duration: const Duration(seconds: 1),
-              width:
-                  _completed ? MediaQuery.of(context).size.longestSide * 2 : 0,
-              height:
-                  _completed ? MediaQuery.of(context).size.longestSide * 2 : 0,
-              decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 25, 55, 95),
-                  shape: BoxShape.circle),
+              width: _completed ? MediaQuery.of(context).size.longestSide * 2 : 0,
+              height: _completed ? MediaQuery.of(context).size.longestSide * 2 : 0,
+              decoration: const BoxDecoration(color: Color.fromARGB(255, 25, 55, 95), shape: BoxShape.circle),
             ),
           ),
         ),
@@ -132,40 +127,35 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
                           color: AppPalette.grey.white,
                         ),
                         tooltip: AppIntl.of(context)!.website_club_open,
-                        onPressed: () => _launchUrlService
-                            .launchInBrowser(Urls.clubWebsite)),
+                        onPressed: () => _launchUrlService.launchInBrowser(Urls.clubWebsite)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.github,
                           color: AppPalette.grey.white,
                         ),
                         tooltip: AppIntl.of(context)!.github_open,
-                        onPressed: () =>
-                            _launchUrlService.launchInBrowser(Urls.clubGithub)),
+                        onPressed: () => _launchUrlService.launchInBrowser(Urls.clubGithub)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.facebook,
                           color: AppPalette.grey.white,
                         ),
                         tooltip: AppIntl.of(context)!.facebook_open,
-                        onPressed: () => _launchUrlService
-                            .launchInBrowser(Urls.clubFacebook)),
+                        onPressed: () => _launchUrlService.launchInBrowser(Urls.clubFacebook)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.youtube,
                           color: AppPalette.grey.white,
                         ),
                         tooltip: AppIntl.of(context)!.youtube_open,
-                        onPressed: () => _launchUrlService
-                            .launchInBrowser(Urls.clubYoutube)),
+                        onPressed: () => _launchUrlService.launchInBrowser(Urls.clubYoutube)),
                     IconButton(
                         icon: FaIcon(
                           FontAwesomeIcons.discord,
                           color: AppPalette.grey.white,
                         ),
                         tooltip: AppIntl.of(context)!.discord_join,
-                        onPressed: () => _launchUrlService
-                            .launchInBrowser(Urls.clubDiscord)),
+                        onPressed: () => _launchUrlService.launchInBrowser(Urls.clubDiscord)),
                   ],
                 ),
               ),

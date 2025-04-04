@@ -79,14 +79,11 @@ void main() {
     });
 
     group("UI -", () {
-      testWidgets(
-          "Right message is displayed when there is no grades available",
-          (WidgetTester tester) async {
+      testWidgets("Right message is displayed when there is no grades available", (WidgetTester tester) async {
         // Mock the repository to have 0 courses available
         CourseRepositoryMock.stubCourses(courseRepositoryMock);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, fromCacheOnly: true);
 
         tester.view.physicalSize = const Size(800, 1410);
 
@@ -96,15 +93,11 @@ void main() {
         expect(find.text(intl.grades_msg_no_grades), findsOneWidget);
       });
 
-      testWidgets(
-          "Correct number of grade button and right session name are displayed",
-          (WidgetTester tester) async {
+      testWidgets("Correct number of grade button and right session name are displayed", (WidgetTester tester) async {
         // Mock the repository to have 4 courses available
-        CourseRepositoryMock.stubCourses(courseRepositoryMock,
-            toReturn: courses);
+        CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: courses);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock,
-            toReturn: courses, fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses, fromCacheOnly: true);
 
         tester.view.physicalSize = const Size(800, 1410);
         await tester.runAsync(() async {
@@ -116,37 +109,22 @@ void main() {
           // Check the summer session list of grades.
           final summerSessionText = find.text("${intl.session_summer} 2020");
           expect(summerSessionText, findsOneWidget);
-          final summerList = find
-              .ancestor(of: summerSessionText, matching: find.byType(Column))
-              .first;
-          expect(
-              find.descendant(
-                  of: summerList, matching: find.byType(GradeButton)),
-              findsNWidgets(2),
+          final summerList = find.ancestor(of: summerSessionText, matching: find.byType(Column)).first;
+          expect(find.descendant(of: summerList, matching: find.byType(GradeButton)), findsNWidgets(2),
               reason: "The summer session should have two grade buttons.");
 
           // Check the fall session list of grades.
           final fallSessionText = find.text("${intl.session_fall} 2020");
           expect(fallSessionText, findsOneWidget);
-          final fallList = find
-              .ancestor(of: fallSessionText, matching: find.byType(Column))
-              .first;
-          expect(
-              find.descendant(of: fallList, matching: find.byType(GradeButton)),
-              findsOneWidget,
-              reason:
-                  "The summer session should have 1 grade button because the session have one course.");
+          final fallList = find.ancestor(of: fallSessionText, matching: find.byType(Column)).first;
+          expect(find.descendant(of: fallList, matching: find.byType(GradeButton)), findsOneWidget,
+              reason: "The summer session should have 1 grade button because the session have one course.");
 
           // Check the winter session list of grades.
           final winterSessionText = find.text("${intl.session_winter} 2020");
           expect(winterSessionText, findsOneWidget);
-          final winterList = find
-              .ancestor(of: winterSessionText, matching: find.byType(Column))
-              .first;
-          expect(
-              find.descendant(
-                  of: winterList, matching: find.byType(GradeButton)),
-              findsOneWidget,
+          final winterList = find.ancestor(of: winterSessionText, matching: find.byType(Column)).first;
+          expect(find.descendant(of: winterList, matching: find.byType(GradeButton)), findsOneWidget,
               reason: "The summer session should have two grade buttons.");
         });
       });

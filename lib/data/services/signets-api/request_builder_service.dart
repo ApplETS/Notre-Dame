@@ -23,8 +23,7 @@ mixin RequestBuilderService {
   /// Send a GET request to SignetsAPI using queryParameters then return
   /// the response.
   /// Will throw a [ApiException] if an error is returned by the api.
-  static Future<XmlElement> sendRequest(
-      http.Client client, String endpoint, String token, String resultTag,
+  static Future<XmlElement> sendRequest(http.Client client, String endpoint, String token, String resultTag,
       {Map<String, String>? queryParameters}) async {
     // Send the envelope
     final uri = Uri.https(Urls.signetsAPI, endpoint, queryParameters);
@@ -34,42 +33,24 @@ mixin RequestBuilderService {
       RequestBuilderService.retries++;
       if (retries > maxRetry) {
         retries = 0;
-        throw ApiException(
-            prefix: tagError,
-            message:
-                "Token invalide. Veuillez vous déconnecter et vous reconnecter.");
+        throw ApiException(prefix: tagError, message: "Token invalide. Veuillez vous déconnecter et vous reconnecter.");
       }
       final authService = locator<AuthService>();
       await authService.acquireTokenSilent();
-      return await sendRequest(
-          client, endpoint, await authService.getToken(), resultTag,
+      return await sendRequest(client, endpoint, await authService.getToken(), resultTag,
           queryParameters: queryParameters);
     }
     retries = 0;
 
-    final responseBody =
-        XmlDocument.parse(response.body).findAllElements(resultTag).first;
+    final responseBody = XmlDocument.parse(response.body).findAllElements(resultTag).first;
 
     // Throw exception if the error tag contains a blocking error
-    if (responseBody
-            .findElements(SignetsError.signetsErrorSoapTag)
-            .isNotEmpty &&
-        responseBody
-            .findElements(SignetsError.signetsErrorSoapTag)
-            .first
-            .innerText
-            .isNotEmpty) {
-      final errorMessage = responseBody
-          .findElements(SignetsError.signetsErrorSoapTag)
-          .first
-          .innerText;
+    if (responseBody.findElements(SignetsError.signetsErrorSoapTag).isNotEmpty &&
+        responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText.isNotEmpty) {
+      final errorMessage = responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText;
       if (!errorMessage.startsWith(SignetsError.scheduleNotAvailable)) {
         throw ApiException(
-            prefix: tagError,
-            message: responseBody
-                .findElements(SignetsError.signetsErrorSoapTag)
-                .first
-                .innerText);
+            prefix: tagError, message: responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText);
       } else {
         return responseBody;
       }

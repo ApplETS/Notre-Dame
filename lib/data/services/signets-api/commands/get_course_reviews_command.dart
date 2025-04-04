@@ -30,14 +30,10 @@ class GetCourseReviewsCommand implements Command<List<CourseReview>> {
   Future<List<CourseReview>> execute() async {
     final queryParams = {"session": session};
 
-    final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag,
+    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag,
         queryParameters: queryParams);
 
     /// Build and return the list of Program
-    return responseBody
-        .findAllElements("EvaluationCours")
-        .map((node) => CourseReview.fromXmlNode(node))
-        .toList();
+    return responseBody.findAllElements("EvaluationCours").map((node) => CourseReview.fromXmlNode(node)).toList();
   }
 }

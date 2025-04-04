@@ -36,8 +36,7 @@ Future<void> main() async {
   final analyticsService = locator<AnalyticsService>();
   await analyticsService.setUserProperties();
 
-  final RemoteConfigService remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   await remoteConfigService.initialize();
 
   // Manage the settings
@@ -66,8 +65,7 @@ class ETSMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     addEdgeToEdgeEffect();
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
+    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsRepository>(
       create: (_) => settingsManager,

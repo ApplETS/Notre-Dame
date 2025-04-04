@@ -29,8 +29,7 @@ class StartUpViewModel extends BaseViewModel {
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
 
-    if (await _settingsManager.getBool(PreferencesFlag.languageChoice) ==
-        null) {
+    if (await _settingsManager.getBool(PreferencesFlag.languageChoice) == null) {
       _navigationService.pushNamed(RouterPaths.chooseLanguage);
       return;
     }
@@ -45,11 +44,9 @@ class StartUpViewModel extends BaseViewModel {
         authorityType: AuthorityType.aad, broker: Broker.msAuthenticator);
 
     if (!clientAppResult.$1) {
-      final message = clientAppResult.$2?.message ??
-          'Failed to create public client application';
+      final message = clientAppResult.$2?.message ?? 'Failed to create public client application';
       await _analyticsService.logError('StartupViewmodel', message);
-      throw Exception(
-          "StartupViewmodel - Failed to create public client application");
+      throw Exception("StartupViewmodel - Failed to create public client application");
     }
 
     final bool isLogin = (await _authService.acquireTokenSilent()).$2 == null;
@@ -73,8 +70,7 @@ class StartUpViewModel extends BaseViewModel {
   /// with the cached data
   Future<bool> handleConnectivityIssues() async {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
-    final wasLoggedIn =
-        (await _settingsManager.getBool(PreferencesFlag.isLoggedIn)) ?? false;
+    final wasLoggedIn = (await _settingsManager.getBool(PreferencesFlag.isLoggedIn)) ?? false;
     if (hasConnectivityIssues && wasLoggedIn) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       return true;

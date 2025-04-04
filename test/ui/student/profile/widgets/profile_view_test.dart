@@ -19,11 +19,7 @@ void main() {
   late UserRepositoryMock userRepositoryMock;
 
   final profileStudent = ProfileStudent(
-      firstName: "John",
-      lastName: "Doe",
-      permanentCode: "ABC123",
-      balance: "123456789",
-      universalCode: 'AA000000');
+      firstName: "John", lastName: "Doe", permanentCode: "ABC123", balance: "123456789", universalCode: 'AA000000');
 
   // Make a test program object
   final program = Program(
@@ -46,16 +42,12 @@ void main() {
       userRepositoryMock = setupUserRepositoryMock();
       setupAnalyticsServiceMock();
 
-      UserRepositoryMock.stubGetInfo(userRepositoryMock,
-          toReturn: profileStudent);
-      UserRepositoryMock.stubProfileStudent(userRepositoryMock,
-          toReturn: profileStudent);
+      UserRepositoryMock.stubGetInfo(userRepositoryMock, toReturn: profileStudent);
+      UserRepositoryMock.stubProfileStudent(userRepositoryMock, toReturn: profileStudent);
 
-      UserRepositoryMock.stubGetPrograms(userRepositoryMock,
-          toReturn: programList);
+      UserRepositoryMock.stubGetPrograms(userRepositoryMock, toReturn: programList);
 
-      UserRepositoryMock.stubPrograms(userRepositoryMock,
-          toReturn: programList);
+      UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: programList);
     });
 
     tearDown(() {
@@ -67,9 +59,7 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: ProfileView()));
       await tester.pumpAndSettle();
 
-      expect(
-          find.text("${profileStudent.firstName} ${profileStudent.lastName}"),
-          findsOneWidget);
+      expect(find.text("${profileStudent.firstName} ${profileStudent.lastName}"), findsOneWidget);
 
       expect(find.text(program.name), findsNWidgets(2));
     });
@@ -93,8 +83,7 @@ void main() {
       await tester.tap(find.text(profileStudent.permanentCode));
       await tester.pumpAndSettle();
 
-      expect(find.text(intl.profile_permanent_code_copied_to_clipboard),
-          findsOneWidget);
+      expect(find.text(intl.profile_permanent_code_copied_to_clipboard), findsOneWidget);
 
       // Could not test clipboard content, could be due to https://github.com/flutter/flutter/issues/47448
     });

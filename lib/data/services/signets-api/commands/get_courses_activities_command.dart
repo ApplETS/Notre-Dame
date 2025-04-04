@@ -47,8 +47,7 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
       throw FormatException("Session $session isn't a correctly formatted");
     }
     if (courseGroup.isNotEmpty && !_courseGroupRegExp.hasMatch(courseGroup)) {
-      throw FormatException(
-          "CourseGroup $courseGroup isn't a correctly formatted");
+      throw FormatException("CourseGroup $courseGroup isn't a correctly formatted");
     }
     if (startDate != null && endDate != null && startDate!.isAfter(endDate!)) {
       throw ArgumentError("The startDate can't be after endDate.");
@@ -66,14 +65,10 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
       queryParams["dateFin"] = dateFormat.format(endDate!);
     }
 
-    final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag,
+    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag,
         queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
-    return responseBody
-        .findAllElements("Seance")
-        .map((node) => CourseActivity.fromXmlNode(node))
-        .toList();
+    return responseBody.findAllElements("Seance").map((node) => CourseActivity.fromXmlNode(node)).toList();
   }
 }

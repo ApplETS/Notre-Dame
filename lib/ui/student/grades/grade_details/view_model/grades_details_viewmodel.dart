@@ -20,8 +20,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   /// Used to get the current course selected of the student
   Course course;
 
-  GradesDetailsViewModel({required this.course, required AppIntl intl})
-      : _appIntl = intl;
+  GradesDetailsViewModel({required this.course, required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future<Course> futureToRun() async {
@@ -41,8 +40,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   // ignore: type_annotate_public_apis
   void onError(error) {
     if (error is ApiException) {
-      if (error.message.startsWith(SignetsError.gradesNotAvailable) ||
-          error.errorCode == SignetsError.gradesEmpty) {
+      if (error.message.startsWith(SignetsError.gradesNotAvailable) || error.errorCode == SignetsError.gradesEmpty) {
         Fluttertoast.showToast(msg: _appIntl.grades_msg_no_grade);
       } else {
         Fluttertoast.showToast(msg: _appIntl.error);

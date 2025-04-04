@@ -34,8 +34,7 @@ void main() {
       test('Calls launchInBrowser', () {
         viewModel.launchWebsite("https://clubapplets.ca/");
 
-        verify(launchUrlServiceMock.launchInBrowser("https://clubapplets.ca/"))
-            .called(1);
+        verify(launchUrlServiceMock.launchInBrowser("https://clubapplets.ca/")).called(1);
       });
 
       test('ETS password assistance web page (en) returns "200 OK"', () async {

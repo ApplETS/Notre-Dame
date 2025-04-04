@@ -105,11 +105,9 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
         shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight,
         vibrantAppBar: vibrantAppBar ?? this.vibrantAppBar,
         newsAccent: newsAccent ?? this.newsAccent,
-        newsBackgroundVibrant:
-            newsBackgroundVibrant ?? this.newsBackgroundVibrant,
+        newsBackgroundVibrant: newsBackgroundVibrant ?? this.newsBackgroundVibrant,
         newsAuthorProfile: newsAuthorProfile ?? this.newsAuthorProfile,
-        newsAuthorProfileDescription:
-            newsAuthorProfileDescription ?? this.newsAuthorProfileDescription,
+        newsAuthorProfileDescription: newsAuthorProfileDescription ?? this.newsAuthorProfileDescription,
         modalTitle: modalTitle ?? this.modalTitle,
         modalHandle: modalHandle ?? this.modalHandle,
         fadedText: fadedText ?? this.fadedText,
@@ -150,12 +148,9 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
         shimmerHighlight: _lerp(shimmerHighlight, other.shimmerHighlight, t),
         vibrantAppBar: _lerp(vibrantAppBar, other.vibrantAppBar, t),
         newsAccent: _lerp(newsAccent, other.newsAccent, t),
-        newsBackgroundVibrant:
-            _lerp(newsBackgroundVibrant, other.newsBackgroundVibrant, t),
-        newsAuthorProfile:
-            _lerp(newsAuthorProfile, other.newsBackgroundVibrant, t),
-        newsAuthorProfileDescription: _lerp(newsAuthorProfileDescription,
-            other.newsAuthorProfileDescription, t),
+        newsBackgroundVibrant: _lerp(newsBackgroundVibrant, other.newsBackgroundVibrant, t),
+        newsAuthorProfile: _lerp(newsAuthorProfile, other.newsBackgroundVibrant, t),
+        newsAuthorProfileDescription: _lerp(newsAuthorProfileDescription, other.newsAuthorProfileDescription, t),
         modalTitle: _lerp(modalTitle, other.modalTitle, t),
         modalHandle: _lerp(modalHandle, other.modalHandle, t),
         fadedText: _lerp(fadedText, other.fadedText, t),
@@ -167,10 +162,8 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
         negativeText: _lerp(negativeText, other.negativeText, t),
         link: _lerp(link, other.link, t),
         outageGif: _lerp(outageGif, other.outageGif, t),
-        dayIndicatorWeekView:
-            _lerp(dayIndicatorWeekView, other.dayIndicatorWeekView, t),
-        dayIndicatorDayView:
-            _lerp(dayIndicatorDayView, other.dayIndicatorDayView, t),
+        dayIndicatorWeekView: _lerp(dayIndicatorWeekView, other.dayIndicatorWeekView, t),
+        dayIndicatorDayView: _lerp(dayIndicatorDayView, other.dayIndicatorDayView, t),
         loginMain: _lerp(loginMain, other.loginMain, t),
         loginAccent: _lerp(loginAccent, other.loginAccent, t),
         inputError: _lerp(inputError, other.inputError, t));

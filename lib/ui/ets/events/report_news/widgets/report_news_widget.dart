@@ -38,14 +38,12 @@ class _ReportNewsState extends State<ReportNews> {
               if (!clicked) _buildTitle(context),
               Expanded(
                 child: clicked && clickedIndex != -1
-                    ? Center(
-                        child: _buildReportView(context, clickedIndex, model))
+                    ? Center(child: _buildReportView(context, clickedIndex, model))
                     : ColoredBox(
                         color: context.theme.appColors.backgroundAlt,
                         child: ListView.builder(
                           padding: EdgeInsets.only(top: 16, bottom: 32),
-                          itemCount:
-                              getLocalizedReportNewsItems(context).length,
+                          itemCount: getLocalizedReportNewsItems(context).length,
                           itemBuilder: (context, index) {
                             return _buildListTile(index);
                           },
@@ -72,8 +70,7 @@ class _ReportNewsState extends State<ReportNews> {
             height: 5,
             width: 50,
             decoration: BoxDecoration(
-                color: context.theme.appColors.modalHandle,
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                color: context.theme.appColors.modalHandle, borderRadius: BorderRadius.all(Radius.circular(8.0))),
           ),
         ),
       ),
@@ -113,8 +110,7 @@ class _ReportNewsState extends State<ReportNews> {
             trailing: const Icon(
               Icons.navigate_next,
             ),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             onTap: () {
               setState(() {
                 clicked = true;
@@ -125,12 +121,9 @@ class _ReportNewsState extends State<ReportNews> {
         ));
   }
 
-  Widget _buildReportView(
-      BuildContext context, int index, ReportNewsViewModel model) {
-    final String reportTitle =
-        getLocalizedReportNewsItems(context)[index].title;
-    final String reportCategory =
-        getLocalizedReportNewsItems(context)[index].category;
+  Widget _buildReportView(BuildContext context, int index, ReportNewsViewModel model) {
+    final String reportTitle = getLocalizedReportNewsItems(context)[index].title;
+    final String reportCategory = getLocalizedReportNewsItems(context)[index].category;
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -158,10 +151,7 @@ class _ReportNewsState extends State<ReportNews> {
                 children: [
                   Text(
                     '${AppIntl.of(context)!.report_as}\n${reportTitle.toLowerCase()}?',
-                    style: TextStyle(
-                        color: AppPalette.grey.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24),
+                    style: TextStyle(color: AppPalette.grey.white, fontWeight: FontWeight.bold, fontSize: 24),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
@@ -178,20 +168,17 @@ class _ReportNewsState extends State<ReportNews> {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all<Color>(
-                          AppPalette.etsLightRed),
+                      backgroundColor: WidgetStateProperty.all<Color>(AppPalette.etsLightRed),
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
-                    child: Text(AppIntl.of(context)!.report,
-                        style: TextStyle(color: AppPalette.grey.white)),
+                    child: Text(AppIntl.of(context)!.report, style: TextStyle(color: AppPalette.grey.white)),
                     onPressed: () {
                       model.reportNews(widget.newsId, reportCategory, _reason);
-                      Fluttertoast.showToast(
-                          msg: AppIntl.of(context)!.report_toast);
+                      Fluttertoast.showToast(msg: AppIntl.of(context)!.report_toast);
                       Navigator.pop(context);
                     },
                   ),

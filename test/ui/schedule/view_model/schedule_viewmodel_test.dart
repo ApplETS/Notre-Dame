@@ -40,8 +40,7 @@ void main() {
       PreferencesFlag.scheduleListView: true,
       PreferencesFlag.scheduleShowTodayBtn: false,
     };
-    when(mockSettingsRepository.getScheduleSettings())
-        .thenAnswer((_) async => testSettings);
+    when(mockSettingsRepository.getScheduleSettings()).thenAnswer((_) async => testSettings);
 
     await viewModel.loadSettings();
 
@@ -54,8 +53,7 @@ void main() {
     expect(viewModel.calendarViewSetting, false);
   });
 
-  test('calendarViewSetting returns correct value when settings are not busy',
-      () {
+  test('calendarViewSetting returns correct value when settings are not busy', () {
     viewModel.settings[PreferencesFlag.scheduleListView] = true;
     viewModel.setBusyForObject(viewModel.settings, false);
     expect(viewModel.calendarViewSetting, true);

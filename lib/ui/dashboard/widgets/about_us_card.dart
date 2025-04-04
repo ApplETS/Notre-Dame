@@ -17,8 +17,7 @@ class AboutUsCard extends StatelessWidget {
 
   final VoidCallback _onDismissed;
 
-  AboutUsCard({required super.key, required VoidCallback onDismissed})
-      : _onDismissed = onDismissed;
+  AboutUsCard({required super.key, required VoidCallback onDismissed}) : _onDismissed = onDismissed;
 
   @override
   Widget build(BuildContext context) => DismissibleCard(
@@ -30,16 +29,16 @@ class AboutUsCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context)!.card_applets_title,
-                    style: Theme.of(context).primaryTextTheme.titleLarge),
+                child:
+                    Text(AppIntl.of(context)!.card_applets_title, style: Theme.of(context).primaryTextTheme.titleLarge),
               )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-                child: Text(AppIntl.of(context)!.card_applets_text,
-                    style: Theme.of(context).primaryTextTheme.bodyMedium),
+                child:
+                    Text(AppIntl.of(context)!.card_applets_text, style: Theme.of(context).primaryTextTheme.bodyMedium),
               ),
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),

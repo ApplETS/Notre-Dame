@@ -24,12 +24,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   List<Program> _programList = List.empty();
 
   /// Student's profile
-  final ProfileStudent _student = ProfileStudent(
-      balance: "",
-      firstName: "",
-      lastName: "",
-      permanentCode: "",
-      universalCode: "");
+  final ProfileStudent _student =
+      ProfileStudent(balance: "", firstName: "", lastName: "", permanentCode: "", universalCode: "");
 
   /// Return the profileStudent
   ProfileStudent get profileStudent {
@@ -45,13 +41,11 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     if (programList.isNotEmpty) {
       Program currentProgram = programList.first;
       for (final program in programList) {
-        if (int.parse(program.registeredCredits) >
-            int.parse(currentProgram.registeredCredits)) {
+        if (int.parse(program.registeredCredits) > int.parse(currentProgram.registeredCredits)) {
           currentProgram = program;
         }
       }
-      final int numberOfCreditsCompleted =
-          int.parse(currentProgram.accumulatedCredits);
+      final int numberOfCreditsCompleted = int.parse(currentProgram.accumulatedCredits);
       final String code = currentProgram.code;
       bool foundMatch = false;
 
@@ -64,8 +58,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
       if (!foundMatch) {
         final String programName = currentProgram.name;
-        analyticsService.logEvent("profile_view",
-            'The program $programName (code: $code) does not match any program');
+        analyticsService.logEvent("profile_view", 'The program $programName (code: $code) does not match any program');
         percentage = 0;
       }
     }
@@ -89,8 +82,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     }
 
     _programList.sort((a, b) => b.status.compareTo(a.status));
-    _programList
-        .sort((a, b) => a.registeredCredits.compareTo(b.registeredCredits));
+    _programList.sort((a, b) => a.registeredCredits.compareTo(b.registeredCredits));
 
     return _programList;
   }
@@ -118,12 +110,10 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   Future refresh() async {
     try {
       setBusyForObject(isLoadingEvents, true);
-      _userRepository
-          .getInfo()
-          .then((value) => _userRepository.getPrograms().then((value) {
-                setBusyForObject(isLoadingEvents, false);
-                notifyListeners();
-              }));
+      _userRepository.getInfo().then((value) => _userRepository.getPrograms().then((value) {
+            setBusyForObject(isLoadingEvents, false);
+            notifyListeners();
+          }));
     } on Exception catch (error) {
       onError(error);
     }

@@ -36,34 +36,27 @@ void main() {
 
     group("changeLanguage - ", () {
       test('can set language english', () async {
-        SettingsRepositoryMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.theme);
+        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         viewModel.changeLanguage(0);
 
-        verify(settingsManagerMock
-            .setLocale(AppIntl.supportedLocales.first.languageCode));
+        verify(settingsManagerMock.setLocale(AppIntl.supportedLocales.first.languageCode));
         verify(navigationServiceMock.pop());
-        verify(
-            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
       });
 
       test('can set language français', () async {
-        SettingsRepositoryMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.theme);
+        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         viewModel.changeLanguage(1);
 
-        verify(settingsManagerMock
-            .setLocale(AppIntl.supportedLocales.last.languageCode));
+        verify(settingsManagerMock.setLocale(AppIntl.supportedLocales.last.languageCode));
         verify(navigationServiceMock.pop());
-        verify(
-            navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
       });
 
       test('throws an error when index does not exist', () async {
-        SettingsRepositoryMock.stubSetString(
-            settingsManagerMock, PreferencesFlag.theme);
+        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         expect(() => viewModel.changeLanguage(-1), throwsException,
             reason: "No valid language for the index -1 passed in parameters");

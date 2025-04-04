@@ -39,8 +39,7 @@ void main() {
       final linearProgressBarFinder = find.byType(LinearProgressIndicator);
       expect(linearProgressBarFinder, findsOneWidget);
 
-      final LinearProgressIndicator linearProgressBar =
-          tester.widget<LinearProgressIndicator>(linearProgressBarFinder);
+      final LinearProgressIndicator linearProgressBar = tester.widget<LinearProgressIndicator>(linearProgressBarFinder);
       expect(linearProgressBar.value, 0.5);
     });
   });

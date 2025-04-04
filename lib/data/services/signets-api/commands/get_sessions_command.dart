@@ -21,13 +21,9 @@ class GetSessionsCommand implements Command<List<Session>> {
 
   @override
   Future<List<Session>> execute() async {
-    final responseBody = await RequestBuilderService.sendRequest(
-        _httpClient, endpoint, token, responseTag);
+    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag);
 
     /// Build and return the list of Session
-    return responseBody
-        .findAllElements("Session")
-        .map((node) => Session.fromXmlNode(node))
-        .toList();
+    return responseBody.findAllElements("Session").map((node) => Session.fromXmlNode(node)).toList();
   }
 }

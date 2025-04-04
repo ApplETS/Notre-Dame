@@ -9,16 +9,12 @@ import 'auth_service_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<AuthService>()])
 class AuthServiceMock extends MockAuthService {
-  static void stubCreatePublicClientApplication(AuthServiceMock mock,
-      {bool success = true}) {
-    when(mock.createPublicClientApplication(
-            authorityType: anyNamed('authorityType'),
-            broker: anyNamed('broker')))
+  static void stubCreatePublicClientApplication(AuthServiceMock mock, {bool success = true}) {
+    when(mock.createPublicClientApplication(authorityType: anyNamed('authorityType'), broker: anyNamed('broker')))
         .thenAnswer((_) async => (success, null));
   }
 
-  static void stubAcquireTokenSilent(AuthServiceMock mock,
-      {bool success = true}) {
+  static void stubAcquireTokenSilent(AuthServiceMock mock, {bool success = true}) {
     AuthenticationResult? result;
     MsalException? exception;
     if (success) {
@@ -35,8 +31,7 @@ class AuthServiceMock extends MockAuthService {
     } else {
       exception = MsalException(message: 'Error');
     }
-    when(mock.acquireTokenSilent())
-        .thenAnswer((_) async => (result, exception));
+    when(mock.acquireTokenSilent()).thenAnswer((_) async => (result, exception));
   }
 
   static void stubAcquireToken(AuthServiceMock mock, {bool success = true}) {
