@@ -78,5 +78,32 @@ main() {
       final gradesButtons = find.byType(GradeButton, skipOffstage: false);
       expect(gradesButtons, findsNWidgets(2));
     });
+
+    testWidgets('GradeButton is not displayed when course is abandoned',
+        (WidgetTester tester) async {
+      // Add a course with grade XX (abandoned)
+      final List<Course> coursesCopy = List.from(courses);
+      coursesCopy.add(Course(
+        acronym: 'GEN103',
+        group: '02',
+        session: 'É2020',
+        programCode: '999',
+        grade: 'XX',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      ));
+
+      await tester.pumpWidget(localizedWidget(
+          child: GradesCard(
+              courses: coursesCopy, onDismissed: () {}, loading: false)));
+      await tester.pumpAndSettle();
+
+      // Find grades buttons in the card
+      final gradesButtons = find.byType(GradeButton, skipOffstage: false);
+
+      // Check that the button for GEN103 is not displayed
+      expect(gradesButtons, findsNWidgets(2));
+      expect(find.text('GEN103'), findsNothing);
+    });
   });
 }

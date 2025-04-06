@@ -62,7 +62,9 @@ class GradesCard extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
           child: Wrap(
             children:
-                courses.map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt)).toList(),
+                courses
+                    .where((course) => course.grade != "XX") // Do not display abandoned courses
+                    .map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt)).toList(),
           ),
         ),
       );
