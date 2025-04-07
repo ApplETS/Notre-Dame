@@ -79,8 +79,7 @@ main() {
       expect(gradesButtons, findsNWidgets(2));
     });
 
-    testWidgets('GradeButton is not displayed when course is abandoned',
-        (WidgetTester tester) async {
+    testWidgets('GradeButton is not displayed when course is abandoned', (WidgetTester tester) async {
       // Add a course with grade XX (abandoned)
       final List<Course> coursesCopy = List.from(courses);
       coursesCopy.add(Course(
@@ -93,9 +92,8 @@ main() {
         title: 'Cours générique',
       ));
 
-      await tester.pumpWidget(localizedWidget(
-          child: GradesCard(
-              courses: coursesCopy, onDismissed: () {}, loading: false)));
+      await tester
+          .pumpWidget(localizedWidget(child: GradesCard(courses: coursesCopy, onDismissed: () {}, loading: false)));
       await tester.pumpAndSettle();
 
       // Find grades buttons in the card
