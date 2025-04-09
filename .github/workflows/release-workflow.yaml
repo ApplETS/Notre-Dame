@@ -46,26 +46,6 @@ jobs:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
           APP_HASH: ${{ secrets.APP_HASH }}
 
-      - name: Set changelog for each platform
-        run: |
-          echo "${{ github.event.release.body }}" > releaseBody.txt
-          enChangelog=$(sed -n '/## English version$/,/## End english version/p' releaseBody.txt | sed '1d;$d')
-          frChangelog=$(sed -n '/## French version$/,/## End french version/p' releaseBody.txt | sed '1d;$d')
-
-          if [[ -n "$enChangelog" ]]; then
-            echo "Changing english changelog"
-            echo "$enChangelog" > ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-            echo "en-CA Changelog file cat:"
-            cat ${{ matrix.metadata_path }}/en-CA/${{ matrix.changelog_path }}
-          fi
-          if [[ -n "$frChangelog" ]]; then
-            echo "Changing english changelog"
-            echo "$frChangelog" > ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
-            echo "fr-CA Changelog file cat:"
-            cat ${{ matrix.metadata_path }}/fr-CA/${{ matrix.changelog_path }}
-          fi
-        working-directory: ${{ matrix.working_directory }}
-
       - name: Setup SSH Key to download match repository for iOS only
         if: matrix.target == 'iOS'
         # Copied from https://github.com/maddox/actions/blob/master/ssh/entrypoint.sh
