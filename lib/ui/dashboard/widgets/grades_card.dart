@@ -15,8 +15,6 @@ import 'package:notredame/ui/core/ui/dismissible_card.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
-  static const String abandonedGradeCode = "XX";
-
   final NavigationService _navigationService = locator<NavigationService>();
   final List<Course> courses;
   final VoidCallback onDismissed;
@@ -63,7 +61,6 @@ class GradesCard extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
           child: Wrap(
             children: courses
-                .where((course) => course.grade != abandonedGradeCode)
                 .map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt))
                 .toList(),
           ),
