@@ -269,6 +269,34 @@ void main() {
 
         verifyNoMoreInteractions(courseRepositoryMock);
       });
+
+      testWidgets('Course is not added when course is abandoned', (WidgetTester tester) async {
+        final Course abandonedCourse = Course(
+          acronym: 'GEN103',
+          group: '02',
+          session: 'É2020',
+          programCode: '999',
+          grade: 'XX',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
+
+        final List<Course> coursesWithAbandoned = [...courses, abandonedCourse];
+
+        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: coursesWithAbandoned, fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: coursesWithAbandoned);
+
+        final List<Course> filteredCourses = await viewModel.futureToRunGrades();
+
+        await untilCalled(courseRepositoryMock.sessions);
+
+        // Check if the course abandoned is not included
+        expect(filteredCourses, equals(courses));
+        expect(filteredCourses.any((c) => c.acronym == 'GEN103'), isFalse);
+      });
     });
 
     group("futureToRun - ", () {

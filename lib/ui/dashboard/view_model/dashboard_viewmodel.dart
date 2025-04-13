@@ -31,6 +31,7 @@ import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
+  static const String abandonedGradeCode = "XX";
 
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -344,7 +345,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
         courses.clear();
         for (final Course course in coursesCached) {
-          if (course.session == currentSession.shortName) {
+          if (course.session == currentSession.shortName && course.grade != abandonedGradeCode) {
             courses.add(course);
           }
         }
@@ -354,7 +355,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         // Update the courses list
         courses.clear();
         for (final Course course in fetchedCourses) {
-          if (course.session == currentSession.shortName) {
+          if (course.session == currentSession.shortName && course.grade != abandonedGradeCode) {
             courses.add(course);
           }
         }
