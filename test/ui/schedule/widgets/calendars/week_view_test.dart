@@ -10,7 +10,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/utils/utils.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
@@ -45,7 +45,7 @@ void main() {
 
   group("week calendar view - ", () {
     setUp(() async {
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       await setupAppIntl();
       setupNetworkingServiceMock();
@@ -69,7 +69,7 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
 
       await tester.runAsync(() async {
-        await tester.pumpWidget(localizedWidget(child: WeekCalendar(controller: CalendarController())));
+        await tester.pumpWidget(localizedWidget(child: WeekCalendar(controller: ScheduleController())));
         await tester.pumpAndSettle();
       });
 
@@ -85,7 +85,7 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: []);
 
       await tester.runAsync(() async {
-        await tester.pumpWidget(localizedWidget(child: WeekCalendar(controller: CalendarController())));
+        await tester.pumpWidget(localizedWidget(child: WeekCalendar(controller: ScheduleController())));
         await tester.pumpAndSettle();
       });
 

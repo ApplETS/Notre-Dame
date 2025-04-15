@@ -11,17 +11,17 @@ import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/author_repository.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
-import 'package:notredame/data/services/internal_info_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/monets/monets_api_client.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
@@ -29,18 +29,18 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/locator.dart';
 import 'data/mocks/repositories/author_repository_mock.dart';
+import 'data/mocks/repositories/broadcast_message_repository_mock.dart';
 import 'data/mocks/repositories/course_repository_mock.dart';
 import 'data/mocks/repositories/news_repository_mock.dart';
 import 'data/mocks/repositories/quick_links_repository_mock.dart';
 import 'data/mocks/repositories/settings_repository_mock.dart';
 import 'data/mocks/repositories/user_repository_mock.dart';
 import 'data/mocks/services/analytics_service_mock.dart';
+import 'data/mocks/services/auth_service_mock.dart';
 import 'data/mocks/services/cache_service_mock.dart';
 import 'data/mocks/services/flutter_secure_storage_mock.dart';
 import 'data/mocks/services/in_app_review_service_mock.dart';
-import 'data/mocks/services/internal_info_service_mock.dart';
 import 'data/mocks/services/launch_url_service_mock.dart';
-import 'data/mocks/services/mon_ets_api_mock.dart';
 import 'data/mocks/services/navigation_service_mock.dart';
 import 'data/mocks/services/networking_service_mock.dart';
 import 'data/mocks/services/preferences_service_mock.dart';
@@ -101,21 +101,11 @@ AuthorRepositoryMock setupAuthorRepositoryMock() {
 }
 
 /// Load a mock of the [InAppReviewService]
-InAppReviewService setupInAppReviewServiceMock() {
+InAppReviewServiceMock setupInAppReviewServiceMock() {
   unregister<InAppReviewService>();
   final service = InAppReviewServiceMock();
 
   locator.registerSingleton<InAppReviewService>(service);
-
-  return service;
-}
-
-/// Load a mock of the [MonETSAPIClient]
-MonETSAPIClientMock setupMonETSApiMock() {
-  unregister<MonETSAPIClient>();
-  final service = MonETSAPIClientMock();
-
-  locator.registerSingleton<MonETSAPIClient>(service);
 
   return service;
 }
@@ -126,16 +116,6 @@ AnalyticsServiceMock setupAnalyticsServiceMock() {
   final service = AnalyticsServiceMock();
 
   locator.registerSingleton<AnalyticsService>(service);
-
-  return service;
-}
-
-/// Load a mock of the [InternalInfoService]
-InternalInfoServiceMock setupInternalInfoServiceMock() {
-  unregister<InternalInfoService>();
-  final service = InternalInfoServiceMock();
-
-  locator.registerSingleton<InternalInfoService>(service);
 
   return service;
 }
@@ -226,7 +206,7 @@ PreferencesServiceMock setupPreferencesServiceMock() {
 }
 
 /// Load a mock of the [SettingsRepository]
-SettingsRepositoryMock setupSettingsManagerMock() {
+SettingsRepositoryMock setupSettingsRepositoryMock() {
   unregister<SettingsRepository>();
   final service = SettingsRepositoryMock();
 
@@ -308,7 +288,25 @@ QuickLinkRepositoryMock setupQuickLinkRepositoryMock() {
   return repository;
 }
 
+AuthServiceMock setupAuthServiceMock() {
+  unregister<AuthService>();
+  final repository = AuthServiceMock();
+
+  locator.registerSingleton<AuthService>(repository);
+
+  return repository;
+}
+
 bool getCalendarViewEnabled() {
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   return remoteConfigService.scheduleListViewDefault;
+}
+
+BroadcastMessageRepositoryMock setupBroadcastMessageRepositoryMock() {
+  unregister<BroadcastMessageRepository>();
+  final BroadcastMessageRepositoryMock repository = BroadcastMessageRepositoryMock();
+
+  locator.registerSingleton<BroadcastMessageRepository>(repository);
+
+  return repository;
 }

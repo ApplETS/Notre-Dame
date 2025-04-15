@@ -17,6 +17,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
@@ -61,7 +62,7 @@ void main() {
   group("ScheduleView - ", () {
     setUp(() async {
       setupNavigationServiceMock();
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       setupNetworkingServiceMock();
@@ -87,7 +88,7 @@ void main() {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
           await tester.pumpAndSettle();
         });
 
@@ -104,7 +105,7 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
           await tester.pumpAndSettle();
         });
 
@@ -127,7 +128,7 @@ void main() {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(WeekView), findsOneWidget);
@@ -139,7 +140,7 @@ void main() {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsMonth);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(MonthView), findsOneWidget);
@@ -151,7 +152,7 @@ void main() {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDay);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(DayView), findsOneWidget);
@@ -163,7 +164,7 @@ void main() {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDayList);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(PageView), findsExactly(2));
@@ -175,7 +176,7 @@ void main() {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(IconButton), findsExactly(5));
@@ -187,7 +188,7 @@ void main() {
         SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDontShowTodayBtn);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
+          await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
           await tester.pumpAndSettle();
         }).then((value) async {
           expect(find.byType(IconButton), findsExactly(4));

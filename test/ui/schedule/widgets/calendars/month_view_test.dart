@@ -11,7 +11,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -45,7 +45,7 @@ void main() {
 
   group("month calendar view - ", () {
     setUp(() async {
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       await setupAppIntl();
       setupNetworkingServiceMock();
@@ -69,7 +69,7 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
 
       await tester.runAsync(() async {
-        await tester.pumpWidget(localizedWidget(child: MonthCalendar(controller: CalendarController())));
+        await tester.pumpWidget(localizedWidget(child: MonthCalendar(controller: ScheduleController())));
         await tester.pumpAndSettle();
       });
 

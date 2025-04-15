@@ -1,12 +1,12 @@
 // Package imports:
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:xml/xml.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/request_builder_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/data/services/signets-api/soap_service.dart';
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/utils/command.dart';
 
 /// Call the SignetsAPI to get the courses activities for the [session] for
@@ -15,12 +15,14 @@ import 'package:notredame/utils/command.dart';
 /// If the [startDate] and/or [endDate] are specified the results will contains
 /// all the activities between these dates
 class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
+  static const String endpoint = "/api/Etudiant/lireHoraireDesSeances";
+  static const String responseTag = "ListeSeances";
+
   final SignetsAPIClient client;
   final http.Client _httpClient;
   final RegExp _sessionShortNameRegExp;
   final RegExp _courseGroupRegExp;
-  final String username;
-  final String password;
+  final String token;
   final String session;
   final String courseGroup;
   final DateTime? startDate;
@@ -31,8 +33,7 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     this._httpClient,
     this._sessionShortNameRegExp,
     this._courseGroupRegExp, {
-    required this.username,
-    required this.password,
+    required this.token,
     required this.session,
     this.courseGroup = "",
     this.startDate,
@@ -52,35 +53,22 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
       throw ArgumentError("The startDate can't be after endDate.");
     }
 
-    // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(Urls.listClassScheduleOperation, username, password).buildDocument();
-    final operationContent = XmlBuilder();
+    final queryParams = {"session": session};
 
-    // Add the content needed by the operation
-    operationContent.element("pSession", nest: () {
-      operationContent.text(session);
-    });
-    operationContent.element("pCoursGroupe", nest: () {
-      operationContent.text(courseGroup);
-    });
+    if (courseGroup.isNotEmpty) queryParams["coursGroupe"] = courseGroup;
 
-    operationContent.element("pDateDebut", nest: () {
-      operationContent.text(startDate == null ? "" : "${startDate!.year}-${startDate!.month}-${startDate!.day}");
-    });
-    operationContent.element("pDateFin", nest: () {
-      operationContent.text(endDate == null ? "" : "${endDate!.year}-${endDate!.month}-${endDate!.day}");
-    });
+    final dateFormat = DateFormat('yyyy-MM-dd');
+    if (startDate != null) {
+      queryParams["dateDebut"] = dateFormat.format(startDate!);
+    }
+    if (endDate != null) {
+      queryParams["dateFin"] = dateFormat.format(endDate!);
+    }
 
-    // Add the parameters needed inside the request.
-    body
-        .findAllElements(Urls.listClassScheduleOperation, namespace: Urls.signetsOperationBase)
-        .first
-        .children
-        .add(operationContent.buildFragment());
-
-    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.listClassScheduleOperation);
+    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag,
+        queryParameters: queryParams);
 
     /// Build and return the list of CourseActivity
-    return responseBody.findAllElements("Seances").map((node) => CourseActivity.fromXmlNode(node)).toList();
+    return responseBody.findAllElements("Seance").map((node) => CourseActivity.fromXmlNode(node)).toList();
   }
 }

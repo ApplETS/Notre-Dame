@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:animations/animations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
@@ -47,19 +46,11 @@ class _GradesViewState extends State<GradesView> {
                   ListView.builder(
                     padding: const EdgeInsets.only(top: 8.0),
                     itemCount: model.coursesBySession.length,
-                    itemBuilder: (BuildContext context, int index) => OpenContainer(
-                      transitionDuration: const Duration(milliseconds: 750),
-                      closedBuilder: (context, action) => _buildSessionCourses(
-                          index,
-                          _sessionName(model.sessionOrder[index], AppIntl.of(context)!),
-                          model.coursesBySession[model.sessionOrder[index]]!,
-                          model),
-                      openBuilder: (context, action) => _buildSessionCourses(
-                          index,
-                          _sessionName(model.sessionOrder[index], AppIntl.of(context)!),
-                          model.coursesBySession[model.sessionOrder[index]]!,
-                          model),
-                    ),
+                    itemBuilder: (BuildContext context, int index) => _buildSessionCourses(
+                        index,
+                        _sessionName(model.sessionOrder[index], AppIntl.of(context)!),
+                        model.coursesBySession[model.sessionOrder[index]]!,
+                        model),
                   ),
                 if (model.isBusy) buildLoading(isInteractionLimitedWhileLoading: false) else const SizedBox()
               ],

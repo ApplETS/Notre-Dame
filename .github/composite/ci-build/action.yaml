@@ -21,15 +21,18 @@ inputs:
     required: true
   maps-api-key:
     required: false
+  app-hash:
+    required: true
   
 runs:
   using: "composite"
   steps:
     - name: Build the application
       shell: bash
-      run: flutter build -v ${{ inputs.build-target }} ${{ inputs.build-args }} --release
+      run: flutter build ${{ inputs.build-target }} ${{ inputs.build-args }} --release
       env:
         MAPS_API_KEY: ${{ inputs.maps-api-key }}
+        APP_HASH: ${{ inputs.app-hash }}
     
     - name: Rename Android build
       if: inputs.target == 'Android'

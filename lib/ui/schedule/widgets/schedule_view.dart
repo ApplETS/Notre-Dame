@@ -12,15 +12,16 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/core/ui/calendar_selector.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/calendar_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
 class ScheduleView extends StatefulWidget {
-  const ScheduleView({super.key});
+  final ScheduleController controller;
+  const ScheduleView({super.key, required this.controller});
 
   @override
   State<ScheduleView> createState() => _ScheduleViewState();
@@ -31,8 +32,6 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
 
   static const String tag = "ScheduleView";
 
-  CalendarController controller = CalendarController();
-
   @override
   Widget build(BuildContext context) => ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(),
@@ -42,7 +41,6 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
           }
         },
         builder: (context, model, child) => BaseScaffold(
-            safeArea: false,
             isLoading: model.isBusy,
             isInteractionLimitedWhileLoading: false,
             appBar: AppBar(
@@ -56,51 +54,54 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
 
   Widget displaySchedule(ScheduleViewModel model) {
     if (model.calendarFormat == CalendarTimeFormat.month) {
-      return MonthCalendar(controller: controller);
+      return MonthCalendar(controller: widget.controller);
     }
     if (model.calendarFormat == CalendarTimeFormat.week) {
-      return WeekCalendar(controller: controller);
+      return WeekCalendar(controller: widget.controller);
     }
     return DayCalendar(
       listView: model.calendarViewSetting,
-      controller: controller,
+      controller: widget.controller,
     );
   }
 
-  List<Widget> _buildActionButtons(ScheduleViewModel model) => [
+  List<Widget> _buildActionButtons(ScheduleViewModel model) {
+    widget.controller.settingsUpdated = () => model.loadSettings();
+
+    return [
+      IconButton(
+        icon: const Icon(Icons.ios_share),
+        tooltip: AppIntl.of(context)!.calendar_export,
+        onPressed: () {
+          final translations = AppIntl.of(context)!;
+          showDialog(
+            context: context,
+            builder: (_) => CalendarSelectionWidget(translations: translations),
+          );
+        },
+      ),
+      if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool))
         IconButton(
-          icon: const Icon(Icons.ios_share),
-          tooltip: AppIntl.of(context)!.calendar_export,
-          onPressed: () {
-            final translations = AppIntl.of(context)!;
-            showDialog(
-              context: context,
-              builder: (_) => CalendarSelectionWidget(translations: translations),
-            );
-          },
-        ),
-        if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool))
-          IconButton(
-              icon: const Icon(Icons.today_outlined),
-              tooltip: AppIntl.of(context)!.schedule_already_today_tooltip,
-              onPressed: () {
-                controller.returnToToday();
-                _analyticsService.logEvent(tag, "Select today clicked");
-              }),
-        IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            tooltip: AppIntl.of(context)!.schedule_settings_title,
-            onPressed: () async {
-              await showModalBottomSheet(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10),
-                    ),
+            icon: const Icon(Icons.today_outlined),
+            tooltip: AppIntl.of(context)!.schedule_already_today_tooltip,
+            onPressed: () {
+              widget.controller.returnToToday();
+              _analyticsService.logEvent(tag, "Select today clicked");
+            }),
+      IconButton(
+          icon: const Icon(Icons.settings_outlined),
+          tooltip: AppIntl.of(context)!.schedule_settings_title,
+          onPressed: () async {
+            await showModalBottomSheet(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(10),
                   ),
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => const ScheduleSettings());
-              model.loadSettings();
-            })
-      ];
+                ),
+                context: context,
+                isScrollControlled: true,
+                builder: (context) => ScheduleSettings(controller: widget.controller));
+          })
+    ];
+  }
 }

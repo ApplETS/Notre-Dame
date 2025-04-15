@@ -9,6 +9,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -18,8 +19,10 @@ late SettingsRepositoryMock settingsManagerMock;
 late CourseRepositoryMock courseRepositoryMock;
 
 late ScheduleSettingsViewModel viewModel;
+ScheduleController controller = ScheduleController();
 
 void main() {
+  controller.settingsUpdated = () {};
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -109,9 +112,9 @@ void main() {
   final List<ScheduleActivity> twoClassesWithLaboratoryABscheduleActivities = [];
   group("ScheduleSettingsViewModel - ", () {
     setUp(() {
-      settingsManagerMock = setupSettingsManagerMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
-      viewModel = ScheduleSettingsViewModel();
+      viewModel = ScheduleSettingsViewModel(controller: controller);
 
       twoClassesWithLaboratoryABscheduleActivities.addAll(classOneWithLaboratoryABscheduleActivities);
       twoClassesWithLaboratoryABscheduleActivities.addAll(classTwoWithLaboratoryABscheduleActivities);

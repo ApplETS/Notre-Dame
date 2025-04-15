@@ -198,7 +198,7 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
           ),
           GestureDetector(
             onTap: () {
-              Clipboard.setData(ClipboardData(text: model.universalAccessCode));
+              Clipboard.setData(ClipboardData(text: model.profileStudent.universalCode));
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(AppIntl.of(context)!.profile_universal_code_copied_to_clipboard),
               ));
@@ -215,7 +215,7 @@ Card getMyInfosCard(ProfileViewModel model, BuildContext context) {
                 ),
                 Center(
                   child: Text(
-                    model.universalAccessCode,
+                    model.profileStudent.universalCode,
                     style: const TextStyle(fontSize: 14),
                   ),
                 ),

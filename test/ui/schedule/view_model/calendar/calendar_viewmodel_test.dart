@@ -21,7 +21,7 @@ void main() {
 
   setUp(() async {
     courseRepositoryMock = setupCourseRepositoryMock();
-    settingsManagerMock = setupSettingsManagerMock();
+    settingsManagerMock = setupSettingsRepositoryMock();
 
     viewModel = _TestCalendarViewModel(
       intl: await setupAppIntl(),

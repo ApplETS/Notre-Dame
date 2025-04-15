@@ -18,8 +18,8 @@ void main() {
   late AppIntl intl;
   late UserRepositoryMock userRepositoryMock;
 
-  final profileStudent =
-      ProfileStudent(firstName: "John", lastName: "Doe", permanentCode: "ABC123", balance: "123456789");
+  final profileStudent = ProfileStudent(
+      firstName: "John", lastName: "Doe", permanentCode: "ABC123", balance: "123456789", universalCode: 'AA000000');
 
   // Make a test program object
   final program = Program(

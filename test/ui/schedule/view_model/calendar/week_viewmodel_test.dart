@@ -16,8 +16,9 @@ void main() {
   late WeekViewModel viewModel;
 
   setUp(() async {
+    setupSettingsRepositoryMock();
     courseRepositoryMock = setupCourseRepositoryMock();
-    setupSettingsManagerMock();
+    setupSettingsRepositoryMock();
     setupFlutterToastMock();
 
     viewModel = WeekViewModel(

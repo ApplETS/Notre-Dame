@@ -11,7 +11,6 @@ import 'package:notredame/ui/ets/quick_links/widgets/quick_links_view.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/web_link_card.dart';
 import '../../../../data/mocks/repositories/quick_links_repository_mock.dart';
 import '../../../../data/mocks/services/analytics_service_mock.dart';
-import '../../../../data/mocks/services/internal_info_service_mock.dart';
 import '../../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../../helpers.dart';
 
@@ -25,7 +24,6 @@ void main() {
       intl = await setupAppIntl();
       setupNavigationServiceMock();
       setupAnalyticsServiceMock();
-      setupInternalInfoServiceMock();
       setupNetworkingServiceMock();
       setupLaunchUrlServiceMock();
       quickLinkRepositoryMock = setupQuickLinkRepositoryMock();
@@ -37,7 +35,6 @@ void main() {
     tearDown(() {
       unregister<NavigationServiceMock>();
       unregister<AnalyticsServiceMock>();
-      unregister<InternalInfoServiceMock>();
       unregister<NetworkingService>();
       unregister<LaunchUrlService>();
       unregister<QuickLinkRepository>();

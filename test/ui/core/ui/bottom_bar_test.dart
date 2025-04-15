@@ -73,7 +73,7 @@ void main() {
 
         await tester.tap(find.byIcon(Icons.schedule_outlined));
 
-        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.schedule));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.schedule, arguments: anything));
       });
 
       testWidgets('student', (WidgetTester tester) async {

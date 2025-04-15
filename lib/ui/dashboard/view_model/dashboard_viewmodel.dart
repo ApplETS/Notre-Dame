@@ -1,14 +1,20 @@
 // Dart imports:
 import 'dart:collection';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/data/models/broadcast_message.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
@@ -25,11 +31,13 @@ import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
+  static const String abandonedGradeCode = "XX";
 
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+  final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
@@ -46,13 +54,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
 
-  /// Message to display in case of urgent/important broadcast need (Firebase
-  /// remote config), and the associated card title
-  String broadcastMessage = "";
-  String broadcastTitle = "";
-  String broadcastColor = "";
-  String broadcastUrl = "";
-  String broadcastType = "";
+  BroadcastMessage? broadcastMessage;
 
   /// Get progress of the session
   double get progress => _progress;
@@ -60,19 +62,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<int> get sessionDays => _sessionDays;
 
   /// Activities for today
-  List<CourseActivity> _todayDateEvents = [];
+  final List<CourseActivity> _scheduleEvents = [];
 
   /// Get the list of activities for today
-  List<CourseActivity> get todayDateEvents {
-    return _todayDateEvents;
-  }
-
-  // Activities for tomorrow
-  List<CourseActivity> _tomorrowDateEvents = [];
-
-  /// Get the list of activities for tomorrow
-  List<CourseActivity> get tomorrowDateEvents {
-    return _tomorrowDateEvents;
+  List<CourseActivity> get scheduleEvents {
+    return _scheduleEvents;
   }
 
   /// Get the status of all displayable cards
@@ -82,8 +76,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
 
   ProgressBarText _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-
-  ProgressBarText get currentProgressBarText => _currentProgressBarText;
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -128,12 +120,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   void changeProgressBarText() {
-    if (currentProgressBarText.index <= 1) {
-      _currentProgressBarText = ProgressBarText.values[currentProgressBarText.index + 1];
+    if (_currentProgressBarText.index <= 1) {
+      _currentProgressBarText = ProgressBarText.values[_currentProgressBarText.index + 1];
     } else {
       _currentProgressBarText = ProgressBarText.values[0];
     }
 
+    notifyListeners();
     _settingsManager.setString(PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
 
@@ -166,36 +159,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
-    final dashboard = await _settingsManager.getDashboard();
-
-    //TODO: remove when all users are on 4.50.1 or more
-    final sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.containsKey("PreferencesFlag.broadcastChange")) {
-      sharedPreferences.remove("PreferencesFlag.broadcastChange");
-    }
-    if (sharedPreferences.containsKey("PreferencesFlag.broadcastCard")) {
-      sharedPreferences.remove("PreferencesFlag.broadcastCard");
-    }
-    final sortedList = dashboard.entries.toList()..sort((a, b) => a.value.compareTo(b.value));
-    final sortedDashboard = LinkedHashMap.fromEntries(sortedList);
-    int index = 0;
-    for (final element in sortedDashboard.entries) {
-      if (element.value >= 0) {
-        sortedDashboard.update(element.key, (value) => index);
-        index++;
-      }
-    }
-    //TODO: end remove when all users are on 4.50.1 or more
-
-    _cards = sortedDashboard;
+    _cards = await _settingsManager.getDashboard();
 
     getCardsToDisplay();
 
-    // load data for both grade cards & grades home screen widget
-    // (moved from getCardsToDisplay())
     await loadDataAndUpdateWidget();
 
-    return sortedDashboard;
+    return _cards!;
   }
 
   Future loadDataAndUpdateWidget() async {
@@ -291,64 +261,52 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future<List<CourseActivity>> futureToRunSchedule() async {
-    setBusyForObject(_todayDateEvents, true);
-    setBusyForObject(_tomorrowDateEvents, true);
     try {
-      var courseActivities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
-      _todayDateEvents.clear();
-      _tomorrowDateEvents.clear();
-      final todayDate = _settingsManager.dateTimeNow;
-      courseActivities = await _courseRepository.getCoursesActivities();
+      setBusyForObject(scheduleEvents, true);
+      scheduleEvents.clear();
+      await _courseRepository.getCoursesActivities();
 
-      if (_todayDateEvents.isEmpty && _courseRepository.coursesActivities != null) {
-        final DateTime tomorrowDate = todayDate.add(const Duration(days: 1));
-        // Build the list
-        for (final CourseActivity course in _courseRepository.coursesActivities!) {
-          final DateTime dateOnly = course.startDateTime;
-          if (isSameDay(todayDate, dateOnly) && todayDate.compareTo(course.endDateTime) < 0) {
-            _todayDateEvents.add(course);
-          } else if (isSameDay(tomorrowDate, dateOnly)) {
-            _tomorrowDateEvents.add(course);
+      final now = _settingsManager.dateTimeNow;
+      final tomorrow = now.add(const Duration(days: 1)).withoutTime;
+      final twoDaysFromNow = now.add(const Duration(days: 2)).withoutTime;
+
+      final courseActivities = _courseRepository.coursesActivities
+              ?.where((activity) => activity.endDateTime.isAfter(now) && activity.endDateTime.isBefore(twoDaysFromNow))
+              .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
+              .toList() ??
+          [];
+
+      for (final activity in courseActivities) {
+        final isToday = now.compareWithoutTime(activity.startDateTime);
+        final isTomorrow = activity.startDateTime.withoutTime == tomorrow;
+
+        if ((isToday || isTomorrow) && await _isLaboratoryGroupToAdd(activity)) {
+          if (isTomorrow && scheduleEvents.isNotEmpty && scheduleEvents.first.startDateTime.compareWithoutTime(now)) {
+            return scheduleEvents;
           }
+          scheduleEvents.add(activity);
         }
       }
-
-      _todayDateEvents.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-      _tomorrowDateEvents.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-
-      _todayDateEvents = await removeLaboratoryGroup(_todayDateEvents);
-      _tomorrowDateEvents = await removeLaboratoryGroup(_tomorrowDateEvents);
-      return courseActivities ?? [];
+      return scheduleEvents;
     } catch (error) {
       onError(error);
     } finally {
-      setBusyForObject(_todayDateEvents, false);
-      setBusyForObject(_tomorrowDateEvents, false);
+      setBusyForObject(scheduleEvents, false);
     }
     return [];
   }
 
-  Future<List<CourseActivity>> removeLaboratoryGroup(List<CourseActivity> todayDateEvents) async {
-    final List<CourseActivity> todayDateEventsCopy = List.from(todayDateEvents);
+  Future<bool> _isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
+    final courseKey = courseActivity.courseGroup.split('-').first;
 
-    for (final courseAcronym in todayDateEvents) {
-      final courseKey = courseAcronym.courseGroup.split('-')[0];
+    final activityCodeToUse =
+        await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseKey);
 
-      final String? activityCodeToUse =
-          await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseKey);
-
-      if (activityCodeToUse == ActivityCode.labGroupA) {
-        todayDateEventsCopy.removeWhere((element) =>
-            element.activityDescription == ActivityDescriptionName.labB &&
-            element.courseGroup == courseAcronym.courseGroup);
-      } else if (activityCodeToUse == ActivityCode.labGroupB) {
-        todayDateEventsCopy.removeWhere((element) =>
-            element.activityDescription == ActivityDescriptionName.labA &&
-            element.courseGroup == courseAcronym.courseGroup);
-      }
-    }
-
-    return todayDateEventsCopy;
+    return activityCodeToUse == ActivityCode.labGroupA
+        ? courseActivity.activityDescription != ActivityDescriptionName.labB
+        : activityCodeToUse == ActivityCode.labGroupB
+            ? courseActivity.activityDescription != ActivityDescriptionName.labA
+            : true;
   }
 
   /// Update cards order and display status in preferences
@@ -387,7 +345,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
         courses.clear();
         for (final Course course in coursesCached) {
-          if (course.session == currentSession.shortName) {
+          if (course.session == currentSession.shortName && course.grade != abandonedGradeCode) {
             courses.add(course);
           }
         }
@@ -397,7 +355,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         // Update the courses list
         courses.clear();
         for (final Course course in fetchedCourses) {
-          if (course.session == currentSession.shortName) {
+          if (course.session == currentSession.shortName && course.grade != abandonedGradeCode) {
             courses.add(course);
           }
         }
@@ -414,26 +372,45 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<void> futureToRunBroadcast() async {
     setBusyForObject(broadcastMessage, true);
-    setBusyForObject(broadcastTitle, true);
-    setBusyForObject(broadcastColor, true);
-    setBusyForObject(broadcastUrl, true);
-    setBusyForObject(broadcastType, true);
 
-    if (_appIntl.localeName == "fr") {
-      broadcastMessage = remoteConfigService.dashboardMessageFr;
-      broadcastTitle = remoteConfigService.dashboardMessageTitleFr;
-    } else {
-      broadcastMessage = remoteConfigService.dashboardMessageEn;
-      broadcastTitle = remoteConfigService.dashboardMessageTitleEn;
+    try {
+      broadcastMessage = _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusyForObject(broadcastMessage, false);
     }
-    broadcastColor = remoteConfigService.dashboardMsgColor;
-    broadcastUrl = remoteConfigService.dashboardMsgUrl;
-    broadcastType = remoteConfigService.dashboardMsgType;
+  }
 
-    setBusyForObject(broadcastMessage, false);
-    setBusyForObject(broadcastTitle, false);
-    setBusyForObject(broadcastColor, false);
-    setBusyForObject(broadcastUrl, false);
-    setBusyForObject(broadcastType, false);
+  void onCardReorder(int oldIndex, int newIndex) {
+    if (newIndex > oldIndex) {
+      // ignore: parameter_assignments
+      newIndex -= 1;
+    }
+
+    // Should not happen becase dismiss card will not be called if the card is null.
+    if (cards == null) {
+      _analyticsService.logError("DashboardView", "Cards list is null");
+      throw Exception("Cards is null");
+    }
+
+    final PreferencesFlag elementMoved = cards!.keys.firstWhere((element) => cards![element] == oldIndex);
+
+    setOrder(elementMoved, newIndex);
+  }
+
+  String getProgressBarText(BuildContext context) {
+    switch (_currentProgressBarText) {
+      case ProgressBarText.daysElapsedWithTotalDays:
+        _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
+        return AppIntl.of(context)!.progress_bar_message(sessionDays[0], sessionDays[1]);
+      case ProgressBarText.percentage:
+        _currentProgressBarText = ProgressBarText.percentage;
+        final percentage = sessionDays[1] == 0 ? 0 : ((sessionDays[0] / sessionDays[1]) * 100).round();
+        return AppIntl.of(context)!.progress_bar_message_percentage(percentage);
+      default:
+        _currentProgressBarText = ProgressBarText.remainingDays;
+        return AppIntl.of(context)!.progress_bar_message_remaining_days(sessionDays[1] - sessionDays[0]);
+    }
   }
 }

@@ -51,8 +51,8 @@ void main() {
 
   final List<Program> programs = [program1, program2, program3];
 
-  final ProfileStudent info =
-      ProfileStudent(balance: '99.99', firstName: 'John', lastName: 'Doe', permanentCode: 'DOEJ00000000');
+  final ProfileStudent info = ProfileStudent(
+      balance: '99.99', firstName: 'John', lastName: 'Doe', permanentCode: 'DOEJ00000000', universalCode: 'AA000000');
 
   group("ProfileViewModel - ", () {
     setUp(() async {

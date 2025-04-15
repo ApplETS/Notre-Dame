@@ -15,6 +15,13 @@
   "github": "GitHub",
   "email": "Email",
   "email_subject": "ÉTSMobile Problem",
+  
+  "faq_questions_app_alert_title": "Notice",
+  "faq_questions_app_alert_confirmation": "Please note that if your question is about gaining access to your account, App|ETS cannot help you. \n\nTap on the \"Password assistance\" button to get help",
+  "faq_questions_app_alert_password_assistance": "Password assistance",
+  "continue_to_mail_app": "Continue to mail app",
+  "cancel_button_text": "Cancel",
+
   "website_open": "Visit the website",
   "website_club_open": "Visit our club website",
   "facebook_open": "Visit our Facebook page",
@@ -296,7 +303,7 @@
   "more_settings": "Settings",
   "more_log_out": "Log out",
   "more_prompt_log_out_confirmation": "Are you sure you want to log out?",
-  "more_log_out_progress": "Disconnection in progress",
+  "more_log_out_progress": "Logging you out",
 
   "more_applets_about_details": "ÉTSMobile was conceived by the ApplETS scientific club from the École de technologie supérieure.\n\nApplets is, most importantly, a gathering of students who share a typical enthusiasm for the field of telecommunications and mobile applications. The mission of ApplETS is to train students in mobile development and promote the production of mobile applications within the student community.\n\nFollow us on: ",
 
@@ -407,7 +414,6 @@
   "progress_bar_suffix": "days",
 
   "in_app_review_title": "Rate us!",
-  "forgot_password": "Forgot your password?",
   "need_help": "Need help?",
   "privacy_policy": "Privacy policy",
   "actions": "Actions",
