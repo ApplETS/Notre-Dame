@@ -13,9 +13,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/core/ui/bottom_bar.dart';
 import 'package:notredame/ui/core/ui/navigation_rail.dart';
 import 'package:notredame/utils/loading.dart';
+
+import 'new_bottom_bar.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
@@ -92,7 +93,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
           body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
           bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait && widget._showBottomBar)
-              ? BottomBar()
+              ? NewBottomBar()
               : null,
           floatingActionButton: widget.fab,
           floatingActionButtonLocation: widget.fabPosition,
