@@ -16,7 +16,6 @@ import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
   final NavigationService _navigationService = locator<NavigationService>();
-
   final List<Course> courses;
   final VoidCallback onDismissed;
   final bool loading;
