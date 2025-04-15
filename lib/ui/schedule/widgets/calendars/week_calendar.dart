@@ -29,18 +29,15 @@ class _WeekCalendarState extends State<WeekCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    final double heightPerMinute =
-        (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+    final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => WeekViewModel(intl: AppIntl.of(context)!),
-      builder: (context, model, child) =>
-          _buildWeekView(model, context, heightPerMinute),
+      builder: (context, model, child) => _buildWeekView(model, context, heightPerMinute),
     );
   }
 
-  Widget _buildWeekView(
-      WeekViewModel model, BuildContext context, double heightPerMinute) {
+  Widget _buildWeekView(WeekViewModel model, BuildContext context, double heightPerMinute) {
     model.handleDateSelectedChanged(model.weekSelected);
 
     if (!isAnimating) {
@@ -50,27 +47,20 @@ class _WeekCalendarState extends State<WeekCalendar> {
     widget.controller.returnToToday = () {
       model.returnToCurrentDate();
       isAnimating = true;
-      weekViewKey.currentState
-          ?.animateToWeek(model.weekSelected)
-          .then((_) => isAnimating = false);
+      weekViewKey.currentState?.animateToWeek(model.weekSelected).then((_) => isAnimating = false);
     };
 
     return Padding(
       padding: EdgeInsets.only(bottom: 96),
       child: WeekView(
           key: weekViewKey,
-          weekNumberBuilder: (date) =>
-              Container(color: context.theme.appColors.appBar),
-          controller: model.eventController
-            ..addAll(model.selectedWeekCalendarEvents()),
+          weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
+          controller: model.eventController..addAll(model.selectedWeekCalendarEvents()),
           onPageChange: (date, page) => setState(() {
                 model.weekSelected = date;
               }),
           backgroundColor: context.theme.scaffoldBackgroundColor,
-          weekTitleHeight:
-              (MediaQuery.of(context).orientation == Orientation.portrait)
-                  ? 60
-                  : 35,
+          weekTitleHeight: (MediaQuery.of(context).orientation == Orientation.portrait) ? 60 : 35,
           safeAreaOption: const SafeAreaOption(top: false, bottom: false),
           headerStyle: HeaderStyle(
               decoration: BoxDecoration(
@@ -113,17 +103,13 @@ class _WeekCalendarState extends State<WeekCalendar> {
             final locale = AppIntl.of(context)!.localeName;
             return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
           },
-          eventTileBuilder:
-              (date, events, boundary, startDuration, endDuration) =>
-                  _buildEventTile(events, context),
-          weekDayBuilder: (DateTime date) => Container(
-              color: context.theme.appColors.appBar,
-              child: _buildWeekDay(date, model, context))),
+          eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events, context),
+          weekDayBuilder: (DateTime date) =>
+              Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date, model, context))),
     );
   }
 
-  Widget _buildWeekDay(
-      DateTime date, WeekViewModel model, BuildContext context) {
+  Widget _buildWeekDay(DateTime date, WeekViewModel model, BuildContext context) {
     return Center(
       child: Wrap(children: <Widget>[
         Container(
@@ -134,16 +120,12 @@ class _WeekCalendarState extends State<WeekCalendar> {
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(6.0)),
           child: Flex(
-              direction:
-                  (MediaQuery.of(context).orientation == Orientation.portrait)
-                      ? Axis.vertical
-                      : Axis.horizontal,
+              direction: (MediaQuery.of(context).orientation == Orientation.portrait) ? Axis.vertical : Axis.horizontal,
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(WeekCalendar.weekTitles[date.weekday - 1]),
-                if (MediaQuery.of(context).orientation == Orientation.landscape)
-                  const SizedBox(width: 4),
+                if (MediaQuery.of(context).orientation == Orientation.landscape) const SizedBox(width: 4),
                 Text(date.day.toString()),
               ]),
         ),
@@ -151,8 +133,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
     );
   }
 
-  Widget _buildEventTile(
-      List<CalendarEventData<dynamic>> events, BuildContext context) {
+  Widget _buildEventTile(List<CalendarEventData<dynamic>> events, BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         title: events[0].title,

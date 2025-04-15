@@ -74,12 +74,7 @@ void main() {
 
   final List<Course> courses = [
     Course(
-        acronym: "ABC123",
-        title: "testCourse",
-        group: "09",
-        session: "H2021",
-        programCode: "XYZ",
-        numberOfCredits: 3),
+        acronym: "ABC123", title: "testCourse", group: "09", session: "H2021", programCode: "XYZ", numberOfCredits: 3),
   ];
 
   /// Verify all the required functions that are called from the logout function
@@ -100,18 +95,12 @@ void main() {
     verifyNoMoreInteractions(settingsManagerMock);
 
     // Make sure that the registered cache
-    expect(courseRepositoryMock.sessions!.length, 0,
-        reason: 'has emptied out the sessions list');
-    expect(courseRepositoryMock.coursesActivities!.length, 0,
-        reason: 'has emptied out the courseActivities list');
-    expect(courseRepositoryMock.courses!.length, 0,
-        reason: 'has emptied out the courses list');
+    expect(courseRepositoryMock.sessions!.length, 0, reason: 'has emptied out the sessions list');
+    expect(courseRepositoryMock.coursesActivities!.length, 0, reason: 'has emptied out the courseActivities list');
+    expect(courseRepositoryMock.courses!.length, 0, reason: 'has emptied out the courses list');
 
     // Check if navigation has been rerouted to login page
-    verifyInOrder([
-      navigationServiceMock.pushNamedAndRemoveUntil(
-          RouterPaths.login, RouterPaths.chooseLanguage)
-    ]);
+    verifyInOrder([navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login, RouterPaths.chooseLanguage)]);
 
     verifyNoMoreInteractions(navigationServiceMock);
   }
@@ -132,12 +121,9 @@ void main() {
       viewModel = MoreViewModel(intl: appIntl);
 
       CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: courses);
-      CourseRepositoryMock.stubSessions(courseRepositoryMock,
-          toReturn: sessions);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-          toReturn: coursesActivities);
-      RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-          remoteConfigServiceMock);
+      CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: sessions);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: coursesActivities);
+      RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock);
     });
 
     tearDown(() {
@@ -154,11 +140,8 @@ void main() {
     });
 
     group('logout - ', () {
-      test('If the correct function have been called when logout occur',
-          () async {
-        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-            remoteConfigServiceMock,
-            toReturn: false);
+      test('If the correct function have been called when logout occur', () async {
+        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
         setupFlutterToastMock();
         UserRepositoryMock.stubLogOut(userRepositoryMock);
 
@@ -167,12 +150,8 @@ void main() {
         verifyEveryFunctionsInLogout();
       });
 
-      test(
-          'If an error occur from the cache manager that the logout function finishes out',
-          () async {
-        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(
-            remoteConfigServiceMock,
-            toReturn: false);
+      test('If an error occur from the cache manager that the logout function finishes out', () async {
+        RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
         setupFlutterToastMock();
         CacheServiceMock.stubEmptyException(cacheManagerMock);
         UserRepositoryMock.stubLogOut(userRepositoryMock);

@@ -6,18 +6,17 @@ class SelectedMenuItem extends StatefulWidget {
   final String label;
   final IconData icon;
 
-  const SelectedMenuItem(
-      {super.key,
-        required this.label,
-        required this.icon,
-      });
+  const SelectedMenuItem({
+    super.key,
+    required this.label,
+    required this.icon,
+  });
 
   @override
   State<SelectedMenuItem> createState() => _SelectedMenuItemState();
 }
 
-class _SelectedMenuItemState extends State<SelectedMenuItem>
-    with TickerProviderStateMixin {
+class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProviderStateMixin {
   late final AnimationController _paddingController;
   late final Animation<double> _paddingAnimation;
 
@@ -38,8 +37,8 @@ class _SelectedMenuItemState extends State<SelectedMenuItem>
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
-    _paddingAnimation = Tween<double>(begin: 40, end: 16).animate(
-        CurvedAnimation(parent: _paddingController, curve: Curves.easeOut))
+    _paddingAnimation = Tween<double>(begin: 40, end: 16)
+        .animate(CurvedAnimation(parent: _paddingController, curve: Curves.easeOut))
       ..addListener(() => setState(() {}));
 
     _buttonColorAnimation = ColorTween(
@@ -48,7 +47,8 @@ class _SelectedMenuItemState extends State<SelectedMenuItem>
     ).animate(CurvedAnimation(
       parent: _buttonController,
       curve: Curves.easeIn,
-    ))..addListener(() => setState(() {}));
+    ))
+      ..addListener(() => setState(() {}));
 
     _shadowController = _textController = AnimationController(
       duration: const Duration(milliseconds: 250),
@@ -60,19 +60,17 @@ class _SelectedMenuItemState extends State<SelectedMenuItem>
     ).animate(CurvedAnimation(
       parent: _shadowController,
       curve: Curves.easeIn,
-    ))..addListener(() => setState(() {}));
+    ))
+      ..addListener(() => setState(() {}));
 
-    _textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(
+    _textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
       parent: _textController,
       curve: Curves.easeIn,
-    ))..addListener(() => setState(() {}));
+    ))
+      ..addListener(() => setState(() {}));
 
     _buttonController.forward();
-    _paddingController.forward().then((_) => {
-      _shadowController.forward(),
-      _textController.forward()
-    });
+    _paddingController.forward().then((_) => {_shadowController.forward(), _textController.forward()});
   }
 
   @override
@@ -84,54 +82,54 @@ class _SelectedMenuItemState extends State<SelectedMenuItem>
 
   @override
   Widget build(BuildContext context) => Expanded(
-    child: Padding(
-      padding: EdgeInsets.only(top: _paddingAnimation.value),
-      child: Column(
-        children: [
-          Stack(
+        child: Padding(
+          padding: EdgeInsets.only(top: _paddingAnimation.value),
+          child: Column(
             children: [
-              Positioned.fill(
-                child: ClipRect(
-                  clipper: _TopHalfClipper(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: _shadowColorAnimation.value!,
-                          offset: const Offset(0, 3),
-                          spreadRadius: 4,
-                          blurRadius: 8,
+              Stack(
+                children: [
+                  Positioned.fill(
+                    child: ClipRect(
+                      clipper: _TopHalfClipper(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: _shadowColorAnimation.value!,
+                              offset: const Offset(0, 3),
+                              spreadRadius: 4,
+                              blurRadius: 8,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: _buttonColorAnimation.value,
+                        iconColor: context.theme.appColors.backgroundAlt,
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(10)),
+                    onPressed: () {},
+                    child: Icon(size: 24, color: Colors.white, widget.icon),
+                  ),
+                ],
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: _buttonColorAnimation.value,
-                    iconColor: context.theme.appColors.backgroundAlt,
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(10)),
-                onPressed: () {},
-                child: Icon(size: 24, color: Colors.white, widget.icon),
-              ),
+              FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    widget.label,
+                    style: TextStyle(
+                        color:
+                            context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value),
+                        fontSize: 14),
+                  )),
             ],
           ),
-          FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                widget.label,
-                style: TextStyle(
-                  color: context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value),
-                    fontSize: 14
-                ),
-              )),
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }
 
 class _TopHalfClipper extends CustomClipper<Rect> {

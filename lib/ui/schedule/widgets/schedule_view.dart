@@ -26,8 +26,7 @@ class ScheduleView extends StatefulWidget {
   State<ScheduleView> createState() => _ScheduleViewState();
 }
 
-class _ScheduleViewState extends State<ScheduleView>
-    with TickerProviderStateMixin {
+class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMixin {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   static const String tag = "ScheduleView";
@@ -35,8 +34,7 @@ class _ScheduleViewState extends State<ScheduleView>
   CalendarController controller = CalendarController();
 
   @override
-  Widget build(BuildContext context) =>
-      ViewModelBuilder<ScheduleViewModel>.reactive(
+  Widget build(BuildContext context) => ViewModelBuilder<ScheduleViewModel>.reactive(
         viewModelBuilder: () => ScheduleViewModel(),
         onViewModelReady: (model) {
           if (model.settings.isEmpty) {
@@ -44,19 +42,16 @@ class _ScheduleViewState extends State<ScheduleView>
           }
         },
         builder: (context, model, child) => BaseScaffold(
-          safeArea: false,
+            safeArea: false,
             isLoading: model.isBusy,
             isInteractionLimitedWhileLoading: false,
             appBar: AppBar(
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
               automaticallyImplyLeading: false,
-              actions:
-                  model.busy(model.settings) ? [] : _buildActionButtons(model),
+              actions: model.busy(model.settings) ? [] : _buildActionButtons(model),
             ),
-            body: model.busy(model.settings)
-                ? const SizedBox()
-                : displaySchedule(model)),
+            body: model.busy(model.settings) ? const SizedBox() : displaySchedule(model)),
       );
 
   Widget displaySchedule(ScheduleViewModel model) {
@@ -80,8 +75,7 @@ class _ScheduleViewState extends State<ScheduleView>
             final translations = AppIntl.of(context)!;
             showDialog(
               context: context,
-              builder: (_) =>
-                  CalendarSelectionWidget(translations: translations),
+              builder: (_) => CalendarSelectionWidget(translations: translations),
             );
           },
         ),

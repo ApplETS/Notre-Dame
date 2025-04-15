@@ -69,8 +69,7 @@ void main() {
 
       SettingsRepositoryMock.stubLocale(settingsManagerMock);
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
-      RemoteConfigServiceMock.stubGetCalendarViewEnabled(
-          remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetCalendarViewEnabled(remoteConfigServiceMock);
     });
 
     tearDown(() => {
@@ -83,32 +82,25 @@ void main() {
         });
 
     group("interactions - ", () {
-      testWidgets("tap on settings button to open the schedule settings",
-          (WidgetTester tester) async {
+      testWidgets("tap on settings button to open the schedule settings", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsWeek);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
           await tester.pumpAndSettle();
         });
 
-        expect(find.byType(ScheduleSettings), findsNothing,
-            reason: "The settings page should not be open");
+        expect(find.byType(ScheduleSettings), findsNothing, reason: "The settings page should not be open");
 
         await tester.tap(find.byIcon(Icons.settings_outlined));
         await tester.pumpAndSettle();
 
-        expect(find.byType(ScheduleSettings), findsOneWidget,
-            reason: "The settings view should be open");
+        expect(find.byType(ScheduleSettings), findsOneWidget, reason: "The settings view should be open");
       });
 
-      testWidgets(
-          "tap on today button when enabled triggers action and logs analytics",
-          (WidgetTester tester) async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsWeek);
+      testWidgets("tap on today button when enabled triggers action and logs analytics", (WidgetTester tester) async {
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
@@ -120,23 +112,19 @@ void main() {
 
         final analyticsService = locator<AnalyticsService>();
         // Assuming AnalyticsService is a Mockito mock
-        verifyNever(
-            analyticsService.logEvent("ScheduleView", "Select today clicked"));
+        verifyNever(analyticsService.logEvent("ScheduleView", "Select today clicked"));
 
         await tester.tap(find.byIcon(Icons.today_outlined));
         await tester.pumpAndSettle();
 
-        verify(analyticsService.logEvent(
-                "ScheduleView", "Select today clicked"))
-            .called(1);
+        verify(analyticsService.logEvent("ScheduleView", "Select today clicked")).called(1);
       });
     });
 
     group("respects settings - ", () {
       testWidgets("displays week view", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsWeek);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -148,8 +136,7 @@ void main() {
 
       testWidgets("displays month view", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsMonth);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsMonth);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -161,8 +148,7 @@ void main() {
 
       testWidgets("displays day view calendar", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsDay);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDay);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -174,8 +160,7 @@ void main() {
 
       testWidgets("displays day view calendar", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsDayList);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDayList);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -187,8 +172,7 @@ void main() {
 
       testWidgets("displays today button", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsWeek);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsWeek);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));
@@ -200,8 +184,7 @@ void main() {
 
       testWidgets("does not display today button", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock,
-            toReturn: settingsDontShowTodayBtn);
+        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settingsDontShowTodayBtn);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: const ScheduleView()));

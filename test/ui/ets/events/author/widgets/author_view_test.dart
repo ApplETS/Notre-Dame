@@ -90,15 +90,11 @@ void main() {
     webSiteLink: 'https://example.com',
   );
 
-  final PaginatedNews paginatedNews = PaginatedNews(
-      news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
+  final PaginatedNews paginatedNews =
+      PaginatedNews(news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
 
-  final PaginatedNews paginatedNewsEmpty = PaginatedNews(
-      news: emptyNews,
-      pageNumber: 1,
-      pageSize: 3,
-      totalRecords: 0,
-      totalPages: 1);
+  final PaginatedNews paginatedNewsEmpty =
+      PaginatedNews(news: emptyNews, pageNumber: 1, pageSize: 3, totalRecords: 0, totalPages: 1);
 
   group('AuthorView -', () {
     setUp(() async {
@@ -114,8 +110,7 @@ void main() {
       setupLaunchUrlServiceMock();
 
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
-      AuthorRepositoryMock.stubGetOrganizer(
-          authorRepository, organizerId, organizer);
+      AuthorRepositoryMock.stubGetOrganizer(authorRepository, organizerId, organizer);
     });
 
     tearDown(() {
@@ -129,8 +124,7 @@ void main() {
     });
 
     testWidgets('Loaded with Author information', (WidgetTester tester) async {
-      await tester.pumpWidget(
-          localizedWidget(child: const AuthorView(authorId: organizerId)));
+      await tester.pumpWidget(localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // Verify that the back button is present
@@ -162,8 +156,7 @@ void main() {
     // });
 
     testWidgets('Social Links Modal', (WidgetTester tester) async {
-      await tester.pumpWidget(
-          localizedWidget(child: const AuthorView(authorId: organizerId)));
+      await tester.pumpWidget(localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       // Tap the social links button
@@ -178,11 +171,9 @@ void main() {
     });
 
     testWidgets('Empty News List', (WidgetTester tester) async {
-      NewsRepositoryMock.stubGetNewsOrganizer(newsRepository, organizerId,
-          toReturn: paginatedNewsEmpty);
+      NewsRepositoryMock.stubGetNewsOrganizer(newsRepository, organizerId, toReturn: paginatedNewsEmpty);
 
-      await tester.pumpWidget(
-          localizedWidget(child: const AuthorView(authorId: organizerId)));
+      await tester.pumpWidget(localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       // Verify that the news list is empty
@@ -190,11 +181,9 @@ void main() {
     });
 
     testWidgets('AuthorView - Loaded with News', (WidgetTester tester) async {
-      NewsRepositoryMock.stubGetNewsOrganizer(newsRepository, organizerId,
-          toReturn: paginatedNews);
+      NewsRepositoryMock.stubGetNewsOrganizer(newsRepository, organizerId, toReturn: paginatedNews);
 
-      await tester.pumpWidget(
-          localizedWidget(child: const AuthorView(authorId: organizerId)));
+      await tester.pumpWidget(localizedWidget(child: const AuthorView(authorId: organizerId)));
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       // Verify that the news cards are displayed

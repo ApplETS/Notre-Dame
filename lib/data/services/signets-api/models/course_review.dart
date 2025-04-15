@@ -41,11 +41,9 @@ class CourseReview {
       group: node.getElement('Groupe')!.innerText,
       teacherName: node.getElement('Enseignant')!.innerText,
       type: node.getElement('TypeEvaluation')!.innerText,
-      startAt:
-          DateTime.parse(node.getElement('DateDebutEvaluation')!.innerText),
+      startAt: DateTime.parse(node.getElement('DateDebutEvaluation')!.innerText),
       endAt: DateTime.parse(node.getElement('DateFinEvaluation')!.innerText),
-      isCompleted:
-          node.getElement('EstComplete')!.innerText.toLowerCase() == 'true');
+      isCompleted: node.getElement('EstComplete')!.innerText.toLowerCase() == 'true');
 
   /// Used to create [CourseReview] instance from a JSON file
   factory CourseReview.fromJson(Map<String, dynamic> map) => CourseReview(

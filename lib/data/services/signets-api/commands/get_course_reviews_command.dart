@@ -30,9 +30,7 @@ class GetCourseReviewsCommand implements Command<List<CourseReview>> {
   @override
   Future<List<CourseReview>> execute() async {
     // Generate initial soap envelope
-    final body = SoapService.buildBasicSOAPBody(
-            Urls.readCourseReviewOperation, username, password)
-        .buildDocument();
+    final body = SoapService.buildBasicSOAPBody(Urls.readCourseReviewOperation, username, password).buildDocument();
 
     final operationContent = XmlBuilder();
 
@@ -41,19 +39,14 @@ class GetCourseReviewsCommand implements Command<List<CourseReview>> {
     });
 
     body
-        .findAllElements(Urls.readCourseReviewOperation,
-            namespace: Urls.signetsOperationBase)
+        .findAllElements(Urls.readCourseReviewOperation, namespace: Urls.signetsOperationBase)
         .first
         .children
         .add(operationContent.buildFragment());
 
-    final responseBody = await SoapService.sendSOAPRequest(
-        _httpClient, body, Urls.readCourseReviewOperation);
+    final responseBody = await SoapService.sendSOAPRequest(_httpClient, body, Urls.readCourseReviewOperation);
 
     /// Build and return the list of Program
-    return responseBody
-        .findAllElements("EvaluationCours")
-        .map((node) => CourseReview.fromXmlNode(node))
-        .toList();
+    return responseBody.findAllElements("EvaluationCours").map((node) => CourseReview.fromXmlNode(node)).toList();
   }
 }

@@ -11,8 +11,7 @@ import 'package:notredame/data/services/signets-api/models/schedule_activity.dar
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 
-class ScheduleSettingsViewModel
-    extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
+class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
   /// Manage the settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
@@ -26,8 +25,7 @@ class ScheduleSettingsViewModel
 
   set calendarFormat(CalendarTimeFormat? format) {
     setBusy(true);
-    _settingsManager.setString(
-        PreferencesFlag.scheduleCalendarFormat, format?.name);
+    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat, format?.name);
     _calendarFormat = format;
     setBusy(false);
   }
@@ -58,28 +56,22 @@ class ScheduleSettingsViewModel
   /// The schedule activities which needs to be shown (group A or B) grouped as courses
   final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
 
-  Map<String, List<ScheduleActivity>> get scheduleActivitiesByCourse =>
-      _scheduleActivitiesByCourse;
+  Map<String, List<ScheduleActivity>> get scheduleActivitiesByCourse => _scheduleActivitiesByCourse;
 
   final Map<String, ScheduleActivity> _selectedScheduleActivity = {};
 
-  Map<String, ScheduleActivity> get selectedScheduleActivity =>
-      _selectedScheduleActivity;
+  Map<String, ScheduleActivity> get selectedScheduleActivity => _selectedScheduleActivity;
 
   /// This function is used to save the state of the selected course settings
   /// for a given course that has different laboratory group
-  Future selectScheduleActivity(
-      String courseAcronym, ScheduleActivity? scheduleActivityToSave) async {
+  Future selectScheduleActivity(String courseAcronym, ScheduleActivity? scheduleActivityToSave) async {
     setBusy(true);
     if (scheduleActivityToSave == null) {
-      await _settingsManager.setDynamicString(
-          PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, null);
+      await _settingsManager.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, null);
       _selectedScheduleActivity.remove(courseAcronym);
     } else {
       await _settingsManager.setDynamicString(
-          PreferencesFlag.scheduleLaboratoryGroup,
-          courseAcronym,
-          scheduleActivityToSave.activityCode);
+          PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, scheduleActivityToSave.activityCode);
       _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
     setBusy(false);
@@ -90,16 +82,14 @@ class ScheduleSettingsViewModel
     setBusy(true);
     final settings = await _settingsManager.getScheduleSettings();
 
-    _calendarFormat =
-        settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
+    _calendarFormat = settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
     _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;
     _toggleCalendarView = settings[PreferencesFlag.scheduleListView] as bool;
 
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
     for (final activity in schedulesActivities) {
-      if (activity.activityCode == ActivityCode.labGroupA ||
-          activity.activityCode == ActivityCode.labGroupB) {
+      if (activity.activityCode == ActivityCode.labGroupA || activity.activityCode == ActivityCode.labGroupB) {
         // Create the list with the new activity inside or add the activity to an existing group
         if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
           _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
@@ -117,11 +107,10 @@ class ScheduleSettingsViewModel
 
     // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
-      final scheduleActivityCode = await _settingsManager.getDynamicString(
-          PreferencesFlag.scheduleLaboratoryGroup, courseKey);
+      final scheduleActivityCode =
+          await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseKey);
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
-          ?.firstWhereOrNull(
-              (element) => element.activityCode == scheduleActivityCode);
+          ?.firstWhereOrNull((element) => element.activityCode == scheduleActivityCode);
       if (scheduleActivity != null) {
         _selectedScheduleActivity[courseKey] = scheduleActivity;
       }

@@ -31,8 +31,7 @@ class MonthCalendar extends StatelessWidget {
   Widget _buildMonthView(BuildContext context, MonthViewModel model) {
     controller.returnToToday = () {
       model.returnToCurrentDate();
-      monthViewKey.currentState
-          ?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
+      monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
     };
 
     return MonthView(
@@ -46,8 +45,7 @@ class MonthCalendar extends StatelessWidget {
       weekDayBuilder: (int value) => WeekDayTile(
           dayIndex: value,
           displayBorder: false,
-          textStyle:
-              TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
+          textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
           backgroundColor: context.theme.appColors.appBar,
           weekDayStringBuilder: (p0) => weekTitles[p0]),
       headerStringBuilder: (date, {secondaryDate}) {
@@ -76,9 +74,7 @@ class MonthCalendar extends StatelessWidget {
         date: date,
         isInMonth: date.month == DateTime.now().month,
         events: events,
-        backgroundColor: (date.month == DateTime.now().month)
-            ? Colors.transparent
-            : Colors.grey.withValues(alpha: .06),
+        backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
       ),
     );
   }

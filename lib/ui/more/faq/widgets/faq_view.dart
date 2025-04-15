@@ -49,8 +49,7 @@ class _FaqViewState extends State<FaqView> {
                       Flexible(
                         child: Column(
                           children: [
-                            getSubtitle(
-                                AppIntl.of(context)!.questions_and_answers),
+                            getSubtitle(AppIntl.of(context)!.questions_and_answers),
                             Expanded(child: getCarousel(model)),
                           ],
                         ),
@@ -149,16 +148,8 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
-  Padding getActionCard(
-      String title,
-      String description,
-      ActionType type,
-      String link,
-      IconData iconName,
-      Color iconColor,
-      Color circleColor,
-      BuildContext context,
-      FaqViewModel model) {
+  Padding getActionCard(String title, String description, ActionType type, String link, IconData iconName,
+      Color iconColor, Color circleColor, BuildContext context, FaqViewModel model) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 4.0),
       child: Card(
@@ -185,12 +176,7 @@ class _FaqViewState extends State<FaqView> {
   }
 
   Padding getActionCardInfo(
-      BuildContext context,
-      String title,
-      String description,
-      IconData iconName,
-      Color iconColor,
-      Color circleColor) {
+      BuildContext context, String title, String description, IconData iconName, Color iconColor, Color circleColor) {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Column(

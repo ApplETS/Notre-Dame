@@ -77,41 +77,34 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: DayCalendar(
-                  listView: true, controller: CalendarController())));
+          await tester
+              .pumpWidget(localizedWidget(child: DayCalendar(listView: true, controller: CalendarController())));
           await tester.pumpAndSettle();
         });
 
-        expect(find.byType(PageView), findsExactly(2),
-            reason: "The page view is displayed");
+        expect(find.byType(PageView), findsExactly(2), reason: "The page view is displayed");
       });
 
-      testWidgets("list view with no event in selected day",
-          (WidgetTester tester) async {
+      testWidgets("list view with no event in selected day", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: DayCalendar(
-                  listView: true, controller: CalendarController())));
+          await tester
+              .pumpWidget(localizedWidget(child: DayCalendar(listView: true, controller: CalendarController())));
           await tester.pumpAndSettle();
         });
 
         expect(find.text(intl.schedule_no_event), findsOneWidget);
       });
 
-      testWidgets("list view with event in selected day",
-          (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: activites);
+      testWidgets("list view with event in selected day", (WidgetTester tester) async {
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
 
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: DayCalendar(
-                  listView: true, controller: CalendarController())));
+          await tester
+              .pumpWidget(localizedWidget(child: DayCalendar(listView: true, controller: CalendarController())));
           await tester.pumpAndSettle();
         });
 
@@ -125,26 +118,21 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: DayCalendar(
-                  listView: false, controller: CalendarController())));
+          await tester
+              .pumpWidget(localizedWidget(child: DayCalendar(listView: false, controller: CalendarController())));
           await tester.pumpAndSettle();
         });
 
-        expect(find.byType(calendar_view.DayView), findsOneWidget,
-            reason: "The page view is displayed");
+        expect(find.byType(calendar_view.DayView), findsOneWidget, reason: "The page view is displayed");
       });
 
-      testWidgets("calendar view with event in selected day",
-          (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: activites);
+      testWidgets("calendar view with event in selected day", (WidgetTester tester) async {
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: DayCalendar(
-                  listView: false, controller: CalendarController())));
+          await tester
+              .pumpWidget(localizedWidget(child: DayCalendar(listView: false, controller: CalendarController())));
           await tester.pumpAndSettle();
         });
 
@@ -153,25 +141,20 @@ void main() {
     });
 
     group("header", () {
-      testWidgets("calendar view with event in selected day",
-          (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock,
-            toReturn: activites);
+      testWidgets("calendar view with event in selected day", (WidgetTester tester) async {
+        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester.pumpWidget(localizedWidget(
-              child: DayCalendar(
-                  listView: false, controller: CalendarController())));
+          await tester
+              .pumpWidget(localizedWidget(child: DayCalendar(listView: false, controller: CalendarController())));
           await tester.pumpAndSettle();
         });
 
         final dayIndicatorFinder = find.byWidgetPredicate((widget) {
           if (widget is Text) {
             final textStyle = widget.style;
-            return widget.data == '2' &&
-                textStyle != null &&
-                textStyle.fontSize == 12.0;
+            return widget.data == '2' && textStyle != null && textStyle.fontSize == 12.0;
           }
           return false;
         });

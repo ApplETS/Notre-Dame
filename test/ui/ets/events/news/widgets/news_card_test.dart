@@ -49,8 +49,7 @@ void main() {
       setupNavigationServiceMock();
     });
 
-    testWidgets('Displays a news card without an image',
-        (WidgetTester tester) async {
+    testWidgets('Displays a news card without an image', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: NewsCard(news)));
       await tester.pumpAndSettle();
 

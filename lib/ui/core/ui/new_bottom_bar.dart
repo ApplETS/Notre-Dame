@@ -22,13 +22,13 @@ class NewBottomBar extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.transparent,
-                    context.theme.scaffoldBackgroundColor.withAlpha(64),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                )),
+              colors: [
+                Colors.transparent,
+                context.theme.scaffoldBackgroundColor.withAlpha(64),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )),
           ),
         ),
       ),
@@ -54,23 +54,21 @@ class NewBottomBar extends StatelessWidget {
             if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.dashboard)
               SelectedMenuItem(label: intl.title_dashboard, icon: Icons.dashboard)
             else
-              UnselectedMenuItem(label: intl.title_dashboard, icon: Icons.dashboard_outlined, route: RouterPaths.dashboard),
-
+              UnselectedMenuItem(
+                  label: intl.title_dashboard, icon: Icons.dashboard_outlined, route: RouterPaths.dashboard),
             if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.schedule)
               SelectedMenuItem(label: intl.title_schedule, icon: Icons.access_time_filled)
             else
-              UnselectedMenuItem(label: intl.title_schedule, icon: Icons.schedule_outlined, route: RouterPaths.schedule),
-
+              UnselectedMenuItem(
+                  label: intl.title_schedule, icon: Icons.schedule_outlined, route: RouterPaths.schedule),
             if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.student)
               SelectedMenuItem(label: intl.title_student, icon: Icons.school)
             else
               UnselectedMenuItem(label: intl.title_student, icon: Icons.school_outlined, route: RouterPaths.student),
-
             if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.ets)
               SelectedMenuItem(label: intl.title_ets, icon: Icons.account_balance)
             else
               UnselectedMenuItem(label: intl.title_ets, icon: Icons.account_balance_outlined, route: RouterPaths.ets),
-
             if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.more)
               SelectedMenuItem(label: intl.title_more, icon: Icons.menu)
             else

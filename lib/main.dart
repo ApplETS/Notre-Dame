@@ -33,8 +33,7 @@ Future<void> main() async {
 
   // Initialize firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final RemoteConfigService remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   await remoteConfigService.initialize();
 
   // Manage the settings
@@ -63,8 +62,7 @@ class ETSMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     addEdgeToEdgeEffect();
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
+    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsRepository>(
       create: (_) => settingsManager,

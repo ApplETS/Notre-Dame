@@ -21,8 +21,7 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
 
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   @override
   Widget build(BuildContext context) => Align(
@@ -32,16 +31,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           child: InkWell(
             child: Text(
               AppIntl.of(context)!.forgot_password,
-              style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: AppPalette.grey.white),
+              style: TextStyle(decoration: TextDecoration.underline, color: AppPalette.grey.white),
             ),
             onTap: () {
-              final signetsPasswordResetUrl =
-                  _remoteConfigService.signetsPasswordResetUrl;
+              final signetsPasswordResetUrl = _remoteConfigService.signetsPasswordResetUrl;
               if (signetsPasswordResetUrl != "") {
-                _launchUrlService.launchInBrowser(
-                    _remoteConfigService.signetsPasswordResetUrl);
+                _launchUrlService.launchInBrowser(_remoteConfigService.signetsPasswordResetUrl);
               } else {
                 Fluttertoast.showToast(msg: AppIntl.of(context)!.error);
               }

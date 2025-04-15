@@ -32,8 +32,7 @@ class MoreViewModel extends FutureViewModel {
   final PreferencesService _preferencesService = locator<PreferencesService>();
 
   /// Remote config service
-  final RemoteConfigService _remoteConfigService =
-      locator<RemoteConfigService>();
+  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   /// User repository needed to log out
   final UserRepository _userRepository = locator<UserRepository>();
@@ -74,8 +73,7 @@ class MoreViewModel extends FutureViewModel {
   Future<void> logout() async {
     setBusy(true);
     // Dismiss alertDialog
-    navigationService.pushNamedAndRemoveUntil(
-        RouterPaths.login, RouterPaths.chooseLanguage);
+    navigationService.pushNamedAndRemoveUntil(RouterPaths.login, RouterPaths.chooseLanguage);
     Fluttertoast.showToast(msg: _appIntl.login_msg_logout_success);
     try {
       await _cacheManager.empty();
@@ -102,8 +100,7 @@ class MoreViewModel extends FutureViewModel {
 
     if (await inAppReviewService.isAvailable()) {
       await inAppReviewService.openStoreListing();
-      preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested,
-          value: true);
+      preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
 
       return true;
     }
@@ -112,8 +109,7 @@ class MoreViewModel extends FutureViewModel {
 
   static Future<void> launchPrivacyPolicy() async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
-    final RemoteConfigService remoteConfigService =
-        locator<RemoteConfigService>();
+    final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     launchUrlService.launchInBrowser(remoteConfigService.privacyPolicyUrl);
   }
 

@@ -29,10 +29,8 @@ void main() {
 
   late WebLinkCardViewModel viewModel;
 
-  final quickLink = QuickLink(
-      id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
-  final securityQuickLink = QuickLink(
-      id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'security');
+  final quickLink = QuickLink(id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'testlink');
+  final securityQuickLink = QuickLink(id: 1, image: const Icon(Icons.ac_unit), name: 'test', link: 'security');
 
   group('WebLinkCardViewModel - ', () {
     setUp(() async {
@@ -60,15 +58,13 @@ void main() {
       test('navigate to security', () async {
         await viewModel.onLinkClicked(securityQuickLink);
 
-        verify(analyticsServiceMock.logEvent(
-            "QuickLink", "QuickLink clicked: test"));
+        verify(analyticsServiceMock.logEvent("QuickLink", "QuickLink clicked: test"));
         verify(navigationServiceMock.pushNamed(RouterPaths.security));
         verifyNoMoreInteractions(navigationServiceMock);
       });
 
       test('navigate to web view if launchInBrowser throw', () async {
-        InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(
-            internalInfoServiceMock);
+        InternalInfoServiceMock.stubGetDeviceInfoForErrorReporting(internalInfoServiceMock);
 
         await viewModel.onLinkClicked(quickLink);
 

@@ -7,8 +7,7 @@ class Urls {
   static const String clubInstagram = "https://www.instagram.com/clubapplets";
   static const String clubTwitter = "https://twitter.com/ClubApplETS";
   static const String clubEmail = "mailto:ApplETS@etsmtl.ca";
-  static const String clubYoutube =
-      "https://youtube.com/channel/UCiSzzfW1bVbE_0KcEZO52ew";
+  static const String clubYoutube = "https://youtube.com/channel/UCiSzzfW1bVbE_0KcEZO52ew";
   static const String clubDiscord = "https://discord.gg/adMkWptn6Y";
 
   // Urls related to MonETS
@@ -18,13 +17,11 @@ class Urls {
   /// Urls related to SignetsMobile API
   /// For more information about the operations supported see:
   /// https://signets-ens.etsmtl.ca/Secure/WebServices/SignetsMobile.asmx
-  static const String signetsAPI =
-      "https://signets-ens.etsmtl.ca/Secure/WebServices/SignetsMobile.asmx";
+  static const String signetsAPI = "https://signets-ens.etsmtl.ca/Secure/WebServices/SignetsMobile.asmx";
 
   // SOAP Operations supported by the Signets API
   static const String signetsOperationBase = "http://etsmtl.ca/";
-  static const String donneesAuthentificationValides =
-      "donneesAuthentificationValides";
+  static const String donneesAuthentificationValides = "donneesAuthentificationValides";
   static const String infoStudentOperation = "infoEtudiant";
   static const String listProgramsOperation = "listeProgrammes";
   static const String listClassScheduleOperation = "lireHoraireDesSeances";

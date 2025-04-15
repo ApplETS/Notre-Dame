@@ -4,8 +4,7 @@
 // Package imports:
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 
-import 'package:flutter/foundation.dart'
-    show TargetPlatform, defaultTargetPlatform, kIsWeb;
+import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform, kIsWeb;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -66,8 +65,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '791091683642',
     projectId: 'etsmobile-14206',
     storageBucket: 'etsmobile-14206.appspot.com',
-    iosClientId:
-        '791091683642-55spd9qud24n3sd07pika6pbl8cegvuj.apps.googleusercontent.com',
+    iosClientId: '791091683642-55spd9qud24n3sd07pika6pbl8cegvuj.apps.googleusercontent.com',
     iosBundleId: 'ca.etsmtl.applets.ETSMobile',
   );
 }

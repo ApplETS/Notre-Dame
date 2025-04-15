@@ -22,10 +22,7 @@ class _StudentViewState extends State<StudentView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> tabs = [
-      AppIntl.of(context)!.grades_title,
-      AppIntl.of(context)!.profile_title
-    ];
+    final List<String> tabs = [AppIntl.of(context)!.grades_title, AppIntl.of(context)!.profile_title];
 
     return BaseScaffold(
       safeArea: false,

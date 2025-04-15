@@ -13,16 +13,13 @@ enum CalendarTimeFormat { month, week, day }
 
 mixin CalendarService {
   static Future<bool> checkPermissions() async {
-    final deviceCalendarPluginPermissionsResponse =
-        await deviceCalendarPlugin.hasPermissions();
+    final deviceCalendarPluginPermissionsResponse = await deviceCalendarPlugin.hasPermissions();
     // if we were able to check for permissions without error
     if (deviceCalendarPluginPermissionsResponse.isSuccess) {
       // if the user has not yet allowed permission
-      if (deviceCalendarPluginPermissionsResponse.data != null &&
-          !deviceCalendarPluginPermissionsResponse.data!) {
+      if (deviceCalendarPluginPermissionsResponse.data != null && !deviceCalendarPluginPermissionsResponse.data!) {
         // request permission
-        final deviceCalendarPluginRequestPermissionsResponse =
-            await deviceCalendarPlugin.requestPermissions();
+        final deviceCalendarPluginRequestPermissionsResponse = await deviceCalendarPlugin.requestPermissions();
         // if permission request was successfully executed
         if (deviceCalendarPluginRequestPermissionsResponse.isSuccess) {
           // return the result of the permission request (accepted or refused)
@@ -40,8 +37,7 @@ mixin CalendarService {
     return false;
   }
 
-  static final DeviceCalendarPlugin deviceCalendarPlugin =
-      DeviceCalendarPlugin();
+  static final DeviceCalendarPlugin deviceCalendarPlugin = DeviceCalendarPlugin();
 
   static Future<UnmodifiableListView<Calendar>> get nativeCalendars async {
     if (await checkPermissions()) {
@@ -67,8 +63,7 @@ mixin CalendarService {
   /// Fetches events from a calendar by id from the native calendar app
   static Future<UnmodifiableListView<Event>> fetchNativeCalendarEvents(
       String calendarId, RetrieveEventsParams retrievalParams) async {
-    final output =
-        await deviceCalendarPlugin.retrieveEvents(calendarId, retrievalParams);
+    final output = await deviceCalendarPlugin.retrieveEvents(calendarId, retrievalParams);
     return output.data!;
   }
 
@@ -76,8 +71,7 @@ mixin CalendarService {
     List<CourseActivity> courses,
     String calendarName,
   ) async {
-    final DeviceCalendarPlugin localDeviceCalendarPlugin =
-        DeviceCalendarPlugin();
+    final DeviceCalendarPlugin localDeviceCalendarPlugin = DeviceCalendarPlugin();
 
     // Request permissions
     final bool calendarPermission = await checkPermissions();
@@ -118,10 +112,8 @@ mixin CalendarService {
       final event = Event(
         calendar.id,
         title: course.courseName,
-        start: TZDateTime.from(
-            course.startDateTime, getLocation('America/Toronto')),
-        end:
-            TZDateTime.from(course.endDateTime, getLocation('America/Toronto')),
+        start: TZDateTime.from(course.startDateTime, getLocation('America/Toronto')),
+        end: TZDateTime.from(course.endDateTime, getLocation('America/Toronto')),
         location: course.activityLocation,
         description:
             "${course.courseGroup} \n${course.activityDescription}\n N'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
@@ -129,8 +121,7 @@ mixin CalendarService {
 
       final existingEvents = events.where(
         (element) {
-          if (element.description != null &&
-              element.description!.contains(course.hashCode.toString())) {
+          if (element.description != null && element.description!.contains(course.hashCode.toString())) {
             return true;
           }
           return false;
@@ -158,8 +149,7 @@ mixin CalendarService {
     News news,
     String calendarName,
   ) async {
-    final DeviceCalendarPlugin localDeviceCalendarPlugin =
-        DeviceCalendarPlugin();
+    final DeviceCalendarPlugin localDeviceCalendarPlugin = DeviceCalendarPlugin();
 
     // Request permissions
     final bool calendarPermission = await checkPermissions();
@@ -181,8 +171,7 @@ mixin CalendarService {
     final event = Event(
       calendar?.id,
       title: news.title,
-      start:
-          TZDateTime.from(news.eventStartDate, getLocation('America/Toronto')),
+      start: TZDateTime.from(news.eventStartDate, getLocation('America/Toronto')),
       end: TZDateTime.from(news.eventEndDate, getLocation('America/Toronto')),
       description: news.content,
     );

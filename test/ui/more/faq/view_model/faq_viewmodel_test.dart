@@ -31,8 +31,7 @@ void main() {
       test('Calls launchInBrowser', () {
         viewModel.launchWebsite("https://clubapplets.ca/");
 
-        verify(launchUrlServiceMock.launchInBrowser("https://clubapplets.ca/"))
-            .called(1);
+        verify(launchUrlServiceMock.launchInBrowser("https://clubapplets.ca/")).called(1);
       });
     });
   });

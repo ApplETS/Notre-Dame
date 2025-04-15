@@ -13,10 +13,7 @@ class MonETSUser {
   /// Get the universal code extracted from the username
   String get universalCode => username.replaceFirst("$domain\\", "");
 
-  MonETSUser(
-      {required this.domain,
-      required this.typeUsagerId,
-      required this.username});
+  MonETSUser({required this.domain, required this.typeUsagerId, required this.username});
 
   MonETSUser.fromJson(Map<String, dynamic> json)
       : domain = json['Domaine'] as String,
@@ -33,6 +30,5 @@ class MonETSUser {
           username == other.username;
 
   @override
-  int get hashCode =>
-      domain.hashCode ^ typeUsagerId.hashCode ^ username.hashCode;
+  int get hashCode => domain.hashCode ^ typeUsagerId.hashCode ^ username.hashCode;
 }

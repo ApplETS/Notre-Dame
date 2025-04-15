@@ -24,11 +24,9 @@ abstract class BaseNavigationBar extends StatefulWidget {
   @override
   BaseNavigationBarState createState();
 
-  Widget buildNavigationBar(BuildContext context, NavigationView currentView,
-      Function(NavigationView) onTap);
+  Widget buildNavigationBar(BuildContext context, NavigationView currentView, Function(NavigationView) onTap);
 
-  List<NavigationRailDestination> buildRailItems(BuildContext context) =>
-      _buildItems(
+  List<NavigationRailDestination> buildRailItems(BuildContext context) => _buildItems(
         context,
         (icon, selectedIcon, label) => NavigationRailDestination(
           icon: Icon(icon),
@@ -37,8 +35,7 @@ abstract class BaseNavigationBar extends StatefulWidget {
         ),
       );
 
-  List<BottomNavigationBarItem> buildBottomBarItems(BuildContext context) =>
-      _buildItems(
+  List<BottomNavigationBarItem> buildBottomBarItems(BuildContext context) => _buildItems(
         context,
         (icon, selectedIcon, label) => BottomNavigationBarItem(
           icon: Icon(icon),
@@ -55,18 +52,15 @@ abstract class BaseNavigationBar extends StatefulWidget {
 
     return [
       builder(Icons.dashboard_outlined, Icons.dashboard, intl.title_dashboard),
-      builder(Icons.schedule_outlined, Icons.access_time_filled,
-          intl.title_schedule),
+      builder(Icons.schedule_outlined, Icons.access_time_filled, intl.title_schedule),
       builder(Icons.school_outlined, Icons.school, intl.title_student),
-      builder(Icons.account_balance_outlined, Icons.account_balance,
-          intl.title_ets),
+      builder(Icons.account_balance_outlined, Icons.account_balance, intl.title_ets),
       builder(Icons.menu_outlined, Icons.menu, intl.title_more),
     ];
   }
 }
 
-abstract class BaseNavigationBarState<T extends BaseNavigationBar>
-    extends State<T> {
+abstract class BaseNavigationBarState<T extends BaseNavigationBar> extends State<T> {
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
