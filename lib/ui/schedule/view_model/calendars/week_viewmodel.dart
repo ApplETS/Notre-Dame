@@ -14,6 +14,9 @@ class WeekViewModel extends CalendarViewModel {
   bool displaySunday = false;
   bool displaySaturday = false;
 
+  /// If today is saturday, I have no course today and the shedule just loaded, then this value will be true
+  bool displayNextWeek = false;
+
   bool _firstLoad = true;
 
   final EventController eventController = EventController();
@@ -30,6 +33,7 @@ class WeekViewModel extends CalendarViewModel {
           Utils.getFirstdayOfWeek(DateTime.now()) == weekSelected &&
           calendarEventsFromDate(DateTime.now()).isEmpty) {
         handleDateSelectedChanged(weekSelected.add(Duration(days: 7, hours: 1)));
+        displayNextWeek = true;
       }
     }
 
