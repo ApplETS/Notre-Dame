@@ -75,15 +75,15 @@ class _SessionScheduleState extends State<SessionSchedule> {
         return DateFormat('H:mm').format(date);
       },
       liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
-      weekNumberBuilder: (date) => null,
-      headerStyle: const HeaderStyle(
-          headerTextStyle: TextStyle(fontSize: 0),
+      weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
+      headerStyle: HeaderStyle(
+          headerTextStyle: const TextStyle(fontSize: 0),
           leftIconConfig: null,
-          rightIconConfig: null,
-          decoration: BoxDecoration(color: Colors.transparent)),
+          rightIconConfig: null
+      ),
       heightPerMinute: heightPerMinute,
       eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events, context),
-      weekDayBuilder: (DateTime date) => _buildWeekDay(date),
+      weekDayBuilder: (DateTime date) => Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date))
     ));
   }
 
