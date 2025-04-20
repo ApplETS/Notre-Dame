@@ -104,7 +104,8 @@ void main() {
         final label3 = find.text(intl.grades_grade_with_percentage(
             evaluation.mark!,
             evaluation.correctedEvaluationOutOfFormatted,
-            Utils.getGradeInPercentage(double.parse(formattedMark), evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+            Utils.getGradeInPercentage(double.parse(formattedMark), evaluation.correctedEvaluationOutOfFormatted) ??
+                0.0));
         expect(label3, findsOneWidget);
 
         final String formattedPassMark = evaluation.passMark!.toStringAsFixed(2);

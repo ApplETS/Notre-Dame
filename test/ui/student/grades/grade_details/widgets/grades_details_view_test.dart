@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
@@ -54,15 +54,14 @@ void main() {
   );
 
   final CourseSummary courseSummary2 = CourseSummary(
-    currentMark: null,
-    currentMarkInPercent: null,
-    markOutOf: 100,
-    passMark: 60,
-    standardDeviation: 2.3,
-    median: 4.5,
-    percentileRank: 99,
-    evaluations: []
-  );
+      currentMark: null,
+      currentMarkInPercent: null,
+      markOutOf: 100,
+      passMark: 60,
+      standardDeviation: 2.3,
+      median: 4.5,
+      percentileRank: 99,
+      evaluations: []);
 
   final completedCourseReview = CourseReview(
     acronym: 'GEN101',
