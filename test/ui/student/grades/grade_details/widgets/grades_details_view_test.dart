@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
@@ -18,6 +20,7 @@ import '../../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../../helpers.dart';
 
 void main() {
+  late AppIntl intl;
   TestWidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.setMockInitialValues({});
@@ -50,8 +53,29 @@ void main() {
     ],
   );
 
+  final CourseSummary courseSummary2 = CourseSummary(
+    currentMark: null,
+    currentMarkInPercent: null,
+    markOutOf: 100,
+    passMark: 60,
+    standardDeviation: 2.3,
+    median: 4.5,
+    percentileRank: 99,
+    evaluations: []
+  );
+
   final completedCourseReview = CourseReview(
     acronym: 'GEN101',
+    group: '02',
+    teacherName: 'TEST',
+    startAt: DateTime.now().subtract(const Duration(days: 1)),
+    endAt: DateTime.now().add(const Duration(days: 1)),
+    type: 'Cours',
+    isCompleted: true,
+  );
+
+  final completedCourseReview2 = CourseReview(
+    acronym: 'GEN102',
     group: '02',
     teacherName: 'TEST',
     startAt: DateTime.now().subtract(const Duration(days: 1)),
@@ -70,7 +94,7 @@ void main() {
     isCompleted: false,
   );
 
-  final completedReviewList = <CourseReview>[completedCourseReview];
+  final completedReviewList = <CourseReview>[completedCourseReview, completedCourseReview2];
   final nonCompletedReviewList = <CourseReview>[nonCompletedCourseReview];
 
   final Course course = Course(
@@ -81,6 +105,16 @@ void main() {
       numberOfCredits: 3,
       title: 'Cours générique',
       summary: courseSummary,
+      reviews: completedReviewList);
+
+  final Course course2 = Course(
+      acronym: 'GEN102',
+      group: '02',
+      session: 'H2020',
+      programCode: '999',
+      numberOfCredits: 3,
+      title: 'Cours générique',
+      summary: courseSummary2,
       reviews: completedReviewList);
 
   final Course courseWithoutSummary = Course(
@@ -108,6 +142,7 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsRepositoryMock();
       setupNetworkingServiceMock();
+      intl = await setupAppIntl();
     });
 
     tearDown(() {
@@ -160,6 +195,29 @@ void main() {
           expect(find.text('Group 02'), findsOneWidget);
           expect(find.text('Professor: TEST'), findsOneWidget);
           expect(find.text('Credits: 3'), findsOneWidget);
+        });
+      });
+
+      testWidgets(
+          'when the page is at the top, it displays the course title, acronym, group, professor name and number of credits along with current grade and circular progress',
+          (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course2, toReturn: course2);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course2)));
+          await tester.pumpAndSettle();
+        }).then((value) {
+          expect(find.byType(SliverAppBar), findsOneWidget);
+
+          expect(find.text(course2.title), findsOneWidget);
+          expect(find.text(course2.acronym), findsOneWidget);
+          expect(find.text('Group 02'), findsOneWidget);
+          expect(find.text('Professor: TEST'), findsOneWidget);
+          expect(find.text('Credits: 3'), findsOneWidget);
+
+          final labelNa = find.text(intl.grades_not_available);
+          // One for circular progress and one for the "Your grade" label
+          expect(labelNa, findsAtLeastNWidgets(2));
         });
       });
 

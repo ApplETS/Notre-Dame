@@ -194,7 +194,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
                           context,
                           model.course.summary?.median.toString(),
                           AppIntl.of(context)!.grades_grade_in_percentage(Utils.getGradeInPercentage(
-                              model.course.summary?.median, model.course.summary?.markOutOf)),
+                              model.course.summary?.median, model.course.summary?.markOutOf) ?? 0.0),
                         ),
                       ),
                     ),
@@ -267,14 +267,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         FittedBox(
           fit: BoxFit.fitWidth,
           child: Text(
-              AppIntl.of(context)!.grades_grade_with_percentage(
-                currentGrade ?? 0.0,
-                maxGrade ?? 0.0,
-                Utils.getGradeInPercentage(
-                  currentGrade,
-                  maxGrade,
-                ),
-              ),
+              Utils.validateResultWithPercentage(context, currentGrade, maxGrade ?? 0.0, Utils.getGradeInPercentage(
+                      currentGrade,
+                      maxGrade,
+                    ) ?? 0.0),
               style: Theme.of(context).textTheme.titleLarge!.copyWith(color: color)),
         ),
         Text(recipient, style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: color)),
