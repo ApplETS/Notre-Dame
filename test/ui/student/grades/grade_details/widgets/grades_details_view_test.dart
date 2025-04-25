@@ -230,7 +230,8 @@ void main() {
           'display regular course content (evaluations, circular progress, etc) when in the evaluation period and the evaluation is completed with a future (inactive) review not completed',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithEvaluationSemiCompleted, toReturn: courseWithEvaluationSemiCompleted);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithEvaluationSemiCompleted,
+            toReturn: courseWithEvaluationSemiCompleted);
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithEvaluationSemiCompleted)));
           await tester.pumpAndSettle(const Duration(seconds: 2));
@@ -251,7 +252,7 @@ void main() {
             }
           },
         );
-      });      
+      });
     });
   });
 }
