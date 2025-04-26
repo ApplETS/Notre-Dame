@@ -44,9 +44,7 @@ class _RootViewState extends State<RootView> {
       return;
     }
 
-    setState(() {
-      currentView = _getViewByIndex(index);
-    });
+    setState(() => currentView = _getViewByIndex(index));
   }
 
   Widget _getViewByIndex(int index) {

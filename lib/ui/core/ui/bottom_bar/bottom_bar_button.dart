@@ -27,11 +27,21 @@ class BottomBarButtonState extends State<BottomBarButton> with TickerProviderSta
   late final AnimationController _textController;
   late final Animation<double> _textOpacityAnimation;
 
+  bool _isActive = false;
+
   @override
   void initState() {
     super.initState();
 
-    _paddingController = _buttonController = AnimationController(
+    // Controllers
+    _buttonController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    )..addStatusListener((status) {
+      setState(() => _isActive = status == AnimationStatus.completed);
+    });
+
+    _paddingController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
@@ -110,7 +120,11 @@ class BottomBarButtonState extends State<BottomBarButton> with TickerProviderSta
                           shape: const CircleBorder(),
                           padding: const EdgeInsets.all(10)),
                       onPressed: () => widget.onPressed(),
-                      child: Icon(size: 24, color: Colors.white, widget.inactiveIcon),
+                      child: Icon(
+                        _isActive ? widget.activeIcon : widget.inactiveIcon,
+                        size: 24,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
