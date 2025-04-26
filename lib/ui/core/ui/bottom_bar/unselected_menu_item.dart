@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
 
-import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/locator.dart';
+import 'package:notredame/ui/core/ui/bottom_bar/button_properties.dart';
 
 class UnselectedMenuItem extends StatefulWidget {
-  final String label;
-  final IconData icon;
-  final String route;
+  final ButtonProperties properties;
 
-  const UnselectedMenuItem({super.key, required this.label, required this.icon, required this.route});
+  const UnselectedMenuItem({super.key, required this.properties});
 
   @override
   State<UnselectedMenuItem> createState() => _UnselectedMenuItemState();
 }
 
 class _UnselectedMenuItemState extends State<UnselectedMenuItem> {
-  final NavigationService _navigationService = locator<NavigationService>();
 
   @override
   Widget build(BuildContext context) => Expanded(
         child: IconButton(
-          tooltip: widget.label,
-          icon: Icon(widget.icon),
+          tooltip: widget.properties.label,
+          icon: Icon(widget.properties.icon),
           onPressed: () {
-            _navigationService.pushNamedAndRemoveDuplicates(widget.route);
+            widget.properties.onPressed();
           },
         ),
       );

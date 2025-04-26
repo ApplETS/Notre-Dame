@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-class SelectedMenuItem extends StatefulWidget {
-  final String label;
-  final IconData icon;
+import 'button_properties.dart';
 
-  const SelectedMenuItem({
-    super.key,
-    required this.label,
-    required this.icon,
-  });
+class SelectedMenuItem extends StatefulWidget {
+  final ButtonProperties properties;
+
+  const SelectedMenuItem({super.key, required this.properties});
 
   @override
   State<SelectedMenuItem> createState() => _SelectedMenuItemState();
@@ -34,7 +31,7 @@ class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProvider
     super.initState();
 
     _paddingController = _buttonController = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
     _paddingAnimation = Tween<double>(begin: 40, end: 16)
@@ -112,15 +109,15 @@ class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProvider
                         iconColor: context.theme.appColors.backgroundAlt,
                         shape: const CircleBorder(),
                         padding: const EdgeInsets.all(10)),
-                    onPressed: () {},
-                    child: Icon(size: 24, color: Colors.white, widget.icon),
+                    onPressed: () { widget.properties.onPressed(); },
+                    child: Icon(size: 24, color: Colors.white, widget.properties.icon),
                   ),
                 ],
               ),
               FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Text(
-                    widget.label,
+                    widget.properties.label,
                     style: TextStyle(
                         color:
                             context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value),

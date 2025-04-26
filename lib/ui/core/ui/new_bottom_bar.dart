@@ -4,14 +4,22 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/bottom_bar/selected_menu_item.dart';
 import 'package:notredame/ui/core/ui/bottom_bar/unselected_menu_item.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'bottom_bar/button_properties.dart';
 
-import 'package:notredame/domain/constants/router_paths.dart';
-import 'base_navigation_bar.dart';
+class NewBottomBar extends StatefulWidget {
+  final ValueChanged<int> indexChangedCallback;
 
-class NewBottomBar extends StatelessWidget {
   const NewBottomBar({
     super.key,
+    required this.indexChangedCallback
   });
+
+  @override
+  State<NewBottomBar> createState() => _NewBottomBarState();
+}
+
+class _NewBottomBarState extends State<NewBottomBar> {
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -51,51 +59,36 @@ class NewBottomBar extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.dashboard)
-              SelectedMenuItem(label: intl.title_dashboard, icon: Icons.dashboard)
+            if (index == 0)
+              SelectedMenuItem(properties: ButtonProperties(intl.title_dashboard, Icons.dashboard, () => _setIndex(0)))
             else
-              UnselectedMenuItem(
-                  label: intl.title_dashboard, icon: Icons.dashboard_outlined, route: RouterPaths.dashboard),
-            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.schedule)
-              SelectedMenuItem(label: intl.title_schedule, icon: Icons.access_time_filled)
+              UnselectedMenuItem(properties: ButtonProperties(intl.title_dashboard, Icons.dashboard_outlined, () => _setIndex(0))),
+            if (index == 1)
+              SelectedMenuItem(properties: ButtonProperties(intl.title_schedule, Icons.access_time_filled, () => _setIndex(1)))
             else
-              UnselectedMenuItem(
-                  label: intl.title_schedule, icon: Icons.schedule_outlined, route: RouterPaths.schedule),
-            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.student)
-              SelectedMenuItem(label: intl.title_student, icon: Icons.school)
+              UnselectedMenuItem(properties: ButtonProperties(intl.title_schedule, Icons.schedule_outlined, () => _setIndex(1))),
+            if (index == 2)
+              SelectedMenuItem(properties: ButtonProperties(intl.title_student, Icons.school, () => _setIndex(2)))
             else
-              UnselectedMenuItem(label: intl.title_student, icon: Icons.school_outlined, route: RouterPaths.student),
-            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.ets)
-              SelectedMenuItem(label: intl.title_ets, icon: Icons.account_balance)
+              UnselectedMenuItem(properties: ButtonProperties(intl.title_student, Icons.school_outlined, () => _setIndex(2))),
+            if (index == 3)
+              SelectedMenuItem(properties: ButtonProperties(intl.title_ets, Icons.account_balance, () => _setIndex(3)))
             else
-              UnselectedMenuItem(label: intl.title_ets, icon: Icons.account_balance_outlined, route: RouterPaths.ets),
-            if (_defineView(ModalRoute.of(context)!.settings.name!) == NavigationView.more)
-              SelectedMenuItem(label: intl.title_more, icon: Icons.menu)
+              UnselectedMenuItem(properties: ButtonProperties(intl.title_ets, Icons.account_balance_outlined, () => _setIndex(3))),
+            if (index == 4)
+              SelectedMenuItem(properties: ButtonProperties(intl.title_more, Icons.menu, () => _setIndex(4)))
             else
-              UnselectedMenuItem(label: intl.title_more, icon: Icons.menu_outlined, route: RouterPaths.more),
+              UnselectedMenuItem(properties: ButtonProperties(intl.title_more, Icons.menu_outlined, () => _setIndex(4)))
           ]),
         ),
       ),
     ]);
   }
-}
 
-NavigationView _defineView(String routeName) {
-  switch (routeName) {
-    case RouterPaths.dashboard:
-      return NavigationView.dashboard;
-    case RouterPaths.schedule:
-      return NavigationView.schedule;
-    case RouterPaths.student:
-      return NavigationView.student;
-    case RouterPaths.ets:
-    case RouterPaths.security:
-      return NavigationView.ets;
-    case RouterPaths.more:
-    case RouterPaths.settings:
-    case RouterPaths.about:
-      return NavigationView.more;
-    default:
-      return NavigationView.dashboard;
+  _setIndex(int index) {
+    setState(() {
+      this.index = index;
+      widget.indexChangedCallback(index);
+    });
   }
 }
