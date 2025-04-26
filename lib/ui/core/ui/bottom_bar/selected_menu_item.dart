@@ -105,6 +105,7 @@ class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProvider
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                        elevation: 0,
                         backgroundColor: _buttonColorAnimation.value,
                         iconColor: context.theme.appColors.backgroundAlt,
                         shape: const CircleBorder(),
