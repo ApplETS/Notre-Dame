@@ -13,10 +13,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/core/ui/navigation_rail.dart';
 import 'package:notredame/utils/loading.dart';
-
-import 'new_bottom_bar.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
@@ -28,8 +25,6 @@ class BaseScaffold extends StatefulWidget {
   final FloatingActionButton? fab;
 
   final FloatingActionButtonLocation? fabPosition;
-
-  final bool _showBottomBar;
 
   final bool _safeArea;
 
@@ -46,10 +41,8 @@ class BaseScaffold extends StatefulWidget {
       this.fabPosition,
       bool isLoading = false,
       bool safeArea = true,
-      bool isInteractionLimitedWhileLoading = true,
-      bool showBottomBar = true})
-      : _showBottomBar = showBottomBar,
-        _isLoading = isLoading,
+      bool isInteractionLimitedWhileLoading = true})
+      : _isLoading = isLoading,
         _safeArea = safeArea,
         _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 

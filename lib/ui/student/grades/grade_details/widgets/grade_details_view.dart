@@ -49,7 +49,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         viewModelBuilder: () => GradesDetailsViewModel(course: widget.course, intl: AppIntl.of(context)!),
         builder: (context, model, child) => BaseScaffold(
           safeArea: false,
-          showBottomBar: false,
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxScrolled) => [
               SliverAppBar(

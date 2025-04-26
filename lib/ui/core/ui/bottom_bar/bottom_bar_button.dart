@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-import 'button_properties.dart';
+class BottomBarButton extends StatefulWidget {
+  final String label;
+  final IconData activeIcon;
+  final IconData inactiveIcon;
+  final VoidCallback onPressed;
 
-class SelectedMenuItem extends StatefulWidget {
-  final ButtonProperties properties;
-
-  const SelectedMenuItem({super.key, required this.properties});
+  const BottomBarButton({super.key, required this.label, required this.activeIcon, required this.inactiveIcon, required this.onPressed});
 
   @override
-  State<SelectedMenuItem> createState() => _SelectedMenuItemState();
+  State<BottomBarButton> createState() => BottomBarButtonState();
 }
 
-class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProviderStateMixin {
+class BottomBarButtonState extends State<BottomBarButton> with TickerProviderStateMixin {
   late final AnimationController _paddingController;
   late final Animation<double> _paddingAnimation;
 
@@ -34,7 +35,7 @@ class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProvider
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
-    _paddingAnimation = Tween<double>(begin: 40, end: 16)
+    _paddingAnimation = Tween<double>(begin: 40, end: 8)
         .animate(CurvedAnimation(parent: _paddingController, curve: Curves.easeOut))
       ..addListener(() => setState(() {}));
 
@@ -44,11 +45,10 @@ class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProvider
     ).animate(CurvedAnimation(
       parent: _buttonController,
       curve: Curves.easeIn,
-    ))
-      ..addListener(() => setState(() {}));
+    ));
 
     _shadowController = _textController = AnimationController(
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 200),
       vsync: this,
     );
     _shadowColorAnimation = ColorTween(
@@ -57,23 +57,20 @@ class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProvider
     ).animate(CurvedAnimation(
       parent: _shadowController,
       curve: Curves.easeIn,
-    ))
-      ..addListener(() => setState(() {}));
+    ));
 
     _textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
       parent: _textController,
       curve: Curves.easeIn,
-    ))
-      ..addListener(() => setState(() {}));
-
-    _buttonController.forward();
-    _paddingController.forward().then((_) => {_shadowController.forward(), _textController.forward()});
+    ))..addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     _paddingController.dispose();
+    _buttonController.dispose();
     _shadowController.dispose();
+    _textController.dispose();
     super.dispose();
   }
 
@@ -95,30 +92,33 @@ class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProvider
                             BoxShadow(
                               color: _shadowColorAnimation.value!,
                               offset: const Offset(0, 3),
-                              spreadRadius: 4,
-                              blurRadius: 8,
+                              spreadRadius: -3,
+                              blurRadius: 6,
                             ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: _buttonColorAnimation.value,
-                        iconColor: context.theme.appColors.backgroundAlt,
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(10)),
-                    onPressed: () { widget.properties.onPressed(); },
-                    child: Icon(size: 24, color: Colors.white, widget.properties.icon),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: _buttonColorAnimation.value,
+                          iconColor: context.theme.appColors.backgroundAlt,
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(10)),
+                      onPressed: () => widget.onPressed(),
+                      child: Icon(size: 24, color: Colors.white, widget.inactiveIcon),
+                    ),
                   ),
                 ],
               ),
               FittedBox(
                   fit: BoxFit.fitWidth,
                   child: Text(
-                    widget.properties.label,
+                    widget.label,
                     style: TextStyle(
                         color:
                             context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value),
@@ -128,13 +128,29 @@ class _SelectedMenuItemState extends State<SelectedMenuItem> with TickerProvider
           ),
         ),
       );
+
+  void reverseAnimation() {
+    _textController.reverse().then((_) {
+      _shadowController.reverse();
+      _paddingController.reverse();
+      _buttonController.reverse();
+    });
+  }
+
+  void restartAnimation() {
+    _buttonController.forward();
+    _paddingController.forward().then((_) {
+      _shadowController.forward();
+      _textController.forward();
+    });
+  }
 }
 
 class _TopHalfClipper extends CustomClipper<Rect> {
   @override
   Rect getClip(Size size) {
     // Only allow the top half of the shadow to be visible
-    return Rect.fromLTWH(-10, -10, size.width + 20, size.height / 2 + 10);
+    return Rect.fromLTWH(-10, -10, size.width + 20, size.height / 2 + 14);
   }
 
   @override

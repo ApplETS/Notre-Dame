@@ -53,7 +53,6 @@ class _AuthorViewState extends State<AuthorView> {
         });
       },
       builder: (context, model, child) => BaseScaffold(
-            showBottomBar: false,
             body: RefreshIndicator(
                 onRefresh: () => Future.sync(
                       () => model.pagingController.refresh(),
