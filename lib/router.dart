@@ -45,7 +45,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
           transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
-          pageBuilder: (_, __, ___) => ScheduleView(controller: routeSettings.arguments as ScheduleController));
+          pageBuilder: (_, __, ___) => ScheduleView(controller: ScheduleController()));
     case RouterPaths.defaultSchedule:
       return MaterialPageRoute(
           settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
