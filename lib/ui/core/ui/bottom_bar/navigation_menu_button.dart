@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-class BottomBarButton extends StatefulWidget {
+class NavigationMenuButton extends StatefulWidget {
   final String label;
   final IconData activeIcon;
   final IconData inactiveIcon;
   final VoidCallback onPressed;
 
-  const BottomBarButton({super.key, required this.label, required this.activeIcon, required this.inactiveIcon, required this.onPressed});
+  const NavigationMenuButton(
+      {super.key, required this.label, required this.activeIcon, required this.inactiveIcon, required this.onPressed});
 
   @override
-  State<BottomBarButton> createState() => BottomBarButtonState();
+  State<NavigationMenuButton> createState() => NavigationMenuButtonState();
 }
 
-class BottomBarButtonState extends State<BottomBarButton> with TickerProviderStateMixin {
+class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerProviderStateMixin {
   late final AnimationController _paddingController;
   late final Animation<double> _paddingAnimation;
 
@@ -57,7 +58,7 @@ class BottomBarButtonState extends State<BottomBarButton> with TickerProviderSta
       curve: Curves.easeIn,
     ));
 
-    _shadowController = _textController = AnimationController(
+    _shadowController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
@@ -68,6 +69,11 @@ class BottomBarButtonState extends State<BottomBarButton> with TickerProviderSta
       parent: _shadowController,
       curve: Curves.easeIn,
     ));
+
+    _textController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
 
     _textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
       parent: _textController,
@@ -85,63 +91,61 @@ class BottomBarButtonState extends State<BottomBarButton> with TickerProviderSta
   }
 
   @override
-  Widget build(BuildContext context) => Expanded(
-        child: Padding(
-          padding: EdgeInsets.only(top: _paddingAnimation.value),
-          child: Column(
-            children: [
-              Stack(
-                children: [
-                  Positioned.fill(
-                    child: ClipRect(
-                      clipper: _TopHalfClipper(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: _shadowColorAnimation.value!,
-                              offset: const Offset(0, 3),
-                              spreadRadius: -3,
-                              blurRadius: 6,
-                            ),
-                          ],
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.only(top: (MediaQuery.of(context).orientation == Orientation.portrait) ? _paddingAnimation.value : 0),
+    child: Column(
+      children: [
+        Stack(
+          children: [
+            if (MediaQuery.of(context).orientation == Orientation.portrait)
+              Positioned.fill(
+                child: ClipRect(
+                  clipper: _TopHalfClipper(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: _shadowColorAnimation.value!,
+                          offset: const Offset(0, 3),
+                          spreadRadius: -3,
+                          blurRadius: 6,
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: _buttonColorAnimation.value,
-                          iconColor: context.theme.appColors.backgroundAlt,
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(10)),
-                      onPressed: () => widget.onPressed(),
-                      child: Icon(
-                        _isActive ? widget.activeIcon : widget.inactiveIcon,
-                        size: 24,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-              FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    widget.label,
-                    style: TextStyle(
-                        color:
-                            context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value),
-                        fontSize: 14),
-                  )),
-            ],
-          ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: _buttonColorAnimation.value,
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(10.0)),
+                onPressed: () => widget.onPressed(),
+                child: Icon(
+                  _isActive ? widget.activeIcon : widget.inactiveIcon,
+                  size: 24,
+                  color: _isActive ? Colors.white : context.theme.textTheme.bodyMedium!.color,
+                ),
+              ),
+            ),
+          ],
         ),
-      );
+        FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              widget.label,
+              style: TextStyle(
+                  fontSize: 14,
+                  color:
+                      context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value)),
+            )),
+      ],
+    ),
+  );
 
   void reverseAnimation() {
     _textController.reverse().then((_) {

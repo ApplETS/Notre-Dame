@@ -1,11 +1,11 @@
 // Flutter imports:
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/core/ui/bottom_bar/navigation_menu.dart';
 
 // Package imports:
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
-import 'package:notredame/ui/core/ui/bottom_bar/new_bottom_bar.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
@@ -29,10 +29,11 @@ class _RootViewState extends State<RootView> {
   @override
   Widget build(BuildContext context) {
     currentView ??= _getViewByIndex();
+    Widget menu = NavigationMenu(indexChangedCallback: _updateView);
 
     return Scaffold(
       extendBody: true,
-      bottomNavigationBar: NewBottomBar(indexChangedCallback: _updateView),
+      bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? menu : null,
       body: Column(children: [
         Expanded(
             child: PageTransitionSwitcher(
@@ -47,9 +48,19 @@ class _RootViewState extends State<RootView> {
                     child: child,
                   );
                 },
-                child: currentView!)),
-        SizedBox(height: 100) // The same height as the menu bar
+                child: _mainContent(menu))),
+        if (MediaQuery.of(context).orientation == Orientation.portrait) SizedBox(height: 100) // The same height as the menu bar
       ]),
+    );
+  }
+
+  Widget _mainContent(Widget menu) {
+    if ((MediaQuery.of(context).orientation == Orientation.portrait)) return currentView!;
+    return Row(
+      children: [
+        menu,
+        Expanded(child: currentView!)
+      ],
     );
   }
 
