@@ -80,7 +80,7 @@ class NavigationService {
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then delete the stack of previous routes
   Future<dynamic> pushNamedAndRemoveUntil(String routeName,
-      [String removeUntilRouteNamed = RouterPaths.dashboard, Object? arguments]) {
+  {String removeUntilRouteNamed = RouterPaths.root, dynamic arguments}) {
     final currentState = _navigatorKey.currentState;
     if (currentState == null) {
       _analyticsService.logError(tag, "Navigator state is null");

@@ -64,7 +64,7 @@ void main() {
         await tester.tap(find.byIcon(Icons.schedule_outlined));
         await tester.tap(find.byIcon(Icons.dashboard));
 
-        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.dashboard));
+        verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.root));
       });
 
       testWidgets('schedule', (WidgetTester tester) async {

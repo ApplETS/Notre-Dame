@@ -23,6 +23,6 @@ class NotFoundViewModel extends BaseViewModel {
   }
 
   void navigateToDashboard() {
-    _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+    _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
   }
 }
