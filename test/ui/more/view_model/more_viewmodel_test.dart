@@ -104,7 +104,7 @@ void main() {
     expect(courseRepositoryMock.courses!.length, 0, reason: 'has emptied out the courses list');
 
     // Check if navigation has been rerouted to login page
-    verifyInOrder([navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup, RouterPaths.chooseLanguage)]);
+    verifyInOrder([navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup, removeUntilRouteNamed: RouterPaths.chooseLanguage)]);
 
     verifyNoMoreInteractions(navigationServiceMock);
   }
