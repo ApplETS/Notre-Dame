@@ -39,8 +39,8 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
       duration: const Duration(milliseconds: 200),
       vsync: this,
     )..addStatusListener((status) {
-      setState(() => _isActive = status == AnimationStatus.completed);
-    });
+        setState(() => _isActive = (status == AnimationStatus.completed));
+      });
 
     _paddingController = AnimationController(
       duration: const Duration(milliseconds: 200),
@@ -78,7 +78,8 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
     _textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
       parent: _textController,
       curve: Curves.easeIn,
-    ))..addListener(() => setState(() {}));
+    ))
+      ..addListener(() => setState(() {}));
   }
 
   @override
@@ -92,60 +93,60 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: EdgeInsets.only(top: (MediaQuery.of(context).orientation == Orientation.portrait) ? _paddingAnimation.value : 0),
-    child: Column(
-      children: [
-        Stack(
+        padding: EdgeInsets.only(
+            top: (MediaQuery.of(context).orientation == Orientation.portrait) ? _paddingAnimation.value : 0),
+        child: Column(
           children: [
-            if (MediaQuery.of(context).orientation == Orientation.portrait)
-              Positioned.fill(
-                child: ClipRect(
-                  clipper: _TopHalfClipper(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: _shadowColorAnimation.value!,
-                          offset: const Offset(0, 3),
-                          spreadRadius: -3,
-                          blurRadius: 6,
+            Stack(
+              children: [
+                if (MediaQuery.of(context).orientation == Orientation.portrait)
+                  Positioned.fill(
+                    child: ClipRect(
+                      clipper: _TopHalfClipper(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: _shadowColorAnimation.value!,
+                              offset: const Offset(0, 3),
+                              spreadRadius: -3,
+                              blurRadius: 6,
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: _buttonColorAnimation.value,
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(10.0)),
+                    onPressed: () => widget.onPressed(),
+                    child: Icon(
+                      _isActive ? widget.activeIcon : widget.inactiveIcon,
+                      size: 24,
+                      color: _isActive ? Colors.white : context.theme.textTheme.bodyMedium!.color,
                     ),
                   ),
                 ),
-              ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    backgroundColor: _buttonColorAnimation.value,
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(10.0)),
-                onPressed: () => widget.onPressed(),
-                child: Icon(
-                  _isActive ? widget.activeIcon : widget.inactiveIcon,
-                  size: 24,
-                  color: _isActive ? Colors.white : context.theme.textTheme.bodyMedium!.color,
-                ),
-              ),
+              ],
             ),
+            FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  widget.label,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value)),
+                )),
           ],
         ),
-        FittedBox(
-            fit: BoxFit.fitWidth,
-            child: Text(
-              widget.label,
-              style: TextStyle(
-                  fontSize: 14,
-                  color:
-                      context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value)),
-            )),
-      ],
-    ),
-  );
+      );
 
   void reverseAnimation() {
     _textController.reverse().then((_) {

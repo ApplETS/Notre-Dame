@@ -36,31 +36,31 @@ class _RootViewState extends State<RootView> {
       bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? menu : null,
       body: Column(children: [
         Expanded(
-            child: PageTransitionSwitcher(
-                reverse: currentIndex < oldIndex,
-                duration: Duration(milliseconds: 350),
-                transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
-                  oldIndex = currentIndex;
-                  return SharedAxisTransition(
-                    animation: primaryAnimation,
-                    secondaryAnimation: secondaryAnimation,
-                    transitionType: SharedAxisTransitionType.horizontal,
-                    child: child,
-                  );
-                },
-                child: _mainContent(menu))),
-        if (MediaQuery.of(context).orientation == Orientation.portrait) SizedBox(height: 100) // The same height as the menu bar
+            child: Row(
+              children: [
+                if (MediaQuery.of(context).orientation == Orientation.landscape) menu,
+                Expanded(
+                  child: PageTransitionSwitcher(
+                      reverse: currentIndex < oldIndex,
+                      duration: Duration(milliseconds: 350),
+                      transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                        oldIndex = currentIndex;
+                        return SharedAxisTransition(
+                          animation: primaryAnimation,
+                          secondaryAnimation: secondaryAnimation,
+                          transitionType: (MediaQuery.of(context).orientation == Orientation.portrait)
+                              ? SharedAxisTransitionType.horizontal
+                              : SharedAxisTransitionType.vertical,
+                          child: child,
+                        );
+                      },
+                      child: currentView!),
+                ),
+          ],
+        )),
+        if (MediaQuery.of(context).orientation == Orientation.portrait)
+          SizedBox(height: 96) // The same height as the menu bar
       ]),
-    );
-  }
-
-  Widget _mainContent(Widget menu) {
-    if ((MediaQuery.of(context).orientation == Orientation.portrait)) return currentView!;
-    return Row(
-      children: [
-        menu,
-        Expanded(child: currentView!)
-      ],
     );
   }
 
