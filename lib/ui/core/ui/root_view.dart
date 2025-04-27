@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -11,6 +12,7 @@ import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
 
 int currentIndex = 0;
+int oldIndex = 0;
 
 class RootView extends StatefulWidget {
   RootView({super.key});
@@ -26,13 +28,26 @@ class _RootViewState extends State<RootView> {
 
   @override
   Widget build(BuildContext context) {
-    currentView ??= _getViewByIndex(currentIndex);
+    currentView ??= _getViewByIndex();
 
     return Scaffold(
       extendBody: true,
       bottomNavigationBar: NewBottomBar(indexChangedCallback: _updateView),
       body: Column(children: [
-        Expanded(child: currentView!),
+        Expanded(
+            child: PageTransitionSwitcher(
+                reverse: currentIndex < oldIndex,
+                duration: Duration(milliseconds: 350),
+                transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                  oldIndex = currentIndex;
+                  return SharedAxisTransition(
+                    animation: primaryAnimation,
+                    secondaryAnimation: secondaryAnimation,
+                    transitionType: SharedAxisTransitionType.horizontal,
+                    child: child,
+                  );
+                },
+                child: currentView!)),
         SizedBox(height: 100) // The same height as the menu bar
       ]),
     );
@@ -44,12 +59,13 @@ class _RootViewState extends State<RootView> {
       return;
     }
 
-    setState(() => currentView = _getViewByIndex(index));
-  }
-
-  Widget _getViewByIndex(int index) {
+    oldIndex = currentIndex;
     currentIndex = index;
 
+    setState(() => currentView = _getViewByIndex());
+  }
+
+  Widget _getViewByIndex() {
     switch (currentIndex) {
       case 0:
         return DashboardView();
