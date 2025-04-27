@@ -121,7 +121,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           NavigationMenuButton(
               key: keys[3],
               label: AppIntl.of(context)!.title_ets,
-              activeIcon: Icons.account_balance,
+              activeIcon: Icons.account_balance_sharp,
               inactiveIcon: Icons.account_balance_outlined,
               onPressed: () => _setIndex(3)),
           NavigationMenuButton(

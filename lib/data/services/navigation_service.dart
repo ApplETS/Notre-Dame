@@ -7,12 +7,6 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 
-//SERVICE
-
-//CONSTANT
-
-//OTHERS
-
 /// Navigation service who doesn't use the BuildContext which allow us to call it from anywhere.
 class NavigationService {
   static const String tag = "NavigationService";

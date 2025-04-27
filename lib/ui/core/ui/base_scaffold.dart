@@ -12,7 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/utils/loading.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
@@ -26,8 +26,6 @@ class BaseScaffold extends StatefulWidget {
 
   final FloatingActionButtonLocation? fabPosition;
 
-  final bool _safeArea;
-
   final bool _isLoading;
 
   /// If true, interactions with the UI is limited while loading.
@@ -40,10 +38,8 @@ class BaseScaffold extends StatefulWidget {
       this.fab,
       this.fabPosition,
       bool isLoading = false,
-      bool safeArea = true,
       bool isInteractionLimitedWhileLoading = true})
       : _isLoading = isLoading,
-        _safeArea = safeArea,
         _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
@@ -82,29 +78,26 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Scaffold(
-          appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
-          body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-
-          floatingActionButton: widget.fab,
-          floatingActionButtonLocation: widget.fabPosition,
-        ),
-        bottomNavigationBar: _isOffline ? buildOfflineBar(context) : null,
-      );
+    appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
+    body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
+    floatingActionButton: widget.fab,
+    floatingActionButtonLocation: widget.fabPosition,
+  );
 
   Widget bodyPortraitMode() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     return SafeArea(
       top: false,
-      bottom: widget._safeArea,
+      bottom: false,
       child: Stack(
+        alignment: Alignment.center,
         children: [
           widget.body!,
           if (widget._isLoading)
-            buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
-          else
-            const SizedBox()
+            buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading),
+          if (_isOffline)
+            _buildOfflineBar()
         ],
       ),
     );
@@ -114,43 +107,38 @@ class _BaseScaffoldState extends State<BaseScaffold> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
 
     return Stack(
+      alignment: Alignment.center,
       children: [
-        Row(
+        Column(
           children: [
+            if (widget.appBar != null) widget.appBar!,
             Expanded(
-              child: Column(
-                children: [
-                  if (widget.appBar != null) widget.appBar!,
-                  Expanded(
-                    child: widget._safeArea ? SafeArea(bottom: false, top: false, child: widget.body!) : widget.body!,
-                  )
-                ],
-              ),
-            ),
+              child: SafeArea(bottom: false, top: false, child: widget.body!),
+            )
           ],
         ),
         if (widget._isLoading)
-          buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
-        else
-          const SizedBox()
+          buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading),
+        if (_isOffline)
+          _buildOfflineBar()
       ],
     );
   }
 
-  Widget buildOfflineBar(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          color: context.theme.appColors.backgroundAlt,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 30,
+  Widget _buildOfflineBar() {
+    return Positioned(
+      bottom: 32,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        decoration: BoxDecoration(
+          color: AppPalette.etsLightRed,
+          borderRadius: BorderRadius.circular(12.0),
         ),
-        Text(
+        child: Text(
           AppIntl.of(context)!.no_connectivity,
           textAlign: TextAlign.center,
         ),
-      ],
+      ),
     );
   }
 
