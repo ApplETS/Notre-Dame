@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 
 // Project imports:
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
@@ -12,8 +14,6 @@ import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/locator.dart';
 
 int currentIndex = 0;
 int oldIndex = 0;
