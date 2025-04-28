@@ -80,6 +80,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
     return Expanded(
         child: calendar_view.DayView(
+            safeAreaOption: calendar_view.SafeAreaOption(bottom: false),
             showVerticalLine: false,
             dayTitleBuilder: calendar_view.DayHeader.hidden,
             key: dayViewKey,

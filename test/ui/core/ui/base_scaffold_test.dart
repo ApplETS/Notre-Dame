@@ -25,31 +25,6 @@ void main() {
       unregister<AnalyticsServiceMock>();
     });
 
-    testWidgets('has a loading overlay (without the loading visible) widget and a bottom bar',
-        (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: const BaseScaffold(body: SizedBox())));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(NavigationRail), findsOneWidget);
-      expect(find.byType(CircularProgressIndicator), findsNothing);
-    });
-
-    group('loading - ', () {
-      testWidgets('the loading is displayed if isLoading is true', (WidgetTester tester) async {
-        await tester
-            .pumpWidget(const MaterialApp(home: BaseScaffold(body: SizedBox(), isLoading: true)));
-
-        expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      });
-
-      testWidgets("the loading isn't displayed if isLoading is false", (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: const BaseScaffold(body: SizedBox()), useScaffold: false));
-        await tester.pumpAndSettle();
-
-        expect(find.byType(CircularProgressIndicator), findsNothing);
-      });
-    });
-
     group('appBar - ', () {
       testWidgets("by default doesn't have an appBar if appBar is set", (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: const BaseScaffold(body: SizedBox()), useScaffold: false));

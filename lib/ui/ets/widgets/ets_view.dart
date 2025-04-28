@@ -35,7 +35,6 @@ class _ETSViewState extends State<ETSView> {
     final List<String> tabs = [AppIntl.of(context)!.news_title, AppIntl.of(context)!.useful_link_title];
 
     return BaseScaffold(
-      isInteractionLimitedWhileLoading: false,
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(

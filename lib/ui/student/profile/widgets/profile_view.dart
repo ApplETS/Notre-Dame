@@ -46,7 +46,7 @@ class _ProfileViewState extends State<ProfileView> {
                   if (model.isBusy)
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: buildLoading(isInteractionLimitedWhileLoading: false),
+                      child: buildLoading(),
                     )
                   else
                     buildPage(context, model)

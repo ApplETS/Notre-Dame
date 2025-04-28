@@ -9,6 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/ui/core/ui/root_view.dart';
 import '../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../helpers.dart';
@@ -31,7 +32,7 @@ void main() {
 
     testWidgets('has five sections with icons and titles (dashboard, schedule, student, ets and more)',
         (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: BottomBar()));
+      await tester.pumpWidget(localizedWidget(child: RootView()));
       await tester.pumpAndSettle();
 
       final texts = find.byType(Text);
@@ -42,7 +43,7 @@ void main() {
     });
 
     testWidgets('not navigate when tapped multiple times', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: BottomBar()));
+      await tester.pumpWidget(localizedWidget(child: RootView()));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byIcon(Icons.school_outlined));
@@ -52,12 +53,12 @@ void main() {
       await tester.tap(find.byIcon(Icons.school_outlined));
       await tester.tap(find.byIcon(Icons.school_outlined));
 
-      verify(navigationServiceMock.pushNamedAndRemoveDuplicates(RouterPaths.student)).called(1);
+      verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.student)).called(1);
     });
 
     group('navigate when tapped to - ', () {
       testWidgets('dashboard', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(localizedWidget(child: RootView()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.schedule_outlined));
@@ -67,7 +68,7 @@ void main() {
       });
 
       testWidgets('schedule', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(localizedWidget(child: RootView()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.schedule_outlined));
@@ -76,7 +77,7 @@ void main() {
       });
 
       testWidgets('student', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(localizedWidget(child: RootView()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.school_outlined));
@@ -85,7 +86,7 @@ void main() {
       });
 
       testWidgets('ets', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(localizedWidget(child: RootView()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.account_balance_outlined));
@@ -94,7 +95,7 @@ void main() {
       });
 
       testWidgets('more', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: BottomBar()));
+        await tester.pumpWidget(localizedWidget(child: RootView()));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byIcon(Icons.menu_outlined));

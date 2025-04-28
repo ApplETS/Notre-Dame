@@ -13,7 +13,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/utils/loading.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
@@ -26,21 +25,13 @@ class BaseScaffold extends StatefulWidget {
 
   final FloatingActionButtonLocation? fabPosition;
 
-  final bool _isLoading;
-
-  /// If true, interactions with the UI is limited while loading.
-  final bool _isInteractionLimitedWhileLoading;
 
   const BaseScaffold(
       {super.key,
       this.appBar,
       this.body,
       this.fab,
-      this.fabPosition,
-      bool isLoading = false,
-      bool isInteractionLimitedWhileLoading = true})
-      : _isLoading = isLoading,
-        _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
+      this.fabPosition});
 
   @override
   State<BaseScaffold> createState() => _BaseScaffoldState();
@@ -94,8 +85,6 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         alignment: Alignment.center,
         children: [
           widget.body!,
-          if (widget._isLoading)
-            buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading),
           if (_isOffline)
             _buildOfflineBar()
         ],
@@ -117,8 +106,6 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             )
           ],
         ),
-        if (widget._isLoading)
-          buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading),
         if (_isOffline)
           _buildOfflineBar()
       ],

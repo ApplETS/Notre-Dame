@@ -52,7 +52,7 @@ class _GradesViewState extends State<GradesView> {
                         model.coursesBySession[model.sessionOrder[index]]!,
                         model),
                   ),
-                if (model.isBusy) buildLoading(isInteractionLimitedWhileLoading: false) else const SizedBox()
+                if (model.isBusy) buildLoading() else const SizedBox()
               ],
             ),
           );
