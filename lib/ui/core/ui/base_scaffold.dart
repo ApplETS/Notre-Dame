@@ -25,13 +25,7 @@ class BaseScaffold extends StatefulWidget {
 
   final FloatingActionButtonLocation? fabPosition;
 
-
-  const BaseScaffold(
-      {super.key,
-      this.appBar,
-      this.body,
-      this.fab,
-      this.fabPosition});
+  const BaseScaffold({super.key, this.appBar, this.body, this.fab, this.fabPosition});
 
   @override
   State<BaseScaffold> createState() => _BaseScaffoldState();
@@ -69,11 +63,11 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
-    body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-    floatingActionButton: widget.fab,
-    floatingActionButtonLocation: widget.fabPosition,
-  );
+        appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
+        body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
+        floatingActionButton: widget.fab,
+        floatingActionButtonLocation: widget.fabPosition,
+      );
 
   Widget bodyPortraitMode() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -83,11 +77,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       bottom: false,
       child: Stack(
         alignment: Alignment.center,
-        children: [
-          widget.body!,
-          if (_isOffline)
-            _buildOfflineBar()
-        ],
+        children: [widget.body!, if (_isOffline) _buildOfflineBar()],
       ),
     );
   }
@@ -106,8 +96,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             )
           ],
         ),
-        if (_isOffline)
-          _buildOfflineBar()
+        if (_isOffline) _buildOfflineBar()
       ],
     );
   }

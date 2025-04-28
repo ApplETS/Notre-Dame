@@ -1,6 +1,9 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+
+// Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class NavigationMenuButton extends StatefulWidget {
   final String label;

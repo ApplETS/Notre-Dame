@@ -1,8 +1,13 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/bottom_bar/navigation_menu_button.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
 
 int index = 0;
 
@@ -61,19 +66,18 @@ class _NavigationMenuState extends State<NavigationMenu> {
           child: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [
-                    Colors.transparent,
-                    context.theme.scaffoldBackgroundColor,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                )),
+              colors: [
+                Colors.transparent,
+                context.theme.scaffoldBackgroundColor,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )),
           ),
         ),
       ),
       Container(
         height: 96.0,
-
         decoration: BoxDecoration(
           color: context.theme.appColors.navBar,
           boxShadow: [
@@ -86,17 +90,16 @@ class _NavigationMenuState extends State<NavigationMenu> {
         ),
       ),
       Positioned.fill(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: buttons
-        ),
+        child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20.0), child: buttons),
       ),
     ]);
   }
 
   Widget _createButtons() {
     return Flex(
-        mainAxisAlignment: (MediaQuery.of(context).orientation == Orientation.portrait) ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
+        mainAxisAlignment: (MediaQuery.of(context).orientation == Orientation.portrait)
+            ? MainAxisAlignment.spaceAround
+            : MainAxisAlignment.center,
         direction: (MediaQuery.of(context).orientation == Orientation.portrait) ? Axis.horizontal : Axis.vertical,
         children: [
           NavigationMenuButton(

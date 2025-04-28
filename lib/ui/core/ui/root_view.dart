@@ -1,9 +1,11 @@
 // Flutter imports:
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/core/ui/bottom_bar/navigation_menu.dart';
 
 // Package imports:
+import 'package:animations/animations.dart';
+
+// Project imports:
+import 'package:notredame/ui/core/ui/bottom_bar/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
@@ -37,25 +39,25 @@ class _RootViewState extends State<RootView> {
       body: Column(children: [
         Expanded(
             child: Row(
-              children: [
-                if (MediaQuery.of(context).orientation == Orientation.landscape) menu,
-                Expanded(
-                  child: PageTransitionSwitcher(
-                      reverse: currentIndex < oldIndex,
-                      duration: Duration(milliseconds: 350),
-                      transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
-                        oldIndex = currentIndex;
-                        return SharedAxisTransition(
-                          animation: primaryAnimation,
-                          secondaryAnimation: secondaryAnimation,
-                          transitionType: (MediaQuery.of(context).orientation == Orientation.portrait)
-                              ? SharedAxisTransitionType.horizontal
-                              : SharedAxisTransitionType.vertical,
-                          child: child,
-                        );
-                      },
-                      child: currentView!),
-                ),
+          children: [
+            if (MediaQuery.of(context).orientation == Orientation.landscape) menu,
+            Expanded(
+              child: PageTransitionSwitcher(
+                  reverse: currentIndex < oldIndex,
+                  duration: Duration(milliseconds: 350),
+                  transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                    oldIndex = currentIndex;
+                    return SharedAxisTransition(
+                      animation: primaryAnimation,
+                      secondaryAnimation: secondaryAnimation,
+                      transitionType: (MediaQuery.of(context).orientation == Orientation.portrait)
+                          ? SharedAxisTransitionType.horizontal
+                          : SharedAxisTransitionType.vertical,
+                      child: child,
+                    );
+                  },
+                  child: currentView!),
+            ),
           ],
         )),
         if (MediaQuery.of(context).orientation == Orientation.portrait)
