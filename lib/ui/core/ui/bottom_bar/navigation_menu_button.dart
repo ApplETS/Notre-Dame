@@ -17,16 +17,8 @@ class NavigationMenuButton extends StatefulWidget {
 
 class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerProviderStateMixin {
   late final AnimationController _paddingController;
-  late final Animation<double> _paddingAnimation;
-
-  late final AnimationController _buttonController;
-  late final Animation<Color?> _buttonColorAnimation;
-
-  late final AnimationController _shadowController;
-  late final Animation<Color?> _shadowColorAnimation;
-
-  late final AnimationController _textController;
-  late final Animation<double> _textOpacityAnimation;
+  late final AnimationController _buttonColorController;
+  late final AnimationController _textOpacityController;
 
   bool _isActive = false;
 
@@ -34,133 +26,117 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
   void initState() {
     super.initState();
 
-    // Controllers
-    _buttonController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    )..addStatusListener((status) {
-        setState(() => _isActive = (status == AnimationStatus.completed));
-      });
+    _buttonColorController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
 
     _paddingController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
-    _paddingAnimation = Tween<double>(begin: 40, end: 8)
-        .animate(CurvedAnimation(parent: _paddingController, curve: Curves.easeOut))
-      ..addListener(() => setState(() {}));
 
-    _buttonColorAnimation = ColorTween(
-      begin: Colors.transparent,
-      end: AppPalette.etsLightRed,
-    ).animate(CurvedAnimation(
-      parent: _buttonController,
-      curve: Curves.easeIn,
-    ));
-
-    _shadowController = AnimationController(
+    _textOpacityController = AnimationController(
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
-    _shadowColorAnimation = ColorTween(
-      begin: Colors.transparent,
-      end: AppPalette.etsDarkRed,
-    ).animate(CurvedAnimation(
-      parent: _shadowController,
-      curve: Curves.easeIn,
-    ));
-
-    _textController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-
-    _textOpacityAnimation = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
-      parent: _textController,
-      curve: Curves.easeIn,
-    ))
-      ..addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     _paddingController.dispose();
-    _buttonController.dispose();
-    _shadowController.dispose();
-    _textController.dispose();
+    _buttonColorController.dispose();
+    _textOpacityController.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: EdgeInsets.only(
-            top: (MediaQuery.of(context).orientation == Orientation.portrait) ? _paddingAnimation.value : 0),
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                if (MediaQuery.of(context).orientation == Orientation.portrait)
-                  Positioned.fill(
-                    child: ClipRect(
-                      clipper: _TopHalfClipper(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: _shadowColorAnimation.value!,
-                              offset: const Offset(0, 3),
-                              spreadRadius: -3,
-                              blurRadius: 6,
-                            ),
-                          ],
-                        ),
+  Widget build(BuildContext context) {
+    bool portrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+    return AnimatedBuilder(
+      animation: _paddingController,
+      builder: (BuildContext context, Widget? child) {
+        double offset = portrait ? 32 : 8;
+        return Transform.translate(
+          offset: Offset(0, _paddingController.value * -offset),
+          child: child,
+        );
+      },
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              if (portrait)
+                Positioned.fill(
+                  child: ClipRect(
+                    clipper: _TopHalfClipper(),
+                    child: AnimatedContainer(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: _isActive ? AppPalette.etsLightRed : Colors.transparent,
+                            offset: const Offset(0.0, 3.0),
+                            spreadRadius: -3.0,
+                            blurRadius: 6.0,
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: _buttonColorAnimation.value,
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(10.0)),
-                    onPressed: () => widget.onPressed(),
-                    child: Icon(
-                      _isActive ? widget.activeIcon : widget.inactiveIcon,
-                      size: 24,
-                      color: _isActive ? Colors.white : context.theme.textTheme.bodyMedium!.color,
+                      duration: Duration(milliseconds: 200),
                     ),
                   ),
                 ),
-              ],
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: AnimatedBuilder(
+                  animation: _buttonColorController,
+                  builder: (BuildContext context, Widget? child) {
+                    Color backgroundColor = ColorTween(
+                      begin: Colors.transparent,
+                      end: AppPalette.etsLightRed,
+                    ).animate(_buttonColorController).value!;
+                    return ElevatedButton(
+                      onPressed: () => widget.onPressed(),
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: backgroundColor,
+                          shadowColor: AppPalette.etsDarkRed,
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(10.0)),
+                      child: Icon(
+                        _isActive ? widget.activeIcon : widget.inactiveIcon,
+                        size: 24,
+                        color: _isActive ? Colors.white : context.theme.textTheme.bodyMedium!.color,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          FadeTransition(
+            opacity: _textOpacityController,
+            child: Text(
+              widget.label,
+              style: TextStyle(fontSize: 14.0),
             ),
-            FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text(
-                  widget.label,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: context.theme.textTheme.bodyMedium!.color!.withValues(alpha: _textOpacityAnimation.value)),
-                )),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
   void reverseAnimation() {
-    _textController.reverse().then((_) {
-      _shadowController.reverse();
+    setState(() => _isActive = false);
+    _textOpacityController.reverse().then((_) {
+      _buttonColorController.reverse();
       _paddingController.reverse();
-      _buttonController.reverse();
     });
   }
 
   void restartAnimation() {
-    _buttonController.forward();
+    _buttonColorController.forward();
     _paddingController.forward().then((_) {
-      _shadowController.forward();
-      _textController.forward();
+      setState(() => _isActive = true);
+      _textOpacityController.forward();
     });
   }
 }
@@ -169,7 +145,7 @@ class _TopHalfClipper extends CustomClipper<Rect> {
   @override
   Rect getClip(Size size) {
     // Only allow the top half of the shadow to be visible
-    return Rect.fromLTWH(-10, -10, size.width + 20, size.height / 2 + 14);
+    return Rect.fromLTWH(-10.0, -10.0, size.width + 20.0, size.height / 2 + 14.0);
   }
 
   @override

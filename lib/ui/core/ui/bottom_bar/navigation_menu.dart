@@ -45,7 +45,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   Widget _sideBar(Widget buttons) {
     return Container(
-      width: 80,
+      width: 80.0,
       color: context.theme.appColors.navBar,
       child: Padding(
         padding: const EdgeInsets.only(top: 12.0),
@@ -63,7 +63,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 gradient: LinearGradient(
                   colors: [
                     Colors.transparent,
-                    context.theme.scaffoldBackgroundColor.withAlpha(64),
+                    context.theme.scaffoldBackgroundColor,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -72,16 +72,15 @@ class _NavigationMenuState extends State<NavigationMenu> {
         ),
       ),
       Container(
-        height: 96,
-        margin: const EdgeInsets.only(top: 40),
-        padding: const EdgeInsets.symmetric(vertical: 4),
+        height: 96.0,
+
         decoration: BoxDecoration(
           color: context.theme.appColors.navBar,
           boxShadow: [
             BoxShadow(
               color: AppPalette.etsDarkRed,
-              spreadRadius: 1,
-              blurRadius: 8,
+              spreadRadius: 1.0,
+              blurRadius: 8.0,
             ),
           ],
         ),
