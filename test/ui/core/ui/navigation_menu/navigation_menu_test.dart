@@ -64,7 +64,10 @@ void main() {
     });
 
     testWidgets('Renders sidebar in landscape orientation', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: NavigationMenu(indexChangedCallback: (index) => selectedIndex = index,)));
+      await tester.pumpWidget(localizedWidget(
+          child: NavigationMenu(
+        indexChangedCallback: (index) => selectedIndex = index,
+      )));
 
       expect(find.byType(Flex), findsWidgets);
 
@@ -88,7 +91,10 @@ void main() {
     });
 
     testWidgets('Shows correct number of navigation buttons', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: NavigationMenu(indexChangedCallback: (index) => selectedIndex = index,)));
+      await tester.pumpWidget(localizedWidget(
+          child: NavigationMenu(
+        indexChangedCallback: (index) => selectedIndex = index,
+      )));
 
       for (final label in buttonLabels) {
         expect(find.text(label), findsOneWidget);
@@ -96,7 +102,10 @@ void main() {
     });
 
     testWidgets('Does nothing when tapping active button', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: NavigationMenu(indexChangedCallback: (index) => selectedIndex = index,)));
+      await tester.pumpWidget(localizedWidget(
+          child: NavigationMenu(
+        indexChangedCallback: (index) => selectedIndex = index,
+      )));
       await tester.pumpAndSettle();
 
       // Initial active button is Dashboard (index 0)
