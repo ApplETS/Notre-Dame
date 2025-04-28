@@ -21,7 +21,7 @@ import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import '../../../helpers.dart';
 
 void main() {
-  group('BaseScaffold - ', () {
+  group('RootView - ', () {
     setUp(() {
       setupAppIntl();
       setupBroadcastMessageRepositoryMock();

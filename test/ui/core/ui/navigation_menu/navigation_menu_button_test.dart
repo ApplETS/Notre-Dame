@@ -13,7 +13,7 @@ import '../../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../../helpers.dart';
 
 void main() {
-  group('BaseScaffold - ', () {
+  group('NavigationMenuButton - ', () {
     setUp(() {
       setupNavigationServiceMock();
       setupNetworkingServiceMock();

@@ -11,11 +11,25 @@ import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import '../../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../../helpers.dart';
 
-void main() {
-  group('BaseScaffold - ', () {
-    late int selectedIndex;
-    late List<String> buttonLabels;
+late int selectedIndex;
 
+Widget buildNavigationMenu({Size size = const Size(400, 800)}) {
+  return localizedWidget(
+    child: MediaQuery(
+      data: MediaQueryData(size: size),
+      child: Scaffold(
+        body: NavigationMenu(
+          indexChangedCallback: (index) => selectedIndex = index,
+        ),
+      ),
+    ),
+  );
+}
+
+void main() {
+  late List<String> buttonLabels;
+
+  group('buttons - ', () {
     setUp(() {
       selectedIndex = 0;
       buttonLabels = ['Dashboard', 'Schedule', 'Student', 'ÉTS', 'More'];
@@ -30,21 +44,8 @@ void main() {
       unregister<AnalyticsServiceMock>();
     });
 
-    Widget buildNavigationMenu({Size size = const Size(400, 800)}) {
-      return localizedWidget(
-        child: MediaQuery(
-          data: MediaQueryData(size: size),
-          child: Scaffold(
-            body: NavigationMenu(
-              indexChangedCallback: (index) => selectedIndex = index,
-            ),
-          ),
-        ),
-      );
-    }
-
     testWidgets('Tapping buttons updates active index', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: buildNavigationMenu()));
+      await tester.pumpWidget(buildNavigationMenu());
       await tester.pumpAndSettle();
 
       // Tap third button
@@ -54,8 +55,30 @@ void main() {
       expect(selectedIndex, 4);
     });
 
+    testWidgets('Shows correct number of navigation buttons', (WidgetTester tester) async {
+      await tester.pumpWidget(buildNavigationMenu());
+
+      for (final label in buttonLabels) {
+        expect(find.text(label), findsOneWidget);
+      }
+    });
+
+    testWidgets('Does nothing when tapping active button', (WidgetTester tester) async {
+      await tester.pumpWidget(buildNavigationMenu());
+      await tester.pumpAndSettle();
+
+      // Initial active button is Dashboard (index 0)
+      await tester.tap(find.byType(Icon).first);
+      await tester.pumpAndSettle();
+
+      // Verify index didn't change
+      expect(selectedIndex, 0);
+    });
+  });
+
+  group('orientation', () {
     testWidgets('Renders bottom bar in portrait orientation', (WidgetTester tester) async {
-      await tester.pumpWidget(buildNavigationMenu(size: const Size(400, 800)));
+      await tester.pumpWidget(buildNavigationMenu());
 
       expect(find.byType(Flex), findsWidgets);
 
@@ -66,8 +89,8 @@ void main() {
     testWidgets('Renders sidebar in landscape orientation', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
           child: NavigationMenu(
-        indexChangedCallback: (index) => selectedIndex = index,
-      )));
+            indexChangedCallback: (index) => selectedIndex = index,
+          )));
 
       expect(find.byType(Flex), findsWidgets);
 
@@ -88,32 +111,6 @@ void main() {
       expect(flexWidget.direction, Axis.vertical);
 
       expect(find.byType(Container), findsWidgets);
-    });
-
-    testWidgets('Shows correct number of navigation buttons', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(
-          child: NavigationMenu(
-        indexChangedCallback: (index) => selectedIndex = index,
-      )));
-
-      for (final label in buttonLabels) {
-        expect(find.text(label), findsOneWidget);
-      }
-    });
-
-    testWidgets('Does nothing when tapping active button', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(
-          child: NavigationMenu(
-        indexChangedCallback: (index) => selectedIndex = index,
-      )));
-      await tester.pumpAndSettle();
-
-      // Initial active button is Dashboard (index 0)
-      await tester.tap(find.byType(Icon).first);
-      await tester.pumpAndSettle();
-
-      // Verify index didn't change
-      expect(selectedIndex, 0);
     });
   });
 }
