@@ -89,8 +89,8 @@ void main() {
     testWidgets('Renders sidebar in landscape orientation', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(
           child: NavigationMenu(
-            indexChangedCallback: (index) => selectedIndex = index,
-          )));
+        indexChangedCallback: (index) => selectedIndex = index,
+      )));
 
       expect(find.byType(Flex), findsWidgets);
 
