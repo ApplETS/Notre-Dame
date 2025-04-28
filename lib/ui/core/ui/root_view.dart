@@ -12,9 +12,19 @@ import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/locator.dart';
 
 int currentIndex = 0;
 int oldIndex = 0;
+
+enum NavigationView {
+  dashboard,
+  schedule,
+  student,
+  ets,
+  more,
+}
 
 class RootView extends StatefulWidget {
   RootView({super.key});
@@ -27,6 +37,7 @@ class RootView extends StatefulWidget {
 
 class _RootViewState extends State<RootView> {
   Widget? currentView;
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +85,7 @@ class _RootViewState extends State<RootView> {
 
     oldIndex = currentIndex;
     currentIndex = index;
+    _analyticsService.logEvent("RootView", "${NavigationView.values[index].name} clicked");
 
     setState(() => currentView = _getViewByIndex());
   }

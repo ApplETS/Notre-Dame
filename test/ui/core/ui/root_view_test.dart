@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
@@ -18,9 +19,12 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/core/ui/root_view.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
+import '../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../helpers.dart';
 
 void main() {
+  late AnalyticsServiceMock analyticsServiceMock;
+
   group('RootView - ', () {
     setUp(() {
       setupAppIntl();
@@ -31,7 +35,7 @@ void main() {
       setupPreferencesServiceMock();
       setupCacheManagerMock();
       setupNetworkingServiceMock();
-      setupAnalyticsServiceMock();
+      analyticsServiceMock = setupAnalyticsServiceMock();
       setupInAppReviewServiceMock();
       setupQuickLinkRepositoryMock();
     });
@@ -58,6 +62,7 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: RootView()));
 
       await tester.tap(find.byIcon(Icons.account_balance_outlined).first);
+      verify(analyticsServiceMock.logEvent("RootView", "ets clicked"));
       await tester.pumpAndSettle();
       expect(find.byType(ETSView), findsOneWidget);
     });
