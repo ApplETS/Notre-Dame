@@ -1,0 +1,86 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/data/repositories/broadcast_message_repository.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/quick_link_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
+
+// Project imports:
+import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/ui/core/ui/root_view.dart';
+import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
+import 'package:notredame/ui/ets/widgets/ets_view.dart';
+import '../../../helpers.dart';
+
+void main() {
+  group('BaseScaffold - ', () {
+    setUp(() {
+      setupAppIntl();
+      setupBroadcastMessageRepositoryMock();
+      setupRemoteConfigServiceMock();
+      setupSettingsRepositoryMock();
+      setupCourseRepositoryMock();
+      setupPreferencesServiceMock();
+      setupCacheManagerMock();
+      setupNetworkingServiceMock();
+      setupAnalyticsServiceMock();
+      setupInAppReviewServiceMock();
+      setupQuickLinkRepositoryMock();
+    });
+
+    tearDown(() {
+      unregister<BroadcastMessageRepository>();
+      unregister<RemoteConfigService>();
+      unregister<SettingsRepository>();
+      unregister<CourseRepository>();
+      unregister<PreferencesService>();
+      unregister<CacheService>();
+      unregister<NetworkingService>();
+      unregister<AnalyticsService>();
+      unregister<InAppReviewService>();
+      unregister<QuickLinkRepository>();
+    });
+
+    testWidgets('Initial view is DashboardView', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: RootView()));
+      expect(find.byType(DashboardView), findsOneWidget);
+    });
+
+    testWidgets('Tapping navigation items switches views', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: RootView()));
+
+      await tester.tap(find.byIcon(Icons.account_balance_outlined).first);
+      await tester.pumpAndSettle();
+      expect(find.byType(ETSView), findsOneWidget);
+    });
+
+    testWidgets('BottomNavigationBar is visible', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: RootView()));
+      final flexWidget = tester.widget<Flex>(find.byType(Flex).first);
+      expect(flexWidget.direction, Axis.vertical);
+      tester.view.resetPhysicalSize();
+    });
+
+    testWidgets('NavigationRail is visible in landscape', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(
+        child: MediaQuery(
+          data: MediaQueryData(size: Size(400, 800)),
+          child: Scaffold(
+            body: RootView(),
+          ),
+        ),
+      ));
+
+      final flexWidget = tester.widget<Flex>(find.byType(Flex).first);
+      expect(flexWidget.direction, Axis.horizontal);
+    });
+  });
+}

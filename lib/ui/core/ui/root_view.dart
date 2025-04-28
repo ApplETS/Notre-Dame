@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 
 // Project imports:
-import 'package:notredame/ui/core/ui/bottom_bar/navigation_menu.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
