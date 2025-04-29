@@ -57,9 +57,9 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
     return AnimatedBuilder(
       animation: _paddingController,
       builder: (BuildContext context, Widget? child) {
-        double offset = portrait ? 32 : 8;
+        double offset = portrait ? 32.0 : 8.0;
         return Transform.translate(
-          offset: Offset(0, _paddingController.value * -offset),
+          offset: Offset(0.0, _paddingController.value * -offset),
           child: child,
         );
       },
@@ -99,14 +99,14 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
                     return ElevatedButton(
                       onPressed: () => widget.onPressed(),
                       style: ElevatedButton.styleFrom(
-                          elevation: 0,
+                          elevation: 0.0,
                           backgroundColor: backgroundColor,
                           shadowColor: AppPalette.etsDarkRed,
                           shape: const CircleBorder(),
                           padding: const EdgeInsets.all(10.0)),
                       child: Icon(
                         _isActive ? widget.activeIcon : widget.inactiveIcon,
-                        size: 24,
+                        size: 24.0,
                         color: _isActive ? Colors.white : context.theme.textTheme.bodyMedium!.color,
                       ),
                     );
@@ -148,9 +148,9 @@ class _TopHalfClipper extends CustomClipper<Rect> {
   @override
   Rect getClip(Size size) {
     // Only allow the top half of the shadow to be visible
-    return Rect.fromLTWH(-10.0, -10.0, size.width + 20.0, size.height / 2 + 14.0);
+    return Rect.fromLTWH(-10.0, -10.0, size.width + 20.0, (size.height / 2.0) + 14.0);
   }
 
   @override
-  bool shouldReclip(CustomClipper<Rect> oldClipper) => false;
+  bool shouldReclip(_) => false;
 }

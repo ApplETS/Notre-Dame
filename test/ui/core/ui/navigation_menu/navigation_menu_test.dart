@@ -19,7 +19,8 @@ Widget buildNavigationMenu({Size size = const Size(400, 800)}) {
       data: MediaQueryData(size: size),
       child: Scaffold(
         body: NavigationMenu(
-          indexChangedCallback: (index) => selectedIndex = index,
+          selectedIndex: 0,
+          indexChangedCallback: (callback) => selectedIndex = callback.index,
         ),
       ),
     ),
@@ -87,10 +88,7 @@ void main() {
     });
 
     testWidgets('Renders sidebar in landscape orientation', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(
-          child: NavigationMenu(
-        indexChangedCallback: (index) => selectedIndex = index,
-      )));
+      await tester.pumpWidget(buildNavigationMenu(size: const Size(800, 400)));
 
       expect(find.byType(Flex), findsWidgets);
 

@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/data/models/navigation_menu_callback.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu_button.dart';
 
-int index = 0;
+late GlobalKey<NavigationMenuButtonState> currentKey;
 
 class NavigationMenu extends StatefulWidget {
-  final ValueChanged<int> indexChangedCallback;
+  final int selectedIndex;
+  final ValueChanged<NavigationMenuCallback> indexChangedCallback;
 
-  const NavigationMenu({super.key, required this.indexChangedCallback});
+  const NavigationMenu({super.key, required this.selectedIndex, required this.indexChangedCallback});
 
   @override
   State<NavigationMenu> createState() => _NavigationMenuState();
@@ -32,20 +34,16 @@ class _NavigationMenuState extends State<NavigationMenu> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      keys[index].currentState?.restartAnimation();
-    });
+
+    currentKey = keys[widget.selectedIndex];
+    WidgetsBinding.instance.addPostFrameCallback((_) => currentKey.currentState?.restartAnimation());
   }
 
   @override
   Widget build(BuildContext context) {
     Widget buttons = _createButtons();
 
-    if (MediaQuery.of(context).orientation == Orientation.portrait) {
-      return _bottomBar(buttons);
-    }
-
-    return _sideBar(buttons);
+    return (MediaQuery.of(context).orientation == Orientation.portrait) ? _bottomBar(buttons) : _sideBar(buttons);
   }
 
   Widget _sideBar(Widget buttons) {
@@ -136,11 +134,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
   }
 
   _setIndex(int newIndex) {
-    widget.indexChangedCallback(newIndex);
-
-    if (newIndex == index) return;
-    keys[index].currentState?.reverseAnimation();
-    index = newIndex;
-    keys[index].currentState?.restartAnimation();
+    widget.indexChangedCallback(NavigationMenuCallback(newIndex, keys[newIndex], currentKey));
+    currentKey = keys[newIndex];
   }
 }

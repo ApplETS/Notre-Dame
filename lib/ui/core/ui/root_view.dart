@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:animations/animations.dart';
+import 'package:notredame/data/models/navigation_menu_callback.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
@@ -15,21 +16,23 @@ import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
 
-int currentIndex = 0;
-int oldIndex = 0;
-
 enum NavigationView {
-  dashboard,
-  schedule,
-  student,
-  ets,
-  more,
+  dashboard(0),
+  schedule(1),
+  student(2),
+  ets(3),
+  more(4);
+
+  final int buttonIndex;
+  const NavigationView(this.buttonIndex);
 }
 
-class RootView extends StatefulWidget {
-  RootView({super.key});
+NavigationView _selected = NavigationView.dashboard;
+NavigationView _previous = _selected;
+final ScheduleController _scheduleController = ScheduleController();
 
-  final ScheduleController _scheduleController = ScheduleController();
+class RootView extends StatefulWidget {
+  const RootView({super.key});
 
   @override
   State<RootView> createState() => _RootViewState();
@@ -42,7 +45,7 @@ class _RootViewState extends State<RootView> {
   @override
   Widget build(BuildContext context) {
     currentView ??= _getViewByIndex();
-    Widget menu = NavigationMenu(indexChangedCallback: _updateView);
+    Widget menu = NavigationMenu(selectedIndex: _selected.buttonIndex, indexChangedCallback: _updateView);
 
     return Scaffold(
       extendBody: true,
@@ -54,10 +57,10 @@ class _RootViewState extends State<RootView> {
             if (MediaQuery.of(context).orientation == Orientation.landscape) menu,
             Expanded(
               child: PageTransitionSwitcher(
-                  reverse: currentIndex < oldIndex,
+                  reverse: _selected.buttonIndex < _previous.buttonIndex,
                   duration: Duration(milliseconds: 350),
                   transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
-                    oldIndex = currentIndex;
+                    _previous = _selected;
                     return SharedAxisTransition(
                       animation: primaryAnimation,
                       secondaryAnimation: secondaryAnimation,
@@ -72,38 +75,39 @@ class _RootViewState extends State<RootView> {
           ],
         )),
         if (MediaQuery.of(context).orientation == Orientation.portrait)
-          SizedBox(height: 96) // The same height as the menu bar
+          SizedBox(height: 96.0) // The same height as the menu bar
       ]),
     );
   }
 
-  _updateView(int index) {
-    if (index == currentIndex) {
-      if (index == 1) widget._scheduleController.returnToToday();
+  _updateView(NavigationMenuCallback callback) {
+    if (callback.index == _selected.buttonIndex) {
+      if (callback.index == 1) _scheduleController.returnToToday();
       return;
     }
 
-    oldIndex = currentIndex;
-    currentIndex = index;
-    _analyticsService.logEvent("RootView", "${NavigationView.values[index].name} clicked");
+    callback.oldKey.currentState?.reverseAnimation();
+    callback.newKey.currentState?.restartAnimation();
 
+    _previous = _selected;
+    _selected = NavigationView.values[callback.index];
+
+    _analyticsService.logEvent("RootView", "${_selected.name} clicked");
     setState(() => currentView = _getViewByIndex());
   }
 
   Widget _getViewByIndex() {
-    switch (currentIndex) {
-      case 0:
+    switch (_selected) {
+      case NavigationView.dashboard:
         return DashboardView();
-      case 1:
-        return ScheduleView(controller: widget._scheduleController);
-      case 2:
+      case NavigationView.schedule:
+        return ScheduleView(controller: _scheduleController);
+      case NavigationView.student:
         return StudentView();
-      case 3:
+      case NavigationView.ets:
         return ETSView();
-      case 4:
+      case NavigationView.more:
         return MoreView();
-      default:
-        return DashboardView();
     }
   }
 }
