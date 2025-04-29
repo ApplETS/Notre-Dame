@@ -97,17 +97,12 @@ class _RootViewState extends State<RootView> {
   }
 
   Widget _getViewByIndex() {
-    switch (_selected) {
-      case NavigationView.dashboard:
-        return DashboardView();
-      case NavigationView.schedule:
-        return ScheduleView(controller: _scheduleController);
-      case NavigationView.student:
-        return StudentView();
-      case NavigationView.ets:
-        return ETSView();
-      case NavigationView.more:
-        return MoreView();
-    }
+    return switch (_selected) {
+      NavigationView.dashboard => DashboardView(),
+      NavigationView.schedule => ScheduleView(controller: _scheduleController),
+      NavigationView.student => StudentView(),
+      NavigationView.ets => ETSView(),
+      NavigationView.more => MoreView()
+    };
   }
 }
