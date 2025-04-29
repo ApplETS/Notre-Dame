@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:animations/animations.dart';
-import 'package:notredame/data/models/navigation_menu_callback.dart';
 
 // Project imports:
+import 'package:notredame/data/models/navigation_menu_callback.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
