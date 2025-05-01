@@ -59,7 +59,12 @@ class Course {
     if (reviews == null) {
       return true;
     }
-    return reviews!.every((review) => review.isCompleted);
+
+    final now = DateTime.now();
+    final activeReviews =
+        reviews!.where((review) => review.startAt.isBefore(now) && review.endAt.isAfter(now)).toList();
+
+    return activeReviews.isNotEmpty && activeReviews.every((review) => review.isCompleted);
   }
 
   Course(
