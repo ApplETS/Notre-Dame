@@ -12,13 +12,17 @@
 .pub/
 build/
 
+# Code generation
+*.freezed.dart
+*.g.dart
+*.mocks.dart
+
 # Flutter localization generated files
 lib/generated/
 app_untranslated_messages.yaml
 
 # Flutter test
 test/**/failures/
-*.mocks.dart
 
 # Certificates and secrets
 assets/certificates/
