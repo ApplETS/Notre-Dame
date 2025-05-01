@@ -12,6 +12,7 @@ import 'package:notredame/data/services/signets-api/models/course_evaluation.dar
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_evaluation_tile.dart';
+import 'package:notredame/utils/utils.dart';
 import '../../../../helpers.dart';
 
 void main() {
@@ -76,6 +77,65 @@ void main() {
         expect(label2, findsOneWidget);
       });
 
+      testWidgets("display values when the information is not null", (WidgetTester tester) async {
+        final evaluation = courseSummary.evaluations.first;
+
+        final widget = localizedWidget(child: GradeEvaluationTile(evaluation, completed: true));
+
+        await tester.pumpWidget(widget);
+
+        await tester.pumpAndSettle();
+
+        final circularPercentIndicator = find.byType(GradeCircularProgress);
+        expect(circularPercentIndicator, findsOneWidget);
+
+        // Tap the button.
+        await tester.tap(find.byType(ExpansionTile));
+
+        await tester.pumpFrames(widget, const Duration(seconds: 5));
+
+        final label = find.text(evaluation.title);
+        expect(label, findsOneWidget);
+
+        final label2 = find.text("Weight: 10.0 %");
+        expect(label2, findsOneWidget);
+
+        final String formattedMark = evaluation.mark!.toStringAsFixed(2);
+        final label3 = find.text(intl.grades_grade_with_percentage(
+            evaluation.mark!,
+            evaluation.correctedEvaluationOutOfFormatted,
+            Utils.getGradeInPercentage(double.parse(formattedMark), evaluation.correctedEvaluationOutOfFormatted) ??
+                0.0));
+        expect(label3, findsOneWidget);
+
+        final String formattedPassMark = evaluation.passMark!.toStringAsFixed(2);
+        final label4 = find.text(intl.grades_grade_with_percentage(
+            double.parse(formattedPassMark),
+            evaluation.correctedEvaluationOutOfFormatted,
+            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+        expect(label4, findsOneWidget);
+
+        final String formattedAverage = evaluation.passMark!.toStringAsFixed(2);
+        final label5 = find.text(intl.grades_grade_with_percentage(
+            double.parse(formattedAverage),
+            evaluation.correctedEvaluationOutOfFormatted,
+            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+        expect(label5, findsOneWidget);
+
+        final String formattedMedian = evaluation.median!.toStringAsFixed(2);
+        final label6 = find.text(intl.grades_grade_with_percentage(
+            double.parse(formattedMedian),
+            evaluation.correctedEvaluationOutOfFormatted,
+            Utils.getGradeInPercentage(evaluation.median!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+        expect(label6, findsOneWidget);
+
+        final label7 = find.text(evaluation.standardDeviation.toString());
+        expect(label7, findsOneWidget);
+
+        final label8 = find.text(evaluation.percentileRank.toString());
+        expect(label8, findsOneWidget);
+      });
+
       testWidgets("display N/A when the information is null", (WidgetTester tester) async {
         final evaluation = courseSummary.evaluations.last;
 
@@ -100,11 +160,12 @@ void main() {
         expect(label2, findsOneWidget);
 
         final label3 = find.text(intl.grades_not_available);
-        //grades_weighted_grade, grades_standard_deviation, grades_percentile_rank
-        expect(label3, findsNWidgets(3));
-
-        final label4 = find.text("0.0/30 (0.0%)");
-        expect(label4, findsNWidgets(3));
+        /*
+          grade_grade (circular progress), grade_grade, grades_average,
+          grades_median, grades_weighted_grade,grades_standard_deviation,
+          grades_percentile_rank
+        */
+        expect(label3, findsNWidgets(7));
       });
     });
   });
