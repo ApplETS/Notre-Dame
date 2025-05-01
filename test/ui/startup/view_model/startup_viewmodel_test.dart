@@ -13,7 +13,6 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
-import '../../../data/mocks/repositories/user_repository_mock.dart';
 import '../../../data/mocks/services/auth_service_mock.dart';
 import '../../../data/mocks/services/navigation_service_mock.dart';
 import '../../../data/mocks/services/networking_service_mock.dart';
@@ -21,7 +20,6 @@ import '../../../helpers.dart';
 
 void main() {
   late NavigationServiceMock navigationServiceMock;
-  late UserRepositoryMock userRepositoryMock;
   late SettingsRepositoryMock settingsRepositoryMock;
   late NetworkingServiceMock networkingServiceMock;
   late AuthServiceMock authServiceMock;
@@ -33,11 +31,8 @@ void main() {
       setupAnalyticsServiceMock();
       navigationServiceMock = setupNavigationServiceMock();
       settingsRepositoryMock = setupSettingsRepositoryMock();
-      userRepositoryMock = setupUserRepositoryMock();
       networkingServiceMock = setupNetworkingServiceMock();
       authServiceMock = setupAuthServiceMock();
-
-      UserRepositoryMock.stubWasPreviouslyLoggedIn(userRepositoryMock, toReturn: false);
 
       viewModel = StartUpViewModel();
     });
