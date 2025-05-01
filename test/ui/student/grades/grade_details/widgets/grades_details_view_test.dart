@@ -92,8 +92,19 @@ void main() {
     isCompleted: false,
   );
 
+  final futureInactiveCourseReview = CourseReview(
+    acronym: 'GEN101',
+    group: '02',
+    teacherName: 'TEST',
+    startAt: DateTime.now().add(const Duration(days: 30)),
+    endAt: DateTime.now().add(const Duration(days: 60)),
+    type: 'Cours',
+    isCompleted: false,
+  );
+
   final completedReviewList = <CourseReview>[completedCourseReview, completedCourseReview2];
-  final nonCompletedReviewList = <CourseReview>[nonCompletedCourseReview];
+  final nonCompletedReviewList = <CourseReview>[nonCompletedCourseReview, futureInactiveCourseReview];
+  final semiCompletedReviewList = <CourseReview>[completedCourseReview, futureInactiveCourseReview];
 
   final Course course = Course(
       acronym: 'GEN101',
@@ -123,6 +134,16 @@ void main() {
     numberOfCredits: 3,
     title: 'Cours générique',
   );
+
+  final Course courseWithEvaluationSemiCompleted = Course(
+      acronym: 'GEN101',
+      group: '02',
+      session: 'H2020',
+      programCode: '999',
+      numberOfCredits: 3,
+      title: 'Cours générique',
+      summary: courseSummary,
+      reviews: semiCompletedReviewList);
 
   final Course courseWithEvaluationNotCompleted = Course(
       acronym: 'GEN101',
@@ -259,6 +280,34 @@ void main() {
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("EvaluationNotCompleted")), findsOneWidget);
+      });
+
+      testWidgets(
+          'display regular course content (evaluations, circular progress, etc) when in the evaluation period and the evaluation is completed with a future (inactive) review not completed',
+          (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithEvaluationSemiCompleted,
+            toReturn: courseWithEvaluationSemiCompleted);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithEvaluationSemiCompleted)));
+          await tester.pumpAndSettle(const Duration(seconds: 2));
+        }).then(
+          (value) {
+            expect(find.byType(RefreshIndicator), findsOneWidget);
+
+            // Find all the grade circular progress
+            expect(find.byKey(const Key("GradeCircularProgress_summary")), findsOneWidget);
+            for (final eval in courseSummary.evaluations) {
+              expect(find.byKey(Key("GradeCircularProgress_${eval.title}")), findsOneWidget);
+            }
+
+            expect(find.byType(Card), findsNWidgets(5));
+
+            for (final eval in courseSummary.evaluations) {
+              expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")), findsOneWidget);
+            }
+          },
+        );
       });
     });
   });
