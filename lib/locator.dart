@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -22,6 +23,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/services/signets_client.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -36,6 +38,10 @@ void setupLocator() {
   locator.registerLazySingleton(() => RemoteConfigService());
   locator.registerLazySingleton(() => LaunchUrlService());
   locator.registerLazySingleton(() => AuthService());
+
+  final dio = Dio();
+  locator.registerLazySingleton(() => dio);
+  locator.registerLazySingleton(() => SignetsClient(dio));
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());
