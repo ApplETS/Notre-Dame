@@ -140,32 +140,26 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> with TickerPr
         children: [
           _buildSummary(
             AppIntl.of(context)!.grades_grade,
-            AppIntl.of(context)!.grades_grade_with_percentage(
-              evaluation.mark ?? 0.0,
-              evaluation.correctedEvaluationOutOf,
-              Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted),
-            ),
+            Utils.validateResultWithPercentage(context, evaluation.mark, evaluation.correctedEvaluationOutOfFormatted,
+                Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0),
           ),
           _buildSummary(
             AppIntl.of(context)!.grades_average,
-            AppIntl.of(context)!.grades_grade_with_percentage(
-              evaluation.passMark ?? 0.0,
-              evaluation.correctedEvaluationOutOf,
-              Utils.getGradeInPercentage(evaluation.passMark, evaluation.correctedEvaluationOutOfFormatted),
-            ),
+            Utils.validateResultWithPercentage(
+                context,
+                evaluation.passMark,
+                evaluation.correctedEvaluationOutOfFormatted,
+                Utils.getGradeInPercentage(evaluation.passMark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0),
           ),
           _buildSummary(
             AppIntl.of(context)!.grades_median,
-            AppIntl.of(context)!.grades_grade_with_percentage(
-              evaluation.median ?? 0.0,
-              evaluation.correctedEvaluationOutOf,
-              Utils.getGradeInPercentage(evaluation.median, evaluation.correctedEvaluationOutOfFormatted),
-            ),
+            Utils.validateResultWithPercentage(context, evaluation.median, evaluation.correctedEvaluationOutOfFormatted,
+                Utils.getGradeInPercentage(evaluation.median, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0),
           ),
           _buildSummary(
               AppIntl.of(context)!.grades_weighted,
-              validateResultWithPercentage(context, evaluation.weightedGrade, evaluation.weight,
-                  Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted))),
+              Utils.validateResultWithPercentage(context, evaluation.weightedGrade, evaluation.weight,
+                  Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0)),
           _buildSummary(AppIntl.of(context)!.grades_standard_deviation,
               validateResult(context, evaluation.standardDeviation.toString())),
           _buildSummary(AppIntl.of(context)!.grades_percentile_rank,
@@ -205,14 +199,5 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> with TickerPr
     }
 
     return AppIntl.of(context)!.grades_not_available;
-  }
-
-  String validateResultWithPercentage(BuildContext context, double? result, double maxGrade, double percentage) {
-    if (result == null) {
-      return AppIntl.of(context)!.grades_not_available;
-    }
-
-    final String formattedResult = result.toStringAsFixed(2);
-    return AppIntl.of(context)!.grades_grade_with_percentage(double.parse(formattedResult), maxGrade, percentage);
   }
 }
