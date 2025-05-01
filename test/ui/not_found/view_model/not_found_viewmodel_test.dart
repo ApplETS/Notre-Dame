@@ -47,7 +47,7 @@ void main() {
       test('navigating back worked', () async {
         viewModel.navigateToDashboard();
 
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.root));
       });
     });
 

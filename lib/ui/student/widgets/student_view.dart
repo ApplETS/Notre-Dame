@@ -25,8 +25,6 @@ class _StudentViewState extends State<StudentView> {
     final List<String> tabs = [AppIntl.of(context)!.grades_title, AppIntl.of(context)!.profile_title];
 
     return BaseScaffold(
-      safeArea: false,
-      isInteractionLimitedWhileLoading: false,
       body: DefaultTabController(
         length: tabs.length,
         child: NestedScrollView(

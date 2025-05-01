@@ -61,7 +61,7 @@ void main() {
         await viewModel.handleStartUp();
 
         verify(authServiceMock.acquireTokenSilent()).called(1);
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.root));
         verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true)).called(1);
       });
 
@@ -76,7 +76,7 @@ void main() {
 
         verify(authServiceMock.acquireTokenSilent()).called(1);
         verify(authServiceMock.acquireToken()).called(1);
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.root));
         verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true)).called(1);
       });
 

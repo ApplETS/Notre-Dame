@@ -37,7 +37,6 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
         viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return BaseScaffold(
-              isInteractionLimitedWhileLoading: false,
               appBar: AppBar(
                   title: Text(AppIntl.of(context)!.title_dashboard),
                   centerTitle: false,

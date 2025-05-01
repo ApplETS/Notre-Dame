@@ -35,7 +35,6 @@ class _SecurityViewState extends State<SecurityView> {
           appBar: AppBar(
             title: Text(AppIntl.of(context)!.ets_security_title),
           ),
-          showBottomBar: false,
           body: SafeArea(
             top: false,
             bottom: false,

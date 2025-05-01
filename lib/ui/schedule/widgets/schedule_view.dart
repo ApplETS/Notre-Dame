@@ -41,8 +41,6 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
           }
         },
         builder: (context, model, child) => BaseScaffold(
-            isLoading: model.isBusy,
-            isInteractionLimitedWhileLoading: false,
             appBar: AppBar(
               title: Text(AppIntl.of(context)!.title_schedule),
               centerTitle: false,
