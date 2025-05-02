@@ -78,7 +78,6 @@ dependencies:
   freezed_annotation: ^3.0.0
   retrofit: ^4.4.2
   dio: ^5.8.0+1
-  mobx: ^2.5.0
   synchronized: ^3.3.1
   retry: ^3.1.2
 
