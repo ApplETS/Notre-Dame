@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
-import 'package:mobx/mobx.dart';
-import 'package:notredame/data/models/signets-api/signets_api_response.dart';
+import 'package:mobx/mobx.dart' as mobx;
+import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:retry/retry.dart';
@@ -20,7 +20,9 @@ class BaseObservableListRepository<T> {
   final secureStorage = locator<FlutterSecureStorage>();
   final _logger = locator<Logger>();
 
-  final items = ObservableList<T>();
+  final _items = mobx.ObservableList<T>();
+  mobx.Listenable<mobx.ListChange<T>> get itemsListenable => _items;
+
   final Lock itemsLock = Lock();
   final String _cacheKey;
 
@@ -41,8 +43,8 @@ class BaseObservableListRepository<T> {
     final cachedObjects = jsonList.map((e) => fromJson(e as Map<String, dynamic>)).toList();
 
     await itemsLock.synchronized(() async {
-      if(items.isEmpty) {
-        items.addAll(cachedObjects);
+      if(_items.isEmpty) {
+        _items.addAll(cachedObjects);
       }
     });
     return null;
@@ -85,9 +87,9 @@ class BaseObservableListRepository<T> {
     }
 
     await itemsLock.synchronized(() async {
-      items.clear();
+      _items.clear();
       _cacheTimestamp = DateTime.now();
-      items.addAll(apiResponse.data!);
+      _items.addAll(apiResponse.data!);
     });
     await secureStorage.write(key: _cacheKey, value: json.encode(apiResponse.data));
 

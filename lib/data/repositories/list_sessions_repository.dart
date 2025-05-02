@@ -1,6 +1,6 @@
 import 'package:notredame/data/repositories/base_observable_list_repository.dart';
 import 'package:notredame/data/services/signets_client.dart';
-import 'package:notredame/data/models/signets-api/session.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/locator.dart';
 
 class ListSessionsRepository extends BaseObservableListRepository<Session> {
