@@ -8,6 +8,7 @@ import 'package:logger/logger.dart';
 import 'package:notredame/data/repositories/author_repository.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/list_sessions_repository.dart';
 import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
@@ -39,11 +40,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => LaunchUrlService());
   locator.registerLazySingleton(() => AuthService());
 
-  final dio = Dio();
-  locator.registerLazySingleton(() => dio);
-  locator.registerLazySingleton(() => SignetsClient(dio));
-
-  // Managers
+  // Repositories
   locator.registerLazySingleton(() => UserRepository());
   locator.registerLazySingleton(() => CourseRepository());
   locator.registerLazySingleton(() => CacheService());
@@ -52,9 +49,18 @@ void setupLocator() {
   locator.registerLazySingleton(() => NewsRepository());
   locator.registerLazySingleton(() => AuthorRepository());
   locator.registerLazySingleton(() => BroadcastMessageRepository());
+  locator.registerLazySingleton(() => ListSessionsRepository());
 
   // Other
   locator.registerLazySingleton(() => SignetsAPIClient());
   locator.registerLazySingleton(() => HelloService());
   locator.registerLazySingleton(() => Logger());
+}
+
+void setupSignetsClientLocator(String authToken) {
+  final dio = Dio();
+  locator.registerLazySingleton<SignetsClient>(() => SignetsClient(
+        dio,
+        authToken
+      ));
 }
