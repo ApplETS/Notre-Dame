@@ -6,60 +6,70 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
-import 'package:mobx/mobx.dart' as mobx;
 import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:retry/retry.dart';
 import 'package:synchronized/synchronized.dart';
 
-class BaseObservableListRepository<T> {
+class BaseStreamRepository<T> {
   static const Duration _cacheDuration = Duration(minutes: 2);
 
   @protected
   final secureStorage = locator<FlutterSecureStorage>();
   final _logger = locator<Logger>();
 
-  final _items = mobx.ObservableList<T>();
-  mobx.Listenable<mobx.ListChange<T>> get itemsListenable => _items;
+  @protected
+  T? value;
 
   final Lock itemsLock = Lock();
   final String _cacheKey;
+  final _controller = StreamController<T?>.broadcast();
+  Stream<T?> get stream => _controller.stream;
 
   DateTime? _cacheTimestamp;
   bool _requestInProgress = false;
   
 
-  BaseObservableListRepository(this._cacheKey);
-  @protected
-  Future<String?> getFromCache(T Function(Map<String, dynamic>) fromJson) async {
-    final cache = await secureStorage.read(key: _cacheKey);
-
-    if(cache == null) {
-      return null;
-    }
-
-    final List<dynamic> jsonList = json.decode(cache) as List<dynamic>;
-    final cachedObjects = jsonList.map((e) => fromJson(e as Map<String, dynamic>)).toList();
-
-    await itemsLock.synchronized(() async {
-      if(_items.isEmpty) {
-        _items.addAll(cachedObjects);
+  BaseStreamRepository(this._cacheKey) {
+    _controller.onListen = () {
+      if(value != null) {
+        _controller.add(value);
       }
-    });
-    return null;
+    };
   }
 
   @protected
-  Future<String?> getFromApi(Future<SignetsApiResponse<List<T>>> Function() apiCall, {bool forceUpdate = false}) async {
+  Future getFromCache<RType>(RType Function(Map<String, dynamic>) fromJson) async {
+    final cache = await secureStorage.read(key: _cacheKey);
+    if(cache == null || cache.isEmpty) {
+      return;
+    }
+
+    final decoded = json.decode(cache);
+
+    await itemsLock.synchronized(() async {
+      if(decoded is List) {
+        value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as T;
+      } else if (decoded is Map<String, dynamic>) {
+        value ??= fromJson(decoded) as T;
+      } else {
+        _controller.addError(FormatException('Unsupported JSON format in cache'));
+      }
+      _controller.add(value);
+    });
+  }
+
+  @protected
+  Future getFromApi(Future<SignetsApiResponse<T>> Function() apiCall, {bool forceUpdate = false}) async {
     if(_requestInProgress) {
-      return null;
+      return;
     }
 
     if(!forceUpdate) {
       final now = DateTime.now();
       if(_cacheTimestamp != null && now.difference(_cacheTimestamp!) < _cacheDuration) {
-        return null;
+        return;
       }
     }
     
@@ -83,18 +93,14 @@ class BaseObservableListRepository<T> {
     _requestInProgress = false;
 
     if(apiResponse.error != null && apiResponse.error!.isNotEmpty) {
-      return apiResponse.error;
+      _controller.addError(apiResponse.error as Object);
     }
 
     await itemsLock.synchronized(() async {
-      _items.clear();
       _cacheTimestamp = DateTime.now();
-      _items.addAll(apiResponse.data!);
+      value = apiResponse.data;
+      _controller.add(value);
     });
     await secureStorage.write(key: _cacheKey, value: json.encode(apiResponse.data));
-
-    return null;
   }
-
-
 }
