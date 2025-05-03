@@ -1,107 +1,95 @@
-import 'package:flutter/widgets.dart';
+import 'dart:async';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/data/repositories/list_sessions_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 
 import 'package:notredame/domain/models/progress_bar_text_options.dart';
-import 'package:notredame/domain/models/signets-api/session.dart';
+import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/locator.dart';
-import 'package:stacked/stacked.dart';
 
-class SessionProgressUseCase extends ChangeNotifier {
+class SessionProgressUseCase {
   final _listSessionsRepository = locator<ListSessionsRepository>();
+  final _settingsRepository = locator<SettingsRepository>();
 
-  String? progressBarText;
+  var _currentTextStyle = ProgressBarText.daysElapsedWithTotalDays;
+  final AppIntl _intl;
 
-  ProgressBarText _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
+  final _controller = StreamController<SessionProgress>.broadcast();
+  Stream<SessionProgress> get stream => _controller.stream;
+  StreamSubscription? _subscription;
 
-  /// Percentage of completed days for the session
-  double _progress = 0.0;
+  SessionProgressUseCase(this._intl);
 
-  /// Numbers of days elapsed and total number of days of the current session
-  List<int> _sessionDays = [0, 0];
+  Future<void> init() async {
+      final progressBarText = await _settingsRepository.getString(PreferencesFlag.progressBarText) ??
+          ProgressBarText.daysElapsedWithTotalDays.toString();
 
-  SessionProgressUseCase() {
-    _listSessionsRepository.itemsListenable.observe((sessions) => futureToRunSessionProgressBar());
-    _listSessionsRepository.getSessions(forceUpdate: true);
+      _currentTextStyle = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
+
+      _subscription = _listSessionsRepository.stream.listen((sessions) => _runSessionProgressBar(), onError: (error) {
+        _controller.addError(error as Object);
+      });
+      await _listSessionsRepository.getSessions();
+  }
+
+  void _runSessionProgressBar() {
+    _controller.add(SessionProgress(
+      _getSessionProgressPercentage(),
+      _getProgressBarText(),
+    ));
   }
 
   /// Return session progress based on today's [date]
-  double getSessionProgress() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return -1.0;
-    } else {
-      return sessionDays[0] / sessionDays[1];
+  double _getSessionProgressPercentage() {
+    final activeSession = _listSessionsRepository.getActiveSession();
+
+    if (activeSession == null) {
+      return 0.0;
     }
+
+    return activeSession.daysCompleted / activeSession.totalDays;
   }
 
   
-  String getProgressBarText(BuildContext context) {
-    switch (_currentProgressBarText) {
+  String _getProgressBarText() {
+    final sessionDays = _listSessionsRepository.getActiveSession();
+    final elapsedDays = sessionDays?.daysCompleted ?? 0;
+    final totalDays = sessionDays?.totalDays ?? 0;
+
+    switch (_currentTextStyle) {
       case ProgressBarText.daysElapsedWithTotalDays:
-        _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-        return AppIntl.of(context)!.progress_bar_message(sessionDays[0], sessionDays[1]);
+        _currentTextStyle = ProgressBarText.daysElapsedWithTotalDays;
+        return _intl.progress_bar_message(elapsedDays, totalDays);
       case ProgressBarText.percentage:
-        _currentProgressBarText = ProgressBarText.percentage;
-        final percentage = sessionDays[1] == 0 ? 0 : ((sessionDays[0] / sessionDays[1]) * 100).round();
-        return AppIntl.of(context)!.progress_bar_message_percentage(percentage);
+        _currentTextStyle = ProgressBarText.percentage;
+        final percentage = (_getSessionProgressPercentage() * 100).round();
+        return _intl.progress_bar_message_percentage(percentage);
       default:
-        _currentProgressBarText = ProgressBarText.remainingDays;
-        return AppIntl.of(context)!.progress_bar_message_remaining_days(sessionDays[1] - sessionDays[0]);
-    }
-  }
-
-  Future<List<Session>> futureToRunSessionProgressBar() async {
-    try {
-      final progressBarText = await _settingsManager.getString(PreferencesFlag.progressBarText) ??
-          ProgressBarText.daysElapsedWithTotalDays.toString();
-
-      _currentProgressBarText = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
-
-      setBusyForObject(progress, true);
-      final sessions = await _courseRepository.getSessions();
-      _sessionDays = getSessionDays();
-      _progress = getSessionProgress();
-      return sessions;
-    } catch (error) {
-      onError(error);
-    } finally {
-      setBusyForObject(progress, false);
-    }
-    return [];
-  }
-
-  /// Returns a list containing the number of elapsed days in the active session
-  /// and the total number of days in the session
-  List<int> getSessionDays() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return [0, 0];
-    } else {
-      int dayCompleted =
-          _settingsManager.dateTimeNow.difference(_courseRepository.activeSessions.first.startDate).inDays;
-      final dayInTheSession = _courseRepository.activeSessions.first.endDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-
-      if (dayCompleted > dayInTheSession) {
-        dayCompleted = dayInTheSession;
-      } else if (dayCompleted < 0) {
-        dayCompleted = 0;
-      }
-
-      return [dayCompleted, dayInTheSession];
+        _currentTextStyle = ProgressBarText.remainingDays;
+        return _intl.progress_bar_message_remaining_days(totalDays - elapsedDays);
     }
   }
 
   void changeProgressBarText() {
-    if (_currentProgressBarText.index <= 1) {
-      _currentProgressBarText = ProgressBarText.values[_currentProgressBarText.index + 1];
+    if (_currentTextStyle.index <= 1) {
+      _currentTextStyle = ProgressBarText.values[_currentTextStyle.index + 1];
     } else {
-      _currentProgressBarText = ProgressBarText.values[0];
+      _currentTextStyle = ProgressBarText.values[0];
     }
 
-    notifyListeners();
-    _settingsManager.setString(PreferencesFlag.progressBarText, _currentProgressBarText.toString());
+    _settingsRepository.setString(PreferencesFlag.progressBarText, _currentTextStyle.toString());
+    _runSessionProgressBar();
   }
-  
+
+  Future<void> fetch({bool forceUpdate = false}) async {
+    await _listSessionsRepository.getSessions(forceUpdate: forceUpdate);
+  }
+
+  void dispose() {
+    _controller.close();
+    _subscription?.cancel();
+  }
   
 }

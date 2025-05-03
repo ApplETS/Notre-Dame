@@ -34,7 +34,11 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
+        viewModelBuilder: () { 
+          final viewModel = DashboardViewModel(intl: AppIntl.of(context)!);
+          viewModel.init();
+          return viewModel;
+        },
         builder: (context, model, child) {
           return BaseScaffold(
               isInteractionLimitedWhileLoading: false,
@@ -92,9 +96,9 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
               key: UniqueKey(),
               onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
               changeProgressBarText: model.changeProgressBarText,
-              progressBarText: model.getProgressBarText(context),
-              progress: model.progress,
-              loading: model.busy(model.progress)));
+              progressBarText: model.sessionProgress?.text ?? '',
+              progress: model.sessionProgress?.percentage ?? 0.0,
+              loading: model.sessionProgress == null));
         case PreferencesFlag.gradesCard:
           cards.add(GradesCard(
               key: UniqueKey(),

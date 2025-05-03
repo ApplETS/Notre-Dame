@@ -40,7 +40,7 @@ class BaseStreamRepository<T> {
   }
 
   @protected
-  Future getFromCache<RType>(RType Function(Map<String, dynamic>) fromJson) async {
+  Future<void> getFromCache<RType>(RType Function(Map<String, dynamic>) fromJson) async {
     final cache = await secureStorage.read(key: _cacheKey);
     if(cache == null || cache.isEmpty) {
       return;
@@ -61,7 +61,7 @@ class BaseStreamRepository<T> {
   }
 
   @protected
-  Future getFromApi(Future<SignetsApiResponse<T>> Function() apiCall, {bool forceUpdate = false}) async {
+  Future<void> getFromApi(Future<SignetsApiResponse<T>> Function() apiCall, {bool forceUpdate = false}) async {
     if(_requestInProgress) {
       return;
     }
@@ -72,7 +72,6 @@ class BaseStreamRepository<T> {
         return;
       }
     }
-    
 
     _requestInProgress = true;
     final apiResponse = await retry(

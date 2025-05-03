@@ -1,14 +1,14 @@
 // Dart imports:
+import 'dart:async';
 import 'dart:collection';
-
-// Flutter imports:
-import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/domain/models/session_progress.dart';
+import 'package:notredame/logic/session_progress_use_case.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -24,10 +24,8 @@ import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/domain/models/progress_bar_text_options.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
@@ -38,6 +36,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
+  final SessionProgressUseCase _sessionProgressUseCase;
+
+  StreamSubscription? _sessionProgressSubscription;
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
@@ -49,11 +50,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<PreferencesFlag>? _cardsToDisplay;
 
   BroadcastMessage? broadcastMessage;
-
-  /// Get progress of the session
-  double get progress => _progress;
-
-  List<int> get sessionDays => _sessionDays;
+  SessionProgress? sessionProgress;
 
   /// Activities for today
   final List<CourseActivity> _scheduleEvents = [];
@@ -105,7 +102,27 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// List of courses for the current session
   List<Course> courses = [];
 
-  DashboardViewModel({required AppIntl intl}) : _appIntl = intl;
+  DashboardViewModel({required AppIntl intl}) : _appIntl = intl, _sessionProgressUseCase = SessionProgressUseCase(intl);
+
+  Future<void> init() async {
+    await initSessionProgress();
+  }
+
+  Future<void> initSessionProgress() async {
+    _sessionProgressSubscription = _sessionProgressUseCase.stream.listen((sessionProgress) {
+      this.sessionProgress = sessionProgress;
+      notifyListeners();
+    },
+        onError: (error) {
+          if(error is Exception) {
+            _analyticsService.logError(tag, "SessionProgressWidget error", error);
+          }
+          if (error is String) {
+            Fluttertoast.showToast(msg: _appIntl.error);
+          }
+        });
+    await _sessionProgressUseCase.init();
+  }
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
@@ -120,7 +137,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future loadDataAndUpdateWidget() async {
     return Future.wait(
-        [futureToRunBroadcast(), futureToRunGrades(), futureToRunSessionProgressBar(), futureToRunSchedule()]);
+        [futureToRunBroadcast(), futureToRunGrades(), _sessionProgressUseCase.fetch(forceUpdate: true), futureToRunSchedule()]);
   }
 
   @override
@@ -327,5 +344,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     final PreferencesFlag elementMoved = cards!.keys.firstWhere((element) => cards![element] == oldIndex);
 
     setOrder(elementMoved, newIndex);
+  }
+
+  void changeProgressBarText() => _sessionProgressUseCase.changeProgressBarText();
+
+  @override
+  void dispose() {
+    _sessionProgressSubscription?.cancel();
+    _sessionProgressUseCase.dispose();
+    super.dispose();
   }
 }
