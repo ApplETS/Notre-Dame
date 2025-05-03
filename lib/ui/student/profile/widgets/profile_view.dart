@@ -118,7 +118,8 @@ Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
         ),
         Column(
           children: [
-            for (var i = 0; i < getProgramListWithoutCurrent(model).length; i++) StudentProgram(getProgramListWithoutCurrent(model)[i]),
+            for (var i = 0; i < getProgramListWithoutCurrent(model).length; i++)
+              StudentProgram(getProgramListWithoutCurrent(model)[i]),
           ],
         ),
         const SizedBox(height: 10.0),
@@ -313,6 +314,6 @@ Column getCurrentProgramTile(Program program, BuildContext context) {
   );
 }
 
-List<Program> getProgramListWithoutCurrent(ProfileViewModel model){
+List<Program> getProgramListWithoutCurrent(ProfileViewModel model) {
   return model.programList.where((item) => item.hashCode != model.getCurrentProgram().hashCode).toList();
 }
