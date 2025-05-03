@@ -34,48 +34,48 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-      viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
-      builder: (context, model, child) {
-        return BaseScaffold(
-          isInteractionLimitedWhileLoading: false,
-          appBar: AppBar(
-            title: Text(AppIntl.of(context)!.title_dashboard),
-            centerTitle: false,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.restore),
-                tooltip: AppIntl.of(context)!.dashboard_restore_all_cards_title,
-                onPressed: () => model.setAllCardsVisible(),
-              ),
-            ],
-            automaticallyImplyLeading: false,
-          ),
-          body: model.cards == null
-              ? buildLoading()
-              : RefreshIndicator(
-                  child: Theme(
-                    data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-                    child: ReorderableListView(
-                      header: model.remoteConfigService.dashboardMessageActive
-                          ? BroadcastMessageCard(
-                              key: UniqueKey(),
-                              loading: model.busy(model.broadcastMessage),
-                              broadcastMessage: model.broadcastMessage,
-                            )
-                          : null,
-                      onReorder: (oldIndex, newIndex) => model.onCardReorder(oldIndex, newIndex),
-                      padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
-                      children: _buildCards(model),
-                      proxyDecorator: (child, _, _) {
-                        return HapticsContainer(child: child);
-                      },
-                    ),
-                  ),
-                  onRefresh: () => model.loadDataAndUpdateWidget(),
-                ),
-        );
-      },
-    );
+        viewModelBuilder: () { 
+          final viewModel = DashboardViewModel(intl: AppIntl.of(context)!);
+          viewModel.init();
+          return viewModel;
+        },
+        builder: (context, model, child) {
+          return BaseScaffold(
+              isInteractionLimitedWhileLoading: false,
+              appBar: AppBar(
+                  title: Text(AppIntl.of(context)!.title_dashboard),
+                  centerTitle: false,
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.restore),
+                      tooltip: AppIntl.of(context)!.dashboard_restore_all_cards_title,
+                      onPressed: () => model.setAllCardsVisible(),
+                    )
+                  ],
+                  automaticallyImplyLeading: false),
+              body: model.cards == null
+                  ? buildLoading()
+                  : RefreshIndicator(
+                      child: Theme(
+                        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+                        child: ReorderableListView(
+                          header: model.remoteConfigService.dashboardMessageActive
+                              ? BroadcastMessageCard(
+                                  key: UniqueKey(),
+                                  loading: model.busy(model.broadcastMessage),
+                                  broadcastMessage: model.broadcastMessage)
+                              : null,
+                          onReorder: (oldIndex, newIndex) => model.onCardReorder(oldIndex, newIndex),
+                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
+                          children: _buildCards(model),
+                          proxyDecorator: (child, _, __) {
+                            return HapticsContainer(child: child);
+                          },
+                        ),
+                      ),
+                      onRefresh: () => model.loadDataAndUpdateWidget(),
+                    ));
+        });
   }
 
   List<Widget> _buildCards(DashboardViewModel model) {
@@ -100,11 +100,9 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
               key: UniqueKey(),
               onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
               changeProgressBarText: model.changeProgressBarText,
-              progressBarText: model.getProgressBarText(context),
-              progress: model.progress,
-              loading: model.busy(model.progress),
-            ),
-          );
+              progressBarText: model.sessionProgress?.text ?? '',
+              progress: model.sessionProgress?.percentage ?? 0.0,
+              loading: model.sessionProgress == null));
         case PreferencesFlag.gradesCard:
           cards.add(
             GradesCard(

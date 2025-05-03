@@ -7,6 +7,9 @@ part 'session.g.dart';
 
 @freezed
 abstract class Session with _$Session {
+  // ignore: unused_element to create methods
+  const Session._();
+
   const factory Session({
     /// Short name (like H2020)
     @JsonKey(name: 'abrege', )
@@ -62,4 +65,7 @@ abstract class Session with _$Session {
   }) = _Session;
 
   factory Session.fromJson(Map<String, dynamic> json) => _$SessionFromJson(json);
+
+  int get daysCompleted => DateTime.now().difference(startDate).inDays;
+  int get totalDays => endDate.difference(startDate).inDays;
 }
