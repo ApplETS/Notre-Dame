@@ -40,10 +40,14 @@ class BaseStreamRepository<T> {
   }
 
   @protected
-  Future<void> getFromCache<RType>(RType Function(Map<String, dynamic>) fromJson) async {
+  Future<bool> getFromCache<RType>(RType Function(Map<String, dynamic>) fromJson) async {
+    if(value != null) {
+      return false;
+    }
+
     final cache = await secureStorage.read(key: _cacheKey);
     if(cache == null || cache.isEmpty) {
-      return;
+      return false;
     }
 
     final decoded = json.decode(cache);
@@ -58,18 +62,19 @@ class BaseStreamRepository<T> {
       }
       _controller.add(value);
     });
+    return true;
   }
 
   @protected
-  Future<void> getFromApi(Future<SignetsApiResponse<T>> Function() apiCall, {bool forceUpdate = false}) async {
+  Future<bool> getFromApi(Future<SignetsApiResponse<T>> Function() apiCall, {bool forceUpdate = false}) async {
     if(_requestInProgress) {
-      return;
+      return false;
     }
 
     if(!forceUpdate) {
       final now = DateTime.now();
       if(_cacheTimestamp != null && now.difference(_cacheTimestamp!) < _cacheDuration) {
-        return;
+        return false;
       }
     }
 
@@ -101,5 +106,6 @@ class BaseStreamRepository<T> {
       _controller.add(value);
     });
     await secureStorage.write(key: _cacheKey, value: json.encode(apiResponse.data));
+    return true;
   }
 }
