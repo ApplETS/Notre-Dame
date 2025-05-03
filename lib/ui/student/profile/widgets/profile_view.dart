@@ -99,7 +99,7 @@ Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
           indent: 10,
           endIndent: 10,
         ),
-        getCurrentProgramTile(model.programList, context),
+        getCurrentProgramTile(model.getCurrentProgram(), context),
         const Divider(
           thickness: 2,
           indent: 10,
@@ -118,7 +118,7 @@ Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
         ),
         Column(
           children: [
-            for (var i = 0; i < model.programList.length - 1; i++) StudentProgram(model.programList[i]),
+            for (var i = 0; i < getProgramListWithoutCurrent(model).length; i++) StudentProgram(getProgramListWithoutCurrent(model)[i]),
           ],
         ),
         const SizedBox(height: 10.0),
@@ -128,7 +128,7 @@ Widget buildPage(BuildContext context, ProfileViewModel model) => Column(
 Card getMainInfoCard(ProfileViewModel model) {
   var programName = "";
   if (model.programList.isNotEmpty) {
-    programName = model.programList.last.name;
+    programName = model.getCurrentProgram().name;
   }
 
   return Card(
@@ -264,57 +264,55 @@ Card getMyBalanceCard(ProfileViewModel model, BuildContext context) {
   );
 }
 
-Column getCurrentProgramTile(List<Program> programList, BuildContext context) {
-  if (programList.isNotEmpty) {
-    final program = programList.last;
+Column getCurrentProgramTile(Program program, BuildContext context) {
+  final List<String> dataTitles = [
+    AppIntl.of(context)!.profile_code_program,
+    AppIntl.of(context)!.profile_average_program,
+    AppIntl.of(context)!.profile_number_accumulated_credits_program,
+    AppIntl.of(context)!.profile_number_registered_credits_program,
+    AppIntl.of(context)!.profile_number_completed_courses_program,
+    AppIntl.of(context)!.profile_number_failed_courses_program,
+    AppIntl.of(context)!.profile_number_equivalent_courses_program,
+    AppIntl.of(context)!.profile_status_program
+  ];
 
-    final List<String> dataTitles = [
-      AppIntl.of(context)!.profile_code_program,
-      AppIntl.of(context)!.profile_average_program,
-      AppIntl.of(context)!.profile_number_accumulated_credits_program,
-      AppIntl.of(context)!.profile_number_registered_credits_program,
-      AppIntl.of(context)!.profile_number_completed_courses_program,
-      AppIntl.of(context)!.profile_number_failed_courses_program,
-      AppIntl.of(context)!.profile_number_equivalent_courses_program,
-      AppIntl.of(context)!.profile_status_program
-    ];
+  final List<String> dataFetched = [
+    program.code,
+    program.average,
+    program.accumulatedCredits,
+    program.registeredCredits,
+    program.completedCourses,
+    program.failedCourses,
+    program.equivalentCourses,
+    program.status
+  ];
 
-    final List<String> dataFetched = [
-      program.code,
-      program.average,
-      program.accumulatedCredits,
-      program.registeredCredits,
-      program.completedCourses,
-      program.failedCourses,
-      program.equivalentCourses,
-      program.status
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-          child: Text(
-            program.name,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppPalette.etsLightRed),
-          ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+        child: Text(
+          program.name,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppPalette.etsLightRed),
         ),
-        ...List<Widget>.generate(dataTitles.length, (index) {
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(dataTitles[index]),
-                Text(dataFetched[index]),
-              ],
-            ),
-          );
-        }),
-      ],
-    );
-  } else {
-    return const Column();
-  }
+      ),
+      ...List<Widget>.generate(dataTitles.length, (index) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(dataTitles[index]),
+              Text(dataFetched[index]),
+            ],
+          ),
+        );
+      }),
+    ],
+  );
+}
+
+List<Program> getProgramListWithoutCurrent(ProfileViewModel model){
+  return model.programList.where((item) => item.hashCode != model.getCurrentProgram().hashCode).toList();
 }
