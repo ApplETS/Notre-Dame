@@ -158,7 +158,6 @@ void main() {
         RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
         setupFlutterToastMock();
         CacheServiceMock.stubEmptyException(cacheManagerMock);
-        UserRepositoryMock.stubLogOut(userRepositoryMock);
 
         await viewModel.logout();
 

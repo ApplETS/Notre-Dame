@@ -1,9 +1,6 @@
 // Dart imports:
 import 'dart:convert';
 
-// Flutter imports:
-import 'package:flutter/services.dart';
-
 // Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,13 +18,11 @@ import 'package:notredame/utils/api_exception.dart';
 import '../../helpers.dart';
 import '../mocks/services/analytics_service_mock.dart';
 import '../mocks/services/cache_service_mock.dart';
-import '../mocks/services/flutter_secure_storage_mock.dart';
 import '../mocks/services/networking_service_mock.dart';
 import '../mocks/services/signets_api_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;
-  late FlutterSecureStorageMock secureStorageMock;
   late CacheServiceMock cacheManagerMock;
   late SignetsAPIClientMock signetsApiMock;
   late NetworkingServiceMock networkingServiceMock;
@@ -38,7 +33,6 @@ void main() {
     setUp(() {
       // Setup needed service
       analyticsServiceMock = setupAnalyticsServiceMock();
-      secureStorageMock = setupFlutterSecureStorageMock();
       cacheManagerMock = setupCacheManagerMock();
       signetsApiMock = setupSignetsApiMock();
       networkingServiceMock = setupNetworkingServiceMock();
@@ -56,69 +50,6 @@ void main() {
       unregister<SignetsAPIClient>();
       unregister<NetworkingService>();
     });
-
-    //TODO: remove when all users are on 4.58.0 or more
-    group('logOut - ', () {
-      test('the user credentials are deleted', () async {
-        expect(await manager.logOut(), isTrue);
-
-        verify(secureStorageMock.delete(key: UserRepository.usernameSecureKey));
-        verify(secureStorageMock.delete(key: UserRepository.passwordSecureKey));
-
-        verifyNever(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
-      });
-
-      test('Verify that localstorage is safely deleted if an exception occurs', () async {
-        FlutterSecureStorageMock.stubDeleteException(secureStorageMock,
-            key: UserRepository.usernameSecureKey, exceptionToThrow: PlatformException(code: "bad key"));
-
-        expect(await manager.logOut(), isFalse);
-
-        verify(secureStorageMock.delete(key: UserRepository.usernameSecureKey));
-        verify(secureStorageMock.deleteAll());
-        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
-      });
-    });
-
-    group("wasPreviouslyLoggedIn - ", () {
-      test("check if username and password are present in the secure storage", () async {
-        const String username = "username";
-        const String password = "password";
-
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
-            key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
-            key: UserRepository.passwordSecureKey, valueToReturn: password);
-
-        expect(await manager.wasPreviouslyLoggedIn(), isTrue);
-      });
-
-      test("check when password is empty in secure storage", () async {
-        const String username = "username";
-        const String password = "";
-
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
-            key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
-            key: UserRepository.passwordSecureKey, valueToReturn: password);
-
-        expect(await manager.wasPreviouslyLoggedIn(), isFalse);
-      });
-
-      test('Verify that localstorage is safely deleted if an exception occurs', () async {
-        const String username = "username";
-
-        FlutterSecureStorageMock.stubRead(secureStorageMock,
-            key: UserRepository.usernameSecureKey, valueToReturn: username);
-        FlutterSecureStorageMock.stubReadException(secureStorageMock,
-            key: UserRepository.passwordSecureKey, exceptionToThrow: PlatformException(code: "bad key"));
-
-        expect(await manager.wasPreviouslyLoggedIn(), isFalse);
-        verify(secureStorageMock.deleteAll());
-        verify(analyticsServiceMock.logError(UserRepository.tag, any, any, any));
-      });
-    });
-    //TODO END: remove when all users are on 4.58.0 or more
 
     group("getPrograms - ", () {
       final List<Program> programs = [
