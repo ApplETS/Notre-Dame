@@ -40,7 +40,9 @@ class GradeButton extends StatelessWidget {
     } else if (course.summary != null &&
         course.summary!.markOutOf > 0 &&
         !(course.inReviewPeriod && !(course.allReviewsCompleted ?? false))) {
-      return intl.grades_grade_in_percentage(course.summary!.currentMarkInPercent.round());
+      if (course.summary!.currentMarkInPercent != null) {
+        return intl.grades_grade_in_percentage(course.summary!.currentMarkInPercent!.round());
+      }
     }
 
     return intl.grades_not_available;

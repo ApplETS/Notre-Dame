@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,7 @@ import '../../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../../helpers.dart';
 
 void main() {
+  late AppIntl intl;
   TestWidgetsFlutterBinding.ensureInitialized();
 
   SharedPreferences.setMockInitialValues({});
@@ -50,8 +52,28 @@ void main() {
     ],
   );
 
+  final CourseSummary courseSummary2 = CourseSummary(
+      currentMark: null,
+      currentMarkInPercent: null,
+      markOutOf: 100,
+      passMark: 60,
+      standardDeviation: 2.3,
+      median: 4.5,
+      percentileRank: 99,
+      evaluations: []);
+
   final completedCourseReview = CourseReview(
     acronym: 'GEN101',
+    group: '02',
+    teacherName: 'TEST',
+    startAt: DateTime.now().subtract(const Duration(days: 1)),
+    endAt: DateTime.now().add(const Duration(days: 1)),
+    type: 'Cours',
+    isCompleted: true,
+  );
+
+  final completedCourseReview2 = CourseReview(
+    acronym: 'GEN102',
     group: '02',
     teacherName: 'TEST',
     startAt: DateTime.now().subtract(const Duration(days: 1)),
@@ -70,8 +92,19 @@ void main() {
     isCompleted: false,
   );
 
-  final completedReviewList = <CourseReview>[completedCourseReview];
-  final nonCompletedReviewList = <CourseReview>[nonCompletedCourseReview];
+  final futureInactiveCourseReview = CourseReview(
+    acronym: 'GEN101',
+    group: '02',
+    teacherName: 'TEST',
+    startAt: DateTime.now().add(const Duration(days: 30)),
+    endAt: DateTime.now().add(const Duration(days: 60)),
+    type: 'Cours',
+    isCompleted: false,
+  );
+
+  final completedReviewList = <CourseReview>[completedCourseReview, completedCourseReview2];
+  final nonCompletedReviewList = <CourseReview>[nonCompletedCourseReview, futureInactiveCourseReview];
+  final semiCompletedReviewList = <CourseReview>[completedCourseReview, futureInactiveCourseReview];
 
   final Course course = Course(
       acronym: 'GEN101',
@@ -83,6 +116,16 @@ void main() {
       summary: courseSummary,
       reviews: completedReviewList);
 
+  final Course course2 = Course(
+      acronym: 'GEN102',
+      group: '02',
+      session: 'H2020',
+      programCode: '999',
+      numberOfCredits: 3,
+      title: 'Cours générique',
+      summary: courseSummary2,
+      reviews: completedReviewList);
+
   final Course courseWithoutSummary = Course(
     acronym: 'GEN101',
     group: '02',
@@ -91,6 +134,16 @@ void main() {
     numberOfCredits: 3,
     title: 'Cours générique',
   );
+
+  final Course courseWithEvaluationSemiCompleted = Course(
+      acronym: 'GEN101',
+      group: '02',
+      session: 'H2020',
+      programCode: '999',
+      numberOfCredits: 3,
+      title: 'Cours générique',
+      summary: courseSummary,
+      reviews: semiCompletedReviewList);
 
   final Course courseWithEvaluationNotCompleted = Course(
       acronym: 'GEN101',
@@ -108,6 +161,7 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsRepositoryMock();
       setupNetworkingServiceMock();
+      intl = await setupAppIntl();
     });
 
     tearDown(() {
@@ -163,6 +217,29 @@ void main() {
         });
       });
 
+      testWidgets(
+          'when the page is at the top, it displays the course title, acronym, group, professor name and number of credits along with current grade and circular progress',
+          (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, course2, toReturn: course2);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: course2)));
+          await tester.pumpAndSettle();
+        }).then((value) {
+          expect(find.byType(SliverAppBar), findsOneWidget);
+
+          expect(find.text(course2.title), findsOneWidget);
+          expect(find.text(course2.acronym), findsOneWidget);
+          expect(find.text('Group 02'), findsOneWidget);
+          expect(find.text('Professor: TEST'), findsOneWidget);
+          expect(find.text('Credits: 3'), findsOneWidget);
+
+          final labelNa = find.text(intl.grades_not_available);
+          // One for circular progress and one for the "Your grade" label
+          expect(labelNa, findsAtLeastNWidgets(2));
+        });
+      });
+
       testWidgets('when the page is scrolled at the bottom, it does not display the SliverToBoxAdapter',
           (WidgetTester tester) async {
         setupFlutterToastMock(tester);
@@ -203,6 +280,34 @@ void main() {
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("EvaluationNotCompleted")), findsOneWidget);
+      });
+
+      testWidgets(
+          'display regular course content (evaluations, circular progress, etc) when in the evaluation period and the evaluation is completed with a future (inactive) review not completed',
+          (WidgetTester tester) async {
+        setupFlutterToastMock(tester);
+        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithEvaluationSemiCompleted,
+            toReturn: courseWithEvaluationSemiCompleted);
+        await tester.runAsync(() async {
+          await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithEvaluationSemiCompleted)));
+          await tester.pumpAndSettle(const Duration(seconds: 2));
+        }).then(
+          (value) {
+            expect(find.byType(RefreshIndicator), findsOneWidget);
+
+            // Find all the grade circular progress
+            expect(find.byKey(const Key("GradeCircularProgress_summary")), findsOneWidget);
+            for (final eval in courseSummary.evaluations) {
+              expect(find.byKey(Key("GradeCircularProgress_${eval.title}")), findsOneWidget);
+            }
+
+            expect(find.byType(Card), findsNWidgets(5));
+
+            for (final eval in courseSummary.evaluations) {
+              expect(find.byKey(Key("GradeEvaluationTile_${eval.title}")), findsOneWidget);
+            }
+          },
+        );
       });
     });
   });
