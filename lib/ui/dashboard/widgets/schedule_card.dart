@@ -59,10 +59,7 @@ class ScheduleCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: GestureDetector(
-                  onTap: () => _navigationService.pushNamedAndRemoveUntil(RouterPaths.schedule),
-                  child: Text(title, style: Theme.of(context).textTheme.titleLarge),
-                ),
+                child: Text(title, style: Theme.of(context).textTheme.titleLarge),
               )),
           if (courseActivities.isNotEmpty)
             Skeletonizer(enabled: loading, child: _buildEventList(courseActivities))
