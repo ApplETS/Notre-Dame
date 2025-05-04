@@ -8,6 +8,7 @@ import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
 import 'package:notredame/locator.dart';
 
 import '../../helpers.dart';
+import '../mocks/services/auth_service_mock.dart';
 import '../mocks/services/flutter_secure_storage_mock.dart';
 
 // ignore_for_file: invalid_use_of_protected_member test file
@@ -180,8 +181,7 @@ void main() {
           onError: (error) => streamErrors++,
         );
 
-        when(authService.getToken()).thenAnswer((_) async => "token");
-        when(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).thenAnswer((_) async {});
+        AuthServiceMock.stubGetToken(authService, token: 'token');
 
         apiCall() async => throw DioException(requestOptions: RequestOptions(path: 'test'), response: Response(statusCode: 401, requestOptions: RequestOptions(path: 'test')));
 
