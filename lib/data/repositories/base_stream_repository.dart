@@ -50,19 +50,24 @@ class BaseStreamRepository<T> {
       return false;
     }
 
-    final decoded = json.decode(cache);
+    try {
+      final decoded = json.decode(cache);
 
-    await itemsLock.synchronized(() async {
-      if(decoded is List) {
-        value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as T;
-      } else if (decoded is Map<String, dynamic>) {
-        value ??= fromJson(decoded) as T;
-      } else {
-        _controller.addError(FormatException('Unsupported JSON format in cache'));
-      }
-      _controller.add(value);
-    });
-    return true;
+      await itemsLock.synchronized(() async {
+        if(decoded is List) {
+          value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as T;
+        } else if (decoded is Map<String, dynamic>) {
+          value ??= fromJson(decoded) as T;
+        }
+        _controller.add(value);
+      });
+      return true;
+    } catch(e) {
+      _logger.e('Error while reading from cache: $_cacheKey', error: Exception);
+      _controller.addError(e);
+      return false;
+    }
+
   }
 
   @protected
@@ -85,11 +90,9 @@ class BaseStreamRepository<T> {
       retryIf: (e) async {
         _logger.e('Error while fetching data from API: $_cacheKey', error: e);
 
-        if (e is DioException) {
-          if(e.response?.statusCode == StatusCodes.UNAUTHORIZED) {
-            final authService = locator<AuthService>();
-            await authService.getToken();
-          }
+        if(e is DioException && e.response?.statusCode == StatusCodes.UNAUTHORIZED) {
+          final authService = locator<AuthService>();
+          await authService.getToken();
         }
         return true;
       },
