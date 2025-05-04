@@ -8,15 +8,12 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 
 class ScheduleCard extends StatelessWidget {
-  final NavigationService _navigationService = locator<NavigationService>();
   final SettingsRepository _settingsRepository = locator<SettingsRepository>();
 
   final VoidCallback onDismissed;
