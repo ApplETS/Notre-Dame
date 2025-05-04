@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -67,6 +68,7 @@ class MonthCalendar extends StatelessWidget {
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, __, ___) => FilledCell(
+        onTileTap: (events, date) => _navigateToDayView(context, date),
         hideDaysNotInMonth: false,
         titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,
@@ -75,6 +77,21 @@ class MonthCalendar extends StatelessWidget {
         isInMonth: date.month == DateTime.now().month,
         events: events,
         backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
+      ),
+      onCellTap: (events, date) => _navigateToDayView(context, date),
+      onEventTap: (event, date) => _navigateToDayView(context, date),
+    );
+  }
+
+  void _navigateToDayView(BuildContext context, DateTime date) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DayCalendar(
+          listView: false,
+          controller: controller,
+          selectedDate: date,
+          showBackButton: true,
+        ),
       ),
     );
   }
