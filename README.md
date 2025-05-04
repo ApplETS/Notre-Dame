@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png" />
+  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png"  alt="ETS_logo"/>
   <p>
     <br /><strong>Notre-Dame Project</strong>
     <br />
@@ -25,11 +25,12 @@ project and is developped by members of the student club [ApplETS](https://cluba
 * Access to the student's schedules
 * And many more...
 
-_Note: This guide is also available in: [Français](https://github.com/ApplETS/Notre-Dame/blob/master/README.fr.md)_
+_Note: This guide is also available in: [Français](README.fr.md)_
 
 ## Technologies used
 
-* [Flutter](https://flutter.dev)
+* Flutter [[Home](https://docs.flutter.dev) |
+  [Download](https://docs.flutter.dev/get-started/install)]
 
 ## Requirements
 
@@ -37,16 +38,37 @@ _Note: This guide is also available in: [Français](https://github.com/ApplETS/N
 - Openssl v1.1.1g or higher
 - Java sdk 17
 
+## Setting up Flutter
+
+- Download the Flutter SDK bundle from the ["Technologies used"](#technologies-used) section and
+  follow the official guide.<br>
+  (It is recommended to use 7-zip to extract the file)
+- Open the settings menu and make sure that both the Flutter and Dart plugins are
+  installed.
+- Open the settings menu and navigate to "Languages & Frameworks".
+  - <ins>Flutter</ins>: Add the path of the Flutter folder.
+  - <ins>Dart</ins>: Add the path of the folder "flutter/bin/cache/dart-sdk" from the Flutter folder
+    and add Notre-Dame as a supported project.
+
 ## Before running the code
 
 - To access some features you will need the SignetsAPI certificate, these files are encrypted. To decrypt them you will have to do two simple steps:
 
 You need to copy the script `env_variables.sh` (only available on the Google Drive of the club) to the root folder of your project, then run:
 
+### Linux
+
 ```sh
 chmod +x ./scripts/decrypt.sh
 chmod +x ./env_variables.sh
 ./env_variables.sh
+```
+
+### Windows
+
+In a GitBash command prompt
+```sh
+sh "env_variables.sh"
 ```
 
 ## Run the code
@@ -61,11 +83,6 @@ flutter pub get
 ```
 dart run build_runner build
 ```
-
-## Add environment variable for API_KEY
-
-- To add the Google Maps API TOKEN and the GitHub API TOKEN, you need to rename the file `.env.template` into `.env`. In
-  the `.env` file, you need to paste the Google Maps API TOKEN and the GitHub API TOKEN.
 
 ## Git hooks
 
@@ -83,4 +100,4 @@ Follow the procedure in this [repo](https://github.com/ApplETS/fastlane-ios-cert
 ## ⚖️ License
 
 This projet is licensed under the Apache License V2.0. See
-the [LICENSE](https://github.com/ApplETS/Notre-Dame/blob/master/LICENSE) file for more info.
+the [LICENSE](LICENSE.md) file for more info.
