@@ -39,12 +39,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     int percentage = 0;
 
     if (programList.isNotEmpty) {
-      Program currentProgram = programList.first;
-      for (final program in programList) {
-        if (int.parse(program.registeredCredits) > int.parse(currentProgram.registeredCredits)) {
-          currentProgram = program;
-        }
-      }
+      Program currentProgram = getCurrentProgram();
       final int numberOfCreditsCompleted = int.parse(currentProgram.accumulatedCredits);
       final String code = currentProgram.code;
       bool foundMatch = false;
@@ -64,6 +59,13 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     }
 
     return percentage;
+  }
+
+  Program getCurrentProgram() {
+    RegExp regExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
+    List<Program> nonInternshipPrograms =
+        programList.where((item) => !regExp.hasMatch(item.name) && item.status.toLowerCase() == "actif").toList();
+    return nonInternshipPrograms.last;
   }
 
   @override
