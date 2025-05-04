@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png"  alt="ETS_logo"/>
+  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png"  alt="ETS"/>
   <p>
     <br /><strong>Projet Notre-Dame</strong>
     <br />
@@ -91,6 +91,3 @@ Vous pouvez trouver dans le dossier `.githooks` l'ensemble des hooks pour git. P
 ```bash
 git config core.hooksPath .githooks
 ```
-
-## ⚖️ License
-Ce projet est licencié selon la licence Apache V2.0. Voir le fichier [LICENSE](LICENSE.md) pour plus d'informations.

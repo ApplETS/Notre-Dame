@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png"  alt="ETS_logo"/>
+  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png"  alt="ETS"/>
   <p>
     <br /><strong>Notre-Dame Project</strong>
     <br />
@@ -38,7 +38,7 @@ _Note: This guide is also available in: [Français](README.fr.md)_
 - Openssl v1.1.1g or higher
 - Java sdk 17
 
-## Setting up Flutter
+## Setting up Flutter (Android Studio)
 
 - Download the Flutter SDK bundle from the ["Technologies used"](#technologies-used) section and
   follow the official guide.<br>
@@ -56,7 +56,7 @@ _Note: This guide is also available in: [Français](README.fr.md)_
 
 You need to copy the script `env_variables.sh` (only available on the Google Drive of the club) to the root folder of your project, then run:
 
-### Linux
+### Linux and MacOS
 
 ```sh
 chmod +x ./scripts/decrypt.sh
@@ -96,8 +96,3 @@ git config core.hooksPath .githooks
 ## How to renew apple certificates:
 
 Follow the procedure in this [repo](https://github.com/ApplETS/fastlane-ios-certificates/blob/master/README.md) available only by admin group and devops group:
-
-## ⚖️ License
-
-This projet is licensed under the Apache License V2.0. See
-the [LICENSE](LICENSE.md) file for more info.
