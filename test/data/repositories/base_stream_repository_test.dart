@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mockito/mockito.dart';
@@ -116,17 +117,15 @@ void main() {
     test('getFromApi should handle API errors', () async {
       final authService = setupAuthServiceMock();
 
-      when(authService.getToken()).thenReturn(Future.value("token"));
+      when(authService.getToken()).thenAnswer((_) async => "token");
+      when(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).thenAnswer((_) async {});
 
-      final apiResponse = SignetsApiResponse<List<Map<String, dynamic>>>(
-        error: 'API error',
-      );
-      final apiCall = () async => apiResponse;
+      apiCall() async => throw DioException(requestOptions: RequestOptions(path: 'test'), response: Response(statusCode: 401, requestOptions: RequestOptions(path: 'test')));
 
-      expect(
-        () async => await repository.getFromApi(apiCall),
-        throwsA(isA<String>()),
-      );
+      final result = await repository.getFromApi(apiCall);
+
+      expect(result, false);
+      verify(authService.getToken()).called(4);
     });
   });
 }

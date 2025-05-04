@@ -83,32 +83,41 @@ class BaseStreamRepository<T> {
       }
     }
 
-    _requestInProgress = true;
-    final apiResponse = await retry(
-      () => apiCall().timeout(Duration(seconds: 3)),
-      maxAttempts: 3,
-      retryIf: (e) async {
-        _logger.e('Error while fetching data from API: $_cacheKey', error: e);
+    try {
+      _requestInProgress = true;
+      final apiResponse = await retry(
+        () => apiCall().timeout(Duration(seconds: 3)),
+        maxAttempts: 5,
+        retryIf: (e) async {
+          _logger.e('Error while fetching data from API: $_cacheKey', error: e);
 
-        if(e is DioException && e.response?.statusCode == StatusCodes.UNAUTHORIZED) {
-          final authService = locator<AuthService>();
-          await authService.getToken();
-        }
-        return true;
-      },
-    );
-    _requestInProgress = false;
+          if(e is DioException && e.response?.statusCode == StatusCodes.UNAUTHORIZED) {
+            final authService = locator<AuthService>();
+            await authService.getToken();
+          }
+          return true;
+        },
+      );
+      _requestInProgress = false;
 
-    if(apiResponse.error != null && apiResponse.error!.isNotEmpty) {
-      _controller.addError(apiResponse.error as Object);
+      if(apiResponse.error != null && apiResponse.error!.isNotEmpty) {
+        _controller.addError(apiResponse.error as Object);
+      }
+
+      await itemsLock.synchronized(() async {
+        _cacheTimestamp = DateTime.now();
+        value = apiResponse.data;
+        _controller.add(value);
+      });
+      await secureStorage.write(key: _cacheKey, value: json.encode(apiResponse.data));
+      return true;
+    } catch(e) {
+      _logger.e('Error while fetching data from API: $_cacheKey', error: e);
+      _controller.addError(e);
+      return false;
+    } finally {
+      _requestInProgress = false;
     }
-
-    await itemsLock.synchronized(() async {
-      _cacheTimestamp = DateTime.now();
-      value = apiResponse.data;
-      _controller.add(value);
-    });
-    await secureStorage.write(key: _cacheKey, value: json.encode(apiResponse.data));
-    return true;
+    
   }
 }
