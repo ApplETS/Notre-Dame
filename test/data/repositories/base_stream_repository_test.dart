@@ -77,55 +77,72 @@ void main() {
         expect(result, false);
       });
     });
-    
 
-    test('getFromApi should fetch data from API and cache it', () async {
-      final apiResponse = SignetsApiResponse<List<Map<String, dynamic>>>(
-        data: [
+
+    group('getFromApi - ', () {
+      test('getFromApi should fetch data from API and cache it', () async {
+        final apiResponse = SignetsApiResponse<List<Map<String, dynamic>>>(
+          data: [
+            {'key': 'value'}
+          ],
+        );
+
+        final result = await repository.getFromApi(() async => apiResponse);
+
+        expect(result, true);
+        expect(repository.value, [
           {'key': 'value'}
-        ],
-      );
+        ]);
 
-      final result = await repository.getFromApi(() async => apiResponse);
+        verify(mockSecureStorage.write(
+          key: 'test_cache_key',
+          value: json.encode(apiResponse.data),
+        )).called(1);
+      });
 
-      expect(result, true);
-      expect(repository.value, [
-        {'key': 'value'}
-      ]);
+      test('getFromApi should not fetch data if cache is still valid', () async {
+        repository.value = [
+          {'key': 'value'}
+        ];
 
-      verify(mockSecureStorage.write(
-        key: 'test_cache_key',
-        value: json.encode(apiResponse.data),
-      )).called(1);
-    });
+        apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
 
-    test('getFromApi should not fetch data if cache is still valid', () async {
-      repository.value = [
-        {'key': 'value'}
-      ];
+        final result1 = await repository.getFromApi(apiCall);
+        final result2 = await repository.getFromApi(apiCall);
 
-      apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
+        expect(result1, true);
+        expect(result2, false);
+        verify(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).called(1);
+      });
 
-      final result1 = await repository.getFromApi(apiCall);
-      final result2 = await repository.getFromApi(apiCall);
+      test('getFromApi should fetch data if forceUpdate is true', () async {
+        repository.value = [
+          {'key': 'value'}
+        ];
 
-      expect(result1, true);
-      expect(result2, false);
-      verify(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).called(1);
-    });
+        apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
 
-    test('getFromApi should handle API errors', () async {
-      final authService = setupAuthServiceMock();
+        final result1 = await repository.getFromApi(apiCall);
+        final result2 = await repository.getFromApi(apiCall, forceUpdate: true);
 
-      when(authService.getToken()).thenAnswer((_) async => "token");
-      when(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).thenAnswer((_) async {});
+        expect(result1, true);
+        expect(result2, true);
+        verify(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).called(2);
+      });
 
-      apiCall() async => throw DioException(requestOptions: RequestOptions(path: 'test'), response: Response(statusCode: 401, requestOptions: RequestOptions(path: 'test')));
+      test('getFromApi should handle API errors', () async {
+        final authService = setupAuthServiceMock();
 
-      final result = await repository.getFromApi(apiCall);
+        when(authService.getToken()).thenAnswer((_) async => "token");
+        when(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).thenAnswer((_) async {});
 
-      expect(result, false);
-      verify(authService.getToken()).called(4);
+        apiCall() async => throw DioException(requestOptions: RequestOptions(path: 'test'), response: Response(statusCode: 401, requestOptions: RequestOptions(path: 'test')));
+
+        final result = await repository.getFromApi(apiCall);
+
+        expect(result, false);
+        verify(authService.getToken()).called(4);
+      });
     });
   });
 }
