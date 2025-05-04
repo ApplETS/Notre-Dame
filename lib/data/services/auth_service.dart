@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:msal_auth/msal_auth.dart';
 
@@ -24,6 +25,7 @@ class AuthService {
       final result = await acquireTokenSilent();
       if (result.$1 != null) {
         _token = result.$1?.accessToken;
+        _setupToken();
       } else {
         _retries++;
         if (_retries > _maxRetry) {
@@ -75,7 +77,8 @@ class AuthService {
         prompt: Prompt.login,
       );
       _token = result?.accessToken;
-      _logger.d('Acquire token => ${result?.toJson()}');
+      _setupToken();
+      _logger.d('Acquire token silent => success');
       return (result, null);
     } on MsalException catch (e) {
       _logger.e('Acquire token failed => $e');
@@ -92,7 +95,8 @@ class AuthService {
         identifier: identifier,
       );
       _token = result?.accessToken;
-      _logger.d('Acquire token silent => ${result?.toJson()}');
+      _setupToken();
+      _logger.d('Acquire token silent => success');
       return (result, null);
     } on MsalException catch (e) {
       _logger.e('Acquire token silent failed => $e');
@@ -103,6 +107,10 @@ class AuthService {
       }
       return (null, e);
     }
+  }
+
+  void _setupToken() {
+    locator<Dio>().options.headers['Authorization'] = 'Bearer $_token';
   }
 
   Future<(bool, MsalException?)> signOut() async {
