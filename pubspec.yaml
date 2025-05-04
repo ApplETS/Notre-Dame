@@ -93,6 +93,7 @@ dev_dependencies:
   json_serializable: ^6.9.5
   freezed: ^3.0.6
   retrofit_generator: ^9.1.9
+  http_mock_adapter: ^0.6.1
 
 flutter_icons:
   android: 'launcher_icon'

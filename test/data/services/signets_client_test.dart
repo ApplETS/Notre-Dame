@@ -11,7 +11,7 @@ void main() {
     setUp(() {
       final dio = Dio();
       dioAdapter = DioAdapter(dio: dio);
-      signetsClient = SignetsClient(dio, "token");
+      signetsClient = SignetsClient(dio);
     });
 
     tearDown(() {
