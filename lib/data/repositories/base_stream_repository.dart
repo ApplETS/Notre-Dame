@@ -22,7 +22,7 @@ class BaseStreamRepository<T> {
   @protected
   T? value;
 
-  final Lock itemsLock = Lock();
+  final Lock _itemsLock = Lock();
   final String _cacheKey;
   final _controller = StreamController<T?>.broadcast();
   Stream<T?> get stream => _controller.stream;
@@ -53,7 +53,7 @@ class BaseStreamRepository<T> {
     try {
       final decoded = json.decode(cache);
 
-      await itemsLock.synchronized(() async {
+      await _itemsLock.synchronized(() async {
         if(decoded is List) {
           value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as T;
         } else if (decoded is Map<String, dynamic>) {
@@ -102,9 +102,11 @@ class BaseStreamRepository<T> {
 
       if(apiResponse.error != null && apiResponse.error!.isNotEmpty) {
         _controller.addError(apiResponse.error as Object);
+        _logger.e('Error while fetching data from API', error: apiResponse.error);
+        return false;
       }
 
-      await itemsLock.synchronized(() async {
+      await _itemsLock.synchronized(() async {
         _cacheTimestamp = DateTime.now();
         value = apiResponse.data;
         _controller.add(value);

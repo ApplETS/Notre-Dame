@@ -5,6 +5,7 @@ import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/locator.dart';
 
 import '../../helpers.dart';
+import '../mocks/services/flutter_secure_storage_mock.dart';
 import '../mocks/services/signets_client_mock.dart';
 
 void main() {
@@ -57,10 +58,11 @@ void main() {
 
   late ListSessionsRepository repository;
   late SignetsClientMock mockSignetsClient;
+  late FlutterSecureStorageMock mockSecureStorage;
 
   setUp(() {
     mockSignetsClient = setupSignetsClientMock();
-    setupFlutterSecureStorageMock();
+    mockSecureStorage = setupFlutterSecureStorageMock();
     setupLogger();
 
     repository = ListSessionsRepository();
@@ -73,10 +75,17 @@ void main() {
   group('getSessions', () {
     test('should call _getFromCache and _getFromApi', () async {
       SignetsClientMock.stubGetSessionList(mockSignetsClient, []);
+      FlutterSecureStorageMock.stubRead(mockSecureStorage, key: ListSessionsRepository.sessionsKey, valueToReturn: '[]');
+
+      int streamEvents = 0;
+      repository.stream.listen((data) {
+        streamEvents++;
+      });
 
       await repository.getSessions();
 
       verify(mockSignetsClient.getSessionList()).called(1);
+      expect(streamEvents, 2);
     });
   });
 
