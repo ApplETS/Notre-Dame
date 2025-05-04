@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:msal_auth/msal_auth.dart';
 
@@ -24,8 +25,15 @@ class AuthService {
 
       final result = await acquireTokenSilent();
       if (result.$1 != null) {
-        _token = result.$1!.accessToken;
-        return _token!;
+        _token = result.$1?.accessToken;
+        _setupToken();
+      } else {
+        _retries++;
+        if (_retries > _maxRetry) {
+          _retries = 0;
+          throw Exception('Max retries reached');
+        }
+        getToken();
       }
 
       attempt++;
@@ -70,7 +78,8 @@ class AuthService {
         prompt: Prompt.selectAccount,
       );
       _token = result?.accessToken;
-      _logger.d('Acquire token => ${result?.toJson()}');
+      _setupToken();
+      _logger.d('Acquire token silent => success');
       return (result, null);
     } on MsalException catch (e) {
       _logger.e('Acquire token failed => $e');
@@ -82,7 +91,8 @@ class AuthService {
     try {
       final result = await singleAccountPca?.acquireTokenSilent(scopes: _scopes, identifier: identifier);
       _token = result?.accessToken;
-      _logger.d('Acquire token silent => ${result?.toJson()}');
+      _setupToken();
+      _logger.d('Acquire token silent => success');
       return (result, null);
     } on MsalException catch (e) {
       _logger.e('Acquire token silent failed => $e');
@@ -94,21 +104,8 @@ class AuthService {
     }
   }
 
-  Future<(AuthenticationResult?, MsalException?)> acquireTokenWithCacheReset() async {
-    try {
-      _token = null;
-
-      await signOut();
-
-      final result = await singleAccountPca?.acquireToken(scopes: _scopes, prompt: Prompt.login);
-
-      _token = result?.accessToken;
-      _logger.d('Token acquired with cache reset => ${result?.toJson()}');
-      return (result, null);
-    } on MsalException catch (e) {
-      _logger.e('Token acquisition with cache reset failed => $e');
-      return (null, e);
-    }
+  void _setupToken() {
+    locator<Dio>().options.headers['Authorization'] = 'Bearer $_token';
   }
 
   Future<(bool, MsalException?)> signOut() async {

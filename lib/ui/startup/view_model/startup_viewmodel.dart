@@ -49,7 +49,6 @@ class StartUpViewModel extends BaseViewModel {
 
     if (isLogin) {
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-      setupSignetsClientLocator(await _authService.getToken());
 
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
@@ -68,7 +67,6 @@ class StartUpViewModel extends BaseViewModel {
       }
 
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-      setupSignetsClientLocator(token.accessToken);
 
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     }

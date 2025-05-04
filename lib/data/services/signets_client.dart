@@ -7,10 +7,7 @@ part 'signets_client.g.dart';
 
 @RestApi(baseUrl: 'https://etsmobileapi.etsmtl.ca/api/Etudiant/')
 abstract class SignetsClient {
-  factory SignetsClient(Dio dio, String authToken, {String? baseUrl, ParseErrorLogger? errorLogger}) {
-    dio.options.headers['Authorization'] = 'Bearer $authToken';
-    return _SignetsClient(dio, baseUrl: baseUrl, errorLogger: errorLogger);
-  }
+  factory SignetsClient(Dio dio, {String? baseUrl, ParseErrorLogger? errorLogger}) = _SignetsClient;
 
   /// Get the list of sessions
   @GET('/listeSessions')
