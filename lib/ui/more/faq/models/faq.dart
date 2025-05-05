@@ -2,12 +2,11 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/domain/constants/app_info.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
 import 'package:notredame/ui/more/faq/models/faq_questions.dart';
-
-import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/locator.dart';
 
 class Faq {
   late List<QuestionItem> questions;

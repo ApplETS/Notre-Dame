@@ -1,7 +1,11 @@
+// Dart imports:
 import 'dart:ui';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
+// Project imports:
 import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/models/faq_questions.dart';
 
