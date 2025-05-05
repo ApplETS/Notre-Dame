@@ -47,13 +47,4 @@ class UserRepositoryMock extends MockUserRepository {
     when(mock.getPrograms(fromCacheOnly: fromCacheOnly ?? anyNamed("fromCacheOnly")))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
-
-  /// Stub the function [logOut] of [mock] when called will return [toReturn].
-  static void stubLogOut(UserRepositoryMock mock, {bool toReturn = true}) {
-    when(mock.logOut()).thenAnswer((_) async => toReturn);
-  }
-
-  static void stubWasPreviouslyLoggedIn(UserRepositoryMock mock, {bool toReturn = true}) {
-    when(mock.wasPreviouslyLoggedIn()).thenAnswer((_) async => toReturn);
-  }
 }

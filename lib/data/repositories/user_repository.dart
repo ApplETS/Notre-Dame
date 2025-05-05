@@ -3,10 +3,8 @@ import 'dart:convert';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
@@ -37,9 +35,6 @@ class UserRepository {
   /// Used to verify if the user has connectivity
   final NetworkingService _networkingService = locator<NetworkingService>();
 
-  /// Secure storage manager to access and update the cache.
-  final FlutterSecureStorage _secureStorage = locator<FlutterSecureStorage>();
-
   /// Cache manager to access and update the cache.
   final CacheService _cacheManager = locator<CacheService>();
 
@@ -55,37 +50,6 @@ class UserRepository {
   List<Program>? _programs;
 
   List<Program>? get programs => _programs;
-
-  //TODO: remove when all users are on 4.58.0 or more
-  /// Log out the user
-  Future<bool> logOut() async {
-    // Delete the credentials from the secure storage
-    try {
-      await _secureStorage.delete(key: usernameSecureKey);
-      await _secureStorage.delete(key: passwordSecureKey);
-    } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(tag, "Authenticate - PlatformException - $e", e, stacktrace);
-      return false;
-    }
-    return true;
-  }
-
-  /// Check whether the user was previously authenticated.
-  Future<bool> wasPreviouslyLoggedIn() async {
-    try {
-      final username = await _secureStorage.read(key: usernameSecureKey);
-      if (username != null) {
-        final password = await _secureStorage.read(key: passwordSecureKey);
-        return password != null && password.isNotEmpty;
-      }
-    } on PlatformException catch (e, stacktrace) {
-      await _secureStorage.deleteAll();
-      _analyticsService.logError(tag, "getPassword - PlatformException - $e", e, stacktrace);
-    }
-    return false;
-  }
-  //TODO END: remove when all users are on 4.58.0 or more
 
   /// Get the list of programs on which the student was active.
   /// The list from the [CacheService] is loaded than updated with the results
