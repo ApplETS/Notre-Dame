@@ -265,14 +265,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.3.3"
-  easter_egg_trigger:
-    dependency: "direct main"
-    description:
-      name: easter_egg_trigger
-      sha256: "094c16e5ebf15c75131e2fe87944e91ca87524f4ffb88f0128e477befbe43501"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   fake_async:
     dependency: transitive
     description:
