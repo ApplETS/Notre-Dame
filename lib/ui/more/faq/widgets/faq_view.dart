@@ -81,8 +81,8 @@ class _FaqViewState extends State<FaqView> {
     return ExpandablePageView(
         children: faq.questions.map((question) {
       return QuestionCard(
-        title: question.title[model.locale?.languageCode] ?? '',
-        description: question.description[model.locale?.languageCode] ?? '',
+        title: question.title,
+        description: question.description,
       );
     }).toList());
   }
@@ -95,8 +95,8 @@ class _FaqViewState extends State<FaqView> {
         itemBuilder: (context, index) {
           final action = faq.actions[index];
           return ActionCard(
-            title: action.title[model.locale?.languageCode] ?? '',
-            description: action.description[model.locale?.languageCode] ?? '',
+            title: action.title,
+            description: action.description,
             type: action.type,
             link: action.link,
             iconName: action.iconName,

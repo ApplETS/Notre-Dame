@@ -14,6 +14,8 @@ class QuestionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 12.0,
       children: <Widget>[
         Text(
           title,
@@ -21,7 +23,6 @@ class QuestionCard extends StatelessWidget {
                 fontSize: 20,
               ),
         ),
-        const SizedBox(height: 12),
         Text(
           description,
           style: Theme.of(context).textTheme.bodyLarge!,

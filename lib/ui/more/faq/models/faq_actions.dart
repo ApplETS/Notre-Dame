@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 class ActionItem {
-  final Map<String, String> title;
-  final Map<String, String> description;
+  final String title;
+  final String description;
   final ActionType type;
   final String link;
   final IconData iconName;

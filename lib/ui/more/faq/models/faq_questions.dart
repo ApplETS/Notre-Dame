@@ -1,6 +1,6 @@
 class QuestionItem {
-  final Map<String, String> title;
-  final Map<String, String> description;
+  final String title;
+  final String description;
 
   QuestionItem({
     required this.title,
