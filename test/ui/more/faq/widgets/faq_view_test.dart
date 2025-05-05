@@ -37,9 +37,9 @@ void main() {
 
         final Faq faq = Faq();
 
-        final action1 = find.text(faq.actions[0].title["en"]!, skipOffstage: false);
-        final action2 = find.text(faq.actions[1].title["en"]!, skipOffstage: false);
-        final action3 = find.text(faq.actions[2].title["en"]!, skipOffstage: false);
+        final action1 = find.text(faq.actions[0].title, skipOffstage: false);
+        final action2 = find.text(faq.actions[1].title, skipOffstage: false);
+        final action3 = find.text(faq.actions[2].title, skipOffstage: false);
 
         await tester.pump();
 
@@ -58,7 +58,7 @@ void main() {
         await tester.drag(find.byType(ListView), const Offset(0.0, -500));
         await tester.pumpAndSettle();
 
-        final questionsAbtETSMobileBtn = find.widgetWithText(Card, faq.actions[2].title["en"]!);
+        final questionsAbtETSMobileBtn = find.widgetWithText(Card, faq.actions[2].title);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
 
         await tester.tap(questionsAbtETSMobileBtn);

@@ -20,7 +20,6 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       required this.modalHandle,
       required this.fadedText,
       required this.fadedInvertText,
-      required this.faqCarouselCard,
       required this.positive,
       required this.positiveText,
       required this.negative,
@@ -50,7 +49,6 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color modalHandle;
   final Color fadedText;
   final Color fadedInvertText;
-  final Color faqCarouselCard;
   final Color positive;
   final Color positiveText;
   final Color negative;
@@ -82,7 +80,6 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       Color? modalHandle,
       Color? fadedText,
       Color? fadedInvertText,
-      Color? faqCarouselCard,
       Color? positive,
       Color? positiveText,
       Color? negative,
@@ -112,7 +109,6 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
         modalHandle: modalHandle ?? this.modalHandle,
         fadedText: fadedText ?? this.fadedText,
         fadedInvertText: fadedInvertText ?? this.fadedInvertText,
-        faqCarouselCard: faqCarouselCard ?? this.faqCarouselCard,
         positive: positive ?? this.positive,
         positiveText: positiveText ?? this.positiveText,
         negative: negative ?? this.negative,
@@ -155,7 +151,6 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
         modalHandle: _lerp(modalHandle, other.modalHandle, t),
         fadedText: _lerp(fadedText, other.fadedText, t),
         fadedInvertText: _lerp(fadedInvertText, other.fadedInvertText, t),
-        faqCarouselCard: _lerp(faqCarouselCard, other.faqCarouselCard, t),
         positive: _lerp(positive, other.positive, t),
         positiveText: _lerp(positiveText, other.positiveText, t),
         negative: _lerp(negative, other.negative, t),

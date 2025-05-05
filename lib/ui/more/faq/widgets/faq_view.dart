@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,7 +12,7 @@ import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
 import 'package:notredame/ui/more/faq/widgets/action_card.dart';
-import 'package:notredame/ui/more/faq/widgets/question_card.dart';
+import 'package:notredame/ui/more/faq/widgets/carousel.dart';
 
 class FaqView extends StatefulWidget {
   const FaqView({super.key});
@@ -37,10 +36,12 @@ class _FaqViewState extends State<FaqView> {
             showBottomBar: false,
             body: (MediaQuery.of(context).orientation == Orientation.portrait)
                 ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                      getCarousel(model),
+                      Carousel(
+                        controller: PageController(viewportFraction: 0.90),
+                      ),
                       getSubtitle(AppIntl.of(context)!.actions),
                       getActions(model)
                     ],
@@ -52,7 +53,9 @@ class _FaqViewState extends State<FaqView> {
                         child: Column(
                           children: [
                             getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                            Expanded(child: getCarousel(model)),
+                            Carousel(
+                              controller: PageController(viewportFraction: 0.90),
+                            ),
                           ],
                         ),
                       ),
@@ -70,38 +73,23 @@ class _FaqViewState extends State<FaqView> {
         },
       );
 
-  Padding getSubtitle(String subtitle) {
+  Widget getSubtitle(String subtitle) {
     return Padding(
-      padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
+      padding: EdgeInsets.only(top: 18.0, bottom: 10.0),
       child: Text(subtitle, style: Theme.of(context).textTheme.headlineSmall!),
     );
   }
 
-  CarouselSlider getCarousel(FaqViewModel model) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 260.0,
-      ),
-      items: faq.questions.map((question) {
-        return QuestionCard(
-          title: question.title[model.locale?.languageCode] ?? '',
-          description: question.description[model.locale?.languageCode] ?? '',
-        );
-      }).toList(),
-    );
-  }
-
-  Expanded getActions(FaqViewModel model) {
+  Widget getActions(FaqViewModel model) {
     return Expanded(
       child: ListView.builder(
-        key: const Key("action_listview_key"),
-        padding: const EdgeInsets.only(top: 1.0, bottom: 32),
+        padding: const EdgeInsets.only(bottom: 32.0),
         itemCount: faq.actions.length,
         itemBuilder: (context, index) {
           final action = faq.actions[index];
           return ActionCard(
-            title: action.title[model.locale?.languageCode] ?? '',
-            description: action.description[model.locale?.languageCode] ?? '',
+            title: action.title,
+            description: action.description,
             type: action.type,
             link: action.link,
             iconName: action.iconName,
