@@ -13,6 +13,7 @@ import 'package:logger/logger.dart';
 import 'package:notredame/data/repositories/author_repository.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/list_sessions_repository.dart';
 import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
@@ -32,6 +33,7 @@ import 'package:notredame/locator.dart';
 import 'data/mocks/repositories/author_repository_mock.dart';
 import 'data/mocks/repositories/broadcast_message_repository_mock.dart';
 import 'data/mocks/repositories/course_repository_mock.dart';
+import 'data/mocks/repositories/list_sessions_repository_mock.dart';
 import 'data/mocks/repositories/news_repository_mock.dart';
 import 'data/mocks/repositories/quick_links_repository_mock.dart';
 import 'data/mocks/repositories/settings_repository_mock.dart';
@@ -320,4 +322,13 @@ SignetsClientMock setupSignetsClientMock() {
   locator.registerSingleton<SignetsClient>(service);
 
   return service;
+}
+
+ListSessionsRepositoryMock setupListSessionsRepositoryMock() {
+  unregister<ListSessionsRepositoryMock>();
+  final repository = ListSessionsRepositoryMock();
+
+  locator.registerSingleton<ListSessionsRepository>(repository);
+
+  return repository;
 }

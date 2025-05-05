@@ -14,13 +14,13 @@ class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
 
   ListSessionsRepository() : super(sessionsKey);
 
-  Future getSessions({bool forceUpdate = false}) async {
+  Future<void> getSessions({bool forceUpdate = false}) async {
     List<Future> tasks = [
       _getFromCache(),
       _getFromApi(forceUpdate: forceUpdate)
     ];
 
-    return Future.wait(tasks);
+    await Future.wait(tasks);
   }
 
   Future<void> _getFromCache() async {
