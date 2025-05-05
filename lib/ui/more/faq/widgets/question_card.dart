@@ -17,6 +17,7 @@ class QuestionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16.0),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: context.theme.appColors.faqCarouselCard,

@@ -36,50 +36,43 @@ class _FaqViewState extends State<FaqView> {
             ),
             showBottomBar: false,
             body: (MediaQuery.of(context).orientation == Orientation.portrait)
-                ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                        getCarousel(model),
-                        getSubtitle(AppIntl.of(context)!.actions),
-                        getActions(model)
-                      ],
-                    ),
-                )
-                : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 8.0,
-                      children: <Widget>[
-                        Flexible(
-                          child: Column(
-                            children: [
-                              getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                              getCarousel(model),
-                            ],
-                          ),
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      getSubtitle(AppIntl.of(context)!.questions_and_answers),
+                      getCarousel(model),
+                      getSubtitle(AppIntl.of(context)!.actions),
+                      getActions(model)
+                    ],
+                  )
+                : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Flexible(
+                        child: Column(
+                          children: [
+                            getSubtitle(AppIntl.of(context)!.questions_and_answers),
+                            Expanded(child: getCarousel(model)),
+                          ],
                         ),
-                        Flexible(
-                          child: Column(
-                            children: [
-                              getSubtitle(AppIntl.of(context)!.actions),
-                              Container(child: getActions(model)),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                ),
+                      ),
+                      Flexible(
+                        child: Column(
+                          children: [
+                            getSubtitle(AppIntl.of(context)!.actions),
+                            Container(child: getActions(model)),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
           );
         },
       );
 
-  Padding getSubtitle(String subtitle) {
+  Widget getSubtitle(String subtitle) {
     return Padding(
-      padding: const EdgeInsets.only(top: 18.0, bottom: 10.0),
+      padding: EdgeInsets.only(top: 18.0, bottom: 10.0),
       child: Text(subtitle, style: Theme.of(context).textTheme.headlineSmall!),
     );
   }

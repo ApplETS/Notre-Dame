@@ -28,42 +28,42 @@ class ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(10.0),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontSize: 18,
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 4.0),
+        child: Card(
+            child: InkWell(
+                borderRadius: BorderRadius.circular(10.0),
+                onTap: onTap,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              title,
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontSize: 18,
+                                  ),
+                            ),
                           ),
-                    ),
+                          const SizedBox(width: 16),
+                          CircleAvatar(
+                            backgroundColor: circleColor,
+                            radius: 25,
+                            child: Icon(iconName, color: iconColor),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12.0),
+                      Text(
+                        description,
+                        style: Theme.of(context).textTheme.bodyLarge!,
+                      )
+                    ],
                   ),
-                  const SizedBox(width: 16),
-                  CircleAvatar(
-                    backgroundColor: circleColor,
-                    radius: 25,
-                    child: Icon(iconName, color: iconColor),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12.0),
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodyLarge!,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+                ))));
   }
 }
