@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/more/faq/widgets/expandable_page_view.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -36,66 +36,68 @@ class _FaqViewState extends State<FaqView> {
             ),
             showBottomBar: false,
             body: (MediaQuery.of(context).orientation == Orientation.portrait)
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                      getCarousel(model),
-                      getSubtitle(AppIntl.of(context)!.actions),
-                      getActions(model)
-                    ],
-                  )
-                : Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Flexible(
-                        child: Column(
-                          children: [
-                            getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                            Expanded(child: getCarousel(model)),
-                          ],
+                ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        getSubtitle(AppIntl.of(context)!.questions_and_answers),
+                        getCarousel(model),
+                        getSubtitle(AppIntl.of(context)!.actions),
+                        getActions(model)
+                      ],
+                    ),
+                )
+                : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 8.0,
+                      children: <Widget>[
+                        Flexible(
+                          child: Column(
+                            children: [
+                              getSubtitle(AppIntl.of(context)!.questions_and_answers),
+                              getCarousel(model),
+                            ],
+                          ),
                         ),
-                      ),
-                      Flexible(
-                        child: Column(
-                          children: [
-                            getSubtitle(AppIntl.of(context)!.actions),
-                            Container(child: getActions(model)),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                        Flexible(
+                          child: Column(
+                            children: [
+                              getSubtitle(AppIntl.of(context)!.actions),
+                              Container(child: getActions(model)),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                ),
           );
         },
       );
 
   Padding getSubtitle(String subtitle) {
     return Padding(
-      padding: const EdgeInsets.only(left: 18.0, top: 18.0, bottom: 10.0),
+      padding: const EdgeInsets.only(top: 18.0, bottom: 10.0),
       child: Text(subtitle, style: Theme.of(context).textTheme.headlineSmall!),
     );
   }
 
-  CarouselSlider getCarousel(FaqViewModel model) {
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 260.0,
-      ),
-      items: faq.questions.map((question) {
-        return QuestionCard(
-          title: question.title[model.locale?.languageCode] ?? '',
-          description: question.description[model.locale?.languageCode] ?? '',
-        );
-      }).toList(),
-    );
+  Widget getCarousel(FaqViewModel model) {
+    return ExpandablePageView(
+        children: faq.questions.map((question) {
+      return QuestionCard(
+        title: question.title[model.locale?.languageCode] ?? '',
+        description: question.description[model.locale?.languageCode] ?? '',
+      );
+    }).toList());
   }
 
   Expanded getActions(FaqViewModel model) {
     return Expanded(
       child: ListView.builder(
-        key: const Key("action_listview_key"),
-        padding: const EdgeInsets.only(top: 1.0, bottom: 32),
+        padding: const EdgeInsets.only(top: 1.0, bottom: 32.0),
         itemCount: faq.actions.length,
         itemBuilder: (context, index) {
           final action = faq.actions[index];

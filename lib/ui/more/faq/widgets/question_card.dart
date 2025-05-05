@@ -18,13 +18,12 @@ class QuestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      margin: const EdgeInsets.symmetric(horizontal: 5.0),
       decoration: BoxDecoration(
         color: context.theme.appColors.faqCarouselCard,
         borderRadius: const BorderRadius.all(Radius.circular(8.0)),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+        padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
