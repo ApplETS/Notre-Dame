@@ -57,7 +57,7 @@ dependencies:
   # Other
   flutter_cache_manager: ^3.4.1
   flutter_secure_storage: ^9.2.4
-  github: ^9.24.0
+  github: ^9.25.0
   in_app_review: ^2.0.10
   easter_egg_trigger: ^1.0.1
   timeago: ^3.7.0
