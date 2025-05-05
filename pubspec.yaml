@@ -83,7 +83,7 @@ dev_dependencies:
   build_runner: ^2.4.15
   import_sorter: ^4.6.0
   flutter_lints: ^5.0.0
-  webview_flutter_android: ^4.3.4
+  webview_flutter_android: ^4.4.2
 
 flutter_icons:
   android: 'launcher_icon'
