@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/more/faq/widgets/size_reporting_widget.dart';
 
 class ExpandablePageView extends StatefulWidget {
@@ -68,7 +69,14 @@ class _ExpandablePageViewState extends State<ExpandablePageView> with TickerProv
             alignment: Alignment.topCenter,
             child: SizeReportingWidget(
               onSizeChange: (size) => setState(() => _heights[index] = size.height),
-              child: Align(child: child),
+              child: Container(
+                  padding: EdgeInsets.all(20.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    color: context.theme.appColors.faqCarouselCard,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  ),
+                  child: child),
             ),
           ),
         ),
