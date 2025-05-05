@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
+import 'package:notredame/ui/more/faq/models/faq_questions.dart';
 
 class Carousel extends StatefulWidget {
   const Carousel({
@@ -51,27 +52,7 @@ class _CarouselState extends State<Carousel> {
                     top: 0,
                     right: 0,
                     child: _SizeAware(
-                      child: Card(
-                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 12.0,
-                              children: <Widget>[
-                                Text(
-                                  questionItem.title,
-                                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Text(
-                                  questionItem.description,
-                                  style: Theme.of(context).textTheme.bodyLarge!,
-                                ),
-                              ],
-                            ),
-                          )),
+                      child: _card(questionItem),
                       // don't setState, we'll use it in the layout phase
                       onSizeLaidOut: (size) {
                         _sizes[i] = size;
@@ -84,6 +65,30 @@ class _CarouselState extends State<Carousel> {
         ),
       ),
     );
+  }
+
+  Widget _card(QuestionItem questionItem) {
+    return Card(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12.0,
+            children: <Widget>[
+              Text(
+                questionItem.title,
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      fontSize: 20,
+                    ),
+              ),
+              Text(
+                questionItem.description,
+                style: Theme.of(context).textTheme.bodyLarge!,
+              ),
+            ],
+          ),
+        ));
   }
 }
 
