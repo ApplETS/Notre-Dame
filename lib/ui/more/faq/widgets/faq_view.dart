@@ -79,7 +79,7 @@ class _FaqViewState extends State<FaqView> {
   Widget getActions(FaqViewModel model) {
     return Expanded(
       child: ListView.builder(
-        padding: const EdgeInsets.only(top: 1.0, bottom: 32.0),
+        padding: const EdgeInsets.only(bottom: 32.0),
         itemCount: faq.actions.length,
         itemBuilder: (context, index) {
           final action = faq.actions[index];

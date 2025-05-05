@@ -57,7 +57,7 @@ class _CarouselState extends State<Carousel> with TickerProviderStateMixin {
       child: PageView(
         controller: _pageController,
         children: _sizeReportingChildren
-            .asMap() //
+            .asMap()
             .map((index, child) => MapEntry(index, child))
             .values
             .toList(),
@@ -66,7 +66,7 @@ class _CarouselState extends State<Carousel> with TickerProviderStateMixin {
   }
 
   List<Widget> get _sizeReportingChildren => children
-      .asMap() //
+      .asMap()
       .map(
         (index, child) => MapEntry(
           index,
