@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/more/faq/widgets/carousel.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -13,6 +12,7 @@ import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
 import 'package:notredame/ui/more/faq/widgets/action_card.dart';
+import 'package:notredame/ui/more/faq/widgets/carousel.dart';
 
 class FaqView extends StatefulWidget {
   const FaqView({super.key});
@@ -39,7 +39,9 @@ class _FaqViewState extends State<FaqView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                      Carousel(),
+                      Carousel(
+                        controller: PageController(viewportFraction: 0.90),
+                      ),
                       getSubtitle(AppIntl.of(context)!.actions),
                       getActions(model)
                     ],
@@ -51,7 +53,9 @@ class _FaqViewState extends State<FaqView> {
                         child: Column(
                           children: [
                             getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                            Expanded(child: Carousel()),
+                            Carousel(
+                              controller: PageController(viewportFraction: 0.90),
+                            ),
                           ],
                         ),
                       ),
