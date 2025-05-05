@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/more/faq/widgets/expandable_page_view.dart';
+import 'package:notredame/ui/more/faq/widgets/carousel.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -13,7 +13,6 @@ import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
 import 'package:notredame/ui/more/faq/widgets/action_card.dart';
-import 'package:notredame/ui/more/faq/widgets/question_card.dart';
 
 class FaqView extends StatefulWidget {
   const FaqView({super.key});
@@ -40,7 +39,7 @@ class _FaqViewState extends State<FaqView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                      getCarousel(model),
+                      Carousel(),
                       getSubtitle(AppIntl.of(context)!.actions),
                       getActions(model)
                     ],
@@ -52,7 +51,7 @@ class _FaqViewState extends State<FaqView> {
                         child: Column(
                           children: [
                             getSubtitle(AppIntl.of(context)!.questions_and_answers),
-                            Expanded(child: getCarousel(model)),
+                            Expanded(child: Carousel()),
                           ],
                         ),
                       ),
@@ -77,17 +76,7 @@ class _FaqViewState extends State<FaqView> {
     );
   }
 
-  Widget getCarousel(FaqViewModel model) {
-    return ExpandablePageView(
-        children: faq.questions.map((question) {
-      return QuestionCard(
-        title: question.title,
-        description: question.description,
-      );
-    }).toList());
-  }
-
-  Expanded getActions(FaqViewModel model) {
+  Widget getActions(FaqViewModel model) {
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.only(top: 1.0, bottom: 32.0),

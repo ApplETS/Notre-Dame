@@ -6,17 +6,16 @@ import 'package:notredame/domain/constants/app_info.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
 import 'package:notredame/ui/more/faq/models/faq_questions.dart';
 
-import '../../../../data/repositories/settings_repository.dart';
-import '../../../../locator.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/locator.dart';
 
 class Faq {
-  final SettingsRepository _settingsManager = locator<SettingsRepository>();
-
   late List<QuestionItem> questions;
   late List<ActionItem> actions;
 
   Faq() {
-    Locale locale = _settingsManager.locale!;
+    Locale locale = locator<SettingsRepository>().locale!;
+
     questions = [
       QuestionItem(
           title: locale.languageCode == "fr"

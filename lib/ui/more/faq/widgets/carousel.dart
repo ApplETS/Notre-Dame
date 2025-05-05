@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/more/faq/models/faq.dart';
+import 'package:notredame/ui/more/faq/widgets/question_card.dart';
 import 'package:notredame/ui/more/faq/widgets/size_reporting_widget.dart';
 
-class ExpandablePageView extends StatefulWidget {
-  final List<Widget> children;
+class Carousel extends StatefulWidget {
 
-  const ExpandablePageView({
+  const Carousel({
     super.key,
-    required this.children,
   });
 
   @override
-  State<ExpandablePageView> createState() => _ExpandablePageViewState();
+  State<Carousel> createState() => _CarouselState();
 }
 
-class _ExpandablePageViewState extends State<ExpandablePageView> with TickerProviderStateMixin {
+class _CarouselState extends State<Carousel> with TickerProviderStateMixin {
   late PageController _pageController;
   late List<double> _heights;
   int _currentPage = 0;
 
   double get _currentHeight => _heights[_currentPage];
 
+  List<Widget> children = Faq().questions.map((question) {
+    return QuestionCard(
+      title: question.title,
+      description: question.description,
+    );
+  }).toList();
+
   @override
   void initState() {
-    _heights = widget.children.map((e) => 0.0).toList();
+    _heights = children.map((e) => 0.0).toList();
     super.initState();
     _pageController = PageController()
       ..addListener(() {
@@ -58,7 +65,7 @@ class _ExpandablePageViewState extends State<ExpandablePageView> with TickerProv
     );
   }
 
-  List<Widget> get _sizeReportingChildren => widget.children
+  List<Widget> get _sizeReportingChildren => children
       .asMap() //
       .map(
         (index, child) => MapEntry(
