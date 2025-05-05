@@ -53,8 +53,6 @@ void main() {
 
       verify(settingsRepository.getString(PreferencesFlag.progressBarText)).called(1);
       verify(listSessionsRepository.getSessions()).called(1);
-      // Adding a small delay to ensure the stream has time to emit
-      await Future.delayed(Duration(milliseconds: 10));
       expect(streamEvents, 1);
       listener.cancel();
     });
