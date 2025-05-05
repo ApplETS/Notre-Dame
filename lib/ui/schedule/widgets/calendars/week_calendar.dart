@@ -40,8 +40,9 @@ class _WeekCalendarState extends State<WeekCalendar> {
   WeekView<Object?> _buildWeekView(WeekViewModel model, BuildContext context, double heightPerMinute) {
     model.handleDateSelectedChanged(model.weekSelected);
 
-    if (!isAnimating) {
+    if (!isAnimating && model.displayNextWeek) {
       weekViewKey.currentState?.animateToWeek(model.weekSelected);
+      model.displayNextWeek = false;
     }
 
     widget.controller.returnToToday = () {

@@ -4,7 +4,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
@@ -21,10 +20,6 @@ class StartUpViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  // TODO: remove when all users are on 4.58.0 or more
-  final UserRepository _userRepository = locator<UserRepository>();
-  // TODO END: remove when all users are on 4.58.0 or more
-
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
@@ -33,12 +28,6 @@ class StartUpViewModel extends BaseViewModel {
       _navigationService.pushNamed(RouterPaths.chooseLanguage);
       return;
     }
-
-    //TODO: remove when all users are on 4.58.0 or more
-    if (await _userRepository.wasPreviouslyLoggedIn()) {
-      _userRepository.logOut();
-    }
-    //TODO END: remove when all users are on 4.58.0 or more
 
     final clientAppResult = await _authService.createPublicClientApplication(
         authorityType: AuthorityType.aad, broker: Broker.msAuthenticator);

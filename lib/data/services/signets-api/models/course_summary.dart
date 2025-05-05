@@ -15,7 +15,7 @@ class CourseSummary {
 
   /// Mark obtained by the student in percent.
   /// (ex: 24)
-  final double currentMarkInPercent;
+  final double? currentMarkInPercent;
 
   /// On how much the course is actually corrected (ex: 30)
   /// Sum of all the evaluations weight already published.
@@ -53,7 +53,7 @@ class CourseSummary {
           : null,
       currentMarkInPercent: node.getElement("noteACeJour")!.innerText.isNotEmpty
           ? double.parse(node.getElement("noteACeJour")!.innerText.replaceAll(",", "."))
-          : 0.0,
+          : null,
       markOutOf: node.getElement("tauxPublication")!.innerText.isNotEmpty
           ? double.parse(node.getElement("tauxPublication")!.innerText.replaceAll(",", "."))
           : 0.0,
@@ -74,7 +74,7 @@ class CourseSummary {
   /// Used to create [CourseSummary] instance from a JSON file
   factory CourseSummary.fromJson(Map<String, dynamic> json) => CourseSummary(
       currentMark: json["currentMark"] as double?,
-      currentMarkInPercent: json["currentMarkInPercent"] as double,
+      currentMarkInPercent: json["currentMarkInPercent"] as double?,
       markOutOf: json["markOutOf"] as double,
       passMark: json["passMark"] as double?,
       standardDeviation: json["standardDeviation"] as double?,
