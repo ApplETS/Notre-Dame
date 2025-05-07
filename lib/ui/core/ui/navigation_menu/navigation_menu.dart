@@ -48,11 +48,16 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   Widget _sideBar(Widget buttons) {
     return Container(
-      width: 80.0,
+      padding: EdgeInsets.only(right: 12.0),
       color: context.theme.appColors.navBar,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12.0),
-        child: buttons,
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        right: false,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: buttons,
+        ),
       ),
     );
   }
