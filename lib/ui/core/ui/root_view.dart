@@ -82,7 +82,7 @@ class _RootViewState extends State<RootView> {
 
   _updateView(NavigationMenuCallback callback) {
     if (callback.index == _selected.buttonIndex) {
-      if (callback.index == NavigationView.schedule) _scheduleController.returnToToday();
+      if (callback.index == NavigationView.schedule.buttonIndex) _scheduleController.returnToToday();
       return;
     }
 
