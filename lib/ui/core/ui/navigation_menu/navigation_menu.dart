@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -48,7 +49,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   Widget _sideBar(Widget buttons) {
     return Container(
-      padding: EdgeInsets.only(right: 12.0),
+      padding: EdgeInsets.only(right: Platform.isIOS ? 12.0 : 0.0),
       color: context.theme.appColors.navBar,
       child: SafeArea(
         top: false,
