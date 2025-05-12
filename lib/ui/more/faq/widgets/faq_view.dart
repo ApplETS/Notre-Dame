@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/ui/more/faq/models/faq_questions.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -12,7 +13,7 @@ import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
 import 'package:notredame/ui/more/faq/widgets/action_card.dart';
-import 'package:notredame/ui/more/faq/widgets/carousel.dart';
+import 'package:notredame/ui/core/ui/carousel.dart';
 
 class FaqView extends StatefulWidget {
   const FaqView({super.key});
@@ -41,6 +42,7 @@ class _FaqViewState extends State<FaqView> {
                       getSubtitle(AppIntl.of(context)!.questions_and_answers),
                       Carousel(
                         controller: PageController(viewportFraction: 0.90),
+                        children: questionAnswersCards(),
                       ),
                       getSubtitle(AppIntl.of(context)!.actions),
                       getActions(model)
@@ -55,6 +57,7 @@ class _FaqViewState extends State<FaqView> {
                             getSubtitle(AppIntl.of(context)!.questions_and_answers),
                             Carousel(
                               controller: PageController(viewportFraction: 0.90),
+                              children: questionAnswersCards(),
                             ),
                           ],
                         ),
@@ -78,6 +81,35 @@ class _FaqViewState extends State<FaqView> {
       padding: EdgeInsets.only(top: 18.0, bottom: 10.0),
       child: Text(subtitle, style: Theme.of(context).textTheme.headlineSmall!),
     );
+  }
+
+  List<Widget> questionAnswersCards() {
+    List<Widget> cards = <Widget>[];
+    for (QuestionItem questionItem in faq.questions) {
+      cards.add(Card(
+          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 12.0,
+              children: <Widget>[
+                Text(
+                  questionItem.title,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    fontSize: 20,
+                  ),
+                ),
+                Text(
+                  questionItem.description,
+                  style: Theme.of(context).textTheme.bodyLarge!,
+                ),
+              ],
+            ),
+          )));
+    }
+
+    return cards;
   }
 
   Widget getActions(FaqViewModel model) {
