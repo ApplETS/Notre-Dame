@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../helpers.dart';
@@ -35,11 +34,9 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
 
-        final Faq faq = Faq();
-
-        final action1 = find.text(faq.actions[0].title, skipOffstage: false);
-        final action2 = find.text(faq.actions[1].title, skipOffstage: false);
-        final action3 = find.text(faq.actions[2].title, skipOffstage: false);
+        final action1 = find.text(appIntl.faq_actions_reactivate_account_title, skipOffstage: false);
+        final action2 = find.text(appIntl.faq_actions_contact_registrar_title, skipOffstage: false);
+        final action3 = find.text(appIntl.faq_actions_contact_applets_title, skipOffstage: false);
 
         await tester.pump();
 
@@ -53,12 +50,10 @@ void main() {
 
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
 
-        final Faq faq = Faq();
-
         await tester.drag(find.byType(ListView), const Offset(0.0, -500));
         await tester.pumpAndSettle();
 
-        final questionsAbtETSMobileBtn = find.widgetWithText(Card, faq.actions[2].title);
+        final questionsAbtETSMobileBtn = find.widgetWithText(Card, appIntl.faq_actions_contact_applets_title);
         expect(questionsAbtETSMobileBtn, findsOneWidget);
 
         await tester.tap(questionsAbtETSMobileBtn);
@@ -75,7 +70,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: const FaqView()));
         await tester.pumpAndSettle();
 
-        final subtitle1 = find.text(appIntl.actions);
+        final subtitle1 = find.text(appIntl.faq_actions);
         expect(subtitle1, findsNWidgets(1));
 
         final subtitle2 = find.text(appIntl.faq_questions);
