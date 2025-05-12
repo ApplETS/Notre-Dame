@@ -18,7 +18,7 @@ dependencies:
 
   # Architecture
   get_it: ^8.0.3
-  provider: ^6.1.4
+  provider: ^6.1.5
   stacked: ^3.4.4
 
   # Firebase
