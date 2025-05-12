@@ -6,11 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class Carousel extends StatefulWidget {
-  const Carousel({
-    super.key,
-    required this.controller,
-    required this.children
-  });
+  const Carousel({super.key, required this.controller, required this.children});
 
   final PageController controller;
   final List<Widget> children;

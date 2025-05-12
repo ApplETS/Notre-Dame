@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:notredame/ui/more/faq/models/faq_questions.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/ui/core/ui/carousel.dart';
 import 'package:notredame/ui/core/ui/need_help_notice_dialog.dart';
 import 'package:notredame/ui/more/faq/models/faq.dart';
 import 'package:notredame/ui/more/faq/models/faq_actions.dart';
+import 'package:notredame/ui/more/faq/models/faq_questions.dart';
 import 'package:notredame/ui/more/faq/view_model/faq_viewmodel.dart';
 import 'package:notredame/ui/more/faq/widgets/action_card.dart';
-import 'package:notredame/ui/core/ui/carousel.dart';
 
 class FaqView extends StatefulWidget {
   const FaqView({super.key});
@@ -97,8 +97,8 @@ class _FaqViewState extends State<FaqView> {
                 Text(
                   questionItem.title,
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    fontSize: 20,
-                  ),
+                        fontSize: 20,
+                      ),
                 ),
                 Text(
                   questionItem.description,
