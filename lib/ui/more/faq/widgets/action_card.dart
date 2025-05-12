@@ -1,14 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Project imports:
-import 'package:notredame/ui/more/faq/models/faq_actions.dart';
-
 class ActionCard extends StatelessWidget {
   final String title;
   final String description;
-  final ActionType type;
-  final String link;
   final IconData iconName;
   final Color iconColor;
   final Color circleColor;
@@ -18,8 +13,6 @@ class ActionCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.type,
-    required this.link,
     required this.iconName,
     required this.iconColor,
     required this.circleColor,
