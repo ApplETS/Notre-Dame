@@ -1,14 +1,11 @@
 // Flutter imports:
 import 'package:flutter/widgets.dart';
 
-// Package imports:
-import 'package:built_collection/built_collection.dart';
-
 class NavigationHistoryObserver extends NavigatorObserver {
   final List<Route<dynamic>?> _history = <Route<dynamic>?>[];
 
-  /// Gets a clone of the navigation history as an immutable list.
-  BuiltList<Route<dynamic>> get history => BuiltList<Route<dynamic>>.from(_history);
+  /// Gets a clone of the navigation history
+  List<Route<dynamic>> get history => List<Route<dynamic>>.from(_history);
 
   /// Implements a singleton pattern for NavigationHistoryObserver.
   static final NavigationHistoryObserver _singleton = NavigationHistoryObserver._internal();
