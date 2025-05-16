@@ -7,10 +7,11 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 
 class DayViewModel extends CalendarViewModel {
-  DateTime daySelected = DateTime.now().withoutTime;
+  DateTime daySelected;
   final EventController eventController = EventController();
 
-  DayViewModel({required super.intl});
+  DayViewModel({required super.intl, DateTime? selectedDate})
+      : daySelected = selectedDate?.withoutTime ?? DateTime.now().withoutTime;
 
   @override
   bool returnToCurrentDate() {
@@ -55,5 +56,10 @@ class DayViewModel extends CalendarViewModel {
     }
 
     return coursesActivities[date.withoutTime] ?? [];
+  }
+
+  void loadEventsForSelectedDay() {
+    eventController.removeWhere((event) => event.date.withoutTime.difference(daySelected).inDays.abs() > 1);
+    eventController.addAll(selectedDayCalendarEvents());
   }
 }
