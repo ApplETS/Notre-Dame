@@ -1,8 +1,8 @@
 // Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:easter_egg_trigger/easter_egg_trigger.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -88,27 +88,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
           left: 0,
           child: Column(
             children: [
-              EasterEggTrigger(
-                action: () => toggleTrigger(),
-                codes: const [
-                  EasterEggTriggers.SwipeUp,
-                  EasterEggTriggers.SwipeRight,
-                  EasterEggTriggers.SwipeDown,
-                  EasterEggTriggers.SwipeLeft,
-                  EasterEggTriggers.Tap
-                ],
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: Hero(
-                    tag: 'about',
-                    child: Image.asset(
-                      "assets/images/favicon_applets.png",
-                      scale: 2.0,
-                    ),
-                  ),
-                ),
-              ),
+              easterEggLogo(),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
@@ -178,6 +158,55 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
           ),
         ),
       ]),
+    );
+  }
+
+  Widget easterEggLogo() {
+    final Duration delay = Duration(seconds: 2);
+    final List<AxisDirection> combinaison = [
+      AxisDirection.up,
+      AxisDirection.right,
+      AxisDirection.down,
+      AxisDirection.left
+    ];
+
+    DateTime? lastCodeDate;
+    List<AxisDirection> currentCombinaison = [];
+
+    void addCode(AxisDirection code) {
+      if (DateTime.now().difference(lastCodeDate ?? DateTime.now()).compareTo(delay) > 0) currentCombinaison = [];
+      currentCombinaison.add(code);
+      lastCodeDate = DateTime.now();
+      if (currentCombinaison.length > combinaison.length) currentCombinaison.removeAt(0);
+    }
+
+    void onVerticalDragEnd(DragEndDetails details) =>
+        addCode(details.primaryVelocity! > 0.0 ? AxisDirection.down : AxisDirection.up);
+
+    void onHorizontalDragEnd(DragEndDetails details) =>
+        addCode(details.primaryVelocity! > 0.0 ? AxisDirection.right : AxisDirection.left);
+
+    return GestureDetector(
+      onVerticalDragEnd: onVerticalDragEnd,
+      onHorizontalDragEnd: onHorizontalDragEnd,
+      onTap: () {
+        if (listEquals(combinaison, currentCombinaison)) toggleTrigger();
+      },
+      child: logo(),
+    );
+  }
+
+  Widget logo() {
+    return SizedBox(
+      width: 100,
+      height: 100,
+      child: Hero(
+        tag: 'about',
+        child: Image.asset(
+          "assets/images/favicon_applets.png",
+          scale: 2.0,
+        ),
+      ),
     );
   }
 }
