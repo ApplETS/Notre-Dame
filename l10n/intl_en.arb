@@ -223,6 +223,9 @@
   "ets_papercut_title":"PaperCut",
   "ets_aeets_title": "AÉÉTS",
   "ets_100genies_title": "Pub 100 Génies",
+  "ets_stages_et_emplois_title": "Jobs and internships",
+  "ets_eportfolio_title": "ePortfolio",
+  "ets_ebourses_title": "eBourses",
   "ets_hide_quick_link": "Hide link {quickLinkName}",
   "@ets_hide_quick_link": {
     "placeholders": {
