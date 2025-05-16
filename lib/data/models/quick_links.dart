@@ -109,5 +109,35 @@ List<QuickLink> quickLinks(AppIntl intl) => [
             'assets/images/ic_100genies_red.png',
             color: AppPalette.etsLightRed,
           ),
-          link: 'https://www.pub100genies.ca/')
+          link: 'https://www.pub100genies.ca/'),
+      QuickLink(
+          id: 12,
+          name: intl.ets_stages_et_emplois_title,
+          image: const FittedBox(
+            child: FaIcon(
+              FontAwesomeIcons.userTie,
+              color: AppPalette.etsLightRed,
+            ),
+          ),
+          link: 'https://see.etsmtl.ca/Accueil'),
+      QuickLink(
+          id: 13,
+          name: intl.ets_eportfolio_title,
+          image: const FittedBox(
+            child: FaIcon(
+              FontAwesomeIcons.addressCard,
+              color: AppPalette.etsLightRed,
+            ),
+          ),
+          link: 'https://eportfolio.etsmtl.ca/Etudiant'),
+      QuickLink(
+          id: 14,
+          name: intl.ets_ebourses_title,
+          image: const FittedBox(
+            child: FaIcon(
+              FontAwesomeIcons.sackDollar,
+              color: AppPalette.etsLightRed,
+            ),
+          ),
+          link: 'https://ebourses.etsmtl.ca/')
     ];
