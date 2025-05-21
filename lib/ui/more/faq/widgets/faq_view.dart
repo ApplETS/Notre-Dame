@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/app_info.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/core/ui/carousel.dart';
 import 'package:notredame/ui/core/ui/need_help_notice_dialog.dart';

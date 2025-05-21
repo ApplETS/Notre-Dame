@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';

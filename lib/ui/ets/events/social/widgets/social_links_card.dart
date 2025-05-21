@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/ets/events/social/models/social_link.dart';
 import 'package:notredame/ui/ets/quick_links/view_model/web_link_card_viewmodel.dart';

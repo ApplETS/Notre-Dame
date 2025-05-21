@@ -4,11 +4,9 @@ import 'dart:math';
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
-
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 

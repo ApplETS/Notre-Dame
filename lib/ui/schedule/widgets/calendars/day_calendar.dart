@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';

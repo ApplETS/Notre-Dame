@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+
+// Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 
 class ScheduleCalendarTile extends StatefulWidget {
   final String? title;

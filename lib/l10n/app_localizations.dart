@@ -1,10 +1,15 @@
+// Dart imports:
 import 'dart:async';
 
+// Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+
+// Package imports:
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+// Project imports:
 import 'app_localizations_en.dart';
 import 'app_localizations_fr.dart';
 
@@ -90,7 +95,10 @@ abstract class AppIntl {
   ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('en'), Locale('fr')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('fr'),
+  ];
 
   /// No description provided for @error.
   ///
@@ -780,7 +788,11 @@ abstract class AppIntl {
   ///
   /// In fr, this message translates to:
   /// **'{grade}/{maxGrade} ({inPercentage} %)'**
-  String grades_grade_with_percentage(double grade, Object maxGrade, double inPercentage);
+  String grades_grade_with_percentage(
+    double grade,
+    Object maxGrade,
+    double inPercentage,
+  );
 
   /// No description provided for @grades_weight.
   ///
@@ -1863,8 +1875,10 @@ AppIntl lookupAppIntl(Locale locale) {
       return AppIntlFr();
   }
 
-  throw FlutterError('AppIntl.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+  throw FlutterError(
+    'AppIntl.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

@@ -1,5 +1,9 @@
 // ignore: unused_import
+
+// Package imports:
 import 'package:intl/intl.dart' as intl;
+
+// Project imports:
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -362,7 +366,11 @@ class AppIntlEn extends AppIntl {
   }
 
   @override
-  String grades_grade_with_percentage(double grade, Object maxGrade, double inPercentage) {
+  String grades_grade_with_percentage(
+    double grade,
+    Object maxGrade,
+    double inPercentage,
+  ) {
     return '$grade/$maxGrade ($inPercentage%)';
   }
 

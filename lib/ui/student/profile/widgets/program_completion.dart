@@ -1,10 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
-
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 

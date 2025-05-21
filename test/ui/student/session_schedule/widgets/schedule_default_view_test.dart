@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -7,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/session_schedule/widgets/session_schedule.dart';
 import 'package:notredame/ui/student/session_schedule/widgets/session_schedule_view.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.mocks.dart';

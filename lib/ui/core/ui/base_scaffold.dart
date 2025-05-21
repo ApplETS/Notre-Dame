@@ -7,10 +7,10 @@ import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:notredame/l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/bottom_bar.dart';

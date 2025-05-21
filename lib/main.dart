@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +20,7 @@ import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/services/navigation_history_observer.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/router.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';

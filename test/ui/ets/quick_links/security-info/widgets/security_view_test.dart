@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // Project imports:
 import 'package:notredame/data/models/emergency_procedures.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/security_view.dart';
 import '../../../../../helpers.dart';
 

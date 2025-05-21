@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+
+// Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
 
 mixin Utils {

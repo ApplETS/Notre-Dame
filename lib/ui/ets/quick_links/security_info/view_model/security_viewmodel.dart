@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 
@@ -11,6 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/data/models/emergency_procedure.dart';
 import 'package:notredame/data/models/emergency_procedures.dart';
 import 'package:notredame/domain/constants/markers.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class SecurityViewModel extends BaseViewModel {

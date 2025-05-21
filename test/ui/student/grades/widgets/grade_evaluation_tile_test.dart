@@ -4,12 +4,12 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/utils/utils.dart';

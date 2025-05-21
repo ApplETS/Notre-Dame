@@ -1,8 +1,6 @@
-// Package imports:
-import 'package:notredame/l10n/app_localizations.dart';
-
 // Project imports:
 import 'package:notredame/data/models/emergency_procedure.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 
 List<EmergencyProcedure> emergencyProcedures(AppIntl intl) => [
       EmergencyProcedure(
