@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:device_calendar/device_calendar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:

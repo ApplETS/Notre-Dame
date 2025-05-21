@@ -22,7 +22,7 @@ class AppTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(
         color: _lightAppColors.appBar,
       ),
-      tabBarTheme: TabBarTheme(labelColor: AppPalette.grey.white),
+      tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xffeeebeb),
       cardTheme: defaultTheme.cardTheme.copyWith(
         color: Color(0xfff8f8f8),
@@ -86,7 +86,7 @@ class AppTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(
         color: _darkAppColors.appBar,
       ),
-      tabBarTheme: TabBarTheme(labelColor: AppPalette.grey.white),
+      tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
       cardTheme: defaultTheme.cardTheme.copyWith(
         color: Color(0xff242326),

@@ -1,5 +1,5 @@
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/data/models/emergency_procedure.dart';
