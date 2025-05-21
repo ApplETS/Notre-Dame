@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.59.3
+version: 4.59.4
 
 environment:
   sdk: '>=3.6.0 <4.0.0'
@@ -43,7 +43,7 @@ dependencies:
   animations: ^2.0.11
 
   # Google
-  google_maps_flutter: ^2.12.1
+  google_maps_flutter: ^2.12.2
   shared_preferences: ^2.5.3
   flutter_markdown: ^0.7.6+2
 
