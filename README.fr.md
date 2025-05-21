@@ -54,7 +54,7 @@ _Note: Ce guide est aussi disponible en: [English](README.md)_
 
 - Pour avoir accès a certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI, la clef Google Drive., etc. , ces fichiers sont encrypté.
   Pour les décrypter vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement sur le Google Drive du club),
-- puis exécuter les commandes suivantes à la racine du projet:
+  puis exécuter les commandes suivantes à la racine du projet:
 
 ### Linux
 
