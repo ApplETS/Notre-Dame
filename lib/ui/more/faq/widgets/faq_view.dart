@@ -35,7 +35,7 @@ class _FaqViewState extends State<FaqView> {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      getSubtitle(AppIntl.of(context)!.faq_questions),
+                      getSubtitle(AppIntl.of(context)!.faq_questions_and_answers),
                       _carousel(),
                       getSubtitle(AppIntl.of(context)!.faq_actions),
                       _getActions(model)
@@ -46,7 +46,7 @@ class _FaqViewState extends State<FaqView> {
                     children: <Widget>[
                       Flexible(
                         child: Column(
-                          children: [getSubtitle(AppIntl.of(context)!.faq_questions), _carousel()],
+                          children: [getSubtitle(AppIntl.of(context)!.faq_questions_and_answers), _carousel()],
                         ),
                       ),
                       Flexible(
