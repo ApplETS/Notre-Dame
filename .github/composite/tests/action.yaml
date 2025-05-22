@@ -45,8 +45,9 @@ runs:
 
     - name: Run tests
       shell: bash
-      run: flutter test --coverage
-
+      run: |
+        flutter test --coverage
+        lcov --remove coverage/lcov.info 'lib/l10n/*' -o ${{ github.workspace }}/coverage/lcov.info
     - name: Upload coverage file
       uses: actions/upload-artifact@v4
       with:
