@@ -64,7 +64,6 @@ class ETSMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    addEdgeToEdgeEffect();
     final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsRepository>(
@@ -97,16 +96,5 @@ class ETSMobile extends StatelessWidget {
         );
       }),
     );
-  }
-
-  void addEdgeToEdgeEffect() {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarContrastEnforced: false,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark,
-    ));
   }
 }
