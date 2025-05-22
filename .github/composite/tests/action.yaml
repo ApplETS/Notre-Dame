@@ -46,10 +46,9 @@ runs:
     - name: Run tests
       shell: bash
       run: |
+        chmod +x ./scripts/remove_l10n_from_coverage.sh
+        ./scripts/remove_l10n_from_coverage.sh
         flutter test --coverage
-        sudo apt-get update
-        sudo apt-get -y install lcov
-        lcov --remove coverage/lcov.info 'lib/l10n/*' -o coverage/lcov.info
     - name: Upload coverage file
       uses: actions/upload-artifact@v4
       with:
