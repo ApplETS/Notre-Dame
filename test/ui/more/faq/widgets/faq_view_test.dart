@@ -73,7 +73,7 @@ void main() {
         final subtitle1 = find.text(appIntl.faq_actions);
         expect(subtitle1, findsNWidgets(1));
 
-        final subtitle2 = find.text(appIntl.faq_questions);
+        final subtitle2 = find.text(appIntl.faq_questions_and_answers);
         expect(subtitle2, findsNWidgets(1));
       });
     });
