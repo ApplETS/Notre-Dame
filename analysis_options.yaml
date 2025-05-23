@@ -8,7 +8,7 @@ analyzer:
     # strict-inference: true
     # strict-raw-types: true
   exclude:
-    - "lib/generated"
     - "*.mocks.dart"
+    - "lib/l10n"
 formatter:
   page_width: 120

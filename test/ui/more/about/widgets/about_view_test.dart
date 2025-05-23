@@ -35,5 +35,34 @@ void main() {
         expect(row, findsOneWidget);
       });
     });
+
+    testWidgets('toggles easter egg when combination is performed', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: AboutView()));
+      await tester.pumpAndSettle();
+
+      final finder = find.byType(Image);
+      expect(finder, findsOneWidget);
+
+      // Up: vertical fling upwards
+      await tester.fling(finder, const Offset(0, -50), 1000);
+      await tester.pump(const Duration(milliseconds: 100));
+      // Right: horizontal fling to the right
+      await tester.fling(finder, const Offset(50, 0), 1000);
+      await tester.pump(const Duration(milliseconds: 100));
+      // Down: vertical fling downwards
+      await tester.fling(finder, const Offset(0, 50), 1000);
+      await tester.pump(const Duration(milliseconds: 100));
+      // Left: horizontal fling to the left
+      await tester.fling(finder, const Offset(-50, 0), 1000);
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Tap to activate
+      await tester.tap(finder);
+      await tester.pumpAndSettle();
+
+      // Total images should now be 2 (original logo + easter egg)
+      final images = find.byType(Image);
+      expect(images, findsNWidgets(2));
+    });
   });
 }
