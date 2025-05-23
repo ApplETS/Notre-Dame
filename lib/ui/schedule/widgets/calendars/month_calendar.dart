@@ -12,6 +12,7 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 
 class MonthCalendar extends StatelessWidget {
   final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
@@ -67,6 +68,7 @@ class MonthCalendar extends StatelessWidget {
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, __, ___) => FilledCell(
+        onTileTap: (events, date) => _navigateToDayView(context, date),
         hideDaysNotInMonth: false,
         titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,
@@ -75,6 +77,21 @@ class MonthCalendar extends StatelessWidget {
         isInMonth: date.month == DateTime.now().month,
         events: events,
         backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
+      ),
+      onCellTap: (events, date) => _navigateToDayView(context, date),
+      onEventTap: (event, date) => _navigateToDayView(context, date),
+    );
+  }
+
+  void _navigateToDayView(BuildContext context, DateTime date) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => DayCalendar(
+          listView: false,
+          controller: controller,
+          selectedDate: date,
+          showBackButton: true,
+        ),
       ),
     );
   }

@@ -21,8 +21,11 @@ import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 class DayCalendar extends StatefulWidget {
   final bool listView;
   final ScheduleController controller;
+  final DateTime? selectedDate;
+  final bool showBackButton;
 
-  const DayCalendar({super.key, required this.listView, required this.controller});
+  const DayCalendar(
+      {super.key, required this.listView, required this.controller, this.selectedDate, this.showBackButton = false});
 
   @override
   State<DayCalendar> createState() => _DayCalendarState();
@@ -51,14 +54,33 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!);
+    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!, selectedDate: widget.selectedDate ?? DateTime.now());
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => model,
-      builder: (context, model, child) => Column(children: [
-        _dayViewHeader(model),
-        _buildEvents(model),
-      ]),
+      onViewModelReady: (model) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          model.loadEventsForSelectedDay();
+        });
+      },
+      builder: (context, model, child) => Scaffold(
+        appBar: widget.showBackButton
+            ? AppBar(
+                automaticallyImplyLeading: false,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                title: const Text("Schedule"),
+              )
+            : null,
+        body: Column(
+          children: [
+            _dayViewHeader(model),
+            _buildEvents(model),
+          ],
+        ),
+      ),
     );
   }
 
@@ -83,7 +105,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             showVerticalLine: false,
             dayTitleBuilder: calendar_view.DayHeader.hidden,
             key: dayViewKey,
-            controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+            controller: model.eventController,
             onPageChange: (date, _) => ({
                   setState(() {
                     model.handleDateSelectedChanged(date);
