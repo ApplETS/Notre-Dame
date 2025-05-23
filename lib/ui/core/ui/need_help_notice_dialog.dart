@@ -1,10 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class NeedHelpNoticeDialog extends AlertDialog {
@@ -22,10 +20,10 @@ class NeedHelpNoticeDialog extends AlertDialog {
   @override
   Widget build(BuildContext context) => AlertDialog(
         title: Text(
-          AppIntl.of(context)!.faq_questions_app_alert_title,
+          AppIntl.of(context)!.need_help_notice_title,
           style: const TextStyle(color: AppPalette.etsLightRed, fontWeight: FontWeight.bold),
         ),
-        content: Text(AppIntl.of(context)!.faq_questions_app_alert_confirmation,
+        content: Text(AppIntl.of(context)!.need_help_notice_description,
             style: const TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           getButtons(context),
@@ -47,7 +45,7 @@ class NeedHelpNoticeDialog extends AlertDialog {
           launchWebsite();
         },
         icon: Icon(Icons.help, color: AppPalette.grey.white),
-        label: Text(AppIntl.of(context)!.faq_questions_app_alert_password_assistance),
+        label: Text(AppIntl.of(context)!.need_help_notice_password_assistance),
       ),
     );
 
@@ -62,7 +60,7 @@ class NeedHelpNoticeDialog extends AlertDialog {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)))),
         onPressed: openMail,
         icon: Icon(Icons.mail, color: AppPalette.grey.white),
-        label: Text(AppIntl.of(context)!.continue_to_mail_app),
+        label: Text(AppIntl.of(context)!.need_help_notice_send_email),
       ),
     );
 
@@ -76,7 +74,7 @@ class NeedHelpNoticeDialog extends AlertDialog {
                   side: const BorderSide(color: AppPalette.etsLightRed, width: 2.0),
                   borderRadius: BorderRadius.circular(radius)))),
           icon: const Icon(Icons.cancel),
-          label: Text(AppIntl.of(context)!.cancel_button_text)),
+          label: Text(AppIntl.of(context)!.need_help_notice_cancel)),
     );
 
     return Column(

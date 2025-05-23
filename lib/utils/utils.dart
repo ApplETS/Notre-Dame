@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+// Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 
 mixin Utils {
   static double? getGradeInPercentage(double? grade, double? maxGrade) {

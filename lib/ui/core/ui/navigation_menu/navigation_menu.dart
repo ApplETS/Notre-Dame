@@ -4,10 +4,8 @@ import 'dart:io';
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/data/models/navigation_menu_callback.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';

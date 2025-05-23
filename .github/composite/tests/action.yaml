@@ -45,8 +45,10 @@ runs:
 
     - name: Run tests
       shell: bash
-      run: flutter test --coverage
-
+      run: |
+        chmod +x ./scripts/remove_l10n_from_coverage.sh
+        ./scripts/remove_l10n_from_coverage.sh
+        flutter test --coverage
     - name: Upload coverage file
       uses: actions/upload-artifact@v4
       with:

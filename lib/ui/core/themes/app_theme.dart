@@ -22,7 +22,7 @@ class AppTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(
         color: _lightAppColors.appBar,
       ),
-      tabBarTheme: TabBarTheme(labelColor: AppPalette.grey.white),
+      tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xffeeebeb),
       cardTheme: defaultTheme.cardTheme.copyWith(
         color: Color(0xfff8f8f8),
@@ -67,7 +67,6 @@ class AppTheme with ChangeNotifier {
       modalHandle: const Color(0xff868383),
       fadedText: const Color(0xff424242),
       fadedInvertText: const Color(0xffefefef),
-      faqCarouselCard: const Color(0xfff8f7f7),
       positive: const Color(0xff5fc263),
       positiveText: const Color(0xff11a616),
       negative: const Color(0xffff9393),
@@ -87,7 +86,7 @@ class AppTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(
         color: _darkAppColors.appBar,
       ),
-      tabBarTheme: TabBarTheme(labelColor: AppPalette.grey.white),
+      tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
       cardTheme: defaultTheme.cardTheme.copyWith(
         color: Color(0xff242326),
@@ -128,7 +127,6 @@ class AppTheme with ChangeNotifier {
       modalHandle: const Color(0xffb9b8b8),
       fadedText: const Color(0xffbebbbb),
       fadedInvertText: const Color(0xffaba8a8),
-      faqCarouselCard: const Color(0xff1d1B20),
       positive: const Color(0xff468f48),
       positiveText: const Color(0xff8dee8f),
       negative: const Color(0xff982a20),
