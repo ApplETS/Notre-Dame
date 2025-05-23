@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
 import '../../../data/mocks/services/navigation_service_mock.dart';

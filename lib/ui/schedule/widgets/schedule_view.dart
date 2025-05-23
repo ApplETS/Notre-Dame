@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/core/ui/calendar_selector.dart';

@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
