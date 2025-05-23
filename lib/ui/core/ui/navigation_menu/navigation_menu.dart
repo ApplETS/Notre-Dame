@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/data/models/navigation_menu_callback.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu_button.dart';
