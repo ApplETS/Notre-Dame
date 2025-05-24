@@ -17,34 +17,20 @@ class EventItemWidget extends StatelessWidget {
   }
 
   Color _getEventColor() {
-    if (event.isOverdue) return Colors.red;
-    if (event.isUpcoming) return Colors.orange;
     return AppPalette.gradeGoodMax;
   }
 
-  Widget _buildUrgencyIndicator() {
+  Widget _buildTimeLeftIndicator() {
     if (event.date == null) return const SizedBox.shrink();
     
     final now = DateTime.now();
-    final difference = event.date!.difference(now).inDays;
+    final difference = event.date!.difference(now).inDays + 1;
     
-    if (difference < 0) {
+    if (difference <= 4) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: Colors.red,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: const Text(
-          'OVERDUE',
-          style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
-        ),
-      );
-    } else if (difference <= 3) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(
-          color: Colors.orange,
+          color: AppPalette.gradeGoodMax,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(
@@ -81,7 +67,7 @@ class EventItemWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    _buildUrgencyIndicator(),
+                    _buildTimeLeftIndicator(),
                   ],
                 ),
                 const SizedBox(height: 2),
