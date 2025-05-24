@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
