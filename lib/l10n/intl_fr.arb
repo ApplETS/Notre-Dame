@@ -24,7 +24,7 @@
   "email_send": "Envoyer un commentaire via courriel",
   "discord_join": "Rejoidre notre Discord",
 
-  "faq_questions": "Questions et réponses",
+  "faq_questions_and_answers": "Questions et réponses",
   "faq_questions_no_access_title": "Je n’ai pas accès au cours et au programme.",
   "faq_questions_no_access_description": "Les nouveaux étudiants pourraient ne pas voir l’horaire et les cours inscrits avant le début de la première session de cours. Cependant, ces informations apparaissent dès le début de la première session de cours.",
   "faq_questions_no_grades_title": "Je ne vois plus mes notes.",
