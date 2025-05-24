@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/app_info.dart';
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/core/ui/carousel.dart';
 import 'package:notredame/ui/core/ui/need_help_notice_dialog.dart';
@@ -128,7 +128,7 @@ class _FaqViewState extends State<FaqView> {
                       context: context,
                       builder: (BuildContext context) {
                         return NeedHelpNoticeDialog(
-                          openMail: () => model.openMail(AppInfo.email, context),
+                          openMail: () => model.openMail(Urls.clubEmail, context),
                           launchWebsite: () => model.launchPasswordReset(),
                         );
                       },
