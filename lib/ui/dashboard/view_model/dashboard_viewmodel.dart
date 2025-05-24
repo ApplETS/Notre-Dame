@@ -54,6 +54,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
 
+  Session? _sessionEvent;
+
   BroadcastMessage? broadcastMessage;
 
   /// Get progress of the session
@@ -76,6 +78,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
 
   ProgressBarText _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
+
+  Session? get sessionEvent => _sessionEvent;
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -169,8 +173,13 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait(
-        [futureToRunBroadcast(), futureToRunGrades(), futureToRunSessionProgressBar(), futureToRunSchedule()]);
+    return Future.wait([
+      futureToRunBroadcast(),
+      futureToRunGrades(),
+      futureToRunSessionProgressBar(),
+      futureToRunSessionEvents(),
+      futureToRunSchedule()
+    ]);
   }
 
   @override
@@ -258,6 +267,21 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       setBusyForObject(progress, false);
     }
     return [];
+  }
+
+  Future<Session?> futureToRunSessionEvents() async {
+    try {
+      setBusyForObject(sessionEvent, true);
+
+      final sessions = await _courseRepository.getSessions();
+      _sessionEvent = sessions.isNotEmpty ? sessions.last : null;
+      return _sessionEvent;
+    } catch (error) {
+      onError(error);
+    } finally {
+      setBusyForObject(sessionEvent, false);
+    }
+    return null;
   }
 
   Future<List<CourseActivity>> futureToRunSchedule() async {

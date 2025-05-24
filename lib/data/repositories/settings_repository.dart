@@ -100,6 +100,11 @@ class SettingsRepository with ChangeNotifier {
 
     dashboard.putIfAbsent(PreferencesFlag.progressBarCard, () => progressBarCardIndex);
 
+    final eventReminderCardIndex = await _preferencesService.getInt(PreferencesFlag.remindersCard) ??
+        getDefaultCardIndex(PreferencesFlag.remindersCard);
+
+    dashboard.putIfAbsent(PreferencesFlag.remindersCard, () => eventReminderCardIndex);
+
     final gradesCardIndex =
         await _preferencesService.getInt(PreferencesFlag.gradesCard) ?? getDefaultCardIndex(PreferencesFlag.gradesCard);
 

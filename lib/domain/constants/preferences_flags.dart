@@ -19,6 +19,7 @@ enum PreferencesFlag {
   scheduleCard,
   progressBarCard,
   gradesCard,
+  remindersCard,
   progressBarText,
 
   // Rating flag

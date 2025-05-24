@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/dashboard/widgets/reminders_event_card.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -93,6 +94,12 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
               changeProgressBarText: model.changeProgressBarText,
               progressBarText: model.getProgressBarText(context),
               progress: model.progress,
+              loading: model.busy(model.progress)));
+        case PreferencesFlag.remindersCard:
+          cards.add(RemindersEventCard(
+              key: UniqueKey(),
+              onDismissed: () => model.hideCard(PreferencesFlag.remindersCard),
+              sessionEvents: model.sessionEvent,
               loading: model.busy(model.progress)));
         case PreferencesFlag.gradesCard:
           cards.add(GradesCard(
