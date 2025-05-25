@@ -17,7 +17,7 @@ class EventItemWidget extends StatelessWidget {
   }
 
   Color _getEventColor() {
-    return AppPalette.gradeGoodMax;
+    return AppPalette.grey.white;
   }
 
   Widget _buildTimeLeftIndicator() {
@@ -30,7 +30,7 @@ class EventItemWidget extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: AppPalette.gradeGoodMax,
+          color: AppPalette.etsLightRed.withOpacity(0.7),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(
