@@ -3,9 +3,7 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/ui/dashboard/view_model/event_filter_service.dart';
 import 'package:notredame/ui/dashboard/view_model/event_viewmodel.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
-import '../../core/themes/app_palette.dart';
 import '../widgets/event_item_widget.dart';
 
 class RemindersEventCard extends StatelessWidget {
@@ -22,15 +20,14 @@ class RemindersEventCard extends StatelessWidget {
     this.showOnlyUpcoming = true,
   });
 
-  Widget _buildEventCategory(String title, List<SessionEvent> events, Color backgroundColor) {
+  Widget _buildEventCategory(String title, List<SessionEvent> events) {
     if (events.isEmpty) return const SizedBox.shrink();
 
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           decoration: BoxDecoration(
-            color: backgroundColor,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
@@ -48,7 +45,6 @@ class RemindersEventCard extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
       ],
     );
   }
@@ -92,24 +88,12 @@ class RemindersEventCard extends StatelessWidget {
               enabled: loading,
               ignoreContainers: true,
               child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 15, 17, 20),
+                padding: const EdgeInsets.fromLTRB(17, 15, 17, 13),
                 child: Column(
                   children: [
-                    _buildEventCategory(
-                      'Session',
-                      groupedEvents['session'] ?? [],
-                      AppPalette.etsLightRed.withOpacity(0.1),
-                    ),
-                    _buildEventCategory(
-                      'Registration',
-                      groupedEvents['registration'] ?? [],
-                      AppPalette.etsLightRed.withOpacity(0.1),
-                    ),
-                    _buildEventCategory(
-                      'Cancellation',
-                      groupedEvents['cancellation'] ?? [],
-                      AppPalette.etsLightRed.withOpacity(0.1),
-                    ),
+                    _buildEventCategory('Session', groupedEvents['session'] ?? []),
+                    _buildEventCategory('Registration', groupedEvents['registration'] ?? []),
+                    _buildEventCategory('Cancellation', groupedEvents['cancellation'] ?? []),
                   ],
                 ),
               ),
