@@ -11,11 +11,6 @@ class EventFilterService {
     return allEvents.where((event) => event.isUpcoming).toList();
   }
 
-  static List<SessionEvent> getOverdueEvents(Session session) {
-    final allEvents = _convertSessionToEvents(session);
-    return allEvents.where((event) => event.isOverdue).toList();
-  }
-
   static List<SessionEvent> getAllEvents(Session? session) {
     if (session == null) return [];
     return _convertSessionToEvents(session);

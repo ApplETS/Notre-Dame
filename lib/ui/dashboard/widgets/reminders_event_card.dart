@@ -24,7 +24,7 @@ class RemindersEventCard extends StatelessWidget {
 
   Widget _buildEventCategory(String title, List<SessionEvent> events, Color backgroundColor) {
     if (events.isEmpty) return const SizedBox.shrink();
-    
+
     return Column(
       children: [
         Container(
@@ -55,7 +55,7 @@ class RemindersEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final events = showOnlyUpcoming 
+    final events = showOnlyUpcoming
         ? EventFilterService.getUpcomingEvents(sessionEvents)
         : EventFilterService.getAllEvents(sessionEvents);
 
@@ -79,9 +79,7 @@ class RemindersEventCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      showOnlyUpcoming 
-                          ? 'Upcoming Events'
-                          : sessionEvents?.name ?? 'Session Events',
+                      showOnlyUpcoming ? 'Upcoming events' : sessionEvents?.name ?? 'Session events',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
@@ -102,13 +100,11 @@ class RemindersEventCard extends StatelessWidget {
                       groupedEvents['session'] ?? [],
                       AppPalette.etsLightRed.withOpacity(0.1),
                     ),
-                    
                     _buildEventCategory(
                       'Registration',
                       groupedEvents['registration'] ?? [],
                       AppPalette.etsLightRed.withOpacity(0.1),
                     ),
-                    
                     _buildEventCategory(
                       'Cancellation',
                       groupedEvents['cancellation'] ?? [],
@@ -118,17 +114,6 @@ class RemindersEventCard extends StatelessWidget {
                 ),
               ),
             )
-          else if (!loading)
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Text(
-                  showOnlyUpcoming 
-                      ? 'No upcoming events'
-                      : AppIntl.of(context)!.session_without,
-                ),
-              ),
-            ),
         ],
       ),
     );

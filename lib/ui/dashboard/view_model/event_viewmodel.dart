@@ -20,9 +20,4 @@ class SessionEvent {
     final difference = date!.difference(now).inDays;
     return difference >= 0 && difference <= 3;
   }
-
-  bool get isOverdue {
-    if (date == null) return false;
-    return date!.isBefore(DateTime.now());
-  }
 }
