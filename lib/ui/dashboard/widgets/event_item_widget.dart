@@ -30,12 +30,12 @@ class EventItemWidget extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: AppPalette.etsLightRed.withOpacity(0.7),
+          color: AppPalette.grey.white.withOpacity(0.9),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(
           '${difference}d left',
-          style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Color(0xff2e2a25), fontSize: 10, fontWeight: FontWeight.bold),
         ),
       );
     }

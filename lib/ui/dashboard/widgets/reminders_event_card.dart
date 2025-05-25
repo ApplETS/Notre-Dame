@@ -100,13 +100,13 @@ class RemindersEventCard extends StatelessWidget {
                     _buildEventCategory(
                       'Session',
                       groupedEvents['session'] ?? [],
-                      AppPalette.gradeFailureMin.withOpacity(0.1),
+                      AppPalette.etsLightRed.withOpacity(0.1),
                     ),
                     
                     _buildEventCategory(
                       'Registration',
                       groupedEvents['registration'] ?? [],
-                      AppPalette.gradeFailureMin.withOpacity(0.1),
+                      AppPalette.etsLightRed.withOpacity(0.1),
                     ),
                     
                     _buildEventCategory(
