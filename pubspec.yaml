@@ -8,7 +8,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 4.59.6
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -51,7 +51,7 @@ dependencies:
   connectivity_plus: ^6.1.4
   flutter_svg: ^2.1.0
   font_awesome_flutter: ^10.8.0
-  share_plus: ^10.1.4
+  share_plus: ^11.0.0
 
   # Other
   flutter_cache_manager: ^3.4.1
@@ -95,6 +95,3 @@ flutter:
     - assets/icons/
     - assets/animations/
     - assets/
-
-flutter_intl:
-  enabled: true

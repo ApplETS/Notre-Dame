@@ -145,7 +145,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   void handleClick(Menu menu, News news) {
     switch (menu) {
       case Menu.share:
-        Share.share("${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}");
+        SharePlus.instance.share(ShareParams(text: "${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}"));
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel = CalendarSelectionViewModel(translations: translations);
