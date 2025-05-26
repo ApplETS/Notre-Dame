@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -177,14 +177,13 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   }
 
   Widget _buildContent(String content) {
-    // TODO : Support underline
     String modifiedContent = content.replaceAll('<u>', "");
     modifiedContent = modifiedContent.replaceAll('</u>', "");
 
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: MarkdownBody(data: modifiedContent),
+        child: GptMarkdown(modifiedContent),
       ),
     );
   }

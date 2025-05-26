@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -53,10 +53,12 @@ class _EmergencyViewState extends State<EmergencyView> {
           return SafeArea(
             top: false,
             bottom: false,
-            child: Scrollbar(
-              child: Markdown(
+            child: SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.only(bottom: 120, top: 12, left: 12, right: 12),
-                data: fileContent.data!,
+                child: GptMarkdown(
+                  fileContent.data!,
+                ),
               ),
             ),
           );

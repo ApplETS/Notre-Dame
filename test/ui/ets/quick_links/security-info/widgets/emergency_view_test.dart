@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
@@ -25,7 +25,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final markdown = find.byType(Markdown);
+        final markdown = find.byType(GptMarkdown);
         expect(markdown, findsOneWidget);
 
         final Finder phoneButton = find.byType(FloatingActionButton);
