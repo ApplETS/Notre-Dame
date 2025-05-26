@@ -181,10 +181,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
     modifiedContent = modifiedContent.replaceAll('</u>', "");
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GptMarkdown(modifiedContent),
-      ),
+      child: Padding(padding: const EdgeInsets.all(16.0), child: GptMarkdown(modifiedContent)),
     );
   }
 

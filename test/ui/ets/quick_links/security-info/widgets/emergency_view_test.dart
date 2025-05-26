@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 
 // Project imports:
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/emergency_view.dart';

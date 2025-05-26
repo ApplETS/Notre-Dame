@@ -56,9 +56,7 @@ class _EmergencyViewState extends State<EmergencyView> {
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 120, top: 12, left: 12, right: 12),
-                child: GptMarkdown(
-                  fileContent.data!,
-                ),
+                child: GptMarkdown(fileContent.data!),
               ),
             ),
           );
