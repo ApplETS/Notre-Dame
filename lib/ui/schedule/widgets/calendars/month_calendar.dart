@@ -43,27 +43,21 @@ class MonthCalendar extends StatelessWidget {
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
       onPageChange: (date, page) => model.handleDateSelectedChanged(date),
       weekDayBuilder: (int value) => WeekDayTile(
-          dayIndex: value,
-          displayBorder: false,
-          textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
-          backgroundColor: context.theme.appColors.appBar,
-          weekDayStringBuilder: (p0) => weekTitles[p0]),
+        dayIndex: value,
+        displayBorder: false,
+        textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
+        backgroundColor: context.theme.appColors.appBar,
+        weekDayStringBuilder: (p0) => weekTitles[p0],
+      ),
       headerStringBuilder: (date, {secondaryDate}) {
         final locale = AppIntl.of(context)!.localeName;
         return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
       },
       headerStyle: HeaderStyle(
-          decoration: BoxDecoration(
-            color: context.theme.appColors.appBar,
-          ),
-          leftIconConfig: IconDataConfig(
-            color: context.theme.textTheme.bodyMedium!.color!,
-            size: 30,
-          ),
-          rightIconConfig: IconDataConfig(
-            color: context.theme.textTheme.bodyMedium!.color!,
-            size: 30,
-          )),
+        decoration: BoxDecoration(color: context.theme.appColors.appBar),
+        leftIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
+        rightIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
+      ),
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, __, ___) => FilledCell(

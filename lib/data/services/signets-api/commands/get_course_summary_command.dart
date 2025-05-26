@@ -36,14 +36,22 @@ class GetCourseSummaryCommand implements Command<CourseSummary> {
   Future<CourseSummary> execute() async {
     final queryParams = {"session": session, "sigle": acronym, "groupe": group};
 
-    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag,
-        queryParameters: queryParams);
+    final responseBody = await RequestBuilderService.sendRequest(
+      _httpClient,
+      endpoint,
+      token,
+      responseTag,
+      queryParameters: queryParams,
+    );
 
     final errorTag = responseBody.getElement(SignetsError.signetsErrorSoapTag);
     if (errorTag != null && errorTag.innerText.contains(SignetsError.gradesNotAvailable) ||
         responseBody.findAllElements('ElementEvaluation').isEmpty) {
       throw const ApiException(
-          prefix: SignetsAPIClient.tag, message: "No grades available", errorCode: SignetsError.gradesEmpty);
+        prefix: SignetsAPIClient.tag,
+        message: "No grades available",
+        errorCode: SignetsError.gradesEmpty,
+      );
     }
 
     return CourseSummary.fromXmlNode(responseBody);

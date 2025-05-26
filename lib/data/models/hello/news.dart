@@ -36,49 +36,51 @@ class News {
 
   final List<NewsTags> tags;
 
-  News(
-      {required this.id,
-      required this.title,
-      required this.content,
-      this.imageUrl,
-      required this.state,
-      required this.tags,
-      required this.publicationDate,
-      required this.eventStartDate,
-      required this.eventEndDate,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.organizer});
+  News({
+    required this.id,
+    required this.title,
+    required this.content,
+    this.imageUrl,
+    required this.state,
+    required this.tags,
+    required this.publicationDate,
+    required this.eventStartDate,
+    required this.eventEndDate,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.organizer,
+  });
 
   /// Used to create [CourseActivity] instance from a JSON file
   factory News.fromJson(Map<String, dynamic> map) => News(
-      id: map['id'] as String,
-      title: map['title'] as String,
-      content: map['content'] as String,
-      imageUrl: map['imageUrl'] as String?,
-      state: map['state'] as String,
-      tags: (map['tags'] as List<dynamic>).map((e) => NewsTags.fromJson(e as Map<String, dynamic>)).toList(),
-      publicationDate: DateTime.parse(map['publicationDate'] as String),
-      eventStartDate: DateTime.parse(map['eventStartDate'] as String),
-      eventEndDate: DateTime.parse(map['eventEndDate'] as String),
-      createdAt: DateTime.parse(map['createdAt'] as String),
-      updatedAt: DateTime.parse(map['updatedAt'] as String),
-      organizer: Organizer.fromJson(map['organizer'] as Map<String, dynamic>));
+    id: map['id'] as String,
+    title: map['title'] as String,
+    content: map['content'] as String,
+    imageUrl: map['imageUrl'] as String?,
+    state: map['state'] as String,
+    tags: (map['tags'] as List<dynamic>).map((e) => NewsTags.fromJson(e as Map<String, dynamic>)).toList(),
+    publicationDate: DateTime.parse(map['publicationDate'] as String),
+    eventStartDate: DateTime.parse(map['eventStartDate'] as String),
+    eventEndDate: DateTime.parse(map['eventEndDate'] as String),
+    createdAt: DateTime.parse(map['createdAt'] as String),
+    updatedAt: DateTime.parse(map['updatedAt'] as String),
+    organizer: Organizer.fromJson(map['organizer'] as Map<String, dynamic>),
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'content': content,
-        'imageUrl': imageUrl,
-        'state': state,
-        'tags': tags.map((e) => e.toJson()).toList(),
-        'publicationDate': publicationDate.toString(),
-        'eventStartDate': eventStartDate.toString(),
-        'eventEndDate': eventEndDate.toString(),
-        'createdAt': createdAt.toString(),
-        'updatedAt': updatedAt.toString(),
-        'organizer': organizer.toJson(),
-      };
+    'id': id,
+    'title': title,
+    'content': content,
+    'imageUrl': imageUrl,
+    'state': state,
+    'tags': tags.map((e) => e.toJson()).toList(),
+    'publicationDate': publicationDate.toString(),
+    'eventStartDate': eventStartDate.toString(),
+    'eventEndDate': eventEndDate.toString(),
+    'createdAt': createdAt.toString(),
+    'updatedAt': updatedAt.toString(),
+    'organizer': organizer.toJson(),
+  };
 
   @override
   bool operator ==(Object other) =>

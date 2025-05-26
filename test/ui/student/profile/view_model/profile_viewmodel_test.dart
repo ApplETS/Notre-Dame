@@ -19,40 +19,48 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
   final Program program1 = Program(
-      name: 'program1',
-      code: '0000',
-      average: '0.00',
-      accumulatedCredits: '99',
-      registeredCredits: '99',
-      completedCourses: '99',
-      failedCourses: '0',
-      equivalentCourses: '0',
-      status: 'Actif');
+    name: 'program1',
+    code: '0000',
+    average: '0.00',
+    accumulatedCredits: '99',
+    registeredCredits: '99',
+    completedCourses: '99',
+    failedCourses: '0',
+    equivalentCourses: '0',
+    status: 'Actif',
+  );
   final Program program2 = Program(
-      name: 'program2',
-      code: '0001',
-      average: '0.00',
-      accumulatedCredits: '99',
-      registeredCredits: '99',
-      completedCourses: '99',
-      failedCourses: '0',
-      equivalentCourses: '0',
-      status: 'Actif');
+    name: 'program2',
+    code: '0001',
+    average: '0.00',
+    accumulatedCredits: '99',
+    registeredCredits: '99',
+    completedCourses: '99',
+    failedCourses: '0',
+    equivalentCourses: '0',
+    status: 'Actif',
+  );
   final Program program3 = Program(
-      name: 'program3',
-      code: '0002',
-      average: '0.00',
-      accumulatedCredits: '99',
-      registeredCredits: '99',
-      completedCourses: '99',
-      failedCourses: '99',
-      equivalentCourses: '99',
-      status: 'Actif');
+    name: 'program3',
+    code: '0002',
+    average: '0.00',
+    accumulatedCredits: '99',
+    registeredCredits: '99',
+    completedCourses: '99',
+    failedCourses: '99',
+    equivalentCourses: '99',
+    status: 'Actif',
+  );
 
   final List<Program> programs = [program1, program2, program3];
 
   final ProfileStudent info = ProfileStudent(
-      balance: '99.99', firstName: 'John', lastName: 'Doe', permanentCode: 'DOEJ00000000', universalCode: 'AA000000');
+    balance: '99.99',
+    firstName: 'John',
+    lastName: 'Doe',
+    permanentCode: 'DOEJ00000000',
+    universalCode: 'AA000000',
+  );
 
   group("ProfileViewModel - ", () {
     setUp(() async {
@@ -78,7 +86,7 @@ void main() {
           userRepositoryMock.getInfo(fromCacheOnly: true),
           userRepositoryMock.getPrograms(fromCacheOnly: true),
           userRepositoryMock.getInfo(),
-          userRepositoryMock.getPrograms()
+          userRepositoryMock.getPrograms(),
         ]);
 
         verifyNoMoreInteractions(userRepositoryMock);
@@ -97,7 +105,7 @@ void main() {
           userRepositoryMock.getInfo(fromCacheOnly: true),
           userRepositoryMock.getPrograms(fromCacheOnly: true),
           userRepositoryMock.getInfo(),
-          userRepositoryMock.programs
+          userRepositoryMock.programs,
         ]);
 
         verifyNoMoreInteractions(userRepositoryMock);
@@ -207,11 +215,7 @@ void main() {
 
         expect(viewModel.profileStudent, info);
 
-        verifyInOrder([
-          userRepositoryMock.getInfo(),
-          userRepositoryMock.getPrograms(),
-          userRepositoryMock.info,
-        ]);
+        verifyInOrder([userRepositoryMock.getInfo(), userRepositoryMock.getPrograms(), userRepositoryMock.info]);
 
         verifyNoMoreInteractions(userRepositoryMock);
       });

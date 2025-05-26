@@ -22,8 +22,11 @@ class QuickLinkRepository {
   }
 
   Future<void> updateQuickLinkDataToCache(List<QuickLink> quickLinkList) async {
-    final quickLinkDataList =
-        quickLinkList.asMap().entries.map((e) => QuickLinkData(id: e.value.id, index: e.key)).toList();
+    final quickLinkDataList = quickLinkList
+        .asMap()
+        .entries
+        .map((e) => QuickLinkData(id: e.value.id, index: e.key))
+        .toList();
 
     await _cacheManager.update(quickLinksCacheKey, jsonEncode(quickLinkDataList));
   }

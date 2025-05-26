@@ -41,8 +41,8 @@ mixin CalendarService {
 
   static Future<UnmodifiableListView<Calendar>> get nativeCalendars async {
     if (await checkPermissions()) {
-      final Result<UnmodifiableListView<Calendar>> calendarFetchResult =
-          await DeviceCalendarPlugin().retrieveCalendars();
+      final Result<UnmodifiableListView<Calendar>> calendarFetchResult = await DeviceCalendarPlugin()
+          .retrieveCalendars();
       return calendarFetchResult.data!;
     }
     // User denied calendar access
@@ -62,15 +62,14 @@ mixin CalendarService {
 
   /// Fetches events from a calendar by id from the native calendar app
   static Future<UnmodifiableListView<Event>> fetchNativeCalendarEvents(
-      String calendarId, RetrieveEventsParams retrievalParams) async {
+    String calendarId,
+    RetrieveEventsParams retrievalParams,
+  ) async {
     final output = await deviceCalendarPlugin.retrieveEvents(calendarId, retrievalParams);
     return output.data!;
   }
 
-  static Future<bool> export(
-    List<CourseActivity> courses,
-    String calendarName,
-  ) async {
+  static Future<bool> export(List<CourseActivity> courses, String calendarName) async {
     final DeviceCalendarPlugin localDeviceCalendarPlugin = DeviceCalendarPlugin();
 
     // Request permissions
@@ -96,11 +95,9 @@ mixin CalendarService {
 
     // Fetch events from calendar to avoid duplicates
     final events = await fetchNativeCalendarEvents(
-        calendar!.id!,
-        RetrieveEventsParams(
-          startDate: startDate,
-          endDate: endDate,
-        ));
+      calendar!.id!,
+      RetrieveEventsParams(startDate: startDate, endDate: endDate),
+    );
 
     // Order by date
     courses.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
@@ -119,14 +116,12 @@ mixin CalendarService {
             "${course.courseGroup} \n${course.activityDescription}\n N'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
       );
 
-      final existingEvents = events.where(
-        (element) {
-          if (element.description != null && element.description!.contains(course.hashCode.toString())) {
-            return true;
-          }
-          return false;
-        },
-      );
+      final existingEvents = events.where((element) {
+        if (element.description != null && element.description!.contains(course.hashCode.toString())) {
+          return true;
+        }
+        return false;
+      });
       if (existingEvents.isNotEmpty) {
         final existingEvent = existingEvents.first;
 
@@ -134,9 +129,7 @@ mixin CalendarService {
         event.eventId = existingEvent.eventId;
       }
       // Create or update event
-      final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
-        event,
-      );
+      final result = await localDeviceCalendarPlugin.createOrUpdateEvent(event);
 
       if (result != null && !result.isSuccess) {
         hasErrors = true;
@@ -145,10 +138,7 @@ mixin CalendarService {
     return !hasErrors;
   }
 
-  static Future<bool> exportNews(
-    News news,
-    String calendarName,
-  ) async {
+  static Future<bool> exportNews(News news, String calendarName) async {
     final DeviceCalendarPlugin localDeviceCalendarPlugin = DeviceCalendarPlugin();
 
     // Request permissions
@@ -177,9 +167,7 @@ mixin CalendarService {
     );
 
     // Create or update event
-    final result = await localDeviceCalendarPlugin.createOrUpdateEvent(
-      event,
-    );
+    final result = await localDeviceCalendarPlugin.createOrUpdateEvent(event);
 
     if (result?.isSuccess == false) {
       hasErrors = true;

@@ -21,9 +21,7 @@ void main() {
     setupSettingsRepositoryMock();
     setupFlutterToastMock();
 
-    viewModel = WeekViewModel(
-      intl: await setupAppIntl(),
-    );
+    viewModel = WeekViewModel(intl: await setupAppIntl());
   });
 
   group('return to current date', () {

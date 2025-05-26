@@ -19,19 +19,19 @@ class GetCourseReviewsCommand implements Command<List<CourseReview>> {
   final String token;
   final String session;
 
-  GetCourseReviewsCommand(
-    this.client,
-    this._httpClient, {
-    required this.token,
-    required this.session,
-  });
+  GetCourseReviewsCommand(this.client, this._httpClient, {required this.token, required this.session});
 
   @override
   Future<List<CourseReview>> execute() async {
     final queryParams = {"session": session};
 
-    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag,
-        queryParameters: queryParams);
+    final responseBody = await RequestBuilderService.sendRequest(
+      _httpClient,
+      endpoint,
+      token,
+      responseTag,
+      queryParameters: queryParams,
+    );
 
     /// Build and return the list of Program
     return responseBody.findAllElements("EvaluationCours").map((node) => CourseReview.fromXmlNode(node)).toList();

@@ -40,7 +40,7 @@ void main() {
       activityLocation: 'Room 101',
       activityName: 'Lecture 1',
       activityDescription: 'Regular',
-    )
+    ),
   ];
 
   group("week calendar view - ", () {
@@ -55,14 +55,16 @@ void main() {
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
     });
 
-    tearDown(() => {
-          unregister<NavigationService>(),
-          unregister<SettingsRepository>(),
-          unregister<CourseRepository>(),
-          unregister<RemoteConfigService>(),
-          unregister<NetworkingService>(),
-          unregister<AnalyticsService>(),
-        });
+    tearDown(
+      () => {
+        unregister<NavigationService>(),
+        unregister<SettingsRepository>(),
+        unregister<CourseRepository>(),
+        unregister<RemoteConfigService>(),
+        unregister<NetworkingService>(),
+        unregister<AnalyticsService>(),
+      },
+    );
 
     testWidgets("displays saturday and sunday", (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);

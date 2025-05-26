@@ -30,8 +30,9 @@ void main() {
       unregister<AnalyticsServiceMock>();
     });
 
-    testWidgets('has five sections with icons and titles (dashboard, schedule, student, ets and more)',
-        (WidgetTester tester) async {
+    testWidgets('has five sections with icons and titles (dashboard, schedule, student, ets and more)', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(localizedWidget(child: BottomBar()));
       await tester.pumpAndSettle();
 

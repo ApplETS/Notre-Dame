@@ -55,20 +55,23 @@ void unregister<T extends Object>() {
 }
 
 /// Load the l10n classes. Take the [child] widget to test
-Widget localizedWidget(
-        {required Widget child, bool useScaffold = true, String locale = 'en', double textScaleFactor = 0.9}) =>
-    RepaintBoundary(
-      child: MaterialApp(
-        localizationsDelegates: const [
-          AppIntl.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: Locale(locale),
-        home: useScaffold ? Scaffold(body: child) : child,
-      ),
-    );
+Widget localizedWidget({
+  required Widget child,
+  bool useScaffold = true,
+  String locale = 'en',
+  double textScaleFactor = 0.9,
+}) => RepaintBoundary(
+  child: MaterialApp(
+    localizationsDelegates: const [
+      AppIntl.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    locale: Locale(locale),
+    home: useScaffold ? Scaffold(body: child) : child,
+  ),
+);
 
 /// Load a mock of the [SignetsAPIClient]
 SignetsAPIClientMock setupSignetsApiMock() {

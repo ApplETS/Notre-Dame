@@ -20,7 +20,12 @@ void main() {
   late UserRepositoryMock userRepositoryMock;
 
   final profileStudent = ProfileStudent(
-      firstName: "John", lastName: "Doe", permanentCode: "ABC123", balance: "123456789", universalCode: 'AA000000');
+    firstName: "John",
+    lastName: "Doe",
+    permanentCode: "ABC123",
+    balance: "123456789",
+    universalCode: 'AA000000',
+  );
 
   final programList = [
     Program(
