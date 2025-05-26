@@ -20,12 +20,6 @@ class InAppReviewService {
   Future<void> requestReview() => _inAppReview.requestReview();
 
   /// Opens the Play Store on Android, the App Store with a review
-  Future<void> openStoreListing({
-    String appStoreId = AppInfo.appStoreId,
-    String? microsoftStoreId,
-  }) =>
-      _inAppReview.openStoreListing(
-        appStoreId: appStoreId,
-        microsoftStoreId: microsoftStoreId,
-      );
+  Future<void> openStoreListing({String appStoreId = AppInfo.appStoreId, String? microsoftStoreId}) =>
+      _inAppReview.openStoreListing(appStoreId: appStoreId, microsoftStoreId: microsoftStoreId);
 }

@@ -31,18 +31,19 @@ class LaunchUrlService {
 
   void launchInBrowser(String url) {
     browser.open(
-        url: WebUri(url),
-        settings: ChromeSafariBrowserSettings(
-          // Android
-          dismissButtonStyle: DismissButtonStyle.CLOSE,
-          enableUrlBarHiding: true,
-          toolbarBackgroundColor: AppPalette.etsLightRed,
-          navigationBarColor: AppPalette.grey.black,
+      url: WebUri(url),
+      settings: ChromeSafariBrowserSettings(
+        // Android
+        dismissButtonStyle: DismissButtonStyle.CLOSE,
+        enableUrlBarHiding: true,
+        toolbarBackgroundColor: AppPalette.etsLightRed,
+        navigationBarColor: AppPalette.grey.black,
 
-          // iOS
-          barCollapsingEnabled: true,
-          preferredControlTintColor: AppPalette.grey.white,
-          preferredBarTintColor: AppPalette.etsLightRed,
-        ));
+        // iOS
+        barCollapsingEnabled: true,
+        preferredControlTintColor: AppPalette.grey.white,
+        preferredBarTintColor: AppPalette.etsLightRed,
+      ),
+    );
   }
 }

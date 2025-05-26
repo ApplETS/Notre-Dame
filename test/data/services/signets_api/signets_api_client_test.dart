@@ -42,19 +42,20 @@ void main() {
   late AuthServiceMock authServiceMock;
 
   final session = Session(
-      shortName: 'H2018',
-      name: 'Hiver 2018',
-      startDate: DateTime(2018, 1, 4),
-      endDate: DateTime(2018, 4, 23),
-      endDateCourses: DateTime(2018, 4, 11),
-      startDateRegistration: DateTime(2017, 10, 30),
-      deadlineRegistration: DateTime(2017, 11, 14),
-      startDateCancellationWithRefund: DateTime(2018, 1, 4),
-      deadlineCancellationWithRefund: DateTime(2018, 1, 17),
-      deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
-      startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
-      deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
-      deadlineCancellationASEQ: DateTime(2018, 1, 31));
+    shortName: 'H2018',
+    name: 'Hiver 2018',
+    startDate: DateTime(2018, 1, 4),
+    endDate: DateTime(2018, 4, 23),
+    endDateCourses: DateTime(2018, 4, 11),
+    startDateRegistration: DateTime(2017, 10, 30),
+    deadlineRegistration: DateTime(2017, 11, 14),
+    startDateCancellationWithRefund: DateTime(2018, 1, 4),
+    deadlineCancellationWithRefund: DateTime(2018, 1, 17),
+    deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
+    startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
+    deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
+    deadlineCancellationASEQ: DateTime(2018, 1, 31),
+  );
 
   group('SignetsApi - ', () {
     setUp(() {
@@ -68,7 +69,8 @@ void main() {
     });
 
     group("getCoursesActivities - ", () {
-      const String courseActivityXML = '<Seance>'
+      const String courseActivityXML =
+          '<Seance>'
           '<dateDebut>2020-09-03T18:00:00</dateDebut> '
           '<dateFin>2020-09-03T20:00:00</dateFin> '
           '<coursGroupe>GEN101-01</coursGroupe> '
@@ -79,20 +81,23 @@ void main() {
           '</Seance>';
 
       final courseActivity = CourseActivity(
-          courseGroup: 'GEN101-01',
-          courseName: 'Libelle du cours',
-          activityName: 'TP',
-          activityDescription: 'Travaux pratiques',
-          activityLocation: 'À distance',
-          startDateTime: DateTime(2020, 9, 3, 18),
-          endDateTime: DateTime(2020, 9, 3, 20));
+        courseGroup: 'GEN101-01',
+        courseName: 'Libelle du cours',
+        activityName: 'TP',
+        activityDescription: 'Travaux pratiques',
+        activityLocation: 'À distance',
+        startDateTime: DateTime(2020, 9, 3, 18),
+        endDateTime: DateTime(2020, 9, 3, 20),
+      );
 
       test("right credentials and valid parameters", () async {
         const String session = "A2020";
 
         final String stubResponse = buildResponse(
-            GetCoursesActivitiesCommand.responseTag, courseActivityXML + courseActivityXML,
-            firstElement: 'ListeDesSeances');
+          GetCoursesActivitiesCommand.responseTag,
+          courseActivityXML + courseActivityXML,
+          firstElement: 'ListeDesSeances',
+        );
 
         final startDate = DateTime(2020, 9, 3, 18);
         final endDate = DateTime(2020, 9, 3, 20);
@@ -114,8 +119,10 @@ void main() {
         const String session = "A2020";
 
         final String stubResponse = buildErrorResponse(
-            GetCoursesActivitiesCommand.responseTag, SignetsError.scheduleNotAvailable,
-            firstElement: 'ListeDesSeances');
+          GetCoursesActivitiesCommand.responseTag,
+          SignetsError.scheduleNotAvailable,
+          firstElement: 'ListeDesSeances',
+        );
 
         final queryParameters = {"session": session};
         final uri = Uri.https(Urls.signetsAPI, GetCoursesActivitiesCommand.endpoint, queryParameters);
@@ -132,8 +139,11 @@ void main() {
         test("session", () async {
           const String session = "A202";
 
-          expect(service.getCoursesActivities(session: session), throwsA(isA<FormatException>()),
-              reason: "The session should validate the regex: /^([A-E-H][0-9]{4})/");
+          expect(
+            service.getCoursesActivities(session: session),
+            throwsA(isA<FormatException>()),
+            reason: "The session should validate the regex: /^([A-E-H][0-9]{4})/",
+          );
         });
 
         test("courseGroup", () async {
@@ -143,18 +153,26 @@ void main() {
           const String courseGroup3 = "MAT12301";
           const String courseGroup4 = "MAT123-1";
 
-          expect(service.getCoursesActivities(session: session, courseGroup: courseGroup1),
-              throwsA(isA<FormatException>()),
-              reason: "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
-          expect(service.getCoursesActivities(session: session, courseGroup: courseGroup2),
-              throwsA(isA<FormatException>()),
-              reason: "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
-          expect(service.getCoursesActivities(session: session, courseGroup: courseGroup3),
-              throwsA(isA<FormatException>()),
-              reason: "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
-          expect(service.getCoursesActivities(session: session, courseGroup: courseGroup4),
-              throwsA(isA<FormatException>()),
-              reason: "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/");
+          expect(
+            service.getCoursesActivities(session: session, courseGroup: courseGroup1),
+            throwsA(isA<FormatException>()),
+            reason: "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/",
+          );
+          expect(
+            service.getCoursesActivities(session: session, courseGroup: courseGroup2),
+            throwsA(isA<FormatException>()),
+            reason: "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/",
+          );
+          expect(
+            service.getCoursesActivities(session: session, courseGroup: courseGroup3),
+            throwsA(isA<FormatException>()),
+            reason: "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/",
+          );
+          expect(
+            service.getCoursesActivities(session: session, courseGroup: courseGroup4),
+            throwsA(isA<FormatException>()),
+            reason: "A courseGroup should validate the regex: /^([A-Z]{3}[0-9]{3}-[0-9]{2})/",
+          );
         });
 
         test("startDate is after endDate", () async {
@@ -163,25 +181,33 @@ void main() {
           final DateTime startDate = DateTime(2020, 2);
           final DateTime endDate = DateTime(2020);
 
-          expect(service.getCoursesActivities(session: session, startDate: startDate, endDate: endDate),
-              throwsArgumentError,
-              reason: "The startDate should be before the endDate");
+          expect(
+            service.getCoursesActivities(session: session, startDate: startDate, endDate: endDate),
+            throwsArgumentError,
+            reason: "The startDate should be before the endDate",
+          );
         });
       });
 
       test("An error occurred", () async {
         const String session = "A2020";
 
-        final String stubResponse = buildErrorResponse(GetCoursesActivitiesCommand.responseTag, 'An error occurred',
-            firstElement: 'ListeDesSeances');
+        final String stubResponse = buildErrorResponse(
+          GetCoursesActivitiesCommand.responseTag,
+          'An error occurred',
+          firstElement: 'ListeDesSeances',
+        );
 
         final queryParameters = {"session": session};
         final uri = Uri.https(Urls.signetsAPI, GetCoursesActivitiesCommand.endpoint, queryParameters);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getCoursesActivities(session: session), throwsA(isA<ApiException>()),
-            reason: "If the SignetsAPI return an error the service should return the error.");
+        expect(
+          service.getCoursesActivities(session: session),
+          throwsA(isA<ApiException>()),
+          reason: "If the SignetsAPI return an error the service should return the error.",
+        );
       });
 
       test("Wrong credentials", () async {
@@ -194,7 +220,7 @@ void main() {
           "session": session,
           "coursGroupe": courseGroup,
           "dateDebut": '2020-09-03',
-          "dateFin": "2020-09-03"
+          "dateFin": "2020-09-03",
         };
         AuthServiceMock.stubAcquireTokenSilent(authServiceMock, success: false);
 
@@ -204,7 +230,11 @@ void main() {
 
         try {
           await service.getCoursesActivities(
-              session: session, courseGroup: courseGroup, startDate: startDate, endDate: endDate);
+            session: session,
+            courseGroup: courseGroup,
+            startDate: startDate,
+            endDate: endDate,
+          );
         } catch (e) {
           expect(e, isA<ApiException>());
           verify(authServiceMock.acquireTokenSilent()).called(3);
@@ -246,8 +276,10 @@ void main() {
         const String session = "A2020";
 
         final String stubResponse = buildResponse(
-            GetScheduleActivitiesCommand.responseTag, scheduleActivityXML + scheduleActivityXML,
-            firstElement: 'listeActivites');
+          GetScheduleActivitiesCommand.responseTag,
+          scheduleActivityXML + scheduleActivityXML,
+          firstElement: 'listeActivites',
+        );
 
         final queryParameters = {"session": session};
         final uri = Uri.https(Urls.signetsAPI, GetScheduleActivitiesCommand.endpoint, queryParameters);
@@ -264,30 +296,40 @@ void main() {
       test("An error occurred", () async {
         const String session = "A2020";
 
-        final String stubResponse = buildErrorResponse(GetScheduleActivitiesCommand.responseTag, 'An error occurred',
-            firstElement: 'listeActivites');
+        final String stubResponse = buildErrorResponse(
+          GetScheduleActivitiesCommand.responseTag,
+          'An error occurred',
+          firstElement: 'listeActivites',
+        );
 
         final queryParameters = {"session": session};
         final uri = Uri.https(Urls.signetsAPI, GetScheduleActivitiesCommand.endpoint, queryParameters);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getScheduleActivities(session: session), throwsA(isA<ApiException>()),
-            reason: "If the SignetsAPI return an error the service should return the error.");
+        expect(
+          service.getScheduleActivities(session: session),
+          throwsA(isA<ApiException>()),
+          reason: "If the SignetsAPI return an error the service should return the error.",
+        );
       });
 
       group("invalid parameters - ", () {
         test("session", () async {
           const String session = "A202";
 
-          expect(service.getScheduleActivities(session: session), throwsA(isA<FormatException>()),
-              reason: "The session should validate the regex: /^([A-E-H][0-9]{4})/");
+          expect(
+            service.getScheduleActivities(session: session),
+            throwsA(isA<FormatException>()),
+            reason: "The session should validate the regex: /^([A-E-H][0-9]{4})/",
+          );
         });
       });
     });
 
     group("getSessions - ", () {
-      const String sessionXML = '<Session>'
+      const String sessionXML =
+          '<Session>'
           '<abrege>H2018</abrege>'
           '<auLong>Hiver 2018</auLong> '
           '<dateDebut>2018-01-04</dateDebut>'
@@ -304,8 +346,11 @@ void main() {
           '</Session>';
 
       test("Success", () async {
-        final String stubResponse =
-            buildResponse(GetSessionsCommand.responseTag, sessionXML + sessionXML, firstElement: 'liste');
+        final String stubResponse = buildResponse(
+          GetSessionsCommand.responseTag,
+          sessionXML + sessionXML,
+          firstElement: 'liste',
+        );
 
         final uri = Uri.https(Urls.signetsAPI, GetSessionsCommand.endpoint);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
@@ -322,20 +367,27 @@ void main() {
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
       test("An error occurred", () async {
-        final String stubResponse =
-            buildErrorResponse(GetSessionsCommand.responseTag, 'An error occurred', firstElement: 'liste');
+        final String stubResponse = buildErrorResponse(
+          GetSessionsCommand.responseTag,
+          'An error occurred',
+          firstElement: 'liste',
+        );
 
         final uri = Uri.https(Urls.signetsAPI, GetSessionsCommand.endpoint);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getSessions(), throwsA(isA<ApiException>()),
-            reason: "If the SignetsAPI return an error the service should return the error.");
+        expect(
+          service.getSessions(),
+          throwsA(isA<ApiException>()),
+          reason: "If the SignetsAPI return an error the service should return the error.",
+        );
       });
     });
 
     group("getStudentInfo - ", () {
-      const String studentInfoXML = '<nom>Doe</nom>'
+      const String studentInfoXML =
+          '<nom>Doe</nom>'
           '<prenom>John</prenom>'
           '<codePerm>DOEJ00000000</codePerm>'
           '<soldeTotal>99.99</soldeTotal>'
@@ -343,11 +395,12 @@ void main() {
           '<codeUniversel>AA00000</codeUniversel>';
 
       final studentInfo = ProfileStudent(
-          lastName: 'Doe',
-          firstName: 'John',
-          permanentCode: 'DOEJ00000000',
-          balance: '99.99',
-          universalCode: 'AA00000');
+        lastName: 'Doe',
+        firstName: 'John',
+        permanentCode: 'DOEJ00000000',
+        balance: '99.99',
+        universalCode: 'AA00000',
+      );
 
       test("Success", () async {
         final String stubResponse = buildResponse(GetStudentInfoCommand.responseTag, studentInfoXML);
@@ -373,13 +426,17 @@ void main() {
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getStudentInfo(), throwsA(isA<ApiException>()),
-            reason: "If the SignetsAPI return an error the service should return the error.");
+        expect(
+          service.getStudentInfo(),
+          throwsA(isA<ApiException>()),
+          reason: "If the SignetsAPI return an error the service should return the error.",
+        );
       });
     });
 
     group("getPrograms - ", () {
-      const String programXML = '<Programme>'
+      const String programXML =
+          '<Programme>'
           '<code>9999</code>'
           '<libelle>Genie</libelle>'
           '<profil>Etudiant</profil>'
@@ -397,19 +454,23 @@ void main() {
           '</Programme>';
 
       final program = Program(
-          name: 'Genie',
-          code: '9999',
-          average: '3',
-          accumulatedCredits: '3',
-          registeredCredits: '4',
-          completedCourses: '6',
-          failedCourses: '5',
-          equivalentCourses: '7',
-          status: 'Actif');
+        name: 'Genie',
+        code: '9999',
+        average: '3',
+        accumulatedCredits: '3',
+        registeredCredits: '4',
+        completedCourses: '6',
+        failedCourses: '5',
+        equivalentCourses: '7',
+        status: 'Actif',
+      );
 
       test("Success", () async {
-        final String stubResponse =
-            buildResponse(GetProgramsCommand.responseTag, programXML + programXML, firstElement: 'liste');
+        final String stubResponse = buildResponse(
+          GetProgramsCommand.responseTag,
+          programXML + programXML,
+          firstElement: 'liste',
+        );
 
         final uri = Uri.https(Urls.signetsAPI, GetProgramsCommand.endpoint);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
@@ -426,20 +487,27 @@ void main() {
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
       test("An error occurred", () async {
-        final String stubResponse =
-            buildErrorResponse(GetProgramsCommand.responseTag, 'An error occurred', firstElement: 'liste');
+        final String stubResponse = buildErrorResponse(
+          GetProgramsCommand.responseTag,
+          'An error occurred',
+          firstElement: 'liste',
+        );
 
         final uri = Uri.https(Urls.signetsAPI, GetProgramsCommand.endpoint);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getPrograms(), throwsA(isA<ApiException>()),
-            reason: "If the SignetsAPI return an error the service should return the error.");
+        expect(
+          service.getPrograms(),
+          throwsA(isA<ApiException>()),
+          reason: "If the SignetsAPI return an error the service should return the error.",
+        );
       });
     });
 
     group("getCourses - ", () {
-      const String courseWithGradeXML = '<Cours>'
+      const String courseWithGradeXML =
+          '<Cours>'
           '<sigle>GEN101</sigle>'
           '<groupe>02</groupe>'
           '<session>H2020</session>'
@@ -450,15 +518,17 @@ void main() {
           '</Cours>';
 
       final courseWithGrade = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          grade: 'C+',
-          numberOfCredits: 3,
-          title: 'Cours générique');
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        grade: 'C+',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      );
 
-      const String courseWithoutGradeXML = '<Cours>'
+      const String courseWithoutGradeXML =
+          '<Cours>'
           '<sigle>GEN101</sigle>'
           '<groupe>02</groupe>'
           '<session>H2020</session>'
@@ -469,17 +539,20 @@ void main() {
           '</Cours>';
 
       final Course courseWithoutGrade = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          numberOfCredits: 3,
-          title: 'Cours générique');
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      );
 
       test("Success", () async {
         final String stubResponse = buildResponse(
-            GetCoursesCommand.responseTag, courseWithGradeXML + courseWithoutGradeXML,
-            firstElement: 'liste');
+          GetCoursesCommand.responseTag,
+          courseWithGradeXML + courseWithoutGradeXML,
+          firstElement: 'liste',
+        );
 
         final uri = Uri.https(Urls.signetsAPI, GetCoursesCommand.endpoint);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
@@ -496,61 +569,72 @@ void main() {
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
       test("An error occurred", () async {
-        final String stubResponse =
-            buildErrorResponse(GetCoursesCommand.responseTag, 'An error occurred', firstElement: 'liste');
+        final String stubResponse = buildErrorResponse(
+          GetCoursesCommand.responseTag,
+          'An error occurred',
+          firstElement: 'liste',
+        );
 
         final uri = Uri.https(Urls.signetsAPI, GetCoursesCommand.endpoint);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getCourses(), throwsA(isA<ApiException>()),
-            reason: "If the SignetsAPI return an error the service should return the error.");
+        expect(
+          service.getCourses(),
+          throwsA(isA<ApiException>()),
+          reason: "If the SignetsAPI return an error the service should return the error.",
+        );
       });
     });
 
     group("getCourseSummary - ", () {
       final Course course = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          numberOfCredits: 3,
-          title: 'Cours générique');
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      );
 
       final courseSummary = CourseSummary(
-          currentMark: 5,
-          currentMarkInPercent: 50,
-          markOutOf: 10,
-          passMark: 6,
-          standardDeviation: 2.3,
-          median: 4.5,
-          percentileRank: 99,
-          evaluations: [
-            CourseEvaluation(
-                courseGroup: 'GEN101-01',
-                title: 'Test',
-                correctedEvaluationOutOf: "20",
-                weight: 10,
-                published: false,
-                teacherMessage: '',
-                ignore: false),
-            CourseEvaluation(
-                courseGroup: 'GEN101-02',
-                title: 'Test',
-                mark: 18,
-                correctedEvaluationOutOf: "20+10",
-                weight: 10,
-                passMark: 16,
-                standardDeviation: 6.4,
-                median: 15.3,
-                percentileRank: 99,
-                published: true,
-                teacherMessage: 'Je suis content',
-                ignore: false,
-                targetDate: DateTime(2020))
-          ]);
+        currentMark: 5,
+        currentMarkInPercent: 50,
+        markOutOf: 10,
+        passMark: 6,
+        standardDeviation: 2.3,
+        median: 4.5,
+        percentileRank: 99,
+        evaluations: [
+          CourseEvaluation(
+            courseGroup: 'GEN101-01',
+            title: 'Test',
+            correctedEvaluationOutOf: "20",
+            weight: 10,
+            published: false,
+            teacherMessage: '',
+            ignore: false,
+          ),
+          CourseEvaluation(
+            courseGroup: 'GEN101-02',
+            title: 'Test',
+            mark: 18,
+            correctedEvaluationOutOf: "20+10",
+            weight: 10,
+            passMark: 16,
+            standardDeviation: 6.4,
+            median: 15.3,
+            percentileRank: 99,
+            published: true,
+            teacherMessage: 'Je suis content',
+            ignore: false,
+            targetDate: DateTime(2020),
+          ),
+        ],
+      );
 
-      const String courseSummaryXml = '<noteACeJour>50</noteACeJour>'
+      const String courseSummaryXml =
+          '<noteACeJour>50</noteACeJour>'
           '<scoreFinalSur100>5</scoreFinalSur100>'
           '<moyenneClasse>6</moyenneClasse>'
           '<ecartTypeClasse>2,3</ecartTypeClasse>'
@@ -592,7 +676,8 @@ void main() {
           '</ElementEvaluation>'
           '</liste>';
 
-      const String courseSummaryEmptyXml = '<erreur /> '
+      const String courseSummaryEmptyXml =
+          '<erreur /> '
           '<noteACeJour /> '
           '<scoreFinalSur100 /> '
           '<moyenneClasse /> '
@@ -612,8 +697,11 @@ void main() {
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        final result =
-            await service.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group);
+        final result = await service.getCourseSummary(
+          session: course.session,
+          acronym: course.acronym,
+          group: course.group,
+        );
 
         expect(result, isA<CourseSummary>());
         expect(result, courseSummary);
@@ -630,9 +718,11 @@ void main() {
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
-            throwsA(isA<ApiException>()),
-            reason: "If the summary is empty, the service should return an error.");
+        expect(
+          service.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+          throwsA(isA<ApiException>()),
+          reason: "If the summary is empty, the service should return an error.",
+        );
       });
 
       // Currently SignetsAPI doesn't have a clear way to indicate which error
@@ -646,14 +736,17 @@ void main() {
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
-            throwsA(isA<ApiException>()),
-            reason: "If the SignetsAPI return an error the service should return the error.");
+        expect(
+          service.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+          throwsA(isA<ApiException>()),
+          reason: "If the SignetsAPI return an error the service should return the error.",
+        );
       });
     });
 
     group("getCoursesEvaluation - ", () {
-      const String courseReviewCompletedXML = '<EvaluationCours> '
+      const String courseReviewCompletedXML =
+          '<EvaluationCours> '
           '<Sigle>GEN101</Sigle> '
           '<Groupe>01</Groupe> '
           '<Enseignant>April, Alain</Enseignant> '
@@ -663,7 +756,8 @@ void main() {
           '<EstComplete>true</EstComplete> '
           '</EvaluationCours>';
 
-      const String incompleteCourseReviewForSameCourseXML = '<EvaluationCours> '
+      const String incompleteCourseReviewForSameCourseXML =
+          '<EvaluationCours> '
           '<Sigle>GEN101</Sigle> '
           '<Groupe>01</Groupe> '
           '<Enseignant>Another, Teacher</Enseignant> '
@@ -673,7 +767,8 @@ void main() {
           '<EstComplete>false</EstComplete> '
           '</EvaluationCours>';
 
-      const String courseReviewNotCompletedXML = '<EvaluationCours> '
+      const String courseReviewNotCompletedXML =
+          '<EvaluationCours> '
           '<Sigle>GEN102</Sigle> '
           '<Groupe>01</Groupe> '
           '<Enseignant>April, Alain</Enseignant> '
@@ -684,36 +779,41 @@ void main() {
           '</EvaluationCours>';
 
       final courseReviewCompleted = CourseReview(
-          acronym: 'GEN101',
-          group: '01',
-          teacherName: 'April, Alain',
-          startAt: DateTime(2021, 03, 19),
-          endAt: DateTime(2021, 03, 28, 23, 59),
-          type: 'Cours',
-          isCompleted: true);
+        acronym: 'GEN101',
+        group: '01',
+        teacherName: 'April, Alain',
+        startAt: DateTime(2021, 03, 19),
+        endAt: DateTime(2021, 03, 28, 23, 59),
+        type: 'Cours',
+        isCompleted: true,
+      );
 
       final incompleteCourseReviewForSameCourse = CourseReview(
-          acronym: 'GEN101',
-          group: '01',
-          teacherName: 'Another, Teacher',
-          startAt: DateTime(2021, 03, 19),
-          endAt: DateTime(2021, 03, 28, 23, 59),
-          type: 'Cours',
-          isCompleted: false);
+        acronym: 'GEN101',
+        group: '01',
+        teacherName: 'Another, Teacher',
+        startAt: DateTime(2021, 03, 19),
+        endAt: DateTime(2021, 03, 28, 23, 59),
+        type: 'Cours',
+        isCompleted: false,
+      );
 
       final courseReviewNotCompleted = CourseReview(
-          acronym: 'GEN102',
-          group: '01',
-          teacherName: 'April, Alain',
-          startAt: DateTime(2021, 03, 19),
-          endAt: DateTime(2021, 03, 28, 23, 59),
-          type: 'Cours',
-          isCompleted: false);
+        acronym: 'GEN102',
+        group: '01',
+        teacherName: 'April, Alain',
+        startAt: DateTime(2021, 03, 19),
+        endAt: DateTime(2021, 03, 28, 23, 59),
+        type: 'Cours',
+        isCompleted: false,
+      );
 
       test("Success", () async {
-        final String stubResponse = buildResponse(GetCourseReviewsCommand.responseTag,
-            courseReviewCompletedXML + incompleteCourseReviewForSameCourseXML + courseReviewNotCompletedXML,
-            firstElement: 'listeEvaluations');
+        final String stubResponse = buildResponse(
+          GetCourseReviewsCommand.responseTag,
+          courseReviewCompletedXML + incompleteCourseReviewForSameCourseXML + courseReviewNotCompletedXML,
+          firstElement: 'listeEvaluations',
+        );
 
         final queryParams = {"session": session.shortName};
         final uri = Uri.https(Urls.signetsAPI, GetCourseReviewsCommand.endpoint, queryParams);
@@ -723,24 +823,32 @@ void main() {
         final result = await service.getCourseReviews(session: session.shortName);
 
         expect(result, isA<List<CourseReview>>());
-        expect(result,
-            containsAll([courseReviewCompleted, incompleteCourseReviewForSameCourse, courseReviewNotCompleted]));
+        expect(
+          result,
+          containsAll([courseReviewCompleted, incompleteCourseReviewForSameCourse, courseReviewNotCompleted]),
+        );
       });
 
       // Currently SignetsAPI doesn't have a clear way to indicate which error
       // occurred (no error code, no change of http code, just a text)
       // so for now whatever the error we will throw a generic error
       test("An error occurred", () async {
-        final String stubResponse =
-            buildErrorResponse(GetCourseReviewsCommand.responseTag, 'An error occurred', firstElement: 'liste');
+        final String stubResponse = buildErrorResponse(
+          GetCourseReviewsCommand.responseTag,
+          'An error occurred',
+          firstElement: 'liste',
+        );
 
         final queryParams = {"session": session.shortName};
         final uri = Uri.https(Urls.signetsAPI, GetCourseReviewsCommand.endpoint, queryParams);
         clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
         service = buildService(clientMock);
 
-        expect(service.getCourseReviews(session: session.shortName), throwsA(isA<ApiException>()),
-            reason: "If the SignetsAPI return an error the service should return the error.");
+        expect(
+          service.getCourseReviews(session: session.shortName),
+          throwsA(isA<ApiException>()),
+          reason: "If the SignetsAPI return an error the service should return the error.",
+        );
       });
     });
   });

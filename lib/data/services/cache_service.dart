@@ -17,10 +17,12 @@ class CacheService {
   static const key = 'ETSMobileCache';
 
   final lib.CacheManager _cacheManager = lib.CacheManager(
-    lib.Config(key,
-        stalePeriod: const Duration(days: 30),
-        maxNrOfCacheObjects: 20,
-        repo: lib.CacheObjectProvider(databaseName: key)),
+    lib.Config(
+      key,
+      stalePeriod: const Duration(days: 30),
+      maxNrOfCacheObjects: 20,
+      repo: lib.CacheObjectProvider(databaseName: key),
+    ),
   );
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();

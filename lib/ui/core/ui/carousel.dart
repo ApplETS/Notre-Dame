@@ -68,28 +68,18 @@ class _CarouselState extends State<Carousel> {
 typedef _OnSizeLaidOutCallback = void Function(Size);
 
 class _SizingContainer extends SingleChildRenderObjectWidget {
-  const _SizingContainer({
-    super.child,
-    required this.sizes,
-    required this.page,
-  });
+  const _SizingContainer({super.child, required this.sizes, required this.page});
 
   final Map<int, Size> sizes;
   final double page;
 
   @override
   _RenderSizingContainer createRenderObject(BuildContext context) {
-    return _RenderSizingContainer(
-      sizes: sizes,
-      page: page,
-    );
+    return _RenderSizingContainer(sizes: sizes, page: page);
   }
 
   @override
-  void updateRenderObject(
-    BuildContext context,
-    _RenderSizingContainer renderObject,
-  ) {
+  void updateRenderObject(BuildContext context, _RenderSizingContainer renderObject) {
     renderObject
       ..sizes = sizes
       ..page = page;
@@ -97,13 +87,10 @@ class _SizingContainer extends SingleChildRenderObjectWidget {
 }
 
 class _RenderSizingContainer extends RenderProxyBox {
-  _RenderSizingContainer({
-    RenderBox? child,
-    required Map<int, Size> sizes,
-    required double page,
-  })  : _sizes = sizes,
-        _page = page,
-        super(child);
+  _RenderSizingContainer({RenderBox? child, required Map<int, Size> sizes, required double page})
+    : _sizes = sizes,
+      _page = page,
+      super(child);
 
   Map<int, Size> _sizes;
 
@@ -142,10 +129,7 @@ class _RenderSizingContainer extends RenderProxyBox {
 
       final height = lerpDouble(a.height, b.height, page - page.floor());
 
-      child.layout(
-        constraints.copyWith(minHeight: height, maxHeight: height),
-        parentUsesSize: true,
-      );
+      child.layout(constraints.copyWith(minHeight: height, maxHeight: height), parentUsesSize: true);
       size = child.size;
     } else {
       size = computeSizeForNoChild(constraints);
@@ -154,18 +138,13 @@ class _RenderSizingContainer extends RenderProxyBox {
 }
 
 class _SizeAware extends SingleChildRenderObjectWidget {
-  const _SizeAware({
-    required Widget child,
-    required this.onSizeLaidOut,
-  }) : super(child: child);
+  const _SizeAware({required Widget child, required this.onSizeLaidOut}) : super(child: child);
 
   final _OnSizeLaidOutCallback onSizeLaidOut;
 
   @override
   _RenderSizeAware createRenderObject(BuildContext context) {
-    return _RenderSizeAware(
-      onSizeLaidOut: onSizeLaidOut,
-    );
+    return _RenderSizeAware(onSizeLaidOut: onSizeLaidOut);
   }
 
   @override
@@ -175,11 +154,9 @@ class _SizeAware extends SingleChildRenderObjectWidget {
 }
 
 class _RenderSizeAware extends RenderProxyBox {
-  _RenderSizeAware({
-    RenderBox? child,
-    required _OnSizeLaidOutCallback onSizeLaidOut,
-  })  : _onSizeLaidOut = onSizeLaidOut,
-        super(child);
+  _RenderSizeAware({RenderBox? child, required _OnSizeLaidOutCallback onSizeLaidOut})
+    : _onSizeLaidOut = onSizeLaidOut,
+      super(child);
 
   _OnSizeLaidOutCallback? _onSizeLaidOut;
 
@@ -195,10 +172,6 @@ class _RenderSizeAware extends RenderProxyBox {
   void performLayout() {
     super.performLayout();
 
-    onSizeLaidOut(
-      getDryLayout(
-        constraints.copyWith(maxHeight: double.infinity),
-      ),
-    );
+    onSizeLaidOut(getDryLayout(constraints.copyWith(maxHeight: double.infinity)));
   }
 }

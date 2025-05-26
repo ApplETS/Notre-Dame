@@ -31,87 +31,120 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
     case RouterPaths.startup:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => StartUpView());
+        settings: RouteSettings(name: routeSettings.name),
+        pageBuilder: (_, __, ___) => StartUpView(),
+      );
     case RouterPaths.serviceOutage:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => OutageView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => OutageView(),
+      );
     case RouterPaths.faq:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => FaqView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => FaqView(),
+      );
     case RouterPaths.dashboard:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
-          transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
-          pageBuilder: (_, __, ___) => const DashboardView());
+        settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
+        transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, __, ___) => const DashboardView(),
+      );
     case RouterPaths.schedule:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name),
-          transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
-          pageBuilder: (_, __, ___) => ScheduleView(controller: routeSettings.arguments as ScheduleController));
+        settings: RouteSettings(name: routeSettings.name),
+        transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, __, ___) => ScheduleView(controller: routeSettings.arguments as ScheduleController),
+      );
     case RouterPaths.defaultSchedule:
       return MaterialPageRoute(
-          settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
-          builder: (_) => SessionScheduleView(sessionCode: routeSettings.arguments as String?));
+        settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
+        builder: (_) => SessionScheduleView(sessionCode: routeSettings.arguments as String?),
+      );
     case RouterPaths.student:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name),
-          transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
-          pageBuilder: (_, __, ___) => StudentView());
+        settings: RouteSettings(name: routeSettings.name),
+        transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, __, ___) => StudentView(),
+      );
     case RouterPaths.gradeDetails:
       return MaterialPageRoute(
-          settings: RouteSettings(name: routeSettings.name),
-          builder: (context) => GradesDetailsView(course: routeSettings.arguments! as Course));
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (context) => GradesDetailsView(course: routeSettings.arguments! as Course),
+      );
     case RouterPaths.ets:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name),
-          transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
-          pageBuilder: (_, __, ___) => ETSView());
+        settings: RouteSettings(name: routeSettings.name),
+        transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, __, ___) => ETSView(),
+      );
     case RouterPaths.usefulLinks:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => QuickLinksView());
+        settings: RouteSettings(name: routeSettings.name),
+        pageBuilder: (_, __, ___) => QuickLinksView(),
+      );
     case RouterPaths.news:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name), pageBuilder: (_, __, ___) => NewsView());
+        settings: RouteSettings(name: routeSettings.name),
+        pageBuilder: (_, __, ___) => NewsView(),
+      );
     case RouterPaths.newsDetails:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
-          pageBuilder: (_, __, ___) => NewsDetailsView(news: routeSettings.arguments! as News));
+        settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
+        pageBuilder: (_, __, ___) => NewsDetailsView(news: routeSettings.arguments! as News),
+      );
     case RouterPaths.newsAuthor:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
-          pageBuilder: (_, __, ___) => AuthorView(
-                authorId: routeSettings.arguments! as String,
-              ));
+        settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
+        pageBuilder: (_, __, ___) => AuthorView(authorId: routeSettings.arguments! as String),
+      );
     case RouterPaths.security:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => SecurityView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => SecurityView(),
+      );
     case RouterPaths.more:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name),
-          transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
-          pageBuilder: (_, __, ___) => MoreView());
+        settings: RouteSettings(name: routeSettings.name),
+        transitionsBuilder: (_, animation, ___, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, __, ___) => MoreView(),
+      );
     case RouterPaths.settings:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => SettingsView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => SettingsView(),
+      );
     case RouterPaths.contributors:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => ContributorsView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => ContributorsView(),
+      );
     case RouterPaths.about:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => AboutView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => AboutView(),
+      );
     case RouterPaths.chooseLanguage:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => ChooseLanguageView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => ChooseLanguageView(),
+      );
     default:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name),
-          pageBuilder: (_, __, ___) => NotFoundView(pageName: routeSettings.name));
+        settings: RouteSettings(name: routeSettings.name),
+        pageBuilder: (_, __, ___) => NotFoundView(pageName: routeSettings.name),
+      );
   }
 }
 
 Widget rootPagesAnimation(Animation<double> animation, Widget child) {
   return Align(
-      child: FadeTransition(
-    opacity: animation,
-    child: SizeTransition(
-      sizeFactor: CurvedAnimation(
-        curve: Curves.easeIn,
-        parent: animation,
+    child: FadeTransition(
+      opacity: animation,
+      child: SizeTransition(
+        sizeFactor: CurvedAnimation(curve: Curves.easeIn, parent: animation),
+        child: child,
       ),
-      child: child,
     ),
-  ));
+  );
 }

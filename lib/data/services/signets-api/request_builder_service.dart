@@ -17,14 +17,21 @@ mixin RequestBuilderService {
   static int retries = 0;
 
   /// Build the basic headers for a SOAP request on.
-  static Map<String, String> _buildHeaders(String token) =>
-      {"Accept": "application/xml", "Authorization": "Bearer $token"};
+  static Map<String, String> _buildHeaders(String token) => {
+    "Accept": "application/xml",
+    "Authorization": "Bearer $token",
+  };
 
   /// Send a GET request to SignetsAPI using queryParameters then return
   /// the response.
   /// Will throw a [ApiException] if an error is returned by the api.
-  static Future<XmlElement> sendRequest(http.Client client, String endpoint, String token, String resultTag,
-      {Map<String, String>? queryParameters}) async {
+  static Future<XmlElement> sendRequest(
+    http.Client client,
+    String endpoint,
+    String token,
+    String resultTag, {
+    Map<String, String>? queryParameters,
+  }) async {
     // Send the envelope
     final uri = Uri.https(Urls.signetsAPI, endpoint, queryParameters);
     final response = await client.get(uri, headers: _buildHeaders(token));
@@ -37,8 +44,13 @@ mixin RequestBuilderService {
       }
       final authService = locator<AuthService>();
       await authService.acquireTokenSilent();
-      return await sendRequest(client, endpoint, await authService.getToken(), resultTag,
-          queryParameters: queryParameters);
+      return await sendRequest(
+        client,
+        endpoint,
+        await authService.getToken(),
+        resultTag,
+        queryParameters: queryParameters,
+      );
     }
     retries = 0;
 
@@ -50,7 +62,9 @@ mixin RequestBuilderService {
       final errorMessage = responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText;
       if (!errorMessage.startsWith(SignetsError.scheduleNotAvailable)) {
         throw ApiException(
-            prefix: tagError, message: responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText);
+          prefix: tagError,
+          message: responseBody.findElements(SignetsError.signetsErrorSoapTag).first.innerText,
+        );
       } else {
         return responseBody;
       }

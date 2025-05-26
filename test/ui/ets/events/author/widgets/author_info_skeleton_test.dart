@@ -16,11 +16,7 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: AuthorInfoSkeleton()));
 
       // Verify that the widget contains shimmer effects for text and icon button
-      expect(
-          find.byWidgetPredicate(
-            (widget) => widget is Skeletonizer,
-          ),
-          findsWidgets);
+      expect(find.byWidgetPredicate((widget) => widget is Skeletonizer), findsWidgets);
     });
   });
 }

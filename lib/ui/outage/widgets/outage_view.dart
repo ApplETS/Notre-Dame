@@ -16,28 +16,28 @@ class OutageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<OutageViewModel>.nonReactive(
-      viewModelBuilder: () => OutageViewModel(context),
-      builder: (context, model, child) => Scaffold(
-            backgroundColor: context.theme.appColors.backgroundVibrant,
-            body: Stack(
-              children: [
-                SafeArea(
-                  minimum: const EdgeInsets.all(20),
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: model.getImagePlacement(),
-                      ),
-                      OutageImageSection(),
-                      OutageTextSection(
-                          textPlacement: model.getTextPlacement(),
-                          buttonPlacement: model.getButtonPlacement(),
-                          refreshOutageConfig: model.refreshOutageConfig),
-                      Expanded(child: OutageSocialSection()),
-                    ],
-                  ),
-                )
+    viewModelBuilder: () => OutageViewModel(context),
+    builder: (context, model, child) => Scaffold(
+      backgroundColor: context.theme.appColors.backgroundVibrant,
+      body: Stack(
+        children: [
+          SafeArea(
+            minimum: const EdgeInsets.all(20),
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: model.getImagePlacement()),
+                OutageImageSection(),
+                OutageTextSection(
+                  textPlacement: model.getTextPlacement(),
+                  buttonPlacement: model.getButtonPlacement(),
+                  refreshOutageConfig: model.refreshOutageConfig,
+                ),
+                Expanded(child: OutageSocialSection()),
               ],
             ),
-          ));
+          ),
+        ],
+      ),
+    ),
+  );
 }

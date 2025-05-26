@@ -24,11 +24,13 @@ void main() {
   tearDown(() => locator.reset());
 
   test('Initialization calls loadSettings', () async {
-    when(mockSettingsRepository.getScheduleSettings()).thenAnswer((_) async => {
-          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
-          PreferencesFlag.scheduleListView: false,
-          PreferencesFlag.scheduleShowTodayBtn: true,
-        });
+    when(mockSettingsRepository.getScheduleSettings()).thenAnswer(
+      (_) async => {
+        PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
+        PreferencesFlag.scheduleListView: false,
+        PreferencesFlag.scheduleShowTodayBtn: true,
+      },
+    );
 
     await viewModel.futureToRun();
     verify(mockSettingsRepository.getScheduleSettings()).called(1);

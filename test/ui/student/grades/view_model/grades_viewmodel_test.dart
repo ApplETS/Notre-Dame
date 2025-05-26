@@ -21,49 +21,54 @@ void main() {
   late GradesViewModel viewModel;
 
   final Course courseSummer = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
+    acronym: 'GEN101',
+    group: '02',
+    session: 'É2020',
+    programCode: '999',
+    grade: 'C+',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
 
   final Course courseSummer2 = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'É2019',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
+    acronym: 'GEN101',
+    group: '02',
+    session: 'É2019',
+    programCode: '999',
+    grade: 'C+',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
 
   final Course courseWinter = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'H2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
+    acronym: 'GEN101',
+    group: '02',
+    session: 'H2020',
+    programCode: '999',
+    grade: 'C+',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
 
   final Course courseFall = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'A2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
+    acronym: 'GEN101',
+    group: '02',
+    session: 'A2020',
+    programCode: '999',
+    grade: 'C+',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
 
   final Course courseWithoutSession = Course(
-      acronym: 'GEN103',
-      group: '01',
-      session: 's.o.',
-      programCode: '999',
-      grade: 'K',
-      numberOfCredits: 3,
-      title: 'Cours générique');
+    acronym: 'GEN103',
+    group: '01',
+    session: 's.o.',
+    programCode: '999',
+    grade: 'K',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
 
   final sessionOrder = ['A2020', 'É2020', 'H2020', 'É2019', 's.o.'];
 
@@ -72,7 +77,7 @@ void main() {
     'É2020': [courseSummer],
     'H2020': [courseWinter],
     'É2019': [courseSummer2],
-    's.o.': [courseWithoutSession]
+    's.o.': [courseWithoutSession],
   };
 
   final courses = [courseSummer, courseSummer2, courseWinter, courseFall, courseWithoutSession];
@@ -110,7 +115,7 @@ void main() {
           courseRepositoryMock.getCourses(fromCacheOnly: true),
           courseRepositoryMock.getCourses(),
           courseRepositoryMock.courses,
-          courseRepositoryMock.courses
+          courseRepositoryMock.courses,
         ]);
 
         verifyNoMoreInteractions(courseRepositoryMock);
@@ -122,8 +127,11 @@ void main() {
         CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: courses);
         setupFlutterToastMock();
 
-        expect(await viewModel.futureToRun(), coursesBySession,
-            reason: "Even if SignetsAPI call fails, should return the cache contents");
+        expect(
+          await viewModel.futureToRun(),
+          coursesBySession,
+          reason: "Even if SignetsAPI call fails, should return the cache contents",
+        );
 
         await untilCalled(courseRepositoryMock.getCourses());
 
@@ -168,8 +176,11 @@ void main() {
 
         await viewModel.refresh();
 
-        expect(viewModel.coursesBySession, coursesBySession,
-            reason: "The list of courses should not change even when an error occurs");
+        expect(
+          viewModel.coursesBySession,
+          coursesBySession,
+          reason: "The list of courses should not change even when an error occurs",
+        );
         expect(viewModel.sessionOrder, sessionOrder);
 
         verifyInOrder([courseRepositoryMock.getCourses()]);

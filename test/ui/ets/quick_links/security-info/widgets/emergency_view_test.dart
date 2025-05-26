@@ -21,7 +21,8 @@ void main() {
     group('UI - ', () {
       testWidgets('has call button and markdown view', (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: const EmergencyView('testEmergency', 'assets/markdown/armed_person_en.md')));
+          localizedWidget(child: const EmergencyView('testEmergency', 'assets/markdown/armed_person_en.md')),
+        );
         await tester.pumpAndSettle();
 
         final markdown = find.byType(Markdown);

@@ -22,10 +22,7 @@ class CalendarSelectionViewModel {
   String? selectedCalendarId;
   News? news;
 
-  CalendarSelectionViewModel({
-    required this.translations,
-    this.news,
-  });
+  CalendarSelectionViewModel({required this.translations, this.news});
 
   Future<void> fetchCalendars() async {
     _calendars = await CalendarService.nativeCalendars;
@@ -35,10 +32,7 @@ class CalendarSelectionViewModel {
     if (_calendars == null) return [];
     return _calendars!
         .map<DropdownMenuItem<String>>(
-          (Calendar value) => DropdownMenuItem<String>(
-            value: value.name,
-            child: Text(value.name ?? ""),
-          ),
+          (Calendar value) => DropdownMenuItem<String>(value: value.name, child: Text(value.name ?? "")),
         )
         .toList();
   }
@@ -78,8 +72,6 @@ class CalendarSelectionViewModel {
   }
 
   void _showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-    );
+    Fluttertoast.showToast(msg: message);
   }
 }
