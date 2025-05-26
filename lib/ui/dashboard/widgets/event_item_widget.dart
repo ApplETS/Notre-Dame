@@ -46,7 +46,7 @@ class EventItemWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 4),
+            padding: const EdgeInsets.only(top: 2),
             child: Icon(event.icon, size: 17, color: _getEventColor()),
           ),
           const SizedBox(width: 8),
