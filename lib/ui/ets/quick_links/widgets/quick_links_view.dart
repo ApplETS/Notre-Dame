@@ -32,21 +32,16 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 250),
-      vsync: this,
-    );
+    _controller = AnimationController(duration: const Duration(milliseconds: 250), vsync: this);
 
     _animation = Tween<double>(begin: -0.05, end: 0.05).animate(_controller);
   }
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<QuickLinksViewModel>.reactive(
-        viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
-        builder: (context, model, child) => Scaffold(
-          body: _buildBody(context, model),
-        ),
-      );
+    viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
+    builder: (context, model, child) => Scaffold(body: _buildBody(context, model)),
+  );
 
   Widget _buildBody(BuildContext context, QuickLinksViewModel model) {
     return GestureDetector(
@@ -64,11 +59,7 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
             child: _buildReorderableGridView(model, model.quickLinkList, _buildDeleteButton, blockReorder: false),
           ),
           if (_editMode && model.deletedQuickLinks.isNotEmpty) ...[
-            const Divider(
-              thickness: 2,
-              indent: 10,
-              endIndent: 10,
-            ),
+            const Divider(thickness: 2, indent: 10, endIndent: 10),
             Expanded(
               child: _buildReorderableGridView(model, model.deletedQuickLinks, _buildAddButton, blockReorder: true),
             ),
@@ -78,9 +69,12 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
     );
   }
 
-  ReorderableGridView _buildReorderableGridView(QuickLinksViewModel model, List<QuickLink> quickLinks,
-      Widget Function(QuickLinksViewModel, int) buildButtonFunction,
-      {required bool blockReorder}) {
+  ReorderableGridView _buildReorderableGridView(
+    QuickLinksViewModel model,
+    List<QuickLink> quickLinks,
+    Widget Function(QuickLinksViewModel, int) buildButtonFunction, {
+    required bool blockReorder,
+  }) {
     final double screenWidth = MediaQuery.of(context).size.width;
     int crossAxisCount;
 
@@ -97,15 +91,12 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
       crossAxisSpacing: 2.0,
       crossAxisCount: crossAxisCount,
       dragWidgetBuilder: (index, widget) => _buildGridChild(model, index, quickLinks, buildButtonFunction),
-      children: List.generate(
-        quickLinks.length,
-        (index) {
-          return KeyedSubtree(
-            key: ValueKey(quickLinks[index].id),
-            child: _buildGridChild(model, index, quickLinks, buildButtonFunction),
-          );
-        },
-      ),
+      children: List.generate(quickLinks.length, (index) {
+        return KeyedSubtree(
+          key: ValueKey(quickLinks[index].id),
+          child: _buildGridChild(model, index, quickLinks, buildButtonFunction),
+        );
+      }),
       onReorder: (oldIndex, newIndex) {
         setState(() {
           model.reorderQuickLinks(oldIndex, newIndex);
@@ -114,8 +105,12 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
     );
   }
 
-  Widget _buildGridChild(QuickLinksViewModel model, int index, List<QuickLink> quickLinks,
-      Widget Function(QuickLinksViewModel, int) buildButtonFunction) {
+  Widget _buildGridChild(
+    QuickLinksViewModel model,
+    int index,
+    List<QuickLink> quickLinks,
+    Widget Function(QuickLinksViewModel, int) buildButtonFunction,
+  ) {
     return GestureDetector(
       onLongPress: _editMode
           ? null
@@ -128,20 +123,13 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
       child: AnimatedBuilder(
         animation: _animation,
         builder: (BuildContext context, Widget? child) {
-          return Transform.rotate(
-            angle: _editMode ? _animation.value : 0,
-            child: child,
-          );
+          return Transform.rotate(angle: _editMode ? _animation.value : 0, child: child);
         },
         child: Stack(
           children: [
             WebLinkCard(quickLinks[index]),
             if (_editMode && quickLinks[index].id != 1) // Don't show delete button for Security QuickLink
-              Positioned(
-                top: 0,
-                left: 0,
-                child: buildButtonFunction(model, index),
-              ),
+              Positioned(top: 0, left: 0, child: buildButtonFunction(model, index)),
           ],
         ),
       ),
@@ -152,10 +140,7 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
     return Container(
       width: 32,
       height: 32,
-      decoration: BoxDecoration(
-        color: AppPalette.grey.darkGrey,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: AppPalette.grey.darkGrey, shape: BoxShape.circle),
       child: IconButton(
         padding: EdgeInsets.zero,
         icon: Icon(Icons.close, color: AppPalette.grey.white, size: 16),
@@ -173,10 +158,7 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
     return Container(
       width: 32,
       height: 32,
-      decoration: BoxDecoration(
-        color: context.theme.appColors.positive,
-        shape: BoxShape.circle,
-      ),
+      decoration: BoxDecoration(color: context.theme.appColors.positive, shape: BoxShape.circle),
       child: IconButton(
         padding: EdgeInsets.zero,
         icon: Icon(Icons.add, color: AppPalette.grey.white, size: 20),

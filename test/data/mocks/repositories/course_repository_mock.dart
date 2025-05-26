@@ -29,16 +29,23 @@ class CourseRepositoryMock extends MockCourseRepository {
   }
 
   /// Stub the function [getCoursesActivities] of [mock] when called will return [toReturn].
-  static void stubGetCoursesActivities(CourseRepositoryMock mock,
-      {List<CourseActivity> toReturn = const [], bool fromCacheOnly = false}) {
+  static void stubGetCoursesActivities(
+    CourseRepositoryMock mock, {
+    List<CourseActivity> toReturn = const [],
+    bool fromCacheOnly = false,
+  }) {
     when(mock.getCoursesActivities(fromCacheOnly: fromCacheOnly)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the function [getCoursesActivities] of [mock] when called will throw [toThrow].
-  static void stubGetCoursesActivitiesException(CourseRepositoryMock mock,
-      {Exception toThrow = const ApiException(prefix: 'ApiException'), bool fromCacheOnly = false}) {
-    when(mock.getCoursesActivities(fromCacheOnly: fromCacheOnly))
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
+  static void stubGetCoursesActivitiesException(
+    CourseRepositoryMock mock, {
+    Exception toThrow = const ApiException(prefix: 'ApiException'),
+    bool fromCacheOnly = false,
+  }) {
+    when(
+      mock.getCoursesActivities(fromCacheOnly: fromCacheOnly),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 
   /// Stub the function [getSessions] of [mock] when called will return [toReturn].
@@ -47,15 +54,21 @@ class CourseRepositoryMock extends MockCourseRepository {
   }
 
   /// Stub the function [getSessions] of [mock] when called will throw [toThrow].
-  static void stubGetSessionsException(CourseRepositoryMock mock,
-      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
-    when(mock.getSessions())
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
+  static void stubGetSessionsException(
+    CourseRepositoryMock mock, {
+    Exception toThrow = const ApiException(prefix: 'ApiException'),
+  }) {
+    when(
+      mock.getSessions(),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 
   /// Stub the function [getCourses] of [mock] when called will return [toReturn].
-  static void stubGetCourses(CourseRepositoryMock mock,
-      {List<Course> toReturn = const [], bool fromCacheOnly = false}) {
+  static void stubGetCourses(
+    CourseRepositoryMock mock, {
+    List<Course> toReturn = const [],
+    bool fromCacheOnly = false,
+  }) {
     when(mock.getCourses(fromCacheOnly: fromCacheOnly)).thenAnswer((_) async => toReturn);
   }
 
@@ -65,10 +78,14 @@ class CourseRepositoryMock extends MockCourseRepository {
   }
 
   /// Stub the function [getCourses] of [mock] when called will throw [toThrow].
-  static void stubGetCoursesException(CourseRepositoryMock mock,
-      {Exception toThrow = const ApiException(prefix: 'ApiException'), bool fromCacheOnly = false}) {
-    when(mock.getCourses(fromCacheOnly: fromCacheOnly))
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
+  static void stubGetCoursesException(
+    CourseRepositoryMock mock, {
+    Exception toThrow = const ApiException(prefix: 'ApiException'),
+    bool fromCacheOnly = false,
+  }) {
+    when(
+      mock.getCourses(fromCacheOnly: fromCacheOnly),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 
   /// Stub the function [getCourseSummary] of [mock] when called will return [toReturn].
@@ -77,22 +94,33 @@ class CourseRepositoryMock extends MockCourseRepository {
   }
 
   /// Stub the function [getCourseSummary] of [mock] when called will throw [toThrow].
-  static void stubGetCourseSummaryException(CourseRepositoryMock mock, Course courseCalled,
-      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
-    when(mock.getCourseSummary(courseCalled))
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
+  static void stubGetCourseSummaryException(
+    CourseRepositoryMock mock,
+    Course courseCalled, {
+    Exception toThrow = const ApiException(prefix: 'ApiException'),
+  }) {
+    when(
+      mock.getCourseSummary(courseCalled),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 
   /// Stub the function [getScheduleActivities] of [mock] when called will return [toReturn].
-  static void stubGetScheduleActivities(CourseRepositoryMock mock,
-      {List<ScheduleActivity> toReturn = const [], bool fromCacheOnly = false}) {
+  static void stubGetScheduleActivities(
+    CourseRepositoryMock mock, {
+    List<ScheduleActivity> toReturn = const [],
+    bool fromCacheOnly = false,
+  }) {
     when(mock.getScheduleActivities(fromCacheOnly: fromCacheOnly)).thenAnswer((_) async => toReturn);
   }
 
   /// Stub the function [getScheduleActivities] of [mock] when called will throw [toThrow].
-  static void stubGetScheduleActivitiesException(CourseRepositoryMock mock, Course courseCalled,
-      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
-    when(mock.getScheduleActivities())
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
+  static void stubGetScheduleActivitiesException(
+    CourseRepositoryMock mock,
+    Course courseCalled, {
+    Exception toThrow = const ApiException(prefix: 'ApiException'),
+  }) {
+    when(
+      mock.getScheduleActivities(),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 }

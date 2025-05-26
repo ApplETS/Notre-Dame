@@ -13,8 +13,9 @@ class NavRail extends BaseNavigationBar {
       destinations: buildRailItems(context),
       selectedIndex: currentView.index,
       onDestinationSelected: (value) => onTap(NavigationView.values[value]),
-      labelType:
-          MediaQuery.of(context).size.height > 350 ? NavigationRailLabelType.all : NavigationRailLabelType.selected,
+      labelType: MediaQuery.of(context).size.height > 350
+          ? NavigationRailLabelType.all
+          : NavigationRailLabelType.selected,
     );
   }
 

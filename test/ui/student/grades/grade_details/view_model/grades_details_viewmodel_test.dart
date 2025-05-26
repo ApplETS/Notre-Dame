@@ -64,13 +64,14 @@ void main() {
   );
 
   final Course courseWithSummary = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'H2020',
-      programCode: '999',
-      numberOfCredits: 3,
-      title: 'Cours générique',
-      summary: courseSummary);
+    acronym: 'GEN101',
+    group: '02',
+    session: 'H2020',
+    programCode: '999',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+    summary: courseSummary,
+  );
 
   final Course courseWithoutSummary = Course(
     acronym: 'GEN101',
@@ -98,8 +99,11 @@ void main() {
 
     group('FutureToRun - -', () {
       test('SignetsAPI gets the summary', () async {
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithoutSummary,
-            toReturn: courseWithSummary);
+        CourseRepositoryMock.stubGetCourseSummary(
+          courseRepositoryMock,
+          courseWithoutSummary,
+          toReturn: courseWithSummary,
+        );
 
         await viewModel.futureToRun();
 
@@ -118,8 +122,11 @@ void main() {
     group('refresh -', () {
       test('Call SignetsAPI to get the summary of the course selected', () async {
         setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithoutSummary,
-            toReturn: courseWithSummary);
+        CourseRepositoryMock.stubGetCourseSummary(
+          courseRepositoryMock,
+          courseWithoutSummary,
+          toReturn: courseWithSummary,
+        );
 
         await viewModel.refresh();
 

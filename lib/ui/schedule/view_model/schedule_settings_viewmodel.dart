@@ -80,7 +80,10 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
       _selectedScheduleActivity.remove(courseAcronym);
     } else {
       await _settingsManager.setDynamicString(
-          PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, scheduleActivityToSave.activityCode);
+        PreferencesFlag.scheduleLaboratoryGroup,
+        courseAcronym,
+        scheduleActivityToSave.activityCode,
+      );
       _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
     _controller.settingsUpdated();
@@ -117,10 +120,13 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
 
     // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
-      final scheduleActivityCode =
-          await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseKey);
-      final scheduleActivity = _scheduleActivitiesByCourse[courseKey]
-          ?.firstWhereOrNull((element) => element.activityCode == scheduleActivityCode);
+      final scheduleActivityCode = await _settingsManager.getDynamicString(
+        PreferencesFlag.scheduleLaboratoryGroup,
+        courseKey,
+      );
+      final scheduleActivity = _scheduleActivitiesByCourse[courseKey]?.firstWhereOrNull(
+        (element) => element.activityCode == scheduleActivityCode,
+      );
       if (scheduleActivity != null) {
         _selectedScheduleActivity[courseKey] = scheduleActivity;
       }

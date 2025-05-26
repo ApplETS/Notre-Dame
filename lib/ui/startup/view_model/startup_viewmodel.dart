@@ -30,7 +30,9 @@ class StartUpViewModel extends BaseViewModel {
     }
 
     final clientAppResult = await _authService.createPublicClientApplication(
-        authorityType: AuthorityType.aad, broker: Broker.msAuthenticator);
+      authorityType: AuthorityType.aad,
+      broker: Broker.msAuthenticator,
+    );
 
     if (!clientAppResult.$1) {
       final message = clientAppResult.$2?.message ?? 'Failed to create public client application';

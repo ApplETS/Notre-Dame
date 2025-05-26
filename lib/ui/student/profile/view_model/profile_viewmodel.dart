@@ -24,8 +24,13 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   List<Program> _programList = List.empty();
 
   /// Student's profile
-  final ProfileStudent _student =
-      ProfileStudent(balance: "", firstName: "", lastName: "", permanentCode: "", universalCode: "");
+  final ProfileStudent _student = ProfileStudent(
+    balance: "",
+    firstName: "",
+    lastName: "",
+    permanentCode: "",
+    universalCode: "",
+  );
 
   /// Return the profileStudent
   ProfileStudent get profileStudent {
@@ -63,8 +68,9 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
   Program getCurrentProgram() {
     RegExp regExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
-    List<Program> nonInternshipPrograms =
-        programList.where((item) => !regExp.hasMatch(item.name) && item.status.toLowerCase() == "actif").toList();
+    List<Program> nonInternshipPrograms = programList
+        .where((item) => !regExp.hasMatch(item.name) && item.status.toLowerCase() == "actif")
+        .toList();
     return nonInternshipPrograms.last;
   }
 
@@ -112,10 +118,12 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   Future refresh() async {
     try {
       setBusyForObject(isLoadingEvents, true);
-      _userRepository.getInfo().then((value) => _userRepository.getPrograms().then((value) {
-            setBusyForObject(isLoadingEvents, false);
-            notifyListeners();
-          }));
+      _userRepository.getInfo().then(
+        (value) => _userRepository.getPrograms().then((value) {
+          setBusyForObject(isLoadingEvents, false);
+          notifyListeners();
+        }),
+      );
     } on Exception catch (error) {
       onError(error);
     }

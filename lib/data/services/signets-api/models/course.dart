@@ -61,58 +61,62 @@ class Course {
     }
 
     final now = DateTime.now();
-    final activeReviews =
-        reviews!.where((review) => review.startAt.isBefore(now) && review.endAt.isAfter(now)).toList();
+    final activeReviews = reviews!
+        .where((review) => review.startAt.isBefore(now) && review.endAt.isAfter(now))
+        .toList();
 
     return activeReviews.isNotEmpty && activeReviews.every((review) => review.isCompleted);
   }
 
-  Course(
-      {required this.acronym,
-      required this.title,
-      required this.group,
-      required this.session,
-      required this.programCode,
-      required this.numberOfCredits,
-      this.grade,
-      this.summary,
-      this.reviews});
+  Course({
+    required this.acronym,
+    required this.title,
+    required this.group,
+    required this.session,
+    required this.programCode,
+    required this.numberOfCredits,
+    this.grade,
+    this.summary,
+    this.reviews,
+  });
 
   /// Used to create a new [Course] instance from a [XMLElement].
   factory Course.fromXmlNode(XmlElement node) => Course(
-      acronym: node.getElement('sigle')!.innerText,
-      title: node.getElement('titreCours')!.innerText,
-      group: node.getElement('groupe')!.innerText,
-      session: node.getElement('session')!.innerText,
-      programCode: node.getElement('programmeEtudes')!.innerText,
-      numberOfCredits: int.parse(node.getElement('nbCredits')!.innerText),
-      grade: node.getElement('cote')!.innerText.isEmpty ? null : node.getElement('cote')!.innerText);
+    acronym: node.getElement('sigle')!.innerText,
+    title: node.getElement('titreCours')!.innerText,
+    group: node.getElement('groupe')!.innerText,
+    session: node.getElement('session')!.innerText,
+    programCode: node.getElement('programmeEtudes')!.innerText,
+    numberOfCredits: int.parse(node.getElement('nbCredits')!.innerText),
+    grade: node.getElement('cote')!.innerText.isEmpty ? null : node.getElement('cote')!.innerText,
+  );
 
   /// Used to create [Course] instance from a JSON file
   factory Course.fromJson(Map<String, dynamic> map) => Course(
-      acronym: map['acronym'] as String,
-      title: map['title'] as String,
-      group: map['group'] as String,
-      session: map['session'] as String,
-      programCode: map['programCode'] as String,
-      numberOfCredits: map['numberOfCredits'] as int,
-      grade: map['grade'] as String?,
-      summary: map["summary"] != null ? CourseSummary.fromJson(map["summary"] as Map<String, dynamic>) : null,
-      reviews: map["review"] != null
-          ? (map["review"] as List).map((item) => CourseReview.fromJson(item as Map<String, dynamic>)).toList()
-          : null);
+    acronym: map['acronym'] as String,
+    title: map['title'] as String,
+    group: map['group'] as String,
+    session: map['session'] as String,
+    programCode: map['programCode'] as String,
+    numberOfCredits: map['numberOfCredits'] as int,
+    grade: map['grade'] as String?,
+    summary: map["summary"] != null ? CourseSummary.fromJson(map["summary"] as Map<String, dynamic>) : null,
+    reviews: map["review"] != null
+        ? (map["review"] as List).map((item) => CourseReview.fromJson(item as Map<String, dynamic>)).toList()
+        : null,
+  );
 
   Map<String, dynamic> toJson() => {
-        'acronym': acronym,
-        'title': title,
-        'group': group,
-        'session': session,
-        'programCode': programCode,
-        'numberOfCredits': numberOfCredits,
-        'grade': grade,
-        'summary': summary,
-        'reviews': reviews
-      };
+    'acronym': acronym,
+    'title': title,
+    'group': group,
+    'session': session,
+    'programCode': programCode,
+    'numberOfCredits': numberOfCredits,
+    'grade': grade,
+    'summary': summary,
+    'reviews': reviews,
+  };
 
   @override
   String toString() {
