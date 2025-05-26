@@ -44,10 +44,7 @@ class AuthorInfoSkeleton extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: height,
-        decoration: BoxDecoration(
-          color: AppPalette.grey.white,
-          borderRadius: BorderRadius.circular(8),
-        ),
+        decoration: BoxDecoration(color: AppPalette.grey.white, borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
@@ -89,12 +86,7 @@ class AvatarSkeleton extends StatelessWidget {
           width: 120,
           height: 120,
           child: ClipOval(
-            child: Skeletonizer(
-              enabled: true,
-              child: Container(
-                color: AppPalette.grey.white,
-              ),
-            ),
+            child: Skeletonizer(enabled: true, child: Container(color: AppPalette.grey.white)),
           ),
         ),
       ),

@@ -38,19 +38,20 @@ void main() {
   late CourseRepository manager;
 
   final Session session = Session(
-      shortName: 'NOW',
-      name: 'now',
-      startDate: DateTime(2020),
-      endDate: DateTime.now().add(const Duration(days: 10)),
-      endDateCourses: DateTime(2020),
-      startDateRegistration: DateTime(2020),
-      deadlineRegistration: DateTime(2020),
-      startDateCancellationWithRefund: DateTime(2020),
-      deadlineCancellationWithRefund: DateTime(2020),
-      deadlineCancellationWithRefundNewStudent: DateTime(2020),
-      startDateCancellationWithoutRefundNewStudent: DateTime(2020),
-      deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
-      deadlineCancellationASEQ: DateTime(2020));
+    shortName: 'NOW',
+    name: 'now',
+    startDate: DateTime(2020),
+    endDate: DateTime.now().add(const Duration(days: 10)),
+    endDateCourses: DateTime(2020),
+    startDateRegistration: DateTime(2020),
+    deadlineRegistration: DateTime(2020),
+    startDateCancellationWithRefund: DateTime(2020),
+    deadlineCancellationWithRefund: DateTime(2020),
+    deadlineCancellationWithRefundNewStudent: DateTime(2020),
+    startDateCancellationWithoutRefundNewStudent: DateTime(2020),
+    deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
+    deadlineCancellationASEQ: DateTime(2020),
+  );
 
   group("CourseRepository - ", () {
     setUp(() {
@@ -80,13 +81,14 @@ void main() {
 
     group("getCoursesActivities - ", () {
       final CourseActivity activity = CourseActivity(
-          courseGroup: "GEN101",
-          courseName: "Generic course",
-          activityName: "TD",
-          activityDescription: "Activity description",
-          activityLocation: "location",
-          startDateTime: DateTime(2020, 1, 1, 18),
-          endDateTime: DateTime(2020, 1, 1, 21));
+        courseGroup: "GEN101",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: DateTime(2020, 1, 1, 18),
+        endDateTime: DateTime(2020, 1, 1, 21),
+      );
 
       final List<CourseActivity> activities = [activity];
 
@@ -127,9 +129,7 @@ void main() {
         expect(results, activities);
         expect(manager.coursesActivities, activities, reason: "The list of activities should not be empty");
 
-        verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
-        ]);
+        verifyInOrder([cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey)]);
 
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(userRepositoryMock);
@@ -152,7 +152,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any)
+          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any),
         ]);
 
         verify(signetsApiMock.getSessions()).called(1);
@@ -182,7 +182,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any)
+          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any),
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
@@ -209,7 +209,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
       });
 
@@ -218,13 +218,14 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
         final CourseActivity courseActivity = CourseActivity(
-            courseGroup: "GEN102",
-            courseName: "Generic course",
-            activityName: "Another activity name",
-            activityDescription: "Activity description",
-            activityLocation: "Another location",
-            startDateTime: DateTime(2020, 1, 2, 18),
-            endDateTime: DateTime(2020, 1, 2, 21));
+          courseGroup: "GEN102",
+          courseName: "Generic course",
+          activityName: "Another activity name",
+          activityDescription: "Activity description",
+          activityLocation: "Another location",
+          startDateTime: DateTime(2020, 1, 2, 18),
+          endDateTime: DateTime(2020, 1, 2, 21),
+        );
 
         // Stub the SignetsAPI to return 2 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [activity, courseActivity]);
@@ -234,13 +235,15 @@ void main() {
 
         expect(results, isInstanceOf<List<CourseActivity>>());
         expect(results, [activity, courseActivity]);
-        expect(manager.coursesActivities, [activity, courseActivity],
-            reason: "The list of activities should not be empty");
+        expect(manager.coursesActivities, [
+          activity,
+          courseActivity,
+        ], reason: "The list of activities should not be empty");
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([activity, courseActivity]))
+          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([activity, courseActivity])),
         ]);
       });
 
@@ -261,7 +264,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities))
+          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities)),
         ]);
       });
 
@@ -277,13 +280,14 @@ void main() {
         clearInteractions(signetsApiMock);
 
         final changedActivity = CourseActivity(
-            courseGroup: activity.courseGroup,
-            courseName: activity.courseName,
-            activityName: activity.activityName,
-            activityDescription: 'Another description',
-            activityLocation: 'Changed location',
-            startDateTime: activity.startDateTime,
-            endDateTime: activity.endDateTime);
+          courseGroup: activity.courseGroup,
+          courseName: activity.courseName,
+          activityName: activity.activityName,
+          activityDescription: 'Another description',
+          activityLocation: 'Changed location',
+          startDateTime: activity.startDateTime,
+          endDateTime: activity.endDateTime,
+        );
 
         // Stub the SignetsAPI to return the same activity as the cache
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [changedActivity]);
@@ -298,7 +302,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([changedActivity]))
+          cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([changedActivity])),
         ]);
       });
 
@@ -307,8 +311,11 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode([]));
 
         // Stub the SignetsAPI to throw an exception
-        SignetsAPIClientMock.stubGetCoursesActivitiesException(signetsApiMock, session.shortName,
-            exceptionToThrow: const ApiException(prefix: CourseRepository.tag));
+        SignetsAPIClientMock.stubGetCoursesActivitiesException(
+          signetsApiMock,
+          session.shortName,
+          exceptionToThrow: const ApiException(prefix: CourseRepository.tag),
+        );
 
         expect(manager.coursesActivities, isNull);
         expect(manager.getCoursesActivities(), throwsA(isInstanceOf<ApiException>()));
@@ -321,7 +328,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
       });
 
@@ -343,7 +350,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
-          signetsApiMock.getCoursesActivities(session: session.shortName)
+          signetsApiMock.getCoursesActivities(session: session.shortName),
         ]);
       });
 
@@ -362,32 +369,34 @@ void main() {
 
     group("getScheduleActivities - ", () {
       final Session session = Session(
-          shortName: 'NOW',
-          name: 'now',
-          startDate: DateTime(2020),
-          endDate: DateTime.now().add(const Duration(days: 10)),
-          endDateCourses: DateTime(2020),
-          startDateRegistration: DateTime(2020),
-          deadlineRegistration: DateTime(2020),
-          startDateCancellationWithRefund: DateTime(2020),
-          deadlineCancellationWithRefund: DateTime(2020),
-          deadlineCancellationWithRefundNewStudent: DateTime(2020),
-          startDateCancellationWithoutRefundNewStudent: DateTime(2020),
-          deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
-          deadlineCancellationASEQ: DateTime(2020));
+        shortName: 'NOW',
+        name: 'now',
+        startDate: DateTime(2020),
+        endDate: DateTime.now().add(const Duration(days: 10)),
+        endDateCourses: DateTime(2020),
+        startDateRegistration: DateTime(2020),
+        deadlineRegistration: DateTime(2020),
+        startDateCancellationWithRefund: DateTime(2020),
+        deadlineCancellationWithRefund: DateTime(2020),
+        deadlineCancellationWithRefundNewStudent: DateTime(2020),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2020),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
+        deadlineCancellationASEQ: DateTime(2020),
+      );
 
       final ScheduleActivity scheduleActivity = ScheduleActivity(
-          courseAcronym: 'GEN101',
-          courseGroup: '01',
-          dayOfTheWeek: 1,
-          day: 'Lundi',
-          activityCode: ActivityCode.labEvery2Weeks,
-          name: 'Laboratoire aux 2 semaines',
-          isPrincipalActivity: false,
-          startTime: DateFormat('HH:mm').parse("08:30"),
-          endTime: DateFormat('HH:mm').parse("12:30"),
-          activityLocation: 'À distance',
-          courseTitle: 'Generic title');
+        courseAcronym: 'GEN101',
+        courseGroup: '01',
+        dayOfTheWeek: 1,
+        day: 'Lundi',
+        activityCode: ActivityCode.labEvery2Weeks,
+        name: 'Laboratoire aux 2 semaines',
+        isPrincipalActivity: false,
+        startTime: DateFormat('HH:mm').parse("08:30"),
+        endTime: DateFormat('HH:mm').parse("12:30"),
+        activityLocation: 'À distance',
+        courseTitle: 'Generic title',
+      );
 
       final List<ScheduleActivity> scheduleActivities = [scheduleActivity];
 
@@ -403,7 +412,10 @@ void main() {
       test("Activities are loaded from cache.", () async {
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(
-            cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey, jsonEncode(scheduleActivities));
+          cacheManagerMock,
+          CourseRepository.scheduleActivitiesCacheKey,
+          jsonEncode(scheduleActivities),
+        );
 
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
@@ -418,14 +430,17 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
           signetsApiMock.getScheduleActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any)
+          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any),
         ]);
       });
 
       test("Activities are only loaded from cache.", () async {
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(
-            cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey, jsonEncode(scheduleActivities));
+          cacheManagerMock,
+          CourseRepository.scheduleActivitiesCacheKey,
+          jsonEncode(scheduleActivities),
+        );
 
         expect(manager.scheduleActivities, isNull);
         final List<ScheduleActivity> results = await manager.getScheduleActivities(fromCacheOnly: true);
@@ -434,9 +449,7 @@ void main() {
         expect(results, scheduleActivities);
         expect(manager.scheduleActivities, scheduleActivities, reason: "The list of activities should not be empty");
 
-        verifyInOrder([
-          cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
-        ]);
+        verifyInOrder([cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey)]);
 
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(userRepositoryMock);
@@ -459,7 +472,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
           signetsApiMock.getScheduleActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any)
+          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any),
         ]);
 
         verify(signetsApiMock.getSessions()).called(1);
@@ -468,7 +481,10 @@ void main() {
       test("Doesn't retrieve sessions if they are already loaded", () async {
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(
-            cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey, jsonEncode(scheduleActivities));
+          cacheManagerMock,
+          CourseRepository.scheduleActivitiesCacheKey,
+          jsonEncode(scheduleActivities),
+        );
 
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
@@ -490,7 +506,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
           signetsApiMock.getScheduleActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any)
+          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any),
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
@@ -503,7 +519,10 @@ void main() {
 
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(
-            cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey, jsonEncode(scheduleActivities));
+          cacheManagerMock,
+          CourseRepository.scheduleActivitiesCacheKey,
+          jsonEncode(scheduleActivities),
+        );
 
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
@@ -518,14 +537,17 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
       });
 
       test("SignetsAPI returns activities that already exists, should avoid duplicata.", () async {
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(
-            cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey, jsonEncode(scheduleActivities));
+          cacheManagerMock,
+          CourseRepository.scheduleActivitiesCacheKey,
+          jsonEncode(scheduleActivities),
+        );
 
         // Stub the SignetsAPI to return the same activity as the cache
         SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, scheduleActivities);
@@ -535,13 +557,16 @@ void main() {
 
         expect(results, isInstanceOf<List<ScheduleActivity>>());
         expect(results, scheduleActivities);
-        expect(manager.scheduleActivities, scheduleActivities,
-            reason: "The list of activities should not have duplicata");
+        expect(
+          manager.scheduleActivities,
+          scheduleActivities,
+          reason: "The list of activities should not have duplicata",
+        );
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
           signetsApiMock.getScheduleActivities(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, jsonEncode(scheduleActivities))
+          cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, jsonEncode(scheduleActivities)),
         ]);
       });
 
@@ -550,8 +575,11 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey, jsonEncode([]));
 
         // Stub the SignetsAPI to throw an exception
-        SignetsAPIClientMock.stubGetScheduleActivitiesException(signetsApiMock, session.shortName,
-            exceptionToThrow: const ApiException(prefix: CourseRepository.tag));
+        SignetsAPIClientMock.stubGetScheduleActivitiesException(
+          signetsApiMock,
+          session.shortName,
+          exceptionToThrow: const ApiException(prefix: CourseRepository.tag),
+        );
 
         expect(manager.scheduleActivities, isNull);
         expect(manager.getScheduleActivities(), throwsA(isInstanceOf<ApiException>()));
@@ -564,7 +592,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
           signetsApiMock.getScheduleActivities(session: session.shortName),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
       });
     });
@@ -572,19 +600,20 @@ void main() {
     group("getSessions - ", () {
       final List<Session> sessions = [
         Session(
-            shortName: 'H2018',
-            name: 'Hiver 2018',
-            startDate: DateTime(2018, 1, 4),
-            endDate: DateTime(2018, 4, 23),
-            endDateCourses: DateTime(2018, 4, 11),
-            startDateRegistration: DateTime(2017, 10, 30),
-            deadlineRegistration: DateTime(2017, 11, 14),
-            startDateCancellationWithRefund: DateTime(2018, 1, 4),
-            deadlineCancellationWithRefund: DateTime(2018, 1, 17),
-            deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
-            startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
-            deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
-            deadlineCancellationASEQ: DateTime(2018, 1, 31))
+          shortName: 'H2018',
+          name: 'Hiver 2018',
+          startDate: DateTime(2018, 1, 4),
+          endDate: DateTime(2018, 4, 23),
+          endDateCourses: DateTime(2018, 4, 11),
+          startDateRegistration: DateTime(2017, 10, 30),
+          deadlineRegistration: DateTime(2017, 11, 14),
+          startDateCancellationWithRefund: DateTime(2018, 1, 4),
+          deadlineCancellationWithRefund: DateTime(2018, 1, 17),
+          deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
+          startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
+          deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
+          deadlineCancellationASEQ: DateTime(2018, 1, 31),
+        ),
       ];
 
       setUp(() {
@@ -609,7 +638,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
           signetsApiMock.getSessions(),
-          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions))
+          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions)),
         ]);
       });
 
@@ -628,7 +657,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
           signetsApiMock.getSessions(),
-          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode([]))
+          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode([])),
         ]);
       });
 
@@ -651,7 +680,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
           signetsApiMock.getSessions(),
-          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions))
+          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions)),
         ]);
       });
 
@@ -670,7 +699,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
           signetsApiMock.getSessions(),
-          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions))
+          cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions)),
         ]);
       });
 
@@ -691,7 +720,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
           signetsApiMock.getSessions(),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
         verifyNever(cacheManagerMock.update(CourseRepository.sessionsCacheKey, any));
@@ -732,7 +761,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
         verifyNever(cacheManagerMock.update(CourseRepository.sessionsCacheKey, any));
@@ -755,35 +784,37 @@ void main() {
       final now = DateTime.now();
 
       final Session oldSession = Session(
-          shortName: 'H2018',
-          name: 'Hiver 2018',
-          startDate: DateTime(2018, 1, 4),
-          endDate: DateTime(2018, 4, 23),
-          endDateCourses: DateTime(2018, 4, 11),
-          startDateRegistration: DateTime(2017, 10, 30),
-          deadlineRegistration: DateTime(2017, 11, 14),
-          startDateCancellationWithRefund: DateTime(2018, 1, 4),
-          deadlineCancellationWithRefund: DateTime(2018, 1, 17),
-          deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
-          startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
-          deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
-          deadlineCancellationASEQ: DateTime(2018, 1, 31));
+        shortName: 'H2018',
+        name: 'Hiver 2018',
+        startDate: DateTime(2018, 1, 4),
+        endDate: DateTime(2018, 4, 23),
+        endDateCourses: DateTime(2018, 4, 11),
+        startDateRegistration: DateTime(2017, 10, 30),
+        deadlineRegistration: DateTime(2017, 11, 14),
+        startDateCancellationWithRefund: DateTime(2018, 1, 4),
+        deadlineCancellationWithRefund: DateTime(2018, 1, 17),
+        deadlineCancellationWithRefundNewStudent: DateTime(2018, 1, 31),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2018, 2),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2018, 3, 14),
+        deadlineCancellationASEQ: DateTime(2018, 1, 31),
+      );
 
       test("current session ends today", () async {
         final Session active = Session(
-            shortName: 'NOW',
-            name: 'now',
-            startDate: DateTime(2020),
-            endDate: DateTime(now.year, now.month, now.day),
-            endDateCourses: DateTime(2020),
-            startDateRegistration: DateTime(2020),
-            deadlineRegistration: DateTime(2020),
-            startDateCancellationWithRefund: DateTime(2020),
-            deadlineCancellationWithRefund: DateTime(2020),
-            deadlineCancellationWithRefundNewStudent: DateTime(2020),
-            startDateCancellationWithoutRefundNewStudent: DateTime(2020),
-            deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
-            deadlineCancellationASEQ: DateTime(2020));
+          shortName: 'NOW',
+          name: 'now',
+          startDate: DateTime(2020),
+          endDate: DateTime(now.year, now.month, now.day),
+          endDateCourses: DateTime(2020),
+          startDateRegistration: DateTime(2020),
+          deadlineRegistration: DateTime(2020),
+          startDateCancellationWithRefund: DateTime(2020),
+          deadlineCancellationWithRefund: DateTime(2020),
+          deadlineCancellationWithRefundNewStudent: DateTime(2020),
+          startDateCancellationWithoutRefundNewStudent: DateTime(2020),
+          deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
+          deadlineCancellationASEQ: DateTime(2020),
+        );
 
         final sessions = [oldSession, active];
 
@@ -798,19 +829,20 @@ void main() {
 
       test("current session ended yesterday", () async {
         final Session old = Session(
-            shortName: 'NOW',
-            name: 'now',
-            startDate: DateTime(2020),
-            endDate: DateTime(now.year, now.month, now.day).subtract(const Duration(days: 1)),
-            endDateCourses: DateTime(2020),
-            startDateRegistration: DateTime(2020),
-            deadlineRegistration: DateTime(2020),
-            startDateCancellationWithRefund: DateTime(2020),
-            deadlineCancellationWithRefund: DateTime(2020),
-            deadlineCancellationWithRefundNewStudent: DateTime(2020),
-            startDateCancellationWithoutRefundNewStudent: DateTime(2020),
-            deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
-            deadlineCancellationASEQ: DateTime(2020));
+          shortName: 'NOW',
+          name: 'now',
+          startDate: DateTime(2020),
+          endDate: DateTime(now.year, now.month, now.day).subtract(const Duration(days: 1)),
+          endDateCourses: DateTime(2020),
+          startDateRegistration: DateTime(2020),
+          deadlineRegistration: DateTime(2020),
+          startDateCancellationWithRefund: DateTime(2020),
+          deadlineCancellationWithRefund: DateTime(2020),
+          deadlineCancellationWithRefundNewStudent: DateTime(2020),
+          startDateCancellationWithoutRefundNewStudent: DateTime(2020),
+          deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
+          deadlineCancellationASEQ: DateTime(2020),
+        );
 
         final sessions = [oldSession, old];
 
@@ -825,19 +857,20 @@ void main() {
 
       test("current session ends tomorrow", () async {
         final Session active = Session(
-            shortName: 'NOW',
-            name: 'now',
-            startDate: DateTime(2020),
-            endDate: DateTime(now.year, now.month, now.day).add(const Duration(days: 1)),
-            endDateCourses: DateTime(2020),
-            startDateRegistration: DateTime(2020),
-            deadlineRegistration: DateTime(2020),
-            startDateCancellationWithRefund: DateTime(2020),
-            deadlineCancellationWithRefund: DateTime(2020),
-            deadlineCancellationWithRefundNewStudent: DateTime(2020),
-            startDateCancellationWithoutRefundNewStudent: DateTime(2020),
-            deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
-            deadlineCancellationASEQ: DateTime(2020));
+          shortName: 'NOW',
+          name: 'now',
+          startDate: DateTime(2020),
+          endDate: DateTime(now.year, now.month, now.day).add(const Duration(days: 1)),
+          endDateCourses: DateTime(2020),
+          startDateRegistration: DateTime(2020),
+          deadlineRegistration: DateTime(2020),
+          startDateCancellationWithRefund: DateTime(2020),
+          deadlineCancellationWithRefund: DateTime(2020),
+          deadlineCancellationWithRefundNewStudent: DateTime(2020),
+          startDateCancellationWithoutRefundNewStudent: DateTime(2020),
+          deadlineCancellationWithoutRefundNewStudent: DateTime(2020),
+          deadlineCancellationASEQ: DateTime(2020),
+        );
 
         final sessions = [oldSession, active];
 
@@ -867,64 +900,71 @@ void main() {
 
     group("getCourses - ", () {
       final Course courseWithGrade = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          grade: 'C+',
-          numberOfCredits: 3,
-          title: 'Cours générique',
-          reviews: <CourseReview>[
-            CourseReview(
-                acronym: 'GEN101',
-                group: '02',
-                teacherName: 'April, Alain',
-                startAt: DateTime(2020),
-                endAt: DateTime(2020, 1, 1, 23, 59),
-                isCompleted: true,
-                type: 'Cours')
-          ]);
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        grade: 'C+',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+        reviews: <CourseReview>[
+          CourseReview(
+            acronym: 'GEN101',
+            group: '02',
+            teacherName: 'April, Alain',
+            startAt: DateTime(2020),
+            endAt: DateTime(2020, 1, 1, 23, 59),
+            isCompleted: true,
+            type: 'Cours',
+          ),
+        ],
+      );
       final Course courseWithGradeDuplicate = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'É2020',
-          programCode: '999',
-          grade: 'C+',
-          numberOfCredits: 3,
-          title: 'Cours générique');
+        acronym: 'GEN101',
+        group: '02',
+        session: 'É2020',
+        programCode: '999',
+        grade: 'C+',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      );
 
       final Course courseWithoutGrade = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          numberOfCredits: 3,
-          title: 'Cours générique',
-          summary: CourseSummary(
-              currentMark: 5,
-              currentMarkInPercent: 50,
-              markOutOf: 10,
-              passMark: 6,
-              standardDeviation: 2.3,
-              median: 4.5,
-              percentileRank: 99,
-              evaluations: [
-                CourseEvaluation(
-                    courseGroup: 'GEN101-02',
-                    title: 'Test',
-                    correctedEvaluationOutOf: "20",
-                    weight: 10,
-                    published: false,
-                    teacherMessage: '',
-                    ignore: false)
-              ]));
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+        summary: CourseSummary(
+          currentMark: 5,
+          currentMarkInPercent: 50,
+          markOutOf: 10,
+          passMark: 6,
+          standardDeviation: 2.3,
+          median: 4.5,
+          percentileRank: 99,
+          evaluations: [
+            CourseEvaluation(
+              courseGroup: 'GEN101-02',
+              title: 'Test',
+              correctedEvaluationOutOf: "20",
+              weight: 10,
+              published: false,
+              teacherMessage: '',
+              ignore: false,
+            ),
+          ],
+        ),
+      );
       final Course courseWithoutGradeAndSummaryAndEvaluation = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          numberOfCredits: 3,
-          title: 'Cours générique');
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      );
 
       setUp(() {
         // Stub some sessions
@@ -949,20 +989,26 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]))
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade])),
         ]);
       });
 
       test("Courses are only loaded from cache", () async {
         expect(manager.courses, isNull);
-        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey,
-            jsonEncode([courseWithGrade, courseWithoutGrade, courseWithoutGradeAndSummaryAndEvaluation]));
+        CacheServiceMock.stubGet(
+          cacheManagerMock,
+          CourseRepository.coursesCacheKey,
+          jsonEncode([courseWithGrade, courseWithoutGrade, courseWithoutGradeAndSummaryAndEvaluation]),
+        );
         final results = await manager.getCourses(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<Course>>());
         expect(results, [courseWithGrade, courseWithoutGrade, courseWithoutGradeAndSummaryAndEvaluation]);
-        expect(manager.courses, [courseWithGrade, courseWithoutGrade, courseWithoutGradeAndSummaryAndEvaluation],
-            reason: 'The courses list should now be loaded.');
+        expect(manager.courses, [
+          courseWithGrade,
+          courseWithoutGrade,
+          courseWithoutGradeAndSummaryAndEvaluation,
+        ], reason: 'The courses list should now be loaded.');
 
         verifyInOrder([cacheManagerMock.get(CourseRepository.coursesCacheKey)]);
 
@@ -973,16 +1019,20 @@ void main() {
 
       test("Signets return a updated version of a course", () async {
         final Course courseFetched = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'H2020',
-            programCode: '999',
-            grade: 'A+',
-            numberOfCredits: 3,
-            title: 'Cours générique');
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          grade: 'A+',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
 
-        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey,
-            jsonEncode([courseWithGrade, courseWithGradeDuplicate]));
+        CacheServiceMock.stubGet(
+          cacheManagerMock,
+          CourseRepository.coursesCacheKey,
+          jsonEncode([courseWithGrade, courseWithGradeDuplicate]),
+        );
         SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched, courseWithGradeDuplicate]);
         SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock);
 
@@ -991,14 +1041,18 @@ void main() {
 
         expect(results, isInstanceOf<List<Course>>());
         expect(results, [courseFetched, courseWithGradeDuplicate]);
-        expect(manager.courses, [courseFetched, courseWithGradeDuplicate],
-            reason: 'The courses list should now be loaded.');
+        expect(manager.courses, [
+          courseFetched,
+          courseWithGradeDuplicate,
+        ], reason: 'The courses list should now be loaded.');
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
           cacheManagerMock.update(
-              CourseRepository.coursesCacheKey, jsonEncode([courseFetched, courseWithGradeDuplicate]))
+            CourseRepository.coursesCacheKey,
+            jsonEncode([courseFetched, courseWithGradeDuplicate]),
+          ),
         ]);
       });
 
@@ -1013,9 +1067,7 @@ void main() {
         expect(results, []);
         expect(manager.courses, [], reason: 'The courses list should be empty.');
 
-        verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesCacheKey),
-        ]);
+        verifyInOrder([cacheManagerMock.get(CourseRepository.coursesCacheKey)]);
 
         verifyNoMoreInteractions(signetsApiMock);
         verifyNoMoreInteractions(cacheManagerMock);
@@ -1037,7 +1089,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
@@ -1061,7 +1113,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
@@ -1071,29 +1123,32 @@ void main() {
 
       test("Courses don't have grade so getCourseSummary is called", () async {
         final Course courseFetched = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'H2020',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique');
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
         final CourseSummary summary = CourseSummary(
-            currentMark: 5,
-            currentMarkInPercent: 50,
-            markOutOf: 10,
-            passMark: 6,
-            standardDeviation: 2.3,
-            median: 4.5,
-            percentileRank: 99,
-            evaluations: []);
+          currentMark: 5,
+          currentMarkInPercent: 50,
+          markOutOf: 10,
+          passMark: 6,
+          standardDeviation: 2.3,
+          median: 4.5,
+          percentileRank: 99,
+          evaluations: [],
+        );
         final Course courseUpdated = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'H2020',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique',
-            summary: summary);
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+          summary: summary,
+        );
 
         SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock);
@@ -1111,19 +1166,23 @@ void main() {
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
           signetsApiMock.getCourseSummary(
-              session: courseFetched.session, acronym: courseFetched.acronym, group: courseFetched.group),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
+            session: courseFetched.session,
+            acronym: courseFetched.acronym,
+            group: courseFetched.group,
+          ),
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated])),
         ]);
       });
 
       test("getCourseSummary fails", () async {
         final Course courseFetched = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'H2020',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique');
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
 
         SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock);
@@ -1141,8 +1200,11 @@ void main() {
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
           signetsApiMock.getCourseSummary(
-              session: courseFetched.session, acronym: courseFetched.acronym, group: courseFetched.group),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
+            session: courseFetched.session,
+            acronym: courseFetched.acronym,
+            group: courseFetched.group,
+          ),
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched])),
         ]);
       });
 
@@ -1157,13 +1219,14 @@ void main() {
 
         expect(results, isInstanceOf<List<Course>>());
         expect(results, [courseWithGrade]);
-        expect(manager.courses, [courseWithGrade],
-            reason: 'The courses list should now be loaded even if the caching fails.');
+        expect(manager.courses, [
+          courseWithGrade,
+        ], reason: 'The courses list should now be loaded even if the caching fails.');
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]))
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade])),
         ]);
       });
 
@@ -1183,7 +1246,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
         verifyNever(cacheManagerMock.update(CourseRepository.coursesCacheKey, any));
@@ -1203,13 +1266,14 @@ void main() {
 
       test("there is no evaluation for a course, should return null", () async {
         final Course courseFetched = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'H2020',
-            grade: 'A+',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique');
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          grade: 'A+',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
 
         SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, session: session);
@@ -1226,44 +1290,50 @@ void main() {
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
           signetsApiMock.getCourseReviews(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched])),
         ]);
       });
 
       test("there is an evaluation for a course, course should be updated", () async {
         final Course courseFetched = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'NOW',
-            grade: 'A+',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique');
+          acronym: 'GEN101',
+          group: '02',
+          session: 'NOW',
+          grade: 'A+',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
 
         final courseReviews = <CourseReview>[
           CourseReview(
-              acronym: 'GEN101',
-              group: '02',
-              teacherName: 'April, Alain',
-              startAt: DateTime(2021, 03, 19),
-              endAt: DateTime(2021, 03, 28, 23, 59),
-              type: 'Cours',
-              isCompleted: true)
+            acronym: 'GEN101',
+            group: '02',
+            teacherName: 'April, Alain',
+            startAt: DateTime(2021, 03, 19),
+            endAt: DateTime(2021, 03, 28, 23, 59),
+            type: 'Cours',
+            isCompleted: true,
+          ),
         ];
 
         final Course updated = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'NOW',
-            grade: 'A+',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique',
-            reviews: courseReviews);
+          acronym: 'GEN101',
+          group: '02',
+          session: 'NOW',
+          grade: 'A+',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+          reviews: courseReviews,
+        );
 
         SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock,
-            session: session, reviewsToReturn: [courseReviews[0]]);
+        SignetsAPIClientMock.stubGetCourseReviews(
+          signetsApiMock,
+          session: session,
+          reviewsToReturn: [courseReviews[0]],
+        );
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
@@ -1277,19 +1347,20 @@ void main() {
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
           signetsApiMock.getCourseReviews(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([updated]))
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([updated])),
         ]);
       });
 
       test("_getCourseReviewss fails", () async {
         final Course courseFetched = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'H2020',
-            grade: 'A+',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique');
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          grade: 'A+',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
 
         SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
         SignetsAPIClientMock.stubGetCourseReviewsException(signetsApiMock, session: session);
@@ -1306,7 +1377,7 @@ void main() {
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
           signetsApiMock.getCourseReviews(session: session.shortName),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched]))
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched])),
         ]);
       });
     });
@@ -1319,37 +1390,41 @@ void main() {
       setUp(() {
         // Reset models
         course = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'H2020',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique');
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
         courseUpdated = Course(
-            acronym: 'GEN101',
-            group: '02',
-            session: 'H2020',
-            programCode: '999',
-            numberOfCredits: 3,
-            title: 'Cours générique',
-            summary: CourseSummary(
-                currentMark: 5,
-                currentMarkInPercent: 50,
-                markOutOf: 10,
-                passMark: 6,
-                standardDeviation: 2.3,
-                median: 4.5,
-                percentileRank: 99,
-                evaluations: [
-                  CourseEvaluation(
-                      courseGroup: 'GEN101-02',
-                      title: 'Test',
-                      correctedEvaluationOutOf: "20",
-                      weight: 10,
-                      published: false,
-                      teacherMessage: '',
-                      ignore: false)
-                ]));
+          acronym: 'GEN101',
+          group: '02',
+          session: 'H2020',
+          programCode: '999',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+          summary: CourseSummary(
+            currentMark: 5,
+            currentMarkInPercent: 50,
+            markOutOf: 10,
+            passMark: 6,
+            standardDeviation: 2.3,
+            median: 4.5,
+            percentileRank: 99,
+            evaluations: [
+              CourseEvaluation(
+                courseGroup: 'GEN101-02',
+                title: 'Test',
+                correctedEvaluationOutOf: "20",
+                weight: 10,
+                published: false,
+                teacherMessage: '',
+                ignore: false,
+              ),
+            ],
+          ),
+        );
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -1367,7 +1442,7 @@ void main() {
 
         verifyInOrder([
           signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated])),
         ]);
       });
 
@@ -1392,7 +1467,7 @@ void main() {
 
         verifyInOrder([
           signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated])),
         ]);
       });
 
@@ -1408,7 +1483,7 @@ void main() {
 
         verifyInOrder([
           signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);
@@ -1425,12 +1500,13 @@ void main() {
 
         expect(results, isInstanceOf<Course>());
         expect(results, courseUpdated);
-        expect(manager.courses, [courseUpdated],
-            reason: 'The courses list should now be loaded even if the caching fails.');
+        expect(manager.courses, [
+          courseUpdated,
+        ], reason: 'The courses list should now be loaded even if the caching fails.');
 
         verifyInOrder([
           signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated]))
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated])),
         ]);
       });
 
@@ -1448,7 +1524,7 @@ void main() {
 
         verifyInOrder([
           signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any)
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
         verifyNoMoreInteractions(signetsApiMock);

@@ -38,8 +38,12 @@ void main() {
         const String pageTestCtor = "\testctor";
         NotFoundViewModel(pageName: pageTestCtor);
 
-        verify(analyticsServiceMock.logEvent(
-            NotFoundViewModel.tag, "An unknown page ($pageTestCtor) has been access from the app."));
+        verify(
+          analyticsServiceMock.logEvent(
+            NotFoundViewModel.tag,
+            "An unknown page ($pageTestCtor) has been access from the app.",
+          ),
+        );
       });
     });
 

@@ -32,11 +32,12 @@ void main() {
     type: 'type',
     organization: 'Test Organization',
     activityArea: ActivityArea(
-        id: 'Test Area',
-        nameEn: 'Test Area',
-        nameFr: 'Test Area',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now()),
+      id: 'Test Area',
+      nameEn: 'Test Area',
+      nameFr: 'Test Area',
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    ),
     isActive: true,
     profileDescription: 'Test Description',
     facebookLink: 'https://facebook.com/test',
@@ -61,15 +62,17 @@ void main() {
       eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
       tags: <NewsTags>[
         NewsTags(
-            id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-            name: "tag 1",
-            createdAt: DateTime.now().subtract(const Duration(days: 180)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 180))),
+          id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+          name: "tag 1",
+          createdAt: DateTime.now().subtract(const Duration(days: 180)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+        ),
         NewsTags(
-            id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-            name: "tag 2",
-            createdAt: DateTime.now().subtract(const Duration(days: 180)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 180)))
+          id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+          name: "tag 2",
+          createdAt: DateTime.now().subtract(const Duration(days: 180)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+        ),
       ],
       organizer: Organizer(
         id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
@@ -82,8 +85,13 @@ void main() {
     ),
   ];
 
-  final PaginatedNews paginatedNews =
-      PaginatedNews(news: news, pageNumber: 1, pageSize: 3, totalRecords: 0, totalPages: 1);
+  final PaginatedNews paginatedNews = PaginatedNews(
+    news: news,
+    pageNumber: 1,
+    pageSize: 3,
+    totalRecords: 0,
+    totalPages: 1,
+  );
 
   group('AuthorViewModel tests', () {
     setUp(() async {

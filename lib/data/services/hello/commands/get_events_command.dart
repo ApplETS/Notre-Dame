@@ -49,10 +49,7 @@ class GetEventsCommand implements Command<PaginatedNews> {
     if (client.apiLink == null || client.apiLink!.isEmpty) {
       throw ArgumentError("_apiLink is null or empty");
     }
-    final query = {
-      'pageNumber': pageNumber.toString(),
-      'pageSize': pageSize.toString(),
-    };
+    final query = {'pageNumber': pageNumber.toString(), 'pageSize': pageSize.toString()};
 
     if (startDate != null) {
       query['startDate'] = startDate!.toUtc().toIso8601String();
@@ -78,11 +75,7 @@ class GetEventsCommand implements Command<PaginatedNews> {
 
     // Log the http error and throw a exception
     if (response.statusCode != 200) {
-      throw HttpException(
-        message: response.body,
-        prefix: HelloService.tagError,
-        code: response.statusCode,
-      );
+      throw HttpException(message: response.body, prefix: HelloService.tagError, code: response.statusCode);
     }
 
     return PaginatedNews.fromJson(jsonDecode(response.body) as Map<String, dynamic>);

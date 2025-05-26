@@ -37,20 +37,20 @@ class BaseScaffold extends StatefulWidget {
   /// If true, interactions with the UI is limited while loading.
   final bool _isInteractionLimitedWhileLoading;
 
-  const BaseScaffold(
-      {super.key,
-      this.appBar,
-      this.body,
-      this.fab,
-      this.fabPosition,
-      bool isLoading = false,
-      bool safeArea = true,
-      bool isInteractionLimitedWhileLoading = true,
-      bool showBottomBar = true})
-      : _showBottomBar = showBottomBar,
-        _isLoading = isLoading,
-        _safeArea = safeArea,
-        _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
+  const BaseScaffold({
+    super.key,
+    this.appBar,
+    this.body,
+    this.fab,
+    this.fabPosition,
+    bool isLoading = false,
+    bool safeArea = true,
+    bool isInteractionLimitedWhileLoading = true,
+    bool showBottomBar = true,
+  }) : _showBottomBar = showBottomBar,
+       _isLoading = isLoading,
+       _safeArea = safeArea,
+       _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
   State<BaseScaffold> createState() => _BaseScaffoldState();
@@ -88,17 +88,17 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: Scaffold(
-          appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
-          body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-          bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait && widget._showBottomBar)
-              ? BottomBar()
-              : null,
-          floatingActionButton: widget.fab,
-          floatingActionButtonLocation: widget.fabPosition,
-        ),
-        bottomNavigationBar: _isOffline ? buildOfflineBar(context) : null,
-      );
+    body: Scaffold(
+      appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
+      body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
+      bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait && widget._showBottomBar)
+          ? BottomBar()
+          : null,
+      floatingActionButton: widget.fab,
+      floatingActionButtonLocation: widget.fabPosition,
+    ),
+    bottomNavigationBar: _isOffline ? buildOfflineBar(context) : null,
+  );
 
   Widget bodyPortraitMode() {
     return SafeArea(
@@ -110,7 +110,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           if (widget._isLoading)
             buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
           else
-            const SizedBox()
+            const SizedBox(),
         ],
       ),
     );
@@ -134,7 +134,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
                   if (widget.appBar != null) widget.appBar!,
                   Expanded(
                     child: widget._safeArea ? SafeArea(bottom: false, top: false, child: widget.body!) : widget.body!,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -143,7 +143,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         if (widget._isLoading)
           buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
         else
-          const SizedBox()
+          const SizedBox(),
       ],
     );
   }
@@ -157,10 +157,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 30,
         ),
-        Text(
-          AppIntl.of(context)!.no_connectivity,
-          textAlign: TextAlign.center,
-        ),
+        Text(AppIntl.of(context)!.no_connectivity, textAlign: TextAlign.center),
       ],
     );
   }
