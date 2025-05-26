@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
+
 import 'package:notredame/ui/dashboard/view_model/event_viewmodel.dart';
+
 import '../../core/themes/app_palette.dart';
 
 class EventItemWidget extends StatelessWidget {
@@ -13,6 +16,7 @@ class EventItemWidget extends StatelessWidget {
 
   String _formatDate(DateTime? date) {
     if (date == null) return 'Date not available';
+
     return DateFormat('MMM dd, yyyy').format(date);
   }
 
@@ -22,35 +26,35 @@ class EventItemWidget extends StatelessWidget {
 
   Widget _buildTimeLeftIndicator() {
     if (event.date == null) return const SizedBox.shrink();
-    
+
     final now = DateTime.now();
+
     final difference = event.date!.difference(now).inDays + 1;
-    
+
     if (difference <= 4) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(
-          color: AppPalette.grey.white.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(10),
-        ),
         child: Text(
           '${difference}d left',
-          style: const TextStyle(color: Color(0xff2e2a25), fontSize: 10, fontWeight: FontWeight.bold),
+          style: const TextStyle(color: Color(0xff807f83), fontSize: 14, fontWeight: FontWeight.bold),
         ),
       );
     }
-    
+
     return const SizedBox.shrink();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(event.icon, size: 16, color: _getEventColor()),
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Icon(event.icon, size: 17, color: _getEventColor()),
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -63,7 +67,7 @@ class EventItemWidget extends StatelessWidget {
                         event.label,
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                          fontSize: 15,
                         ),
                       ),
                     ),
@@ -74,8 +78,9 @@ class EventItemWidget extends StatelessWidget {
                 Text(
                   _formatDate(event.date),
                   style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
+                    color: AppPalette.grey.lightGrey, //Colors.grey[600],
+
+                    fontSize: 14,
                   ),
                 ),
               ],

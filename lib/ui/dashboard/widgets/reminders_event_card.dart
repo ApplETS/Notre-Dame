@@ -33,13 +33,6 @@ class RemindersEventCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
               const SizedBox(height: 8),
               ...events.map((event) => EventItemWidget(event: event)),
             ],
@@ -54,8 +47,6 @@ class RemindersEventCard extends StatelessWidget {
     final events = showOnlyUpcoming
         ? EventFilterService.getUpcomingEvents(sessionEvents)
         : EventFilterService.getAllEvents(sessionEvents);
-
-    final groupedEvents = EventFilterService.groupEventsByCategory(events);
 
     if (showOnlyUpcoming && events.isEmpty && !loading) {
       return const SizedBox.shrink();
@@ -88,12 +79,10 @@ class RemindersEventCard extends StatelessWidget {
               enabled: loading,
               ignoreContainers: true,
               child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 15, 17, 13),
+                padding: const EdgeInsets.fromLTRB(17, 0, 17, 13),
                 child: Column(
                   children: [
-                    _buildEventCategory('Session', groupedEvents['session'] ?? []),
-                    _buildEventCategory('Registration', groupedEvents['registration'] ?? []),
-                    _buildEventCategory('Cancellation', groupedEvents['cancellation'] ?? []),
+                    _buildEventCategory('Session', events)
                   ],
                 ),
               ),
