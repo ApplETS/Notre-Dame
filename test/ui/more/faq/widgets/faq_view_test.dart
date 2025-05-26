@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../helpers.dart';
@@ -73,7 +73,7 @@ void main() {
         final subtitle1 = find.text(appIntl.faq_actions);
         expect(subtitle1, findsNWidgets(1));
 
-        final subtitle2 = find.text(appIntl.faq_questions);
+        final subtitle2 = find.text(appIntl.faq_questions_and_answers);
         expect(subtitle2, findsNWidgets(1));
       });
     });

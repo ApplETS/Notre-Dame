@@ -1,6 +1,8 @@
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+// Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 
 List<Marker> markers(AppIntl intl) => [
       Marker(

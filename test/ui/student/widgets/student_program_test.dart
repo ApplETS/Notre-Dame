@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
 import '../../../helpers.dart';
 
