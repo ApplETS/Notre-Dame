@@ -23,7 +23,7 @@ dependencies:
 
   # Firebase
   firebase_core: ^3.13.1
-  firebase_analytics: ^11.4.5
+  firebase_analytics: ^11.4.6
   firebase_crashlytics: ^4.3.6
   firebase_remote_config: ^5.4.4
   # Web
@@ -44,7 +44,7 @@ dependencies:
   # Google
   google_maps_flutter: ^2.12.2
   shared_preferences: ^2.5.3
-  flutter_markdown: ^0.7.6+2
+  flutter_markdown: ^0.7.7+1
 
   # flutter community
   package_info_plus: ^8.3.0
