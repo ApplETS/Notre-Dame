@@ -34,7 +34,16 @@ class RemindersEventCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-              ...events.map((event) => EventItemWidget(event: event)),
+              ...events.asMap().entries.map((entry) {
+                int index = entry.key;
+                SessionEvent event = entry.value;
+                return Column(
+                  children: [
+                    EventItemWidget(event: event),
+                    if (index < events.length - 1) const SizedBox(height: 5),
+                  ],
+                );
+              }),
             ],
           ),
         ),
@@ -81,9 +90,7 @@ class RemindersEventCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 0, 17, 13),
                 child: Column(
-                  children: [
-                    _buildEventCategory('Session', events)
-                  ],
+                  children: [_buildEventCategory('Session', events)],
                 ),
               ),
             )
