@@ -11,9 +11,7 @@ class AuthService {
   final int _maxRetry = 3;
   int _retries = 0;
 
-  final _scopes = [
-    'api://etsmobileapi/access_as_user',
-  ];
+  final _scopes = ['api://etsmobileapi/access_as_user'];
 
   SingleAccountPca? singleAccountPca;
   final _remoteConfigService = locator<RemoteConfigService>();
@@ -65,15 +63,9 @@ class AuthService {
     }
   }
 
-  Future<(AuthenticationResult?, MsalException?)> acquireToken({
-    String? loginHint,
-  }) async {
+  Future<(AuthenticationResult?, MsalException?)> acquireToken({String? loginHint}) async {
     try {
-      final result = await singleAccountPca?.acquireToken(
-        scopes: _scopes,
-        loginHint: loginHint,
-        prompt: Prompt.login,
-      );
+      final result = await singleAccountPca?.acquireToken(scopes: _scopes, loginHint: loginHint, prompt: Prompt.login);
       _token = result?.accessToken;
       _logger.d('Acquire token => ${result?.toJson()}');
       return (result, null);
@@ -83,14 +75,9 @@ class AuthService {
     }
   }
 
-  Future<(AuthenticationResult?, MsalException?)> acquireTokenSilent({
-    String? identifier,
-  }) async {
+  Future<(AuthenticationResult?, MsalException?)> acquireTokenSilent({String? identifier}) async {
     try {
-      final result = await singleAccountPca?.acquireTokenSilent(
-        scopes: _scopes,
-        identifier: identifier,
-      );
+      final result = await singleAccountPca?.acquireTokenSilent(scopes: _scopes, identifier: identifier);
       _token = result?.accessToken;
       _logger.d('Acquire token silent => ${result?.toJson()}');
       return (result, null);

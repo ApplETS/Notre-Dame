@@ -30,11 +30,7 @@ class GetOrganizerCommand implements Command<Organizer?> {
 
     // Log the http error and throw a exception
     if (response.statusCode != 200) {
-      throw HttpException(
-        message: response.body,
-        prefix: HelloService.tagError,
-        code: response.statusCode,
-      );
+      throw HttpException(message: response.body, prefix: HelloService.tagError, code: response.statusCode);
     }
 
     final json = jsonDecode(response.body);

@@ -34,15 +34,17 @@ void main() {
       eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
       tags: <NewsTags>[
         NewsTags(
-            id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-            name: "tag 1",
-            createdAt: DateTime.now().subtract(const Duration(days: 180)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 180))),
+          id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+          name: "tag 1",
+          createdAt: DateTime.now().subtract(const Duration(days: 180)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+        ),
         NewsTags(
-            id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-            name: "tag 2",
-            createdAt: DateTime.now().subtract(const Duration(days: 180)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 180)))
+          id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+          name: "tag 2",
+          createdAt: DateTime.now().subtract(const Duration(days: 180)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+        ),
       ],
       organizer: Organizer(
         id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",
@@ -54,12 +56,22 @@ void main() {
       updatedAt: DateTime.now().subtract(const Duration(days: 5)),
     ),
   ];
-  final PaginatedNews paginatedNews =
-      PaginatedNews(news: news, pageNumber: 1, pageSize: 3, totalRecords: 3, totalPages: 1);
+  final PaginatedNews paginatedNews = PaginatedNews(
+    news: news,
+    pageNumber: 1,
+    pageSize: 3,
+    totalRecords: 3,
+    totalPages: 1,
+  );
 
   final List<News> emptyNews = List<News>.empty();
-  final PaginatedNews paginatedEmptyNews =
-      PaginatedNews(news: emptyNews, pageNumber: 1, pageSize: 3, totalRecords: 0, totalPages: 1);
+  final PaginatedNews paginatedEmptyNews = PaginatedNews(
+    news: emptyNews,
+    pageNumber: 1,
+    pageSize: 3,
+    totalRecords: 0,
+    totalPages: 1,
+  );
 
   group('NewsView -', () {
     setUp(() async {

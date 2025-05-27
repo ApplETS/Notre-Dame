@@ -15,12 +15,7 @@ void main() {
     testWidgets('Displays a news card skeleton', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: NewsCardSkeleton()));
 
-      expect(
-        find.byWidgetPredicate(
-          (widget) => widget is Skeletonizer,
-        ),
-        findsNWidgets(2),
-      );
+      expect(find.byWidgetPredicate((widget) => widget is Skeletonizer), findsNWidgets(2));
     });
   });
 }

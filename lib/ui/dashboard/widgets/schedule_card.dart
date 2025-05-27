@@ -36,13 +36,14 @@ class ScheduleCard extends StatelessWidget {
             // User will not see this.
             // It serves the purpose of creating text in the skeleton and make it look closer to the real schedule.
             CourseActivity(
-                courseGroup: "APP375-99",
-                courseName: "Développement mobile (ÉTSMobile)",
-                activityName: '',
-                activityDescription: '5 à 7',
-                activityLocation: '100 Génies',
-                startDateTime: DateTime.now(),
-                endDateTime: DateTime.now())
+              courseGroup: "APP375-99",
+              courseName: "Développement mobile (ÉTSMobile)",
+              activityName: '',
+              activityDescription: '5 à 7',
+              activityLocation: '100 Génies',
+              startDateTime: DateTime.now(),
+              endDateTime: DateTime.now(),
+            ),
           ]
         : events;
 
@@ -51,30 +52,35 @@ class ScheduleCard extends StatelessWidget {
       key: UniqueKey(),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 5),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Align(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Align(
               alignment: Alignment.centerLeft,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
                 child: Text(title, style: Theme.of(context).textTheme.titleLarge),
-              )),
-          if (courseActivities.isNotEmpty)
-            Skeletonizer(enabled: loading, child: _buildEventList(courseActivities))
-          else
-            SizedBox(height: 100, child: Center(child: Text(AppIntl.of(context)!.schedule_no_event)))
-        ]),
+              ),
+            ),
+            if (courseActivities.isNotEmpty)
+              Skeletonizer(enabled: loading, child: _buildEventList(courseActivities))
+            else
+              SizedBox(height: 100, child: Center(child: Text(AppIntl.of(context)!.schedule_no_event))),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
-        separatorBuilder: (_, index) =>
-            (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
-        itemCount: events.length);
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
+      separatorBuilder: (_, index) =>
+          (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
+      itemCount: events.length,
+    );
   }
 }

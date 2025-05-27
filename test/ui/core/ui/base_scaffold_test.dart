@@ -25,8 +25,9 @@ void main() {
       unregister<AnalyticsServiceMock>();
     });
 
-    testWidgets('has a loading overlay (without the loading visible) widget and a bottom bar',
-        (WidgetTester tester) async {
+    testWidgets('has a loading overlay (without the loading visible) widget and a bottom bar', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(localizedWidget(child: const BaseScaffold(body: SizedBox())));
       await tester.pumpAndSettle();
 
@@ -36,8 +37,9 @@ void main() {
 
     group('loading - ', () {
       testWidgets('the loading is displayed if isLoading is true', (WidgetTester tester) async {
-        await tester
-            .pumpWidget(const MaterialApp(home: BaseScaffold(body: SizedBox(), isLoading: true, showBottomBar: false)));
+        await tester.pumpWidget(
+          const MaterialApp(home: BaseScaffold(body: SizedBox(), isLoading: true, showBottomBar: false)),
+        );
 
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
       });
@@ -62,7 +64,11 @@ void main() {
 
       testWidgets('has an appBar if appBar is set', (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: BaseScaffold(appBar: AppBar(), body: const SizedBox()), useScaffold: false));
+          localizedWidget(
+            child: BaseScaffold(appBar: AppBar(), body: const SizedBox()),
+            useScaffold: false,
+          ),
+        );
         await tester.pumpAndSettle();
 
         final appBar = find.byType(AppBar);

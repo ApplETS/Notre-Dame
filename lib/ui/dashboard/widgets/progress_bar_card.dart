@@ -16,30 +16,35 @@ class ProgressBarCard extends StatelessWidget {
   final double progress;
   final bool loading;
 
-  const ProgressBarCard(
-      {super.key,
-      required this.onDismissed,
-      required this.progressBarText,
-      required this.changeProgressBarText,
-      required this.progress,
-      required this.loading});
+  const ProgressBarCard({
+    super.key,
+    required this.onDismissed,
+    required this.progressBarText,
+    required this.changeProgressBarText,
+    required this.progress,
+    required this.loading,
+  });
 
   @override
   Widget build(BuildContext context) => DismissibleCard(
-        key: UniqueKey(),
-        onDismissed: (DismissDirection direction) => onDismissed(),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-                child: Text(AppIntl.of(context)!.progress_bar_title, style: Theme.of(context).textTheme.titleLarge),
-              )),
-          if (loading || progress >= 0.0)
-            Skeletonizer(
-              enabled: loading,
-              ignoreContainers: true,
-              child: Stack(children: [
+    key: UniqueKey(),
+    onDismissed: (DismissDirection direction) => onDismissed(),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
+            child: Text(AppIntl.of(context)!.progress_bar_title, style: Theme.of(context).textTheme.titleLarge),
+          ),
+        ),
+        if (loading || progress >= 0.0)
+          Skeletonizer(
+            enabled: loading,
+            ignoreContainers: true,
+            child: Stack(
+              children: [
                 Container(
                   padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
                   child: ClipRRect(
@@ -60,22 +65,19 @@ class ProgressBarCard extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.only(top: 16),
                     child: Center(
-                      child: Text(
-                        progressBarText,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                      child: Text(progressBarText, style: const TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
-              ]),
-            )
-          else
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Text(AppIntl.of(context)!.session_without),
-              ),
+              ],
             ),
-        ]),
-      );
+          )
+        else
+          Container(
+            padding: const EdgeInsets.all(16),
+            child: Center(child: Text(AppIntl.of(context)!.session_without)),
+          ),
+      ],
+    ),
+  );
 }

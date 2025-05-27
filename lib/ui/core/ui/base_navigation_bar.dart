@@ -9,13 +9,7 @@ import '../../../data/services/navigation_service.dart';
 import '../../../domain/constants/router_paths.dart';
 import '../../../locator.dart';
 
-enum NavigationView {
-  dashboard,
-  schedule,
-  student,
-  ets,
-  more,
-}
+enum NavigationView { dashboard, schedule, student, ets, more }
 
 ScheduleController _scheduleController = ScheduleController();
 
@@ -28,27 +22,18 @@ abstract class BaseNavigationBar extends StatefulWidget {
   Widget buildNavigationBar(BuildContext context, NavigationView currentView, Function(NavigationView) onTap);
 
   List<NavigationRailDestination> buildRailItems(BuildContext context) => _buildItems(
-        context,
-        (icon, selectedIcon, label) => NavigationRailDestination(
-          icon: Icon(icon),
-          selectedIcon: Icon(selectedIcon),
-          label: Text(label),
-        ),
-      );
+    context,
+    (icon, selectedIcon, label) =>
+        NavigationRailDestination(icon: Icon(icon), selectedIcon: Icon(selectedIcon), label: Text(label)),
+  );
 
   List<BottomNavigationBarItem> buildBottomBarItems(BuildContext context) => _buildItems(
-        context,
-        (icon, selectedIcon, label) => BottomNavigationBarItem(
-          icon: Icon(icon),
-          activeIcon: Icon(selectedIcon),
-          label: label,
-        ),
-      );
+    context,
+    (icon, selectedIcon, label) =>
+        BottomNavigationBarItem(icon: Icon(icon), activeIcon: Icon(selectedIcon), label: label),
+  );
 
-  List<T> _buildItems<T>(
-    BuildContext context,
-    T Function(IconData, IconData?, String) builder,
-  ) {
+  List<T> _buildItems<T>(BuildContext context, T Function(IconData, IconData?, String) builder) {
     final intl = AppIntl.of(context)!;
 
     return [
@@ -105,14 +90,14 @@ abstract class BaseNavigationBarState<T extends BaseNavigationBar> extends State
       NavigationView.schedule: RouterPaths.schedule,
       NavigationView.student: RouterPaths.student,
       NavigationView.ets: RouterPaths.ets,
-      NavigationView.more: RouterPaths.more
+      NavigationView.more: RouterPaths.more,
     };
     final events = {
       NavigationView.dashboard: "DashboardView clicked",
       NavigationView.schedule: "ScheduleView clicked",
       NavigationView.student: "StudentView clicked",
       NavigationView.ets: "EtsView clicked",
-      NavigationView.more: "MoreView clicked"
+      NavigationView.more: "MoreView clicked",
     };
 
     if (view == NavigationView.schedule) {

@@ -33,7 +33,11 @@ mixin Utils {
   }
 
   static String validateResultWithPercentage(
-      BuildContext context, double? result, double? maxGrade, double percentage) {
+    BuildContext context,
+    double? result,
+    double? maxGrade,
+    double percentage,
+  ) {
     if (result == null || maxGrade == null) {
       return AppIntl.of(context)!.grades_not_available;
     }

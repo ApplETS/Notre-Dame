@@ -15,9 +15,7 @@ void main() {
     setupSettingsRepositoryMock();
     setupFlutterToastMock();
 
-    viewModel = MonthViewModel(
-      intl: await setupAppIntl(),
-    );
+    viewModel = MonthViewModel(intl: await setupAppIntl());
   });
 
   group('return to current date', () {

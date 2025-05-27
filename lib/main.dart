@@ -46,13 +46,14 @@ Future<void> main() async {
   final HelloService helloApiClient = locator<HelloService>();
   helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
-  runZonedGuarded(() {
-    runApp(
-      ETSMobile(settingsManager),
-    );
-  }, (error, stackTrace) {
-    FirebaseCrashlytics.instance.recordError(error, stackTrace);
-  });
+  runZonedGuarded(
+    () {
+      runApp(ETSMobile(settingsManager));
+    },
+    (error, stackTrace) {
+      FirebaseCrashlytics.instance.recordError(error, stackTrace);
+    },
+  );
 }
 
 class ETSMobile extends StatelessWidget {
@@ -67,33 +68,32 @@ class ETSMobile extends StatelessWidget {
     final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsRepository>(
       create: (_) => settingsManager,
-      child: Consumer<SettingsRepository>(builder: (context, model, child) {
-        return CalendarControllerProvider(
-          controller: EventController(),
-          child: MaterialApp(
-            title: 'ÉTS Mobile',
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: model.themeMode,
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: const [
-              AppIntl.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            locale: model.locale,
-            supportedLocales: AppIntl.supportedLocales,
-            navigatorKey: locator<NavigationService>().navigatorKey,
-            navigatorObservers: [
-              locator<AnalyticsService>().getAnalyticsObserver(),
-              NavigationHistoryObserver(),
-            ],
-            home: outage ? OutageView() : StartUpView(),
-            onGenerateRoute: generateRoute,
-          ),
-        );
-      }),
+      child: Consumer<SettingsRepository>(
+        builder: (context, model, child) {
+          return CalendarControllerProvider(
+            controller: EventController(),
+            child: MaterialApp(
+              title: 'ÉTS Mobile',
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: model.themeMode,
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: const [
+                AppIntl.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              locale: model.locale,
+              supportedLocales: AppIntl.supportedLocales,
+              navigatorKey: locator<NavigationService>().navigatorKey,
+              navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver(), NavigationHistoryObserver()],
+              home: outage ? OutageView() : StartUpView(),
+              onGenerateRoute: generateRoute,
+            ),
+          );
+        },
+      ),
     );
   }
 }

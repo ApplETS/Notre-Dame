@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -52,100 +52,111 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<NewsDetailsViewModel>.reactive(
-        viewModelBuilder: () => NewsDetailsViewModel(news: widget.news),
-        builder: (context, model, child) => BaseScaffold(
-          showBottomBar: false,
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    SliverAppBar(
-                      backgroundColor: context.theme.appColors.newsBackgroundVibrant,
-                      pinned: true,
-                      titleSpacing: 0,
-                      leading: IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        color: AppPalette.grey.white,
-                        tooltip: AppIntl.of(context)!.go_back,
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      title: Text(
-                        AppIntl.of(context)!.news_details_title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(color: AppPalette.grey.white, fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                      actions: <Widget>[
-                        PopupMenuButton<Menu>(
-                          padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                          position: PopupMenuPosition.under,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          color: context.theme.appColors.backgroundAlt,
-                          icon: const Icon(Icons.more_vert),
-                          onSelected: (Menu menu) => handleClick(menu, model.news),
-                          itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-                            PopupMenuItem<Menu>(
-                              value: Menu.share,
-                              child: ListTile(
-                                leading: const Icon(Icons.share_outlined),
-                                title: Text(AppIntl.of(context)!.share),
-                              ),
-                            ),
-                            PopupMenuItem<Menu>(
-                              value: Menu.export,
-                              child: ListTile(
-                                leading: const Icon(Icons.ios_share),
-                                title: Text(AppIntl.of(context)!.export),
-                              ),
-                            ),
-                            PopupMenuItem<Menu>(
-                              value: Menu.report,
-                              child: ListTile(
-                                leading: SvgPicture.asset(
-                                  'assets/images/report.svg',
-                                  colorFilter: const ColorFilter.mode(AppPalette.etsLightRed, BlendMode.srcIn),
-                                  width: 26,
-                                ),
-                                title: Text(
-                                  AppIntl.of(context)!.report,
-                                  style: const TextStyle(color: AppPalette.etsLightRed),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
+    viewModelBuilder: () => NewsDetailsViewModel(news: widget.news),
+    builder: (context, model, child) => BaseScaffold(
+      showBottomBar: false,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  backgroundColor: context.theme.appColors.newsBackgroundVibrant,
+                  pinned: true,
+                  titleSpacing: 0,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    color: AppPalette.grey.white,
+                    tooltip: AppIntl.of(context)!.go_back,
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  title: Text(
+                    AppIntl.of(context)!.news_details_title,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: AppPalette.grey.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          _buildTitle(widget.news.title),
-                          _buildDate(context, widget.news.publicationDate, widget.news.eventStartDate,
-                              widget.news.eventEndDate),
-                          _buildImage(widget.news),
-                          _buildAuthor(widget.news.organizer.avatarUrl ?? "", widget.news.organizer.organization ?? "",
-                              widget.news.organizer.activityArea, widget.news.organizer.id),
-                          _buildContent(widget.news.content),
-                        ],
-                      ),
+                  ),
+                  actions: <Widget>[
+                    PopupMenuButton<Menu>(
+                      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                      position: PopupMenuPosition.under,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      color: context.theme.appColors.backgroundAlt,
+                      icon: const Icon(Icons.more_vert),
+                      onSelected: (Menu menu) => handleClick(menu, model.news),
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
+                        PopupMenuItem<Menu>(
+                          value: Menu.share,
+                          child: ListTile(
+                            leading: const Icon(Icons.share_outlined),
+                            title: Text(AppIntl.of(context)!.share),
+                          ),
+                        ),
+                        PopupMenuItem<Menu>(
+                          value: Menu.export,
+                          child: ListTile(
+                            leading: const Icon(Icons.ios_share),
+                            title: Text(AppIntl.of(context)!.export),
+                          ),
+                        ),
+                        PopupMenuItem<Menu>(
+                          value: Menu.report,
+                          child: ListTile(
+                            leading: SvgPicture.asset(
+                              'assets/images/report.svg',
+                              colorFilter: const ColorFilter.mode(AppPalette.etsLightRed, BlendMode.srcIn),
+                              width: 26,
+                            ),
+                            title: Text(
+                              AppIntl.of(context)!.report,
+                              style: const TextStyle(color: AppPalette.etsLightRed),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
-              _buildTags(model),
-            ],
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      _buildTitle(widget.news.title),
+                      _buildDate(
+                        context,
+                        widget.news.publicationDate,
+                        widget.news.eventStartDate,
+                        widget.news.eventEndDate,
+                      ),
+                      _buildImage(widget.news),
+                      _buildAuthor(
+                        widget.news.organizer.avatarUrl ?? "",
+                        widget.news.organizer.organization ?? "",
+                        widget.news.organizer.activityArea,
+                        widget.news.organizer.id,
+                      ),
+                      _buildContent(widget.news.content),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+          _buildTags(model),
+        ],
+      ),
+    ),
+  );
 
   void handleClick(Menu menu, News news) {
     switch (menu) {
       case Menu.share:
-        Share.share("${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}");
+        SharePlus.instance.share(
+          ShareParams(text: "${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}"),
+        );
       case Menu.export:
         final translations = AppIntl.of(context)!;
         final viewModel = CalendarSelectionViewModel(translations: translations);
@@ -156,25 +167,21 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         );
       case Menu.report:
         showModalBottomSheet(
-            context: context,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-            builder: (context) => ReportNews(
-                  newsId: news.id,
-                ));
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          ),
+          builder: (context) => ReportNews(newsId: news.id),
+        );
     }
   }
 
   Widget _buildContent(String content) {
-    // TODO : Support underline
     String modifiedContent = content.replaceAll('<u>', "");
     modifiedContent = modifiedContent.replaceAll('</u>', "");
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: MarkdownBody(data: modifiedContent),
-      ),
+      child: Padding(padding: const EdgeInsets.all(16.0), child: GptMarkdown(modifiedContent)),
     );
   }
 
@@ -183,10 +190,11 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
       child: Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .bodySmall!
-            .copyWith(color: context.theme.textTheme.bodyMedium!.color, fontSize: 25, fontWeight: FontWeight.bold),
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+          color: context.theme.textTheme.bodyMedium!.color,
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -220,53 +228,51 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
       color: context.theme.appColors.newsBackgroundVibrant,
       child: ListTile(
         leading: GestureDetector(
-            onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor, arguments: authorId),
-            child: Hero(
-                tag: 'news_author_avatar',
-                child: CircleAvatar(
-                  radius: 26,
-                  backgroundColor: context.theme.appColors.backgroundAlt,
-                  child: (avatar != "")
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(26),
-                          child: Image.network(
-                            avatar,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Center(
-                                child: Text(
-                                  author.substring(0, 1),
-                                  style: TextStyle(fontSize: 24, color: context.theme.textTheme.bodyMedium!.color),
-                                ),
-                              );
-                            },
-                          ))
-                      : Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Center(
-                              child: Text(author.substring(0, 1),
-                                  style: TextStyle(fontSize: 24, color: context.theme.textTheme.bodyMedium!.color)),
+          onTap: () => _navigationService.pushNamed(RouterPaths.newsAuthor, arguments: authorId),
+          child: Hero(
+            tag: 'news_author_avatar',
+            child: CircleAvatar(
+              radius: 26,
+              backgroundColor: context.theme.appColors.backgroundAlt,
+              child: (avatar != "")
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(26),
+                      child: Image.network(
+                        avatar,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: Text(
+                              author.substring(0, 1),
+                              style: TextStyle(fontSize: 24, color: context.theme.textTheme.bodyMedium!.color),
                             ),
-                          ],
+                          );
+                        },
+                      ),
+                    )
+                  : Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Center(
+                          child: Text(
+                            author.substring(0, 1),
+                            style: TextStyle(fontSize: 24, color: context.theme.textTheme.bodyMedium!.color),
+                          ),
                         ),
-                ))),
+                      ],
+                    ),
+            ),
+          ),
+        ),
         title: Text(
           author,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: AppPalette.grey.white,
-            fontSize: 20,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white, fontSize: 20),
         ),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
             activity != null ? Utils.getMessageByLocale(context, activity.nameFr, activity.nameEn) : "",
-            style: TextStyle(
-              color: context.theme.appColors.fadedInvertText,
-              fontSize: 16,
-            ),
+            style: TextStyle(color: context.theme.appColors.fadedInvertText, fontSize: 16),
           ),
         ),
       ),
@@ -303,10 +309,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                formattedPublishedDate,
-                style: TextStyle(color: context.theme.textTheme.bodyMedium!.color),
-              ),
+              Text(formattedPublishedDate, style: TextStyle(color: context.theme.textTheme.bodyMedium!.color)),
               const SizedBox(height: 12.0),
             ],
           ),
@@ -316,31 +319,29 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: context.theme.appColors.backgroundAlt,
-                    shape: BoxShape.circle,
-                  ),
+                  decoration: BoxDecoration(color: context.theme.appColors.backgroundAlt, shape: BoxShape.circle),
                   child: Icon(Icons.event, size: 20.0, color: context.theme.textTheme.bodyMedium!.color),
                 ),
                 Flexible(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppIntl.of(context)!.news_event_date,
-                        style: TextStyle(color: context.theme.appColors.fadedText),
-                        textAlign: TextAlign.right,
-                      ),
-                      Text(
-                        formattedEventDate,
-                        style: TextStyle(color: context.theme.textTheme.bodyMedium!.color),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppIntl.of(context)!.news_event_date,
+                          style: TextStyle(color: context.theme.appColors.fadedText),
+                          textAlign: TextAlign.right,
+                        ),
+                        Text(
+                          formattedEventDate,
+                          style: TextStyle(color: context.theme.textTheme.bodyMedium!.color),
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
                   ),
-                )),
+                ),
               ],
             ),
           ),
@@ -368,10 +369,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
                 ),
                 child: Text(
                   widget.news.tags[index].name,
-                  style: TextStyle(
-                    color: AppPalette.grey.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(color: AppPalette.grey.white, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -387,12 +385,6 @@ class SkeletonizerEffect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Skeletonizer(
-      enabled: true,
-      child: Container(
-        height: 200,
-        color: AppPalette.grey.darkGrey,
-      ),
-    );
+    return Skeletonizer(enabled: true, child: Container(height: 200, color: AppPalette.grey.darkGrey));
   }
 }

@@ -28,25 +28,37 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
 
   /// Stub the answer of the [getCoursesActivities] when the [session] is used.
   static void stubGetCoursesActivities(
-      MockSignetsAPIClient mock, String session, List<CourseActivity> coursesActivitiesToReturn) {
+    MockSignetsAPIClient mock,
+    String session,
+    List<CourseActivity> coursesActivitiesToReturn,
+  ) {
     when(mock.getCoursesActivities(session: session)).thenAnswer((_) async => coursesActivitiesToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getCoursesActivities] with the [session] is used.
-  static void stubGetCoursesActivitiesException(MockSignetsAPIClient mock, String session,
-      {required ApiException exceptionToThrow}) {
+  static void stubGetCoursesActivitiesException(
+    MockSignetsAPIClient mock,
+    String session, {
+    required ApiException exceptionToThrow,
+  }) {
     when(mock.getCoursesActivities(session: session)).thenThrow(exceptionToThrow);
   }
 
   /// Stub the answer of the [getCoursesActivities] when the [session] is used.
   static void stubGetScheduleActivities(
-      MockSignetsAPIClient mock, String session, List<ScheduleActivity> coursesActivitiesToReturn) {
+    MockSignetsAPIClient mock,
+    String session,
+    List<ScheduleActivity> coursesActivitiesToReturn,
+  ) {
     when(mock.getScheduleActivities(session: session)).thenAnswer((_) async => coursesActivitiesToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getScheduleActivities] with the [session] is used.
-  static void stubGetScheduleActivitiesException(MockSignetsAPIClient mock, String session,
-      {required ApiException exceptionToThrow}) {
+  static void stubGetScheduleActivitiesException(
+    MockSignetsAPIClient mock,
+    String session, {
+    required ApiException exceptionToThrow,
+  }) {
     when(mock.getScheduleActivities(session: session)).thenThrow(exceptionToThrow);
   }
 
@@ -92,29 +104,41 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
 
   /// Stub the answer of the [getCourseSummary] when the [course] is used.
   static void stubGetCourseSummary(MockSignetsAPIClient mock, Course course, {CourseSummary? summaryToReturn}) {
-    when(mock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group))
-        .thenAnswer((_) async => summaryToReturn!);
+    when(
+      mock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+    ).thenAnswer((_) async => summaryToReturn!);
   }
 
   /// Throw [exceptionToThrow] when [getCourseSummary] when the [course] is used.
-  static void stubGetCourseSummaryException(MockSignetsAPIClient mock, Course course,
-      {ApiException exceptionToThrow = signetsException}) {
-    when(mock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group))
-        .thenThrow(exceptionToThrow);
+  static void stubGetCourseSummaryException(
+    MockSignetsAPIClient mock,
+    Course course, {
+    ApiException exceptionToThrow = signetsException,
+  }) {
+    when(
+      mock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+    ).thenThrow(exceptionToThrow);
   }
 
   /// Stub the answer of the [getCoursesReviews] when the [session] is used.
   /// If [session] is null any session will be accepted.
-  static void stubGetCourseReviews(MockSignetsAPIClient mock,
-      {Session? session, List<CourseReview> reviewsToReturn = const []}) {
-    when(mock.getCourseReviews(session: session?.shortName ?? anyNamed('session')))
-        .thenAnswer((_) async => reviewsToReturn);
+  static void stubGetCourseReviews(
+    MockSignetsAPIClient mock, {
+    Session? session,
+    List<CourseReview> reviewsToReturn = const [],
+  }) {
+    when(
+      mock.getCourseReviews(session: session?.shortName ?? anyNamed('session')),
+    ).thenAnswer((_) async => reviewsToReturn);
   }
 
   /// Throw [exceptionToThrow] when [getCoursesReviews] when the [session] is used.
   /// If [session] is null any session will be accepted.
-  static void stubGetCourseReviewsException(MockSignetsAPIClient mock,
-      {Session? session, ApiException exceptionToThrow = signetsException}) {
+  static void stubGetCourseReviewsException(
+    MockSignetsAPIClient mock, {
+    Session? session,
+    ApiException exceptionToThrow = signetsException,
+  }) {
     when(mock.getCourseReviews(session: session?.shortName ?? anyNamed('session'))).thenThrow(exceptionToThrow);
   }
 }

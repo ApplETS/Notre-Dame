@@ -28,24 +28,14 @@ class CalendarSelectionWidget extends StatelessWidget {
           return lackingPermissionsDialog(context);
         }
         if (!calendars.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
         final items = calendars.data!
             .map<DropdownMenuItem<String>>(
-              (Calendar value) => DropdownMenuItem<String>(
-                value: value.name,
-                child: Text(value.name!),
-              ),
+              (Calendar value) => DropdownMenuItem<String>(value: value.name, child: Text(value.name!)),
             )
             .toList();
-        items.add(
-          DropdownMenuItem<String>(
-            value: "new",
-            child: Text(translations.calendar_new),
-          ),
-        );
+        items.add(DropdownMenuItem<String>(value: "new", child: Text(translations.calendar_new)));
         String selectedCalendarId = items[0].value ?? '';
         return StatefulBuilder(
           builder: (context, setState) {
@@ -71,9 +61,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                               onChanged: (value) {
                                 selectedCalendarId = value;
                               },
-                              decoration: InputDecoration(
-                                labelText: translations.calendar_name,
-                              ),
+                              decoration: InputDecoration(labelText: translations.calendar_name),
                             )
                           : const SizedBox(height: 10);
                     },
@@ -99,10 +87,7 @@ class CalendarSelectionWidget extends StatelessWidget {
 
                     final CourseRepository courseRepository = locator<CourseRepository>();
 
-                    final result = CalendarService.export(
-                      courseRepository.coursesActivities!,
-                      selectedCalendarId,
-                    );
+                    final result = CalendarService.export(courseRepository.coursesActivities!, selectedCalendarId);
 
                     result.then((value) {
                       if (value) {

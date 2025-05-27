@@ -18,13 +18,17 @@ void main() {
     });
 
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(
+      await tester.pumpWidget(
+        localizedWidget(
           child: ProgressBarCard(
-              onDismissed: () {},
-              progressBarText: "progressBarText",
-              changeProgressBarText: () {},
-              progress: 0.5,
-              loading: false)));
+            onDismissed: () {},
+            progressBarText: "progressBarText",
+            changeProgressBarText: () {},
+            progress: 0.5,
+            loading: false,
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Find progress card

@@ -10,12 +10,13 @@ class OutageImageSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-        tag: 'ets_logo',
-        child: Image.asset(
-          "assets/animations/outage.gif",
-          excludeFromSemantics: true,
-          width: 500,
-          color: context.theme.appColors.outageGif,
-        ));
+      tag: 'ets_logo',
+      child: Image.asset(
+        "assets/animations/outage.gif",
+        excludeFromSemantics: true,
+        width: 500,
+        color: context.theme.appColors.outageGif,
+      ),
+    );
   }
 }
