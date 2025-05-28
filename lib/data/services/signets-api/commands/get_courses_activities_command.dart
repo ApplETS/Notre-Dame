@@ -89,7 +89,7 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
       for (CourseActivity item in bucket) {
         locations.addAll(item.activityLocation);
       }
-      return bucket.first.copyWith(locations);
+      return bucket.first.copyWithLocations(locations);
     }).toList();
   }
 }

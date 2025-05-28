@@ -70,7 +70,7 @@ class CourseActivity {
     'endDateTime': endDateTime.toString(),
   };
 
-  CourseActivity copyWith(List<String> activityLocation) {
+  CourseActivity copyWithLocations(List<String> activityLocation) {
     return CourseActivity(
       courseGroup: courseGroup,
       courseName: courseName,

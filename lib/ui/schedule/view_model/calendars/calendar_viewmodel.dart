@@ -89,8 +89,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
         _courses = await _courseRepository.getCourses(fromCacheOnly: true);
       }
-      final scheduleActivities = await _courseRepository.getScheduleActivities();
-      await _assignScheduleActivities(scheduleActivities);
     } catch (e) {
       onError(e);
     } finally {
@@ -99,54 +97,10 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return activities ?? [];
   }
 
-  Future _assignScheduleActivities(List<ScheduleActivity> listOfSchedules) async {
-    if (listOfSchedules.isEmpty ||
-        !listOfSchedules.any(
-          (element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode),
-        )) {
-      return;
-    }
-
-    setBusy(true);
-    scheduleActivitiesByCourse.clear();
-    for (final activity in listOfSchedules) {
-      if (activity.activityCode == ActivityCode.labGroupA || activity.activityCode == ActivityCode.labGroupB) {
-        // Create the list with the new activity inside or add the activity to an existing group
-        if (!scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
-          scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
-        } else {
-          scheduleActivitiesByCourse[activity.courseAcronym]?.add(activity);
-        }
-      }
-    }
-
-    await loadSettingsScheduleActivities();
-  }
-
   @override
   void onError(error) {
     throw error;
     Fluttertoast.showToast(msg: appIntl.error);
-  }
-
-  Future loadSettingsScheduleActivities() async {
-    for (final courseAcronym in scheduleActivitiesByCourse.keys) {
-      final String? activityCodeToUse = await _settingsManager.getDynamicString(
-        PreferencesFlag.scheduleLaboratoryGroup,
-        courseAcronym,
-      );
-      final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
-        (element) => element.activityCode == activityCodeToUse,
-      );
-      if (scheduleActivityToSet != null) {
-        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
-      } else {
-        // All group selected
-        settingsScheduleActivities.removeWhere((key, value) => key == courseAcronym);
-      }
-
-      coursesActivities;
-    }
   }
 
   /// Return the list of all the courses activities arranged by date.
