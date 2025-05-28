@@ -63,7 +63,7 @@ class CourseRepository {
   List<Course>? get courses => _courses;
 
   /// List of the courses activities for the student
-  List<CourseActivity>? _coursesActivities;
+  List<CourseActivity>? _coursesActivities = [];
 
   List<CourseActivity>? get coursesActivities => _coursesActivities;
 
@@ -97,6 +97,7 @@ class CourseRepository {
   /// Get and update the list of courses activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheService]
   /// is updated with the latest version of the activities.
+  /// TODO merge activities
   Future<List<CourseActivity>?> getCoursesActivities({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
@@ -105,21 +106,17 @@ class CourseRepository {
     }
 
     // Load the activities from the cache if the list doesn't exist
-    if (_coursesActivities == null) {
-      _coursesActivities = [];
+    if (fromCacheOnly) {
       try {
         final List responseCache = jsonDecode(await _cacheManager.get(coursesActivitiesCacheKey)) as List<dynamic>;
 
         // Build list of activities loaded from the cache.
         _coursesActivities = responseCache.map((e) => CourseActivity.fromJson(e as Map<String, dynamic>)).toList();
         _logger.d("$tag - getCoursesActivities: ${_coursesActivities?.length ?? 0} activities loaded from cache");
+        return _coursesActivities;
       } on CacheException catch (_) {
         _logger.e("$tag - getCoursesActivities: exception raised while trying to load activities from cache.");
       }
-    }
-
-    if (fromCacheOnly) {
-      return _coursesActivities;
     }
 
     final List<CourseActivity> fetchedCoursesActivities = [];

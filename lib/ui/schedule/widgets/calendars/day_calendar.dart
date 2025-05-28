@@ -204,7 +204,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           titleCentered: true,
           formatButtonVisible: false,
         ),
-        eventLoader: model.coursesActivitiesFor,
+        eventLoader: model.calendarEventsFromDate,
         calendarFormat: CalendarFormat.week,
         focusedDay: model.daySelected,
         calendarBuilders: CalendarBuilders(

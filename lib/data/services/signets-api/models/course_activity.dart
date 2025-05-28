@@ -70,6 +70,18 @@ class CourseActivity {
     'endDateTime': endDateTime.toString(),
   };
 
+  CourseActivity copyWith({ String? activityLocation }) {
+    return CourseActivity(
+      courseGroup: courseGroup,
+      courseName: courseName,
+      activityName: activityName,
+      activityDescription: activityDescription,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      activityLocation: activityLocation ?? this.activityLocation,
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
