@@ -101,6 +101,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   );
 
   Widget bodyPortraitMode() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
     return SafeArea(
       top: false,
       bottom: widget._safeArea,
