@@ -81,9 +81,7 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
 
   List<CourseActivity> mergeLocations(List<CourseActivity> activities) {
     final grouped = groupBy(activities, (CourseActivity a) =>
-    '${a.courseGroup}‖${a.activityName}‖'
-        '${a.startDateTime.toIso8601String()}‖'
-        '${a.endDateTime.toIso8601String()}'
+    '${a.courseGroup}‖${a.activityName}‖${a.startDateTime}‖${a.endDateTime}'
     );
 
     return grouped.values.map((bucket) {
