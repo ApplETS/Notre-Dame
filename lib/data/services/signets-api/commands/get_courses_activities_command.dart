@@ -85,9 +85,11 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     );
 
     return grouped.values.map((bucket) {
-      final any = bucket.first;
-      final locs = bucket.map((e) => e.activityLocation).toSet();
-      return any.copyWith(activityLocation: locs.join('\n'));
+      List<String> locations = [];
+      for (CourseActivity item in bucket) {
+        locations.addAll(item.activityLocation);
+      }
+      return bucket.first.copyWith(locations);
     }).toList();
   }
 }

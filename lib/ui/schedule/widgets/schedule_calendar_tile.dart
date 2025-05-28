@@ -11,10 +11,8 @@ class ScheduleCalendarTile extends StatefulWidget {
   final String? title;
   final String? description;
   final TextStyle? titleStyle;
-  final int? totalEvents;
   final EdgeInsets? padding;
   final Color? backgroundColor;
-  final BorderRadius? borderRadius;
   final DateTime? start;
   final DateTime? end;
   final BuildContext buildContext;
@@ -24,10 +22,8 @@ class ScheduleCalendarTile extends StatefulWidget {
     this.title,
     this.description,
     this.titleStyle,
-    this.totalEvents,
     this.padding,
     this.backgroundColor,
-    this.borderRadius,
     this.start,
     this.end,
     required this.buildContext,
@@ -93,15 +89,12 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     return GestureDetector(
       onTap: _showTileInfo,
       child: Container(
-        decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: widget.borderRadius),
+        decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(6.0)),
         padding: widget.padding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(widget.title ?? "", style: widget.titleStyle),
-            ),
+            Text(widget.title ?? "", style: widget.titleStyle),
           ],
         ),
       ),

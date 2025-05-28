@@ -20,7 +20,7 @@ class CourseActivity {
   final String activityDescription;
 
   /// Place where the activity is given
-  final String activityLocation;
+  final List<String> activityLocation;
 
   /// Date when the activity start
   final DateTime startDateTime;
@@ -44,7 +44,7 @@ class CourseActivity {
     courseName: node.getElement('libelleCours')!.innerText,
     activityName: node.getElement('nomActivite')!.innerText,
     activityDescription: node.getElement('descriptionActivite')!.innerText,
-    activityLocation: node.getElement('local')!.innerText,
+    activityLocation: [node.getElement('local')!.innerText],
     startDateTime: DateTime.parse(node.getElement('dateDebut')!.innerText),
     endDateTime: DateTime.parse(node.getElement('dateFin')!.innerText),
   );
@@ -55,7 +55,7 @@ class CourseActivity {
     courseName: map['courseName'] as String,
     activityName: map['activityName'] as String,
     activityDescription: map['activityDescription'] as String,
-    activityLocation: map['activityLocation'] as String,
+    activityLocation: List.castFrom(map['activityLocation']),
     startDateTime: DateTime.parse(map['startDateTime'] as String),
     endDateTime: DateTime.parse(map['endDateTime'] as String),
   );
@@ -70,7 +70,7 @@ class CourseActivity {
     'endDateTime': endDateTime.toString(),
   };
 
-  CourseActivity copyWith({ String? activityLocation }) {
+  CourseActivity copyWith(List<String> activityLocation) {
     return CourseActivity(
       courseGroup: courseGroup,
       courseName: courseName,
@@ -78,7 +78,7 @@ class CourseActivity {
       activityDescription: activityDescription,
       startDateTime: startDateTime,
       endDateTime: endDateTime,
-      activityLocation: activityLocation ?? this.activityLocation,
+      activityLocation: activityLocation,
     );
   }
 
