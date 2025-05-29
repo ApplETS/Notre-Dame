@@ -205,9 +205,7 @@ void main() {
 
         await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
-        verifyInOrder([
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
-        ]);
+        verifyInOrder([analyticsServiceMock.logError(CourseRepository.tag, any, any, any)]);
       });
 
       test("SignetsAPI returns new activities, the old ones should be maintained and the cache updated.", () async {
@@ -341,9 +339,7 @@ void main() {
         expect(results, activities);
         expect(manager.coursesActivities, activities, reason: "The list of activities should not be empty");
 
-        verifyInOrder([
-          signetsApiMock.getCoursesActivities(session: session.shortName),
-        ]);
+        verifyInOrder([signetsApiMock.getCoursesActivities(session: session.shortName)]);
       });
 
       test("Should force fromCacheOnly mode when user has no connectivity", () async {
