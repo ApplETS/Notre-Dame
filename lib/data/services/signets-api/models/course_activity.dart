@@ -1,6 +1,7 @@
 // FLUTTER / DART / THIRD-PARTIES
 
 // Package imports:
+import 'package:flutter/foundation.dart';
 import 'package:xml/xml.dart';
 
 /// Data-class that represent an activity of a course
@@ -91,7 +92,7 @@ class CourseActivity {
           courseName == other.courseName &&
           activityName == other.activityName &&
           activityDescription == other.activityDescription &&
-          activityLocation == other.activityLocation &&
+          listEquals(activityLocation, other.activityLocation) &&
           startDateTime == other.startDateTime &&
           endDateTime == other.endDateTime;
 

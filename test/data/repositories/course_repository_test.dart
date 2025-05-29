@@ -150,7 +150,6 @@ void main() {
         expect(manager.coursesActivities, isEmpty, reason: "The list of activities should be empty");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any),
         ]);
@@ -241,7 +240,6 @@ void main() {
         ], reason: "The list of activities should not be empty");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([activity, courseActivity])),
         ]);
@@ -262,7 +260,6 @@ void main() {
         expect(manager.coursesActivities, activities, reason: "The list of activities should not have duplicata");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities)),
         ]);
@@ -300,7 +297,6 @@ void main() {
         expect(manager.coursesActivities, [changedActivity], reason: "The list of activities should be updated");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([changedActivity])),
         ]);
@@ -326,7 +322,6 @@ void main() {
         await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
