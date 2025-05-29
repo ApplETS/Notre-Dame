@@ -102,7 +102,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   Future _assignScheduleActivities(List<ScheduleActivity> listOfSchedules) async {
     if (listOfSchedules.isEmpty ||
         !listOfSchedules.any(
-              (element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode),
+          (element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode),
         )) {
       return;
     }
@@ -140,7 +140,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       if (activityCodeToUse != null) print("code : " + activityCodeToUse!);
 
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
-            (element) => element.activityCode == activityCodeToUse,
+        (element) => element.activityCode == activityCodeToUse,
       );
       if (scheduleActivityToSet != null) {
         print("schedule activity to set is " + scheduleActivityToSet!.activityCode);
@@ -172,7 +172,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
             course.courseGroup.split("-").first,
           );
 
-          if (scheduleActivitiesContainsGroup && _scheduleActivityIsSelected(course) || !scheduleActivitiesContainsGroup) {
+          if (scheduleActivitiesContainsGroup && _scheduleActivityIsSelected(course) ||
+              !scheduleActivitiesContainsGroup) {
             value.add(course);
           }
 
@@ -197,7 +198,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     }
 
     final activityNameSelected = settingsScheduleActivities[course.courseGroup.split("-").first];
-    return (activityNameSelected == ActivityCode.labGroupA && "Labo A" == course.activityName) || (activityNameSelected == ActivityCode.labGroupB && "Labo B" == course.activityName);
+    return (activityNameSelected == ActivityCode.labGroupA && "Labo A" == course.activityName) ||
+        (activityNameSelected == ActivityCode.labGroupB && "Labo B" == course.activityName);
   }
 
   List<CalendarEventData> calendarEventsFromDate(DateTime date) {
