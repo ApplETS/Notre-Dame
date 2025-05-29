@@ -1,7 +1,9 @@
 // FLUTTER / DART / THIRD-PARTIES
 
-// Package imports:
+// Flutter imports:
 import 'package:flutter/foundation.dart';
+
+// Package imports:
 import 'package:xml/xml.dart';
 
 /// Data-class that represent an activity of a course
