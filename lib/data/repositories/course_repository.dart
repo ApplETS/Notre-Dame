@@ -97,7 +97,6 @@ class CourseRepository {
   /// Get and update the list of courses activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheService]
   /// is updated with the latest version of the activities.
-  /// TODO merge activities
   Future<List<CourseActivity>?> getCoursesActivities({bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {

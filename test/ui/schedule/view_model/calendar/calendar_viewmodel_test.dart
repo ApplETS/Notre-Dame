@@ -208,7 +208,7 @@ void main() {
       );
 
       await viewModel.loadSettingsScheduleActivities();
-      expect(viewModel.settingsScheduleActivities['XYZ321'], equals('Laboratoire (Groupe A)'));
+      expect(viewModel.settingsScheduleActivities['XYZ321'], equals(ActivityCode.labGroupA));
     });
 
     test('loadSettingsScheduleActivities removes settings when no matching activity found', () async {

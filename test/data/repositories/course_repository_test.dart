@@ -108,7 +108,7 @@ void main() {
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -122,7 +122,7 @@ void main() {
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -142,7 +142,7 @@ void main() {
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -172,7 +172,7 @@ void main() {
         clearInteractions(userRepositoryMock);
         clearInteractions(signetsApiMock);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -199,7 +199,7 @@ void main() {
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         expect(manager.getCoursesActivities(), throwsA(isInstanceOf<ApiException>()));
 
         await untilCalled(networkingServiceMock.hasConnectivity());
@@ -230,7 +230,7 @@ void main() {
         // Stub the SignetsAPI to return 2 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [activity, courseActivity]);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -254,7 +254,7 @@ void main() {
         // Stub the SignetsAPI to return the same activity as the cache
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, activities);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -292,7 +292,7 @@ void main() {
         // Stub the SignetsAPI to return the same activity as the cache
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [changedActivity]);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -317,7 +317,7 @@ void main() {
           exceptionToThrow: const ApiException(prefix: CourseRepository.tag),
         );
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         expect(manager.getCoursesActivities(), throwsA(isInstanceOf<ApiException>()));
 
         await untilCalled(networkingServiceMock.hasConnectivity());
@@ -341,7 +341,7 @@ void main() {
 
         CacheServiceMock.stubUpdateException(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -415,7 +415,7 @@ void main() {
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<ScheduleActivity> results = await manager.getScheduleActivities();
 
         expect(results, isInstanceOf<List<ScheduleActivity>>());

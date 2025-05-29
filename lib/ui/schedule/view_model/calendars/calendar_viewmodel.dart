@@ -155,7 +155,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     _coursesActivities = {};
 
     // Build the map
-    if (_courseRepository.coursesActivities != null) {
+    if (_courseRepository.coursesActivities != []) {
       for (final CourseActivity course in _courseRepository.coursesActivities!) {
         final DateTime dateOnly = course.startDateTime.withoutTime;
 
@@ -188,8 +188,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool _scheduleActivityIsSelected(CourseActivity course) {
-    if (course.activityDescription != ActivityDescriptionName.labA &&
-        course.activityDescription != ActivityDescriptionName.labB) {
+    if (course.activityName != ActivityName.labA &&
+        course.activityName != ActivityName.labB) {
       return true;
     }
 
