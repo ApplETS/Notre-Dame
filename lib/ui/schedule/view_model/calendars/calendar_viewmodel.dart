@@ -125,7 +125,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   @override
   void onError(error) {
-    throw error;
     Fluttertoast.showToast(msg: appIntl.error);
   }
 
