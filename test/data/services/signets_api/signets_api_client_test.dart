@@ -85,7 +85,7 @@ void main() {
         courseName: 'Libelle du cours',
         activityName: 'TP',
         activityDescription: 'Travaux pratiques',
-        activityLocation: 'À distance',
+        activityLocation: ['À distance'],
         startDateTime: DateTime(2020, 9, 3, 18),
         endDateTime: DateTime(2020, 9, 3, 20),
       );
@@ -260,15 +260,10 @@ void main() {
 
       final scheduleActivity = ScheduleActivity(
         courseAcronym: 'GEN101',
-        courseGroup: '01',
         dayOfTheWeek: 1,
-        day: 'Lundi',
         activityCode: ActivityCode.labEvery2Weeks,
-        name: 'Laboratoire aux 2 semaines',
-        isPrincipalActivity: false,
         startTime: DateFormat('HH:mm').parse("08:30"),
         endTime: DateFormat('HH:mm').parse("12:30"),
-        activityLocation: 'À distance',
         courseTitle: 'Generic title',
       );
 

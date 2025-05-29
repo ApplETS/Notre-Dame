@@ -14,7 +14,7 @@ final CourseActivity course = CourseActivity(
   courseName: 'Libelle du cours',
   activityName: 'TP',
   activityDescription: 'Travaux pratiques',
-  activityLocation: 'À distance',
+  activityLocation: ['À distance'],
   startDateTime: DateTime(2020, 9, 3, 18),
   endDateTime: DateTime(2020, 9, 3, 20),
 );
@@ -37,7 +37,7 @@ void main() {
 
       expect(find.text(course.courseGroup), findsOneWidget);
       expect(find.text("${course.courseName}\n${course.activityDescription}"), findsOneWidget);
-      expect(find.text(course.activityLocation), findsOneWidget);
+      expect(find.text(course.activityLocation.first), findsOneWidget);
 
       expect(find.text("18:00"), findsOneWidget);
       expect(find.text("20:00"), findsOneWidget);

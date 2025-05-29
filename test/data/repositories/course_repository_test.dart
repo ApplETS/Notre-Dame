@@ -85,7 +85,7 @@ void main() {
         courseName: "Generic course",
         activityName: "TD",
         activityDescription: "Activity description",
-        activityLocation: "location",
+        activityLocation: ["location"],
         startDateTime: DateTime(2020, 1, 1, 18),
         endDateTime: DateTime(2020, 1, 1, 21),
       );
@@ -222,7 +222,7 @@ void main() {
           courseName: "Generic course",
           activityName: "Another activity name",
           activityDescription: "Activity description",
-          activityLocation: "Another location",
+          activityLocation: ["Another location"],
           startDateTime: DateTime(2020, 1, 2, 18),
           endDateTime: DateTime(2020, 1, 2, 21),
         );
@@ -284,7 +284,7 @@ void main() {
           courseName: activity.courseName,
           activityName: activity.activityName,
           activityDescription: 'Another description',
-          activityLocation: 'Changed location',
+          activityLocation: ['Changed location'],
           startDateTime: activity.startDateTime,
           endDateTime: activity.endDateTime,
         );
@@ -386,15 +386,10 @@ void main() {
 
       final ScheduleActivity scheduleActivity = ScheduleActivity(
         courseAcronym: 'GEN101',
-        courseGroup: '01',
         dayOfTheWeek: 1,
-        day: 'Lundi',
         activityCode: ActivityCode.labEvery2Weeks,
-        name: 'Laboratoire aux 2 semaines',
-        isPrincipalActivity: false,
         startTime: DateFormat('HH:mm').parse("08:30"),
         endTime: DateFormat('HH:mm').parse("12:30"),
-        activityLocation: 'À distance',
         courseTitle: 'Generic title',
       );
 
