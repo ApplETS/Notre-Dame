@@ -95,7 +95,8 @@ void main() {
 
         final String stubResponse = buildResponse(
           GetCoursesActivitiesCommand.responseTag,
-          courseActivityXML + courseActivityXML,
+          // Replace the course to avoid merging (courses at the same time with different locations get merged)
+          courseActivityXML + courseActivityXML.replaceAll("GEN101-01", "GEN102-01"),
           firstElement: 'ListeDesSeances',
         );
 

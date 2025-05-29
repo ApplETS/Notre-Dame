@@ -206,7 +206,6 @@ void main() {
         await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
       });
@@ -343,7 +342,6 @@ void main() {
         expect(manager.coursesActivities, activities, reason: "The list of activities should not be empty");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
         ]);
       });
