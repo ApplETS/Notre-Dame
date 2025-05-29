@@ -179,7 +179,6 @@ void main() {
         expect(manager.coursesActivities, activities, reason: "The list of activities should not be empty");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any),
         ]);

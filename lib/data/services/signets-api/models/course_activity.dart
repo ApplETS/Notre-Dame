@@ -1,6 +1,8 @@
 // FLUTTER / DART / THIRD-PARTIES
 
 // Flutter imports:
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 // Package imports:
@@ -58,7 +60,7 @@ class CourseActivity {
     courseName: map['courseName'] as String,
     activityName: map['activityName'] as String,
     activityDescription: map['activityDescription'] as String,
-    activityLocation: List.castFrom(map['activityLocation']),
+    activityLocation: jsonDecode(map['activityLocation'] as String).cast<String>() as List<String>,
     startDateTime: DateTime.parse(map['startDateTime'] as String),
     endDateTime: DateTime.parse(map['endDateTime'] as String),
   );
@@ -68,7 +70,7 @@ class CourseActivity {
     'courseName': courseName,
     'activityName': activityName,
     'activityDescription': activityDescription,
-    'activityLocation': activityLocation,
+    'activityLocation': jsonEncode(activityLocation),
     'startDateTime': startDateTime.toString(),
     'endDateTime': endDateTime.toString(),
   };
