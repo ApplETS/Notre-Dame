@@ -135,7 +135,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         PreferencesFlag.scheduleLaboratoryGroup,
         courseAcronym,
       );
-      
+
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
         (element) => element.activityCode == activityCodeToUse,
       );
