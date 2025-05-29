@@ -135,15 +135,11 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         PreferencesFlag.scheduleLaboratoryGroup,
         courseAcronym,
       );
-
-      print("acronym : " + courseAcronym);
-      if (activityCodeToUse != null) print("code : " + activityCodeToUse!);
-
+      
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
         (element) => element.activityCode == activityCodeToUse,
       );
       if (scheduleActivityToSet != null) {
-        print("schedule activity to set is " + scheduleActivityToSet!.activityCode);
         settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.activityCode;
       } else {
         // All group selected
@@ -198,8 +194,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     }
 
     final activityNameSelected = settingsScheduleActivities[course.courseGroup.split("-").first];
-    return (activityNameSelected == ActivityCode.labGroupA && "Labo A" == course.activityName) ||
-        (activityNameSelected == ActivityCode.labGroupB && "Labo B" == course.activityName);
+    return (activityNameSelected == ActivityCode.labGroupA && ActivityName.labA == course.activityName) ||
+        (activityNameSelected == ActivityCode.labGroupB && ActivityName.labB == course.activityName);
   }
 
   List<CalendarEventData> calendarEventsFromDate(DateTime date) {
