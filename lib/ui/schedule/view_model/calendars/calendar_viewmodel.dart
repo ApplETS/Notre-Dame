@@ -188,8 +188,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool _scheduleActivityIsSelected(CourseActivity course) {
-    if (course.activityName != ActivityName.labA &&
-        course.activityName != ActivityName.labB) {
+    if (course.activityName != ActivityName.labA && course.activityName != ActivityName.labB) {
       return true;
     }
 
