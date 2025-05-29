@@ -1,8 +1,8 @@
 // Package imports:
+import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:xml/xml.dart';
-import 'package:collection/collection.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
@@ -75,13 +75,17 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     );
 
     /// Build and return the list of CourseActivity
-    List<CourseActivity> activities = responseBody.findAllElements("Seance").map((node) => CourseActivity.fromXmlNode(node)).toList();
+    List<CourseActivity> activities = responseBody
+        .findAllElements("Seance")
+        .map((node) => CourseActivity.fromXmlNode(node))
+        .toList();
     return mergeLocations(activities);
   }
 
   List<CourseActivity> mergeLocations(List<CourseActivity> activities) {
-    final grouped = groupBy(activities, (CourseActivity a) =>
-    '${a.courseGroup}‖${a.activityName}‖${a.startDateTime}‖${a.endDateTime}'
+    final grouped = groupBy(
+      activities,
+      (CourseActivity a) => '${a.courseGroup}‖${a.activityName}‖${a.startDateTime}‖${a.endDateTime}',
     );
 
     return grouped.values.map((bucket) {

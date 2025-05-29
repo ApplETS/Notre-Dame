@@ -31,7 +31,7 @@ class ScheduleActivity {
     required this.dayOfTheWeek,
     required this.startTime,
     required this.endTime,
-    required this.activityCode
+    required this.activityCode,
   });
 
   /// Used to create a new [CourseActivity] instance from a [XMLElement].

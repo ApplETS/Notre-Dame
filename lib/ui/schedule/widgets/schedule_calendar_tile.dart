@@ -93,9 +93,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
         padding: widget.padding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(widget.title ?? "", style: widget.titleStyle),
-          ],
+          children: [Text(widget.title ?? "", style: widget.titleStyle)],
         ),
       ),
     );
