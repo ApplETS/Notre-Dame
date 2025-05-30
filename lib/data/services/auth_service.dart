@@ -28,7 +28,7 @@ class AuthService {
           _retries = 0;
           throw Exception('Max retries reached');
         }
-        getToken();
+        return await getToken();
       }
     }
     _retries = 0;
@@ -65,7 +65,11 @@ class AuthService {
 
   Future<(AuthenticationResult?, MsalException?)> acquireToken({String? loginHint}) async {
     try {
-      final result = await singleAccountPca?.acquireToken(scopes: _scopes, loginHint: loginHint, prompt: Prompt.login);
+      final result = await singleAccountPca?.acquireToken(
+        scopes: _scopes,
+        loginHint: loginHint,
+        prompt: Prompt.selectAccount,
+      );
       _token = result?.accessToken;
       _logger.d('Acquire token => ${result?.toJson()}');
       return (result, null);
@@ -84,10 +88,26 @@ class AuthService {
     } on MsalException catch (e) {
       _logger.e('Acquire token silent failed => $e');
 
-      // If it is a UI required exception, try to acquire token interactively.
       if (e is MsalUiRequiredException) {
-        return acquireToken();
+        return await acquireTokenWithCacheReset();
       }
+      return (null, e);
+    }
+  }
+
+  Future<(AuthenticationResult?, MsalException?)> acquireTokenWithCacheReset() async {
+    try {
+      _token = null;
+
+      await signOut();
+
+      final result = await singleAccountPca?.acquireToken(scopes: _scopes, prompt: Prompt.login);
+
+      _token = result?.accessToken;
+      _logger.d('Token acquired with cache reset => ${result?.toJson()}');
+      return (result, null);
+    } on MsalException catch (e) {
+      _logger.e('Token acquisition with cache reset failed => $e');
       return (null, e);
     }
   }
