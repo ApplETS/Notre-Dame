@@ -133,8 +133,8 @@ void main() {
       });
 
       testWidgets("calendar view with event in selected day", (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
@@ -149,8 +149,8 @@ void main() {
 
     group("header", () {
       testWidgets("calendar view with event in selected day", (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
