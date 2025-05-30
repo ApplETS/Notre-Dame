@@ -39,21 +39,15 @@ mixin RequestBuilderService {
       RequestBuilderService.retries++;
       if (retries > maxRetry) {
         retries = 0;
-        throw ApiException(
-          prefix: tagError,
-          message: "Token invalide. Veuillez vous déconnecter et vous reconnecter."
-        );
+        throw ApiException(prefix: tagError, message: "Token invalide. Veuillez vous déconnecter et vous reconnecter.");
       }
 
       final authService = locator<AuthService>();
       final tokenResult = await authService.acquireTokenSilent();
-      
+
       if (tokenResult.$1 == null) {
         retries = 0;
-        throw ApiException(
-          prefix: tagError,
-          message: "Session expirée. Veuillez vous reconnecter."
-        );
+        throw ApiException(prefix: tagError, message: "Session expirée. Veuillez vous reconnecter.");
       }
 
       return await sendRequest(
