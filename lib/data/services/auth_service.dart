@@ -9,7 +9,6 @@ import 'package:notredame/locator.dart';
 class AuthService {
   String? _token;
   final int _maxRetry = 3;
-  int _retries = 0;
 
   final _scopes = ['api://etsmobileapi/access_as_user'];
 
@@ -18,21 +17,20 @@ class AuthService {
   final Logger _logger = locator<Logger>();
 
   Future<String> getToken() async {
-    while (_retries <= _maxRetry) {
-      if (_token != null) {
-        _retries = 0;
-        return _token!;
-      }
+    int attempt = 0;
+
+    while (attempt <= _maxRetry) {
+      if (_token != null) return _token!;
+
       final result = await acquireTokenSilent();
       if (result.$1 != null) {
-        _token = result.$1?.accessToken;
-        _retries = 0;
+        _token = result.$1!.accessToken;
         return _token!;
-      } else {
-        _retries++;
       }
+      
+      attempt++;
     }
-    _retries = 0;
+
     throw Exception('Max retries reached');
   }
 
