@@ -27,7 +27,7 @@ class AuthService {
         _token = result.$1!.accessToken;
         return _token!;
       }
-      
+
       attempt++;
     }
 
