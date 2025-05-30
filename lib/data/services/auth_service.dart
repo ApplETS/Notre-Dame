@@ -18,21 +18,22 @@ class AuthService {
   final Logger _logger = locator<Logger>();
 
   Future<String> getToken() async {
-    if (_token == null) {
+    while (_retries <= _maxRetry) {
+      if (_token != null) {
+        _retries = 0;
+        return _token!;
+      }
       final result = await acquireTokenSilent();
       if (result.$1 != null) {
         _token = result.$1?.accessToken;
+        _retries = 0;
+        return _token!;
       } else {
         _retries++;
-        if (_retries > _maxRetry) {
-          _retries = 0;
-          throw Exception('Max retries reached');
-        }
-        return await getToken();
       }
     }
     _retries = 0;
-    return _token!;
+    throw Exception('Max retries reached');
   }
 
   Future<(bool, MsalException?)> createPublicClientApplication({
