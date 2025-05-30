@@ -314,9 +314,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     );
 
     return activityCodeToUse == ActivityCode.labGroupA
-        ? courseActivity.activityDescription != ActivityDescriptionName.labB
+        ? courseActivity.activityName != ActivityName.labB
         : activityCodeToUse == ActivityCode.labGroupB
-        ? courseActivity.activityDescription != ActivityDescriptionName.labA
+        ? courseActivity.activityName != ActivityName.labA
         : true;
   }
 

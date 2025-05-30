@@ -85,7 +85,7 @@ void main() {
         courseName: 'Libelle du cours',
         activityName: 'TP',
         activityDescription: 'Travaux pratiques',
-        activityLocation: 'À distance',
+        activityLocation: ['À distance'],
         startDateTime: DateTime(2020, 9, 3, 18),
         endDateTime: DateTime(2020, 9, 3, 20),
       );
@@ -95,7 +95,8 @@ void main() {
 
         final String stubResponse = buildResponse(
           GetCoursesActivitiesCommand.responseTag,
-          courseActivityXML + courseActivityXML,
+          // Replace the course to avoid merging (courses at the same time with different locations get merged)
+          courseActivityXML + courseActivityXML.replaceFirst("GEN101-01", "GEN102-01"),
           firstElement: 'ListeDesSeances',
         );
 
@@ -111,6 +112,31 @@ void main() {
         expect(result, isA<List<CourseActivity>>());
         expect(result.first == courseActivity, isTrue);
         expect(result.length, 2);
+      });
+
+      test("right credentials and valid parameters, merges events", () async {
+        const String session = "A2020";
+
+        final String stubResponse = buildResponse(
+          GetCoursesActivitiesCommand.responseTag,
+          // Replace the course to avoid merging (courses at the same time with different locations get merged)
+          courseActivityXML + courseActivityXML.replaceFirst("À distance", "D-2020"),
+          firstElement: 'ListeDesSeances',
+        );
+
+        final startDate = DateTime(2020, 9, 3, 18);
+        final endDate = DateTime(2020, 9, 3, 20);
+        final queryParameters = {"session": session, "dateDebut": '2020-09-03', "dateFin": "2020-09-03"};
+        final uri = Uri.https(Urls.signetsAPI, GetCoursesActivitiesCommand.endpoint, queryParameters);
+        clientMock = HttpClientMockHelper.stubGet(uri.toString(), stubResponse);
+        service = buildService(clientMock);
+
+        final result = await service.getCoursesActivities(session: session, startDate: startDate, endDate: endDate);
+
+        expect(result, isA<List<CourseActivity>>());
+        expect(result.first == courseActivity, isFalse);
+        expect(result.first.activityLocation.length, 2);
+        expect(result.length, 1);
       });
 
       /// This occur when register for a internship without any other courses
@@ -260,15 +286,10 @@ void main() {
 
       final scheduleActivity = ScheduleActivity(
         courseAcronym: 'GEN101',
-        courseGroup: '01',
         dayOfTheWeek: 1,
-        day: 'Lundi',
         activityCode: ActivityCode.labEvery2Weeks,
-        name: 'Laboratoire aux 2 semaines',
-        isPrincipalActivity: false,
         startTime: DateFormat('HH:mm').parse("08:30"),
         endTime: DateFormat('HH:mm').parse("12:30"),
-        activityLocation: 'À distance',
         courseTitle: 'Generic title',
       );
 
