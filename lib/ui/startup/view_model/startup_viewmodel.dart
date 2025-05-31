@@ -16,7 +16,6 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
