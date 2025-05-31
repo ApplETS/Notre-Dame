@@ -1,7 +1,7 @@
 # Contribuer
 
 Lors de la contribution à ce répertoire, veuillez commencer par discuter des changements que vous
-souhaitez appliquer par le biais d'un "issue", email, ou tout autre moyen avec le propriétaire de ce
+souhaitez appliquer par le biais d'un "_issue_", email, ou tout autre moyen avec le propriétaire de ce
 répertoire.
 
 Prendre note que nous avons un code de conduite, veuillez le suivre pour toutes vos interactions
@@ -34,8 +34,9 @@ pull request" en utilisant les étiquettes: `version: Major`,`version: Minor` ou
 1. **Définir un problème relié**
 
 Si vous voulez suggérer des modification, svp faire un `Issue` pour en discuter.
-Pour plus d'information:
+<br/>Pour plus d'information:
 [Lien de la documentation sur les "GitHub Issues"](https://docs.github.com/fr/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
+<br/>SVP inscrire le `Issue` ici: (utiliser le mot-clé `closes: #12345`)
 
 2. **Description**
 
@@ -65,79 +66,68 @@ Si c’est un changement visuel, veuillez fournir une capture d’écran.
 
 ### Notre Engagement
 
-In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, gender identity and expression, level of experience,
-nationality, personal appearance, race, religion, or sexual identity and
-orientation.
-
 Afin de favoriser un environnement ouvert et accueillant, nous les contributeurs et mainteneurs
 s’engagent à participer à notre projet et notre communauté une expérience sans harcèlement pour tout
 le monde, peu importe l’âge, condition physique, handicap, origine ethnique, identité et expression
-de
-genre, niveau d’expérience, nationalité, apparence personnelle, race, religion ou identité sexuelle
-et orientation.
+de genre, niveau d’expérience, nationalité, apparence personnelle, race, religion ou identité
+sexuelle et orientation.
 
 ### Nos Standards
 
-Examples of behavior that contributes to creating a positive environment
-include:
+Voici des exemples de comportements qui contribuent à la création d’un environnement positif:
 
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
+* Utiliser un langage accueillant et inclusif
+* Respecter les points de vue et les expériences différents
+* Accepter gracieusement les critiques constructives
+* Se concentrer sur ce qui est le mieux pour la collectivité
+* Faire preuve d’empathie envers les autres membres de la communauté
 
-Examples of unacceptable behavior by participants include:
+Voici des exemples de comportements inacceptables:
 
-* The use of sexualized language or imagery and unwelcome sexual attention or advances
-* Trolling, insulting/derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or electronic address, without explicit
-  permission
-* Other conduct which could reasonably be considered inappropriate in a professional setting
+* L’utilisation d’un langage ou d’images sexualisés et une attention sexuelle ou des avances non
+  désirée
+* Trolling, insultes/commentaires désobligeants et attaques personnelles ou politiques
+* Harcèlement public ou privé
+* Publier les renseignements personnels d’autrui, comme une adresse physique ou électronique, sans
+  autorisation explicite
+* Autres comportements qui pourraient raisonnablement être considérés comme inappropriés dans un
+  contexte professionnel
 
-### Our Responsibilities
+### Nos Responsabilités
 
-Project maintainers are responsible for clarifying the standards of acceptable
-behavior and are expected to take appropriate and fair corrective action in
-response to any instances of unacceptable behavior.
+Les responsables du projet sont chargés de clarifier les normes de comportement acceptable et
+doivent prendre des mesures correctives appropriées et équitables en réponse à tout cas de
+comportement inacceptable.
 
-Project maintainers have the right and responsibility to remove, edit, or
-reject comments, commits, code, wiki edits, issues, and other contributions
-that are not aligned to this Code of Conduct, or to ban temporarily or
-permanently any contributor for other behaviors that they deem inappropriate,
-threatening, offensive, or harmful.
+Les responsables du projet ont le droit et la responsabilité de supprimer, modifier ou rejeter des
+commentaires, des confirmations, du code, des modifications au wiki, des problèmes et d’autres
+contributions qui ne sont pas alignées sur ce code de conduite, ou d’interdire temporairement ou
+définitivement tout contributeur pour d’autres comportements qu’ils jugent inappropriés, menaçants,
+offensants ou nuisibles.
 
-### Scope
+### Champ d'Application
 
-This Code of Conduct applies both within project spaces and in public spaces
-when an individual is representing the project or its community. Examples of
-representing a project or community include using an official project e-mail
-address, posting via an official social media account, or acting as an appointed
-representative at an online or offline event. Representation of a project may be
-further defined and clarified by project maintainers.
+Ce code de conduite s’applique aussi bien dans les espaces du projet que dans les espaces publics
+lorsqu’une personne représente le projet ou sa communauté. Les exemples de représentation d’un
+projet ou d’une communauté comprennent l’utilisation d’une adresse électronique officielle du
+projet, la publication par l’intermédiaire d’un compte officiel sur les médias sociaux ou le fait
+d’agir en tant que représentant désigné à un événement en ligne ou hors ligne. La représentation
+d’un projet peut être définie et clarifiée par les responsables du projet.
 
-### Enforcement
+### Application des Règlement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at applets@etsmtl.ca. All
-complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
-obligated to maintain confidentiality with regard to the reporter of an incident.
-Further details of specific enforcement policies may be posted separately.
+Les cas de comportement abusif, harcelant ou inacceptable peuvent être signalés en communiquant avec
+l’équipe du projet à [applets@etsmtl.ca](mailto:applets@etsmtl.ca). Toutes les plaintes feront
+l’objet d’un examen et d’une enquête, et donneront lieu à une réponse jugée nécessaire et appropriée
+aux circonstances. L’équipe de projet est tenue de respecter la confidentialité à l’égard du
+déclarant d’un incident. De plus amples détails sur les politiques d’application spécifiques peuvent
+être affichés séparément.
 
-Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
+Les responsables du projet qui ne suivent pas ou n’appliquent pas le code de bonne foi peuvent être
+confrontés à des répercussions temporaires ou permanentes déterminées par d’autres membres de la
+direction du projet.
 
 ### Attribution
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at [http://contributor-covenant.org/version/1/4][version]
-
-[homepage]: http://contributor-covenant.org
-
-[version]: http://contributor-covenant.org/version/1/4/
+Le présent code de conduite est une adaptation du [Contributor Covenant](http://contributor-covenant.org), version 1.4,
+disponible à l’adresse suivante: [http://contributor-covenant.org/version/1/4](http://contributor-covenant.org/version/1/4/)

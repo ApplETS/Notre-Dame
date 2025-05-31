@@ -30,10 +30,10 @@ using the specified label: `version: Major`,`version: Minor` or `version: Patch`
 
 1. **Define a related Issue**
 
-If suggesting a new feature or change, please discuss it in an issue first
-For more
-explanation: https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword
-Please link the issue here: (use keyword `closes: #12345`)
+If suggesting a new feature or change, please discuss it in an issue first.
+<br/>For more explanation: 
+[GitHub Issue Documentation](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
+<br/>Please link the issue here: (use keyword `closes: #12345`)
 
 2. **Description**
 
@@ -116,7 +116,7 @@ further defined and clarified by project maintainers.
 ### Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at applets@etsmtl.ca. All
+reported by contacting the project team at [applets@etsmtl.ca](mailto:applets@etsmtl.ca). All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
