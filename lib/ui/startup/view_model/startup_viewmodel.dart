@@ -51,13 +51,6 @@ class StartUpViewModel extends BaseViewModel {
 
     final bool isLogin = (await _authService.acquireTokenSilent()).$2 == null;
 
-    Fluttertoast.showToast(
-      msg: translations.startup_failed_acquire_token,
-      backgroundColor: AppPalette.grey.white,
-      textColor: AppPalette.grey.black,
-      toastLength: Toast.LENGTH_LONG,
-    );
-
     if (isLogin) {
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
@@ -70,6 +63,7 @@ class StartUpViewModel extends BaseViewModel {
         attempts++;
         token = (await _authService.acquireToken()).$1;
         if (token == null && attempts >= maxAttempts) {
+          Fluttertoast.showToast(msg: translations.startup_failed_acquire_token, toastLength: Toast.LENGTH_LONG);
           await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
           return;
         }
