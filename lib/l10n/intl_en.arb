@@ -46,6 +46,8 @@
 
   "close_button_text": "Close",
 
+  "startup_failed_acquire_token": "Failed to establish connection after multiple attempts. Please try again.",
+
   "title_schedule": "Schedule",
   "title_student": "Student",
   "title_dashboard": "Dashboard",

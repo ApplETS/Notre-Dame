@@ -15,7 +15,7 @@ class StartUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<StartUpViewModel>.nonReactive(
-    viewModelBuilder: () => StartUpViewModel(),
+    viewModelBuilder: () => StartUpViewModel()..context = context,
     onViewModelReady: (StartUpViewModel model) {
       model.handleStartUp();
     },

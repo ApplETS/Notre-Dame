@@ -1,4 +1,8 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Package imports:
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:msal_auth/msal_auth.dart';
 import 'package:stacked/stacked.dart';
 
@@ -6,6 +10,8 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
@@ -19,6 +25,9 @@ class StartUpViewModel extends BaseViewModel {
   final NetworkingService _networkingService = locator<NetworkingService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  late final BuildContext context;
+  AppIntl get translations => AppIntl.of(context)!;
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
@@ -41,6 +50,13 @@ class StartUpViewModel extends BaseViewModel {
     }
 
     final bool isLogin = (await _authService.acquireTokenSilent()).$2 == null;
+
+    Fluttertoast.showToast(
+      msg: translations.startup_failed_acquire_token,
+      backgroundColor: AppPalette.grey.white,
+      textColor: AppPalette.grey.black,
+      toastLength: Toast.LENGTH_LONG,
+    );
 
     if (isLogin) {
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
