@@ -62,7 +62,10 @@ class StartUpViewModel extends BaseViewModel {
         attempts++;
         token = (await _authService.acquireToken()).$1;
         if (token == null && attempts >= maxAttempts) {
-          Fluttertoast.showToast(msg: translations.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
+          Fluttertoast.showToast(
+            msg: translations.startup_viewmodel_acquire_token_fail,
+            toastLength: Toast.LENGTH_LONG,
+          );
           await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
           return;
         }
