@@ -11,6 +11,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/auth_service_mock.dart';
@@ -25,6 +26,7 @@ void main() {
   late AuthServiceMock authServiceMock;
 
   late StartUpViewModel viewModel;
+  late AppIntl appIntl;
 
   group('StartupViewModel - ', () {
     setUp(() async {
@@ -34,7 +36,8 @@ void main() {
       networkingServiceMock = setupNetworkingServiceMock();
       authServiceMock = setupAuthServiceMock();
 
-      viewModel = StartUpViewModel();
+      appIntl = await setupAppIntl();
+      viewModel = StartUpViewModel(intl: appIntl);
     });
 
     tearDown(() {

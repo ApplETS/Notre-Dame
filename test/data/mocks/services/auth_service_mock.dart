@@ -57,6 +57,29 @@ class AuthServiceMock extends MockAuthService {
     when(mock.acquireToken()).thenAnswer((_) async => (result, exception));
   }
 
+  static void stubAcquireTokenWithCacheReset(AuthServiceMock mock, {bool success = true}) {
+    AuthenticationResult? result;
+    MsalException? exception;
+
+    if (success) {
+      result = AuthenticationResult(
+        accessToken: '',
+        authenticationScheme: '',
+        expiresOn: DateTime.now(),
+        idToken: '',
+        authority: '',
+        tenantId: '',
+        scopes: [''],
+        correlationId: '',
+        account: Account(id: '', username: '', name: ''),
+      );
+    } else {
+      exception = MsalException(message: 'Error');
+    }
+
+    when(mock.acquireTokenWithCacheReset()).thenAnswer((_) async => (result, exception));
+  }
+
   static void stubSignOut(AuthServiceMock mock) {
     when(mock.signOut()).thenAnswer((_) async => (true, null));
   }

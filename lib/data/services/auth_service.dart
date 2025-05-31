@@ -9,7 +9,6 @@ import 'package:notredame/locator.dart';
 class AuthService {
   String? _token;
   final int _maxRetry = 3;
-  int _retries = 0;
 
   final _scopes = ['api://etsmobileapi/access_as_user'];
 
@@ -18,21 +17,21 @@ class AuthService {
   final Logger _logger = locator<Logger>();
 
   Future<String> getToken() async {
-    if (_token == null) {
+    int attempt = 0;
+
+    while (attempt <= _maxRetry) {
+      if (_token != null) return _token!;
+
       final result = await acquireTokenSilent();
       if (result.$1 != null) {
-        _token = result.$1?.accessToken;
-      } else {
-        _retries++;
-        if (_retries > _maxRetry) {
-          _retries = 0;
-          throw Exception('Max retries reached');
-        }
-        getToken();
+        _token = result.$1!.accessToken;
+        return _token!;
       }
+
+      attempt++;
     }
-    _retries = 0;
-    return _token!;
+
+    throw Exception('Max retries reached');
   }
 
   Future<(bool, MsalException?)> createPublicClientApplication({
@@ -65,7 +64,11 @@ class AuthService {
 
   Future<(AuthenticationResult?, MsalException?)> acquireToken({String? loginHint}) async {
     try {
-      final result = await singleAccountPca?.acquireToken(scopes: _scopes, loginHint: loginHint, prompt: Prompt.login);
+      final result = await singleAccountPca?.acquireToken(
+        scopes: _scopes,
+        loginHint: loginHint,
+        prompt: Prompt.selectAccount,
+      );
       _token = result?.accessToken;
       _logger.d('Acquire token => ${result?.toJson()}');
       return (result, null);
@@ -84,10 +87,26 @@ class AuthService {
     } on MsalException catch (e) {
       _logger.e('Acquire token silent failed => $e');
 
-      // If it is a UI required exception, try to acquire token interactively.
       if (e is MsalUiRequiredException) {
-        return acquireToken();
+        return await acquireTokenWithCacheReset();
       }
+      return (null, e);
+    }
+  }
+
+  Future<(AuthenticationResult?, MsalException?)> acquireTokenWithCacheReset() async {
+    try {
+      _token = null;
+
+      await signOut();
+
+      final result = await singleAccountPca?.acquireToken(scopes: _scopes, prompt: Prompt.login);
+
+      _token = result?.accessToken;
+      _logger.d('Token acquired with cache reset => ${result?.toJson()}');
+      return (result, null);
+    } on MsalException catch (e) {
+      _logger.e('Token acquisition with cache reset failed => $e');
       return (null, e);
     }
   }
