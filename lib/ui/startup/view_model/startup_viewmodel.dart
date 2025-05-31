@@ -1,6 +1,3 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:msal_auth/msal_auth.dart';
@@ -25,8 +22,8 @@ class StartUpViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  late final BuildContext context;
-  AppIntl get translations => AppIntl.of(context)!;
+  final AppIntl intl;
+  StartUpViewModel({required this.intl});
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
@@ -62,7 +59,7 @@ class StartUpViewModel extends BaseViewModel {
         attempts++;
         token = (await _authService.acquireToken()).$1;
         if (token == null && attempts >= maxAttempts) {
-          Fluttertoast.showToast(msg: translations.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
+          Fluttertoast.showToast(msg: intl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
           await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
           return;
         }

@@ -9,13 +9,14 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 
 class StartUpView extends StatelessWidget {
   const StartUpView({super.key});
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<StartUpViewModel>.nonReactive(
-    viewModelBuilder: () => StartUpViewModel()..context = context,
+    viewModelBuilder: () => StartUpViewModel(intl: AppIntl.of(context)!),
     onViewModelReady: (StartUpViewModel model) {
       model.handleStartUp();
     },
