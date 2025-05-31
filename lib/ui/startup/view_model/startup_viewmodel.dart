@@ -10,13 +10,13 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
-import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
