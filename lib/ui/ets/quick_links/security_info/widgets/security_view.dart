@@ -1,16 +1,16 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
 
 // Package imports:
-import 'package:stacked/stacked.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/view_model/security_viewmodel.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/emergency_view.dart';
@@ -41,18 +41,18 @@ class _SecurityViewState extends State<SecurityView> {
             spacing: 12,
             children: [
               LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    return ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      child: Container(
-                        color: context.theme.appColors.backgroundAlt,
-                        child: SvgPicture.asset(
-                          "assets/images/emergency_meeting_points_" + context.theme.brightness.name + ".svg",
-                          width: constraints.maxWidth,
-                        ),
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: Container(
+                      color: context.theme.appColors.backgroundAlt,
+                      child: SvgPicture.asset(
+                        "assets/images/emergency_meeting_points_" + context.theme.brightness.name + ".svg",
+                        width: constraints.maxWidth,
                       ),
-                    );
-                  }
+                    ),
+                  );
+                },
               ),
               joinSecurity(),
               emergencyProcedures(model),

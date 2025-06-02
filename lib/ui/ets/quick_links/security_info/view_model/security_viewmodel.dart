@@ -16,8 +16,7 @@ class SecurityViewModel extends BaseViewModel {
 
   final List<EmergencyProcedure> emergencyProcedureList;
 
-  SecurityViewModel({required AppIntl intl})
-    : emergencyProcedureList = emergencyProcedures(intl);
+  SecurityViewModel({required AppIntl intl}) : emergencyProcedureList = emergencyProcedures(intl);
 
   /// Used to load a Json file
   Future<String> getJsonFile(String path) async {
