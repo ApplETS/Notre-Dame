@@ -1,9 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // Project imports:
 import 'package:notredame/data/models/emergency_procedures.dart';
@@ -24,12 +24,12 @@ void main() {
     tearDown(() {});
 
     group('UI - ', () {
-      testWidgets('has maps view and emergency procedures', (WidgetTester tester) async {
+      testWidgets('has map view and emergency procedures', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: SecurityView()));
         await tester.pumpAndSettle();
 
-        final gMaps = find.byType(GoogleMap);
-        expect(gMaps, findsOneWidget);
+        final map = find.byType(SvgPicture);
+        expect(map, findsOneWidget);
 
         final Finder emergencyProceduresList = find.text('Bomb threat');
         expect(emergencyProceduresList, findsOneWidget);
