@@ -1,11 +1,10 @@
 // Flutter imports:
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 // Package imports:
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -25,10 +24,6 @@ class SecurityView extends StatefulWidget {
 
 class _SecurityViewState extends State<SecurityView> {
   final LaunchUrlService _launchUrlService = locator<LaunchUrlService>();
-  static const CameraPosition _etsLocation = CameraPosition(
-    target: LatLng(45.49449875, -73.56246144109338),
-    zoom: 17.0,
-  );
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<SecurityViewModel>.reactive(
@@ -36,28 +31,28 @@ class _SecurityViewState extends State<SecurityView> {
     builder: (context, model, child) => BaseScaffold(
       appBar: AppBar(title: Text(AppIntl.of(context)!.ets_security_title)),
       showBottomBar: false,
+      safeArea: false,
       body: SafeArea(
         top: false,
         bottom: false,
         child: SingleChildScrollView(
+          padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0, bottom: 32.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12,
             children: [
-              SizedBox(
-                height: 250,
-                child: GoogleMap(
-                  initialCameraPosition: _etsLocation,
-                  style: model.mapStyle,
-                  zoomControlsEnabled: false,
-                  markers: model.getSecurityMarkersForMaps(model.markersList),
-                  onMapCreated: (GoogleMapController controller) {
-                    model.controller = controller;
-                    model.changeMapMode(context);
-                  },
-                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                    Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
-                  },
-                ),
+              LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    return ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        color: context.theme.appColors.backgroundAlt,
+                        child: SvgPicture.asset(
+                          "assets/images/emergency_meeting_points_" + context.theme.brightness.name + ".svg",
+                          width: constraints.maxWidth,
+                        ),
+                      ),
+                    );
+                  }
               ),
               joinSecurity(),
               emergencyProcedures(model),
@@ -68,47 +63,43 @@ class _SecurityViewState extends State<SecurityView> {
     ),
   );
 
-  Widget joinSecurity() => Padding(
-    padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppIntl.of(context)!.security_reach_security,
-          style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 24),
-        ),
-        Card(
-          child: InkWell(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            onTap: () {
-              try {
-                _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-              }
-            },
-            child: ListTile(
-              leading: const Icon(Icons.phone, size: 30),
-              title: Text(AppIntl.of(context)!.security_emergency_call),
-              subtitle: Text(AppIntl.of(context)!.security_emergency_number),
-            ),
-          ),
-        ),
-        Card(
-          elevation: 0,
-          color: Colors.transparent,
+  Widget joinSecurity() => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        AppIntl.of(context)!.security_reach_security,
+        style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 24),
+      ),
+      Card(
+        child: InkWell(
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          onTap: () {
+            try {
+              _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+            }
+          },
           child: ListTile(
             leading: const Icon(Icons.phone, size: 30),
-            title: Text(AppIntl.of(context)!.security_emergency_intern_call),
-            subtitle: Text(AppIntl.of(context)!.security_emergency_intern_number),
+            title: Text(AppIntl.of(context)!.security_emergency_call),
+            subtitle: Text(AppIntl.of(context)!.security_emergency_number),
           ),
         ),
-      ],
-    ),
+      ),
+      Card(
+        elevation: 0,
+        color: Colors.transparent,
+        child: ListTile(
+          leading: const Icon(Icons.phone, size: 30),
+          title: Text(AppIntl.of(context)!.security_emergency_intern_call),
+          subtitle: Text(AppIntl.of(context)!.security_emergency_intern_number),
+        ),
+      ),
+    ],
   );
 
   Widget emergencyProcedures(SecurityViewModel model) => SingleChildScrollView(
-    padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 24.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
