@@ -40,20 +40,7 @@ class _SecurityViewState extends State<SecurityView> {
           child: Column(
             spacing: 12,
             children: [
-              LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: Container(
-                      color: context.theme.appColors.backgroundAlt,
-                      child: SvgPicture.asset(
-                        "assets/images/emergency_meeting_points_" + context.theme.brightness.name + ".svg",
-                        width: constraints.maxWidth,
-                      ),
-                    ),
-                  );
-                },
-              ),
+              map(),
               joinSecurity(),
               emergencyProcedures(model),
             ],
@@ -61,6 +48,21 @@ class _SecurityViewState extends State<SecurityView> {
         ),
       ),
     ),
+  );
+
+  Widget map() => LayoutBuilder(
+    builder: (BuildContext context, BoxConstraints constraints) {
+      return ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        child: Container(
+          color: context.theme.appColors.backgroundAlt,
+          child: SvgPicture.asset(
+            "assets/images/emergency_meeting_points_" + context.theme.brightness.name + ".svg",
+            width: constraints.maxWidth,
+          ),
+        ),
+      );
+    },
   );
 
   Widget joinSecurity() => Column(
