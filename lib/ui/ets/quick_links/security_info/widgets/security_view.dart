@@ -50,7 +50,7 @@ class _SecurityViewState extends State<SecurityView> {
         child: Container(
           color: context.theme.appColors.backgroundAlt,
           child: SvgPicture.asset(
-            "assets/images/emergency_meeting_points_" + context.theme.brightness.name + ".svg",
+            "assets/images/emergency_meeting_points_${context.theme.brightness.name}.svg",
             width: constraints.maxWidth,
           ),
         ),
