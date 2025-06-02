@@ -1,6 +1,5 @@
 import UIKit
 import Flutter
-import GoogleMaps
 import MSAL
 
 @main
@@ -10,9 +9,6 @@ import MSAL
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    // Google Maps API key initialization
-    GMSServices.provideAPIKey("\(Bundle.main.object(forInfoDictionaryKey: "MAPS_API_KEY") ?? "")")
-
     // Register generated plugins for Flutter
     GeneratedPluginRegistrant.register(with: self)
 
