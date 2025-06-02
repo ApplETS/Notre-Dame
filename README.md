@@ -16,16 +16,17 @@
   </p>
 </div>
 
-This project is the placeholder for the fourth version of ÉTSMobile, a mobile which application that is currently
-available for Android and iOS. ÉTSMobile is the main gateway between the user and
-the [École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/) on mobile devices. ÉTSMobile is an open-source
-project and is developped by members of the student club [ApplETS](https://clubapplets.ca/). It offers:
+This project is the placeholder for the fourth version of ÉTSMobile, a mobile which application that
+is currently available for Android and iOS. ÉTSMobile is the main gateway between the user and
+the [École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/) on mobile devices. ÉTSMobile is
+an open-source project and is developped by members of the student
+club [ApplETS](https://clubapplets.ca/). It offers:
 
 * Access to evaluation grades
 * Access to the student's schedules
 * And many more...
 
-_Note: This guide is also available in: [Français](README.fr.md)_
+<ins>_Note: Ce guide est aussi disponible en: [Français](README.fr.md)_<ins/>
 
 ## Technologies used
 
@@ -52,9 +53,11 @@ _Note: This guide is also available in: [Français](README.fr.md)_
 
 ## Before running the code
 
-- To access some features you will need the SignetsAPI certificate, these files are encrypted. To decrypt them you will have to do two simple steps:
+- To access some features you will need the SignetsAPI certificate, these files are encrypted. To
+  decrypt them you will have to do two simple steps:
 
-You need to copy the script `env_variables.sh` (only available on the Google Drive of the club) to the root folder of your project, then run:
+You need to copy the script `env_variables.sh` (only available on the Google Drive of the club) to
+the root folder of your project, then run:
 
 ### Linux and MacOS
 
@@ -73,8 +76,9 @@ sh "env_variables.sh"
 
 ## Run the code
 
-- After cloning the repo, you will have to get the packages and generate the l10n classes. To do that run the following
-  command:
+- After cloning the repo, you will have to get the packages and generate the l10n classes. To do
+  that run the following command:
+
 ```
 flutter pub get
 ```
@@ -86,8 +90,8 @@ dart run build_runner build
 
 ## Git hooks
 
-You can find under the folder `.githooks` all the hooks needed for this project. To configure git to use this folder
-enter the following command:
+You can find under the folder `.githooks` all the hooks needed for this project. To configure git to
+use this folder enter the following command:
 
 ```bash
 git config core.hooksPath .githooks
@@ -95,4 +99,10 @@ git config core.hooksPath .githooks
 
 ## How to renew apple certificates:
 
-Follow the procedure in this [repo](https://github.com/ApplETS/fastlane-ios-certificates/blob/master/README.md) available only by admin group and devops group:
+Follow the procedure in
+this [repo](https://github.com/ApplETS/fastlane-ios-certificates/blob/master/README.md) available
+only by admin group and devops group:
+
+## How to contribute to the project
+
+You can contribute to the project by following these [instructions](CONTRIBUTING.md)

@@ -17,15 +17,16 @@
 </div>
 
 Ce projet concrétise la quatrième version de l'application mobile ÉTSMobile pour Android et iOS. Il
-s'agit du portail principal entre l'utilisateur et l'École de technologie supérieure (ÉTS) sur
-appareils mobiles. ÉTSMobile est un projet open-source développé par les membres du club étudiant
-ApplETS. L'application offre notamment :
+s'agit du portail principal entre l'utilisateur et
+l'[École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/) sur appareils mobiles. ÉTSMobile
+est un projet open-source développé par les membres du club
+étudiant [ApplETS](https://clubapplets.ca/). L'application offre notamment :
 
 * L'accès aux notes d'évaluations
 * L'accès aux horaires de cours
 * Et bien plus...
 
-_Note: Ce guide est aussi disponible en: [English](README.md)_
+<ins>_Note: This guide is also available in: [English](README.md)_<ins/>
 
 ## Technologies utilisées
 
@@ -42,22 +43,21 @@ _Note: Ce guide est aussi disponible en: [English](README.md)_
 
 - Télécharger le SDK Flutter à partir de la
   section ["Technologies utilisées"](#Technologies-utilisées)
-  et suivre les instructions officiels.<br>
-  (Il est recommandé d'utiliser 7-zip pour l'extraction du fichier)
-- Ouvrir le menu des paramètres et s'assurer que les extensions Flutter et Dart sont bien installés.
+  et suivre les instructions officielles.<br>
+  (Il est recommandé d'utiliser 7-Zip pour l'extraction du fichier)
+- Ouvrir le menu des paramètres et s'assurer que les extensions Flutter et Dart sont bien
+  installées.
 - Dans le menu des paramètres, se rendre dans la section "Languages & Frameworks".
     - <ins>Flutter</ins>: Ajouter le chemin vers le dossier Flutter.
     - <ins>Dart</ins>: Ajouter le chemin du dossier "flutter/bin/cache/dart-sdk" du dossier Flutter
-      et
-      cocher Notre-Dame comme projet supporté.
+      et cocher Notre-Dame comme projet supporté.
 
 ## Avant de démarrer le code
 
-- Pour avoir accès a certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI,
-  la clef Google Drive., etc. , ces fichiers sont encrypté.
-  Pour les décrypter vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement
-  sur le Google Drive du club),
-  puis exécuter les commandes suivantes à la racine du projet:
+- Pour avoir accès à certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI,
+  la clef Google Drive, etc. Ces fichiers sont encryptés.
+  Pour les décrypter, vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement
+  sur le Google Drive du club), puis exécuter les commandes suivantes à la racine du projet:
 
 ### Linux
 
@@ -97,3 +97,13 @@ afin d'utiliser ce dossier, saisir la commande suivante:
 ```bash
 git config core.hooksPath .githooks
 ```
+
+## Comment renouveler les certificats Apple
+
+Suivre la procédure de
+ce [répertoire](https://github.com/ApplETS/fastlane-ios-certificates/blob/master/README.md),
+accessible uniquement par les groupes admin et devops.
+
+## Comment contribuer au projet
+
+Vous pouvez contribuer au projet en suivant les instructions de ce [document](CONTRIBUTING.fr.md)
