@@ -37,14 +37,7 @@ class _SecurityViewState extends State<SecurityView> {
         bottom: false,
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0, bottom: 32.0),
-          child: Column(
-            spacing: 12,
-            children: [
-              map(),
-              joinSecurity(),
-              emergencyProcedures(model),
-            ],
-          ),
+          child: Column(spacing: 12, children: [map(), joinSecurity(), emergencyProcedures(model)]),
         ),
       ),
     ),
