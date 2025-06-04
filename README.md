@@ -16,7 +16,7 @@
   </p>
 </div>
 
-This project is the placeholder for the fourth version of ÉTSMobile, a mobile which application that
+This project is the placeholder for the fourth version of ÉTSMobile, a mobile application that
 is currently available for Android and iOS. ÉTSMobile is the main gateway between the user and
 the [École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/) on mobile devices. ÉTSMobile is
 an open-source project and is developped by members of the student

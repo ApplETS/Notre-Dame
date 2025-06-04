@@ -26,14 +26,14 @@ pull request" en utilisant les étiquettes: `version: Major`,`version: Minor` ou
 - `version: Major`: utilisé lorsqu'un changement complet de UI est effectué ou lorsqu'un changement
   majeur dans le fonctionnement du projet.
 - `version: Minor`: utilisé lorsqu'une nouvelle fonctionnalité est ajouté dans l'application
-- `version: Patch`: utilisé lorsque aucune fonctionnalité a été ajouté au prjet. Cela inclut le
-  formatage, patches, réglage de bug, etc.
+- `version: Patch`: utilisé lorsque aucune fonctionnalité a été ajouté au projet. Cela inclut le
+  formatage, patches, correction de bug, etc.
 
 ## Processus des "Pull Request"
 
 1. **Définir un problème relié**
 
-Si vous voulez suggérer des modification, svp faire un `Issue` pour en discuter.
+Si vous voulez suggérer des modifications, svp faire un `Issue` pour en discuter.
 <br/>Pour plus d'information:
 [Lien de la documentation sur les "GitHub Issues"](https://docs.github.com/fr/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
 <br/>SVP inscrire le `Issue` ici: (utiliser le mot-clé `closes: #12345`)
@@ -84,8 +84,7 @@ Voici des exemples de comportements qui contribuent à la création d’un envir
 
 Voici des exemples de comportements inacceptables:
 
-* L’utilisation d’un langage ou d’images sexualisés et une attention sexuelle ou des avances non
-  désirée
+* L'utilisation d'un langage ou d'images sexualisés, d'une attention ou d'avances sexuelles non désirées.
 * Trolling, insultes/commentaires désobligeants et attaques personnelles ou politiques
 * Harcèlement public ou privé
 * Publier les renseignements personnels d’autrui, comme une adresse physique ou électronique, sans

@@ -52,8 +52,7 @@ Make sure to fill out the following checklist for a change request:
 - [ ] I have performed a self-review of my code.
 - [ ] If it is a core feature, I have added thorough tests.
 - [ ] Do we need to implement analytics?
-- [ ] Make sure to add either one of the following labels: `version: Major`,`version: Minor` or
-  `version: Patch`.
+- [ ] Make sure to add either one of the following labels: `version: Major`,`version: Minor` or `version: Patch`.
 
 5. **Screenshots (if useful)**
 

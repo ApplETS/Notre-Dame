@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png"  alt="ETS"/>
+  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png" alt="ETS"/>
   <p>
     <br /><strong>Projet Notre-Dame</strong>
     <br />
@@ -35,7 +35,7 @@ est un projet open-source développé par les membres du club
 
 ## Requis
 
-- Flutter SDK v3.24.3 ou supérieure
+- Flutter SDK v3.32.0 ou supérieure
 - Openssl v1.1.1g ou supérieure
 - Java sdk 17
 
