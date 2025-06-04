@@ -1,7 +1,9 @@
-// Package imports:
-import 'package:url_launcher/url_launcher.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
