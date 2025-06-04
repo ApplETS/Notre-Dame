@@ -1,14 +1,9 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 // Package imports:
 import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class LaunchUrlService {
   final SettingsRepository settingsManager = locator<SettingsRepository>();
