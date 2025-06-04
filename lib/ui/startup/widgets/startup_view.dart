@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
@@ -15,7 +16,7 @@ class StartUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<StartUpViewModel>.nonReactive(
-    viewModelBuilder: () => StartUpViewModel(),
+    viewModelBuilder: () => StartUpViewModel(intl: AppIntl.of(context)!),
     onViewModelReady: (StartUpViewModel model) {
       model.handleStartUp();
     },
