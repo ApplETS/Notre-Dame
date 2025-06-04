@@ -7,6 +7,7 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/choose_language/widgets/choose_language_view.dart';
 import 'package:notredame/ui/core/ui/root_view.dart';
+import 'package:notredame/ui/dashboard_v5/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/events/author/widgets/author_view.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_view.dart';
 import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.dart';
@@ -66,6 +67,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => AboutView());
     case RouterPaths.chooseLanguage:
       return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => ChooseLanguageView());
+
+    /// TODO remove it
+    case RouterPaths.dashboardV5:
+      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => DashboardViewV5());
+
     default:
       return PageRouteBuilder(
           settings: RouteSettings(name: routeSettings.name),
