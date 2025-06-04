@@ -50,85 +50,89 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> {
                   ClipPath(
                     clipper: TopWaveClipper(),
                     child: Container(
-                      height: 310,
+                      height: 360,
                       width: double.infinity,
                       color: etsV5DarkRed,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0, top: 60),
-                    // add horizontal padding if needed
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Accueil',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.normal,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          'Bonjour, John Doe!',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ]),
-
-                /// Temp widgets
-                Container(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 13),
-                  width: double.infinity,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          height: 145,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: etsV5DarkGrey,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: const Text(
-                            "Encore 4 jours et c'est fini !",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 100, left: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Accueil',
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
+                            SizedBox(height: 10),
+                            Text(
+                              'Bonjour, John Doe!',
+                              style: TextStyle(fontSize: 16, color: Colors.white),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(width: 15),
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(20),
-                          height: 145,
-                          alignment: Alignment.bottomCenter,
-                          decoration: BoxDecoration(
-                            color: etsV5DarkGrey,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: const Text(
-                            'Progression',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
+                      SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
+                        width: double.infinity,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.all(20),
+                                height: 145,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: etsV5DarkGrey,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: const Text(
+                                  "Encore 4 jours et c'est fini !",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            SizedBox(width: 15),
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.all(20),
+                                height: 145,
+                                alignment: Alignment.bottomCenter,
+                                decoration: BoxDecoration(
+                                  color: etsV5DarkGrey,
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: const Text(
+                                  'Progression',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
+                ]),
+
+                /// Temp widgets
                 Container(
                   padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
                   child: Column(

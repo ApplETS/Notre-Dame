@@ -15,6 +15,7 @@ import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
+import '../../dashboard_v5/widgets/dashboard_view.dart';
 
 enum NavigationView {
   dashboard(0),
@@ -24,6 +25,7 @@ enum NavigationView {
   more(4);
 
   final int buttonIndex;
+
   const NavigationView(this.buttonIndex);
 }
 
@@ -99,7 +101,8 @@ class _RootViewState extends State<RootView> {
 
   Widget _getViewByIndex() {
     return switch (_selected) {
-      NavigationView.dashboard => DashboardView(),
+      /// TODO Change it back
+      NavigationView.dashboard => DashboardViewV5(),
       NavigationView.schedule => ScheduleView(controller: _scheduleController),
       NavigationView.student => StudentView(),
       NavigationView.ets => ETSView(),
