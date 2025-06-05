@@ -29,7 +29,7 @@ class ProgramCompletionCard extends StatelessWidget {
                   TweenAnimationBuilder<double>(
                     tween: Tween(begin: 0, end: model.programProgression / 100),
                     duration: const Duration(milliseconds: 900),
-                    builder: (_, value, __) => SizedBox.square(
+                    builder: (_, value, _) => SizedBox.square(
                       dimension: 75,
                       child: CircularProgressIndicator(
                         value: value,

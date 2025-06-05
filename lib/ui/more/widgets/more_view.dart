@@ -94,7 +94,7 @@ class _MoreViewState extends State<MoreView> {
                   _analyticsService.logEvent(tag, "Rate us clicked");
                   Navigator.of(context).push(
                     PageRouteBuilder(
-                      pageBuilder: (context, _, __) => AboutDialog(
+                      pageBuilder: (context, _, _) => AboutDialog(
                         applicationIcon: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: SizedBox(width: 75, child: Image.asset('assets/images/favicon_applets.png')),
@@ -139,7 +139,7 @@ class _MoreViewState extends State<MoreView> {
                 leading: const Icon(Icons.logout_outlined),
                 onTap: () => Navigator.of(context).push(
                   PageRouteBuilder(
-                    pageBuilder: (context, _, __) => AlertDialog(
+                    pageBuilder: (context, _, _) => AlertDialog(
                       title: Text(
                         AppIntl.of(context)!.more_log_out,
                         style: const TextStyle(color: AppPalette.etsLightRed),

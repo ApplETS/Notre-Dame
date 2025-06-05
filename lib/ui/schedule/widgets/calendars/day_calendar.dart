@@ -208,10 +208,10 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         calendarFormat: CalendarFormat.week,
         focusedDay: model.daySelected,
         calendarBuilders: CalendarBuilders(
-          defaultBuilder: (_, date, __) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-          outsideBuilder: (_, date, __) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-          todayBuilder: (_, date, __) => _buildHeaderDay(date, todayColor, model, dayViewKey),
-          selectedBuilder: (_, date, __) => FadeTransition(
+          defaultBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
+          outsideBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
+          todayBuilder: (_, date, _) => _buildHeaderDay(date, todayColor, model, dayViewKey),
+          selectedBuilder: (_, date, _) => FadeTransition(
             opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
             child: _buildHeaderDay(date, selectedColor, model, dayViewKey),
           ),
