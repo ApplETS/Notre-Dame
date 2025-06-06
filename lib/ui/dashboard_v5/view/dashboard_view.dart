@@ -31,7 +31,7 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
     return Scaffold(
       body: Stack(
         children: [
-          // L'animation builder pour le cercle
+          // L'animation builder pour le cercle animé
           AnimatedBuilder(
             animation: viewModel.heightAnimation,
             builder: (context, child) {
@@ -57,7 +57,7 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Padding entre le top du screen et du texte
+                    // Padding entre le top de l'écran et du texte
                     SizedBox(height: 100),
                     Padding(
                       padding: const EdgeInsets.only(top: 0, left: 30),
@@ -67,7 +67,7 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                           Text(
                             'Accueil',
 
-                            /// TODO Changer pour le Theme.of(context).text ...
+                            /// TODO Changer pour le Theme.of(context).text pour le fontsize ... a voir
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.normal,
@@ -132,7 +132,7 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                       ),
                     ),
 
-                    /// TODO Wrapper le container dans une classe Card ...
+                    /// TODO Wrapper les containers dans un component Card ... a faire
                     Container(
                       padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
                       child: Column(
