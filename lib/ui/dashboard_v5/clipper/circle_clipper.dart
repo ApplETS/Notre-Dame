@@ -1,25 +1,26 @@
 import 'package:flutter/cupertino.dart';
 
 class CircleClipper extends CustomClipper<Path> {
+  /// Gets the path of the circle
   @override
   Path getClip(Size size) {
     final path = Path();
 
-    // Début du tracé en bas à gauche du conteneur à 60 pixels du bas
+    // Start of path at bottom left of container 60 pixels from bottom
     path.lineTo(0, size.height - 60);
 
-    // Création d'une courbe de Bézier quadratique vers le coin inférieur droit
-    // avec un point de contrôle situé au centre inférieur (width / 2, height)
+    // Creating a quadratic Bezier curve to the lower right corner
+    // With a control point located at the bottom center (width / 2, height)
     path.quadraticBezierTo(size.width / 2, size.height, size.width, size.height - 60);
 
-    // Ligne jusqu'au coin supérieur droit
+    // Line to the upper right corner
     path.lineTo(size.width, 0);
     path.close();
 
     return path;
   }
 
-  // Indique si le clip doit être recalculé
+  // Indicates whether the clip should be calculated
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
