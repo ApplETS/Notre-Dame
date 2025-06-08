@@ -37,20 +37,41 @@ class EventFilterService {
         date: session.endDate,
         icon: Icons.stop,
       ),
-      SessionEvent(label: 'Courses End', date: session.endDateCourses, icon: Icons.school),
-      SessionEvent(label: 'Registration Opens', date: session.startDateRegistration, icon: Icons.app_registration),
-      SessionEvent(label: 'Registration Deadline', date: session.deadlineRegistration, icon: Icons.event_busy),
       SessionEvent(
-          label: 'Cancellation with Refund (Start)', date: session.startDateCancellationWithRefund, icon: Icons.money),
+        label: 'Courses End',
+        date: session.endDateCourses,
+        icon: Icons.school,
+      ),
       SessionEvent(
-          label: 'Cancellation with Refund (Deadline)',
-          date: session.deadlineCancellationWithRefund,
-          icon: Icons.money_off),
+        label: 'Registration Opens',
+        date: session.startDateRegistration,
+        icon: Icons.app_registration,
+      ),
       SessionEvent(
-          label: 'New Student Refund Deadline',
-          date: session.deadlineCancellationWithRefundNewStudent,
-          icon: Icons.person_add),
-      SessionEvent(label: 'ASEQ Cancellation Deadline', date: session.deadlineCancellationASEQ, icon: Icons.group),
+        label: 'Registration Deadline',
+        date: session.deadlineRegistration,
+        icon: Icons.event_busy,
+      ),
+      SessionEvent(
+        label: 'Cancellation with Refund (Start)',
+        date: session.startDateCancellationWithRefund,
+        icon: Icons.money,
+      ),
+      SessionEvent(
+        label: 'Cancellation with Refund (Deadline)',
+        date: session.deadlineCancellationWithRefund,
+        icon: Icons.money_off,
+      ),
+      SessionEvent(
+        label: 'New Student Refund Deadline',
+        date: session.deadlineCancellationWithRefundNewStudent,
+        icon: Icons.person_add,
+      ),
+      SessionEvent(
+        label: 'ASEQ Cancellation Deadline',
+        date: session.deadlineCancellationASEQ,
+        icon: Icons.group,
+      ),
     ].where((event) => event.date != null).toList();
   }
 }
