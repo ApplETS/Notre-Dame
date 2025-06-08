@@ -1,23 +1,26 @@
+// Project imports:
 import 'package:flutter/material.dart';
+
+// Project imports:
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/ui/dashboard/view_model/event_filter_service.dart';
+import 'package:notredame/ui/dashboard/services/event_filter_service.dart';
 import 'package:notredame/ui/dashboard/view_model/event_viewmodel.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:notredame/ui/dashboard/widgets/event_item_widget.dart';
 import 'package:notredame/ui/core/ui/dismissible_card.dart';
-import '../widgets/event_item_widget.dart';
+
+// Package imports:
+import 'package:skeletonizer/skeletonizer.dart';
 
 class RemindersEventCard extends StatelessWidget {
   final VoidCallback onDismissed;
   final bool loading;
   final Session? sessionEvents;
-  final bool showOnlyUpcoming;
 
   const RemindersEventCard({
     super.key,
     required this.onDismissed,
     required this.loading,
     required this.sessionEvents,
-    this.showOnlyUpcoming = true,
   });
 
   Widget _buildEventCategory(String title, List<SessionEvent> events) {
@@ -53,11 +56,9 @@ class RemindersEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final events = showOnlyUpcoming
-        ? EventFilterService.getUpcomingEvents(sessionEvents)
-        : EventFilterService.getAllEvents(sessionEvents);
+    final events = EventFilterService.getUpcomingEvents(sessionEvents);
 
-    if (showOnlyUpcoming && events.isEmpty && !loading) {
+    if (events.isEmpty && !loading) {
       return const SizedBox.shrink();
     }
 
@@ -75,7 +76,7 @@ class RemindersEventCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      showOnlyUpcoming ? 'Upcoming events' : sessionEvents?.name ?? 'Session events',
+                      'Upcoming events',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
