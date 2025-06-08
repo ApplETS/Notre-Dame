@@ -24,7 +24,7 @@ class RemindersEventCard extends StatelessWidget {
     required this.sessionEvents,
   });
 
-  Widget _buildEventCategory(String title, List<SessionEvent> events) {
+  Widget _buildEventCategory(List<SessionEvent> events) {
     if (events.isEmpty) return const SizedBox.shrink();
 
     return Column(
@@ -57,7 +57,7 @@ class RemindersEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EventFilterService eventFilterService = new EventFilterService(translations: AppIntl.of(context)!);
+    EventFilterService eventFilterService = EventFilterService(translations: AppIntl.of(context)!);
     final events = eventFilterService.getUpcomingEvents(sessionEvents);
 
     if (events.isEmpty && !loading) {
@@ -93,7 +93,7 @@ class RemindersEventCard extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.fromLTRB(17, 0, 17, 13),
                 child: Column(
-                  children: [_buildEventCategory('Session', events)],
+                  children: [_buildEventCategory(events)],
                 ),
               ),
             )

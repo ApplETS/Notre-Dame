@@ -29,14 +29,21 @@ class EventItemWidget extends StatelessWidget {
     if (event.date == null) return const SizedBox.shrink();
 
     final now = DateTime.now();
-    final difference = event.date!.difference(now).inDays + 1;
+    final today = DateTime(now.year, now.month, now.day);
+    final eventDate = DateTime(event.date!.year, event.date!.month, event.date!.day);
+    final difference = eventDate.difference(today).inDays;
 
-    if (difference <= 4) {
+    if (event.isUpcoming) {
+      final displayText = difference == 0 ? 'today' : difference == 1 ? 'tomorrow' : '$difference days';
       return Padding(
         padding: const EdgeInsets.only(right: 5),
         child: Text(
-          '${difference}d left',
-          style: const TextStyle(color: Color(0xff807f83), fontSize: 14, fontWeight: FontWeight.bold),
+          displayText,
+          style: const TextStyle(
+            color: Color(0xff807f83),
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       );
     }
