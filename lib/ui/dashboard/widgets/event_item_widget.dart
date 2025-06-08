@@ -1,7 +1,12 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:intl/intl.dart';
+
+// Project imports:
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/dashboard/view_model/event_viewmodel.dart';
-import '../../core/themes/app_palette.dart';
 
 class EventItemWidget extends StatelessWidget {
   final SessionEvent event;
@@ -16,8 +21,8 @@ class EventItemWidget extends StatelessWidget {
     return DateFormat('MMM dd, yyyy').format(date);
   }
 
-  Color _getEventColor() {
-    return AppPalette.grey.white;
+  Color _getEventColor(BuildContext context) {
+    return Theme.of(context).textTheme.titleLarge?.color ?? Colors.black;
   }
 
   Widget _buildTimeLeftIndicator() {
@@ -47,7 +52,7 @@ class EventItemWidget extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 2),
-            child: Icon(event.icon, size: 17, color: _getEventColor()),
+            child: Icon(event.icon, size: 17, color: _getEventColor(context)),
           ),
           const SizedBox(width: 8),
           Expanded(
