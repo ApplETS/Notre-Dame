@@ -11,6 +11,7 @@ class ProgressionCard extends StatelessWidget {
     required this.childWidget,
   });
 
+  /// TODO : This class needs to be entirely refactored
   @override
   Widget build(BuildContext context) {
     return Container(

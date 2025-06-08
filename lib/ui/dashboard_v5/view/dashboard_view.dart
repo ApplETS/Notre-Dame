@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard_v5/widgets/days_left_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../domain/constants/preferences_flags.dart';
@@ -22,14 +23,25 @@ class DashboardViewV5 extends StatefulWidget {
 }
 
 class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProviderStateMixin {
-  late final DashboardViewModelV5 viewModel;
+  late DashboardViewModelV5 viewModel;
+  bool _isViewModelInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    viewModel = DashboardViewModelV5();
-    viewModel.fetchUserInfo();
-    viewModel.init(this);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_isViewModelInitialized) {
+      final intl = AppIntl.of(context)!;
+      viewModel = DashboardViewModelV5(intl: intl);
+      viewModel.fetchUserInfo();
+      viewModel.init(this);
+      _isViewModelInitialized = true;
+    }
   }
 
   @override
@@ -80,27 +92,49 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 100),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Accueil',
-                                      style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.normal,
-                                        color: AppPalette.grey.white,
-                                      ),
-                                    ),
-                                    SizedBox(height: 10),
-                                    Text(
-                                      'Bonjour, ${viewModel.getFullName()} !',
-                                      style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              AnimatedBuilder(
+                                  animation: viewModel.titleAnimation,
+                                  builder: (context, child) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(left: 30),
+                                      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                        Transform.translate(
+                                          offset: viewModel.titleSlideOffset,
+                                          child: Opacity(
+                                            opacity: viewModel.titleFadeOpacity,
+                                            child: Text(
+                                              'Accueil',
+                                              style: TextStyle(
+                                                fontSize: 28,
+                                                fontWeight: FontWeight.normal,
+                                                color: AppPalette.grey.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Transform.translate(
+                                          offset: viewModel.titleSlideOffset,
+                                          child: Opacity(
+                                            opacity: viewModel.titleFadeOpacity,
+                                            child: SkeletonLoader(
+                                              loading: viewModel.isLoading,
+                                              child: Container(
+                                                width: 300,
+                                                height: 20,
+                                                child: Text(
+                                                  'Bonjour, ${viewModel.getFullName()} !',
+                                                  style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                    );
+                                  }),
                               const SizedBox(height: 20),
                               Container(
                                 padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),

@@ -20,6 +20,7 @@ class WidgetComponent extends StatelessWidget {
               ),
             );
 
+  /// TODO : This class needs to be entirely refactored
   @override
   Widget build(BuildContext context) {
     return Theme(

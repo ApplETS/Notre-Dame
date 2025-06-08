@@ -12,6 +12,7 @@ class DaysLeftCard extends StatefulWidget {
   State<DaysLeftCard> createState() => _DaysLeftCardState();
 }
 
+/// TODO : This class needs to be entirely refactored
 class _DaysLeftCardState extends State<DaysLeftCard> {
   @override
   Widget build(BuildContext context) {
