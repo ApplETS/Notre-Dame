@@ -96,7 +96,7 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                                   animation: viewModel.titleAnimation,
                                   builder: (context, child) {
                                     return Padding(
-                                      padding: const EdgeInsets.only(left: 30),
+                                      padding: const EdgeInsets.only(left: 32),
                                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                         Transform.translate(
                                           offset: viewModel.titleSlideOffset,

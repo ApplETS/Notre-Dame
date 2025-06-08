@@ -28,7 +28,8 @@ class _DaysLeftCardState extends State<DaysLeftCard> {
               borderRadius: BorderRadius.circular(25),
             ),
             child: Text(
-              "Encore ${model.sessionDays[1] - model.sessionDays[0]} jours et c'est fini !",
+              "Encore 4 jours et c'est fini !",
+              //"Encore ${model.sessionDays[1] - model.sessionDays[0]} jours et c'est fini !",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 18,
