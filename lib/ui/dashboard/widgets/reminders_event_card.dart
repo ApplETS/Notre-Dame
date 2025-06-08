@@ -78,7 +78,7 @@ class RemindersEventCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Upcoming events',
+                      AppIntl.of(context)!.events_reminder_title,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
