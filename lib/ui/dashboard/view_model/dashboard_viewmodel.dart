@@ -54,7 +54,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Numbers of days elapsed and total number of days of the current session
   List<int> _sessionDays = [0, 0];
 
-  Session? _sessionEvent;
+  List<Session>? _sessionEvent;
 
   BroadcastMessage? broadcastMessage;
 
@@ -79,7 +79,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   ProgressBarText _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
 
-  Session? get sessionEvent => _sessionEvent;
+  List<Session>? get sessionEvent => _sessionEvent;
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -269,12 +269,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     return [];
   }
 
-  Future<Session?> futureToRunSessionEvents() async {
+  Future<List<Session>?> futureToRunSessionEvents() async {
     try {
       setBusyForObject(sessionEvent, true);
 
       final sessions = await _courseRepository.getSessions();
-      _sessionEvent = sessions.isNotEmpty ? sessions.last : null;
+      _sessionEvent = sessions;
       return _sessionEvent;
     } catch (error) {
       onError(error);

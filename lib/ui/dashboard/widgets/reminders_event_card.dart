@@ -14,7 +14,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 class RemindersEventCard extends StatelessWidget {
   final VoidCallback onDismissed;
   final bool loading;
-  final Session? sessionEvents;
+  final List<Session>? sessionEvents;
 
   const RemindersEventCard({
     super.key,
