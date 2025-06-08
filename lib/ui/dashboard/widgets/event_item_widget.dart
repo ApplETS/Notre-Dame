@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:intl/intl.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -25,7 +26,7 @@ class EventItemWidget extends StatelessWidget {
     return Theme.of(context).textTheme.titleLarge?.color ?? Colors.black;
   }
 
-  Widget _buildTimeLeftIndicator() {
+  Widget _buildTimeLeftIndicator(BuildContext context) {
     if (event.date == null) return const SizedBox.shrink();
 
     final now = DateTime.now();
@@ -34,7 +35,10 @@ class EventItemWidget extends StatelessWidget {
     final difference = eventDate.difference(today).inDays;
 
     if (event.isUpcoming) {
-      final displayText = difference == 0 ? 'today' : difference == 1 ? 'tomorrow' : '$difference days';
+      final displayText =
+        difference == 0 ? AppIntl.of(context)!.events_reminder_today
+        : difference == 1 ? AppIntl.of(context)!.events_reminder_tomorrow
+        : '$difference ${AppIntl.of(context)!.events_reminder_days}';
       return Padding(
         padding: const EdgeInsets.only(right: 5),
         child: Text(
@@ -88,7 +92,7 @@ class EventItemWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                _buildTimeLeftIndicator(),
+                _buildTimeLeftIndicator(context),
               ],
             ),
           ),

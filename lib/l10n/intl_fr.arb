@@ -44,6 +44,9 @@
   "need_help_notice_cancel": "Annuler",
 
   "events_reminder_title": "Évènements à venir",
+  "events_reminder_today": "Aujourd'hui",
+  "events_reminder_tomorrow": "Demain",
+  "events_reminder_days": "jours",
   "events_reminder_session_start": "Début de la session",
   "events_reminder_session_end": "Fin de la session",
   "events_reminder_courses_end": "Fin des cours",

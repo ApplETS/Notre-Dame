@@ -45,6 +45,9 @@
   "discord_join": "Join our Discord",
 
   "events_reminder_title": "Upcoming events",
+  "events_reminder_today": "Today",
+  "events_reminder_tomorrow": "Tomorrow",
+  "events_reminder_days": "days",
   "events_reminder_session_start": "Session Starts",
   "events_reminder_session_end": "Session Ends",
   "events_reminder_courses_end": "End of Courses",
