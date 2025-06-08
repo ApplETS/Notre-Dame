@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/services/event_filter_service.dart';
 import 'package:notredame/ui/dashboard/view_model/event_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/event_item_widget.dart';
@@ -56,7 +57,8 @@ class RemindersEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final events = EventFilterService.getUpcomingEvents(sessionEvents);
+    EventFilterService eventFilterService = new EventFilterService(translations: AppIntl.of(context)!);
+    final events = eventFilterService.getUpcomingEvents(sessionEvents);
 
     if (events.isEmpty && !loading) {
       return const SizedBox.shrink();
