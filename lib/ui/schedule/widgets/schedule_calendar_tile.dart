@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:intl/intl.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
@@ -98,12 +98,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
         padding: widget.padding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AutoSizeText(
-              widget.title!,
-              minFontSize: 14,
-            ),
-          ],
+          children: [AutoSizeText(widget.title!, minFontSize: 14)],
         ),
       ),
     );
