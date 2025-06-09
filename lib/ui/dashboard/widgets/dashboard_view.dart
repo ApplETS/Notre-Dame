@@ -66,7 +66,7 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
                       onReorder: (oldIndex, newIndex) => model.onCardReorder(oldIndex, newIndex),
                       padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
                       children: _buildCards(model),
-                      proxyDecorator: (child, _, __) {
+                      proxyDecorator: (child, _, _) {
                         return HapticsContainer(child: child);
                       },
                     ),

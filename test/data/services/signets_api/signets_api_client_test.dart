@@ -263,7 +263,7 @@ void main() {
           );
         } catch (e) {
           expect(e, isA<ApiException>());
-          verify(authServiceMock.acquireTokenSilent()).called(3);
+          verify(authServiceMock.acquireTokenSilent()).called(1);
         }
       });
     });

@@ -204,5 +204,5 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool returnToCurrentDate();
 
-  handleDateSelectedChanged(DateTime newDate);
+  void handleDateSelectedChanged(DateTime newDate);
 }

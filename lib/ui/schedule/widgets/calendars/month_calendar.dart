@@ -60,7 +60,7 @@ class MonthCalendar extends StatelessWidget {
       ),
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
-      cellBuilder: (date, events, _, __, ___) => FilledCell(
+      cellBuilder: (date, events, _, _, _) => FilledCell(
         hideDaysNotInMonth: false,
         titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,

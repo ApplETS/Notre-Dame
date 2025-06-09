@@ -14,7 +14,7 @@ import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../helpers.dart';
 
-main() {
+void main() {
   // Activities for today
   final gen101 = CourseActivity(
     courseGroup: "GEN101",

@@ -12,7 +12,7 @@ import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../helpers.dart';
 
-main() {
+void main() {
   final Course course1 = Course(
     acronym: 'GEN101',
     group: '02',
