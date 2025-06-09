@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:intl/intl.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
@@ -52,9 +53,13 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text(
-            "$courseName ($courseLocation)",
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          title: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.topLeft,
+            child: Text(
+              courseLocation.isEmpty ? courseName : "$courseName ($courseLocation)",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -94,9 +99,9 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(widget.title ?? "", style: widget.titleStyle),
+            AutoSizeText(
+              widget.title!,
+              minFontSize: 14,
             ),
           ],
         ),
