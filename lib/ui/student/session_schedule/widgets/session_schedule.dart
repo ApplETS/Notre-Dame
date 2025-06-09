@@ -92,7 +92,6 @@ class _SessionScheduleState extends State<SessionSchedule> {
         description: events[0].description,
         start: events[0].startTime,
         end: events[0].endTime,
-        titleStyle: TextStyle(fontSize: 14, color: events[0].color.accent),
         padding: const EdgeInsets.all(6.0),
         backgroundColor: events[0].color,
         buildContext: context,

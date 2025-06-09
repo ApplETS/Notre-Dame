@@ -11,7 +11,6 @@ import 'package:notredame/l10n/app_localizations.dart';
 class ScheduleCalendarTile extends StatefulWidget {
   final String? title;
   final String? description;
-  final TextStyle? titleStyle;
   final EdgeInsets? padding;
   final Color? backgroundColor;
   final DateTime? start;
@@ -22,7 +21,6 @@ class ScheduleCalendarTile extends StatefulWidget {
     super.key,
     this.title,
     this.description,
-    this.titleStyle,
     this.padding,
     this.backgroundColor,
     this.start,
@@ -96,10 +94,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
       child: Container(
         decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(6.0)),
         padding: widget.padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [AutoSizeText(widget.title!, minFontSize: 14)],
-        ),
+          child: AutoSizeText(widget.title!, minFontSize: 12),
       ),
     );
   }
