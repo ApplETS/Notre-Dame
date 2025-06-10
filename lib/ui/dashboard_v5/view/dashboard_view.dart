@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard_v5/widgets/days_left_card.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../domain/constants/preferences_flags.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../dashboard/view_model/dashboard_viewmodel.dart';
+import '../../dashboard/widgets/dashboard_view.dart';
 import '../../dashboard/widgets/grades_card.dart';
 import '../../dashboard/widgets/schedule_card.dart';
 import '../clipper/circle_clipper.dart';
@@ -52,12 +52,18 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
+    /// TODO : Move all the logic needed from DashboardViewModel
+    /// To the new DashboardViewModelV5
+    /// DashboardViewModel => DashboardViewModelV5
     return ViewModelBuilder<DashboardViewModel>.reactive(
         viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
         builder: (context, model, child) {
           return Scaffold(
             body: RefreshIndicator(
-              onRefresh: () => model.loadDataAndUpdateWidget(),
+              onRefresh: () async {
+                await model.loadDataAndUpdateWidget();
+                await viewModel.fetchUserInfo();
+              },
               child: Theme(
                 data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
                 child: SingleChildScrollView(
@@ -119,7 +125,7 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                                             opacity: viewModel.titleFadeOpacity,
                                             child: SkeletonLoader(
                                               loading: viewModel.isLoading,
-                                              child: Container(
+                                              child: SizedBox(
                                                 width: 300,
                                                 height: 20,
                                                 child: Text(
@@ -147,7 +153,6 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                                     Expanded(
                                       child: ProgressionCard(
                                         childWidget: ProgressBarCard(
-                                            key: UniqueKey(),
                                             onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
                                             changeProgressBarText: model.changeProgressBarText,
                                             progressBarText: model.getProgressBarText(context),
@@ -165,7 +170,6 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                       WidgetComponent(
                         title: "Horaire - Aujourd'hui",
                         childWidget: ScheduleCard(
-                            key: UniqueKey(),
                             onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
                             events: model.scheduleEvents,
                             loading: model.busy(model.scheduleEvents)),

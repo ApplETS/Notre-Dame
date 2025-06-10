@@ -42,7 +42,7 @@ void main() {
       setupUserRepositoryMock();
 
       // setupSettingsRepositoryMock();
-      /// TODO REMOVE WHEN REFACTORING : need to generate a stub for schedule DateTimeNow
+      /// TODO : REMOVE WHEN REFACTORING : need to generate a stub for schedule DateTimeNow
       final settingRepository = setupSettingsRepositoryMock();
       SettingsRepositoryMock.stubDateTimeNow(settingRepository, toReturn: DateTime.now());
     });

@@ -13,9 +13,6 @@ import 'package:notredame/ui/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
 import 'package:notredame/utils/loading.dart';
-import '../../../data/services/navigation_service.dart';
-import '../../../domain/constants/router_paths.dart';
-import '../../../locator.dart';
 import 'about_us_card.dart';
 import 'broadcast_message_card.dart';
 import 'grades_card.dart';
@@ -44,13 +41,6 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
                   title: Text(AppIntl.of(context)!.title_dashboard),
                   centerTitle: false,
                   actions: [
-                    IconButton(
-                      icon: const Icon(Icons.accessible_rounded),
-                      tooltip: "Animation test V5",
-                      onPressed: () {
-                        locator<NavigationService>().pushNamed(RouterPaths.dashboardV5);
-                      },
-                    ),
                     IconButton(
                       icon: const Icon(Icons.restore),
                       tooltip: AppIntl.of(context)!.dashboard_restore_all_cards_title,

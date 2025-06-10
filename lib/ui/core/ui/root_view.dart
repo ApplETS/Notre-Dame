@@ -100,7 +100,7 @@ class _RootViewState extends State<RootView> {
 
   Widget _getViewByIndex() {
     return switch (_selected) {
-      /// TODO Temp redirect pour la V5
+      /// TODO : Temp redirect pour la V5
       NavigationView.dashboardv5 => DashboardViewV5(),
       NavigationView.schedule => ScheduleView(controller: _scheduleController),
       NavigationView.student => StudentView(),

@@ -11,7 +11,7 @@ class DashboardViewModelV5 extends ChangeNotifier {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  /// TODO AppIntl for the view
+  /// TODO : AppIntl for the view
   DashboardViewModelV5({required AppIntl intl}) : _appIntl = intl;
 
   late AnimationController controller;
@@ -23,19 +23,26 @@ class DashboardViewModelV5 extends ChangeNotifier {
   bool isLoading = false;
 
   /// Slide offset for title and subtitle animations (slide from top)
-  /// Vertical slide offset from ( 0.0(x), -15.0(y) ) to 0 (y)
+  /// Vertical slide offset from ( 0.0 (x), -15.0 (y) ) to 0 (y)
   Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
 
   /// Fade-in opacity based on title animation progress
   double get titleFadeOpacity => titleAnimation.value;
 
-  /// Get the list of programs for the student
+  /// Get the info of the student
+  /// TODO : Test the service to get the info
   Future<void> fetchUserInfo() async {
     try {
       isLoading = true;
       notifyListeners();
 
+      /// Try go get the info from the cache
       await _userRepository.getInfo(fromCacheOnly: true);
+
+      /// If the info is not in the cache, fetch it from the server
+      if (_userRepository.info == null) {
+        await _userRepository.getInfo(fromCacheOnly: false);
+      }
     } catch (error) {
       Fluttertoast.showToast(msg: _appIntl.error);
     } finally {

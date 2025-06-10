@@ -17,7 +17,7 @@ class ProgressionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
 
-      /// TODO add the right height: 145,
+      /// TODO : add the right => height: 145,
       alignment: Alignment.bottomCenter,
       decoration: BoxDecoration(
         color: AppPalette.grey.darkGrey,
