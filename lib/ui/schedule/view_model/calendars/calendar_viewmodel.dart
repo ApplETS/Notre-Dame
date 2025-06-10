@@ -52,7 +52,9 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   CalendarViewModel({required AppIntl intl}) : appIntl = intl;
 
   CalendarEventData<Object> calendarEventData(CourseActivity eventData) {
-    final courseLocation = eventData.activityLocation == "Non assign" ? "N/A" : eventData.activityLocation;
+    final courseLocation = eventData.activityLocation.contains("Non assign")
+        ? "N/A"
+        : eventData.activityLocation.join(", ");
     final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
     return CalendarEventData(
@@ -134,11 +136,12 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         PreferencesFlag.scheduleLaboratoryGroup,
         courseAcronym,
       );
+
       final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
         (element) => element.activityCode == activityCodeToUse,
       );
       if (scheduleActivityToSet != null) {
-        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
+        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.activityCode;
       } else {
         // All group selected
         settingsScheduleActivities.removeWhere((key, value) => key == courseAcronym);
@@ -166,11 +169,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
             course.courseGroup.split("-").first,
           );
 
-          if (scheduleActivitiesContainsGroup) {
-            if (_scheduleActivityIsSelected(course)) {
-              value.add(course);
-            }
-          } else {
+          if (scheduleActivitiesContainsGroup && _scheduleActivityIsSelected(course) ||
+              !scheduleActivitiesContainsGroup) {
             value.add(course);
           }
 
@@ -189,14 +189,13 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   bool _scheduleActivityIsSelected(CourseActivity course) {
-    if (course.activityDescription != ActivityDescriptionName.labA &&
-        course.activityDescription != ActivityDescriptionName.labB) {
+    if (course.activityName != ActivityName.labA && course.activityName != ActivityName.labB) {
       return true;
     }
 
     final activityNameSelected = settingsScheduleActivities[course.courseGroup.split("-").first];
-
-    return activityNameSelected == course.activityDescription;
+    return (activityNameSelected == ActivityCode.labGroupA && ActivityName.labA == course.activityName) ||
+        (activityNameSelected == ActivityCode.labGroupB && ActivityName.labB == course.activityName);
   }
 
   List<CalendarEventData> calendarEventsFromDate(DateTime date) {
