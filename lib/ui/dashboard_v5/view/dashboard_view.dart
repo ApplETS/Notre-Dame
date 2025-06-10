@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
-import 'package:notredame/ui/dashboard_v5/widgets/days_left_card.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../domain/constants/preferences_flags.dart';
@@ -23,6 +22,7 @@ class DashboardViewV5 extends StatefulWidget {
 }
 
 class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProviderStateMixin {
+  static const EdgeInsets paddingCards = EdgeInsets.fromLTRB(16, 13, 16, 13);
   late DashboardViewModelV5 viewModel;
   bool _isViewModelInitialized = false;
 
@@ -38,7 +38,6 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
     if (!_isViewModelInitialized) {
       final intl = AppIntl.of(context)!;
       viewModel = DashboardViewModelV5(intl: intl);
-      viewModel.fetchUserInfo();
       viewModel.init(this);
       _isViewModelInitialized = true;
     }
@@ -62,7 +61,6 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
             body: RefreshIndicator(
               onRefresh: () async {
                 await model.loadDataAndUpdateWidget();
-                await viewModel.fetchUserInfo();
               },
               child: Theme(
                 data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
@@ -119,6 +117,8 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                                           ),
                                         ),
                                         const SizedBox(height: 10),
+
+                                        /// TODO : La duration de l'animation du texte pourrais être plus courte..
                                         Transform.translate(
                                           offset: viewModel.titleSlideOffset,
                                           child: Opacity(
@@ -126,12 +126,13 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                                             child: SkeletonLoader(
                                               loading: viewModel.isLoading,
                                               child: SizedBox(
-                                                width: 300,
-                                                height: 20,
+                                                /// TODO : Mettre la bonne width
+                                                width: double.infinity,
+                                                height: 70,
                                                 child: Text(
-                                                  'Bonjour, ${viewModel.getFullName()} !',
+                                                  'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
                                                   style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
-                                                  maxLines: 1,
+                                                  maxLines: 2,
                                                   overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
@@ -141,23 +142,40 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                                       ]),
                                     );
                                   }),
-                              const SizedBox(height: 20),
+
+                              /// TODO : Remettre old height of 20 instead de 0
+                              const SizedBox(height: 0),
                               Container(
-                                padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
+                                padding: paddingCards,
                                 width: double.infinity,
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Expanded(child: DaysLeftCard()),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(20),
+                                        height: 145,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: AppPalette.grey.darkGrey,
+                                          borderRadius: BorderRadius.circular(25),
+                                        ),
+                                        child: Placeholder(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
                                     const SizedBox(width: 15),
                                     Expanded(
                                       child: ProgressionCard(
                                         childWidget: ProgressBarCard(
-                                            onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
-                                            changeProgressBarText: model.changeProgressBarText,
-                                            progressBarText: model.getProgressBarText(context),
-                                            progress: model.progress,
-                                            loading: model.busy(model.progress)),
+                                          onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
+                                          changeProgressBarText: model.changeProgressBarText,
+                                          progressBarText: model.getProgressBarText(context),
+                                          progress: model.progress,
+                                          loading: model.busy(model.progress),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -170,20 +188,19 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                       WidgetComponent(
                         title: "Horaire - Aujourd'hui",
                         childWidget: ScheduleCard(
-                            onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
-                            events: model.scheduleEvents,
-                            loading: model.busy(model.scheduleEvents)),
+                          onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
+                          events: model.scheduleEvents,
+                          loading: model.busy(model.scheduleEvents),
+                        ),
                       ),
                       WidgetComponent(
                         title: "Notes",
                         childWidget: GradesCard(
-                            courses: model.courses,
-                            onDismissed: () => model.hideCard(PreferencesFlag.gradesCard),
-                            loading: model.busy(model.courses)),
-                      ),
-                      WidgetComponent(
-                        title: "Évenements",
-                      ),
+                          courses: model.courses,
+                          onDismissed: () => model.hideCard(PreferencesFlag.gradesCard),
+                          loading: model.busy(model.courses),
+                        ),
+                      )
                     ],
                   ),
                 ),

@@ -29,35 +29,6 @@ class DashboardViewModelV5 extends ChangeNotifier {
   /// Fade-in opacity based on title animation progress
   double get titleFadeOpacity => titleAnimation.value;
 
-  /// Get the info of the student
-  /// TODO : Test the service to get the info
-  Future<void> fetchUserInfo() async {
-    try {
-      isLoading = true;
-      notifyListeners();
-
-      /// Try go get the info from the cache
-      await _userRepository.getInfo(fromCacheOnly: true);
-
-      /// If the info is not in the cache, fetch it from the server
-      if (_userRepository.info == null) {
-        await _userRepository.getInfo(fromCacheOnly: false);
-      }
-    } catch (error) {
-      Fluttertoast.showToast(msg: _appIntl.error);
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  /// Get full name of the user
-  String getFullName() {
-    final info = _userRepository.info;
-    if (info == null) return '';
-    return '${info.firstName} ${info.lastName}';
-  }
-
   /// Animation controller for the circle
   void init(TickerProvider ticker) {
     controller = AnimationController(
