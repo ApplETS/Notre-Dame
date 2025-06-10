@@ -28,7 +28,7 @@ class DashboardViewModelV5 extends ChangeNotifier {
   void init(TickerProvider ticker) {
     controller = AnimationController(
       vsync: ticker,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1250),
     );
 
     // Animation of the circle's height
