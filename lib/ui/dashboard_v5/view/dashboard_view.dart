@@ -6,7 +6,6 @@ import 'package:stacked/stacked.dart';
 import '../../../domain/constants/preferences_flags.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../dashboard/view_model/dashboard_viewmodel.dart';
-import '../../dashboard/widgets/dashboard_view.dart';
 import '../../dashboard/widgets/grades_card.dart';
 import '../../dashboard/widgets/schedule_card.dart';
 import '../clipper/circle_clipper.dart';

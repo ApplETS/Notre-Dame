@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../../data/repositories/user_repository.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../locator.dart';
 
 class DashboardViewModelV5 extends ChangeNotifier {
-  final UserRepository _userRepository = locator<UserRepository>();
-
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  /// TODO : AppIntl for the view
+  /// TODO : add AppIntl to the messages
   DashboardViewModelV5({required AppIntl intl}) : _appIntl = intl;
 
   late AnimationController controller;
