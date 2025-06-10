@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/dashboard/widgets/reminders_event_card.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -9,14 +8,15 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/utils/loading.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/haptics_container.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
-import 'package:notredame/utils/loading.dart';
-import 'about_us_card.dart';
-import 'broadcast_message_card.dart';
-import 'grades_card.dart';
+import 'package:notredame/ui/dashboard/widgets/reminders_event_card.dart';
+import 'package:notredame/ui/dashboard/widgets/about_us_card.dart';
+import 'package:notredame/ui/dashboard/widgets/broadcast_message_card.dart';
+import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
