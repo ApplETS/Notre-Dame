@@ -21,35 +21,35 @@ class StartUpView extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
 
     return ViewModelBuilder<StartUpViewModel>.nonReactive(
-    viewModelBuilder: () => StartUpViewModel(intl: AppIntl.of(context)!),
-    onViewModelReady: (StartUpViewModel model) {
-      model.handleStartUp();
-    },
-    builder: (context, model, child) => Scaffold(
-      backgroundColor: context.theme.appColors.backgroundVibrant,
-      body: SafeArea(
-        minimum: const EdgeInsets.all(20),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Hero(
-                tag: 'ets_logo',
-                child: SvgPicture.asset(
-                  "assets/images/ets_white_logo.svg",
-                  excludeFromSemantics: true,
-                  width: 90,
-                  height: 90,
-                  colorFilter: ColorFilter.mode(context.theme.appColors.loginAccent, BlendMode.srcIn),
+      viewModelBuilder: () => StartUpViewModel(intl: AppIntl.of(context)!),
+      onViewModelReady: (StartUpViewModel model) {
+        model.handleStartUp();
+      },
+      builder: (context, model, child) => Scaffold(
+        backgroundColor: context.theme.appColors.backgroundVibrant,
+        body: SafeArea(
+          minimum: const EdgeInsets.all(20),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Hero(
+                  tag: 'ets_logo',
+                  child: SvgPicture.asset(
+                    "assets/images/ets_white_logo.svg",
+                    excludeFromSemantics: true,
+                    width: 90,
+                    height: 90,
+                    colorFilter: ColorFilter.mode(context.theme.appColors.loginAccent, BlendMode.srcIn),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 15),
-              CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppPalette.grey.white)),
-            ],
+                const SizedBox(height: 15),
+                CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppPalette.grey.white)),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
   }
 }
