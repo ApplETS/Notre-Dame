@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,7 +16,11 @@ class StartUpView extends StatelessWidget {
   const StartUpView({super.key});
 
   @override
-  Widget build(BuildContext context) => ViewModelBuilder<StartUpViewModel>.nonReactive(
+  Widget build(BuildContext context) {
+    // Make Android's gesture bar transparent on versions of Android (it is now the default behavior)
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
+
+    return ViewModelBuilder<StartUpViewModel>.nonReactive(
     viewModelBuilder: () => StartUpViewModel(intl: AppIntl.of(context)!),
     onViewModelReady: (StartUpViewModel model) {
       model.handleStartUp();
@@ -46,4 +51,5 @@ class StartUpView extends StatelessWidget {
       ),
     ),
   );
+  }
 }
