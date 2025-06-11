@@ -49,35 +49,43 @@ void main() {
 
   final List<Session> sessions = [
     Session(
-        name: 'Hivers 2XXX',
-        shortName: 'H1',
-        deadlineCancellationASEQ: now,
-        deadlineCancellationWithoutRefundNewStudent: now,
-        deadlineCancellationWithRefund: now,
-        deadlineCancellationWithRefundNewStudent: now,
-        deadlineRegistration: now,
-        startDate: now,
-        startDateCancellationWithoutRefundNewStudent: now,
-        startDateCancellationWithRefund: now,
-        startDateRegistration: now,
-        endDate: now,
-        endDateCourses: now),
+      name: 'Hivers 2XXX',
+      shortName: 'H1',
+      deadlineCancellationASEQ: now,
+      deadlineCancellationWithoutRefundNewStudent: now,
+      deadlineCancellationWithRefund: now,
+      deadlineCancellationWithRefundNewStudent: now,
+      deadlineRegistration: now,
+      startDate: now,
+      startDateCancellationWithoutRefundNewStudent: now,
+      startDateCancellationWithRefund: now,
+      startDateRegistration: now,
+      endDate: now,
+      endDateCourses: now,
+    ),
   ];
 
   final List<CourseActivity> coursesActivities = [
     CourseActivity(
-        courseName: 'sample course',
-        courseGroup: '',
-        activityName: '',
-        activityDescription: '',
-        activityLocation: '',
-        startDateTime: now,
-        endDateTime: now.add(const Duration(hours: 1))),
+      courseName: 'sample course',
+      courseGroup: '',
+      activityName: '',
+      activityDescription: '',
+      activityLocation: '',
+      startDateTime: now,
+      endDateTime: now.add(const Duration(hours: 1)),
+    ),
   ];
 
   final List<Course> courses = [
     Course(
-        acronym: "ABC123", title: "testCourse", group: "09", session: "H2021", programCode: "XYZ", numberOfCredits: 3),
+      acronym: "ABC123",
+      title: "testCourse",
+      group: "09",
+      session: "H2021",
+      programCode: "XYZ",
+      numberOfCredits: 3,
+    ),
   ];
 
   /// Verify all the required functions that are called from the logout function
@@ -105,8 +113,7 @@ void main() {
 
     // Check if navigation has been rerouted to login page
     verifyInOrder([
-      navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup,
-          removeUntilRouteNamed: RouterPaths.chooseLanguage)
+      navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup, RouterPaths.chooseLanguage)
     ]);
 
     verifyNoMoreInteractions(navigationServiceMock);

@@ -65,8 +65,13 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
       queryParams["dateFin"] = dateFormat.format(endDate!);
     }
 
-    final responseBody = await RequestBuilderService.sendRequest(_httpClient, endpoint, token, responseTag,
-        queryParameters: queryParams);
+    final responseBody = await RequestBuilderService.sendRequest(
+      _httpClient,
+      endpoint,
+      token,
+      responseTag,
+      queryParameters: queryParams,
+    );
 
     /// Build and return the list of CourseActivity
     return responseBody.findAllElements("Seance").map((node) => CourseActivity.fromXmlNode(node)).toList();

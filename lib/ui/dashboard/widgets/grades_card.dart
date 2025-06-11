@@ -25,8 +25,14 @@ class GradesCard extends StatelessWidget {
     // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
     // During that first stage, putting empty courses with no title allows for a smoother transition.
     if (displayedCourses.isEmpty && loading) {
-      final Course skeletonCourse =
-          Course(acronym: " ", title: "", group: "", session: "", programCode: "", numberOfCredits: 0);
+      final Course skeletonCourse = Course(
+        acronym: " ",
+        title: "",
+        group: "",
+        session: "",
+        programCode: "",
+        numberOfCredits: 0,
+      );
       displayedCourses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
     }
 
@@ -49,18 +55,15 @@ class GradesCard extends StatelessWidget {
   }
 
   static Widget _buildGradesButton(List<Course> courses, BuildContext context, {bool loading = false}) => Skeletonizer(
-        enabled: loading,
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-          child: Wrap(
-            children:
-                courses.map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt)).toList(),
-          ),
-        ),
-      );
+    enabled: loading,
+    child: Container(
+      padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
+      child: Wrap(
+        children: courses.map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt)).toList(),
+      ),
+    ),
+  );
 
-  static SizedBox _buildNoGradesContent(BuildContext context) => SizedBox(
-        height: 100,
-        child: Center(child: Text(AppIntl.of(context)!.grades_msg_no_grades.split("\n").first)),
-      );
+  static SizedBox _buildNoGradesContent(BuildContext context) =>
+      SizedBox(height: 100, child: Center(child: Text(AppIntl.of(context)!.grades_msg_no_grades.split("\n").first)));
 }

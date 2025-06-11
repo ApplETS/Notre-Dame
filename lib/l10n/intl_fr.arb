@@ -45,6 +45,8 @@
 
   "close_button_text": "Fermer",
 
+  "startup_viewmodel_acquire_token_fail": "Échec de la connexion après plusieurs tentatives. Veuillez réessayer.",
+
   "title_schedule": "Horaire",
   "title_student": "Étudiant",
   "title_dashboard": "Accueil",

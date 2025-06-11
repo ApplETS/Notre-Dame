@@ -66,17 +66,21 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// Sort [courses] by session.
   void _buildCoursesBySession(List<Course> courses) {
     for (final Course course in courses) {
-      coursesBySession.update(course.session, (value) {
-        // Remove the current version of the course
-        value.removeWhere((element) => element.acronym == course.acronym);
-        // Add the updated version of the course
-        value.add(course);
-        value.sort((a, b) => a.acronym.compareTo(b.acronym));
-        return value;
-      }, ifAbsent: () {
-        sessionOrder.add(course.session);
-        return [course];
-      });
+      coursesBySession.update(
+        course.session,
+        (value) {
+          // Remove the current version of the course
+          value.removeWhere((element) => element.acronym == course.acronym);
+          // Add the updated version of the course
+          value.add(course);
+          value.sort((a, b) => a.acronym.compareTo(b.acronym));
+          return value;
+        },
+        ifAbsent: () {
+          sessionOrder.add(course.session);
+          return [course];
+        },
+      );
     }
 
     sessionOrder.sort((a, b) {

@@ -23,9 +23,7 @@ void main() {
     courseRepositoryMock = setupCourseRepositoryMock();
     settingsManagerMock = setupSettingsRepositoryMock();
 
-    viewModel = _TestCalendarViewModel(
-      intl: await setupAppIntl(),
-    );
+    viewModel = _TestCalendarViewModel(intl: await setupAppIntl());
   });
 
   group('CalendarViewModel', () {
@@ -55,12 +53,13 @@ void main() {
     test('calendarEventData returns correct event data with valid location', () async {
       // Arrange: create a dummy Course that will be picked up by calendarEventData.
       final dummyCourse = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          numberOfCredits: 3,
-          title: 'Cours générique');
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      );
       // Stub the getCourses call to return the dummy course.
       CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: [dummyCourse]);
 
@@ -92,12 +91,13 @@ void main() {
 
     test('calendarEventData returns correct event data with "Non assign" location', () async {
       final dummyCourse = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          numberOfCredits: 3,
-          title: 'Cours générique');
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      );
       CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: [dummyCourse]);
 
       final activity = CourseActivity(
@@ -160,12 +160,13 @@ void main() {
         activityDescription: 'Regular',
       );
       final dummyCourse = Course(
-          acronym: 'GEN101',
-          group: '02',
-          session: 'H2020',
-          programCode: '999',
-          numberOfCredits: 3,
-          title: 'Cours générique');
+        acronym: 'GEN101',
+        group: '02',
+        session: 'H2020',
+        programCode: '999',
+        numberOfCredits: 3,
+        title: 'Cours générique',
+      );
       // Arrange repository stubs.
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, fromCacheOnly: true, toReturn: [activity]);
       CourseRepositoryMock.stubCourses(courseRepositoryMock, toReturn: [dummyCourse]);
@@ -177,9 +178,7 @@ void main() {
 
     test('futureToRun handles exceptions and calls onError', () async {
       // Use a subclass that records errors.
-      final errorViewModel = _TestCalendarViewModelWithError(
-        intl: await setupAppIntl(),
-      );
+      final errorViewModel = _TestCalendarViewModelWithError(intl: await setupAppIntl());
       // Arrange: stub getCoursesActivities to throw an exception.
       CourseRepositoryMock.stubGetCoursesActivitiesException(courseRepositoryMock, toThrow: Exception("Test error"));
       final result = await errorViewModel.futureToRun();
@@ -191,23 +190,27 @@ void main() {
     test('loadSettingsScheduleActivities updates settingsScheduleActivities when matching activity found', () async {
       // Arrange: create a dummy schedule activity.
       final scheduleActivity = ScheduleActivity(
-          courseAcronym: "XYZ321",
-          courseGroup: "01",
-          courseTitle: "Sample Course",
-          dayOfTheWeek: 1,
-          day: "Lundi",
-          startTime: DateFormat("hh:mm").parse("08:30"),
-          endTime: DateFormat("hh:mm").parse("12:00"),
-          activityCode: ActivityCode.labGroupA,
-          isPrincipalActivity: true,
-          activityLocation: "En ligne",
-          name: "Laboratoire (Groupe A)");
+        courseAcronym: "XYZ321",
+        courseGroup: "01",
+        courseTitle: "Sample Course",
+        dayOfTheWeek: 1,
+        day: "Lundi",
+        startTime: DateFormat("hh:mm").parse("08:30"),
+        endTime: DateFormat("hh:mm").parse("12:00"),
+        activityCode: ActivityCode.labGroupA,
+        isPrincipalActivity: true,
+        activityLocation: "En ligne",
+        name: "Laboratoire (Groupe A)",
+      );
       // Set the scheduleActivitiesByCourse manually.
       viewModel.scheduleActivitiesByCourse['XYZ321'] = [scheduleActivity];
       // Stub settingsManager to return the matching activity code.
       SettingsRepositoryMock.stubGetDynamicString(
-          settingsManagerMock, PreferencesFlag.scheduleLaboratoryGroup, "XYZ321",
-          toReturn: ActivityCode.labGroupA);
+        settingsManagerMock,
+        PreferencesFlag.scheduleLaboratoryGroup,
+        "XYZ321",
+        toReturn: ActivityCode.labGroupA,
+      );
 
       await viewModel.loadSettingsScheduleActivities();
       expect(viewModel.settingsScheduleActivities['XYZ321'], equals('Laboratoire (Groupe A)'));
@@ -215,17 +218,18 @@ void main() {
 
     test('loadSettingsScheduleActivities removes settings when no matching activity found', () async {
       final scheduleActivity = ScheduleActivity(
-          courseAcronym: "XYZ321",
-          courseGroup: "01",
-          courseTitle: "Sample Course",
-          dayOfTheWeek: 1,
-          day: "Lundi",
-          startTime: DateFormat("hh:mm").parse("08:30"),
-          endTime: DateFormat("hh:mm").parse("12:00"),
-          activityCode: ActivityCode.lectureCourse,
-          isPrincipalActivity: true,
-          activityLocation: "En ligne",
-          name: "Activité de cours");
+        courseAcronym: "XYZ321",
+        courseGroup: "01",
+        courseTitle: "Sample Course",
+        dayOfTheWeek: 1,
+        day: "Lundi",
+        startTime: DateFormat("hh:mm").parse("08:30"),
+        endTime: DateFormat("hh:mm").parse("12:00"),
+        activityCode: ActivityCode.lectureCourse,
+        isPrincipalActivity: true,
+        activityLocation: "En ligne",
+        name: "Activité de cours",
+      );
       viewModel.scheduleActivitiesByCourse['XYZ321'] = [scheduleActivity];
       // Stub settingsManager to return a non-matching activity code (for example, labGroupB).
       await viewModel.loadSettingsScheduleActivities();
@@ -267,9 +271,7 @@ void main() {
 
 // Concrete class for testing abstract CalendarViewModel
 class _TestCalendarViewModel extends CalendarViewModel {
-  _TestCalendarViewModel({
-    required super.intl,
-  });
+  _TestCalendarViewModel({required super.intl});
 
   @override
   bool returnToCurrentDate() => false;

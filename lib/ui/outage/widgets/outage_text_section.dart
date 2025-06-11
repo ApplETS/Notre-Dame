@@ -10,8 +10,12 @@ class OutageTextSection extends StatelessWidget {
   final double textPlacement;
   final double buttonPlacement;
 
-  const OutageTextSection(
-      {super.key, required this.textPlacement, required this.buttonPlacement, required this.refreshOutageConfig});
+  const OutageTextSection({
+    super.key,
+    required this.textPlacement,
+    required this.buttonPlacement,
+    required this.refreshOutageConfig,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +36,7 @@ class OutageTextSection extends StatelessWidget {
         SizedBox(height: buttonPlacement),
         ElevatedButton(
           onPressed: () => refreshOutageConfig(),
-          child: Text(
-            AppIntl.of(context)!.service_outage_refresh,
-            style: const TextStyle(fontSize: 17),
-          ),
+          child: Text(AppIntl.of(context)!.service_outage_refresh, style: const TextStyle(fontSize: 17)),
         ),
       ],
     );

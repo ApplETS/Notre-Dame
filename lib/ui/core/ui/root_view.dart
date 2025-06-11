@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:animations/animations.dart';
+import 'package:flutter/services.dart';
 
 // Project imports:
 import 'package:notredame/data/models/navigation_menu_callback.dart';
@@ -48,39 +49,45 @@ class _RootViewState extends State<RootView> {
     Widget menu = NavigationMenu(selectedIndex: _selected.buttonIndex, indexChangedCallback: _updateView);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      // primary: false,
       extendBody: true,
       bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? menu : null,
-      body: Column(children: [
-        Expanded(
+      body: Column(
+        children: [
+          Expanded(
             child: Row(
-          children: [
-            if (MediaQuery.of(context).orientation == Orientation.landscape) menu,
-            Expanded(
-              child: PageTransitionSwitcher(
-                  reverse: _selected.buttonIndex < _previous.buttonIndex,
-                  duration: Duration(milliseconds: 350),
-                  transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
-                    _previous = _selected;
-                    return SharedAxisTransition(
-                      animation: primaryAnimation,
-                      secondaryAnimation: secondaryAnimation,
-                      transitionType: (MediaQuery.of(context).orientation == Orientation.portrait)
-                          ? SharedAxisTransitionType.horizontal
-                          : SharedAxisTransitionType.vertical,
-                      child: child,
-                    );
-                  },
-                  child: currentView!),
+              children: [
+                if (MediaQuery.of(context).orientation == Orientation.landscape) menu,
+                Expanded(
+                  child: PageTransitionSwitcher(
+                    reverse: _selected.buttonIndex < _previous.buttonIndex,
+                    duration: Duration(milliseconds: 350),
+                    transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                      _previous = _selected;
+                      return SharedAxisTransition(
+                        animation: primaryAnimation,
+                        secondaryAnimation: secondaryAnimation,
+                        transitionType: (MediaQuery.of(context).orientation == Orientation.portrait)
+                            ? SharedAxisTransitionType.horizontal
+                            : SharedAxisTransitionType.vertical,
+                        child: child,
+                      );
+                    },
+                    child: currentView!,
+                  ),
+                ),
+              ],
             ),
-          ],
-        )),
-        if (MediaQuery.of(context).orientation == Orientation.portrait)
-          SizedBox(height: 96.0) // The same height as the menu bar
-      ]),
+          ),
+          if (MediaQuery.of(context).orientation == Orientation.portrait)
+             SizedBox(height: 80.0) // The same height as the menu bar
+        ],
+      ),
     );
   }
 
-  _updateView(NavigationMenuCallback callback) {
+  void _updateView(NavigationMenuCallback callback) {
     if (callback.index == _selected.buttonIndex) {
       if (callback.index == NavigationView.schedule.buttonIndex) _scheduleController.returnToToday();
       return;
@@ -103,7 +110,7 @@ class _RootViewState extends State<RootView> {
       NavigationView.schedule => ScheduleView(controller: _scheduleController),
       NavigationView.student => StudentView(),
       NavigationView.ets => ETSView(),
-      NavigationView.more => MoreView()
+      NavigationView.more => MoreView(),
     };
   }
 }

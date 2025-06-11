@@ -13,8 +13,10 @@ import 'settings_repository_mock.mocks.dart';
 @GenerateNiceMocks([MockSpec<SettingsRepository>()])
 class SettingsRepositoryMock extends MockSettingsRepository {
   /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
-  static void stubGetScheduleSettings(SettingsRepositoryMock mock,
-      {Map<PreferencesFlag, dynamic> toReturn = const {}}) {
+  static void stubGetScheduleSettings(
+    SettingsRepositoryMock mock, {
+    Map<PreferencesFlag, dynamic> toReturn = const {},
+  }) {
     when(mock.getScheduleSettings()).thenAnswer((_) async => toReturn);
   }
 
@@ -34,8 +36,12 @@ class SettingsRepositoryMock extends MockSettingsRepository {
   }
 
   /// Stub the [getDynamicString] function of [mock], when called with [flag] return [toReturn].
-  static void stubGetDynamicString(SettingsRepositoryMock mock, PreferencesFlag flag, String key,
-      {String toReturn = 'test'}) {
+  static void stubGetDynamicString(
+    SettingsRepositoryMock mock,
+    PreferencesFlag flag,
+    String key, {
+    String toReturn = 'test',
+  }) {
     when(mock.getDynamicString(flag, key)).thenAnswer((_) async => toReturn);
   }
 

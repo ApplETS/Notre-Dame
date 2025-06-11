@@ -24,10 +24,7 @@ class _ETSViewState extends State<ETSView> {
   @override
   Widget build(BuildContext context) {
     if (!_remoteConfigService.helloFeatureToggle) {
-      return BaseScaffold(
-        appBar: _buildAppBar(context),
-        body: QuickLinksView(),
-      );
+      return BaseScaffold(appBar: _buildAppBar(context), body: QuickLinksView());
     }
 
     final List<String> tabs = [AppIntl.of(context)!.news_title, AppIntl.of(context)!.useful_link_title];
@@ -49,29 +46,18 @@ class _ETSViewState extends State<ETSView> {
                 bottom: TabBar(
                   indicatorColor: context.theme.appColors.tabBarIndicator,
                   labelColor: context.theme.appColors.tabBarLabel,
-                  tabs: List.generate(
-                    tabs.length,
-                    (index) => Tab(
-                      text: tabs[index],
-                    ),
-                  ),
+                  tabs: List.generate(tabs.length, (index) => Tab(text: tabs[index])),
                 ),
               ),
             ];
           },
-          body: TabBarView(
-            children: tabsView,
-          ),
+          body: TabBarView(children: tabsView),
         ),
       ),
     );
   }
 
   AppBar _buildAppBar(BuildContext context) {
-    return AppBar(
-      title: Text(AppIntl.of(context)!.title_ets),
-      automaticallyImplyLeading: false,
-      actions: const [],
-    );
+    return AppBar(title: Text(AppIntl.of(context)!.title_ets), automaticallyImplyLeading: false, actions: const []);
   }
 }

@@ -25,13 +25,10 @@ class GradeCircularIndicator extends StatelessWidget {
       width: size * ratio,
       height: size * ratio,
       child: TweenAnimationBuilder<double>(
-        tween: Tween<double>(
-          begin: 0.0,
-          end: completed ? _getGradeInDecimals(grade ?? 0.0) : 0.0,
-        ),
+        tween: Tween<double>(begin: 0.0, end: completed ? _getGradeInDecimals(grade ?? 0.0) : 0.0),
         duration: Duration(milliseconds: duration),
         curve: Curves.easeOut,
-        builder: (_, value, __) => CircularProgressIndicator(
+        builder: (_, value, _) => CircularProgressIndicator(
           value: value,
           strokeWidth: 8.0 * ratio,
           strokeCap: StrokeCap.round,

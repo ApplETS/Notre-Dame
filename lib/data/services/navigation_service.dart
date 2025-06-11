@@ -47,8 +47,11 @@ class NavigationService {
 
   /// Replace the current route of the navigator by pushing the route named
   /// [routeName] and then delete the stack of previous routes
-  Future<dynamic> pushNamedAndRemoveUntil(String routeName,
-      {String removeUntilRouteNamed = RouterPaths.root, dynamic arguments}) {
+  Future<dynamic> pushNamedAndRemoveUntil(
+    String routeName, [
+    String removeUntilRouteNamed = RouterPaths.root,
+    Object? arguments,
+  ]) {
     final currentState = _navigatorKey.currentState;
     if (currentState == null) {
       _analyticsService.logError(tag, "Navigator state is null");
@@ -58,7 +61,10 @@ class NavigationService {
     if (remoteConfigService.outage) {
       return currentState.pushNamedAndRemoveUntil(RouterPaths.serviceOutage, (route) => false);
     }
-    return currentState.pushNamedAndRemoveUntil(routeName, ModalRoute.withName(removeUntilRouteNamed),
-        arguments: arguments);
+    return currentState.pushNamedAndRemoveUntil(
+      routeName,
+      ModalRoute.withName(removeUntilRouteNamed),
+      arguments: arguments,
+    );
   }
 }

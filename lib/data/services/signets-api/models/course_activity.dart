@@ -28,44 +28,47 @@ class CourseActivity {
   /// Date when the activity end
   final DateTime endDateTime;
 
-  CourseActivity(
-      {required this.courseGroup,
-      required this.courseName,
-      required this.activityName,
-      required this.activityDescription,
-      required this.activityLocation,
-      required this.startDateTime,
-      required this.endDateTime});
+  CourseActivity({
+    required this.courseGroup,
+    required this.courseName,
+    required this.activityName,
+    required this.activityDescription,
+    required this.activityLocation,
+    required this.startDateTime,
+    required this.endDateTime,
+  });
 
   /// Used to create a new [CourseActivity] instance from a [XMLElement].
   factory CourseActivity.fromXmlNode(XmlElement node) => CourseActivity(
-      courseGroup: node.getElement('coursGroupe')!.innerText,
-      courseName: node.getElement('libelleCours')!.innerText,
-      activityName: node.getElement('nomActivite')!.innerText,
-      activityDescription: node.getElement('descriptionActivite')!.innerText,
-      activityLocation: node.getElement('local')!.innerText,
-      startDateTime: DateTime.parse(node.getElement('dateDebut')!.innerText),
-      endDateTime: DateTime.parse(node.getElement('dateFin')!.innerText));
+    courseGroup: node.getElement('coursGroupe')!.innerText,
+    courseName: node.getElement('libelleCours')!.innerText,
+    activityName: node.getElement('nomActivite')!.innerText,
+    activityDescription: node.getElement('descriptionActivite')!.innerText,
+    activityLocation: node.getElement('local')!.innerText,
+    startDateTime: DateTime.parse(node.getElement('dateDebut')!.innerText),
+    endDateTime: DateTime.parse(node.getElement('dateFin')!.innerText),
+  );
 
   /// Used to create [CourseActivity] instance from a JSON file
   factory CourseActivity.fromJson(Map<String, dynamic> map) => CourseActivity(
-      courseGroup: map['courseGroup'] as String,
-      courseName: map['courseName'] as String,
-      activityName: map['activityName'] as String,
-      activityDescription: map['activityDescription'] as String,
-      activityLocation: map['activityLocation'] as String,
-      startDateTime: DateTime.parse(map['startDateTime'] as String),
-      endDateTime: DateTime.parse(map['endDateTime'] as String));
+    courseGroup: map['courseGroup'] as String,
+    courseName: map['courseName'] as String,
+    activityName: map['activityName'] as String,
+    activityDescription: map['activityDescription'] as String,
+    activityLocation: map['activityLocation'] as String,
+    startDateTime: DateTime.parse(map['startDateTime'] as String),
+    endDateTime: DateTime.parse(map['endDateTime'] as String),
+  );
 
   Map<String, dynamic> toJson() => {
-        'courseGroup': courseGroup,
-        'courseName': courseName,
-        'activityName': activityName,
-        'activityDescription': activityDescription,
-        'activityLocation': activityLocation,
-        'startDateTime': startDateTime.toString(),
-        'endDateTime': endDateTime.toString()
-      };
+    'courseGroup': courseGroup,
+    'courseName': courseName,
+    'activityName': activityName,
+    'activityDescription': activityDescription,
+    'activityLocation': activityLocation,
+    'startDateTime': startDateTime.toString(),
+    'endDateTime': endDateTime.toString(),
+  };
 
   @override
   bool operator ==(Object other) =>

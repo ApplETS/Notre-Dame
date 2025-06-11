@@ -81,7 +81,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         ),
       ),
       Container(
-        height: 96.0,
+        height: 80.0,
         decoration: BoxDecoration(
           color: context.theme.appColors.navBar,
           boxShadow: [
@@ -139,7 +139,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         ]);
   }
 
-  _setIndex(int newIndex) {
+  void _setIndex(int newIndex) {
     widget.indexChangedCallback(NavigationMenuCallback(newIndex, keys[newIndex], currentKey));
     currentKey = keys[newIndex];
   }
