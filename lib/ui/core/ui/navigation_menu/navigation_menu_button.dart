@@ -11,8 +11,13 @@ class NavigationMenuButton extends StatefulWidget {
   final IconData inactiveIcon;
   final VoidCallback onPressed;
 
-  const NavigationMenuButton(
-      {super.key, required this.label, required this.activeIcon, required this.inactiveIcon, required this.onPressed});
+  const NavigationMenuButton({
+    super.key,
+    required this.label,
+    required this.activeIcon,
+    required this.inactiveIcon,
+    required this.onPressed,
+  });
 
   @override
   State<NavigationMenuButton> createState() => NavigationMenuButtonState();
@@ -31,15 +36,9 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
 
     _buttonColorController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
 
-    _paddingController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
+    _paddingController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
 
-    _textOpacityController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
+    _textOpacityController = AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
   }
 
   @override
@@ -58,10 +57,7 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
       animation: _paddingController,
       builder: (BuildContext context, Widget? child) {
         double offset = portrait ? 32.0 : 8.0;
-        return Transform.translate(
-          offset: Offset(0.0, _paddingController.value * -offset),
-          child: child,
-        );
+        return Transform.translate(offset: Offset(0.0, _paddingController.value * -offset), child: child);
       },
       child: Column(
         children: [
@@ -99,11 +95,12 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
                     return ElevatedButton(
                       onPressed: () => widget.onPressed(),
                       style: ElevatedButton.styleFrom(
-                          elevation: 0.0,
-                          backgroundColor: backgroundColor,
-                          shadowColor: AppPalette.etsDarkRed,
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(10.0)),
+                        elevation: 0.0,
+                        backgroundColor: backgroundColor,
+                        shadowColor: AppPalette.etsDarkRed,
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(10.0),
+                      ),
                       child: Icon(
                         _isActive ? widget.activeIcon : widget.inactiveIcon,
                         size: 24.0,
@@ -117,10 +114,7 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
           ),
           FadeTransition(
             opacity: _textOpacityController,
-            child: Text(
-              widget.label,
-              style: TextStyle(fontSize: 14.0),
-            ),
+            child: Text(widget.label, style: TextStyle(fontSize: 14.0)),
           ),
         ],
       ),

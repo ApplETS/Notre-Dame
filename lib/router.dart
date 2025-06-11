@@ -34,20 +34,26 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => OutageView(),
       );
     case RouterPaths.faq:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => FaqView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => FaqView(),
+      );
     case RouterPaths.root:
       return PageRouteBuilder(
-          settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
-          transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
-          pageBuilder: (_, _, _) => RootView());
+        settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
+        transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, _, _) => RootView(),
+      );
     case RouterPaths.defaultSchedule:
       return MaterialPageRoute(
-          settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
-          builder: (_) => SessionScheduleView(sessionCode: routeSettings.arguments as String?));
+        settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
+        builder: (_) => SessionScheduleView(sessionCode: routeSettings.arguments as String?),
+      );
     case RouterPaths.gradeDetails:
       return MaterialPageRoute(
-          settings: RouteSettings(name: routeSettings.name),
-          builder: (context) => GradesDetailsView(course: routeSettings.arguments! as Course));
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (context) => GradesDetailsView(course: routeSettings.arguments! as Course),
+      );
     case RouterPaths.news:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
@@ -64,7 +70,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         pageBuilder: (_, _, _) => AuthorView(authorId: routeSettings.arguments! as String),
       );
     case RouterPaths.security:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => SecurityView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => SecurityView(),
+      );
     case RouterPaths.settings:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
