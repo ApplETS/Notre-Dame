@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:msal_auth/msal_auth.dart';
 import 'package:stacked/stacked.dart';
 
@@ -10,6 +11,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class StartUpViewModel extends BaseViewModel {
@@ -19,6 +21,9 @@ class StartUpViewModel extends BaseViewModel {
   final NetworkingService _networkingService = locator<NetworkingService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
+
+  final AppIntl intl;
+  StartUpViewModel({required this.intl});
 
   /// Try to silent authenticate the user then redirect to [LoginView] or [DashboardView]
   Future handleStartUp() async {
@@ -30,7 +35,9 @@ class StartUpViewModel extends BaseViewModel {
     }
 
     final clientAppResult = await _authService.createPublicClientApplication(
-        authorityType: AuthorityType.aad, broker: Broker.msAuthenticator);
+      authorityType: AuthorityType.aad,
+      broker: Broker.msAuthenticator,
+    );
 
     if (!clientAppResult.$1) {
       final message = clientAppResult.$2?.message ?? 'Failed to create public client application';
@@ -45,9 +52,19 @@ class StartUpViewModel extends BaseViewModel {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
     } else {
       AuthenticationResult? token;
-      while (token == null) {
+      int attempts = 0;
+      const maxAttempts = 3;
+
+      while (token == null && attempts < maxAttempts) {
+        attempts++;
         token = (await _authService.acquireToken()).$1;
+        if (token == null && attempts >= maxAttempts) {
+          Fluttertoast.showToast(msg: intl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
+          await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
+          return;
+        }
       }
+
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
     }

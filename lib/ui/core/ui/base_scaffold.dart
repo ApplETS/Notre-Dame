@@ -63,20 +63,19 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
-        body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-        floatingActionButton: widget.fab,
-        floatingActionButtonLocation: widget.fabPosition,
-      );
+    appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
+    body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
+    floatingActionButton: widget.fab,
+    floatingActionButtonLocation: widget.fabPosition,
+  );
 
   Widget bodyPortraitMode() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
     return SafeArea(
       top: false,
       bottom: false,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [widget.body!, if (_isOffline) _buildOfflineBar()],
-      ),
+      child: Stack(alignment: Alignment.center, children: [widget.body!, if (_isOffline) _buildOfflineBar()]),
     );
   }
 
@@ -89,12 +88,10 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         Column(
           children: [
             if (widget.appBar != null) widget.appBar!,
-            Expanded(
-              child: SafeArea(bottom: false, top: false, child: widget.body!),
-            )
+            Expanded(child: SafeArea(bottom: false, top: false, child: widget.body!)),
           ],
         ),
-        if (_isOffline) _buildOfflineBar()
+        if (_isOffline) _buildOfflineBar(),
       ],
     );
   }
@@ -104,14 +101,8 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       bottom: 32,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
-        decoration: BoxDecoration(
-          color: AppPalette.etsLightRed,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Text(
-          AppIntl.of(context)!.no_connectivity,
-          textAlign: TextAlign.center,
-        ),
+        decoration: BoxDecoration(color: AppPalette.etsLightRed, borderRadius: BorderRadius.circular(12.0)),
+        child: Text(AppIntl.of(context)!.no_connectivity, textAlign: TextAlign.center),
       ),
     );
   }

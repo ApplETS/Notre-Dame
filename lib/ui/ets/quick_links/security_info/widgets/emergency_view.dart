@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -27,37 +27,41 @@ class _EmergencyViewState extends State<EmergencyView> {
 
   @override
   Widget build(BuildContext context) => BaseScaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      fabPosition: FloatingActionButtonLocation.centerFloat,
-      fab: FloatingActionButton.extended(
-        onPressed: () {
-          try {
-            _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-          }
-        },
-        label: Text(
-          AppIntl.of(context)!.security_reach_security,
-          style: TextStyle(color: AppPalette.grey.white, fontSize: 20),
-        ),
-        icon: Icon(Icons.phone, size: 30, color: AppPalette.grey.white),
-        backgroundColor: AppPalette.etsLightRed,
+    appBar: AppBar(title: Text(widget.title)),
+    fabPosition: FloatingActionButtonLocation.centerFloat,
+    fab: FloatingActionButton.extended(
+      onPressed: () {
+        try {
+          _launchUrlService.call(AppIntl.of(context)!.security_emergency_number);
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+        }
+      },
+      label: Text(
+        AppIntl.of(context)!.security_reach_security,
+        style: TextStyle(color: AppPalette.grey.white, fontSize: 20),
       ),
-      body: FutureBuilder<String>(
-          future: rootBundle.loadString(widget.description),
-          builder: (context, AsyncSnapshot<String> fileContent) {
-            if (fileContent.hasData) {
-              return SafeArea(
-                  top: false,
-                  bottom: false,
-                  child: Scrollbar(
-                    child: Markdown(
-                        padding: const EdgeInsets.only(bottom: 120, top: 12, left: 12, right: 12),
-                        data: fileContent.data!),
-                  ));
-            }
-            // Loading a file is so fast showing a spinner would make the user experience worse
-            return const SizedBox.shrink();
-          }));
+      icon: Icon(Icons.phone, size: 30, color: AppPalette.grey.white),
+      backgroundColor: AppPalette.etsLightRed,
+    ),
+    body: FutureBuilder<String>(
+      future: rootBundle.loadString(widget.description),
+      builder: (context, AsyncSnapshot<String> fileContent) {
+        if (fileContent.hasData) {
+          return SafeArea(
+            top: false,
+            bottom: false,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 120, top: 12, left: 12, right: 12),
+                child: GptMarkdown(fileContent.data!),
+              ),
+            ),
+          );
+        }
+        // Loading a file is so fast showing a spinner would make the user experience worse
+        return const SizedBox.shrink();
+      },
+    ),
+  );
 }

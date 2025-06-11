@@ -36,64 +36,67 @@ class CourseSummary {
   /// All the evaluations for this courses.
   final List<CourseEvaluation> evaluations;
 
-  CourseSummary(
-      {required this.currentMarkInPercent,
-      required this.markOutOf,
-      required this.evaluations,
-      this.currentMark,
-      this.passMark,
-      this.standardDeviation,
-      this.median,
-      this.percentileRank});
+  CourseSummary({
+    required this.currentMarkInPercent,
+    required this.markOutOf,
+    required this.evaluations,
+    this.currentMark,
+    this.passMark,
+    this.standardDeviation,
+    this.median,
+    this.percentileRank,
+  });
 
   /// Used to create a new [CourseSummary] instance from a [XMLElement].
   factory CourseSummary.fromXmlNode(XmlElement node) => CourseSummary(
-      currentMark: node.getElement("scoreFinalSur100")!.innerText.isNotEmpty
-          ? double.parse(node.getElement("scoreFinalSur100")!.innerText.replaceAll(",", "."))
-          : null,
-      currentMarkInPercent: node.getElement("noteACeJour")!.innerText.isNotEmpty
-          ? double.parse(node.getElement("noteACeJour")!.innerText.replaceAll(",", "."))
-          : null,
-      markOutOf: node.getElement("tauxPublication")!.innerText.isNotEmpty
-          ? double.parse(node.getElement("tauxPublication")!.innerText.replaceAll(",", "."))
-          : 0.0,
-      passMark: node.getElement("moyenneClasse")!.innerText.isNotEmpty
-          ? double.parse(node.getElement("moyenneClasse")!.innerText.replaceAll(",", "."))
-          : null,
-      standardDeviation: node.getElement("ecartTypeClasse")!.innerText.isNotEmpty
-          ? double.parse(node.getElement("ecartTypeClasse")!.innerText.replaceAll(",", "."))
-          : null,
-      median: node.getElement("medianeClasse")!.innerText.isNotEmpty
-          ? double.parse(node.getElement("medianeClasse")!.innerText.replaceAll(",", "."))
-          : null,
-      percentileRank: node.getElement("rangCentileClasse")!.innerText.isNotEmpty
-          ? int.parse(node.getElement("rangCentileClasse")!.innerText.replaceAll(",0", ""))
-          : null,
-      evaluations: node.findAllElements("ElementEvaluation").map((node) => CourseEvaluation.fromXml(node)).toList());
+    currentMark: node.getElement("scoreFinalSur100")!.innerText.isNotEmpty
+        ? double.parse(node.getElement("scoreFinalSur100")!.innerText.replaceAll(",", "."))
+        : null,
+    currentMarkInPercent: node.getElement("noteACeJour")!.innerText.isNotEmpty
+        ? double.parse(node.getElement("noteACeJour")!.innerText.replaceAll(",", "."))
+        : null,
+    markOutOf: node.getElement("tauxPublication")!.innerText.isNotEmpty
+        ? double.parse(node.getElement("tauxPublication")!.innerText.replaceAll(",", "."))
+        : 0.0,
+    passMark: node.getElement("moyenneClasse")!.innerText.isNotEmpty
+        ? double.parse(node.getElement("moyenneClasse")!.innerText.replaceAll(",", "."))
+        : null,
+    standardDeviation: node.getElement("ecartTypeClasse")!.innerText.isNotEmpty
+        ? double.parse(node.getElement("ecartTypeClasse")!.innerText.replaceAll(",", "."))
+        : null,
+    median: node.getElement("medianeClasse")!.innerText.isNotEmpty
+        ? double.parse(node.getElement("medianeClasse")!.innerText.replaceAll(",", "."))
+        : null,
+    percentileRank: node.getElement("rangCentileClasse")!.innerText.isNotEmpty
+        ? int.parse(node.getElement("rangCentileClasse")!.innerText.replaceAll(",0", ""))
+        : null,
+    evaluations: node.findAllElements("ElementEvaluation").map((node) => CourseEvaluation.fromXml(node)).toList(),
+  );
 
   /// Used to create [CourseSummary] instance from a JSON file
   factory CourseSummary.fromJson(Map<String, dynamic> json) => CourseSummary(
-      currentMark: json["currentMark"] as double?,
-      currentMarkInPercent: json["currentMarkInPercent"] as double?,
-      markOutOf: json["markOutOf"] as double,
-      passMark: json["passMark"] as double?,
-      standardDeviation: json["standardDeviation"] as double?,
-      median: json["median"] as double?,
-      percentileRank: json["percentileRank"] as int?,
-      evaluations: (json["evaluations"] as List)
-          .map<CourseEvaluation>((e) => CourseEvaluation.fromJson(e as Map<String, dynamic>))
-          .toList());
+    currentMark: json["currentMark"] as double?,
+    currentMarkInPercent: json["currentMarkInPercent"] as double?,
+    markOutOf: json["markOutOf"] as double,
+    passMark: json["passMark"] as double?,
+    standardDeviation: json["standardDeviation"] as double?,
+    median: json["median"] as double?,
+    percentileRank: json["percentileRank"] as int?,
+    evaluations: (json["evaluations"] as List)
+        .map<CourseEvaluation>((e) => CourseEvaluation.fromJson(e as Map<String, dynamic>))
+        .toList(),
+  );
 
   Map<String, dynamic> toJson() => {
-        "currentMark": currentMark,
-        "currentMarkInPercent": currentMarkInPercent,
-        "markOutOf": markOutOf,
-        "passMark": passMark,
-        "standardDeviation": standardDeviation,
-        "median": median,
-        "percentileRank": percentileRank,
-        "evaluations": evaluations
-      };
+    "currentMark": currentMark,
+    "currentMarkInPercent": currentMarkInPercent,
+    "markOutOf": markOutOf,
+    "passMark": passMark,
+    "standardDeviation": standardDeviation,
+    "median": median,
+    "percentileRank": percentileRank,
+    "evaluations": evaluations,
+  };
 
   @override
   String toString() {

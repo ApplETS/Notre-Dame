@@ -136,8 +136,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     if (_courseRepository.activeSessions.isEmpty) {
       return [0, 0];
     } else {
-      int dayCompleted =
-          _settingsManager.dateTimeNow.difference(_courseRepository.activeSessions.first.startDate).inDays;
+      int dayCompleted = _settingsManager.dateTimeNow
+          .difference(_courseRepository.activeSessions.first.startDate)
+          .inDays;
       final dayInTheSession = _courseRepository.activeSessions.first.endDate
           .difference(_courseRepository.activeSessions.first.startDate)
           .inDays;
@@ -169,8 +170,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait(
-        [futureToRunBroadcast(), futureToRunGrades(), futureToRunSessionProgressBar(), futureToRunSchedule()]);
+    return Future.wait([
+      futureToRunBroadcast(),
+      futureToRunGrades(),
+      futureToRunSessionProgressBar(),
+      futureToRunSchedule(),
+    ]);
   }
 
   @override
@@ -227,8 +232,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     _cardsToDisplay = [];
 
     if (_cards != null) {
-      final orderedCards =
-          SplayTreeMap<PreferencesFlag, int>.from(_cards!, (a, b) => _cards![a]!.compareTo(_cards![b]!));
+      final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
+        _cards!,
+        (a, b) => _cards![a]!.compareTo(_cards![b]!),
+      );
 
       orderedCards.forEach((key, value) {
         if (value >= 0) {
@@ -242,7 +249,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
     try {
-      final progressBarText = await _settingsManager.getString(PreferencesFlag.progressBarText) ??
+      final progressBarText =
+          await _settingsManager.getString(PreferencesFlag.progressBarText) ??
           ProgressBarText.daysElapsedWithTotalDays.toString();
 
       _currentProgressBarText = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
@@ -270,7 +278,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final tomorrow = now.add(const Duration(days: 1)).withoutTime;
       final twoDaysFromNow = now.add(const Duration(days: 2)).withoutTime;
 
-      final courseActivities = _courseRepository.coursesActivities
+      final courseActivities =
+          _courseRepository.coursesActivities
               ?.where((activity) => activity.endDateTime.isAfter(now) && activity.endDateTime.isBefore(twoDaysFromNow))
               .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
               .toList() ??
@@ -299,14 +308,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<bool> _isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
     final courseKey = courseActivity.courseGroup.split('-').first;
 
-    final activityCodeToUse =
-        await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseKey);
+    final activityCodeToUse = await _settingsManager.getDynamicString(
+      PreferencesFlag.scheduleLaboratoryGroup,
+      courseKey,
+    );
 
     return activityCodeToUse == ActivityCode.labGroupA
         ? courseActivity.activityDescription != ActivityDescriptionName.labB
         : activityCodeToUse == ActivityCode.labGroupB
-            ? courseActivity.activityDescription != ActivityDescriptionName.labA
-            : true;
+        ? courseActivity.activityDescription != ActivityDescriptionName.labA
+        : true;
   }
 
   /// Update cards order and display status in preferences

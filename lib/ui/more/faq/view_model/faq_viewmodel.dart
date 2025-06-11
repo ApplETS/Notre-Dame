@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/domain/constants/app_info.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
@@ -26,7 +26,7 @@ class FaqViewModel extends BaseViewModel {
   Future<void> openMail(String addressEmail, BuildContext context) async {
     String subject = "";
 
-    if (addressEmail == AppInfo.email) {
+    if (addressEmail == Urls.clubEmail) {
       subject = AppIntl.of(context)!.email_subject;
     }
 

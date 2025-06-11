@@ -29,7 +29,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
     GlobalKey<NavigationMenuButtonState>(),
     GlobalKey<NavigationMenuButtonState>(),
     GlobalKey<NavigationMenuButtonState>(),
-    GlobalKey<NavigationMenuButtonState>()
+    GlobalKey<NavigationMenuButtonState>(),
   ];
 
   @override
@@ -55,91 +55,88 @@ class _NavigationMenuState extends State<NavigationMenu> {
         top: false,
         bottom: false,
         right: false,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 12.0),
-          child: buttons,
-        ),
+        child: Padding(padding: const EdgeInsets.only(top: 12.0), child: buttons),
       ),
     );
   }
 
   Widget _bottomBar(Widget buttons) {
-    return Stack(children: [
-      Positioned.fill(
-        child: IgnorePointer(
-          child: Container(
-            decoration: BoxDecoration(
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: IgnorePointer(
+            child: Container(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-              colors: [
-                Colors.transparent,
-                context.theme.scaffoldBackgroundColor,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            )),
+                  colors: [Colors.transparent, context.theme.scaffoldBackgroundColor],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
           ),
         ),
-      ),
-      Container(
-        height: 96.0,
-        decoration: BoxDecoration(
-          color: context.theme.appColors.navBar,
-          boxShadow: [
-            BoxShadow(
-              color: AppPalette.etsDarkRed,
-              spreadRadius: 1.0,
-              blurRadius: 8.0,
-            ),
-          ],
+        Container(
+          height: 80.0,
+          decoration: BoxDecoration(
+            color: context.theme.appColors.navBar,
+            boxShadow: [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
+          ),
         ),
-      ),
-      Positioned.fill(
-        child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20.0), child: buttons),
-      ),
-    ]);
+        Positioned.fill(
+          child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20.0), child: buttons),
+        ),
+      ],
+    );
   }
 
   Widget _createButtons() {
     return Flex(
-        mainAxisAlignment: (MediaQuery.of(context).orientation == Orientation.portrait)
-            ? MainAxisAlignment.spaceAround
-            : MainAxisAlignment.center,
-        direction: (MediaQuery.of(context).orientation == Orientation.portrait) ? Axis.horizontal : Axis.vertical,
-        children: [
-          NavigationMenuButton(
-              key: keys[0],
-              label: AppIntl.of(context)!.title_dashboard,
-              activeIcon: Icons.dashboard,
-              inactiveIcon: Icons.dashboard_outlined,
-              onPressed: () => _setIndex(0)),
-          NavigationMenuButton(
-              key: keys[1],
-              label: AppIntl.of(context)!.title_schedule,
-              activeIcon: Icons.access_time_filled,
-              inactiveIcon: Icons.access_time,
-              onPressed: () => _setIndex(1)),
-          NavigationMenuButton(
-              key: keys[2],
-              label: AppIntl.of(context)!.title_student,
-              activeIcon: Icons.school,
-              inactiveIcon: Icons.school_outlined,
-              onPressed: () => _setIndex(2)),
-          NavigationMenuButton(
-              key: keys[3],
-              label: AppIntl.of(context)!.title_ets,
-              activeIcon: Icons.account_balance_sharp,
-              inactiveIcon: Icons.account_balance_outlined,
-              onPressed: () => _setIndex(3)),
-          NavigationMenuButton(
-              key: keys[4],
-              label: AppIntl.of(context)!.title_more,
-              activeIcon: Icons.menu,
-              inactiveIcon: Icons.menu,
-              onPressed: () => _setIndex(4)),
-        ]);
+      mainAxisAlignment: (MediaQuery.of(context).orientation == Orientation.portrait)
+          ? MainAxisAlignment.spaceAround
+          : MainAxisAlignment.center,
+      direction: (MediaQuery.of(context).orientation == Orientation.portrait) ? Axis.horizontal : Axis.vertical,
+      children: [
+        NavigationMenuButton(
+          key: keys[0],
+          label: AppIntl.of(context)!.title_dashboard,
+          activeIcon: Icons.dashboard,
+          inactiveIcon: Icons.dashboard_outlined,
+          onPressed: () => _setIndex(0),
+        ),
+        NavigationMenuButton(
+          key: keys[1],
+          label: AppIntl.of(context)!.title_schedule,
+          activeIcon: Icons.access_time_filled,
+          inactiveIcon: Icons.access_time,
+          onPressed: () => _setIndex(1),
+        ),
+        NavigationMenuButton(
+          key: keys[2],
+          label: AppIntl.of(context)!.title_student,
+          activeIcon: Icons.school,
+          inactiveIcon: Icons.school_outlined,
+          onPressed: () => _setIndex(2),
+        ),
+        NavigationMenuButton(
+          key: keys[3],
+          label: AppIntl.of(context)!.title_ets,
+          activeIcon: Icons.account_balance_sharp,
+          inactiveIcon: Icons.account_balance_outlined,
+          onPressed: () => _setIndex(3),
+        ),
+        NavigationMenuButton(
+          key: keys[4],
+          label: AppIntl.of(context)!.title_more,
+          activeIcon: Icons.menu,
+          inactiveIcon: Icons.menu,
+          onPressed: () => _setIndex(4),
+        ),
+      ],
+    );
   }
 
-  _setIndex(int newIndex) {
+  void _setIndex(int newIndex) {
     widget.indexChangedCallback(NavigationMenuCallback(newIndex, keys[newIndex], currentKey));
     currentKey = keys[newIndex];
   }

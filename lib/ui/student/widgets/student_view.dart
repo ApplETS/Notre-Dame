@@ -39,21 +39,12 @@ class _StudentViewState extends State<StudentView> {
                 bottom: TabBar(
                   indicatorColor: context.theme.appColors.tabBarIndicator,
                   labelColor: context.theme.appColors.tabBarLabel,
-                  tabs: List.generate(
-                    tabs.length,
-                    (index) => Tab(text: tabs[index]),
-                  ),
+                  tabs: List.generate(tabs.length, (index) => Tab(text: tabs[index])),
                 ),
               ),
             ];
           },
-          body: SafeArea(
-            top: false,
-            bottom: false,
-            child: TabBarView(
-              children: tabsView,
-            ),
-          ),
+          body: SafeArea(top: false, bottom: false, child: TabBarView(children: tabsView)),
         ),
       ),
     );

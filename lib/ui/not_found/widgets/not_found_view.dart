@@ -31,46 +31,39 @@ class _NotFoundState extends State<NotFoundView> {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<NotFoundViewModel>.nonReactive(
-      viewModelBuilder: () => viewModel,
-      builder: (context, model, child) => Scaffold(
-            body: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 80,
-                      ),
-                      child: Text(
-                        AppIntl.of(context)!.not_found_title,
-                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 70,
-                      ),
-                      child: Text(
-                        AppIntl.of(context)!.not_found_message(model.notFoundPageName),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppPalette.etsLightRed,
-                      ),
-                      onPressed: () {
-                        model.navigateToDashboard();
-                      },
-                      child: Text(AppIntl.of(context)!.go_to_dashboard),
-                    ),
-                  ],
+    viewModelBuilder: () => viewModel,
+    builder: (context, model, child) => Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 80),
+                child: Text(
+                  AppIntl.of(context)!.not_found_title,
+                  style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
-          ));
+              Padding(
+                padding: const EdgeInsets.only(bottom: 70),
+                child: Text(
+                  AppIntl.of(context)!.not_found_message(model.notFoundPageName),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: AppPalette.etsLightRed),
+                onPressed: () {
+                  model.navigateToDashboard();
+                },
+                child: Text(AppIntl.of(context)!.go_to_dashboard),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }

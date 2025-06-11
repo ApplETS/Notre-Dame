@@ -54,15 +54,16 @@ void main() {
     group("getPrograms - ", () {
       final List<Program> programs = [
         Program(
-            name: 'Genie',
-            code: '9999',
-            average: '3',
-            accumulatedCredits: '3',
-            registeredCredits: '4',
-            completedCourses: '6',
-            failedCourses: '5',
-            equivalentCourses: '7',
-            status: 'Actif')
+          name: 'Genie',
+          code: '9999',
+          average: '3',
+          accumulatedCredits: '3',
+          registeredCredits: '4',
+          completedCourses: '6',
+          failedCourses: '5',
+          equivalentCourses: '7',
+          status: 'Actif',
+        ),
       ];
 
       setUp(() async {
@@ -177,13 +178,19 @@ void main() {
 
     group("getInfo - ", () {
       final ProfileStudent info = ProfileStudent(
-          balance: '99.99',
-          firstName: 'John',
-          lastName: 'Doe',
-          permanentCode: 'DOEJ00000000',
-          universalCode: 'AA00000');
-      final ProfileStudent defaultInfo =
-          ProfileStudent(balance: '', firstName: '', lastName: '', permanentCode: '', universalCode: '');
+        balance: '99.99',
+        firstName: 'John',
+        lastName: 'Doe',
+        permanentCode: 'DOEJ00000000',
+        universalCode: 'AA00000',
+      );
+      final ProfileStudent defaultInfo = ProfileStudent(
+        balance: '',
+        firstName: '',
+        lastName: '',
+        permanentCode: '',
+        universalCode: '',
+      );
 
       setUp(() async {
         // Stub to simulate presence of info cache
@@ -231,11 +238,12 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         final ProfileStudent anotherInfo = ProfileStudent(
-            balance: '0.0',
-            firstName: 'Johnny',
-            lastName: 'Doe',
-            permanentCode: 'DOEJ00000000',
-            universalCode: 'AA00000');
+          balance: '0.0',
+          firstName: 'Johnny',
+          lastName: 'Doe',
+          permanentCode: 'DOEJ00000000',
+          universalCode: 'AA00000',
+        );
         reset(signetsApiMock);
         SignetsAPIClientMock.stubGetInfo(signetsApiMock, anotherInfo);
 

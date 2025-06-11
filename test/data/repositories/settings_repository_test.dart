@@ -43,10 +43,16 @@ void main() {
     group("getScheduleSettings - ", () {
       test("validate default behaviour", () async {
         // Stubs the answer of the preferences services
-        PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
-            toReturn: null);
-        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleShowTodayBtn,
-            toReturn: null);
+        PreferencesServiceMock.stubGetString(
+          preferencesServiceMock,
+          PreferencesFlag.scheduleCalendarFormat,
+          toReturn: null,
+        );
+        PreferencesServiceMock.stubGetBool(
+          preferencesServiceMock,
+          PreferencesFlag.scheduleShowTodayBtn,
+          toReturn: null,
+        );
         PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleListView, toReturn: null);
         RemoteConfigServiceMock.stubGetCalendarViewEnabled(remoteConfigServiceMock);
 
@@ -70,10 +76,16 @@ void main() {
 
       test("validate the loading of the settings", () async {
         // Stubs the answer of the preferences services
-        PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.scheduleCalendarFormat,
-            toReturn: CalendarTimeFormat.month.name);
-        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleShowTodayBtn,
-            toReturn: false);
+        PreferencesServiceMock.stubGetString(
+          preferencesServiceMock,
+          PreferencesFlag.scheduleCalendarFormat,
+          toReturn: CalendarTimeFormat.month.name,
+        );
+        PreferencesServiceMock.stubGetBool(
+          preferencesServiceMock,
+          PreferencesFlag.scheduleShowTodayBtn,
+          toReturn: false,
+        );
         PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleListView, toReturn: false);
 
         final expected = {
@@ -138,8 +150,11 @@ void main() {
     group("Locale - ", () {
       test("validate default behaviour", () async {
         const flag = PreferencesFlag.locale;
-        PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.locale,
-            toReturn: const Locale('fr').toString());
+        PreferencesServiceMock.stubGetString(
+          preferencesServiceMock,
+          PreferencesFlag.locale,
+          toReturn: const Locale('fr').toString(),
+        );
 
         repository.setLocale('fr');
         repository.locale;
@@ -189,8 +204,11 @@ void main() {
     });
 
     test("fetch theme and locale", () async {
-      PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.locale,
-          toReturn: const Locale('fr').toString());
+      PreferencesServiceMock.stubGetString(
+        preferencesServiceMock,
+        PreferencesFlag.locale,
+        toReturn: const Locale('fr').toString(),
+      );
       PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.theme, toReturn: 'ThemeMode.system');
 
       await repository.fetchLanguageAndThemeMode();
@@ -204,8 +222,11 @@ void main() {
 
     test("reset language and theme", () async {
       // Set local and theme
-      PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.locale,
-          toReturn: const Locale('fr').toString());
+      PreferencesServiceMock.stubGetString(
+        preferencesServiceMock,
+        PreferencesFlag.locale,
+        toReturn: const Locale('fr').toString(),
+      );
       PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.theme, toReturn: 'ThemeMode.system');
 
       await repository.fetchLanguageAndThemeMode();
@@ -216,16 +237,22 @@ void main() {
       repository.resetLanguageAndThemeMode();
 
       expect(repository.themeMode, null, reason: "Default theme mode should be null");
-      expect(repository.locale, Locale(Intl.systemLocale.split('_')[0]),
-          reason: "Default locale should be system language");
+      expect(
+        repository.locale,
+        Locale(Intl.systemLocale.split('_')[0]),
+        reason: "Default locale should be system language",
+      );
     });
 
     test("setString", () async {
       const flag = PreferencesFlag.scheduleCalendarFormat;
       PreferencesServiceMock.stubSetString(preferencesServiceMock, flag);
 
-      expect(await repository.setString(flag, "test"), true,
-          reason: "setString should return true if the PreferenceService return true");
+      expect(
+        await repository.setString(flag, "test"),
+        true,
+        reason: "setString should return true if the PreferenceService return true",
+      );
 
       untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
 
@@ -237,8 +264,11 @@ void main() {
       const flag = PreferencesFlag.aboutUsCard;
       PreferencesServiceMock.stubSetInt(preferencesServiceMock, flag);
 
-      expect(await repository.setInt(flag, 0), true,
-          reason: "setInt should return true if the PreferenceService return true");
+      expect(
+        await repository.setInt(flag, 0),
+        true,
+        reason: "setInt should return true if the PreferenceService return true",
+      );
 
       untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
 
@@ -250,8 +280,11 @@ void main() {
       const flag = PreferencesFlag.scheduleCalendarFormat;
       PreferencesServiceMock.stubGetString(preferencesServiceMock, flag);
 
-      expect(await repository.getString(flag), 'test',
-          reason: "setString should return true if the PreferenceService return true");
+      expect(
+        await repository.getString(flag),
+        'test',
+        reason: "setString should return true if the PreferenceService return true",
+      );
 
       untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
 
@@ -263,8 +296,11 @@ void main() {
       const flag = PreferencesFlag.scheduleCalendarFormat;
       PreferencesServiceMock.stubSetBool(preferencesServiceMock, flag);
 
-      expect(await repository.setBool(flag, true), true,
-          reason: "setString should return true if the PreferenceService return true");
+      expect(
+        await repository.setBool(flag, true),
+        true,
+        reason: "setString should return true if the PreferenceService return true",
+      );
 
       untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
 
@@ -284,13 +320,10 @@ void main() {
           PreferencesFlag.aboutUsCard: 0,
           PreferencesFlag.scheduleCard: 1,
           PreferencesFlag.progressBarCard: 2,
-          PreferencesFlag.gradesCard: 3
+          PreferencesFlag.gradesCard: 3,
         };
 
-        expect(
-          await repository.getDashboard(),
-          expected,
-        );
+        expect(await repository.getDashboard(), expected);
 
         verify(preferencesServiceMock.getInt(PreferencesFlag.aboutUsCard)).called(1);
         verify(preferencesServiceMock.getInt(PreferencesFlag.scheduleCard)).called(1);
@@ -304,9 +337,12 @@ void main() {
       test("validate the loading of the cards", () async {
         PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.aboutUsCard);
         PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.scheduleCard, toReturn: 2);
-        PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.progressBarCard,
-            // ignore: avoid_redundant_argument_values
-            toReturn: 0);
+        PreferencesServiceMock.stubGetInt(
+          preferencesServiceMock,
+          PreferencesFlag.progressBarCard,
+          // ignore: avoid_redundant_argument_values
+          toReturn: 0,
+        );
         PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.gradesCard, toReturn: 3);
 
         // Cards
@@ -314,13 +350,10 @@ void main() {
           PreferencesFlag.aboutUsCard: 1,
           PreferencesFlag.scheduleCard: 2,
           PreferencesFlag.progressBarCard: 0,
-          PreferencesFlag.gradesCard: 3
+          PreferencesFlag.gradesCard: 3,
         };
 
-        expect(
-          await repository.getDashboard(),
-          expected,
-        );
+        expect(await repository.getDashboard(), expected);
 
         verify(preferencesServiceMock.getInt(PreferencesFlag.aboutUsCard)).called(1);
         verify(preferencesServiceMock.getInt(PreferencesFlag.scheduleCard)).called(1);

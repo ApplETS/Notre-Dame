@@ -60,10 +60,14 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
     isNotified = !isNotified;
     if (isNotified) {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_notified_for(author?.organization ?? ""), toastLength: Toast.LENGTH_LONG);
+        msg: appIntl.news_author_notified_for(author?.organization ?? ""),
+        toastLength: Toast.LENGTH_LONG,
+      );
     } else {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_not_notified_for(author?.organization ?? ""), toastLength: Toast.LENGTH_LONG);
+        msg: appIntl.news_author_not_notified_for(author?.organization ?? ""),
+        toastLength: Toast.LENGTH_LONG,
+      );
     }
   }
 

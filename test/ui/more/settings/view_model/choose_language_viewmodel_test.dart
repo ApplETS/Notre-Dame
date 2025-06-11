@@ -58,8 +58,11 @@ void main() {
       test('throws an error when index does not exist', () async {
         SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
-        expect(() => viewModel.changeLanguage(-1), throwsException,
-            reason: "No valid language for the index -1 passed in parameters");
+        expect(
+          () => viewModel.changeLanguage(-1),
+          throwsException,
+          reason: "No valid language for the index -1 passed in parameters",
+        );
       });
     });
 

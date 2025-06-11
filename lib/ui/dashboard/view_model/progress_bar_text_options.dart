@@ -1,5 +1,1 @@
-enum ProgressBarText {
-  daysElapsedWithTotalDays,
-  percentage,
-  remainingDays,
-}
+enum ProgressBarText { daysElapsedWithTotalDays, percentage, remainingDays }

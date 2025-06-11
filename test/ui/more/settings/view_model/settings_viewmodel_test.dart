@@ -44,7 +44,7 @@ void main() {
         verifyInOrder([
           settingsManagerMock.fetchLanguageAndThemeMode(),
           settingsManagerMock.locale,
-          settingsManagerMock.themeMode
+          settingsManagerMock.themeMode,
         ]);
         verifyNoMoreInteractions(settingsManagerMock);
       });

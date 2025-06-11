@@ -35,10 +35,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
 
     _animationController.forward();
   }
@@ -55,10 +52,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => model,
-      builder: (context, model, child) => Column(children: [
-        _dayViewHeader(model),
-        _buildEvents(model),
-      ]),
+      builder: (context, model, child) => Column(children: [_dayViewHeader(model), _buildEvents(model)]),
     );
   }
 
@@ -79,36 +73,35 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
 
     return Expanded(
-        child: calendar_view.DayView(
-            safeAreaOption: calendar_view.SafeAreaOption(bottom: false),
-            showVerticalLine: false,
-            dayTitleBuilder: calendar_view.DayHeader.hidden,
-            key: dayViewKey,
-            controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
-            onPageChange: (date, _) => ({
-                  setState(() {
-                    model.handleDateSelectedChanged(date);
-                  })
-                }),
-            backgroundColor: context.theme.scaffoldBackgroundColor,
-            initialDay: model.daySelected,
-            hourIndicatorSettings: calendar_view.HourIndicatorSettings(
-              color: context.theme.appColors.scheduleLine,
-            ),
-            liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-              color: context.theme.textTheme.bodyMedium!.color!,
-            ),
-            heightPerMinute: heightPerMinute,
-            scrollOffset: heightPerMinute * 60 * 7.5,
-            keepScrollOffset: true,
-            dateStringBuilder: (date, {secondaryDate}) {
-              final locale = AppIntl.of(context)!.localeName;
-              return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
-            },
-            timeStringBuilder: (date, {secondaryDate}) {
-              return DateFormat('H:mm').format(date);
-            },
-            eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events)));
+      child: calendar_view.DayView(
+        showVerticalLine: false,
+        dayTitleBuilder: calendar_view.DayHeader.hidden,
+        key: dayViewKey,
+        controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+        onPageChange: (date, _) => ({
+          setState(() {
+            model.handleDateSelectedChanged(date);
+          }),
+        }),
+        backgroundColor: context.theme.scaffoldBackgroundColor,
+        initialDay: model.daySelected,
+        hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
+        liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
+          color: context.theme.textTheme.bodyMedium!.color!,
+        ),
+        heightPerMinute: heightPerMinute,
+        scrollOffset: heightPerMinute * 60 * 7.5,
+        keepScrollOffset: true,
+        dateStringBuilder: (date, {secondaryDate}) {
+          final locale = AppIntl.of(context)!.localeName;
+          return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
+        },
+        timeStringBuilder: (date, {secondaryDate}) {
+          return DateFormat('H:mm').format(date);
+        },
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
+      ),
+    );
   }
 
   Widget _buildListView(DayViewModel model) {
@@ -138,7 +131,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         children: [
           // When swiping fast, this prevents from having to wait for animation completion to go to the next page
           for (int i = pageBufferSize * -1; i <= pageBufferSize + 1; i++)
-            _buildDayList(model.daySelected.add(Duration(days: i)), model)
+            _buildDayList(model.daySelected.add(Duration(days: i)), model),
         ],
       ),
     );
@@ -168,10 +161,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         description: events[0].description,
         start: events[0].startTime,
         end: events[0].endTime,
-        titleStyle: TextStyle(
-          fontSize: 14,
-          color: events[0].color.accent,
-        ),
+        titleStyle: TextStyle(fontSize: 14, color: events[0].color.accent),
         totalEvents: events.length,
         padding: const EdgeInsets.all(7.0),
         backgroundColor: events[0].color,
@@ -186,12 +176,13 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
-        physics: const ScrollPhysics(),
-        shrinkWrap: true,
-        itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
-        separatorBuilder: (_, index) =>
-            (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
-        itemCount: events.length);
+      physics: const ScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
+      separatorBuilder: (_, index) =>
+          (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
+      itemCount: events.length,
+    );
   }
 
   Widget _dayViewHeader(DayViewModel model) {
@@ -209,35 +200,37 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           return isSameDay(model.daySelected, day);
         },
         headerStyle: HeaderStyle(
-            titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
-            titleCentered: true,
-            formatButtonVisible: false),
+          titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
+          titleCentered: true,
+          formatButtonVisible: false,
+        ),
         eventLoader: model.coursesActivitiesFor,
         calendarFormat: CalendarFormat.week,
         focusedDay: model.daySelected,
         calendarBuilders: CalendarBuilders(
-            defaultBuilder: (_, date, __) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-            outsideBuilder: (_, date, __) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-            todayBuilder: (_, date, __) => _buildHeaderDay(date, todayColor, model, dayViewKey),
-            selectedBuilder: (_, date, __) => FadeTransition(
-                  opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-                  child: _buildHeaderDay(date, selectedColor, model, dayViewKey),
-                ),
-            markerBuilder: (_, date, events) {
-              final bool isSelected = isSameDay(date, model.daySelected);
-              final bool isToday = isSameDay(date, DateTime.now());
-              Color color = selectedColor;
+          defaultBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
+          outsideBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
+          todayBuilder: (_, date, _) => _buildHeaderDay(date, todayColor, model, dayViewKey),
+          selectedBuilder: (_, date, _) => FadeTransition(
+            opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+            child: _buildHeaderDay(date, selectedColor, model, dayViewKey),
+          ),
+          markerBuilder: (_, date, events) {
+            final bool isSelected = isSameDay(date, model.daySelected);
+            final bool isToday = isSameDay(date, DateTime.now());
+            Color color = selectedColor;
 
-              if (!isSelected) {
-                if (isToday) {
-                  color = todayColor;
-                } else {
-                  color = defaultColor;
-                }
+            if (!isSelected) {
+              if (isToday) {
+                color = todayColor;
+              } else {
+                color = defaultColor;
               }
+            }
 
-              return _buildEventsMarker(events, color);
-            }),
+            return _buildEventsMarker(events, color);
+          },
+        ),
         // Those are now required by the package table_calendar ^3.0.0. In the doc,
         // it is suggest to set them to values that won't affect user experience.
         // Outside the range, the date are set to disable so no event can be loaded.
@@ -248,49 +241,51 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   }
 
   Widget _buildHeaderDay(
-          DateTime date, Color color, DayViewModel model, GlobalKey<calendar_view.DayViewState> dayViewKey) =>
-      Container(
-        margin: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: color)),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            borderRadius: BorderRadius.circular(10),
-            onTap: () {
-              DateTime startingDate = model.daySelected;
-              setState(() {
-                model.handleDateSelectedChanged(date);
-              });
+    DateTime date,
+    Color color,
+    DayViewModel model,
+    GlobalKey<calendar_view.DayViewState> dayViewKey,
+  ) => Container(
+    margin: const EdgeInsets.all(4.0),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: color),
+    ),
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(10),
+        onTap: () {
+          DateTime startingDate = model.daySelected;
+          setState(() {
+            model.handleDateSelectedChanged(date);
+          });
 
-              if (model.daySelected.difference(startingDate).inDays.abs() == 1) {
-                dayViewKey.currentState?.animateToDate(model.daySelected);
-              } else {
-                dayViewKey.currentState?.jumpToDate(model.daySelected);
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.only(top: 5.0, left: 6.0),
-              width: 100,
-              height: 100,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${date.day}',
-                    style: const TextStyle().copyWith(
-                      fontSize: 16.0,
-                      height: 1.2,
-                    ),
-                  ),
-                  if (date.month != DateTime.now().month || date.year != DateTime.now().year)
-                    Text(DateFormat.MMM(AppIntl.of(context)!.localeName).format(date),
-                        style: const TextStyle(fontSize: 10.0)),
-                ],
-              ),
-            ),
+          if (model.daySelected.difference(startingDate).inDays.abs() == 1) {
+            dayViewKey.currentState?.animateToDate(model.daySelected);
+          } else {
+            dayViewKey.currentState?.jumpToDate(model.daySelected);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.only(top: 5.0, left: 6.0),
+          width: 100,
+          height: 100,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('${date.day}', style: const TextStyle().copyWith(fontSize: 16.0, height: 1.2)),
+              if (date.month != DateTime.now().month || date.year != DateTime.now().year)
+                Text(
+                  DateFormat.MMM(AppIntl.of(context)!.localeName).format(date),
+                  style: const TextStyle(fontSize: 10.0),
+                ),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   Widget? _buildEventsMarker(List events, Color color) {
     if (events.isNotEmpty) {
@@ -305,9 +300,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           child: Text(
             '${events.length}',
             textAlign: TextAlign.center,
-            style: const TextStyle().copyWith(
-              fontSize: 12.0,
-            ),
+            style: const TextStyle().copyWith(fontSize: 12.0),
           ),
         ),
       );
