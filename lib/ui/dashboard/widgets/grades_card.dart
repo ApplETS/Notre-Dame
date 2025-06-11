@@ -37,9 +37,12 @@ class GradesCard extends StatelessWidget {
     }
 
     return DismissibleCard(
-        key: UniqueKey(),
-        onDismissed: (DismissDirection direction) => onDismissed(),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+      key: UniqueKey(),
+      onDismissed: (DismissDirection direction) => onDismissed(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
@@ -50,8 +53,10 @@ class GradesCard extends StatelessWidget {
           if (courses.isEmpty && !loading)
             _buildNoGradesContent(context)
           else
-            _buildGradesButton(courses, context, loading: loading)
-        ]));
+            _buildGradesButton(courses, context, loading: loading),
+        ],
+      ),
+    );
   }
 
   static Widget _buildGradesButton(List<Course> courses, BuildContext context, {bool loading = false}) => Skeletonizer(

@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:animations/animations.dart';
@@ -80,7 +81,7 @@ class _RootViewState extends State<RootView> {
             ),
           ),
           if (MediaQuery.of(context).orientation == Orientation.portrait)
-             SizedBox(height: 80.0) // The same height as the menu bar
+            SizedBox(height: 80.0), // The same height as the menu bar
         ],
       ),
     );

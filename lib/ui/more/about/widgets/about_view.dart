@@ -151,7 +151,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
       AxisDirection.up,
       AxisDirection.right,
       AxisDirection.down,
-      AxisDirection.left
+      AxisDirection.left,
     ];
 
     DateTime? lastCodeDate;
@@ -184,13 +184,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
     return SizedBox(
       width: 100,
       height: 100,
-      child: Hero(
-        tag: 'about',
-        child: Image.asset(
-          "assets/images/favicon_applets.png",
-          scale: 2.0,
-        ),
-      ),
+      child: Hero(tag: 'about', child: Image.asset("assets/images/favicon_applets.png", scale: 2.0)),
     );
   }
 }

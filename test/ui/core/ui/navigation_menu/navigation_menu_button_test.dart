@@ -129,10 +129,7 @@ void main() {
       // Verify inactive icon and transparent background
       expect(find.byIcon(Icons.home_outlined), findsOneWidget);
       final elevatedButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
-      expect(
-        elevatedButton.style?.backgroundColor?.resolve({}),
-        Colors.transparent,
-      );
+      expect(elevatedButton.style?.backgroundColor?.resolve({}), Colors.transparent);
 
       // Verify text is hidden
       final fadeTransition = tester.widget<FadeTransition>(find.byType(FadeTransition));

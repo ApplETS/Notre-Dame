@@ -18,10 +18,7 @@ Widget buildNavigationMenu({Size size = const Size(400, 800)}) {
     child: MediaQuery(
       data: MediaQueryData(size: size),
       child: Scaffold(
-        body: NavigationMenu(
-          selectedIndex: 0,
-          indexChangedCallback: (callback) => selectedIndex = callback.index,
-        ),
+        body: NavigationMenu(selectedIndex: 0, indexChangedCallback: (callback) => selectedIndex = callback.index),
       ),
     ),
   );
