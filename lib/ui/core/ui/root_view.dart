@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:animations/animations.dart';
-import 'package:flutter/services.dart';
 
 // Project imports:
 import 'package:notredame/data/models/navigation_menu_callback.dart';
