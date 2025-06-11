@@ -36,7 +36,7 @@ void main() {
       startDateTime: DateTime.now().withoutTime.add(Duration(hours: 14)),
       endDateTime: DateTime.now().withoutTime.add(Duration(hours: 17)),
       courseGroup: 'ING150-01',
-      activityLocation: 'Room 101',
+      activityLocation: ['Room 101'],
       activityName: 'Lecture 1',
       activityDescription: 'Regular',
     ),
@@ -45,7 +45,7 @@ void main() {
       startDateTime: DateTime.now().withoutTime.add(Duration(hours: 9)),
       endDateTime: DateTime.now().withoutTime.add(Duration(hours: 12)),
       courseGroup: 'ING150-01',
-      activityLocation: 'Room 102',
+      activityLocation: ['Room 102'],
       activityName: 'Lab Session',
       activityDescription: 'Regular',
     ),
@@ -133,8 +133,8 @@ void main() {
       });
 
       testWidgets("calendar view with event in selected day", (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
@@ -149,8 +149,8 @@ void main() {
 
     group("header", () {
       testWidgets("calendar view with event in selected day", (WidgetTester tester) async {
+        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
