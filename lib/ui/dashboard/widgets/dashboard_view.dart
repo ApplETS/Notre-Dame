@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -33,6 +34,8 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    // Make Android's gesture bar transparent on versions of Android (it is now the default behavior)
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent));
     return ViewModelBuilder<DashboardViewModel>.reactive(
       viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
       builder: (context, model, child) {
