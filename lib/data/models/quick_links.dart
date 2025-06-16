@@ -99,4 +99,34 @@ List<QuickLink> quickLinks(AppIntl intl) => [
     image: const FittedBox(child: FaIcon(FontAwesomeIcons.sackDollar, color: AppPalette.etsLightRed)),
     link: 'https://ebourses.etsmtl.ca/',
   ),
+  QuickLink(
+    id: 15,
+    name: intl.ets_appui_reussite_title,
+    image: const FittedBox(child: FaIcon(FontAwesomeIcons.sackDollar, color: AppPalette.etsLightRed)),
+    link: 'https://www.etsmtl.ca/experience-etudiante/appui-a-la-reussite',
+  ), //TODO logo
+  QuickLink(
+    id: 16,
+    name: intl.ets_nimbus_title,
+    image: const FittedBox(child: FaIcon(FontAwesomeIcons.sackDollar, color: AppPalette.etsLightRed)),
+    link: 'https://www.etsmtl.ca/experience-etudiante/appui-a-la-reussite/tutorat-par-les-pairs-nimbus',
+  ), //TODO logo
+  QuickLink(
+    id: 17,
+    name: intl.ets_centre_sportif_title,
+    image: const FittedBox(child: FaIcon(FontAwesomeIcons.sackDollar, color: AppPalette.etsLightRed)),
+    link: 'https://www.etsmtl.ca/satellite/centre-sportif',
+  ), //TODO logo
+  QuickLink(
+    id: 18,
+    name: intl.ets_etudiants_actuels_title,
+    image: const FittedBox(child: FaIcon(FontAwesomeIcons.sackDollar, color: AppPalette.etsLightRed)),
+    link: 'https://www.etsmtl.ca/etudiants-actuels',
+  ), //TODO logo
+  QuickLink(
+    id: 19,
+    name: intl.ets_cafe_sans_filtre_title,
+    image: const FittedBox(child: FaIcon(FontAwesomeIcons.sackDollar, color: AppPalette.etsLightRed)),
+    link: 'https://cafesansfiltre.com/',
+  ), //TODO logo
 ];

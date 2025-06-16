@@ -241,6 +241,11 @@
   "ets_stages_et_emplois_title": "Jobs and internships",
   "ets_eportfolio_title": "ePortfolio",
   "ets_ebourses_title": "eBourses",
+  "ets_appui_reussite_title": "Student Success Support",
+  "ets_nimbus_title": "Nimbus",
+  "ets_centre_sportif_title": "Sport center",
+  "ets_etudiants_actuels_title": "Current students",
+  "ets_cafe_sans_filtre_title": "CAFE SANS FILTRE",
   "ets_hide_quick_link": "Hide link {quickLinkName}",
   "@ets_hide_quick_link": {
     "placeholders": {
