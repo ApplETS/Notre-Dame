@@ -26,11 +26,6 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
   bool _isViewModelInitialized = false;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 

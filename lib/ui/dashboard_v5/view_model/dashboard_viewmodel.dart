@@ -6,8 +6,20 @@ class DashboardViewModelV5 extends ChangeNotifier {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
+  /// Static flag to track if the animation has been played
+  static bool hasAnimationPlayed = false;
+
+  /// Tracks if the animation should be played
+  final bool shouldPlayAnimation;
+
   /// TODO : add AppIntl to the messages
-  DashboardViewModelV5({required AppIntl intl}) : _appIntl = intl;
+  DashboardViewModelV5({required AppIntl intl})
+      : _appIntl = intl,
+
+        /// if the animation has not been played, play it
+        shouldPlayAnimation = !hasAnimationPlayed {
+    hasAnimationPlayed = true;
+  }
 
   late AnimationController controller;
   late Animation<double> heightAnimation;
@@ -18,7 +30,7 @@ class DashboardViewModelV5 extends ChangeNotifier {
   bool isLoading = false;
 
   /// Slide offset for title and subtitle animations (slide from top)
-  /// Vertical slide offset from ( 0.0 (x), -15.0 (y) ) to 0 (y)
+  /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
   Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
 
   /// Fade-in opacity based on title animation progress
@@ -54,7 +66,13 @@ class DashboardViewModelV5 extends ChangeNotifier {
       CurvedAnimation(parent: controller, curve: Curves.easeInOut),
     );
 
-    controller.forward();
+    /// Play the animation if it hasn't been played before
+    /// Otherwise, set the animation to value 100%
+    if (shouldPlayAnimation) {
+      controller.forward();
+    } else {
+      controller.value = 1.0;
+    }
   }
 
   @override
