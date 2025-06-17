@@ -55,7 +55,7 @@
   "events_reminder_start_cancel_with_refund": "Début de l'annulation avec remboursement",
   "events_reminder_end_cancel_with_refund": "Fin de l'annulation avec remboursement",
   "events_reminder_end_new_student_cancel_with_refund": "Fin de l'annulation avec remboursement (nouveaux étudiants)",
-  "events_reminder_end_cancel_aseq": "Début de la période de désistement ASEQ",
+  "events_reminder_end_cancel_aseq": "Fin de la période de désistement ASEQ",
 
   "close_button_text": "Fermer",
 
