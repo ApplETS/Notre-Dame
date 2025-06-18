@@ -54,83 +54,85 @@ class CourseEvaluation {
       ? null
       : (mark! / correctedEvaluationOutOfFormatted) * weight;
 
-  CourseEvaluation(
-      {required this.courseGroup,
-      required this.title,
-      required this.weight,
-      required this.published,
-      required this.teacherMessage,
-      required this.ignore,
-      required this.correctedEvaluationOutOf,
-      this.mark,
-      this.passMark,
-      this.standardDeviation,
-      this.median,
-      this.percentileRank,
-      this.targetDate})
-      : correctedEvaluationOutOfFormatted = correctedEvaluationOutOf.isNotEmpty
-            ? double.parse(correctedEvaluationOutOf.split("+").first.replaceAll(",", "."))
-            : 0.0;
+  CourseEvaluation({
+    required this.courseGroup,
+    required this.title,
+    required this.weight,
+    required this.published,
+    required this.teacherMessage,
+    required this.ignore,
+    required this.correctedEvaluationOutOf,
+    this.mark,
+    this.passMark,
+    this.standardDeviation,
+    this.median,
+    this.percentileRank,
+    this.targetDate,
+  }) : correctedEvaluationOutOfFormatted = correctedEvaluationOutOf.isNotEmpty
+           ? double.parse(correctedEvaluationOutOf.split("+").first.replaceAll(",", "."))
+           : 0.0;
 
   /// Used to create a new [CourseEvaluation] instance from a [XMLElement].
   factory CourseEvaluation.fromXml(XmlElement node) => CourseEvaluation(
-      courseGroup: node.getElement('coursGroupe')!.innerText,
-      title: node.getElement('nom')!.innerText,
-      mark: node.getElement('note')!.innerText.isNotEmpty
-          ? double.parse(node.getElement('note')!.innerText.replaceAll(",", "."))
-          : null,
-      correctedEvaluationOutOf: node.getElement('corrigeSur')!.innerText.replaceAll(",", "."),
-      weight: double.parse(node.getElement('ponderation')!.innerText.replaceAll(",", ".")),
-      passMark: node.getElement('moyenne')!.innerText.isNotEmpty
-          ? double.parse(node.getElement('moyenne')!.innerText.replaceAll(",", "."))
-          : null,
-      standardDeviation: node.getElement('ecartType')!.innerText.isNotEmpty
-          ? double.parse(node.getElement('ecartType')!.innerText.replaceAll(",", "."))
-          : null,
-      median: node.getElement('mediane')!.innerText.isNotEmpty
-          ? double.parse(node.getElement('mediane')!.innerText.replaceAll(",", "."))
-          : null,
-      percentileRank: node.getElement('rangCentile')!.innerText.isNotEmpty
-          ? int.parse(node.getElement('rangCentile')!.innerText)
-          : null,
-      published: node.getElement('publie')!.innerText == "Oui",
-      teacherMessage: node.getElement('messageDuProf')!.innerText,
-      ignore: node.getElement('ignoreDuCalcul')!.innerText == "Oui",
-      targetDate: node.getElement('dateCible')!.innerText.isNotEmpty
-          ? DateTime.parse(node.getElement('dateCible')!.innerText)
-          : null);
+    courseGroup: node.getElement('coursGroupe')!.innerText,
+    title: node.getElement('nom')!.innerText,
+    mark: node.getElement('note')!.innerText.isNotEmpty
+        ? double.parse(node.getElement('note')!.innerText.replaceAll(",", "."))
+        : null,
+    correctedEvaluationOutOf: node.getElement('corrigeSur')!.innerText.replaceAll(",", "."),
+    weight: double.parse(node.getElement('ponderation')!.innerText.replaceAll(",", ".")),
+    passMark: node.getElement('moyenne')!.innerText.isNotEmpty
+        ? double.parse(node.getElement('moyenne')!.innerText.replaceAll(",", "."))
+        : null,
+    standardDeviation: node.getElement('ecartType')!.innerText.isNotEmpty
+        ? double.parse(node.getElement('ecartType')!.innerText.replaceAll(",", "."))
+        : null,
+    median: node.getElement('mediane')!.innerText.isNotEmpty
+        ? double.parse(node.getElement('mediane')!.innerText.replaceAll(",", "."))
+        : null,
+    percentileRank: node.getElement('rangCentile')!.innerText.isNotEmpty
+        ? int.parse(node.getElement('rangCentile')!.innerText)
+        : null,
+    published: node.getElement('publie')!.innerText == "Oui",
+    teacherMessage: node.getElement('messageDuProf')!.innerText,
+    ignore: node.getElement('ignoreDuCalcul')!.innerText == "Oui",
+    targetDate: node.getElement('dateCible')!.innerText.isNotEmpty
+        ? DateTime.parse(node.getElement('dateCible')!.innerText)
+        : null,
+  );
 
   /// Used to create [CourseEvaluation] instance from a JSON file
   factory CourseEvaluation.fromJson(Map<String, dynamic> map) => CourseEvaluation(
-      courseGroup: map["courseGroup"] as String,
-      title: map["title"] as String,
-      mark: map["mark"] as double?,
-      correctedEvaluationOutOf: map["correctedEvaluationOutOf"] as String,
-      weight: map["weight"] as double,
-      passMark: map["passMark"] as double?,
-      standardDeviation: map["standardDeviation"] as double?,
-      median: map["median"] as double?,
-      percentileRank: map["percentileRank"] as int?,
-      published: map["published"] as bool,
-      teacherMessage: map["teacherMessage"] as String,
-      ignore: map["ignore"] as bool,
-      targetDate: map["targetDate"] == null ? null : DateTime.parse(map["targetDate"] as String));
+    courseGroup: map["courseGroup"] as String,
+    title: map["title"] as String,
+    mark: map["mark"] as double?,
+    correctedEvaluationOutOf: map["correctedEvaluationOutOf"] as String,
+    weight: map["weight"] as double,
+    passMark: map["passMark"] as double?,
+    standardDeviation: map["standardDeviation"] as double?,
+    median: map["median"] as double?,
+    percentileRank: map["percentileRank"] as int?,
+    published: map["published"] as bool,
+    teacherMessage: map["teacherMessage"] as String,
+    ignore: map["ignore"] as bool,
+    targetDate: map["targetDate"] == null ? null : DateTime.parse(map["targetDate"] as String),
+  );
 
   Map<String, dynamic> toJson() => {
-        'courseGroup': courseGroup,
-        'title': title,
-        'mark': mark,
-        'correctedEvaluationOutOf': correctedEvaluationOutOf,
-        'weight': weight,
-        'passMark': passMark,
-        'standardDeviation': standardDeviation,
-        'median': median,
-        'percentileRank': percentileRank,
-        'published': published,
-        'teacherMessage': teacherMessage,
-        'ignore': ignore,
-        'targetDate': targetDate?.toString(),
-      };
+    'courseGroup': courseGroup,
+    'title': title,
+    'mark': mark,
+    'correctedEvaluationOutOf': correctedEvaluationOutOf,
+    'weight': weight,
+    'passMark': passMark,
+    'standardDeviation': standardDeviation,
+    'median': median,
+    'percentileRank': percentileRank,
+    'published': published,
+    'teacherMessage': teacherMessage,
+    'ignore': ignore,
+    'targetDate': targetDate?.toString(),
+  };
 
   @override
   bool operator ==(Object other) =>

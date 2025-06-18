@@ -12,24 +12,26 @@ import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../helpers.dart';
 
-main() {
+void main() {
   final Course course1 = Course(
-      acronym: 'GEN101',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
+    acronym: 'GEN101',
+    group: '02',
+    session: 'É2020',
+    programCode: '999',
+    grade: 'C+',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
 
   final Course course2 = Course(
-      acronym: 'GEN102',
-      group: '02',
-      session: 'É2020',
-      programCode: '999',
-      grade: 'C+',
-      numberOfCredits: 3,
-      title: 'Cours générique');
+    acronym: 'GEN102',
+    group: '02',
+    session: 'É2020',
+    programCode: '999',
+    grade: 'C+',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
 
   final courses = [course1, course2];
 
@@ -46,7 +48,11 @@ main() {
     });
 
     testWidgets('Has card grades displayed - with no courses', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: GradesCard(courses: [], onDismissed: () {}, loading: false)));
+      await tester.pumpWidget(
+        localizedWidget(
+          child: GradesCard(courses: [], onDismissed: () {}, loading: false),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Find grades card
@@ -63,7 +69,11 @@ main() {
     });
 
     testWidgets('Has card grades displayed - with courses', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: GradesCard(courses: courses, onDismissed: () {}, loading: false)));
+      await tester.pumpWidget(
+        localizedWidget(
+          child: GradesCard(courses: courses, onDismissed: () {}, loading: false),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Find grades card

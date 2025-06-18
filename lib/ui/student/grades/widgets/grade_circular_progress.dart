@@ -13,8 +13,14 @@ class GradeCircularProgress extends StatefulWidget {
   final double? averageGrade;
   final double ratio;
 
-  const GradeCircularProgress(this.ratio,
-      {super.key, this.completed = false, this.finalGrade, this.studentGrade, this.averageGrade});
+  const GradeCircularProgress(
+    this.ratio, {
+    super.key,
+    this.completed = false,
+    this.finalGrade,
+    this.studentGrade,
+    this.averageGrade,
+  });
 
   @override
   State<GradeCircularProgress> createState() => _GradeCircularProgressState();
@@ -28,20 +34,17 @@ class _GradeCircularProgressState extends State<GradeCircularProgress> with Tick
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1100),
-      vsync: this,
-    );
+    _controller = AnimationController(duration: const Duration(milliseconds: 1100), vsync: this);
 
     _controller.forward();
 
-    animation = ColorTween(
-      begin: AppPalette.gradeFailureMin,
-      end: gradePercentageColor(widget.studentGrade ?? 0.0),
-    ).animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      });
+    animation =
+        ColorTween(
+          begin: AppPalette.gradeFailureMin,
+          end: gradePercentageColor(widget.studentGrade ?? 0.0),
+        ).animate(_controller)..addListener(() {
+          setState(() {});
+        });
   }
 
   @override
@@ -71,10 +74,7 @@ class _GradeCircularProgressState extends State<GradeCircularProgress> with Tick
           ratio: widget.ratio,
           completed: widget.completed,
         ),
-        Text(
-          getGrade(context),
-          style: TextStyle(fontSize: 22 * widget.ratio),
-        ),
+        Text(getGrade(context), style: TextStyle(fontSize: 22 * widget.ratio)),
       ],
     );
   }

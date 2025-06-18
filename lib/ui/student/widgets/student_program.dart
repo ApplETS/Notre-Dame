@@ -27,12 +27,7 @@ class _StudentProgramState extends State<StudentProgram> with TickerProviderStat
   void initState() {
     super.initState();
 
-    controller = AnimationController(
-        vsync: this,
-        duration: const Duration(
-          milliseconds: 200,
-        ),
-        value: 1.0);
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 200), value: 1.0);
 
     rotateAnimation = Tween(begin: pi, end: 0.0).animate(CurvedAnimation(parent: controller, curve: Curves.easeIn));
   }
@@ -53,7 +48,7 @@ class _StudentProgramState extends State<StudentProgram> with TickerProviderStat
       AppIntl.of(context)!.profile_number_completed_courses_program,
       AppIntl.of(context)!.profile_number_failed_courses_program,
       AppIntl.of(context)!.profile_number_equivalent_courses_program,
-      AppIntl.of(context)!.profile_status_program
+      AppIntl.of(context)!.profile_status_program,
     ];
 
     final List<String> dataFetched = [
@@ -64,16 +59,14 @@ class _StudentProgramState extends State<StudentProgram> with TickerProviderStat
       widget._program.completedCourses,
       widget._program.failedCourses,
       widget._program.equivalentCourses,
-      widget._program.status
+      widget._program.status,
     ];
 
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: Colors.transparent,
         unselectedWidgetColor: AppPalette.etsLightRed,
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          onSecondary: AppPalette.etsLightRed,
-        ),
+        colorScheme: ColorScheme.fromSwatch().copyWith(onSecondary: AppPalette.etsLightRed),
       ),
       child: ExpansionTile(
         onExpansionChanged: (value) {
@@ -87,10 +80,7 @@ class _StudentProgramState extends State<StudentProgram> with TickerProviderStat
             }
           });
         },
-        title: Text(
-          widget._program.name,
-          style: TextStyle(color: context.theme.textTheme.bodyMedium!.color),
-        ),
+        title: Text(widget._program.name, style: TextStyle(color: context.theme.textTheme.bodyMedium!.color)),
         trailing: Padding(
           padding: const EdgeInsets.only(top: 5.0),
           child: AnimatedBuilder(
@@ -98,16 +88,10 @@ class _StudentProgramState extends State<StudentProgram> with TickerProviderStat
             builder: (BuildContext context, Widget? child) {
               return Transform.rotate(
                 angle: rotateAnimation.value,
-                child: const Icon(
-                  Icons.keyboard_arrow_down_sharp,
-                  color: AppPalette.etsLightRed,
-                ),
+                child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
               );
             },
-            child: const Icon(
-              Icons.keyboard_arrow_down_sharp,
-              color: AppPalette.etsLightRed,
-            ),
+            child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
           ),
         ),
         children: <Widget>[
@@ -118,10 +102,7 @@ class _StudentProgramState extends State<StudentProgram> with TickerProviderStat
                 padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(dataTitles[index]),
-                    Text(dataFetched[index]),
-                  ],
+                  children: <Widget>[Text(dataTitles[index]), Text(dataFetched[index])],
                 ),
               );
             }),

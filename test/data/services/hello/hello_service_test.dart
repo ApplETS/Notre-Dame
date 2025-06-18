@@ -34,13 +34,15 @@ void main() {
 
     group('getEvents - ', () {
       test('empty data', () async {
-        final query = {
-          'pageNumber': 1.toString(),
-          'pageSize': 10.toString(),
-        };
+        final query = {'pageNumber': 1.toString(), 'pageSize': 10.toString()};
         final uri = Uri.https(helloNewsAPI, '/api/events', query);
-        mockClient = HttpClientMockHelper.stubJsonGet(
-            uri.toString(), {'data': [], 'pageNumber': 1, 'pageSize': 10, 'totalPages': 1, 'totalRecords': 0});
+        mockClient = HttpClientMockHelper.stubJsonGet(uri.toString(), {
+          'data': [],
+          'pageNumber': 1,
+          'pageSize': 10,
+          'totalPages': 1,
+          'totalRecords': 0,
+        });
         service = buildService(mockClient);
 
         final result = await service.getEvents();
@@ -51,41 +53,40 @@ void main() {
 
       test('one news', () async {
         final news = News(
-            id: "402e711c-0f72-4aab-9684-31f1956c1da1",
-            title: "title",
-            content: "content",
-            imageUrl: "imageUrl",
-            state: "1",
-            publicationDate: DateTime.now(),
-            eventStartDate: DateTime.now().add(const Duration(days: 4)),
-            eventEndDate: DateTime.now().add(const Duration(days: 4, hours: 2)),
-            createdAt: DateTime.now().subtract(const Duration(days: 4)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 4)),
-            tags: [],
-            organizer: Organizer(
-              id: "3a5cb049-67cf-428e-b98f-ef29fb633e0d",
-              organization: "name2",
-              email: "email2",
-              type: "organizer",
-              activityArea: ActivityArea(
-                  id: "1",
-                  nameFr: "Fr",
-                  nameEn: "En",
-                  createdAt: DateTime.now().subtract(const Duration(days: 4)),
-                  updatedAt: DateTime.now().subtract(const Duration(days: 4))),
-            ));
+          id: "402e711c-0f72-4aab-9684-31f1956c1da1",
+          title: "title",
+          content: "content",
+          imageUrl: "imageUrl",
+          state: "1",
+          publicationDate: DateTime.now(),
+          eventStartDate: DateTime.now().add(const Duration(days: 4)),
+          eventEndDate: DateTime.now().add(const Duration(days: 4, hours: 2)),
+          createdAt: DateTime.now().subtract(const Duration(days: 4)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 4)),
+          tags: [],
+          organizer: Organizer(
+            id: "3a5cb049-67cf-428e-b98f-ef29fb633e0d",
+            organization: "name2",
+            email: "email2",
+            type: "organizer",
+            activityArea: ActivityArea(
+              id: "1",
+              nameFr: "Fr",
+              nameEn: "En",
+              createdAt: DateTime.now().subtract(const Duration(days: 4)),
+              updatedAt: DateTime.now().subtract(const Duration(days: 4)),
+            ),
+          ),
+        );
 
-        final query = {
-          'pageNumber': 1.toString(),
-          'pageSize': 10.toString(),
-        };
+        final query = {'pageNumber': 1.toString(), 'pageSize': 10.toString()};
         final uri = Uri.https(helloNewsAPI, '/api/events', query);
         mockClient = HttpClientMockHelper.stubJsonGet(uri.toString(), {
           'data': [news],
           'pageNumber': 1,
           'pageSize': 10,
           'totalPages': 1,
-          'totalRecords': 1
+          'totalRecords': 1,
         });
         service = buildService(mockClient);
 
@@ -119,11 +120,12 @@ void main() {
         type: 'type',
         organization: 'Test Organization',
         activityArea: ActivityArea(
-            id: "1",
-            nameFr: "Fr",
-            nameEn: "En",
-            createdAt: DateTime.now().subtract(const Duration(days: 4)),
-            updatedAt: DateTime.now().subtract(const Duration(days: 4))),
+          id: "1",
+          nameFr: "Fr",
+          nameEn: "En",
+          createdAt: DateTime.now().subtract(const Duration(days: 4)),
+          updatedAt: DateTime.now().subtract(const Duration(days: 4)),
+        ),
         isActive: true,
         profileDescription: 'Test Description',
         facebookLink: 'https://facebook.com/test',
@@ -139,8 +141,10 @@ void main() {
       final apiResponse = ApiResponse<Organizer>(data: organizer);
 
       final uri = Uri.https(helloNewsAPI, '/api/organizers/$organizerId');
-      mockClient =
-          HttpClientMockHelper.stubJsonGet(uri.toString(), apiResponse.toJson((organizer) => organizer.toJson()));
+      mockClient = HttpClientMockHelper.stubJsonGet(
+        uri.toString(),
+        apiResponse.toJson((organizer) => organizer.toJson()),
+      );
       service = buildService(mockClient);
 
       final result = await service.getOrganizer(organizerId);

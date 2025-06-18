@@ -85,10 +85,7 @@ class _NewsCardState extends State<NewsCard> {
       enabled: true,
       child: Container(
         height: 200,
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(16),
-        ),
+        decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
@@ -100,17 +97,9 @@ class _NewsCardState extends State<NewsCard> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Flexible(
-          child: Text(
-            news.title,
-            style: textStyle,
-          ),
-        ),
+        Flexible(child: Text(news.title, style: textStyle)),
         const SizedBox(width: 10),
-        Text(
-          timeago.format(news.publicationDate, locale: AppIntl.of(context)!.localeName),
-          style: textStyle,
-        ),
+        Text(timeago.format(news.publicationDate, locale: AppIntl.of(context)!.localeName), style: textStyle),
       ],
     );
   }

@@ -83,14 +83,14 @@ void main() {
     });
 
     testWidgets('NavigationRail is visible in landscape', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(
-        child: MediaQuery(
-          data: MediaQueryData(size: Size(400, 800)),
-          child: Scaffold(
-            body: RootView(),
+      await tester.pumpWidget(
+        localizedWidget(
+          child: MediaQuery(
+            data: MediaQueryData(size: Size(400, 800)),
+            child: Scaffold(body: RootView()),
           ),
         ),
-      ));
+      );
 
       final flexWidget = tester.widget<Flex>(find.byType(Flex).first);
       expect(flexWidget.direction, Axis.horizontal);

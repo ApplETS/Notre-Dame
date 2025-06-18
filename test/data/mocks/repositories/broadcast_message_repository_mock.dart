@@ -10,7 +10,10 @@ import 'broadcast_message_repository_mock.mocks.dart';
 @GenerateNiceMocks([MockSpec<BroadcastMessageRepository>()])
 class BroadcastMessageRepositoryMock extends MockBroadcastMessageRepository {
   static void stubGetBroadcastMessage(
-      BroadcastMessageRepositoryMock mock, String localeName, BroadcastMessage toReturn) {
+    BroadcastMessageRepositoryMock mock,
+    String localeName,
+    BroadcastMessage toReturn,
+  ) {
     when(mock.getBroadcastMessage(localeName)).thenReturn(toReturn);
   }
 }

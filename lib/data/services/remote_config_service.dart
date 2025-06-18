@@ -168,9 +168,8 @@ class RemoteConfigService {
 
   Future _fetchAndActivate() async {
     fetch();
-    _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 30),
-      minimumFetchInterval: const Duration(minutes: 1),
-    ));
+    _remoteConfig.setConfigSettings(
+      RemoteConfigSettings(fetchTimeout: const Duration(seconds: 30), minimumFetchInterval: const Duration(minutes: 1)),
+    );
   }
 }

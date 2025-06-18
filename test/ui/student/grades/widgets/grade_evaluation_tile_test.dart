@@ -101,32 +101,44 @@ void main() {
         expect(label2, findsOneWidget);
 
         final String formattedMark = evaluation.mark!.toStringAsFixed(2);
-        final label3 = find.text(intl.grades_grade_with_percentage(
+        final label3 = find.text(
+          intl.grades_grade_with_percentage(
             evaluation.mark!,
             evaluation.correctedEvaluationOutOfFormatted,
             Utils.getGradeInPercentage(double.parse(formattedMark), evaluation.correctedEvaluationOutOfFormatted) ??
-                0.0));
+                0.0,
+          ),
+        );
         expect(label3, findsOneWidget);
 
         final String formattedPassMark = evaluation.passMark!.toStringAsFixed(2);
-        final label4 = find.text(intl.grades_grade_with_percentage(
+        final label4 = find.text(
+          intl.grades_grade_with_percentage(
             double.parse(formattedPassMark),
             evaluation.correctedEvaluationOutOfFormatted,
-            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+          ),
+        );
         expect(label4, findsOneWidget);
 
         final String formattedAverage = evaluation.passMark!.toStringAsFixed(2);
-        final label5 = find.text(intl.grades_grade_with_percentage(
+        final label5 = find.text(
+          intl.grades_grade_with_percentage(
             double.parse(formattedAverage),
             evaluation.correctedEvaluationOutOfFormatted,
-            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+          ),
+        );
         expect(label5, findsOneWidget);
 
         final String formattedMedian = evaluation.median!.toStringAsFixed(2);
-        final label6 = find.text(intl.grades_grade_with_percentage(
+        final label6 = find.text(
+          intl.grades_grade_with_percentage(
             double.parse(formattedMedian),
             evaluation.correctedEvaluationOutOfFormatted,
-            Utils.getGradeInPercentage(evaluation.median!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+            Utils.getGradeInPercentage(evaluation.median!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+          ),
+        );
         expect(label6, findsOneWidget);
 
         final label7 = find.text(evaluation.standardDeviation.toString());

@@ -34,43 +34,47 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-        viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
-        builder: (context, model, child) {
-          return BaseScaffold(
-              appBar: AppBar(
-                  title: Text(AppIntl.of(context)!.title_dashboard),
-                  centerTitle: false,
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.restore),
-                      tooltip: AppIntl.of(context)!.dashboard_restore_all_cards_title,
-                      onPressed: () => model.setAllCardsVisible(),
+      viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
+      builder: (context, model, child) {
+        return BaseScaffold(
+          appBar: AppBar(
+            title: Text(AppIntl.of(context)!.title_dashboard),
+            centerTitle: false,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.restore),
+                tooltip: AppIntl.of(context)!.dashboard_restore_all_cards_title,
+                onPressed: () => model.setAllCardsVisible(),
+              ),
+            ],
+            automaticallyImplyLeading: false,
+          ),
+          body: model.cards == null
+              ? buildLoading()
+              : RefreshIndicator(
+                  child: Theme(
+                    data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+                    child: ReorderableListView(
+                      header: model.remoteConfigService.dashboardMessageActive
+                          ? BroadcastMessageCard(
+                              key: UniqueKey(),
+                              loading: model.busy(model.broadcastMessage),
+                              broadcastMessage: model.broadcastMessage,
+                            )
+                          : null,
+                      onReorder: (oldIndex, newIndex) => model.onCardReorder(oldIndex, newIndex),
+                      padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
+                      children: _buildCards(model),
+                      proxyDecorator: (child, _, _) {
+                        return HapticsContainer(child: child);
+                      },
                     ),
-                  ],
-                  automaticallyImplyLeading: false),
-              body: model.cards == null
-                  ? buildLoading()
-                  : RefreshIndicator(
-                      child: Theme(
-                        data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-                        child: ReorderableListView(
-                          header: model.remoteConfigService.dashboardMessageActive
-                              ? BroadcastMessageCard(
-                                  key: UniqueKey(),
-                                  loading: model.busy(model.broadcastMessage),
-                                  broadcastMessage: model.broadcastMessage)
-                              : null,
-                          onReorder: (oldIndex, newIndex) => model.onCardReorder(oldIndex, newIndex),
-                          padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
-                          children: _buildCards(model),
-                          proxyDecorator: (child, _, __) {
-                            return HapticsContainer(child: child);
-                          },
-                        ),
-                      ),
-                      onRefresh: () => model.loadDataAndUpdateWidget(),
-                    ));
-        });
+                  ),
+                  onRefresh: () => model.loadDataAndUpdateWidget(),
+                ),
+        );
+      },
+    );
   }
 
   List<Widget> _buildCards(DashboardViewModel model) {
@@ -81,25 +85,34 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
         case PreferencesFlag.aboutUsCard:
           cards.add(AboutUsCard(key: UniqueKey(), onDismissed: () => model.hideCard(PreferencesFlag.aboutUsCard)));
         case PreferencesFlag.scheduleCard:
-          cards.add(ScheduleCard(
+          cards.add(
+            ScheduleCard(
               key: UniqueKey(),
               onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
               events: model.scheduleEvents,
-              loading: model.busy(model.scheduleEvents)));
+              loading: model.busy(model.scheduleEvents),
+            ),
+          );
         case PreferencesFlag.progressBarCard:
-          cards.add(ProgressBarCard(
+          cards.add(
+            ProgressBarCard(
               key: UniqueKey(),
               onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
               changeProgressBarText: model.changeProgressBarText,
               progressBarText: model.getProgressBarText(context),
               progress: model.progress,
-              loading: model.busy(model.progress)));
+              loading: model.busy(model.progress),
+            ),
+          );
         case PreferencesFlag.gradesCard:
-          cards.add(GradesCard(
+          cards.add(
+            GradesCard(
               key: UniqueKey(),
               courses: model.courses,
               onDismissed: () => model.hideCard(PreferencesFlag.gradesCard),
-              loading: model.busy(model.courses)));
+              loading: model.busy(model.courses),
+            ),
+          );
         default:
       }
     }

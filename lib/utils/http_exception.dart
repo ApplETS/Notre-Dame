@@ -5,9 +5,9 @@ class HttpException implements Exception {
   final int _code;
 
   HttpException({String prefix = "", int code = 404, String message = ""})
-      : _message = message,
-        _code = code,
-        _prefix = prefix;
+    : _message = message,
+      _code = code,
+      _prefix = prefix;
 
   int get code {
     return _code;

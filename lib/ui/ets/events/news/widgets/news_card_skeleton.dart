@@ -24,11 +24,7 @@ class NewsCardSkeleton extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _skeletonEffect(context),
-                  const SizedBox(height: 8),
-                  _skeletonTextEffect(context),
-                ],
+                children: [_skeletonEffect(context), const SizedBox(height: 8), _skeletonTextEffect(context)],
               ),
             ),
           ],
@@ -40,10 +36,7 @@ class NewsCardSkeleton extends StatelessWidget {
   Widget _skeletonEffect(BuildContext context) {
     return Container(
       height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(16)),
     );
   }
 
@@ -56,10 +49,7 @@ class NewsCardSkeleton extends StatelessWidget {
           Container(
             width: double.infinity,
             height: 20.0,
-            decoration: BoxDecoration(
-              color: AppPalette.grey.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
+            decoration: BoxDecoration(color: AppPalette.grey.white, borderRadius: BorderRadius.circular(12)),
           ),
           const SizedBox(height: 8),
           Row(
@@ -68,18 +58,12 @@ class NewsCardSkeleton extends StatelessWidget {
               Container(
                 width: 100,
                 height: 20.0,
-                decoration: BoxDecoration(
-                  color: AppPalette.grey.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: BoxDecoration(color: AppPalette.grey.white, borderRadius: BorderRadius.circular(12)),
               ),
               Container(
                 width: 60,
                 height: 20.0,
-                decoration: BoxDecoration(
-                  color: AppPalette.grey.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: BoxDecoration(color: AppPalette.grey.white, borderRadius: BorderRadius.circular(12)),
               ),
             ],
           ),

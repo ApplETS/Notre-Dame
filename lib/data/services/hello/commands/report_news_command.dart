@@ -29,22 +29,13 @@ class ReportNewsCommand implements Command<bool> {
     final uri = Uri.https(client.apiLink!, '/api/reports/$newsId');
     final response = await _httpClient.post(
       uri,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'reason': report.reason,
-        'category': report.category,
-      }),
+      headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode(<String, String>{'reason': report.reason, 'category': report.category}),
     );
 
     // Log the http error and throw a exception
     if (response.statusCode != 200) {
-      throw HttpException(
-        message: response.body,
-        prefix: HelloService.tagError,
-        code: response.statusCode,
-      );
+      throw HttpException(message: response.body, prefix: HelloService.tagError, code: response.statusCode);
     }
 
     return true;

@@ -37,7 +37,11 @@ void main() {
 
       testWidgets('has an appBar if appBar is set', (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: BaseScaffold(appBar: AppBar(), body: const SizedBox()), useScaffold: false));
+          localizedWidget(
+            child: BaseScaffold(appBar: AppBar(), body: const SizedBox()),
+            useScaffold: false,
+          ),
+        );
         await tester.pumpAndSettle();
 
         final appBar = find.byType(AppBar);
