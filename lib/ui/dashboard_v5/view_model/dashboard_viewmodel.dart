@@ -1,5 +1,7 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
 
+// Project imports:
 import '../../../l10n/app_localizations.dart';
 
 class DashboardViewModelV5 extends ChangeNotifier {
@@ -14,10 +16,10 @@ class DashboardViewModelV5 extends ChangeNotifier {
 
   /// TODO : add AppIntl to the messages
   DashboardViewModelV5({required AppIntl intl})
-      : _appIntl = intl,
+    : _appIntl = intl,
 
-        /// if the animation has not been played, play it
-        shouldPlayAnimation = !hasAnimationPlayed {
+      /// if the animation has not been played, play it
+      shouldPlayAnimation = !hasAnimationPlayed {
     hasAnimationPlayed = true;
   }
 
@@ -38,33 +40,27 @@ class DashboardViewModelV5 extends ChangeNotifier {
 
   /// Animation controller for the circle
   void init(TickerProvider ticker) {
-    controller = AnimationController(
-      vsync: ticker,
-      duration: const Duration(milliseconds: 1250),
-    );
+    controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
 
     // Animation of the circle's height
     // Grows from (0) to the end (330)
-    heightAnimation = Tween<double>(begin: 0, end: 330).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: Curves.ease,
-      ),
-    );
+    heightAnimation = Tween<double>(
+      begin: 0,
+      end: 330,
+    ).animate(CurvedAnimation(parent: controller, curve: Curves.ease));
 
     // Animation for the circle's opacity
     // From transparent (0.0) to opaque (1.0)
-    opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: Curves.easeInOut,
-      ),
-    );
+    opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOut));
 
     /// Animation for the title and subtitle
-    titleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-    );
+    titleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOut));
 
     /// Play the animation if it hasn't been played before
     /// Otherwise, set the animation to value 100%

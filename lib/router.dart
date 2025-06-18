@@ -91,11 +91,17 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => AboutView(),
       );
     case RouterPaths.chooseLanguage:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => ChooseLanguageView());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => ChooseLanguageView(),
+      );
 
     /// TODO : Temp path pour le dashboard de la V5
     case RouterPaths.dashboardV5:
-      return MaterialPageRoute(settings: RouteSettings(name: routeSettings.name), builder: (_) => DashboardViewV5());
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => DashboardViewV5(),
+      );
 
     default:
       return PageRouteBuilder(
