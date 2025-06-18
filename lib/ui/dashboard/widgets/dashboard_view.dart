@@ -77,8 +77,9 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
     );
   }
 
-  List<Widget> _buildCards(DashboardViewModel model) {
+  List<Widget>_buildCards(DashboardViewModel model) {
     final List<Widget> cards = List.empty(growable: true);
+    final status = model.getSemesterStatus();
 
     for (final PreferencesFlag element in model.cardsToDisplay ?? []) {
       switch (element) {
