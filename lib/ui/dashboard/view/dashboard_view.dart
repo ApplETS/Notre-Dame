@@ -1,12 +1,12 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/core/ui/base_scaffold.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import '../../../domain/constants/preferences_flags.dart';
 import '../../../l10n/app_localizations.dart';
