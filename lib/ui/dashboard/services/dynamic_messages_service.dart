@@ -7,7 +7,7 @@ class DynamicMessagesService {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
-  Future<String> getMessageToDisplay() async {
+  Future<String> getDynamicMessage() async {
     if (!(sessionHasStarted())) {
       return "Repose-toi bien! La session recommence le ${upcomingSessionstartDate()}";
     }
