@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -154,37 +153,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
-  void showToast(String msg) {
-    Fluttertoast.showToast(msg: msg, toastLength: Toast.LENGTH_LONG);
-  }
-
-  Future<String> getSemesterStatus() async {
-    try {
-      await _courseRepository.getSessions();
-      final sessions = _courseRepository.upcomingSessions;
-
-      if (sessions.isEmpty) {
-        return "No semester information available";
-      }
-
-      final currentSession = sessions.first;
-      final now = _settingsManager.dateTimeNow;
-
-      if (now.isBefore(currentSession.startDate)) {
-        final formatter = DateFormat('MMM dd, yyyy');
-        String msg = "Semester starts on ${formatter.format(currentSession.startDate)}";
-        showToast(msg);
-        return msg;
-      } else {
-        showToast("Semester has started");
-        return "Semester has started";
-      }
-    } catch (error) {
-      showToast("Error checking semester status");
-      return "Error checking semester status";
-    }
-  }
-
   /// List of courses for the current session
   List<Course> courses = [];
 
@@ -207,7 +175,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       futureToRunGrades(),
       futureToRunSessionProgressBar(),
       futureToRunSchedule(),
-      getSemesterStatus(),
     ]);
   }
 
