@@ -14,10 +14,10 @@ import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import '../../dashboard_v5/view/dashboard_view.dart';
+import '../../dashboard/view/dashboard_view.dart';
 
 enum NavigationView {
-  dashboardv5(0),
+  dashboard(0),
   schedule(1),
   student(2),
   ets(3),
@@ -28,7 +28,7 @@ enum NavigationView {
   const NavigationView(this.buttonIndex);
 }
 
-NavigationView _selected = NavigationView.dashboardv5;
+NavigationView _selected = NavigationView.dashboard;
 NavigationView _previous = _selected;
 final ScheduleController _scheduleController = ScheduleController();
 
@@ -106,8 +106,7 @@ class _RootViewState extends State<RootView> {
 
   Widget _getViewByIndex() {
     return switch (_selected) {
-      /// TODO : Temp redirect pour la V5
-      NavigationView.dashboardv5 => DashboardViewV5(),
+      NavigationView.dashboard => DashboardView(),
       NavigationView.schedule => ScheduleView(controller: _scheduleController),
       NavigationView.student => StudentView(),
       NavigationView.ets => ETSView(),

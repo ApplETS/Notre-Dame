@@ -14,7 +14,4 @@ class RouterPaths {
   static const String about = "/more/about";
   static const String chooseLanguage = "/discovery/choose-language";
   static const String serviceOutage = "/service/outage";
-
-  /// TODO : Temp path pour le dashboard de la V5
-  static const String dashboardV5 = "/dashboardv5";
 }

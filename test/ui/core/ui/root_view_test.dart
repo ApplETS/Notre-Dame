@@ -18,7 +18,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/core/ui/root_view.dart';
-import 'package:notredame/ui/dashboard_v5/view/dashboard_view.dart';
+import 'package:notredame/ui/dashboard/view/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/analytics_service_mock.dart';
@@ -39,9 +39,7 @@ void main() {
       analyticsServiceMock = setupAnalyticsServiceMock();
       setupInAppReviewServiceMock();
       setupQuickLinkRepositoryMock();
-      setupUserRepositoryMock();
 
-      // setupSettingsRepositoryMock();
       /// TODO : REMOVE WHEN REFACTORING : need to generate a stub for schedule DateTimeNow
       final settingRepository = setupSettingsRepositoryMock();
       SettingsRepositoryMock.stubDateTimeNow(settingRepository, toReturn: DateTime.now());
@@ -57,13 +55,12 @@ void main() {
       unregister<AnalyticsService>();
       unregister<InAppReviewService>();
       unregister<QuickLinkRepository>();
-      unregister<UserRepository>();
       unregister<SettingsRepository>();
     });
 
     testWidgets('Initial view is DashboardView', (WidgetTester tester) async {
       await tester.pumpWidget(localizedWidget(child: RootView()));
-      expect(find.byType(DashboardViewV5), findsOneWidget);
+      expect(find.byType(DashboardView), findsOneWidget);
     });
 
     testWidgets('Tapping navigation items switches views', (WidgetTester tester) async {

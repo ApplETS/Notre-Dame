@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -13,49 +14,49 @@ import '../../dashboard/view_model/dashboard_viewmodel.dart';
 import '../../dashboard/widgets/grades_card.dart';
 import '../../dashboard/widgets/schedule_card.dart';
 import '../clipper/circle_clipper.dart';
-import '../view_model/dashboard_viewmodel.dart';
 import '../widgets/progression_card.dart';
 import '../widgets/widget_component.dart';
 
-class DashboardViewV5 extends StatefulWidget {
-  const DashboardViewV5({super.key});
+class DashboardView extends StatefulWidget {
+  const DashboardView({super.key});
 
   @override
-  State<DashboardViewV5> createState() => _DashboardViewStateV5();
+  State<DashboardView> createState() => _DashboardViewState();
 }
 
-class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProviderStateMixin {
+class _DashboardViewState extends State<DashboardView> with SingleTickerProviderStateMixin {
   static const EdgeInsets paddingCards = EdgeInsets.fromLTRB(16, 13, 16, 13);
-  late DashboardViewModelV5 viewModel;
-  bool _isViewModelInitialized = false;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (!_isViewModelInitialized) {
-      final intl = AppIntl.of(context)!;
-      viewModel = DashboardViewModelV5(intl: intl);
-      viewModel.init(this);
-      _isViewModelInitialized = true;
-    }
-  }
-
-  @override
-  void dispose() {
-    viewModel.controller.dispose();
-    super.dispose();
+  /// Animated circle widget
+  Widget _redCircle(DashboardViewModel model) {
+    return AnimatedBuilder(
+      animation: model.heightAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: model.opacityAnimation.value,
+          child: PhysicalShape(
+            clipper: CircleClipper(),
+            elevation: 4,
+            shadowColor: const Color.fromRGBO(0, 0, 0, 1.0),
+            color: AppPalette.etsLightRed,
+            child: SizedBox(height: model.heightAnimation.value, width: double.infinity),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    /// TODO : Move all the logic needed from DashboardViewModel
-    /// To the new DashboardViewModelV5
-    /// DashboardViewModel => DashboardViewModelV5
     return ViewModelBuilder<DashboardViewModel>.reactive(
-      viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
+      viewModelBuilder: () {
+        /// Single viewModelBuilder reference for the whole dashboard view
+        final model = DashboardViewModel(intl: AppIntl.of(context)!);
+        model.init(this);
+        return model;
+      },
       builder: (context, model, child) {
-        return Scaffold(
+        return BaseScaffold(
           body: RefreshIndicator(
             onRefresh: () async {
               await model.loadDataAndUpdateWidget();
@@ -70,21 +71,7 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                     Stack(
                       children: [
                         /// Animated circle in the background
-                        AnimatedBuilder(
-                          animation: viewModel.heightAnimation,
-                          builder: (context, child) {
-                            return Opacity(
-                              opacity: viewModel.opacityAnimation.value,
-                              child: PhysicalShape(
-                                clipper: CircleClipper(),
-                                elevation: 4,
-                                shadowColor: Color.fromRGBO(0, 0, 0, 1.0),
-                                color: AppPalette.etsLightRed,
-                                child: SizedBox(height: viewModel.heightAnimation.value, width: double.infinity),
-                              ),
-                            );
-                          },
-                        ),
+                        _redCircle(model),
 
                         /// Content positioned on top of the circle
                         Column(
@@ -92,17 +79,17 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                           children: [
                             const SizedBox(height: 100),
                             AnimatedBuilder(
-                              animation: viewModel.titleAnimation,
+                              animation: model.titleAnimation,
                               builder: (context, child) {
                                 return Padding(
-                                  padding: const EdgeInsets.only(left: 32),
+                                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 0),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Transform.translate(
-                                        offset: viewModel.titleSlideOffset,
+                                        offset: model.titleSlideOffset,
                                         child: Opacity(
-                                          opacity: viewModel.titleFadeOpacity,
+                                          opacity: model.titleFadeOpacity,
                                           child: Text(
                                             'Accueil',
                                             style: TextStyle(
@@ -117,13 +104,12 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
 
                                       /// TODO : La duration de l'animation du texte pourrais être plus courte..
                                       Transform.translate(
-                                        offset: viewModel.titleSlideOffset,
+                                        offset: model.titleSlideOffset,
                                         child: Opacity(
-                                          opacity: viewModel.titleFadeOpacity,
+                                          opacity: model.titleFadeOpacity,
                                           child: SkeletonLoader(
-                                            loading: viewModel.isLoading,
+                                            loading: model.isLoading,
                                             child: SizedBox(
-                                              /// TODO : Mettre la bonne width
                                               width: double.infinity,
                                               height: 70,
                                               child: Text(
@@ -150,6 +136,7 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                spacing: 16,
                                 children: [
                                   Expanded(
                                     child: Container(
@@ -163,7 +150,6 @@ class _DashboardViewStateV5 extends State<DashboardViewV5> with SingleTickerProv
                                       child: Placeholder(color: Colors.white),
                                     ),
                                   ),
-                                  const SizedBox(width: 15),
                                   Expanded(
                                     child: ProgressionCard(
                                       childWidget: ProgressBarCard(
