@@ -24,6 +24,9 @@ class DynamicMessagesService {
     }
 
     // TODO : Regarder jour férier
+    if (hasUpcomingHoliday()) {
+      return "Jour férier $getUpcomingHolidayDate() !";
+    }
 
     if (shouldDisplayLastCourseOfCurWeek()) {
       return "Fabuleux c'est ${getCurrentWeekDayName()} ! Dernière journée de cours de la semaine !";
@@ -237,6 +240,7 @@ class DynamicMessagesService {
     return DateTime(date.year, date.month, date.day).subtract(Duration(days: daysToSubtract));
   }
 
+  //MARK: upcoming holiday
   DateTime? getUpcomingHolidayDate() {
     List<ReplacedDay>? replacedDays = _courseRepository.replacedDays;
 
@@ -247,13 +251,21 @@ class DynamicMessagesService {
     final now = DateTime.now();
     final oneWeekFromNow = now.add(Duration(days: 7));
 
-    for (ReplacedDay replacedDay in replacedDays) {
-      if (replacedDay.originalDate.isAfter(now) && replacedDay.originalDate.isBefore(oneWeekFromNow)) {
-        return replacedDay.originalDate;
-      }
+    final upcomingHolidays = replacedDays
+        .where((event) => event.originalDate.isAfter(now) && event.originalDate.isBefore(oneWeekFromNow))
+        .toList();
+
+    if (upcomingHolidays.isEmpty) {
+      return null;
     }
 
-    return null;
+    upcomingHolidays.sort((a, b) => a.originalDate.compareTo(b.originalDate));
+
+    return upcomingHolidays.first.originalDate;
+  }
+
+  bool hasUpcomingHoliday() {
+    return getUpcomingHolidayDate() != null;
   }
 
   bool shouldDisplayLastCourseOfCurWeek() {
