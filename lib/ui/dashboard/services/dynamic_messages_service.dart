@@ -1,5 +1,6 @@
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/locator.dart';
 
@@ -202,5 +203,24 @@ class DynamicMessagesService {
   DateTime _getStartOfWeek(DateTime date) {
     int daysToSubtract = date.weekday - 1;
     return DateTime(date.year, date.month, date.day).subtract(Duration(days: daysToSubtract));
+  }
+
+  DateTime? getUpcomingHolidayDate() {
+    List<ReplacedDay>? replacedDays = _courseRepository.replacedDays;
+
+    if (replacedDays == null || replacedDays.isEmpty) {
+      return null;
+    }
+
+    final now = DateTime.now();
+    final oneWeekFromNow = now.add(Duration(days: 7));
+
+    for (ReplacedDay replacedDay in replacedDays) {
+      if (replacedDay.originalDate.isAfter(now) && replacedDay.originalDate.isBefore(oneWeekFromNow)) {
+        return replacedDay.originalDate;
+      }
+    }
+
+    return null;
   }
 }
