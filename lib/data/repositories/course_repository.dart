@@ -79,7 +79,7 @@ class CourseRepository {
   /// List of the default schedule activities for the student
   late List<ScheduleActivity> _scheduleDefaultActivities;
 
-  List<ScheduleActivity>? get scheduleDefaultActivities => _scheduleActivities;
+  List<ScheduleActivity>? get scheduleDefaultActivities => _scheduleDefaultActivities;
 
   /// List of the replaced days for the student in the active session
   List<ReplacedDay>? _replacedDays;
