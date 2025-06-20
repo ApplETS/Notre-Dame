@@ -223,4 +223,37 @@ class DynamicMessagesService {
 
     return null;
   }
+
+  bool displayLastCourseOfCurWeek() {
+    DateTime now = DateTime.now();
+    DateTime startOfCurrentWeek = _getStartOfWeek(now);
+
+    Set<int> actualDays = _getActualClassDaysForWeek(startOfCurrentWeek);
+    List<int> sortedDays = actualDays.toList()..sort();
+
+    if (sortedDays.length < 3) {
+      return false;
+    }
+
+    int todayWeekday = now.weekday;
+    int lastClassDay = sortedDays.last;
+
+    return todayWeekday == lastClassDay;
+  }
+
+  DateTime? getLastCourseDay() {
+    DateTime now = DateTime.now();
+    DateTime startOfCurrentWeek = _getStartOfWeek(now);
+
+    Set<int> actualDays = _getActualClassDaysForWeek(startOfCurrentWeek);
+    List<int> sortedDays = actualDays.toList()..sort();
+
+    if (sortedDays.isEmpty) {
+      return null;
+    }
+
+    int lastClassDay = sortedDays.last;
+
+    return startOfCurrentWeek.add(Duration(days: lastClassDay - 1));
+  }
 }
