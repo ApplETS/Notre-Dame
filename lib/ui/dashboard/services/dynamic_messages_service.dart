@@ -150,6 +150,9 @@ class DynamicMessagesService {
       return true;
     }
 
+    // TODO : Handle replaced days (ex: for holidays).
+    //  Could verify that rest of the week (starting from "lastWeekdayCourse") doesn't have courses
+
     // TODO : Check if at least one course in current week
     // TODO : Handle weekend courses
     // TODO : Remove code duplication for both current and next week checks
