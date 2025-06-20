@@ -40,6 +40,10 @@ class DynamicMessagesService {
       return "Tiens bon, il ne reste que $remaining $semaine !";
     }
 
+    if (shouldDisplayLastCourseOfCurWeek()) {
+      return "Fabuleux c'est ${getCurrentWeekDayName()} ! Dernière journée de cours de la semaine !";
+    }
+
     return "";
   }
 
@@ -222,7 +226,7 @@ class DynamicMessagesService {
     return schedule.map((activity) => activity.dayOfTheWeek).toSet();
   }
 
-  // Helper method to get the start date of the week (Monday)
+  /// Helper method to get the start date of the week (Monday)
   DateTime _getStartOfWeek(DateTime date) {
     int daysToSubtract = date.weekday - 1;
     return DateTime(date.year, date.month, date.day).subtract(Duration(days: daysToSubtract));
@@ -247,7 +251,7 @@ class DynamicMessagesService {
     return null;
   }
 
-  bool displayLastCourseOfCurWeek() {
+  bool shouldDisplayLastCourseOfCurWeek() {
     DateTime now = DateTime.now();
     DateTime startOfCurrentWeek = _getStartOfWeek(now);
 
@@ -264,7 +268,13 @@ class DynamicMessagesService {
     return todayWeekday == lastClassDay;
   }
 
-  DateTime? getLastCourseDay() {
+  String getCurrentWeekDayName() {
+    DateTime now = DateTime.now();
+    List<String> weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return weekdays[now.weekday - 1];
+  }
+
+  DateTime? getLastCourseOfWeekDate() {
     DateTime now = DateTime.now();
     DateTime startOfCurrentWeek = _getStartOfWeek(now);
 
