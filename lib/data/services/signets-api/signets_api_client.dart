@@ -12,6 +12,7 @@ import 'package:notredame/data/services/signets-api/commands/get_course_summary_
 import 'package:notredame/data/services/signets-api/commands/get_courses_activities_command.dart';
 import 'package:notredame/data/services/signets-api/commands/get_courses_command.dart';
 import 'package:notredame/data/services/signets-api/commands/get_programs_command.dart';
+import 'package:notredame/data/services/signets-api/commands/get_replaced_days_command.dart';
 import 'package:notredame/data/services/signets-api/commands/get_schedule_activities_command.dart';
 import 'package:notredame/data/services/signets-api/commands/get_sessions_command.dart';
 import 'package:notredame/data/services/signets-api/commands/get_student_info_command.dart';
@@ -21,6 +22,7 @@ import 'package:notredame/data/services/signets-api/models/course_review.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import '../../../locator.dart';
@@ -118,6 +120,13 @@ class SignetsAPIClient {
   /// Call the SignetsAPI to get the list of all the [Program] for the student.
   Future<List<Program>> getPrograms() async {
     final command = GetProgramsCommand(this, _httpClient, token: await _authService.getToken());
+    return command.execute();
+  }
+
+  /// Call the SignetsAPI to get the list of all [ReplacedDay] for the [session]
+  /// of the student.
+  Future<List<ReplacedDay>> getReplacedDays({required String session}) async {
+    final command = GetReplacedDaysCommand(this, _httpClient, token: await _authService.getToken(), session: session);
     return command.execute();
   }
 
