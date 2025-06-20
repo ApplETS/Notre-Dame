@@ -18,6 +18,17 @@ class DynamicMessagesService {
       return "Encore ${sessionEndDaysRemaining()} jours et c'est fini !";
     }
 
+    // TODO : Add message if long weekend is currently happening
+    if (longWeekendIncoming()) {
+      return "Une longue fin de semaine s'en vient !";
+    }
+
+    // TODO : Regarder jour férier
+
+    if (shouldDisplayLastCourseOfCurWeek()) {
+      return "Fabuleux c'est ${getCurrentWeekDayName()} ! Dernière journée de cours de la semaine !";
+    }
+
     // TODO : Check if this is after last course of the week.
     //  Check order vs last course day
     if (isEndOfWeek()) {
@@ -26,22 +37,14 @@ class DynamicMessagesService {
           : "${getCompletedWeeks()} semaine complétée !";
     }
 
-    if (sessionRecentlyStarted()) {
+    if (isFirstWeek()) {
       return "Bon début de session !";
-    }
-
-    if (longWeekendIncoming()) {
-      return "Long weekend !";
     }
 
     if (isOneMonthOrLessRemaining()) {
       final remaining = getRemainingWeeks();
       final semaine = remaining == 1 ? 'semaine' : 'semaines';
       return "Tiens bon, il ne reste que $remaining $semaine !";
-    }
-
-    if (shouldDisplayLastCourseOfCurWeek()) {
-      return "Fabuleux c'est ${getCurrentWeekDayName()} ! Dernière journée de cours de la semaine !";
     }
 
     return "";
@@ -84,14 +87,6 @@ class DynamicMessagesService {
     return endDate.difference(now).inDays.toString();
   }
 
-  bool sessionRecentlyStarted() {
-    final now = DateTime.now();
-    final oneWeekAgo = now.subtract(Duration(days: 7));
-    final firstActiveSession = _courseRepository.activeSessions.first;
-
-    return firstActiveSession.startDate.isAfter(oneWeekAgo) && firstActiveSession.startDate.isBefore(now);
-  }
-
   bool isEndOfWeek() {
     // TODO: Add checks
     //  - if there are weekend courses
@@ -104,7 +99,17 @@ class DynamicMessagesService {
     final now = DateTime.now();
     final startDate = _courseRepository.activeSessions.first.startDate;
 
+    // TODO : Maybe keep it all weekend
     final isFirstWeek = now.difference(startDate).inDays < 7 && now.weekday >= startDate.weekday;
+
+    return isFirstWeek;
+  }
+
+  bool isFirstWeek() {
+    final now = DateTime.now();
+    final startDate = _courseRepository.activeSessions.first.startDate;
+
+    final isFirstWeek = now.difference(startDate).inDays < 7;
 
     return isFirstWeek;
   }
