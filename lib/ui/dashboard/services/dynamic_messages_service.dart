@@ -18,16 +18,16 @@ class DynamicMessagesService {
       return "Encore ${sessionEndDaysRemaining()} jours et c'est fini !";
     }
 
-    if (sessionRecentlyStarted()) {
-      return "Bon début de session !";
-    }
-
     // TODO : Check if this is after last course of the week.
     //  Check order vs last course day
     if (isEndOfWeek()) {
       return isEndOfFirstWeek()
           ? "Première semaine de la session complétée, continue !"
           : "${getCompletedWeeks()} semaine complétée !";
+    }
+
+    if (sessionRecentlyStarted()) {
+      return "Bon début de session !";
     }
 
     if (isOneMonthOrLessRemaining()) {
