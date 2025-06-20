@@ -8,6 +8,8 @@ class DynamicMessagesService {
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
   Future<String> getDynamicMessage() async {
+    await fetchData();
+
     if (!(sessionHasStarted())) {
       return "Repose-toi bien! La session recommence le ${upcomingSessionstartDate()}";
     }
@@ -35,6 +37,15 @@ class DynamicMessagesService {
     }
 
     return "";
+  }
+
+  Future<void> fetchData() async {
+    await Future.wait([
+      _courseRepository.getSessions(),
+      _courseRepository.getReplacedDays(),
+      _courseRepository.getScheduleActivities(),
+      _courseRepository.getCoursesActivities(),
+    ]);
   }
 
   bool sessionHasStarted() {
@@ -140,10 +151,11 @@ class DynamicMessagesService {
     Set<int> missingDays = regularDays.difference(actualDays);
 
     // Find consecutive course days starting from friday all the way to monday
-    int lastWeekdayCourse = fridayIndex;
-    for (var i = fridayIndex; i >= 1; i--) {
-      if (!regularDays.contains(i) && i == lastWeekdayCourse) {
-        lastWeekdayCourse--;
+    int lastWeekdayCourse = -1;
+    for (var i = fridayIndex; i >= mondayIndex; i--) {
+      if (regularDays.contains(i)) {
+        lastWeekdayCourse = i;
+        break;
       }
     }
 
@@ -166,16 +178,17 @@ class DynamicMessagesService {
     Set<int> missingDaysNextWeek = regularDays.difference(actualDaysNextWeek);
 
     // Find consecutive course days starting from monday all the way to friday
-    int firstWeekdayCourse = mondayIndex;
-    for (var i = mondayIndex; i <= 5; i++) {
-      if (!regularDays.contains(i) && i == firstWeekdayCourse) {
-        firstWeekdayCourse++;
+    int firstWeekdayCourse = -1;
+    for (var i = mondayIndex; i >= fridayIndex; i++) {
+      if (regularDays.contains(i)) {
+        lastWeekdayCourse = i;
+        break;
       }
     }
 
     // If first course of the next week (starting from monday) is missed
     // then the weekend will be longer than usual
-    if (missingDaysNextWeek.contains(lastWeekdayCourse)) {
+    if (missingDaysNextWeek.contains(firstWeekdayCourse)) {
       return true;
     }
 
@@ -184,15 +197,19 @@ class DynamicMessagesService {
 
   Set<int> _getActualClassDaysForWeek(DateTime weekStart) {
     final weekEnd = weekStart.add(Duration(days: 6));
-    final schedule = _courseRepository.scheduleActivities ?? [];
+    final schedule = _courseRepository.coursesActivities ?? [];
 
     return schedule
         .where((activity) {
-          final activityDate = DateTime(activity.startTime.year, activity.startTime.month, activity.startTime.day);
+          final activityDate = DateTime(
+            activity.startDateTime.year,
+            activity.startDateTime.month,
+            activity.startDateTime.day,
+          );
           return activityDate.isAfter(weekStart.subtract(Duration(days: 1))) &&
               activityDate.isBefore(weekEnd.add(Duration(days: 1)));
         })
-        .map((activity) => activity.dayOfTheWeek)
+        .map((activity) => activity.startDateTime.weekday)
         .toSet();
   }
 
