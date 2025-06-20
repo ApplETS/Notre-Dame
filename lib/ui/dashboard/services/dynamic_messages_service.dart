@@ -20,6 +20,8 @@ class DynamicMessagesService {
       return "Bon début de session !";
     }
 
+    // TODO : Check if this is after last course of the week.
+    //  Check order vs last course day
     if (isEndOfWeek()) {
       return isEndOfFirstWeek()
           ? "Première semaine de la session complétée, continue !"

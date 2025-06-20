@@ -406,6 +406,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     final PreferencesFlag elementMoved = cards!.keys.firstWhere((element) => cards![element] == oldIndex);
+
     setOrder(elementMoved, newIndex);
   }
 
