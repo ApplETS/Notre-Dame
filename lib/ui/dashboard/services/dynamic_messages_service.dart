@@ -119,7 +119,7 @@ class DynamicMessagesService {
     return remainingWeeks;
   }
 
-  /// Checks if a specific week has a weekend that is longer than usual
+  /// Check if a specific week has a weekend that is longer than usual
   bool longWeekendIncoming() {
     List<ScheduleActivity>? schedule = _courseRepository.scheduleActivities;
     if (schedule == null || schedule.isEmpty) return false;
@@ -144,7 +144,7 @@ class DynamicMessagesService {
       }
     }
 
-    // If last course of the current week (starting from friday) is missed
+    // If last course day of the current week (starting from friday) is missed
     // then the weekend will be longer than usual
     if (missingDays.contains(lastWeekdayCourse)) {
       return true;
@@ -153,8 +153,8 @@ class DynamicMessagesService {
     // TODO : Handle replaced days (ex: for holidays).
     //  Could verify that rest of the week (starting from "lastWeekdayCourse") doesn't have courses
 
-    // TODO : Check if at least one course in current week
-    // TODO : Handle weekend courses
+    // TODO : Check if at least one course is in the current week
+    // TODO : Handle weekend courses ?
     // TODO : Remove code duplication for both current and next week checks
 
     // Next week
@@ -162,7 +162,7 @@ class DynamicMessagesService {
     Set<int> actualDaysNextWeek = _getActualClassDaysForWeek(nextWeekStart);
     Set<int> missingDaysNextWeek = regularDays.difference(actualDaysNextWeek);
 
-    // Find consecutive course days starting from monday all to day to friday
+    // Find consecutive course days starting from monday all the way to friday
     int firstWeekdayCourse = mondayIndex;
     for (var i = mondayIndex; i <= 5; i++) {
       if (!regularDays.contains(i) && i == firstWeekdayCourse) {
@@ -198,7 +198,7 @@ class DynamicMessagesService {
     return schedule.map((activity) => activity.dayOfTheWeek).toSet();
   }
 
-  // Helper method to get the start of the week (Monday)
+  // Helper method to get the start date of the week (Monday)
   DateTime _getStartOfWeek(DateTime date) {
     int daysToSubtract = date.weekday - 1;
     return DateTime(date.year, date.month, date.day).subtract(Duration(days: daysToSubtract));

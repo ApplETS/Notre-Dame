@@ -94,7 +94,7 @@ class CourseRepository {
         [];
   }
 
-  /// Return the active sessions which mean the sessions that the endDate isn't already passed.
+  /// Return the upcoming sessions which means the sessions that the startDate hasn't already started.
   List<Session> get upcomingSessions {
     DateTime now = DateTime.now();
     now = DateTime(now.year, now.month, now.day);
