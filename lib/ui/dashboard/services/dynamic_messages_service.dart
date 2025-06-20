@@ -1,4 +1,5 @@
 // Project imports:
+import 'dart:developer';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
@@ -25,7 +26,7 @@ class DynamicMessagesService {
 
     // TODO : Regarder jour férier
     if (hasUpcomingHoliday()) {
-      return "Jour férier $getUpcomingHolidayDate() !";
+      return "Jour férier le ${getUpcomingHolidayDate()} !";
     }
 
     if (shouldDisplayLastCourseOfCurWeek()) {
@@ -65,7 +66,7 @@ class DynamicMessagesService {
   bool sessionHasStarted() {
     final now = DateTime.now();
     final firstActiveSession = _courseRepository.activeSessions.first;
-    return firstActiveSession.startDate.isAfter(now);
+    return firstActiveSession.startDate.isBefore(now);
   }
 
   String upcomingSessionstartDate() {
@@ -241,7 +242,7 @@ class DynamicMessagesService {
   }
 
   //MARK: upcoming holiday
-  DateTime? getUpcomingHolidayDate() {
+  String? getUpcomingHolidayDate() {
     List<ReplacedDay>? replacedDays = _courseRepository.replacedDays;
 
     if (replacedDays == null || replacedDays.isEmpty) {
@@ -261,7 +262,7 @@ class DynamicMessagesService {
 
     upcomingHolidays.sort((a, b) => a.originalDate.compareTo(b.originalDate));
 
-    return upcomingHolidays.first.originalDate;
+    return upcomingHolidays.first.originalDate.toString();
   }
 
   bool hasUpcomingHoliday() {
