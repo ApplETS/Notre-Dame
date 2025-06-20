@@ -1,11 +1,10 @@
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/locator.dart';
 
 class DynamicMessagesService {
   final CourseRepository _courseRepository = locator<CourseRepository>();
-  final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
   Future<String> getDynamicMessage() async {
     if (!(sessionHasStarted())) {
@@ -31,8 +30,6 @@ class DynamicMessagesService {
       final semaine = remaining == 1 ? 'semaine' : 'semaines';
       return "Tiens bon, il ne reste que $remaining $semaine !";
     }
-
-
 
     return "";
   }
@@ -75,8 +72,8 @@ class DynamicMessagesService {
 
   bool isEndOfWeek() {
     // TODO: Add checks
-    // if there are weekend courses
-    // if friday time is after courses
+    //  - if there are weekend courses
+    //  - if friday time is after courses
     final now = DateTime.now();
     return now.weekday == DateTime.friday || now.weekday == DateTime.saturday || now.weekday == DateTime.sunday;
   }
@@ -120,5 +117,87 @@ class DynamicMessagesService {
     final remainingWeeks = (daysRemaining / 7).ceil();
 
     return remainingWeeks;
+  }
+
+  /// Checks if a specific week has a weekend that is longer than usual
+  bool longWeekendIncoming() {
+    List<ScheduleActivity>? schedule = _courseRepository.scheduleActivities;
+    if (schedule == null || schedule.isEmpty) return false;
+
+    Set<int> regularDays = _getRegularCourseDays(schedule);
+    DateTime now = DateTime.now();
+    DateTime startOfCurrentWeek = _getStartOfWeek(now);
+
+    int mondayIndex = 1;
+    int fridayIndex = 5;
+
+    // Current week
+    DateTime weekStart = startOfCurrentWeek;
+    Set<int> actualDays = _getActualClassDaysForWeek(weekStart);
+    Set<int> missingDays = regularDays.difference(actualDays);
+
+    // Find consecutive course days starting from friday all the way to monday
+    int lastWeekdayCourse = fridayIndex;
+    for (var i = fridayIndex; i >= 1; i--) {
+      if (!regularDays.contains(i) && i == lastWeekdayCourse) {
+        lastWeekdayCourse--;
+      }
+    }
+
+    // If last course of the current week (starting from friday) is missed
+    // then the weekend will be longer than usual
+    if (missingDays.contains(lastWeekdayCourse)) {
+      return true;
+    }
+
+    // TODO : Check if at least one course in current week
+    // TODO : Handle weekend courses
+    // TODO : Remove code duplication for both current and next week checks
+
+    // Next week
+    DateTime nextWeekStart = startOfCurrentWeek.add(Duration(days: 7));
+    Set<int> actualDaysNextWeek = _getActualClassDaysForWeek(nextWeekStart);
+    Set<int> missingDaysNextWeek = regularDays.difference(actualDaysNextWeek);
+
+    // Find consecutive course days starting from monday all to day to friday
+    int firstWeekdayCourse = mondayIndex;
+    for (var i = mondayIndex; i <= 5; i++) {
+      if (!regularDays.contains(i) && i == firstWeekdayCourse) {
+        firstWeekdayCourse++;
+      }
+    }
+
+    // If first course of the next week (starting from monday) is missed
+    // then the weekend will be longer than usual
+    if (missingDaysNextWeek.contains(lastWeekdayCourse)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  Set<int> _getActualClassDaysForWeek(DateTime weekStart) {
+    final weekEnd = weekStart.add(Duration(days: 6));
+    final schedule = _courseRepository.scheduleActivities ?? [];
+
+    return schedule
+        .where((activity) {
+          final activityDate = DateTime(activity.startTime.year, activity.startTime.month, activity.startTime.day);
+          return activityDate.isAfter(weekStart.subtract(Duration(days: 1))) &&
+              activityDate.isBefore(weekEnd.add(Duration(days: 1)));
+        })
+        .map((activity) => activity.dayOfTheWeek)
+        .toSet();
+  }
+
+  /// Determines which days of the week the user regularly has classes
+  Set<int> _getRegularCourseDays(List<ScheduleActivity> schedule) {
+    return schedule.map((activity) => activity.dayOfTheWeek).toSet();
+  }
+
+  // Helper method to get the start of the week (Monday)
+  DateTime _getStartOfWeek(DateTime date) {
+    int daysToSubtract = date.weekday - 1;
+    return DateTime(date.year, date.month, date.day).subtract(Duration(days: daysToSubtract));
   }
 }
