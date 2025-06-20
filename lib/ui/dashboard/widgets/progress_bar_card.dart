@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/dashboard/services/dynamic_messages_service.dart';
 
 // Package imports:
 import 'package:skeletonizer/skeletonizer.dart';
@@ -39,6 +40,24 @@ class ProgressBarCard extends StatelessWidget {
             child: Text(AppIntl.of(context)!.progress_bar_title, style: Theme.of(context).textTheme.titleLarge),
           ),
         ),
+
+        FutureBuilder<String>(
+          future: DynamicMessagesService().getDynamicMessage(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Padding(padding: EdgeInsets.fromLTRB(17, 10, 17, 0), child: LinearProgressIndicator());
+            }
+            if (snapshot.hasError || (snapshot.data?.isEmpty ?? true)) {
+              return const SizedBox.shrink();
+            }
+
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(17, 10, 17, 0),
+              child: Text(snapshot.data!, style: Theme.of(context).textTheme.bodyMedium),
+            );
+          },
+        ),
+
         if (loading || progress >= 0.0)
           Skeletonizer(
             enabled: loading,
