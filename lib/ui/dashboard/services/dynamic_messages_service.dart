@@ -30,6 +30,10 @@ class DynamicMessagesService {
       return "Bon début de session !";
     }
 
+    if (longWeekendIncoming()) {
+      return "Long weekend !";
+    }
+
     if (isOneMonthOrLessRemaining()) {
       final remaining = getRemainingWeeks();
       final semaine = remaining == 1 ? 'semaine' : 'semaines';
