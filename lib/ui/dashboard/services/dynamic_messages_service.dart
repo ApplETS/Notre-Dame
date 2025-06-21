@@ -201,6 +201,12 @@ class DynamicMessagesService {
     Set<int> actualDays = _getActualClassDaysForWeek(weekStart);
     Set<int> missingDays = regularDays.difference(actualDays);
 
+    // If current week doesn't have at least one course
+    // then don't consider it a long weekend
+    if (actualDays.isEmpty) {
+      return false;
+    }
+
     // Find consecutive course days starting from friday all the way to monday
     int lastWeekdayCourse = -1;
     for (var i = fridayIndex; i >= mondayIndex; i--) {
@@ -223,7 +229,6 @@ class DynamicMessagesService {
       return true;
     }
 
-    // TODO : Check if at least one course is in the current week
     // TODO : Handle weekend courses ?
     // TODO : Remove code duplication for both current and next week checks
 
@@ -231,6 +236,12 @@ class DynamicMessagesService {
     DateTime nextWeekStart = startOfCurrentWeek.add(Duration(days: 7));
     Set<int> actualDaysNextWeek = _getActualClassDaysForWeek(nextWeekStart);
     Set<int> missingDaysNextWeek = regularDays.difference(actualDaysNextWeek);
+
+    // If next week doesn't have at least one course
+    // then don't consider it a long weekend
+    if (actualDaysNextWeek.isEmpty) {
+      return false;
+    }
 
     // Find consecutive course days starting from monday all the way to friday
     int firstWeekdayCourse = -1;
