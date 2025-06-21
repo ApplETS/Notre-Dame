@@ -17,8 +17,9 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/core/ui/root_view.dart';
-import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
+import 'package:notredame/ui/dashboard/view/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
+import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../helpers.dart';
 
@@ -30,7 +31,6 @@ void main() {
       setupAppIntl();
       setupBroadcastMessageRepositoryMock();
       setupRemoteConfigServiceMock();
-      setupSettingsRepositoryMock();
       setupCourseRepositoryMock();
       setupPreferencesServiceMock();
       setupCacheManagerMock();
@@ -38,12 +38,15 @@ void main() {
       analyticsServiceMock = setupAnalyticsServiceMock();
       setupInAppReviewServiceMock();
       setupQuickLinkRepositoryMock();
+
+      // Stub the date time now
+      final settingRepository = setupSettingsRepositoryMock();
+      SettingsRepositoryMock.stubDateTimeNow(settingRepository, toReturn: DateTime.now());
     });
 
     tearDown(() {
       unregister<BroadcastMessageRepository>();
       unregister<RemoteConfigService>();
-      unregister<SettingsRepository>();
       unregister<CourseRepository>();
       unregister<PreferencesService>();
       unregister<CacheService>();
@@ -51,6 +54,7 @@ void main() {
       unregister<AnalyticsService>();
       unregister<InAppReviewService>();
       unregister<QuickLinkRepository>();
+      unregister<SettingsRepository>();
     });
 
     testWidgets('Initial view is DashboardView', (WidgetTester tester) async {
