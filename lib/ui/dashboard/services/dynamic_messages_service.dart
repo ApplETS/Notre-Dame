@@ -19,8 +19,6 @@ class DynamicMessagesService {
       return "Encore ${sessionEndDaysRemaining()} jours et c'est fini !";
     }
 
-    // TODO : Add message if long weekend is currently happening
-    //  Example : enjoy long weekend !
     if (longWeekendIncoming()) {
       return "Une longue fin de semaine s'en vient !";
     }
