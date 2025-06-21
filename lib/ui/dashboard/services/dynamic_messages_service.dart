@@ -229,9 +229,6 @@ class DynamicMessagesService {
       return true;
     }
 
-    // TODO : Handle weekend courses ?
-    // TODO : Remove code duplication for both current and next week checks
-
     // Next week
     DateTime nextWeekStart = startOfCurrentWeek.add(Duration(days: 7));
     Set<int> actualDaysNextWeek = _getActualClassDaysForWeek(nextWeekStart);
