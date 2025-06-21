@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/ui/core/ui/base_scaffold.dart';
-import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
-import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
-import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
+import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progression_card.dart';
+import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
 
 class DashboardView extends StatefulWidget {

@@ -9,12 +9,12 @@ import 'package:notredame/data/models/navigation_menu_callback.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
+import 'package:notredame/ui/dashboard/view/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import 'package:notredame/ui/dashboard/view/dashboard_view.dart';
 
 enum NavigationView {
   dashboard(0),
