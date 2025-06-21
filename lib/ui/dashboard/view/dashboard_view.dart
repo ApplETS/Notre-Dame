@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
