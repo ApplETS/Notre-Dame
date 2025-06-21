@@ -312,7 +312,6 @@ class DynamicMessagesService {
     return DateTime(date.year, date.month, date.day).subtract(Duration(days: daysToSubtract));
   }
 
-  //MARK: upcoming holiday
   String? getUpcomingHolidayDate() {
     List<ReplacedDay>? replacedDays = _courseRepository.replacedDays;
 
