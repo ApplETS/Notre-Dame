@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import '../../core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class WidgetComponent extends StatelessWidget {
   final Widget _childWidget;

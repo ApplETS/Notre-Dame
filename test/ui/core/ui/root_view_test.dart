@@ -39,7 +39,7 @@ void main() {
       setupInAppReviewServiceMock();
       setupQuickLinkRepositoryMock();
 
-      /// TODO : REMOVE WHEN REFACTORING : need to generate a stub for schedule DateTimeNow
+      // Stub the date time now
       final settingRepository = setupSettingsRepositoryMock();
       SettingsRepositoryMock.stubDateTimeNow(settingRepository, toReturn: DateTime.now());
     });

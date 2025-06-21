@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -9,14 +8,14 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
-import '../../../domain/constants/preferences_flags.dart';
-import '../../../l10n/app_localizations.dart';
-import '../../dashboard/view_model/dashboard_viewmodel.dart';
-import '../../dashboard/widgets/grades_card.dart';
-import '../../dashboard/widgets/schedule_card.dart';
-import '../clipper/circle_clipper.dart';
-import '../widgets/progression_card.dart';
-import '../widgets/widget_component.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
+import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
+import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
+import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
+import 'package:notredame/ui/dashboard/widgets/progression_card.dart';
+import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -99,8 +98,6 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
     /// Get orientation of the device (Horizontal)
     bool isHorizontal = MediaQuery.of(context).orientation == Orientation.landscape;
 
-    Fluttertoast.showToast(msg: "isTablet : $isTablet and isHorizontal : $isHorizontal");
-
     if (isTablet) {
       return isHorizontal ? _tabletHorizontal(context, model) : _tabletVertical(context, model);
     } else {
@@ -108,18 +105,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
     }
   }
 
-  /// TODO : faire les autres variantes ...
   Widget _tabletHorizontal(BuildContext context, DashboardViewModel model) {
-    return Container();
-  }
-
-  /// TODO : faire les autres variantes ...
-  Widget _tabletVertical(BuildContext context, DashboardViewModel model) {
-    return Container();
-  }
-
-  /// TODO : adapter selon les besoins ...
-  Widget _phoneVertical(BuildContext context, DashboardViewModel model) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -143,8 +129,6 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
                     ),
                   ),
                   const SizedBox(height: 10),
-
-                  /// TODO : La duration de l'animation du texte pourrais être plus courte..
                   Transform.translate(
                     offset: model.titleSlideOffset,
                     child: Opacity(
@@ -169,8 +153,6 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             );
           },
         ),
-
-        /// TODO : Remettre old height of 20 instead de 0
         const SizedBox(height: 0),
         Container(
           padding: paddingCards,
@@ -224,8 +206,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
     );
   }
 
-  /// TODO : adapter selon les besoins ...
-  Widget _phoneHorizontal(BuildContext context, DashboardViewModel model) {
+  Widget _tabletVertical(BuildContext context, DashboardViewModel model) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -249,8 +230,6 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
                     ),
                   ),
                   const SizedBox(height: 10),
-
-                  /// TODO : La duration de l'animation du texte pourrais être plus courte..
                   Transform.translate(
                     offset: model.titleSlideOffset,
                     child: Opacity(
@@ -275,9 +254,208 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             );
           },
         ),
-
-        /// TODO : Remettre old height of 20 instead de 0
         const SizedBox(height: 0),
+        Container(
+          padding: paddingCards,
+          width: double.infinity,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  height: 145,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: AppPalette.grey.darkGrey, borderRadius: BorderRadius.circular(25)),
+                  child: Placeholder(color: Colors.white),
+                ),
+              ),
+              Expanded(
+                child: ProgressionCard(
+                  childWidget: ProgressBarCard(
+                    onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
+                    changeProgressBarText: model.changeProgressBarText,
+                    progressBarText: model.getProgressBarText(context),
+                    progress: model.progress,
+                    loading: model.busy(model.progress),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        WidgetComponent(
+          title: "Horaire - Aujourd'hui",
+          childWidget: ScheduleCard(
+            onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
+            events: model.scheduleEvents,
+            loading: model.busy(model.scheduleEvents),
+          ),
+        ),
+        WidgetComponent(
+          title: "Notes",
+          childWidget: GradesCard(
+            courses: model.courses,
+            onDismissed: () => model.hideCard(PreferencesFlag.gradesCard),
+            loading: model.busy(model.courses),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _phoneVertical(BuildContext context, DashboardViewModel model) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 100),
+        AnimatedBuilder(
+          animation: model.titleAnimation,
+          builder: (context, child) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Transform.translate(
+                    offset: model.titleSlideOffset,
+                    child: Opacity(
+                      opacity: model.titleFadeOpacity,
+                      child: Text(
+                        'Accueil',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: AppPalette.grey.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Transform.translate(
+                    offset: model.titleSlideOffset,
+                    child: Opacity(
+                      opacity: model.titleFadeOpacity,
+                      child: SkeletonLoader(
+                        loading: model.isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 70,
+                          child: Text(
+                            'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
+                            style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 0),
+        Container(
+          padding: paddingCards,
+          width: double.infinity,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 16,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  height: 145,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: AppPalette.grey.darkGrey, borderRadius: BorderRadius.circular(25)),
+                  child: Placeholder(color: Colors.white),
+                ),
+              ),
+              Expanded(
+                child: ProgressionCard(
+                  childWidget: ProgressBarCard(
+                    onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
+                    changeProgressBarText: model.changeProgressBarText,
+                    progressBarText: model.getProgressBarText(context),
+                    progress: model.progress,
+                    loading: model.busy(model.progress),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        WidgetComponent(
+          title: "Horaire - Aujourd'hui",
+          childWidget: ScheduleCard(
+            onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
+            events: model.scheduleEvents,
+            loading: model.busy(model.scheduleEvents),
+          ),
+        ),
+        WidgetComponent(
+          title: "Notes",
+          childWidget: GradesCard(
+            courses: model.courses,
+            onDismissed: () => model.hideCard(PreferencesFlag.gradesCard),
+            loading: model.busy(model.courses),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _phoneHorizontal(BuildContext context, DashboardViewModel model) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 100),
+        AnimatedBuilder(
+          animation: model.titleAnimation,
+          builder: (context, child) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Transform.translate(
+                    offset: model.titleSlideOffset,
+                    child: Opacity(
+                      opacity: model.titleFadeOpacity,
+                      child: Text(
+                        'Accueil',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: AppPalette.grey.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Transform.translate(
+                    offset: model.titleSlideOffset,
+                    child: Opacity(
+                      opacity: model.titleFadeOpacity,
+                      child: SkeletonLoader(
+                        loading: model.isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 70,
+                          child: Text(
+                            'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
+                            style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
         Container(
           padding: paddingCards,
           width: double.infinity,

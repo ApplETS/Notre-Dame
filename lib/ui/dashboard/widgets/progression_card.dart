@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import '../../core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class ProgressionCard extends StatelessWidget {
   final Widget childWidget;

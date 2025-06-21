@@ -14,7 +14,7 @@ import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import '../../dashboard/view/dashboard_view.dart';
+import 'package:notredame/ui/dashboard/view/dashboard_view.dart';
 
 enum NavigationView {
   dashboard(0),
