@@ -1,6 +1,6 @@
 // Project imports:
-import 'dart:developer';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/locator.dart';
@@ -20,21 +20,19 @@ class DynamicMessagesService {
     }
 
     // TODO : Add message if long weekend is currently happening
+    //  Example : enjoy long weekend !
     if (longWeekendIncoming()) {
       return "Une longue fin de semaine s'en vient !";
     }
 
-    // TODO : Regarder jour férier
     if (hasUpcomingHoliday()) {
       return "Jour férier le ${getUpcomingHolidayDate()} !";
     }
 
-    if (shouldDisplayLastCourseOfCurWeek()) {
+    if (shouldDisplayLastCourseDayOfCurWeek()) {
       return "Fabuleux c'est ${getCurrentWeekDayName()} ! Dernière journée de cours de la semaine !";
     }
 
-    // TODO : Check if this is after last course of the week.
-    //  Check order vs last course day
     if (isEndOfWeek()) {
       return isEndOfFirstWeek()
           ? "Première semaine de la session complétée, continue !"
@@ -92,11 +90,47 @@ class DynamicMessagesService {
   }
 
   bool isEndOfWeek() {
-    // TODO: Add checks
-    //  - if there are weekend courses
-    //  - if friday time is after courses
     final now = DateTime.now();
-    return now.weekday == DateTime.friday || now.weekday == DateTime.saturday || now.weekday == DateTime.sunday;
+    List<CourseActivity>? courses = _courseRepository.coursesActivities;
+
+    DateTime startOfCurrentWeek = _getStartOfWeek(now);
+    Set<int> actualDays = _getActualClassDaysForWeek(startOfCurrentWeek);
+
+    if (courses == null || courses.isEmpty) {
+      return false;
+    }
+
+    // check if current day if either fri, sat, sun
+    if (now.weekday != DateTime.friday || now.weekday != DateTime.saturday || now.weekday != DateTime.sunday) {
+      return false;
+    }
+
+    bool hasFridayCourses = actualDays.contains(5);
+    bool hasSaturdayCourses = actualDays.contains(6);
+    bool hasSundayCourses = actualDays.contains(7);
+
+    // check if no courses on fri, sat, sun
+    if (!actualDays.contains(5) && !actualDays.contains(6) && !actualDays.contains(7)) {
+      return true;
+    }
+
+    // check if there are courses on sunday
+    if (hasSundayCourses) {
+      // user doesn't have a weekend this week
+      return false;
+    } else if (hasSaturdayCourses) {
+      DateTime? lastCourseEndTime = getLastCourseEndDateTimeOnSameDay(now);
+      if (lastCourseEndTime != null && now.hour > lastCourseEndTime.hour && now.weekday == DateTime.saturday) {
+        return true;
+      }
+    } else if (hasFridayCourses) {
+      DateTime? lastCourseEndTime = getLastCourseEndDateTimeOnSameDay(now);
+      if (lastCourseEndTime != null && now.hour > lastCourseEndTime.hour && now.weekday == DateTime.friday) {
+        return true;
+      }
+    }
+
+    return true;
   }
 
   bool isEndOfFirstWeek() {
@@ -230,6 +264,24 @@ class DynamicMessagesService {
         .toSet();
   }
 
+  DateTime? getLastCourseEndDateTimeOnSameDay(DateTime targetDate) {
+    final schedule = _courseRepository.coursesActivities ?? [];
+
+    final matchingDateTimes = schedule
+        .where((activity) => _isSameCalendarDay(activity.endDateTime, targetDate))
+        .map((activity) => activity.endDateTime)
+        .toList();
+
+    if (matchingDateTimes.isEmpty) return null;
+
+    matchingDateTimes.sort();
+    return matchingDateTimes.last;
+  }
+
+  bool _isSameCalendarDay(DateTime date1, DateTime date2) {
+    return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
+  }
+
   /// Determines which days of the week the user regularly has classes
   Set<int> _getRegularCourseDays(List<ScheduleActivity> schedule) {
     return schedule.map((activity) => activity.dayOfTheWeek).toSet();
@@ -269,7 +321,7 @@ class DynamicMessagesService {
     return getUpcomingHolidayDate() != null;
   }
 
-  bool shouldDisplayLastCourseOfCurWeek() {
+  bool shouldDisplayLastCourseDayOfCurWeek() {
     DateTime now = DateTime.now();
     DateTime startOfCurrentWeek = _getStartOfWeek(now);
 
