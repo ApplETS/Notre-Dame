@@ -210,14 +210,18 @@ class DynamicMessagesService {
       }
     }
 
+    // Handle replaced days (ex: for holidays)
+    for (var i = fridayIndex; i > lastWeekdayCourse; i--) {
+      if (actualDays.contains(i)) {
+        return false;
+      }
+    }
+
     // If last course day of the current week (starting from friday) is missed
     // then the weekend will be longer than usual
     if (missingDays.contains(lastWeekdayCourse)) {
       return true;
     }
-
-    // TODO : Handle replaced days (ex: for holidays).
-    //  Could verify that rest of the week (starting from "lastWeekdayCourse") doesn't have courses
 
     // TODO : Check if at least one course is in the current week
     // TODO : Handle weekend courses ?
@@ -230,10 +234,17 @@ class DynamicMessagesService {
 
     // Find consecutive course days starting from monday all the way to friday
     int firstWeekdayCourse = -1;
-    for (var i = mondayIndex; i >= fridayIndex; i++) {
+    for (var i = mondayIndex; i <= fridayIndex; i++) {
       if (regularDays.contains(i)) {
-        lastWeekdayCourse = i;
+        firstWeekdayCourse = i;
         break;
+      }
+    }
+
+    // Handle replaced days (ex: for holidays)
+    for (var i = mondayIndex; i < firstWeekdayCourse; i++) {
+      if (actualDays.contains(i)) {
+        return false;
       }
     }
 
