@@ -125,7 +125,7 @@ class DynamicMessagesService {
       }
     } else if (hasFridayCourses) {
       DateTime? lastCourseEndTime = getLastCourseEndDateTimeOnSameDay(now);
-      if (lastCourseEndTime != null && now.hour > lastCourseEndTime.hour && now.weekday == DateTime.friday) {
+      if (lastCourseEndTime != null && now.isAfter(lastCourseEndTime) && now.weekday == DateTime.friday) {
         return true;
       }
     }
