@@ -71,6 +71,7 @@
   "login_password_hide": "Hide password",
 
   "dynamic_message_first_week_of_session": "Good start to the session !",
+  "dynamic_message_first_week_of_session_completed": "First week of the semester completed, continue !",
   "dynamic_message_long_weekend_incoming": "Keep going, a long weekend is coming !",
 
   "dynamic_message_session_starts_soon": "Have a good rest! The next session starts on {date}",
@@ -86,6 +87,15 @@
   "@dynamic_message_days_before_session_ends": {
     "placeholders": {
       "num_days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_end_of_week": "${num_weeks} semaine complétée !",
+  "@dynamic_message_end_of_week": {
+    "placeholders": {
+      "num_weeks": {
         "type": "int"
       }
     }
@@ -118,8 +128,8 @@
     }
   },
 
-  "dynamic_message_one_week_remaining": "Keep going, only {num_weeks} weeks to go!",
-  "@dynamic_message_one_week_remaining": {
+  "dynamic_message_less_one_month_remaining": "Keep going, only {num_weeks} weeks to go!",
+  "@dynamic_message_less_one_month_remaining": {
   "placeholders": {
     "num_weeks": {
       "type": "int"

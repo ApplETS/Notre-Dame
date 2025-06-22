@@ -20,43 +20,46 @@ class DynamicMessagesService {
     await fetchData();
 
     if (!(sessionHasStarted())) {
-      return "Repose-toi bien! La session recommence le ${upcomingSessionstartDate()}";
+      return intl.dynamic_message_session_starts_soon(upcomingSessionstartDate());
     }
 
     if (oneWeekRemainingUntilSessionEnd()) {
-      return "Encore ${sessionEndDaysRemaining()} jours et c'est fini !";
+      return intl.dynamic_message_days_before_session_ends(sessionEndDaysRemaining());
     }
 
     LongWeekendStatus incomingLongWeekendStatus = longWeekendIncoming();
     if (incomingLongWeekendStatus == LongWeekendStatus.incoming) {
-      return "Une longue fin de semaine s'en vient !";
+      return intl.dynamic_message_long_weekend_incoming;
     } else if (incomingLongWeekendStatus == LongWeekendStatus.inside) {
-      return "Bon long weekend ${getCompletedWeeks()} ième semaine complétée !";
+      return intl.dynamic_message_long_weekend_currently(getCompletedWeeks());
     }
 
     if (shouldDisplayLastCourseDayOfCurWeek()) {
-      return "Fabuleux c'est ${getCurrentWeekDayName()} ! Dernière journée de cours de la semaine !";
+      return intl.dynamic_message_last_course_day_of_session(getCurrentWeekDayName());
     }
 
     if (hasUpcomingHoliday()) {
-      return "Jour férier le ${getUpcomingHolidayDate()} !";
+      String? date = getUpcomingHolidayDate();
+      if (date != null) {
+        return intl.dynamic_message_public_holiday_incoming(date);
+      }
     }
 
     if (isEndOfWeek()) {
       return isEndOfFirstWeek()
-          ? "Première semaine de la session complétée, continue !"
-          : "${getCompletedWeeks()} semaine complétée !";
+          ? intl.dynamic_message_first_week_of_session_completed
+          : intl.dynamic_message_end_of_week(getCompletedWeeks());
     }
 
     // TODO : Maybe move higher up
     if (isFirstWeek()) {
-      return "Bon début de session !";
+      return intl.dynamic_message_first_week_of_session;
     }
 
     if (isOneMonthOrLessRemaining()) {
-      final remaining = getRemainingWeeks();
-      final semaine = remaining == 1 ? 'semaine' : 'semaines';
-      return "Tiens bon, il ne reste que $remaining $semaine !"; // TODO : Différencier entre fin des cours et période d'examens
+      return intl.dynamic_message_less_one_month_remaining(
+        getRemainingWeeks(),
+      ); // TODO : Différencier entre fin des cours et période d'examens
     }
 
     // TODO : Ajouter messages génériques
@@ -92,12 +95,12 @@ class DynamicMessagesService {
     return difference <= 7 && difference >= 0;
   }
 
-  String sessionEndDaysRemaining() {
+  int sessionEndDaysRemaining() {
     final now = DateTime.now();
     final firstActiveSession = _courseRepository.activeSessions.first;
     final endDate = firstActiveSession.endDate;
 
-    return endDate.difference(now).inDays.toString();
+    return endDate.difference(now).inDays;
   }
 
   bool isEndOfWeek() {

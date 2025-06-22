@@ -70,6 +70,7 @@
   "login_password_hide": "Cacher le mot de passe",
 
   "dynamic_message_first_week_of_session": "Bon début de session !",
+  "dynamic_message_first_week_of_session_completed": "Première semaine de la session complétée, continue !",
   "dynamic_message_long_weekend_incoming": "Une longue fin de semaine s'en vient !",
 
   "dynamic_message_session_starts_soon": "Repose-toi bien! La prochaine session débute le {date}",
@@ -85,6 +86,15 @@
   "@dynamic_message_days_before_session_ends": {
     "placeholders": {
       "num_days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_end_of_week": "${num_weeks} semaine complétée !",
+  "@dynamic_message_end_of_week": {
+    "placeholders": {
+      "num_weeks": {
         "type": "int"
       }
     }
@@ -108,7 +118,7 @@
     }
   },
 
-  "dynamic_message_public_holiday_incoming": "Super! Jour férier {weekday} !",
+  "dynamic_message_public_holiday_incoming": "Super! Jour férier le {weekday} !",
   "@dynamic_message_public_holiday_incoming": {
     "placeholders": {
       "weekday": {
@@ -117,8 +127,8 @@
     }
   },
 
-  "dynamic_message_one_week_remaining": "Tiens bon, il ne reste que {num_weeks} semaines !",
-  "@dynamic_message_one_week_remaining": {
+  "dynamic_message_less_one_month_remaining": "Tiens bon, il ne reste que {num_weeks} semaines !",
+  "@dynamic_message_less_one_month_remaining": {
   "placeholders": {
     "num_weeks": {
       "type": "int"
