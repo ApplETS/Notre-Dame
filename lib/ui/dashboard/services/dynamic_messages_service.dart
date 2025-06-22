@@ -1,5 +1,6 @@
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/ui/dashboard/services/long_weekend_status.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
@@ -19,8 +20,11 @@ class DynamicMessagesService {
       return "Encore ${sessionEndDaysRemaining()} jours et c'est fini !";
     }
 
-    if (longWeekendIncoming()) {
+    LongWeekendStatus incomingLongWeekendStatus = longWeekendIncoming();
+    if (incomingLongWeekendStatus == LongWeekendStatus.incoming) {
       return "Une longue fin de semaine s'en vient !";
+    } else if (incomingLongWeekendStatus == LongWeekendStatus.inside) {
+      return "Bon long weekend !"; // TODO : Add current week completed after this text
     }
 
     if (shouldDisplayLastCourseDayOfCurWeek()) {
@@ -194,12 +198,10 @@ class DynamicMessagesService {
     return remainingWeeks;
   }
 
-  // TODO : Add "is currently in long weekend" check
-
   /// Check if a specific week has a weekend that is longer than usual
-  bool longWeekendIncoming() {
+  LongWeekendStatus longWeekendIncoming() {
     List<ScheduleActivity>? schedule = _courseRepository.scheduleActivities;
-    if (schedule == null || schedule.isEmpty) return false;
+    if (schedule == null || schedule.isEmpty) return LongWeekendStatus.none;
 
     Set<int> regularDays = _getRegularCourseDays(schedule);
     DateTime now = DateTime.now();
@@ -216,7 +218,7 @@ class DynamicMessagesService {
     // If current week doesn't have at least one course
     // then don't consider it a long weekend
     if (actualDays.isEmpty) {
-      return false;
+      return LongWeekendStatus.none;
     }
 
     // Find consecutive course days starting from friday all the way to monday
@@ -231,14 +233,19 @@ class DynamicMessagesService {
     // Handle replaced days (ex: for holidays)
     for (var i = fridayIndex; i > lastWeekdayCourse; i--) {
       if (actualDays.contains(i)) {
-        return false;
+        return LongWeekendStatus.none;
       }
+    }
+
+    // If user is already in long weekend
+    if (now.weekday >= lastWeekdayCourse) {
+      return LongWeekendStatus.none;
     }
 
     // If last course day of the current week (starting from friday) is missed
     // then the weekend will be longer than usual
     if (missingDays.contains(lastWeekdayCourse)) {
-      return true;
+      return LongWeekendStatus.incoming;
     }
 
     // Next week
@@ -249,7 +256,7 @@ class DynamicMessagesService {
     // If next week doesn't have at least one course
     // then don't consider it a long weekend
     if (actualDaysNextWeek.isEmpty) {
-      return false;
+      return LongWeekendStatus.none;
     }
 
     // Find consecutive course days starting from monday all the way to friday
@@ -264,17 +271,22 @@ class DynamicMessagesService {
     // Handle replaced days (ex: for holidays)
     for (var i = mondayIndex; i < firstWeekdayCourse; i++) {
       if (actualDays.contains(i)) {
-        return false;
+        return LongWeekendStatus.none;
       }
+    }
+
+    // If user is already in long weekend
+    if (now.weekday <= firstWeekdayCourse) {
+      return LongWeekendStatus.inside;
     }
 
     // If first course of the next week (starting from monday) is missed
     // then the weekend will be longer than usual
     if (missingDaysNextWeek.contains(firstWeekdayCourse)) {
-      return true;
+      return LongWeekendStatus.incoming;
     }
 
-    return false;
+    return LongWeekendStatus.none;
   }
 
   Set<int> _getActualClassDaysForWeek(DateTime weekStart) {
