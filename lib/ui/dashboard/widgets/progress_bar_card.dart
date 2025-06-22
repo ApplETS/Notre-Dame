@@ -42,7 +42,7 @@ class ProgressBarCard extends StatelessWidget {
         ),
 
         FutureBuilder<String>(
-          future: DynamicMessagesService().getDynamicMessage(),
+          future: DynamicMessagesService(AppIntl.of(context)!).getDynamicMessage(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Padding(padding: EdgeInsets.fromLTRB(17, 10, 17, 0), child: LinearProgressIndicator());

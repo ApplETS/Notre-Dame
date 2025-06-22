@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/services/long_weekend_status.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
@@ -11,6 +12,9 @@ import 'package:notredame/locator.dart';
 
 class DynamicMessagesService {
   final CourseRepository _courseRepository = locator<CourseRepository>();
+  AppIntl intl;
+
+  DynamicMessagesService(this.intl);
 
   Future<String> getDynamicMessage() async {
     await fetchData();
