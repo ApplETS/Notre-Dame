@@ -131,6 +131,7 @@ class DynamicMessagesService {
     return true;
   }
 
+  // TODO : Check if first day of session is thursday or friday, do we want to wait for next week to display message?
   bool isEndOfFirstWeek() {
     final now = DateTime.now();
     final startDate = _courseRepository.activeSessions.first.startDate;
