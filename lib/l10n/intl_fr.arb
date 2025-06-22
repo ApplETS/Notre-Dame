@@ -69,6 +69,15 @@
   "login_password_show": "Afficher le mot de passe",
   "login_password_hide": "Cacher le mot de passe",
 
+  "dynamic_message_session_starts_soon": "Repose-toi bien! La prochaine session débute le x",
+  "dynamic_message_days_before_session_ends": "Encore x jours et c'est fini !",
+  "dynamic_message_long_weekend_incoming": "Une longue fin de semaine s'en vient !",
+  "dynamic_message_long_weekend_currently": "Bon long weeiend ! x ième semaine complétée !",
+  "dynamic_message_last_course_day_of_session": "Fabuleux c'est x ! Dernière journée de cours de la semaine !",
+  "dynamic_message_public_holiday_incoming": "Jour férier le x !",
+  "dynamic_message_first_week_of_session": "Bon début de session !",
+  "dynamic_message_one_week_remaining": "Tiens bon, il ne reste que x semaines !",
+
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
 

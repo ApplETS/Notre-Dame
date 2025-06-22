@@ -70,6 +70,15 @@
   "login_password_show": "Show password",
   "login_password_hide": "Hide password",
 
+  "dynamic_message_session_starts_soon": "Have a good rest! The next session starts on x",
+  "dynamic_message_days_before_session_ends": "x more days and it's over!",
+  "dynamic_message_long_weekend_incoming": "A long weekend is coming!",
+  "dynamic_message_long_weekend_currently": "Have a nice long weekend! x th week completed!",
+  "dynamic_message_last_course_day_of_session": "Fabulous this is x! Last day of classes of the week!",
+  "dynamic_message_public_holiday_incoming": "Public holiday on x!",
+  "dynamic_message_first_week_of_session": "Good start to the session!",
+  "dynamic_message_one_week_remaining": "Keep going, only x weeks to go!",
+
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
 
