@@ -131,15 +131,25 @@ class DynamicMessagesService {
     return true;
   }
 
-  // TODO : Check if first day of session is thursday or friday, do we want to wait for next week to display message?
   bool isEndOfFirstWeek() {
-    final now = DateTime.now();
-    final startDate = _courseRepository.activeSessions.first.startDate;
+    DateTime now = DateTime.now();
+    DateTime startDate = _courseRepository.activeSessions.first.startDate;
 
-    // TODO : Maybe keep it all weekend
-    final isFirstWeek = now.difference(startDate).inDays < 7 && now.weekday >= startDate.weekday;
+    Set<int> daysTooLateFirstWeek = {DateTime.thursday, DateTime.friday, DateTime.saturday, DateTime.sunday};
 
-    return isFirstWeek;
+    // If session started late in the week, consider next Monday as the real start
+    if (daysTooLateFirstWeek.contains(startDate.weekday)) {
+      int daysUntilNextMonday = (DateTime.monday - startDate.weekday + 7) % 7;
+      DateTime adjustedStartDate = startDate.add(Duration(days: daysUntilNextMonday));
+
+      // Keep message active through the weekend
+      DateTime endOfWeek = adjustedStartDate.add(Duration(days: 6));
+      return now.isAfter(adjustedStartDate.subtract(Duration(days: 1))) &&
+          now.isBefore(endOfWeek.add(Duration(days: 1)));
+    } else {
+      bool isFirstWeek = now.difference(startDate).inDays < 7 && now.weekday >= startDate.weekday;
+      return isFirstWeek;
+    }
   }
 
   bool isFirstWeek() {
