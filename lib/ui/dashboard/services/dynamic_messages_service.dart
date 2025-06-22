@@ -23,12 +23,12 @@ class DynamicMessagesService {
       return "Une longue fin de semaine s'en vient !";
     }
 
-    if (hasUpcomingHoliday()) {
-      return "Jour férier le ${getUpcomingHolidayDate()} !";
-    }
-
     if (shouldDisplayLastCourseDayOfCurWeek()) {
       return "Fabuleux c'est ${getCurrentWeekDayName()} ! Dernière journée de cours de la semaine !";
+    }
+
+    if (hasUpcomingHoliday()) {
+      return "Jour férier le ${getUpcomingHolidayDate()} !";
     }
 
     if (isEndOfWeek()) {
@@ -45,7 +45,7 @@ class DynamicMessagesService {
     if (isOneMonthOrLessRemaining()) {
       final remaining = getRemainingWeeks();
       final semaine = remaining == 1 ? 'semaine' : 'semaines';
-      return "Tiens bon, il ne reste que $remaining $semaine !";
+      return "Tiens bon, il ne reste que $remaining $semaine !"; // TODO : Différencier entre fin des cours et période d'examens
     }
 
     return "";
@@ -100,7 +100,7 @@ class DynamicMessagesService {
     }
 
     // check if current day if either fri, sat, sun
-    if (now.weekday != DateTime.friday || now.weekday != DateTime.saturday || now.weekday != DateTime.sunday) {
+    if (now.weekday != DateTime.friday && now.weekday != DateTime.saturday && now.weekday != DateTime.sunday) {
       return false;
     }
 
@@ -129,7 +129,7 @@ class DynamicMessagesService {
       }
     }
 
-    return true;
+    return false;
   }
 
   bool isEndOfFirstWeek() {
@@ -193,6 +193,8 @@ class DynamicMessagesService {
 
     return remainingWeeks;
   }
+
+  // TODO : Add "is currently in long weekend" check
 
   /// Check if a specific week has a weekend that is longer than usual
   bool longWeekendIncoming() {
@@ -375,6 +377,7 @@ class DynamicMessagesService {
     Set<int> actualDays = _getActualClassDaysForWeek(startOfCurrentWeek);
     List<int> sortedDays = actualDays.toList()..sort();
 
+    // TODO : Maybe change to two days
     if (sortedDays.length < 3) {
       return false;
     }
