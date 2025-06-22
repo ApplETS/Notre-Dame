@@ -100,11 +100,11 @@
     }
   },
 
-  "dynamic_message_long_weekend_currently": "Bonne longue fin de semaine ! {num_weeks} ième semaine complétée !",
+  "dynamic_message_long_weekend_currently": "Bonne longue fin de semaine ! {num_weeks} semaine complétée !",
   "@dynamic_message_long_weekend_currently": {
     "placeholders": {
       "num_weeks": {
-        "type": "int"
+        "type": "String"
       }
     }
   },

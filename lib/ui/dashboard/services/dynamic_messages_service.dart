@@ -3,21 +3,25 @@ import 'package:collection/collection.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/services/long_weekend_status.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/utils/utils.dart';
 
 class DynamicMessagesService {
   final CourseRepository _courseRepository = locator<CourseRepository>();
+  final SettingsRepository settingsManager = locator<SettingsRepository>();
   AppIntl intl;
 
   DynamicMessagesService(this.intl);
 
   Future<String> getDynamicMessage() async {
     await fetchData();
+    var lang = settingsManager.locale.toString();
 
     if (!(sessionHasStarted())) {
       return intl.dynamic_message_session_starts_soon(upcomingSessionstartDate());
@@ -31,7 +35,7 @@ class DynamicMessagesService {
     if (incomingLongWeekendStatus == LongWeekendStatus.incoming) {
       return intl.dynamic_message_long_weekend_incoming;
     } else if (incomingLongWeekendStatus == LongWeekendStatus.inside) {
-      return intl.dynamic_message_long_weekend_currently(getCompletedWeeks());
+      return intl.dynamic_message_long_weekend_currently(Utils.getOrdinal(getCompletedWeeks(), lang));
     }
 
     if (shouldDisplayLastCourseDayOfCurWeek()) {
@@ -68,10 +72,10 @@ class DynamicMessagesService {
 
   Future<void> fetchData() async {
     await Future.wait([
-      _courseRepository.getSessions(),
+      /*_courseRepository.getSessions(),
       _courseRepository.getReplacedDays(),
       _courseRepository.getScheduleActivities(),
-      _courseRepository.getCoursesActivities(),
+      _courseRepository.getCoursesActivities(),*/
     ]);
   }
 
