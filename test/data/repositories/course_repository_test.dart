@@ -1812,7 +1812,7 @@ void main() {
         // Stub the cache to return 1 replaced day
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
-        //Stub the networkingService to return no connectivity
+        // Stub the networkingService to return no connectivity
         reset(networkingServiceMock);
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock, hasConnectivity: false);
 

@@ -25,7 +25,7 @@ import 'package:notredame/data/services/signets-api/models/program.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import '../../../locator.dart';
+import 'package:notredame/locator.dart';
 
 /// A Wrapper for all calls to Signets API.
 class SignetsAPIClient {
