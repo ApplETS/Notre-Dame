@@ -37,6 +37,7 @@ class DynamicMessagesService {
           : "${getCompletedWeeks()} semaine complétée !";
     }
 
+    // TODO : Maybe move higher up
     if (isFirstWeek()) {
       return "Bon début de session !";
     }
@@ -312,9 +313,26 @@ class DynamicMessagesService {
 
   /// Determines which days of the week the user regularly has classes
   Set<int> _getRegularCourseDays(List<ScheduleActivity> schedule) {
-    // TODO : Remove courses that don't occur often during the sesssion
-    //  (ex: courses that don't occur every week)
-    return schedule.map((activity) => activity.dayOfTheWeek).toSet();
+    List<CourseActivity>? allCourses = _courseRepository.coursesActivities;
+
+    // Counts how many times each course activity happens in a session
+    Map<String, int> courseCounts = {};
+
+    if (allCourses != null) {
+      for (var course in allCourses) {
+        courseCounts[course.courseName] = (courseCounts[course.courseName] ?? 0) + 1;
+      }
+    }
+
+    int minOccurence = 12;
+
+    // Filter schedule to only include activities with at least [minOccurence] occurrences
+    Iterable<ScheduleActivity> filteredActivities = schedule.where((activity) {
+      int? count = courseCounts[activity.courseTitle];
+      return (count != null && count >= minOccurence);
+    });
+
+    return filteredActivities.map((activity) => activity.dayOfTheWeek).toSet();
   }
 
   /// Helper method to get the start date of the week (Monday)
