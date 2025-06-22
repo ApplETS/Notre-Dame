@@ -27,7 +27,7 @@ class DynamicMessagesService {
     if (incomingLongWeekendStatus == LongWeekendStatus.incoming) {
       return "Une longue fin de semaine s'en vient !";
     } else if (incomingLongWeekendStatus == LongWeekendStatus.inside) {
-      return "Bon long weekend !"; // TODO : Add current week completed after this text
+      return "Bon long weekend ${getCompletedWeeks()} ième semaine complétée !";
     }
 
     if (shouldDisplayLastCourseDayOfCurWeek()) {
