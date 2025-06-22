@@ -302,6 +302,8 @@ class DynamicMessagesService {
 
   /// Determines which days of the week the user regularly has classes
   Set<int> _getRegularCourseDays(List<ScheduleActivity> schedule) {
+    // TODO : Remove courses that don't occur often during the sesssion
+    //  (ex: courses that don't occur every week)
     return schedule.map((activity) => activity.dayOfTheWeek).toSet();
   }
 
