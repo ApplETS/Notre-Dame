@@ -1,3 +1,6 @@
+// Package imports:
+import 'package:collection/collection.dart';
+
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/ui/dashboard/services/long_weekend_status.dart';
@@ -198,6 +201,7 @@ class DynamicMessagesService {
     return remainingWeeks;
   }
 
+  // TODO : Handle when two consecutive weeks have long weekends
   /// Check if a specific week has a weekend that is longer than usual
   LongWeekendStatus longWeekendIncoming() {
     List<ScheduleActivity>? schedule = _courseRepository.scheduleActivities;
@@ -238,7 +242,7 @@ class DynamicMessagesService {
     }
 
     // If user is already in long weekend
-    if (now.weekday >= lastWeekdayCourse) {
+    if (now.weekday > actualDays.max && missingDays.contains(lastWeekdayCourse)) {
       return LongWeekendStatus.inside;
     }
 
@@ -270,17 +274,19 @@ class DynamicMessagesService {
 
     // Handle replaced days (ex: for holidays)
     for (var i = mondayIndex; i < firstWeekdayCourse; i++) {
-      if (actualDays.contains(i)) {
+      if (actualDaysNextWeek.contains(i)) {
         return LongWeekendStatus.none;
       }
     }
 
     // If user is already in long weekend
-    if (now.weekday <= firstWeekdayCourse) {
+    if (now.weekday > actualDaysNextWeek.min &&
+        missingDaysNextWeek.contains(firstWeekdayCourse) &&
+        now.weekday > actualDays.max) {
       return LongWeekendStatus.inside;
     }
 
-    // If first course of the next week (starting from monday) is missed
+    // If first course day of the next week (starting from monday) is missed
     // then the weekend will be longer than usual
     if (missingDaysNextWeek.contains(firstWeekdayCourse)) {
       return LongWeekendStatus.incoming;
