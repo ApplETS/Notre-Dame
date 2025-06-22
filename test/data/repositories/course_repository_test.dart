@@ -17,6 +17,7 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
 import 'package:notredame/data/services/signets-api/models/course_review.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
@@ -1541,6 +1542,282 @@ void main() {
         verifyNever(
           signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
         );
+      });
+    });
+
+    group("getReplacedDays - ", () {
+      final ReplacedDay replacedDay = ReplacedDay(
+        originalDate: DateTime(2025, 05, 10),
+        replacementDate: DateTime(2025, 05, 15),
+        description: "Action de grâces",
+      );
+
+      final List<ReplacedDay> replacedDays = [replacedDay];
+
+      setUp(() {
+        // Stub some sessions
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode([]));
+        SignetsAPIClientMock.stubGetSessions(signetsApiMock, [session]);
+
+        // Stub to simulate that the user has an active internet connection
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
+      });
+
+      test("Replaced days are loaded from cache.", () async {
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        // Stub the SignetsAPI to return 0 replaced days
+        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, []);
+
+        expect(manager.replacedDays, isNull);
+        final List<ReplacedDay>? results = await manager.getReplacedDays(fromCacheOnly: true);
+
+        expect(results, isInstanceOf<List<ReplacedDay>>());
+        expect(results, replacedDays);
+        expect(manager.replacedDays, replacedDays, reason: "The list of replaced days should not be empty");
+
+        verifyInOrder([cacheManagerMock.get(CourseRepository.replacedDaysCacheKey)]);
+      });
+
+      test("Replaced days are only loaded from cache.", () async {
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        expect(manager.replacedDays, isNull);
+        final List<ReplacedDay>? results = await manager.getReplacedDays(fromCacheOnly: true);
+
+        expect(results, isInstanceOf<List<ReplacedDay>>());
+        expect(results, replacedDays);
+        expect(manager.replacedDays, replacedDays, reason: "The list of replaced days should not be empty");
+
+        verifyInOrder([cacheManagerMock.get(CourseRepository.replacedDaysCacheKey)]);
+
+        verifyNoMoreInteractions(signetsApiMock);
+        verifyNoMoreInteractions(userRepositoryMock);
+      });
+
+      test("Trying to recover replaced days from cache but an exception is raised.", () async {
+        // Stub the cache to throw an exception
+        CacheServiceMock.stubGetException(cacheManagerMock, CourseRepository.replacedDaysCacheKey);
+
+        // Stub the SignetsAPI to return 0 activities
+        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, []);
+
+        expect(manager.replacedDays, isNull);
+        final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+        expect(results, isInstanceOf<List<ReplacedDay>>());
+        expect(results, isEmpty);
+        expect(manager.replacedDays, isEmpty, reason: "The list of replaced days should be empty");
+
+        verifyInOrder([
+          cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
+          signetsApiMock.getReplacedDays(session: session.shortName),
+          cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, any),
+        ]);
+
+        verify(signetsApiMock.getSessions()).called(1);
+      });
+
+      test("Doesn't retrieve sessions if they are already loaded", () async {
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        // Stub the SignetsAPI to return 1 activities
+        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+
+        // Load the sessions
+        await manager.getSessions();
+        expect(manager.sessions, isNotEmpty);
+        clearInteractions(cacheManagerMock);
+        clearInteractions(userRepositoryMock);
+        clearInteractions(signetsApiMock);
+
+        expect(manager.replacedDays, isNull);
+        final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+        expect(results, isInstanceOf<List<ReplacedDay>>());
+        expect(results, replacedDays);
+        expect(manager.replacedDays, replacedDays, reason: "The list of replaced days should not be empty");
+
+        verifyInOrder([
+          cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
+          signetsApiMock.getReplacedDays(session: session.shortName),
+          cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, any),
+        ]);
+
+        verifyNoMoreInteractions(signetsApiMock);
+      });
+
+      test("getSessions fails", () async {
+        // Stub SignetsApi to throw an exception
+        reset(signetsApiMock);
+        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock);
+
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        // Stub the SignetsAPI to return 0 activities
+        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
+
+        expect(manager.replacedDays, isNull);
+        expect(manager.getReplacedDays(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingServiceMock.hasConnectivity());
+        expect(manager.replacedDays, isEmpty, reason: "The list of replaced days should be empty");
+
+        await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
+
+        verifyInOrder([
+          cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
+        ]);
+      });
+
+      test("SignetsAPI returns new replaced days, the old ones should be maintained and the cache updated.", () async {
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        final ReplacedDay replacedDayNew = ReplacedDay(
+          originalDate: DateTime(2025, 06, 20),
+          replacementDate: DateTime(2025, 06, 27),
+          description: "Fête du Canada",
+        );
+
+        // Stub the SignetsAPI to return 2 replaced days
+        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, [replacedDay, replacedDayNew]);
+
+        expect(manager.replacedDays, isNull);
+        final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+        expect(results, isInstanceOf<List<ReplacedDay>>());
+        expect(results, [replacedDay, replacedDayNew]);
+        expect(manager.replacedDays, [
+          replacedDay,
+          replacedDayNew,
+        ], reason: "The list of replaced days should not be empty");
+
+        verifyInOrder([
+          cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
+          signetsApiMock.getReplacedDays(session: session.shortName),
+          cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, jsonEncode([replacedDay, replacedDayNew])),
+        ]);
+      });
+
+      test("SignetsAPI returns replaced days that already exists, should avoid duplicate.", () async {
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        // Stub the SignetsAPI to return the same replaced day as the cache
+        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+
+        expect(manager.coursesActivities, isNull);
+        final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+        expect(results, isInstanceOf<List<ReplacedDay>>());
+        expect(results, replacedDays);
+        expect(manager.replacedDays, replacedDays, reason: "The list of replaced days should not have duplicate");
+
+        verifyInOrder([
+          cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
+          signetsApiMock.getReplacedDays(session: session.shortName),
+          cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays)),
+        ]);
+      });
+
+      test("SignetsAPI returns replaced days that changed (for example replacement date changed).", () async {
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        // Load the sessions
+        await manager.getSessions();
+        expect(manager.sessions, isNotEmpty);
+        clearInteractions(cacheManagerMock);
+        clearInteractions(userRepositoryMock);
+        clearInteractions(signetsApiMock);
+
+        final changedReplacedDay = ReplacedDay(
+          originalDate: DateTime(2025, 06, 20),
+          replacementDate: DateTime(2025, 06, 27),
+          description: "Fête du Canada",
+        );
+
+        // Stub the SignetsAPI to return the same replaced days as the cache
+        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, [changedReplacedDay]);
+
+        expect(manager.coursesActivities, isNull);
+        final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+        expect(results, isInstanceOf<List<ReplacedDay>>());
+        expect(results, [changedReplacedDay]);
+        expect(manager.replacedDays, [changedReplacedDay], reason: "The list of replaced days should be updated");
+
+        verifyInOrder([
+          cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
+          signetsApiMock.getReplacedDays(session: session.shortName),
+          cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, jsonEncode([changedReplacedDay])),
+        ]);
+      });
+
+      test("SignetsAPI raise a exception.", () async {
+        // Stub the cache to return no replaced days
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode([]));
+
+        // Stub the SignetsAPI to throw an exception
+        SignetsAPIClientMock.stubGetReplacedDaysException(
+          signetsApiMock,
+          session.shortName,
+          exceptionToThrow: const ApiException(prefix: CourseRepository.tag),
+        );
+
+        expect(manager.replacedDays, isNull);
+        expect(manager.getReplacedDays(), throwsA(isInstanceOf<ApiException>()));
+
+        await untilCalled(networkingServiceMock.hasConnectivity());
+        expect(manager.replacedDays, isEmpty, reason: "The list of replaced days should be empty");
+
+        await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
+
+        verifyInOrder([
+          cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
+          signetsApiMock.getReplacedDays(session: session.shortName),
+          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
+        ]);
+      });
+
+      test("Cache update fails, should still return the updated list of replaced days.", () async {
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        // Stub the SignetsAPI to return 1 replaced day
+        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+
+        CacheServiceMock.stubUpdateException(cacheManagerMock, CourseRepository.replacedDaysCacheKey);
+
+        expect(manager.replacedDays, isNull);
+        final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+        expect(results, isInstanceOf<List<ReplacedDay>>());
+        expect(results, replacedDays);
+        expect(manager.replacedDays, replacedDays, reason: "The list of replaced days should not be empty");
+
+        verifyInOrder([
+          cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
+          signetsApiMock.getReplacedDays(session: session.shortName),
+        ]);
+      });
+
+      test("Should force fromCacheOnly mode when user has no connectivity", () async {
+        // Stub the cache to return 1 replaced day
+        CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+        //Stub the networkingService to return no connectivity
+        reset(networkingServiceMock);
+        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock, hasConnectivity: false);
+
+        final replacedDaysCache = await manager.getReplacedDays();
+        expect(replacedDaysCache, replacedDays);
       });
     });
   });

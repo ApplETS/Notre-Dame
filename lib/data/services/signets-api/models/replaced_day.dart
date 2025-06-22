@@ -22,8 +22,8 @@ class ReplacedDay {
 
   /// Used to create [ReplacedDay] instance from a JSON file
   factory ReplacedDay.fromJson(Map<String, dynamic> map) => ReplacedDay(
-    originalDate: DateTime.parse(map['dateOrigine'] as String),
-    replacementDate: DateTime.parse(map['dateRemplacement'] as String),
+    originalDate: DateTime.parse(map['originalDate'] as String),
+    replacementDate: DateTime.parse(map['replacementDate'] as String),
     description: map['description'] as String,
   );
 
