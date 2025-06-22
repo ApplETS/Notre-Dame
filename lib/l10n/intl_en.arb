@@ -101,11 +101,11 @@
     }
   },
 
-  "dynamic_message_long_weekend_currently": "Have a nice long weekend! {num_weeks} week completed!",
+  "dynamic_message_long_weekend_currently": "Have a nice long weekend! Week {num_weeks} completed!",
   "@dynamic_message_long_weekend_currently": {
     "placeholders": {
       "num_weeks": {
-        "type": "String"
+        "type": "int"
       }
     }
   },

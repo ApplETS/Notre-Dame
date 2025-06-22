@@ -10,7 +10,6 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/utils/utils.dart';
 
 class DynamicMessagesService {
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -21,7 +20,6 @@ class DynamicMessagesService {
 
   Future<String> getDynamicMessage() async {
     await fetchData();
-    var lang = settingsManager.locale.toString();
 
     if (!(sessionHasStarted())) {
       return intl.dynamic_message_session_starts_soon(upcomingSessionstartDate());
@@ -35,7 +33,7 @@ class DynamicMessagesService {
     if (incomingLongWeekendStatus == LongWeekendStatus.incoming) {
       return intl.dynamic_message_long_weekend_incoming;
     } else if (incomingLongWeekendStatus == LongWeekendStatus.inside) {
-      return intl.dynamic_message_long_weekend_currently(Utils.getOrdinal(getCompletedWeeks(), lang));
+      return intl.dynamic_message_long_weekend_currently(getCompletedWeeks());
     }
 
     if (shouldDisplayLastCourseDayOfCurWeek()) {
