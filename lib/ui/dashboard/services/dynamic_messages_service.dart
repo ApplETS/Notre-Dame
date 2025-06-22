@@ -55,7 +55,8 @@ class DynamicMessagesService {
       return "Tiens bon, il ne reste que $remaining $semaine !"; // TODO : Différencier entre fin des cours et période d'examens
     }
 
-    return "";
+    // TODO : Ajouter messages génériques
+    return "Message générique";
   }
 
   Future<void> fetchData() async {
