@@ -239,7 +239,7 @@ class DynamicMessagesService {
 
     // If user is already in long weekend
     if (now.weekday >= lastWeekdayCourse) {
-      return LongWeekendStatus.none;
+      return LongWeekendStatus.inside;
     }
 
     // If last course day of the current week (starting from friday) is missed
