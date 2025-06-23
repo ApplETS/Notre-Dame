@@ -156,22 +156,22 @@ class DynamicMessagesService {
   }
 
   bool isEndOfFirstWeek() {
-    DateTime now = DateTime.now();
-    DateTime startDate = _courseRepository.activeSessions.first.startDate;
+    DateTime curSessionStartDate = _courseRepository.activeSessions.first.startDate;
+    int curSessionStartDateWeekday = curSessionStartDate.weekday;
 
-    Set<int> daysTooLateFirstWeek = {DateTime.thursday, DateTime.friday, DateTime.saturday, DateTime.sunday};
+    Set<int> daysTooLateForFullFirstWeek = {DateTime.thursday, DateTime.friday, DateTime.saturday, DateTime.sunday};
 
     // If session started late in the week, consider next Monday as the real start
-    if (daysTooLateFirstWeek.contains(startDate.weekday)) {
-      int daysUntilNextMonday = (DateTime.monday - startDate.weekday + 7) % 7;
-      DateTime adjustedStartDate = startDate.add(Duration(days: daysUntilNextMonday));
+    if (daysTooLateForFullFirstWeek.contains(curSessionStartDateWeekday)) {
+      int daysUntilNextMonday = (DateTime.monday - curSessionStartDateWeekday + 7) % 7;
+      DateTime adjustedStartDate = curSessionStartDate.add(Duration(days: daysUntilNextMonday));
 
-      // Keep message active through the weekend
+      // Include weekend as end of first week
       DateTime endOfWeek = adjustedStartDate.add(Duration(days: 6));
       return now.isAfter(adjustedStartDate.subtract(Duration(days: 1))) &&
           now.isBefore(endOfWeek.add(Duration(days: 1)));
     } else {
-      bool isFirstWeek = now.difference(startDate).inDays < 7 && now.weekday >= startDate.weekday;
+      bool isFirstWeek = now.difference(curSessionStartDate).inDays < 7 && now.weekday >= curSessionStartDateWeekday;
       return isFirstWeek;
     }
   }
