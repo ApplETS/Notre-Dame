@@ -18,17 +18,15 @@ class DynamicMessagesService {
 
   final int daysInAWeek = 7;
 
-  DateTime now = DateTime.now();
   AppIntl intl;
 
+  DateTime get now => DateTime.now();
   Session get firstActiveSession => _courseRepository.activeSessions.first;
 
   DynamicMessagesService(this.intl);
 
   Future<String> getDynamicMessage() async {
     await fetchData();
-
-    now = DateTime.now();
 
     if (!(sessionHasStarted())) {
       return intl.dynamic_message_session_starts_soon(firstActiveSession.startDate.toString());
