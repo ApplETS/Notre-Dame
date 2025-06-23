@@ -206,8 +206,27 @@ class DynamicMessagesService {
     return remainingWeeks;
   }
 
+  int getLastCourseDayOfCurWeek() {
+    DateTime startOfCurrentWeek = _getStartOfWeek(now);
+    Set<int> courseDays = _getClassDaysForWeek(startOfCurrentWeek);
+    int fridayWeekday = 5;
+    return courseDays.where((courseWeekday) => courseWeekday <= fridayWeekday).reduce((a, b) => a > b ? a : b);
+  }
+
+  int getFirstCourseDayOfNextWeek() {
+    DateTime startOfCurrentWeek = _getStartOfWeek(now).add(Duration(days: 7));
+    Set<int> courseDays = _getClassDaysForWeek(startOfCurrentWeek);
+    int mondayWeekday = 1;
+    return courseDays.where((courseWeekday) => courseWeekday >= mondayWeekday).reduce((a, b) => a < b ? a : b);
+  }
+
+  bool _hasCoursesInWeek(DateTime curTime) {
+    DateTime startOfCurrentWeek = _getStartOfWeek(curTime);
+    Set<int> classDays = _getClassDaysForWeek(startOfCurrentWeek);
+    return classDays.isNotEmpty;
+  }
+
   // TODO : Handle when two consecutive weeks have long weekends
-  // TODO : Simplify
   /// Check if a specific week has a weekend that is longer than usual
   LongWeekendStatus getIncomingLongWeekendStatus() {
     List<ScheduleActivity>? schedule = _courseRepository.scheduleActivities;
@@ -220,80 +239,63 @@ class DynamicMessagesService {
     int fridayIndex = 5;
 
     // Current week
-    DateTime weekStart = startOfCurrentWeek;
-    Set<int> actualDays = _getClassDaysForWeek(weekStart);
-    Set<int> missingDays = regularDays.difference(actualDays);
+    Set<int> classDays = _getClassDaysForWeek(startOfCurrentWeek);
+    Set<int> missingDays = regularDays.difference(classDays);
 
     // If current week doesn't have at least one course
     // then don't consider it a long weekend
-    if (actualDays.isEmpty) {
+    if (!_hasCoursesInWeek(now)) {
       return LongWeekendStatus.none;
     }
 
     // Find consecutive course days starting from friday all the way to monday
-    int lastWeekdayCourse = -1;
-    for (var i = fridayIndex; i >= mondayIndex; i--) {
-      if (regularDays.contains(i)) {
-        lastWeekdayCourse = i;
-        break;
-      }
-    }
+    int lastWeekdayCourseDay = getLastCourseDayOfCurWeek();
 
     // Handle replaced days (ex: for holidays)
-    for (var i = fridayIndex; i > lastWeekdayCourse; i--) {
-      if (actualDays.contains(i)) {
-        return LongWeekendStatus.none;
-      }
+    if (classDays.any((day) => day > lastWeekdayCourseDay && day <= fridayIndex)) {
+      return LongWeekendStatus.none;
     }
 
     // If user is already in long weekend
-    if (now.weekday > actualDays.max && missingDays.contains(lastWeekdayCourse)) {
+    if (now.weekday > classDays.max && missingDays.contains(lastWeekdayCourseDay)) {
       return LongWeekendStatus.inside;
     }
 
     // If last course day of the current week (starting from friday) is missed
     // then the weekend will be longer than usual
-    if (missingDays.contains(lastWeekdayCourse)) {
+    if (missingDays.contains(lastWeekdayCourseDay)) {
       return LongWeekendStatus.incoming;
     }
 
     // Next week
     DateTime nextWeekStart = startOfCurrentWeek.add(Duration(days: 7));
-    Set<int> actualDaysNextWeek = _getClassDaysForWeek(nextWeekStart);
-    Set<int> missingDaysNextWeek = regularDays.difference(actualDaysNextWeek);
+    Set<int> classDaysNextWeek = _getClassDaysForWeek(nextWeekStart);
+    Set<int> missingDaysNextWeek = regularDays.difference(classDaysNextWeek);
 
     // If next week doesn't have at least one course
     // then don't consider it a long weekend
-    if (actualDaysNextWeek.isEmpty) {
+    if (!_hasCoursesInWeek(nextWeekStart)) {
       return LongWeekendStatus.none;
     }
 
     // Find consecutive course days starting from monday all the way to friday
-    int firstWeekdayCourse = -1;
-    for (var i = mondayIndex; i <= fridayIndex; i++) {
-      if (regularDays.contains(i)) {
-        firstWeekdayCourse = i;
-        break;
-      }
-    }
+    int firstWeekdayCourseDay = getFirstCourseDayOfNextWeek();
 
     // Handle replaced days (ex: for holidays)
-    for (var i = mondayIndex; i < firstWeekdayCourse; i++) {
-      if (actualDaysNextWeek.contains(i)) {
-        return LongWeekendStatus.none;
-      }
+    if (classDaysNextWeek.any((day) => day >= mondayIndex && day < firstWeekdayCourseDay)) {
+      return LongWeekendStatus.none;
     }
 
     // If user is already in long weekend
-    if (now.weekday > actualDaysNextWeek.min &&
-        missingDaysNextWeek.contains(firstWeekdayCourse) &&
-        now.weekday > actualDays.max) {
+    if (now.weekday > classDaysNextWeek.min &&
+        missingDaysNextWeek.contains(firstWeekdayCourseDay) &&
+        now.weekday > classDays.max) {
       return LongWeekendStatus.inside;
     }
 
     // If first course day of the next week (starting from monday) is missed
     // then the weekend will be longer than usual
-    if (missingDaysNextWeek.contains(firstWeekdayCourse)) {
+    if (missingDaysNextWeek.contains(firstWeekdayCourseDay)) {
       return LongWeekendStatus.incoming;
     }
 
