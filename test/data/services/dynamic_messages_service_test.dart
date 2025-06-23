@@ -154,4 +154,54 @@ void main() {
       });
     });
   });
+
+  group('daysRemainingBeforeSessionEnds -', () {
+    test('returns number of days before session ends', () {
+      final session = Session(
+        shortName: 'SESSION',
+        name: 'SESSION',
+        startDate: DateTime(2025),
+        endDate: fakeNow.add(Duration(days: 5)),
+        endDateCourses: DateTime(2025),
+        startDateRegistration: DateTime(2025),
+        deadlineRegistration: DateTime(2025),
+        startDateCancellationWithRefund: DateTime(2025),
+        deadlineCancellationWithRefund: DateTime(2025),
+        deadlineCancellationWithRefundNewStudent: DateTime(2025),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2025),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2025),
+        deadlineCancellationASEQ: DateTime(2025),
+      );
+
+      when(mockCourseRepository.activeSessions).thenReturn([session]);
+
+      withClock(Clock.fixed(fakeNow), () {
+        expect(service.daysRemainingBeforeSessionEnds(), 5);
+      });
+    });
+
+    test('returns zero if session end date is current date', () {
+      final session = Session(
+        shortName: 'SESSION',
+        name: 'SESSION',
+        startDate: DateTime(2025),
+        endDate: fakeNow,
+        endDateCourses: DateTime(2025),
+        startDateRegistration: DateTime(2025),
+        deadlineRegistration: DateTime(2025),
+        startDateCancellationWithRefund: DateTime(2025),
+        deadlineCancellationWithRefund: DateTime(2025),
+        deadlineCancellationWithRefundNewStudent: DateTime(2025),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2025),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2025),
+        deadlineCancellationASEQ: DateTime(2025),
+      );
+
+      when(mockCourseRepository.activeSessions).thenReturn([session]);
+
+      withClock(Clock.fixed(fakeNow), () {
+        expect(service.daysRemainingBeforeSessionEnds(), 0);
+      });
+    });
+  });
 }
