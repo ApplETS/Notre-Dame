@@ -92,7 +92,7 @@
     }
   },
 
-  "dynamic_message_end_of_week": "${num_weeks} semaine complétée !",
+  "dynamic_message_end_of_week": "Week {num_weeks} completed !",
   "@dynamic_message_end_of_week": {
     "placeholders": {
       "num_weeks": {

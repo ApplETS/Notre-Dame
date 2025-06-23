@@ -20,7 +20,7 @@ class DynamicMessagesService {
 
   AppIntl intl;
 
-  DateTime get now => DateTime.now();
+  DateTime get now => DateTime(2025, 04, 28);
   Session get firstActiveSession => _courseRepository.activeSessions.first;
 
   DynamicMessagesService(this.intl);
@@ -85,7 +85,13 @@ class DynamicMessagesService {
   }
 
   bool sessionHasStarted() {
-    return firstActiveSession.startDate.isBefore(now);
+    final nowDate = DateTime(now.year, now.month, now.day);
+    final startDate = DateTime(
+      firstActiveSession.startDate.year,
+      firstActiveSession.startDate.month,
+      firstActiveSession.startDate.day,
+    );
+    return !startDate.isAfter(nowDate);
   }
 
   bool oneWeekRemainingUntilSessionEnd() {
@@ -264,7 +270,8 @@ class DynamicMessagesService {
     }
 
     // If user is already in long weekend
-    if (now.weekday > classDays.max && missingDays.any((weekday) => weekday > lastWeekdayCourseDay && weekday <= fridayIndex)) {
+    if (now.weekday > classDays.max &&
+        missingDays.any((weekday) => weekday > lastWeekdayCourseDay && weekday <= fridayIndex)) {
       return LongWeekendStatus.inside;
     }
 
@@ -292,13 +299,14 @@ class DynamicMessagesService {
     if (classDaysNextWeek.any((day) => day >= mondayIndex && day < firstWeekdayCourseDay)) {
       return LongWeekendStatus.none;
     }
-    
+
     // If user is already in long weekend
     if (now.weekday < getFirstCourseDayOfCurWeek() && missingDays.contains(now.weekday)) {
       return LongWeekendStatus.inside;
     }
 
-    if (now.weekday > classDays.max && missingDaysNextWeek.any((weekday) => weekday >= mondayIndex && weekday < firstWeekdayCourseDay)) {
+    if (now.weekday > classDays.max &&
+        missingDaysNextWeek.any((weekday) => weekday >= mondayIndex && weekday < firstWeekdayCourseDay)) {
       return LongWeekendStatus.inside;
     }
 
@@ -394,7 +402,7 @@ class DynamicMessagesService {
         .toList();
 
     upcomingHolidays.sort((a, b) => a.originalDate.compareTo(b.originalDate));
-    
+
     if (upcomingHolidays.isEmpty) return null;
 
     return upcomingHolidays.first.originalDate.toString();
