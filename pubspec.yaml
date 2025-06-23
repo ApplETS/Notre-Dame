@@ -67,6 +67,7 @@ dependencies:
   collection: ^1.19.1
   intl: ^0.20.2
   msal_auth: ^3.1.4
+  clock: ^1.1.2
 
 dev_dependencies:
   flutter_test:

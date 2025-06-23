@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:collection/collection.dart';
+import 'package:clock/clock.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
@@ -20,7 +21,7 @@ class DynamicMessagesService {
 
   AppIntl intl;
 
-  DateTime get now => DateTime(2025, 04, 28);
+  DateTime get now => clock.now();
   Session get firstActiveSession => _courseRepository.activeSessions.first;
 
   DynamicMessagesService(this.intl);
