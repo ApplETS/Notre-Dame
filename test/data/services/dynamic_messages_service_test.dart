@@ -2,6 +2,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -16,7 +17,7 @@ void main() {
   late DynamicMessagesService service;
   late MockCourseRepository mockCourseRepository;
   late SettingsRepositoryMock mockSettingsRepository;
-  final DateTime fakeNow = DateTime(2025, 06, 20);
+  final DateTime fakeNow = DateTime(2025, 06, 15);
 
   setUp(() async {
     mockCourseRepository = setupCourseRepositoryMock();
@@ -203,5 +204,61 @@ void main() {
         expect(service.daysRemainingBeforeSessionEnds(), 0);
       });
     });
+  });
+
+  group('isEndOfWeek -', () {
+    final noWeekendCourses = [
+      CourseActivity(
+        courseGroup: "GEN101",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 13)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 17)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN102",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 08)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 12)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN103",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.tuesday, hours: 08)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.tuesday, hours: 12)),
+      ),
+    ];
+
+    final weekdayNames = {
+      DateTime.monday: 'Monday',
+      DateTime.tuesday: 'Tuesday',
+      DateTime.wednesday: 'Wednesday',
+      DateTime.thursday: 'Thursday',
+    };
+
+    for (final weekday in [DateTime.monday, DateTime.tuesday, DateTime.wednesday, DateTime.thursday]) {
+      test('returns true when it\'s ${weekdayNames[weekday]} with no weekend courses', () {
+        when(mockCourseRepository.coursesActivities).thenReturn(noWeekendCourses);
+        withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.friday))), () {
+          expect(service.isEndOfWeek(), isTrue);
+        });
+      });
+    }
+
+    for (final weekday in [DateTime.monday, DateTime.tuesday, DateTime.wednesday, DateTime.thursday]) {
+      test('returns false ${weekdayNames[weekday]}', () {
+        withClock(Clock.fixed(fakeNow.add(Duration(days: weekday))), () {
+          expect(service.isEndOfWeek(), isFalse);
+        });
+      });
+    }
   });
 }
