@@ -4,36 +4,45 @@ import 'package:collection/collection.dart';
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/dashboard/services/long_weekend_status.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/dashboard/services/long_weekend_status.dart';
 import 'package:notredame/locator.dart';
 
 class DynamicMessagesService {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final SettingsRepository settingsManager = locator<SettingsRepository>();
+
+  final int daysInAWeek = 7;
+
+  DateTime now = DateTime.now();
   AppIntl intl;
+
+  Session get firstActiveSession => _courseRepository.activeSessions.first;
 
   DynamicMessagesService(this.intl);
 
   Future<String> getDynamicMessage() async {
     await fetchData();
 
+    now = DateTime.now();
+
     if (!(sessionHasStarted())) {
-      return intl.dynamic_message_session_starts_soon(upcomingSessionstartDate());
+      return intl.dynamic_message_session_starts_soon(firstActiveSession.startDate.toString());
     }
 
     if (oneWeekRemainingUntilSessionEnd()) {
-      return intl.dynamic_message_days_before_session_ends(sessionEndDaysRemaining());
+      return intl.dynamic_message_days_before_session_ends(daysRemainingBeforeSessionEnds());
     }
 
-    LongWeekendStatus incomingLongWeekendStatus = longWeekendIncoming();
+    LongWeekendStatus incomingLongWeekendStatus = getIncomingLongWeekendStatus();
     if (incomingLongWeekendStatus == LongWeekendStatus.incoming) {
       return intl.dynamic_message_long_weekend_incoming;
     } else if (incomingLongWeekendStatus == LongWeekendStatus.inside) {
-      return intl.dynamic_message_long_weekend_currently(getCompletedWeeks());
+      return intl.dynamic_message_long_weekend_currently(getCompletedWeeksInCurSession());
     }
 
     if (shouldDisplayLastCourseDayOfCurWeek()) {
@@ -50,7 +59,7 @@ class DynamicMessagesService {
     if (isEndOfWeek()) {
       return isEndOfFirstWeek()
           ? intl.dynamic_message_first_week_of_session_completed
-          : intl.dynamic_message_end_of_week(getCompletedWeeks());
+          : intl.dynamic_message_end_of_week(getCompletedWeeksInCurSession());
     }
 
     // TODO : Maybe move higher up
@@ -58,9 +67,9 @@ class DynamicMessagesService {
       return intl.dynamic_message_first_week_of_session;
     }
 
-    if (isOneMonthOrLessRemaining()) {
+    if (isOneMonthOrLessRemainingToSession()) {
       return intl.dynamic_message_less_one_month_remaining(
-        getRemainingWeeks(),
+        getRemainingWeeksUntilSessionEnd(),
       ); // TODO : Différencier entre fin des cours et période d'examens
     }
 
@@ -78,70 +87,67 @@ class DynamicMessagesService {
   }
 
   bool sessionHasStarted() {
-    final now = DateTime.now();
-    final firstActiveSession = _courseRepository.activeSessions.first;
     return firstActiveSession.startDate.isBefore(now);
   }
 
-  String upcomingSessionstartDate() {
-    final firstActiveSession = _courseRepository.activeSessions.first;
-    return firstActiveSession.startDate.toString();
-  }
-
   bool oneWeekRemainingUntilSessionEnd() {
-    final now = DateTime.now();
-    final firstActiveSession = _courseRepository.activeSessions.first;
     final endDate = firstActiveSession.endDate;
 
-    final difference = endDate.difference(now).inDays;
-    return difference <= 7 && difference >= 0;
+    final daysFromNow = endDate.difference(now).inDays;
+    return daysFromNow <= daysInAWeek && daysFromNow >= 0;
   }
 
-  int sessionEndDaysRemaining() {
-    final now = DateTime.now();
-    final firstActiveSession = _courseRepository.activeSessions.first;
+  int daysRemainingBeforeSessionEnds() {
     final endDate = firstActiveSession.endDate;
-
     return endDate.difference(now).inDays;
   }
 
   bool isEndOfWeek() {
-    final now = DateTime.now();
     List<CourseActivity>? courses = _courseRepository.coursesActivities;
 
-    DateTime startOfCurrentWeek = _getStartOfWeek(now);
-    Set<int> actualDays = _getActualClassDaysForWeek(startOfCurrentWeek);
+    DateTime mondayDateOfCurrentWeek = _getStartOfWeek(now);
+    Set<int> curWeekCourseDays = _getClassDaysForWeek(mondayDateOfCurrentWeek);
 
     if (courses == null || courses.isEmpty) {
       return false;
     }
 
-    // check if current day if either fri, sat, sun
-    if (now.weekday != DateTime.friday && now.weekday != DateTime.saturday && now.weekday != DateTime.sunday) {
+    int curWeekday = now.weekday;
+
+    // Check that current day is not friday, saturday or sunday
+    if (curWeekday != DateTime.friday && curWeekday != DateTime.saturday && curWeekday != DateTime.sunday) {
       return false;
     }
 
-    bool hasFridayCourses = actualDays.contains(5);
-    bool hasSaturdayCourses = actualDays.contains(6);
-    bool hasSundayCourses = actualDays.contains(7);
+    int fridayWeekdayIndex = 5;
+    int saturdayWeekdayIndex = 6;
+    int sundayWeekdayIndex = 7;
 
-    // check if no courses on fri, sat, sun
-    if (!actualDays.contains(5) && !actualDays.contains(6) && !actualDays.contains(7)) {
+    bool hasFridayCourses = curWeekCourseDays.contains(fridayWeekdayIndex);
+    bool hasSaturdayCourses = curWeekCourseDays.contains(saturdayWeekdayIndex);
+    bool hasSundayCourses = curWeekCourseDays.contains(sundayWeekdayIndex);
+
+    // Check that there are no courses on friday, saturday and sunday
+    if (!curWeekCourseDays.contains(fridayWeekdayIndex) &&
+        !curWeekCourseDays.contains(saturdayWeekdayIndex) &&
+        !curWeekCourseDays.contains(sundayWeekdayIndex)) {
       return true;
     }
+
+    DateTime? lastCourseOfWeekEndTime = getLatestCourseEndTime(now);
 
     // check if there are courses on sunday
     if (hasSundayCourses) {
       // user doesn't have a weekend this week
       return false;
     } else if (hasSaturdayCourses) {
-      DateTime? lastCourseEndTime = getLastCourseEndDateTimeOnSameDay(now);
-      if (lastCourseEndTime != null && now.hour > lastCourseEndTime.hour && now.weekday == DateTime.saturday) {
+      if (lastCourseOfWeekEndTime != null &&
+          now.hour > lastCourseOfWeekEndTime.hour &&
+          now.weekday == DateTime.saturday) {
         return true;
       }
     } else if (hasFridayCourses) {
-      DateTime? lastCourseEndTime = getLastCourseEndDateTimeOnSameDay(now);
-      if (lastCourseEndTime != null && now.isAfter(lastCourseEndTime) && now.weekday == DateTime.friday) {
+      if (lastCourseOfWeekEndTime != null && now.isAfter(lastCourseOfWeekEndTime) && now.weekday == DateTime.friday) {
         return true;
       }
     }
@@ -171,54 +177,45 @@ class DynamicMessagesService {
   }
 
   bool isFirstWeek() {
-    final now = DateTime.now();
     final startDate = _courseRepository.activeSessions.first.startDate;
-
     final isFirstWeek = now.difference(startDate).inDays < 7;
-
     return isFirstWeek;
   }
 
-  int getCompletedWeeks() {
-    final now = DateTime.now();
-    final startDate = _courseRepository.activeSessions.first.startDate;
+  int getCompletedWeeksInCurSession() {
+    DateTime sessionStartDate = _courseRepository.activeSessions.first.startDate;
+    int daysPassed = now.difference(sessionStartDate).inDays;
+    int fullWeeksPassed = daysPassed ~/ 7;
 
-    final daysPassed = now.difference(startDate).inDays;
-    final fullWeeks = daysPassed ~/ 7;
-
-    return fullWeeks > 0 ? fullWeeks : 0;
+    return fullWeeksPassed > 0 ? fullWeeksPassed : 0;
   }
 
-  bool isOneMonthOrLessRemaining() {
-    final now = DateTime.now();
-    final firstActiveSession = _courseRepository.activeSessions.first;
-    final endDate = firstActiveSession.endDate;
-
-    final daysRemaining = endDate.difference(now).inDays;
-
-    return daysRemaining <= 30 && daysRemaining >= 0;
+  bool isOneMonthOrLessRemainingToSession() {
+    DateTime sessionEndDate = firstActiveSession.endDate;
+    int sessionDaysRemaining = sessionEndDate.difference(now).inDays;
+    return sessionDaysRemaining <= 30 && sessionDaysRemaining >= 0;
   }
 
-  int getRemainingWeeks() {
-    final now = DateTime.now();
-    final endDate = _courseRepository.activeSessions.first.endDate;
+  int getRemainingWeeksUntilSessionEnd() {
+    DateTime endDate = _courseRepository.activeSessions.first.endDate;
 
+    // If session has ended
     if (endDate.isBefore(now)) return 0;
 
-    final daysRemaining = endDate.difference(now).inDays;
-    final remainingWeeks = (daysRemaining / 7).ceil();
+    int daysRemaining = endDate.difference(now).inDays;
+    int remainingWeeks = (daysRemaining / 7).ceil();
 
     return remainingWeeks;
   }
 
   // TODO : Handle when two consecutive weeks have long weekends
+  // TODO : Simplify
   /// Check if a specific week has a weekend that is longer than usual
-  LongWeekendStatus longWeekendIncoming() {
+  LongWeekendStatus getIncomingLongWeekendStatus() {
     List<ScheduleActivity>? schedule = _courseRepository.scheduleActivities;
     if (schedule == null || schedule.isEmpty) return LongWeekendStatus.none;
 
     Set<int> regularDays = _getRegularCourseDays(schedule);
-    DateTime now = DateTime.now();
     DateTime startOfCurrentWeek = _getStartOfWeek(now);
 
     int mondayIndex = 1;
@@ -226,7 +223,7 @@ class DynamicMessagesService {
 
     // Current week
     DateTime weekStart = startOfCurrentWeek;
-    Set<int> actualDays = _getActualClassDaysForWeek(weekStart);
+    Set<int> actualDays = _getClassDaysForWeek(weekStart);
     Set<int> missingDays = regularDays.difference(actualDays);
 
     // If current week doesn't have at least one course
@@ -264,7 +261,7 @@ class DynamicMessagesService {
 
     // Next week
     DateTime nextWeekStart = startOfCurrentWeek.add(Duration(days: 7));
-    Set<int> actualDaysNextWeek = _getActualClassDaysForWeek(nextWeekStart);
+    Set<int> actualDaysNextWeek = _getClassDaysForWeek(nextWeekStart);
     Set<int> missingDaysNextWeek = regularDays.difference(actualDaysNextWeek);
 
     // If next week doesn't have at least one course
@@ -305,9 +302,12 @@ class DynamicMessagesService {
     return LongWeekendStatus.none;
   }
 
-  Set<int> _getActualClassDaysForWeek(DateTime weekStart) {
-    final weekEnd = weekStart.add(Duration(days: 6));
-    final schedule = _courseRepository.coursesActivities ?? [];
+  // TODO : Don't take weekStart as parameter. Take any day of the week
+  //  and calculate week boundaries inside function
+  /// Returns the weekdays where there are classes in the specified week
+  Set<int> _getClassDaysForWeek(DateTime weekStart) {
+    DateTime weekEnd = weekStart.add(Duration(days: 6));
+    List<CourseActivity>? schedule = _courseRepository.coursesActivities ?? [];
 
     return schedule
         .where((activity) {
@@ -323,11 +323,11 @@ class DynamicMessagesService {
         .toSet();
   }
 
-  DateTime? getLastCourseEndDateTimeOnSameDay(DateTime targetDate) {
+  DateTime? getLatestCourseEndTime(DateTime targetDate) {
     final schedule = _courseRepository.coursesActivities ?? [];
 
     final matchingDateTimes = schedule
-        .where((activity) => _isSameCalendarDay(activity.endDateTime, targetDate))
+        .where((activity) => _isSameDay(activity.endDateTime, targetDate))
         .map((activity) => activity.endDateTime)
         .toList();
 
@@ -337,7 +337,7 @@ class DynamicMessagesService {
     return matchingDateTimes.last;
   }
 
-  bool _isSameCalendarDay(DateTime date1, DateTime date2) {
+  bool _isSameDay(DateTime date1, DateTime date2) {
     return date1.year == date2.year && date1.month == date2.month && date1.day == date2.day;
   }
 
@@ -345,21 +345,21 @@ class DynamicMessagesService {
   Set<int> _getRegularCourseDays(List<ScheduleActivity> schedule) {
     List<CourseActivity>? allCourses = _courseRepository.coursesActivities;
 
+    if (allCourses == null) return {};
+
     // Counts how many times each course activity happens in a session
     Map<String, int> courseCounts = {};
 
-    if (allCourses != null) {
-      for (var course in allCourses) {
-        courseCounts[course.courseName] = (courseCounts[course.courseName] ?? 0) + 1;
-      }
+    for (CourseActivity course in allCourses) {
+      courseCounts[course.courseName] = (courseCounts[course.courseName] ?? 0) + 1;
     }
 
-    int minOccurence = 12;
+    int minOccurrence = 12;
 
-    // Filter schedule to only include activities with at least [minOccurence] occurrences
+    // Filter schedule to only include activities with at least [minOccurrence] occurrences
     Iterable<ScheduleActivity> filteredActivities = schedule.where((activity) {
       int? count = courseCounts[activity.courseTitle];
-      return (count != null && count >= minOccurence);
+      return (count != null && count >= minOccurrence);
     });
 
     return filteredActivities.map((activity) => activity.dayOfTheWeek).toSet();
@@ -378,16 +378,11 @@ class DynamicMessagesService {
       return null;
     }
 
-    final now = DateTime.now();
     final oneWeekFromNow = now.add(Duration(days: 7));
 
     final upcomingHolidays = replacedDays
         .where((event) => event.originalDate.isAfter(now) && event.originalDate.isBefore(oneWeekFromNow))
         .toList();
-
-    if (upcomingHolidays.isEmpty) {
-      return null;
-    }
 
     upcomingHolidays.sort((a, b) => a.originalDate.compareTo(b.originalDate));
 
@@ -402,7 +397,7 @@ class DynamicMessagesService {
     DateTime now = DateTime.now();
     DateTime startOfCurrentWeek = _getStartOfWeek(now);
 
-    Set<int> actualDays = _getActualClassDaysForWeek(startOfCurrentWeek);
+    Set<int> actualDays = _getClassDaysForWeek(startOfCurrentWeek);
     List<int> sortedDays = actualDays.toList()..sort();
 
     // TODO : Maybe change to two days
@@ -426,7 +421,7 @@ class DynamicMessagesService {
     DateTime now = DateTime.now();
     DateTime startOfCurrentWeek = _getStartOfWeek(now);
 
-    Set<int> actualDays = _getActualClassDaysForWeek(startOfCurrentWeek);
+    Set<int> actualDays = _getClassDaysForWeek(startOfCurrentWeek);
     List<int> sortedDays = actualDays.toList()..sort();
 
     if (sortedDays.isEmpty) {
