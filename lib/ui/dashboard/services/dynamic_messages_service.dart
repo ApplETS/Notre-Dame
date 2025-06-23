@@ -77,10 +77,10 @@ class DynamicMessagesService {
 
   Future<void> fetchData() async {
     await Future.wait([
-      /*_courseRepository.getSessions(),
+      _courseRepository.getSessions(),
       _courseRepository.getReplacedDays(),
       _courseRepository.getScheduleActivities(),
-      _courseRepository.getCoursesActivities(),*/
+      _courseRepository.getCoursesActivities(),
     ]);
   }
 
@@ -220,6 +220,13 @@ class DynamicMessagesService {
     return courseDays.where((courseWeekday) => courseWeekday >= mondayWeekday).reduce((a, b) => a < b ? a : b);
   }
 
+  int getFirstCourseDayOfCurWeek() {
+    DateTime startOfCurrentWeek = _getStartOfWeek(now);
+    Set<int> courseDays = _getClassDaysForWeek(startOfCurrentWeek);
+    int fridayWeekday = 5;
+    return courseDays.where((courseWeekday) => courseWeekday <= fridayWeekday).reduce((a, b) => a < b ? a : b);
+  }
+
   bool _hasCoursesInWeek(DateTime curTime) {
     DateTime startOfCurrentWeek = _getStartOfWeek(curTime);
     Set<int> classDays = _getClassDaysForWeek(startOfCurrentWeek);
@@ -257,20 +264,20 @@ class DynamicMessagesService {
     }
 
     // If user is already in long weekend
-    if (now.weekday > classDays.max && missingDays.contains(lastWeekdayCourseDay)) {
+    if (now.weekday > classDays.max && missingDays.any((weekday) => weekday > lastWeekdayCourseDay && weekday <= fridayIndex)) {
       return LongWeekendStatus.inside;
     }
 
     // If last course day of the current week (starting from friday) is missed
     // then the weekend will be longer than usual
-    if (missingDays.contains(lastWeekdayCourseDay)) {
+    if (missingDays.any((weekday) => weekday > lastWeekdayCourseDay && weekday <= fridayIndex)) {
       return LongWeekendStatus.incoming;
     }
 
     // Next week
     DateTime nextWeekStart = startOfCurrentWeek.add(Duration(days: 7));
     Set<int> classDaysNextWeek = _getClassDaysForWeek(nextWeekStart);
-    Set<int> missingDaysNextWeek = regularDays.difference(classDaysNextWeek);
+    Set<int> missingDaysNextWeek = regularDays.difference(classDaysNextWeek); // check if days are connected
 
     // If next week doesn't have at least one course
     // then don't consider it a long weekend
@@ -285,17 +292,19 @@ class DynamicMessagesService {
     if (classDaysNextWeek.any((day) => day >= mondayIndex && day < firstWeekdayCourseDay)) {
       return LongWeekendStatus.none;
     }
-
+    
     // If user is already in long weekend
-    if (now.weekday > classDaysNextWeek.min &&
-        missingDaysNextWeek.contains(firstWeekdayCourseDay) &&
-        now.weekday > classDays.max) {
+    if (now.weekday < getFirstCourseDayOfCurWeek() && missingDays.contains(now.weekday)) {
+      return LongWeekendStatus.inside;
+    }
+
+    if (now.weekday > classDays.max && missingDaysNextWeek.any((weekday) => weekday >= mondayIndex && weekday < firstWeekdayCourseDay)) {
       return LongWeekendStatus.inside;
     }
 
     // If first course day of the next week (starting from monday) is missed
     // then the weekend will be longer than usual
-    if (missingDaysNextWeek.contains(firstWeekdayCourseDay)) {
+    if (missingDaysNextWeek.any((weekday) => weekday >= mondayIndex && weekday < firstWeekdayCourseDay)) {
       return LongWeekendStatus.incoming;
     }
 
@@ -385,6 +394,8 @@ class DynamicMessagesService {
         .toList();
 
     upcomingHolidays.sort((a, b) => a.originalDate.compareTo(b.originalDate));
+    
+    if (upcomingHolidays.isEmpty) return null;
 
     return upcomingHolidays.first.originalDate.toString();
   }
