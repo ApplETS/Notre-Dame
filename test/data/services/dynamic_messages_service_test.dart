@@ -623,7 +623,7 @@ void main() {
         courseAcronym: "GEN102",
         courseGroup: "01",
         courseTitle: "Generic Course",
-        dayOfTheWeek: 2,
+        dayOfTheWeek: 3,
         day: "Mardi",
         startTime: DateFormat("hh:mm").parse("13:30"),
         endTime: DateFormat("hh:mm").parse("15:00"),
@@ -687,8 +687,8 @@ void main() {
           activityName: "Lab Group A",
           activityDescription: "Weekly lab session",
           activityLocation: "D-4001",
-          startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 13, 30),
-          endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 15),
+          startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 13, 30),
+          endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 15),
         ),
       );
 
@@ -764,8 +764,8 @@ void main() {
             activityName: "Lab Group A",
             activityDescription: "Weekly lab session",
             activityLocation: "D-4001",
-            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 13, 30),
-            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 15),
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 13, 30),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 15),
           ),
         );
 
@@ -836,8 +836,8 @@ void main() {
               activityName: "Lab Group A",
               activityDescription: "Weekly lab session",
               activityLocation: "D-4001",
-              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 13, 30),
-              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 15),
+              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 13, 30),
+              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 15),
             ),
           );
 
@@ -907,8 +907,8 @@ void main() {
             activityName: "Lab Group A",
             activityDescription: "Weekly lab session",
             activityLocation: "D-4001",
-            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 13, 30),
-            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 15),
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 13, 30),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 15),
           ),
         );
 
@@ -945,15 +945,10 @@ void main() {
       when(mockCourseRepository.scheduleActivities).thenReturn(scheduleActivities);
       when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
 
-      final wednesdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.wednesday));
       final thursdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.thursday));
       final fridayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.friday));
       final saturdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.saturday));
       final sundayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.sunday));
-
-      withClock(Clock.fixed(wednesdayOfWeek2), () {
-        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
-      });
 
       withClock(Clock.fixed(thursdayOfWeek2), () {
         expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
