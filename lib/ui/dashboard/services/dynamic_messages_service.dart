@@ -139,20 +139,20 @@ class DynamicMessagesService {
       return true;
     }
 
-    DateTime? lastCourseOfWeekEndTime = getLatestCourseEndTime(now);
+    DateTime? latestCourseEndTimeToday = getLatestCourseEndTime(now);
 
     // check if there are courses on sunday
     if (hasSundayCourses) {
       // user doesn't have a weekend this week
       return false;
     } else if (hasSaturdayCourses) {
-      if (lastCourseOfWeekEndTime != null &&
-          now.hour > lastCourseOfWeekEndTime.hour &&
+      if (latestCourseEndTimeToday != null &&
+          now.hour > latestCourseEndTimeToday.hour &&
           now.weekday == DateTime.saturday) {
         return true;
       }
     } else if (hasFridayCourses) {
-      if (lastCourseOfWeekEndTime != null && now.isAfter(lastCourseOfWeekEndTime) && now.weekday == DateTime.friday) {
+      if (latestCourseEndTimeToday != null && now.isAfter(latestCourseEndTimeToday) && now.weekday == DateTime.friday) {
         return true;
       }
     }

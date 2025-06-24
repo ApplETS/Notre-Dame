@@ -531,4 +531,71 @@ void main() {
       });
     });
   });
+
+  group('getLatestCourseEndTime - ', () {
+    final courseActivities = [
+      CourseActivity(
+        courseGroup: "GEN101",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 13)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 17)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN102",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.thursday, hours: 08, minutes: 30)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.thursday, hours: 12, minutes: 30)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN103",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.thursday, hours: 19, minutes: 00)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.thursday, hours: 19, minutes: 30)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN104",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.thursday, hours: 12, minutes: 30)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.thursday, hours: 16, minutes: 00)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN105",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.friday, hours: 08)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.friday, hours: 12)),
+      ),
+    ];
+
+    test('return end time of the latest course of the day', () {
+      when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+      withClock(Clock.fixed(fakeNow), () {
+        expect(
+          service.getLatestCourseEndTime(fakeNow.add(Duration(days: DateTime.thursday))),
+          fakeNow.add(Duration(days: DateTime.thursday, hours: 19, minutes: 30)),
+        );
+      });
+    });
+
+    test('return null if no courses that day', () {
+      when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+      withClock(Clock.fixed(fakeNow), () {
+        expect(service.getLatestCourseEndTime(fakeNow.add(Duration(days: DateTime.saturday))), null);
+      });
+    });
+  });
 }
