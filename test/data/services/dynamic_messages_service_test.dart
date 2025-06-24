@@ -376,4 +376,159 @@ void main() {
       });
     });
   });
+
+  group('shouldDisplayLastCourseDayOfCurWeek - ', () {
+    final courseActivities = [
+      CourseActivity(
+        courseGroup: "GEN101",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 13)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 17)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN102",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 08)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 12)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN103",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 08)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 12)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN104",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.thursday, hours: 08)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.thursday, hours: 12)),
+      ),
+      CourseActivity(
+        courseGroup: "GEN105",
+        courseName: "Generic course",
+        activityName: "TD",
+        activityDescription: "Activity description",
+        activityLocation: "location",
+        startDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 08)),
+        endDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 12)),
+      ),
+    ];
+
+    test(
+      'return true if current day is the last day of the week with courses and there are at least 3 course days',
+      () {
+        when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+        withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.thursday))), () {
+          expect(service.shouldDisplayLastCourseDayOfCurWeek(), isTrue);
+        });
+      },
+    );
+
+    test(
+      'return false if current day is before the last day of the week with courses  and there are at least 3 course days',
+      () {
+        when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+        withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.wednesday))), () {
+          expect(service.shouldDisplayLastCourseDayOfCurWeek(), isFalse);
+        });
+      },
+    );
+
+    test(
+      'return false if current day is before the last day of the week with courses and there are at least 3 course days',
+      () {
+        when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+        withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.wednesday))), () {
+          expect(service.shouldDisplayLastCourseDayOfCurWeek(), isFalse);
+        });
+      },
+    );
+
+    test(
+      'return false if current day is the last day of the week with courses and there are less than 3 course days',
+      () {
+        final lessThanThreeCourseActivities = [
+          CourseActivity(
+            courseGroup: "GEN101",
+            courseName: "Generic course",
+            activityName: "TD",
+            activityDescription: "Activity description",
+            activityLocation: "location",
+            startDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 13)),
+            endDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 17)),
+          ),
+          CourseActivity(
+            courseGroup: "GEN102",
+            courseName: "Generic course",
+            activityName: "TD",
+            activityDescription: "Activity description",
+            activityLocation: "location",
+            startDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 08)),
+            endDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 12)),
+          ),
+        ];
+
+        when(mockCourseRepository.coursesActivities).thenReturn(lessThanThreeCourseActivities);
+        withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.wednesday))), () {
+          expect(service.shouldDisplayLastCourseDayOfCurWeek(), isFalse);
+        });
+      },
+    );
+
+    test('return true if current day is the last day of the week with courses and there are exactly 3 course days', () {
+      final lessThanThreeCourseActivities = [
+        CourseActivity(
+          courseGroup: "GEN101",
+          courseName: "Generic course",
+          activityName: "TD",
+          activityDescription: "Activity description",
+          activityLocation: "location",
+          startDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 13)),
+          endDateTime: fakeNow.add(Duration(days: DateTime.wednesday, hours: 17)),
+        ),
+        CourseActivity(
+          courseGroup: "GEN102",
+          courseName: "Generic course",
+          activityName: "TD",
+          activityDescription: "Activity description",
+          activityLocation: "location",
+          startDateTime: fakeNow.add(Duration(days: DateTime.friday, hours: 08)),
+          endDateTime: fakeNow.add(Duration(days: DateTime.friday, hours: 12)),
+        ),
+        CourseActivity(
+          courseGroup: "GEN103",
+          courseName: "Generic course",
+          activityName: "TD",
+          activityDescription: "Activity description",
+          activityLocation: "location",
+          startDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 08)),
+          endDateTime: fakeNow.add(Duration(days: DateTime.monday, hours: 12)),
+        ),
+      ];
+
+      when(mockCourseRepository.coursesActivities).thenReturn(lessThanThreeCourseActivities);
+      withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.friday))), () {
+        expect(service.shouldDisplayLastCourseDayOfCurWeek(), isTrue);
+      });
+    });
+
+    test('return false if there are no course activities', () {
+      when(mockCourseRepository.coursesActivities).thenReturn([]);
+      withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.wednesday))), () {
+        expect(service.shouldDisplayLastCourseDayOfCurWeek(), isFalse);
+      });
+    });
+  });
 }

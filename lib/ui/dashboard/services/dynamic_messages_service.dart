@@ -414,7 +414,6 @@ class DynamicMessagesService {
   }
 
   bool shouldDisplayLastCourseDayOfCurWeek() {
-    DateTime now = DateTime.now();
     DateTime startOfCurrentWeek = _getStartOfWeek(now);
 
     Set<int> actualDays = _getClassDaysForWeek(startOfCurrentWeek);
@@ -432,13 +431,11 @@ class DynamicMessagesService {
   }
 
   String getCurrentWeekDayName() {
-    DateTime now = DateTime.now();
     List<String> weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     return weekdays[now.weekday - 1];
   }
 
   DateTime? getLastCourseOfWeekDate() {
-    DateTime now = DateTime.now();
     DateTime startOfCurrentWeek = _getStartOfWeek(now);
 
     Set<int> actualDays = _getClassDaysForWeek(startOfCurrentWeek);
