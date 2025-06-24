@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -32,7 +33,7 @@ void main() {
     locator.reset();
   });
 
-  group('sessionHasStarted -', () {
+  group('sessionHasStarted - ', () {
     test('returns true when current date is after session start date', () {
       final session = Session(
         shortName: 'NOW',
@@ -82,7 +83,7 @@ void main() {
     });
   });
 
-  group('oneWeekRemainingUntilSessionEnd -', () {
+  group('oneWeekRemainingUntilSessionEnd - ', () {
     test('returns true if less than 7 days remain to session', () {
       final session = Session(
         shortName: 'SESSION',
@@ -156,7 +157,7 @@ void main() {
     });
   });
 
-  group('daysRemainingBeforeSessionEnds -', () {
+  group('daysRemainingBeforeSessionEnds - ', () {
     test('returns number of days before session ends', () {
       final session = Session(
         shortName: 'SESSION',
@@ -206,7 +207,7 @@ void main() {
     });
   });
 
-  group('isEndOfWeek -', () {
+  group('isEndOfWeek - ', () {
     final noWeekendCourses = [
       CourseActivity(
         courseGroup: "GEN101",
@@ -260,5 +261,119 @@ void main() {
         });
       });
     }
+  });
+
+  group('hasUpcomingHoliday - ', () {
+    test("returns false when there are no replacedDays", () {
+      when(mockCourseRepository.replacedDays).thenReturn([]);
+
+      withClock(Clock.fixed(fakeNow), () {
+        expect(service.hasUpcomingHoliday(), isFalse);
+      });
+    });
+
+    test("returns true when there is a holiday in exactly 7 days", () {
+      final replacedDays = [
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 7)),
+          replacementDate: fakeNow.add(Duration(days: 7)),
+          description: "test",
+        ),
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 10)),
+          replacementDate: fakeNow.add(Duration(days: 10)),
+          description: "test",
+        ),
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 30)),
+          replacementDate: fakeNow.add(Duration(days: 30)),
+          description: "test",
+        ),
+      ];
+
+      when(mockCourseRepository.replacedDays).thenReturn(replacedDays);
+
+      withClock(Clock.fixed(fakeNow), () {
+        expect(service.hasUpcomingHoliday(), isTrue);
+      });
+    });
+
+    test("returns true when there is a holiday in less than 7 days", () {
+      final replacedDays = [
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 10)),
+          replacementDate: fakeNow.add(Duration(days: 10)),
+          description: "test",
+        ),
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 4)),
+          replacementDate: fakeNow.add(Duration(days: 4)),
+          description: "test",
+        ),
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 30)),
+          replacementDate: fakeNow.add(Duration(days: 30)),
+          description: "test",
+        ),
+      ];
+
+      when(mockCourseRepository.replacedDays).thenReturn(replacedDays);
+
+      withClock(Clock.fixed(fakeNow), () {
+        expect(service.hasUpcomingHoliday(), isTrue);
+      });
+    });
+
+    test("returns true when there are multiple holidays in less than 7 days", () {
+      final replacedDays = [
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 10)),
+          replacementDate: fakeNow.add(Duration(days: 10)),
+          description: "test",
+        ),
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 4)),
+          replacementDate: fakeNow.add(Duration(days: 4)),
+          description: "test",
+        ),
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 3)),
+          replacementDate: fakeNow.add(Duration(days: 3)),
+          description: "test",
+        ),
+      ];
+
+      when(mockCourseRepository.replacedDays).thenReturn(replacedDays);
+
+      withClock(Clock.fixed(fakeNow), () {
+        expect(service.hasUpcomingHoliday(), isTrue);
+      });
+    });
+
+    test("returns false when there is no holiday in the next 7 days", () {
+      final replacedDays = [
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 15)),
+          replacementDate: fakeNow.add(Duration(days: 15)),
+          description: "test",
+        ),
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 8)),
+          replacementDate: fakeNow.add(Duration(days: 8)),
+          description: "test",
+        ),
+        ReplacedDay(
+          originalDate: fakeNow.add(Duration(days: 30)),
+          replacementDate: fakeNow.add(Duration(days: 30)),
+          description: "test",
+        ),
+      ];
+
+      when(mockCourseRepository.replacedDays).thenReturn(replacedDays);
+
+      withClock(Clock.fixed(fakeNow), () {
+        expect(service.hasUpcomingHoliday(), isFalse);
+      });
+    });
   });
 }

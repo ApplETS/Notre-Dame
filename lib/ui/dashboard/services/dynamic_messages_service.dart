@@ -399,7 +399,7 @@ class DynamicMessagesService {
     final oneWeekFromNow = now.add(Duration(days: 7));
 
     final upcomingHolidays = replacedDays
-        .where((event) => event.originalDate.isAfter(now) && event.originalDate.isBefore(oneWeekFromNow))
+        .where((event) => event.originalDate.isAfter(now) && !event.originalDate.isAfter(oneWeekFromNow))
         .toList();
 
     upcomingHolidays.sort((a, b) => a.originalDate.compareTo(b.originalDate));
