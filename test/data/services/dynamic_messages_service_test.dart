@@ -719,6 +719,14 @@ void main() {
       );
     }
 
+    final mondayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.monday));
+    final tuesdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.tuesday));
+    final wednesdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.wednesday));
+    final thursdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.thursday));
+    final fridayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.friday));
+    final saturdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.saturday));
+    final sundayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.sunday));
+
     test('return none if schedule is empty', () {
       when(mockCourseRepository.scheduleActivities).thenReturn([]);
       when(mockCourseRepository.coursesActivities).thenReturn([]);
@@ -807,78 +815,99 @@ void main() {
       });
     });
 
-    test(
-      'return none if the last day of the week that isn\'t current week is missed and we are not currently in weekend',
-      () {
-        List<CourseActivity> courseActivities = [];
+    test('return none another week has long weekend, but current week does not have long weekend', () {
+      List<CourseActivity> courseActivities = [];
 
-        for (int week = 0; week < 15; week++) {
-          final weekStart = firstDayOfWeek.add(Duration(days: week * 7));
+      for (int week = 0; week < 15; week++) {
+        final weekStart = firstDayOfWeek.add(Duration(days: week * 7));
 
-          // GEN101 - Monday 9:00-12:00
+        // GEN101 - Monday 9:00-12:00
+        courseActivities.add(
+          CourseActivity(
+            courseGroup: "01",
+            courseName: "Generic Course",
+            activityName: "Lecture",
+            activityDescription: "Weekly lecture",
+            activityLocation: "Online",
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 9),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 12),
+          ),
+        );
+
+        // GEN102 - Tuesday 13:30-15:00
+        courseActivities.add(
+          CourseActivity(
+            courseGroup: "01",
+            courseName: "Generic Course",
+            activityName: "Lab Group A",
+            activityDescription: "Weekly lab session",
+            activityLocation: "D-4001",
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 13, 30),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 15),
+          ),
+        );
+
+        // Simulate missing last day of classes for second week
+        if (week != 1) {
+          // GEN103 - Thursday 9:00-13:30
           courseActivities.add(
             CourseActivity(
-              courseGroup: "01",
+              courseGroup: "02",
               courseName: "Generic Course",
               activityName: "Lecture",
               activityDescription: "Weekly lecture",
-              activityLocation: "Online",
-              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 9),
-              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 12),
+              activityLocation: "D-2003",
+              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 9),
+              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 13, 30),
             ),
           );
 
-          // GEN102 - Tuesday 13:30-15:00
+          // GEN104 - Thursday 10:15-12:45
           courseActivities.add(
             CourseActivity(
-              courseGroup: "01",
+              courseGroup: "03",
               courseName: "Generic Course",
-              activityName: "Lab Group A",
-              activityDescription: "Weekly lab session",
-              activityLocation: "D-4001",
-              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 13, 30),
-              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 15),
+              activityName: "Tutorial",
+              activityDescription: "Weekly tutorial session",
+              activityLocation: "D-3005",
+              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 10, 15),
+              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 12, 45),
             ),
           );
-
-          // Simulate missing last day of classes for second week
-          if (week != 1) {
-            // GEN103 - Thursday 9:00-13:30
-            courseActivities.add(
-              CourseActivity(
-                courseGroup: "02",
-                courseName: "Generic Course",
-                activityName: "Lecture",
-                activityDescription: "Weekly lecture",
-                activityLocation: "D-2003",
-                startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 9),
-                endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 13, 30),
-              ),
-            );
-
-            // GEN104 - Thursday 10:15-12:45
-            courseActivities.add(
-              CourseActivity(
-                courseGroup: "03",
-                courseName: "Generic Course",
-                activityName: "Tutorial",
-                activityDescription: "Weekly tutorial session",
-                activityLocation: "D-3005",
-                startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 10, 15),
-                endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 12, 45),
-              ),
-            );
-          }
         }
+      }
 
-        when(mockCourseRepository.scheduleActivities).thenReturn(scheduleActivities);
-        when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+      when(mockCourseRepository.scheduleActivities).thenReturn(scheduleActivities);
+      when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
 
-        withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.monday + (7 * 2)))), () {
-          expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
-        });
-      },
-    );
+      withClock(Clock.fixed(mondayOfWeek2.add(Duration(days: 7))), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+      });
+
+      withClock(Clock.fixed(tuesdayOfWeek2.add(Duration(days: 7))), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+      });
+
+      withClock(Clock.fixed(wednesdayOfWeek2.add(Duration(days: 7))), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+      });
+
+      withClock(Clock.fixed(thursdayOfWeek2.add(Duration(days: 7))), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+      });
+
+      withClock(Clock.fixed(fridayOfWeek2.add(Duration(days: 7))), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+      });
+
+      withClock(Clock.fixed(saturdayOfWeek2.add(Duration(days: 7))), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+      });
+
+      withClock(Clock.fixed(sundayOfWeek2.add(Duration(days: 7))), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+      });
+    });
 
     test('return inside if the last day of the week is missed and we are currently in long weekend', () {
       List<CourseActivity> courseActivities = [];
@@ -945,11 +974,6 @@ void main() {
       when(mockCourseRepository.scheduleActivities).thenReturn(scheduleActivities);
       when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
 
-      final thursdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.thursday));
-      final fridayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.friday));
-      final saturdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.saturday));
-      final sundayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.sunday));
-
       withClock(Clock.fixed(thursdayOfWeek2), () {
         expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
       });
@@ -963,6 +987,170 @@ void main() {
       });
 
       withClock(Clock.fixed(sundayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
+      });
+    });
+
+    test('return incoming if the first course day of next week is missed and we are not currently in long weekend', () {
+      List<CourseActivity> courseActivities = [];
+
+      for (int week = 0; week < 15; week++) {
+        final weekStart = firstDayOfWeek.add(Duration(days: week * 7));
+
+        // Simulate first course day of the third week is missed
+        if (week != 2) {
+          // GEN101 - Monday 9:00-12:00
+          courseActivities.add(
+            CourseActivity(
+              courseGroup: "01",
+              courseName: "Generic Course",
+              activityName: "Lecture",
+              activityDescription: "Weekly lecture",
+              activityLocation: "Online",
+              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 9),
+              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 12),
+            ),
+          );
+        }
+
+        // GEN102 - Tuesday 13:30-15:00
+        courseActivities.add(
+          CourseActivity(
+            courseGroup: "01",
+            courseName: "Generic Course",
+            activityName: "Lab Group A",
+            activityDescription: "Weekly lab session",
+            activityLocation: "D-4001",
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 13, 30),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 15),
+          ),
+        );
+
+        // GEN103 - Thursday 9:00-13:30
+        courseActivities.add(
+          CourseActivity(
+            courseGroup: "02",
+            courseName: "Generic Course",
+            activityName: "Lecture",
+            activityDescription: "Weekly lecture",
+            activityLocation: "D-2003",
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 9),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 13, 30),
+          ),
+        );
+
+        // GEN104 - Thursday 10:15-12:45
+        courseActivities.add(
+          CourseActivity(
+            courseGroup: "03",
+            courseName: "Generic Course",
+            activityName: "Tutorial",
+            activityDescription: "Weekly tutorial session",
+            activityLocation: "D-3005",
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 10, 15),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 12, 45),
+          ),
+        );
+      }
+
+      when(mockCourseRepository.scheduleActivities).thenReturn(scheduleActivities);
+      when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+
+      withClock(Clock.fixed(mondayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.incoming);
+      });
+
+      withClock(Clock.fixed(tuesdayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.incoming);
+      });
+
+      withClock(Clock.fixed(wednesdayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.incoming);
+      });
+
+      withClock(Clock.fixed(thursdayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.incoming);
+      });
+    });
+
+    test('return inside if the first course day of next week is missed and we are currently in long weekend', () {
+      List<CourseActivity> courseActivities = [];
+
+      for (int week = 0; week < 15; week++) {
+        final weekStart = firstDayOfWeek.add(Duration(days: week * 7));
+
+        // Simulate first course day of the third week is missed
+        if (week != 2) {
+          // GEN101 - Monday 9:00-12:00
+          courseActivities.add(
+            CourseActivity(
+              courseGroup: "01",
+              courseName: "Generic Course",
+              activityName: "Lecture",
+              activityDescription: "Weekly lecture",
+              activityLocation: "Online",
+              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 9),
+              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 12),
+            ),
+          );
+        }
+
+        // GEN102 - Tuesday 13:30-15:00
+        courseActivities.add(
+          CourseActivity(
+            courseGroup: "01",
+            courseName: "Generic Course",
+            activityName: "Lab Group A",
+            activityDescription: "Weekly lab session",
+            activityLocation: "D-4001",
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 13, 30),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 2, 15),
+          ),
+        );
+
+        // GEN103 - Thursday 9:00-13:30
+        courseActivities.add(
+          CourseActivity(
+            courseGroup: "02",
+            courseName: "Generic Course",
+            activityName: "Lecture",
+            activityDescription: "Weekly lecture",
+            activityLocation: "D-2003",
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 9),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 13, 30),
+          ),
+        );
+
+        // GEN104 - Thursday 10:15-12:45
+        courseActivities.add(
+          CourseActivity(
+            courseGroup: "03",
+            courseName: "Generic Course",
+            activityName: "Tutorial",
+            activityDescription: "Weekly tutorial session",
+            activityLocation: "D-3005",
+            startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 10, 15),
+            endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 12, 45),
+          ),
+        );
+      }
+
+      when(mockCourseRepository.scheduleActivities).thenReturn(scheduleActivities);
+      when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+
+      withClock(Clock.fixed(fridayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
+      });
+
+      withClock(Clock.fixed(saturdayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
+      });
+
+      withClock(Clock.fixed(sundayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
+      });
+
+      withClock(Clock.fixed(mondayOfWeek2.add(Duration(days: 7))), () {
         expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
       });
     });
