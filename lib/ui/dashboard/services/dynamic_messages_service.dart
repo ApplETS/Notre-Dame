@@ -1,4 +1,6 @@
 // Package imports:
+import 'dart:developer';
+
 import 'package:collection/collection.dart';
 import 'package:clock/clock.dart';
 
@@ -252,9 +254,15 @@ class DynamicMessagesService {
     int mondayIndex = 1;
     int fridayIndex = 5;
 
+    print("REGULAR DAYS: $regularDays");
+
     // Current week
     Set<int> classDays = _getClassDaysForWeek(startOfCurrentWeek);
     Set<int> missingDays = regularDays.difference(classDays);
+
+    print("CLASS DAYS: $classDays");
+    print("MISSING DAYS: $missingDays");
+    
 
     // If current week doesn't have at least one course
     // then don't consider it a long weekend

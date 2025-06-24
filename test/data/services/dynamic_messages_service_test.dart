@@ -807,7 +807,80 @@ void main() {
       });
     });
 
-    test('return none if the last day of the a week that isn\'t current week is missed and we are not currently in weekend', () {
+    test(
+      'return none if the last day of the week that isn\'t current week is missed and we are not currently in weekend',
+      () {
+        List<CourseActivity> courseActivities = [];
+
+        for (int week = 0; week < 15; week++) {
+          final weekStart = firstDayOfWeek.add(Duration(days: week * 7));
+
+          // GEN101 - Monday 9:00-12:00
+          courseActivities.add(
+            CourseActivity(
+              courseGroup: "01",
+              courseName: "Generic Course",
+              activityName: "Lecture",
+              activityDescription: "Weekly lecture",
+              activityLocation: "Online",
+              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 9),
+              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day, 12),
+            ),
+          );
+
+          // GEN102 - Tuesday 13:30-15:00
+          courseActivities.add(
+            CourseActivity(
+              courseGroup: "01",
+              courseName: "Generic Course",
+              activityName: "Lab Group A",
+              activityDescription: "Weekly lab session",
+              activityLocation: "D-4001",
+              startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 13, 30),
+              endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 1, 15),
+            ),
+          );
+
+          // Simulate missing last day of classes for second week
+          if (week != 1) {
+            // GEN103 - Thursday 9:00-13:30
+            courseActivities.add(
+              CourseActivity(
+                courseGroup: "02",
+                courseName: "Generic Course",
+                activityName: "Lecture",
+                activityDescription: "Weekly lecture",
+                activityLocation: "D-2003",
+                startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 9),
+                endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 13, 30),
+              ),
+            );
+
+            // GEN104 - Thursday 10:15-12:45
+            courseActivities.add(
+              CourseActivity(
+                courseGroup: "03",
+                courseName: "Generic Course",
+                activityName: "Tutorial",
+                activityDescription: "Weekly tutorial session",
+                activityLocation: "D-3005",
+                startDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 10, 15),
+                endDateTime: DateTime(weekStart.year, weekStart.month, weekStart.day + 3, 12, 45),
+              ),
+            );
+          }
+        }
+
+        when(mockCourseRepository.scheduleActivities).thenReturn(scheduleActivities);
+        when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
+
+        withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.monday + (7 * 2)))), () {
+          expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+        });
+      },
+    );
+
+    test('return inside if the last day of the week is missed and we are currently in long weekend', () {
       List<CourseActivity> courseActivities = [];
 
       for (int week = 0; week < 15; week++) {
@@ -872,8 +945,30 @@ void main() {
       when(mockCourseRepository.scheduleActivities).thenReturn(scheduleActivities);
       when(mockCourseRepository.coursesActivities).thenReturn(courseActivities);
 
-      withClock(Clock.fixed(fakeNow.add(Duration(days: DateTime.monday + (7 * 2)))), () {
-        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.none);
+      final wednesdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.wednesday));
+      final thursdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.thursday));
+      final fridayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.friday));
+      final saturdayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.saturday));
+      final sundayOfWeek2 = fakeNow.add(Duration(days: 7 + DateTime.sunday));
+
+      withClock(Clock.fixed(wednesdayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
+      });
+
+      withClock(Clock.fixed(thursdayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
+      });
+
+      withClock(Clock.fixed(fridayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
+      });
+
+      withClock(Clock.fixed(saturdayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
+      });
+
+      withClock(Clock.fixed(sundayOfWeek2), () {
+        expect(service.getIncomingLongWeekendStatus(), LongWeekendStatus.inside);
       });
     });
   });
