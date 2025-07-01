@@ -1,83 +1,127 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-// Package imports:
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/core/ui/dismissible_card.dart';
-import '../../core/themes/app_palette.dart';
 
 class ProgressBarCard extends StatelessWidget {
-  final VoidCallback onDismissed;
-  final VoidCallback changeProgressBarText;
   final String progressBarText;
   final double progress;
   final bool loading;
 
-  const ProgressBarCard({
-    super.key,
-    required this.onDismissed,
-    required this.progressBarText,
-    required this.changeProgressBarText,
-    required this.progress,
-    required this.loading,
-  });
+  const ProgressBarCard({super.key, required this.progressBarText, required this.progress, required this.loading});
 
   @override
-  Widget build(BuildContext context) => DismissibleCard(
-    key: UniqueKey(),
-    onDismissed: (DismissDirection direction) => onDismissed(),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-            child: Text(AppIntl.of(context)!.progress_bar_title, style: Theme.of(context).textTheme.titleLarge),
-          ),
+  Widget build(BuildContext context) => AspectRatio(
+    aspectRatio: 1,
+    child: Card(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (loading || progress >= 0.0)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _progress(),
+                  Text("jours restants", style: const TextStyle(fontSize: 18)),
+                ],
+              )
+            else
+              Container(
+                padding: const EdgeInsets.all(16),
+                child: Center(child: Text(AppIntl.of(context)!.session_without)),
+              ),
+          ],
         ),
-        if (loading || progress >= 0.0)
-          Skeletonizer(
-            enabled: loading,
-            ignoreContainers: true,
-            child: Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: GestureDetector(
-                      onTap: () => changeProgressBarText(),
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        minHeight: 30,
-                        valueColor: const AlwaysStoppedAnimation<Color>(AppPalette.gradeGoodMax),
-                        backgroundColor: AppPalette.grey.darkGrey,
+      ),
+    ),
+  );
+
+  Widget _progress() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0, right: 3),
+      child: Transform.rotate(
+        angle: -pi / 5,
+        child: CustomPaint(
+          painter: _CircularProgressPainter(progress * 100),
+          child: SizedBox(
+            width: 100,
+            height: 100,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: SizedBox(
+                width: 40,
+                height: 32,
+                child: Transform.rotate(
+                  angle: pi / 5,
+                  child: Transform.translate(
+                    offset: Offset(5, 60),
+                    child: FittedBox(
+                      alignment: Alignment.centerRight,
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        progressBarText,
+                        style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
                       ),
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => changeProgressBarText(),
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Center(
-                      child: Text(progressBarText, style: const TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          )
-        else
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: Center(child: Text(AppIntl.of(context)!.session_without)),
           ),
-      ],
-    ),
-  );
+        ),
+      ),
+    );
+  }
+}
+
+class _CircularProgressPainter extends CustomPainter {
+  final double value;
+
+  _CircularProgressPainter(this.value);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double strokeWidth = 12;
+    final Offset center = Offset(size.width / 2, size.height / 2);
+    final double radius = (size.width / 2) - strokeWidth / 2;
+    final double startAngle = pi - pi / 4;
+    final double sweepAngle = pi + 2 * pi / 4;
+    final double progressSweep = sweepAngle * (value / 100);
+
+    // Paint background (gray)
+    final backgroundPaint = Paint()
+      ..color = Colors.grey
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.round;
+
+    // Paint foreground (green)
+    final foregroundPaint = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          Colors.lightGreen.withAlpha(0),
+          Colors.green,
+        ],
+      ).createShader(Rect.fromCircle(
+        center: Offset(radius - 2, radius),
+        radius: radius,
+      ))
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.round;
+
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle, sweepAngle, false, backgroundPaint);
+
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), startAngle, progressSweep, false, foregroundPaint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

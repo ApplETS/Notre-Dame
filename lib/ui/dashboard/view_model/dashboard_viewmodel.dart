@@ -87,8 +87,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Get cards to display
   List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
 
-  ProgressBarText _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
@@ -189,17 +187,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static Future<void> launchBroadcastUrl(String url) async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
     launchUrlService.launchInBrowser(url);
-  }
-
-  void changeProgressBarText() {
-    if (_currentProgressBarText.index <= 1) {
-      _currentProgressBarText = ProgressBarText.values[_currentProgressBarText.index + 1];
-    } else {
-      _currentProgressBarText = ProgressBarText.values[0];
-    }
-
-    notifyListeners();
-    _settingsManager.setString(PreferencesFlag.progressBarText, _currentProgressBarText.toString());
   }
 
   /// Returns a list containing the number of elapsed days in the active session
@@ -319,12 +306,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
     try {
-      final progressBarText =
-          await _settingsManager.getString(PreferencesFlag.progressBarText) ??
-          ProgressBarText.daysElapsedWithTotalDays.toString();
-
-      _currentProgressBarText = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
-
       setBusyForObject(progress, true);
       final sessions = await _courseRepository.getSessions();
       _sessionDays = getSessionDays();
@@ -481,17 +462,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   String getProgressBarText(BuildContext context) {
-    switch (_currentProgressBarText) {
-      case ProgressBarText.daysElapsedWithTotalDays:
-        _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-        return AppIntl.of(context)!.progress_bar_message(sessionDays[0], sessionDays[1]);
-      case ProgressBarText.percentage:
-        _currentProgressBarText = ProgressBarText.percentage;
-        final percentage = sessionDays[1] == 0 ? 0 : ((sessionDays[0] / sessionDays[1]) * 100).round();
-        return AppIntl.of(context)!.progress_bar_message_percentage(percentage);
-      default:
-        _currentProgressBarText = ProgressBarText.remainingDays;
-        return AppIntl.of(context)!.progress_bar_message_remaining_days(sessionDays[1] - sessionDays[0]);
-    }
+    return (sessionDays[1] - sessionDays[0]).toString();
   }
 }

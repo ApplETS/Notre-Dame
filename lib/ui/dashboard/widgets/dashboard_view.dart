@@ -97,8 +97,6 @@ class _DashboardViewState extends State<DashboardView> with TickerProviderStateM
           cards.add(
             ProgressBarCard(
               key: UniqueKey(),
-              onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
-              changeProgressBarText: model.changeProgressBarText,
               progressBarText: model.getProgressBarText(context),
               progress: model.progress,
               loading: model.busy(model.progress),
