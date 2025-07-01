@@ -39,6 +39,18 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
 
+  /// Animation controller for the circle
+  AnimationController? _controller;
+  late Animation<double> heightAnimation;
+  late Animation<double> opacityAnimation;
+  late Animation<double> titleAnimation;
+
+  /// Getter for the animation controller
+  AnimationController get controller => _controller!;
+
+  /// Check if the controller is initialized
+  bool get _isControllerInitialized => _controller != null;
+
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
 
@@ -84,6 +96,66 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     } else {
       return sessionDays[0] / sessionDays[1];
     }
+  }
+
+  /// Static flag to track if the animation has been played
+  static bool hasAnimationPlayed = false;
+
+  /// Tracks if the animation should be played
+  final bool shouldPlayAnimation;
+
+  /// TODO : add AppIntl to the messages
+  DashboardViewModel({required AppIntl intl})
+    : _appIntl = intl,
+
+      /// if the animation has not been played, play it
+      shouldPlayAnimation = !hasAnimationPlayed {
+    hasAnimationPlayed = true;
+  }
+
+  /// Loading state of the widget
+  bool isLoading = false;
+
+  /// Slide offset for title and subtitle animations (slide from top)
+  /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
+  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
+
+  /// Fade-in opacity based on title animation progress
+  double get titleFadeOpacity => titleAnimation.value;
+
+  /// Initialize the animation controller for the circle
+  void init(TickerProvider ticker) {
+    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
+
+    heightAnimation = Tween<double>(
+      begin: 0,
+      end: 330,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
+
+    opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    titleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    if (shouldPlayAnimation) {
+      _controller!.forward();
+    } else {
+      _controller!.value = 1.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose the controller only if it has been initialized and its not null
+    if (_isControllerInitialized) {
+      _controller!.dispose();
+    }
+    super.dispose();
   }
 
   static Future<bool> launchInAppReview() async {
@@ -155,8 +227,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// List of courses for the current session
   List<Course> courses = [];
-
-  DashboardViewModel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
