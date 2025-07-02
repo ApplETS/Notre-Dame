@@ -48,7 +48,7 @@ dependencies:
   # flutter community
   package_info_plus: ^8.3.0
   connectivity_plus: ^6.1.4
-  flutter_svg: ^2.1.0
+  flutter_svg: ^2.2.0
   font_awesome_flutter: ^10.8.0
   share_plus: ^11.0.0
 
