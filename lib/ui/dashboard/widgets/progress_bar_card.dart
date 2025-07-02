@@ -126,7 +126,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                     child: widget.loading
                         ? Skeletonizer(
                             enabled: true,
-                            child: Bone(height: 30, width: 40, borderRadius: BorderRadius.circular(10)),
+                            child: Bone(height: 32, width: 40, borderRadius: BorderRadius.circular(10)),
                           )
                         : Text(
                             widget.progressBarText,
