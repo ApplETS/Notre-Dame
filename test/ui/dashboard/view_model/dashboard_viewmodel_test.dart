@@ -19,7 +19,6 @@ import '../../../data/mocks/services/remote_config_service_mock.dart';
 import '../../../helpers.dart';
 
 void main() {
-  late PreferencesServiceMock preferenceServiceMock;
   late SettingsRepositoryMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
@@ -156,7 +155,7 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       settingsManagerMock = setupSettingsRepositoryMock();
-      preferenceServiceMock = setupPreferencesServiceMock();
+      preferencesServiceMock = setupPreferencesServiceMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
       setupBroadcastMessageRepositoryMock();
@@ -514,9 +513,9 @@ void main() {
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
-        PreferencesServiceMock.stubException(preferenceServiceMock, PreferencesFlag.aboutUsCard);
-        PreferencesServiceMock.stubException(preferenceServiceMock, PreferencesFlag.scheduleCard);
-        PreferencesServiceMock.stubException(preferenceServiceMock, PreferencesFlag.progressBarCard);
+        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.aboutUsCard);
+        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.scheduleCard);
+        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.progressBarCard);
 
         await viewModel.futureToRun();
       });
