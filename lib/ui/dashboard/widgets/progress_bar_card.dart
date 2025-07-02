@@ -6,13 +6,55 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
 
-class ProgressBarCard extends StatelessWidget {
+class ProgressBarCard extends StatefulWidget {
   final String progressBarText;
   final double progress;
   final bool loading;
+
+  const ProgressBarCard({super.key, required this.progressBarText, required this.progress, required this.loading});
+
+  @override
+  State<ProgressBarCard> createState() => _ProgressBarCardState();
+}
+
+class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
   final TextStyle smallTextStyle = TextStyle(fontSize: 18, height: 1);
 
-  ProgressBarCard({super.key, required this.progressBarText, required this.progress, required this.loading});
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+
+    _animation = Tween<double>(
+      begin: 0,
+      end: widget.progress,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void didUpdateWidget(covariant ProgressBarCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.progress != widget.progress) {
+      _animation = Tween<double>(
+        begin: _animation.value,
+        end: widget.progress,
+      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+      _controller
+        ..reset()
+        ..forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => AspectRatio(
@@ -24,7 +66,7 @@ class ProgressBarCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            if (loading || progress >= 0.0)
+            if (widget.loading || widget.progress >= 0.0)
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -37,8 +79,15 @@ class ProgressBarCard extends StatelessWidget {
                       )..layout();
                       double size = constraints.maxWidth - textPainter.height - 12;
                       return Transform.translate(
-                        offset: Offset(0, -12),
-                        child: Transform.scale(scale: size / 100, alignment: Alignment.bottomRight, child: _progress()),
+                        offset: const Offset(0, -12),
+                        child: Transform.scale(
+                          scale: size / 100,
+                          alignment: Alignment.bottomRight,
+                          child: AnimatedBuilder(
+                            animation: _animation,
+                            builder: (context, child) => _progress(_animation.value),
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -53,11 +102,11 @@ class ProgressBarCard extends StatelessWidget {
     ),
   );
 
-  Widget _progress() {
+  Widget _progress(double animatedProgress) {
     return Transform.rotate(
       angle: -pi / 5,
       child: CustomPaint(
-        painter: _CircularProgressPainter(progress),
+        painter: _CircularProgressPainter(animatedProgress),
         child: SizedBox(
           width: 100,
           height: 100,
@@ -69,12 +118,12 @@ class ProgressBarCard extends StatelessWidget {
               child: Transform.rotate(
                 angle: pi / 5,
                 child: Transform.translate(
-                  offset: Offset(5, 60),
+                  offset: const Offset(5, 60),
                   child: FittedBox(
                     alignment: Alignment.centerRight,
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      progressBarText,
+                      widget.progressBarText,
                       style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
                     ),
                   ),
