@@ -13,7 +13,6 @@ import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
-import 'package:notredame/ui/dashboard/widgets/progression_card.dart';
 import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
 

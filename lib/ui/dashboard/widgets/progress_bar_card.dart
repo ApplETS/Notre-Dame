@@ -35,10 +35,13 @@ class ProgressBarCard extends StatelessWidget {
                         text: TextSpan(text: "jours restants", style: smallTextStyle),
                         textDirection: TextDirection.ltr,
                       )..layout();
-
-                      double size = constraints.maxWidth - 1.5 * textPainter.height -16;
-                      return Transform.scale(scale: size/100, alignment: Alignment.bottomRight, child: _progress());
-                    }),
+                      double size = constraints.maxWidth - textPainter.height - 12;
+                      return Transform.translate(
+                        offset: Offset(0, -12),
+                        child: Transform.scale(scale: size / 100, alignment: Alignment.bottomRight, child: _progress()),
+                      );
+                    },
+                  ),
                   Text("jours restants", style: smallTextStyle),
                 ],
               )
@@ -54,31 +57,28 @@ class ProgressBarCard extends StatelessWidget {
   );
 
   Widget _progress() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0, right: 3),
-      child: Transform.rotate(
-        angle: -pi / 5,
-        child: CustomPaint(
-          painter: _CircularProgressPainter(progress * 100),
-          child: SizedBox(
-            width: 100,
-            height: 100,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: SizedBox(
-                width: 40,
-                height: 32,
-                child: Transform.rotate(
-                  angle: pi / 5,
-                  child: Transform.translate(
-                    offset: Offset(5, 60),
-                    child: FittedBox(
-                      alignment: Alignment.centerRight,
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        progressBarText,
-                        style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
-                      ),
+    return Transform.rotate(
+      angle: -pi / 5,
+      child: CustomPaint(
+        painter: _CircularProgressPainter(progress * 100),
+        child: SizedBox(
+          width: 100,
+          height: 100,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              width: 40,
+              height: 32,
+              child: Transform.rotate(
+                angle: pi / 5,
+                child: Transform.translate(
+                  offset: Offset(5, 60),
+                  child: FittedBox(
+                    alignment: Alignment.centerRight,
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      progressBarText,
+                      style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
                     ),
                   ),
                 ),
@@ -115,14 +115,8 @@ class _CircularProgressPainter extends CustomPainter {
     // Paint foreground (green)
     final foregroundPaint = Paint()
       ..shader = RadialGradient(
-        colors: [
-          Colors.lightGreen.withAlpha(0),
-          Colors.green,
-        ],
-      ).createShader(Rect.fromCircle(
-        center: Offset(radius - 2, radius),
-        radius: radius,
-      ))
+        colors: [Colors.lightGreen.withAlpha(0), Colors.green],
+      ).createShader(Rect.fromCircle(center: Offset(radius - 2, radius), radius: radius))
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
