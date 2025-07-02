@@ -60,7 +60,7 @@ class ProgressBarCard extends StatelessWidget {
     return Transform.rotate(
       angle: -pi / 5,
       child: CustomPaint(
-        painter: _CircularProgressPainter(progress * 100),
+        painter: _CircularProgressPainter(progress),
         child: SizedBox(
           width: 100,
           height: 100,
@@ -103,7 +103,7 @@ class _CircularProgressPainter extends CustomPainter {
     final double radius = (size.width / 2) - strokeWidth / 2;
     final double startAngle = pi - pi / 4;
     final double sweepAngle = pi + 2 * pi / 4;
-    final double progressSweep = sweepAngle * (value / 100);
+    final double progressSweep = sweepAngle * value;
 
     // Paint background (gray)
     final backgroundPaint = Paint()
