@@ -19,20 +19,14 @@ void main() {
 
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
       await tester.pumpWidget(
-        localizedWidget(
-          child: ProgressBarCard(
-            progressBarText: "45",
-            progress: 0.5,
-            loading: false,
-          ),
-        ),
+        localizedWidget(child: ProgressBarCard(progressBarText: "45", progress: 0.5, loading: false)),
       );
       await tester.pumpAndSettle();
 
       // Find progress card
       final progressCard = find.widgetWithText(Card, intl.progress_bar);
       expect(progressCard, findsOneWidget);
-      
+
       // Find progress card linearProgressBar
       final linearProgressBarFinder = find.byType(CustomPaint);
       expect(linearProgressBarFinder, findsNWidgets(3));

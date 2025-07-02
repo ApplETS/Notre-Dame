@@ -1,11 +1,14 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:math';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class ProgressBarCard extends StatefulWidget {
   final String progressBarText;

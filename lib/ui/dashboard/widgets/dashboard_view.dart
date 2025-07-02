@@ -150,21 +150,13 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           child: Row(
             spacing: 12,
             children: [
+              Expanded(child: AspectRatio(aspectRatio: 1, child: Card(child: null))),
               Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Card(
-                    child: null,
-                  ),
+                child: ProgressBarCard(
+                  progressBarText: model.getProgressBarText(context),
+                  progress: model.progress,
+                  loading: model.busy(model.progress),
                 ),
-              ),
-              Expanded(
-                  child: ProgressBarCard(
-                    progressBarText: model.getProgressBarText(context),
-                    progress: model.progress,
-                    loading: model.busy(model.progress),
-                  ),
-
               ),
             ],
           ),
@@ -180,11 +172,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
         ),
         WidgetComponent(
           title: "Notes",
-          childWidget: GradesCard(
-            courses: model.courses,
-            onDismissed: () => {},
-            loading: model.busy(model.courses),
-          ),
+          childWidget: GradesCard(courses: model.courses, onDismissed: () => {}, loading: model.busy(model.courses)),
         ),
       ],
     );

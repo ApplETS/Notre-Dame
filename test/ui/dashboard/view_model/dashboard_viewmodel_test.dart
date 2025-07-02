@@ -553,7 +553,6 @@ void main() {
         expect(viewModel.progress, -1.0);
         expect(viewModel.sessionDays, [0, 0]);
       });
-
     });
 
     group("In app review - ", () {
