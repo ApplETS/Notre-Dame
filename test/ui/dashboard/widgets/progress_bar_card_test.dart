@@ -21,9 +21,7 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: ProgressBarCard(
-            onDismissed: () {},
-            progressBarText: "progressBarText",
-            changeProgressBarText: () {},
+            progressBarText: "45",
             progress: 0.5,
             loading: false,
           ),
@@ -32,19 +30,12 @@ void main() {
       await tester.pumpAndSettle();
 
       // Find progress card
-      final progressCard = find.widgetWithText(Card, intl.progress_bar_title);
+      final progressCard = find.widgetWithText(Card, intl.progress_bar);
       expect(progressCard, findsOneWidget);
-
-      // Find progress card Title
-      final progressTitle = find.text(intl.progress_bar_title);
-      expect(progressTitle, findsOneWidget);
-
+      
       // Find progress card linearProgressBar
-      final linearProgressBarFinder = find.byType(LinearProgressIndicator);
-      expect(linearProgressBarFinder, findsOneWidget);
-
-      final LinearProgressIndicator linearProgressBar = tester.widget<LinearProgressIndicator>(linearProgressBarFinder);
-      expect(linearProgressBar.value, 0.5);
+      final linearProgressBarFinder = find.byType(CustomPaint);
+      expect(linearProgressBarFinder, findsNWidgets(3));
     });
   });
 }
