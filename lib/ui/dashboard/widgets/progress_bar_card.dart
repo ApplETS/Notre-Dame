@@ -10,15 +10,16 @@ class ProgressBarCard extends StatelessWidget {
   final String progressBarText;
   final double progress;
   final bool loading;
+  final TextStyle smallTextStyle = TextStyle(fontSize: 18, height: 1);
 
-  const ProgressBarCard({super.key, required this.progressBarText, required this.progress, required this.loading});
+  ProgressBarCard({super.key, required this.progressBarText, required this.progress, required this.loading});
 
   @override
   Widget build(BuildContext context) => AspectRatio(
     aspectRatio: 1,
     child: Card(
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -28,8 +29,17 @@ class ProgressBarCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  _progress(),
-                  Text("jours restants", style: const TextStyle(fontSize: 18)),
+                  LayoutBuilder(
+                    builder: (BuildContext context, BoxConstraints constraints) {
+                      final textPainter = TextPainter(
+                        text: TextSpan(text: "jours restants", style: smallTextStyle),
+                        textDirection: TextDirection.ltr,
+                      )..layout();
+
+                      double size = constraints.maxWidth - 1.5 * textPainter.height -16;
+                      return Transform.scale(scale: size/100, alignment: Alignment.bottomRight, child: _progress());
+                    }),
+                  Text("jours restants", style: smallTextStyle),
                 ],
               )
             else
@@ -97,7 +107,7 @@ class _CircularProgressPainter extends CustomPainter {
 
     // Paint background (gray)
     final backgroundPaint = Paint()
-      ..color = Colors.grey
+      ..color = Colors.black54
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
