@@ -32,7 +32,7 @@ class ProgressBarCard extends StatelessWidget {
                   LayoutBuilder(
                     builder: (BuildContext context, BoxConstraints constraints) {
                       final textPainter = TextPainter(
-                        text: TextSpan(text: "jours restants", style: smallTextStyle),
+                        text: TextSpan(text: AppIntl.of(context)!.progress_bar, style: smallTextStyle),
                         textDirection: TextDirection.ltr,
                       )..layout();
                       double size = constraints.maxWidth - textPainter.height - 12;
@@ -42,7 +42,7 @@ class ProgressBarCard extends StatelessWidget {
                       );
                     },
                   ),
-                  Text("jours restants", style: smallTextStyle),
+                  Text(AppIntl.of(context)!.progress_bar, style: smallTextStyle),
                 ],
               )
             else
