@@ -113,7 +113,7 @@ class _CircularProgressPainter extends CustomPainter {
     final foregroundPaint = Paint()
       ..shader = RadialGradient(
         colors: [Colors.lightGreen.withAlpha(0), Colors.green],
-      ).createShader(Rect.fromCircle(center: Offset(radius - 2, radius), radius: radius))
+      ).createShader(Rect.fromCircle(center: Offset(radius, radius), radius: radius))
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
