@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:collection';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -34,7 +31,6 @@ class DashboardViewModel extends FutureViewModel {
 
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
 

@@ -24,7 +24,6 @@ void main() {
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late PreferencesServiceMock preferencesServiceMock;
   late InAppReviewServiceMock inAppReviewServiceMock;
-  late AnalyticsServiceMock analyticsServiceMock;
 
   late DashboardViewModel viewModel;
 
@@ -156,7 +155,6 @@ void main() {
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       settingsManagerMock = setupSettingsRepositoryMock();
       preferencesServiceMock = setupPreferencesServiceMock();
-      analyticsServiceMock = setupAnalyticsServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
       setupBroadcastMessageRepositoryMock();
 

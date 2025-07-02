@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
@@ -52,8 +51,8 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
                         /// Animated circle in the background
                         _redCircle(model),
 
-                        /// Set content of the dashboard depending on the device orientation and size
-                        setLayoutRelativeToDeviceSizeAndOrientation(context, model),
+                        // TODO create layouts for all sizes and orientations
+                        _phoneVertical(context, model),
                       ],
                     ),
                   ],
@@ -83,16 +82,6 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
         );
       },
     );
-  }
-
-  /// Set layout depending on the device orientation and size
-  Widget setLayoutRelativeToDeviceSizeAndOrientation(BuildContext context, DashboardViewModel model) {
-    // TODO create layouts for all sizes and orientation
-
-    bool isTablet = MediaQuery.of(context).size.shortestSide >= 600;
-    bool isHorizontal = MediaQuery.of(context).orientation == Orientation.landscape;
-
-    return _phoneVertical(context, model);
   }
 
   Widget _phoneVertical(BuildContext context, DashboardViewModel model) {
