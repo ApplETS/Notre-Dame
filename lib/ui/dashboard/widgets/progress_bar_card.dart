@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProgressBarCard extends StatefulWidget {
   final String progressBarText;
@@ -122,10 +123,15 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                   child: FittedBox(
                     alignment: Alignment.centerRight,
                     fit: BoxFit.scaleDown,
-                    child: Text(
-                      widget.progressBarText,
-                      style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
-                    ),
+                    child: widget.loading
+                        ? Skeletonizer(
+                            enabled: true,
+                            child: Bone(height: 30, width: 40, borderRadius: BorderRadius.circular(10)),
+                          )
+                        : Text(
+                            widget.progressBarText,
+                            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
+                          ),
                   ),
                 ),
               ),
