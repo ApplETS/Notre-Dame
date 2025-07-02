@@ -28,7 +28,7 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
-class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
+class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
   static const String abandonedGradeCode = "XX";
 
@@ -50,14 +50,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Check if the controller is initialized
   bool get _isControllerInitialized => _controller != null;
 
-  /// All dashboard displayable cards
-  Map<PreferencesFlag, int>? _cards;
-
   /// Localization class of the application.
   final AppIntl _appIntl;
-
-  /// Cards to display on dashboard
-  List<PreferencesFlag>? _cardsToDisplay;
 
   /// Percentage of completed days for the session
   double _progress = 0.0;
@@ -79,12 +73,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<CourseActivity> get scheduleEvents {
     return _scheduleEvents;
   }
-
-  /// Get the status of all displayable cards
-  Map<PreferencesFlag, int>? get cards => _cards;
-
-  /// Get cards to display
-  List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -215,14 +203,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   List<Course> courses = [];
 
   @override
-  Future<Map<PreferencesFlag, int>> futureToRun() async {
-    _cards = await _settingsManager.getDashboard();
-
-    getCardsToDisplay();
-
+  Future futureToRun() async {
     await loadDataAndUpdateWidget();
-
-    return _cards!;
   }
 
   Future loadDataAndUpdateWidget() async {
@@ -238,69 +220,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   // ignore: type_annotate_public_apis
   void onError(error) {
     Fluttertoast.showToast(msg: _appIntl.error);
-  }
-
-  /// Change the order of [flag] card from [oldIndex] to [newIndex].
-  void setOrder(PreferencesFlag flag, int newIndex) {
-    _cardsToDisplay?.remove(flag);
-    _cardsToDisplay?.insert(newIndex, flag);
-
-    updatePreferences();
-
-    notifyListeners();
-
-    _analyticsService.logEvent(tag, "Reordoring ${flag.name}");
-  }
-
-  /// Hide [flag] card from dashboard by setting int value -1
-  void hideCard(PreferencesFlag flag) {
-    _cards?.update(flag, (value) => -1);
-
-    _cardsToDisplay?.remove(flag);
-
-    updatePreferences();
-
-    notifyListeners();
-
-    _analyticsService.logEvent(tag, "Deleting ${flag.name}");
-  }
-
-  /// Reset all card indexes to their default values
-  void setAllCardsVisible() {
-    _cards?.updateAll((key, value) {
-      _settingsManager.setInt(key, key.index - PreferencesFlag.aboutUsCard.index).then((value) {
-        if (!value) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      });
-      return key.index - PreferencesFlag.aboutUsCard.index;
-    });
-
-    getCardsToDisplay();
-
-    loadDataAndUpdateWidget();
-
-    notifyListeners();
-  }
-
-  /// Populate list of cards used in view
-  void getCardsToDisplay() {
-    _cardsToDisplay = [];
-
-    if (_cards != null) {
-      final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
-        _cards!,
-        (a, b) => _cards![a]!.compareTo(_cards![b]!),
-      );
-
-      orderedCards.forEach((key, value) {
-        if (value >= 0) {
-          _cardsToDisplay?.insert(value, key);
-        }
-      });
-    }
-
-    _analyticsService.logEvent(tag, "Restoring cards");
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
@@ -370,24 +289,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         : true;
   }
 
-  /// Update cards order and display status in preferences
-  void updatePreferences() {
-    if (_cards == null || _cardsToDisplay == null) {
-      return;
-    }
-    for (final MapEntry<PreferencesFlag, int> element in _cards!.entries) {
-      _cards![element.key] = _cardsToDisplay!.indexOf(element.key);
-      _settingsManager.setInt(element.key, _cardsToDisplay!.indexOf(element.key)).then((value) {
-        if (!value) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      });
-    }
-  }
-
-  /// Returns true if dates [a] and [b] are on the same day
-  bool isSameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
-
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
     if (!busy(courses)) {
@@ -441,23 +342,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     } finally {
       setBusyForObject(broadcastMessage, false);
     }
-  }
-
-  void onCardReorder(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) {
-      // ignore: parameter_assignments
-      newIndex -= 1;
-    }
-
-    // Should not happen becase dismiss card will not be called if the card is null.
-    if (cards == null) {
-      _analyticsService.logError("DashboardView", "Cards list is null");
-      throw Exception("Cards is null");
-    }
-
-    final PreferencesFlag elementMoved = cards!.keys.firstWhere((element) => cards![element] == oldIndex);
-
-    setOrder(elementMoved, newIndex);
   }
 
   String getProgressBarText(BuildContext context) {

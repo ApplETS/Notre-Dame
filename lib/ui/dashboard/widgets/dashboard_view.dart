@@ -24,8 +24,6 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> with SingleTickerProviderStateMixin {
-  static const EdgeInsets paddingCards = EdgeInsets.fromLTRB(16, 13, 16, 13);
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
@@ -147,20 +145,17 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
         ),
         const SizedBox(height: 0),
         Container(
-          padding: paddingCards,
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
           width: double.infinity,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 16,
+            spacing: 12,
             children: [
               Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  height: 145,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(color: AppPalette.grey.darkGrey, borderRadius: BorderRadius.circular(25)),
-                  child: Placeholder(color: Colors.white),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Card(
+                    child: null,
+                  ),
                 ),
               ),
               Expanded(
@@ -178,7 +173,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
         WidgetComponent(
           title: "Horaire - Aujourd'hui",
           childWidget: ScheduleCard(
-            onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
+            onDismissed: () => {},
             events: model.scheduleEvents,
             loading: model.busy(model.scheduleEvents),
           ),
@@ -187,7 +182,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           title: "Notes",
           childWidget: GradesCard(
             courses: model.courses,
-            onDismissed: () => model.hideCard(PreferencesFlag.gradesCard),
+            onDismissed: () => {},
             loading: model.busy(model.courses),
           ),
         ),
