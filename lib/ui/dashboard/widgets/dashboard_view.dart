@@ -89,12 +89,9 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
 
   /// Set layout depending on the device orientation and size
   Widget setLayoutRelativeToDeviceSizeAndOrientation(BuildContext context, DashboardViewModel model) {
-    /// Get size of the device (width and height)
-    /// If one of the size is greater than 600, the device is a tablet
-    /// TODO : checker les 2 sizes ...?
-    bool isTablet = MediaQuery.of(context).size.shortestSide >= 600;
+    // TODO create layouts for all sizes and orientation
 
-    /// Get orientation of the device (Horizontal)
+    bool isTablet = MediaQuery.of(context).size.shortestSide >= 600;
     bool isHorizontal = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return _phoneVertical(context, model);
