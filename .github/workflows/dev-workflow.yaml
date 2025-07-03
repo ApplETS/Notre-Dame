@@ -58,7 +58,7 @@ jobs:
       matrix:
         target: [ iOS, Android ]
         include:
-          - os: macos-latest
+          - os: macos-15
             target: iOS
             build_target: ios
             build_args: --no-codesign
