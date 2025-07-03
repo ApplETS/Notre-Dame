@@ -33,10 +33,6 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-
-  pod 'FirebaseSharedSwift', '11.13.0'
-  pod 'FirebaseRemoteConfigInterop', '11.13.0'
-  pod 'FirebaseCore', '11.14.0'
 end
 
 post_install do |installer|
