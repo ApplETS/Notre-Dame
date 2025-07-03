@@ -20,11 +20,6 @@ PODS:
     - Firebase/Analytics (= 11.15.0)
     - firebase_core
     - Flutter
-  - FirebaseABTesting (11.10.0):
-    - FirebaseCore (~> 11.10.0)
-  - FirebaseAnalytics (11.10.0):
-    - FirebaseAnalytics/AdIdSupport (= 11.10.0)
-    - FirebaseCore (~> 11.10.0)
   - firebase_core (3.15.1):
     - Firebase/CoreOnly (= 11.15.0)
     - Flutter
@@ -86,7 +81,7 @@ PODS:
     - FirebaseSharedSwift (~> 11.0)
     - GoogleUtilities/Environment (~> 8.1)
     - "GoogleUtilities/NSData+zlib (~> 8.1)"
-  - FirebaseRemoteConfigInterop (11.15.0)
+  - FirebaseRemoteConfigInterop (11.13.0)
   - FirebaseSessions (11.15.0):
     - FirebaseCore (~> 11.15.0)
     - FirebaseCoreExtension (~> 11.15.0)
@@ -96,7 +91,7 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 8.1)
     - nanopb (~> 3.30910.0)
     - PromisesSwift (~> 2.1)
-  - FirebaseSharedSwift (11.15.0)
+  - FirebaseSharedSwift (11.13.0)
   - Flutter (1.0.0)
   - flutter_secure_storage (6.0.0):
     - Flutter
@@ -286,9 +281,9 @@ SPEC CHECKSUMS:
   FirebaseCrashlytics: e09d0bc19aa54a51e45b8039c836ef73f32c039a
   FirebaseInstallations: 317270fec08a5d418fdbc8429282238cab3ac843
   FirebaseRemoteConfig: b496646b82855e174a7f1e354c65e0e913085168
-  FirebaseRemoteConfigInterop: 1c6135e8a094cc6368949f5faeeca7ee8948b8aa
+  FirebaseRemoteConfigInterop: 7915cec47731a806cda541f90898ad0fab8f9f86
   FirebaseSessions: b9a92c1c51bbb81e78fc3142cda6d925d700f8e7
-  FirebaseSharedSwift: e17c654ef1f1a616b0b33054e663ad1035c8fd40
+  FirebaseSharedSwift: aca73668bc95e8efccb618e0167eab05d19d3a75
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
   fluttertoast: 21eecd6935e7064cc1fcb733a4c5a428f3f24f0f
@@ -309,6 +304,6 @@ SPEC CHECKSUMS:
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
-PODFILE CHECKSUM: d0fcd0b39705809f59cb44f4580b0bf2d6267946
+PODFILE CHECKSUM: 79977beba82dd3d57d04b29fc3556aaa72bc33d3
 
 COCOAPODS: 1.16.2
