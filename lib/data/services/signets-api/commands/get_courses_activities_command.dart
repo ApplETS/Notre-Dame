@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:xml/xml.dart';
@@ -74,6 +75,25 @@ class GetCoursesActivitiesCommand implements Command<List<CourseActivity>> {
     );
 
     /// Build and return the list of CourseActivity
-    return responseBody.findAllElements("Seance").map((node) => CourseActivity.fromXmlNode(node)).toList();
+    List<CourseActivity> activities = responseBody
+        .findAllElements("Seance")
+        .map((node) => CourseActivity.fromXmlNode(node))
+        .toList();
+    return mergeLocations(activities);
+  }
+
+  List<CourseActivity> mergeLocations(List<CourseActivity> activities) {
+    final grouped = groupBy(
+      activities,
+      (CourseActivity a) => '${a.courseGroup}‖${a.activityName}‖${a.startDateTime}‖${a.endDateTime}',
+    );
+
+    return grouped.values.map((bucket) {
+      List<String> locations = [];
+      for (CourseActivity item in bucket) {
+        locations.addAll(item.activityLocation);
+      }
+      return bucket.first.copyWithLocations(locations);
+    }).toList();
   }
 }

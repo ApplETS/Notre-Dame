@@ -132,11 +132,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
         description: events[0].description,
         start: events[0].startTime,
         end: events[0].endTime,
-        titleStyle: TextStyle(fontSize: 14, color: events[0].color.accent),
-        totalEvents: events.length,
-        padding: const EdgeInsets.all(7.0),
+        padding: const EdgeInsets.all(6.0),
         backgroundColor: events[0].color,
-        borderRadius: BorderRadius.circular(6.0),
         buildContext: context,
       );
     } else {

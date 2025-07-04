@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
@@ -10,11 +11,8 @@ import 'package:notredame/l10n/app_localizations.dart';
 class ScheduleCalendarTile extends StatefulWidget {
   final String? title;
   final String? description;
-  final TextStyle? titleStyle;
-  final int? totalEvents;
   final EdgeInsets? padding;
   final Color? backgroundColor;
-  final BorderRadius? borderRadius;
   final DateTime? start;
   final DateTime? end;
   final BuildContext buildContext;
@@ -23,11 +21,8 @@ class ScheduleCalendarTile extends StatefulWidget {
     super.key,
     this.title,
     this.description,
-    this.titleStyle,
-    this.totalEvents,
     this.padding,
     this.backgroundColor,
-    this.borderRadius,
     this.start,
     this.end,
     required this.buildContext,
@@ -56,9 +51,13 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text(
-            "$courseName ($courseLocation)",
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          title: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.topLeft,
+            child: Text(
+              courseLocation.isEmpty ? courseName : "$courseName ($courseLocation)",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -93,17 +92,9 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     return GestureDetector(
       onTap: _showTileInfo,
       child: Container(
-        decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: widget.borderRadius),
+        decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(6.0)),
         padding: widget.padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(widget.title ?? "", style: widget.titleStyle, maxLines: 3),
-            ),
-          ],
-        ),
+        child: AutoSizeText(widget.title!, minFontSize: 12),
       ),
     );
   }

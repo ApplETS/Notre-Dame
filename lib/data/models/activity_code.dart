@@ -34,3 +34,8 @@ class ActivityDescriptionName {
   static const String labA = "Laboratoire (Groupe A)";
   static const String labB = "Laboratoire (Groupe B)";
 }
+
+class ActivityName {
+  static const String labA = "Labo A";
+  static const String labB = "Labo B";
+}

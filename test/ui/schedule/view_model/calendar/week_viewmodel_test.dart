@@ -37,7 +37,7 @@ void main() {
         courseName: 'PRE011',
         activityName: 'PRE011',
         activityDescription: 'PRE011',
-        activityLocation: 'PRE011',
+        activityLocation: ['PRE011'],
         startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
         endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 16)),
       );
