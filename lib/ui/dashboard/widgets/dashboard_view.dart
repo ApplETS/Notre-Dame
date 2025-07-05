@@ -5,17 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
-import 'package:notredame/ui/dashboard/widgets/haptics_container.dart';
+import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
-import 'package:notredame/utils/loading.dart';
-import 'about_us_card.dart';
-import 'broadcast_message_card.dart';
-import 'grades_card.dart';
+import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -24,99 +22,148 @@ class DashboardView extends StatefulWidget {
   State<DashboardView> createState() => _DashboardViewState();
 }
 
-class _DashboardViewState extends State<DashboardView> with TickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-    DashboardViewModel.launchInAppReview();
-  }
-
+class _DashboardViewState extends State<DashboardView> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
-      viewModelBuilder: () => DashboardViewModel(intl: AppIntl.of(context)!),
+      viewModelBuilder: () {
+        /// Single viewModelBuilder reference for the whole dashboard view
+        final model = DashboardViewModel(intl: AppIntl.of(context)!);
+        model.init(this);
+        return model;
+      },
       builder: (context, model, child) {
         return BaseScaffold(
-          appBar: AppBar(
-            title: Text(AppIntl.of(context)!.title_dashboard),
-            centerTitle: false,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.restore),
-                tooltip: AppIntl.of(context)!.dashboard_restore_all_cards_title,
-                onPressed: () => model.setAllCardsVisible(),
-              ),
-            ],
-            automaticallyImplyLeading: false,
-          ),
-          body: model.cards == null
-              ? buildLoading()
-              : RefreshIndicator(
-                  child: Theme(
-                    data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-                    child: ReorderableListView(
-                      header: model.remoteConfigService.dashboardMessageActive
-                          ? BroadcastMessageCard(
-                              key: UniqueKey(),
-                              loading: model.busy(model.broadcastMessage),
-                              broadcastMessage: model.broadcastMessage,
-                            )
-                          : null,
-                      onReorder: (oldIndex, newIndex) => model.onCardReorder(oldIndex, newIndex),
-                      padding: const EdgeInsets.fromLTRB(0, 4, 0, 24),
-                      children: _buildCards(model),
-                      proxyDecorator: (child, _, _) {
-                        return HapticsContainer(child: child);
-                      },
+          body: RefreshIndicator(
+            onRefresh: () async {
+              await model.loadDataAndUpdateWidget();
+            },
+            child: Theme(
+              data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Content positioned on top of the circle
+                    Stack(
+                      children: [
+                        /// Animated circle in the background
+                        _redCircle(model),
+
+                        // TODO create layouts for all sizes and orientations
+                        _phoneVertical(context, model),
+                      ],
                     ),
-                  ),
-                  onRefresh: () => model.loadDataAndUpdateWidget(),
+                  ],
                 ),
+              ),
+            ),
+          ),
         );
       },
     );
   }
 
-  List<Widget> _buildCards(DashboardViewModel model) {
-    final List<Widget> cards = List.empty(growable: true);
+  /// Animated circle widget
+  Widget _redCircle(DashboardViewModel model) {
+    return AnimatedBuilder(
+      animation: model.heightAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: model.opacityAnimation.value,
+          child: PhysicalShape(
+            clipper: CircleClipper(),
+            elevation: 4,
+            shadowColor: const Color.fromRGBO(0, 0, 0, 1.0),
+            color: AppPalette.etsLightRed,
+            child: SizedBox(height: model.heightAnimation.value, width: double.infinity),
+          ),
+        );
+      },
+    );
+  }
 
-    for (final PreferencesFlag element in model.cardsToDisplay ?? []) {
-      switch (element) {
-        case PreferencesFlag.aboutUsCard:
-          cards.add(AboutUsCard(key: UniqueKey(), onDismissed: () => model.hideCard(PreferencesFlag.aboutUsCard)));
-        case PreferencesFlag.scheduleCard:
-          cards.add(
-            ScheduleCard(
-              key: UniqueKey(),
-              onDismissed: () => model.hideCard(PreferencesFlag.scheduleCard),
-              events: model.scheduleEvents,
-              loading: model.busy(model.scheduleEvents),
-            ),
-          );
-        case PreferencesFlag.progressBarCard:
-          cards.add(
-            ProgressBarCard(
-              key: UniqueKey(),
-              onDismissed: () => model.hideCard(PreferencesFlag.progressBarCard),
-              changeProgressBarText: model.changeProgressBarText,
-              progressBarText: model.getProgressBarText(context),
-              progress: model.progress,
-              loading: model.busy(model.progress),
-            ),
-          );
-        case PreferencesFlag.gradesCard:
-          cards.add(
-            GradesCard(
-              key: UniqueKey(),
-              courses: model.courses,
-              onDismissed: () => model.hideCard(PreferencesFlag.gradesCard),
-              loading: model.busy(model.courses),
-            ),
-          );
-        default:
-      }
-    }
-
-    return cards;
+  Widget _phoneVertical(BuildContext context, DashboardViewModel model) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 100),
+        AnimatedBuilder(
+          animation: model.titleAnimation,
+          builder: (context, child) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Transform.translate(
+                    offset: model.titleSlideOffset,
+                    child: Opacity(
+                      opacity: model.titleFadeOpacity,
+                      child: Text(
+                        'Accueil',
+                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: AppPalette.grey.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Transform.translate(
+                    offset: model.titleSlideOffset,
+                    child: Opacity(
+                      opacity: model.titleFadeOpacity,
+                      child: SkeletonLoader(
+                        loading: model.isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 70,
+                          child: Text(
+                            'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
+                            style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 0),
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          width: double.infinity,
+          child: Row(
+            spacing: 12,
+            children: [
+              Expanded(child: AspectRatio(aspectRatio: 1, child: Card(child: null))),
+              Expanded(
+                child: ProgressBarCard(
+                  progressBarText: model.getProgressBarText(context),
+                  progress: model.progress,
+                  loading: model.busy(model.progress),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        WidgetComponent(
+          title: "Horaire - Aujourd'hui",
+          childWidget: ScheduleCard(
+            onDismissed: () => {},
+            events: model.scheduleEvents,
+            loading: model.busy(model.scheduleEvents),
+          ),
+        ),
+        WidgetComponent(
+          title: "Notes",
+          childWidget: GradesCard(courses: model.courses, onDismissed: () => {}, loading: model.busy(model.courses)),
+        ),
+      ],
+    );
   }
 }
