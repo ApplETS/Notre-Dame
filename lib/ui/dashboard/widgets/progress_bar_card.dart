@@ -106,44 +106,42 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
     ),
   );
 
-  Widget _progress(double animatedProgress) {
-    return Transform.rotate(
-      angle: -pi / 5,
-      child: CustomPaint(
-        painter: _CircularProgressPainter(animatedProgress),
-        child: SizedBox(
-          width: 100,
-          height: 100,
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: SizedBox(
-              width: 40,
-              height: 32,
-              child: Transform.rotate(
-                angle: pi / 5,
-                child: Transform.translate(
-                  offset: const Offset(5, 60),
-                  child: FittedBox(
-                    alignment: Alignment.centerRight,
-                    fit: BoxFit.scaleDown,
-                    child: widget.loading
-                        ? Skeletonizer(
-                            enabled: true,
-                            child: Bone(height: 32, width: 40, borderRadius: BorderRadius.circular(10)),
-                          )
-                        : Text(
-                            widget.progressBarText,
-                            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
-                          ),
-                  ),
+  Widget _progress(double animatedProgress) => Transform.rotate(
+    angle: -pi / 5,
+    child: CustomPaint(
+      painter: _CircularProgressPainter(animatedProgress),
+      child: SizedBox(
+        width: 100,
+        height: 100,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: SizedBox(
+            width: 40,
+            height: 32,
+            child: Transform.rotate(
+              angle: pi / 5,
+              child: Transform.translate(
+                offset: const Offset(5, 60),
+                child: FittedBox(
+                  alignment: Alignment.centerRight,
+                  fit: BoxFit.scaleDown,
+                  child: widget.loading
+                      ? Skeletonizer(
+                          enabled: true,
+                          child: Bone(height: 32, width: 40, borderRadius: BorderRadius.circular(10)),
+                        )
+                      : Text(
+                          widget.progressBarText,
+                          style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
+                        ),
                 ),
               ),
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class _CircularProgressPainter extends CustomPainter {
