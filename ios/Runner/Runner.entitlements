@@ -8,7 +8,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)shared.ca.etsmtl.applets.ETSMobile</string>
+		<string>$(AppIdentifierPrefix)ca.etsmtl.applets.ETSMobile</string>
 		<string>$(AppIdentifierPrefix)com.microsoft.adalcache</string>
 	</array>
 </dict>

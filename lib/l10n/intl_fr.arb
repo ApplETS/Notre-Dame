@@ -240,6 +240,11 @@
   "ets_stages_et_emplois_title": "Stages et emplois",
   "ets_eportfolio_title": "ePortfolio",
   "ets_ebourses_title": "eBourses",
+  "ets_appui_reussite_title": "Appui réussite",
+  "ets_nimbus_title": "Nimbus",
+  "ets_centre_sportif_title": "Centre sportif",
+  "ets_etudiants_actuels_title": "Étudiants actuels",
+  "ets_cafe_sans_filtre_title": "Cafe sans filtre",
   "ets_hide_quick_link": "Masquer le lien : {quickLinkName}",
   "@ets_hide_quick_link": {
     "placeholders": {
