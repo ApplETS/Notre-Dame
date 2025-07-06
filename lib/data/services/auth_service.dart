@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:msal_auth/msal_auth.dart';
 
@@ -25,6 +26,7 @@ class AuthService {
       final result = await acquireTokenSilent();
       if (result.$1 != null) {
         _token = result.$1!.accessToken;
+        _setupToken();
         return _token!;
       }
 
