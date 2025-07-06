@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/models/progress_bar_text_options.dart';
+import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/logic/session_progress_use_case.dart';
@@ -57,17 +58,33 @@ void main() {
       listener.cancel();
     });
 
-    // test('changeProgressBarText() cycles through text styles', () async {
-    //   when(settingsRepository.setString(any, any)).thenAnswer((_) async => {});
+    test('changeProgressBarText() cycles through text styles', () async {
+      SettingsRepositoryMock.stubSetString(
+        settingsRepository,
+        PreferencesFlag.progressBarText,
+        toReturn: true
+      );
+      SettingsRepositoryMock.stubGetString(
+        settingsRepository,
+        PreferencesFlag.progressBarText,
+        toReturn: ProgressBarText.daysElapsedWithTotalDays.toString(),
+      );
+      var streamEvents = 0;
+      final stream = controller.stream;
+      ListSessionsRepositoryMock.stubGetStream(listSessionsRepository, stream: stream);
+      final listener = stream.listen((data) =>  streamEvents++);
+      ListSessionsRepositoryMock.stubGetSessions(listSessionsRepository, controller: controller, sessions: []);
+      await useCase.init();
 
-    //   useCase.changeProgressBarText();
-    //   expect(useCase.stream, emits(isA<SessionProgress>()));
+      useCase.changeProgressBarText();
 
-    //   verify(settingsRepository.setString(
-    //     PreferencesFlag.progressBarText,
-    //     ProgressBarText.percentage.toString(),
-    //   )).called(1);
-    // });
+      expect(useCase.stream, emits(isA<SessionProgress>()));
+
+      // verify(settingsRepository.setString(
+      //   PreferencesFlag.progressBarText,
+      //   ProgressBarText.percentage.toString(),
+      // )).called(1);
+    });
 
     // test('_getSessionProgressPercentage() returns correct percentage', () {
     //   final session = Session(
