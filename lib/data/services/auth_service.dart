@@ -25,15 +25,9 @@ class AuthService {
 
       final result = await acquireTokenSilent();
       if (result.$1 != null) {
-        _token = result.$1?.accessToken;
+        _token = result.$1!.accessToken;
         _setupToken();
-      } else {
-        _retries++;
-        if (_retries > _maxRetry) {
-          _retries = 0;
-          throw Exception('Max retries reached');
-        }
-        getToken();
+        return _token!;
       }
 
       attempt++;

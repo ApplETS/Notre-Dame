@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:notredame/data/repositories/list_sessions_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
@@ -8,6 +7,8 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/models/progress_bar_text_options.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/locator.dart';
+
+import '../l10n/app_localizations.dart';
 
 class SessionProgressUseCase {
   final _listSessionsRepository = locator<ListSessionsRepository>();

@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/models/progress_bar_text_options.dart';
 import 'package:notredame/domain/models/signets-api/session.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/logic/session_progress_use_case.dart';
 import 'package:notredame/locator.dart';
 
@@ -14,7 +14,7 @@ import '../data/mocks/repositories/settings_repository_mock.dart';
 import '../helpers.dart';
 
 void main() {
-  final _controller = StreamController<List<Session>>.broadcast();
+  final controller = StreamController<List<Session>>.broadcast();
 
   late ListSessionsRepositoryMock listSessionsRepository;
   late SettingsRepositoryMock settingsRepository;
@@ -43,10 +43,10 @@ void main() {
       );
 
       var streamEvents = 0;
-      final stream = _controller.stream;
+      final stream = controller.stream;
       ListSessionsRepositoryMock.stubGetStream(listSessionsRepository, stream: stream);
       final listener = stream.listen((data) =>  streamEvents++);
-      ListSessionsRepositoryMock.stubGetSessions(listSessionsRepository, controller: _controller, sessions: []);
+      ListSessionsRepositoryMock.stubGetSessions(listSessionsRepository, controller: controller, sessions: []);
       
 
       await useCase.init();
