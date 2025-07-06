@@ -96,6 +96,7 @@ assets/certificates/
 
 # Generated files
 .idea/**/contentModel.xml
+/lib/l10n/*.dart
 
 # Sensitive or high-churn files
 .idea/**/dataSources/

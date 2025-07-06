@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:device_calendar/device_calendar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
@@ -28,24 +28,14 @@ class CalendarSelectionWidget extends StatelessWidget {
           return lackingPermissionsDialog(context);
         }
         if (!calendars.hasData) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
         final items = calendars.data!
             .map<DropdownMenuItem<String>>(
-              (Calendar value) => DropdownMenuItem<String>(
-                value: value.name,
-                child: Text(value.name!),
-              ),
+              (Calendar value) => DropdownMenuItem<String>(value: value.name, child: Text(value.name!)),
             )
             .toList();
-        items.add(
-          DropdownMenuItem<String>(
-            value: "new",
-            child: Text(translations.calendar_new),
-          ),
-        );
+        items.add(DropdownMenuItem<String>(value: "new", child: Text(translations.calendar_new)));
         String selectedCalendarId = items[0].value ?? '';
         return StatefulBuilder(
           builder: (context, setState) {
@@ -71,9 +61,7 @@ class CalendarSelectionWidget extends StatelessWidget {
                               onChanged: (value) {
                                 selectedCalendarId = value;
                               },
-                              decoration: InputDecoration(
-                                labelText: translations.calendar_name,
-                              ),
+                              decoration: InputDecoration(labelText: translations.calendar_name),
                             )
                           : const SizedBox(height: 10);
                     },
@@ -99,10 +87,7 @@ class CalendarSelectionWidget extends StatelessWidget {
 
                     final CourseRepository courseRepository = locator<CourseRepository>();
 
-                    final result = CalendarService.export(
-                      courseRepository.coursesActivities!,
-                      selectedCalendarId,
-                    );
+                    final result = CalendarService.export(courseRepository.coursesActivities!, selectedCalendarId);
 
                     result.then((value) {
                       if (value) {

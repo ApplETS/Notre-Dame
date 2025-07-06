@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 import '../../../helpers.dart';
 
@@ -77,8 +77,10 @@ void main() {
     expect(find.textContaining('By John Doe'), findsOneWidget);
     // And the time info should be formatted correctly.
     // Note: The end time is computed by adding one minute to the provided end time.
-    expect(find.textContaining('${intl.schedule_calendar_from_time} 9:05 ${intl.schedule_calendar_to_time} 10:01'),
-        findsOneWidget);
+    expect(
+      find.textContaining('${intl.schedule_calendar_from_time} 9:05 ${intl.schedule_calendar_to_time} 10:01'),
+      findsOneWidget,
+    );
   });
 
   // Test that when start and end times are null, the dialog shows the "not available" text.

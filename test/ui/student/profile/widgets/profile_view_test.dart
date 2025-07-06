@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/profile/widgets/profile_view.dart';
+import 'package:notredame/ui/student/widgets/student_program.dart';
 import '../../../../data/mocks/repositories/user_repository_mock.dart';
 import '../../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../../helpers.dart';
@@ -19,21 +20,48 @@ void main() {
   late UserRepositoryMock userRepositoryMock;
 
   final profileStudent = ProfileStudent(
-      firstName: "John", lastName: "Doe", permanentCode: "ABC123", balance: "123456789", universalCode: 'AA000000');
+    firstName: "John",
+    lastName: "Doe",
+    permanentCode: "ABC123",
+    balance: "123456789",
+    universalCode: 'AA000000',
+  );
 
-  // Make a test program object
-  final program = Program(
-      name: "Program name",
-      code: "1234",
-      average: "4.20",
-      accumulatedCredits: "123",
-      registeredCredits: "123",
-      completedCourses: "123",
-      failedCourses: "123",
-      equivalentCourses: "123",
-      status: "Actif");
-
-  final programList = [program];
+  final programList = [
+    Program(
+      name: 'Baccalauréat en génie logiciel ',
+      code: '7084',
+      average: '3.00',
+      accumulatedCredits: '116',
+      registeredCredits: '0',
+      completedCourses: '40',
+      failedCourses: '0',
+      equivalentCourses: '0',
+      status: 'actif',
+    ),
+    Program(
+      name: 'Microprogramme de 1er cycle en enseignement coopératif I',
+      code: '0725',
+      average: '',
+      accumulatedCredits: '9',
+      registeredCredits: '0',
+      completedCourses: '1',
+      failedCourses: '0',
+      equivalentCourses: '0',
+      status: 'Dossier fermé',
+    ),
+    Program(
+      name: 'Microprogramme de 1er cycle en enseignement coopératif II',
+      code: '0726',
+      average: '',
+      accumulatedCredits: '0',
+      registeredCredits: '9',
+      completedCourses: '0',
+      failedCourses: '0',
+      equivalentCourses: '0',
+      status: 'actif',
+    ),
+  ];
 
   group('Profile view - ', () {
     setUp(() async {
@@ -61,7 +89,7 @@ void main() {
 
       expect(find.text("${profileStudent.firstName} ${profileStudent.lastName}"), findsOneWidget);
 
-      expect(find.text(program.name), findsNWidgets(2));
+      expect(find.text(programList[0].name), findsNWidgets(2));
     });
 
     testWidgets('contains personal info', (WidgetTester tester) async {
@@ -104,6 +132,17 @@ void main() {
       expect(find.text(intl.profile_program_completion), findsOneWidget);
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
+
+    testWidgets('contains "other" programs section', (WidgetTester tester) async {
+      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpAndSettle();
+
+      expect(find.text(intl.profile_other_programs), findsOneWidget);
+
+      expect(find.byType(StudentProgram), findsNWidgets(2));
+      expect(find.text(programList[1].name), findsOneWidget);
+      expect(find.text(programList[2].name), findsOneWidget);
     });
   });
 }

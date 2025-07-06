@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+
+// Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 
 class ScheduleCalendarTile extends StatefulWidget {
   final String? title;
@@ -17,18 +19,19 @@ class ScheduleCalendarTile extends StatefulWidget {
   final DateTime? end;
   final BuildContext buildContext;
 
-  const ScheduleCalendarTile(
-      {super.key,
-      this.title,
-      this.description,
-      this.titleStyle,
-      this.totalEvents,
-      this.padding,
-      this.backgroundColor,
-      this.borderRadius,
-      this.start,
-      this.end,
-      required this.buildContext});
+  const ScheduleCalendarTile({
+    super.key,
+    this.title,
+    this.description,
+    this.titleStyle,
+    this.totalEvents,
+    this.padding,
+    this.backgroundColor,
+    this.borderRadius,
+    this.start,
+    this.end,
+    required this.buildContext,
+  });
 
   @override
   State<ScheduleCalendarTile> createState() => _ScheduleCalendarTileState();
@@ -52,54 +55,31 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Text(
             "$courseName ($courseLocation)",
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                courseType,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              Text(courseType, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               if (teacherName != "null")
                 Text(
                   "${AppIntl.of(widget.buildContext)!.schedule_calendar_by} $teacherName",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
               Text(
                 "${AppIntl.of(widget.buildContext)!.schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext)!.schedule_calendar_to_time} $endTime",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
             ],
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                'Close',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: const Text('Close', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
           ],
           actionsPadding: const EdgeInsets.all(10),
@@ -113,15 +93,15 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     return GestureDetector(
       onTap: _showTileInfo,
       child: Container(
-        decoration: BoxDecoration(
-          color: widget.backgroundColor,
-          borderRadius: widget.borderRadius,
-        ),
+        decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: widget.borderRadius),
         padding: widget.padding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FittedBox(fit: BoxFit.fitWidth, child: Text(widget.title ?? "", style: widget.titleStyle, maxLines: 3))
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(widget.title ?? "", style: widget.titleStyle, maxLines: 3),
+            ),
           ],
         ),
       ),

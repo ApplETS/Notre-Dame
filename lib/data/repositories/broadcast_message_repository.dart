@@ -12,16 +12,18 @@ class BroadcastMessageRepository {
 
   BroadcastMessage getBroadcastMessage(String localeName) {
     final iconType = BroadcastIconType.values.firstWhere(
-        (e) => e.name.toLowerCase() == _remoteConfigService.dashboardMsgType.toLowerCase(),
-        orElse: () => BroadcastIconType.other);
+      (e) => e.name.toLowerCase() == _remoteConfigService.dashboardMsgType.toLowerCase(),
+      orElse: () => BroadcastIconType.other,
+    );
 
     return BroadcastMessage(
-        message: localeName == "fr" ? _remoteConfigService.dashboardMessageFr : _remoteConfigService.dashboardMessageEn,
-        title: localeName == "fr"
-            ? _remoteConfigService.dashboardMessageTitleFr
-            : _remoteConfigService.dashboardMessageTitleEn,
-        color: Color(int.parse(_remoteConfigService.dashboardMsgColor)),
-        url: _remoteConfigService.dashboardMsgUrl,
-        type: iconType);
+      message: localeName == "fr" ? _remoteConfigService.dashboardMessageFr : _remoteConfigService.dashboardMessageEn,
+      title: localeName == "fr"
+          ? _remoteConfigService.dashboardMessageTitleFr
+          : _remoteConfigService.dashboardMessageTitleEn,
+      color: Color(int.parse(_remoteConfigService.dashboardMsgColor)),
+      url: _remoteConfigService.dashboardMsgUrl,
+      type: iconType,
+    );
   }
 }

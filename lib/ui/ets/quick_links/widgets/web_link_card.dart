@@ -16,36 +16,31 @@ class WebLinkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<WebLinkCardViewModel>.reactive(
-      viewModelBuilder: () => WebLinkCardViewModel(),
-      builder: (context, model, child) {
-        return ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: Card(
-            elevation: 4.0,
-            child: InkWell(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              onTap: () => model.onLinkClicked(_links),
-              splashColor: AppPalette.etsLightRed.withAlpha(50),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Expanded(
-                      flex: 40,
-                      child: _links.image,
-                    ),
-                    FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text(
-                        _links.name,
-                        style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 18.0),
-                      ),
-                    ),
-                  ],
-                ),
+    viewModelBuilder: () => WebLinkCardViewModel(),
+    builder: (context, model, child) {
+      return ConstrainedBox(
+        constraints: const BoxConstraints.expand(),
+        child: Card(
+          elevation: 4.0,
+          child: InkWell(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            onTap: () => model.onLinkClicked(_links),
+            splashColor: AppPalette.etsLightRed.withAlpha(50),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Expanded(flex: 40, child: _links.image),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(_links.name, style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 18.0)),
+                  ),
+                ],
               ),
             ),
           ),
-        );
-      });
+        ),
+      );
+    },
+  );
 }

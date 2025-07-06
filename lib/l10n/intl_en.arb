@@ -1,1 +1,459 @@
-{­}
+{
+  "@@locale": "en",
+  "error": "An error has occurred",
+  "error_no_internet_connection": "No internet connection",
+  "yes": "Yes",
+  "no": "No",
+  "retry": "Retry",
+  "session_fall": "Fall",
+  "session_winter": "Winter",
+  "session_summer": "Summer",
+  "session_without": "No active semester",
+  "link": "Link",
+  "social_links": "Social links",
+  "facebook": "Facebook",
+  "github": "GitHub",
+  "email": "Email",
+  "email_subject": "ÉTSMobile Problem",
+
+  "faq_questions_and_answers": "Questions and answers",
+  "faq_questions_no_access_title": "I don't have access to the courses and program.",
+  "faq_questions_no_access_description": "New students may not see the schedule and courses before the start of the first course session. However, this information becomes available at the beginning of the first course session.",
+  "faq_questions_no_grades_title": "I can't see my grades anymore.",
+  "faq_questions_no_grades_description": "It is possible that this is the course evaluation period. You need to complete the evaluations on SignETS. Grades will be available after responding to the evaluations.",
+  "faq_actions": "Actions",
+  "faq_actions_reactivate_account_title": "I am an ÉTS graduate, and I want to reactivate my account.",
+  "faq_actions_reactivate_account_description": "You can request to reactivate your account.",
+  "faq_actions_contact_registrar_title": "Questions about your admission conditions, registrations, and conditions for continuing your studies",
+  "faq_actions_contact_registrar_description": "Please contact the Office of the Registrar.",
+  "faq_actions_contact_applets_title": "Questions about the ÉTSMobile app",
+  "faq_actions_contact_applets_description": "Please contact App|ETS.",
+
+  "need_help_notice_title": "Notice",
+  "need_help_notice_description": "Please note that if your question is about gaining access to your account, App|ETS cannot help you. \n\nTap on the \"Password assistance\" button to get help",
+  "need_help_notice_password_assistance": "Password assistance",
+  "need_help_notice_send_email": "Write an email",
+  "need_help_notice_cancel": "Cancel",
+
+  "website_open": "Visit the website",
+  "website_club_open": "Visit our club website",
+  "facebook_open": "Visit our Facebook page",
+  "instagram_open": "Visit our Instagram page",
+  "github_open": "Visit our GitHub page",
+  "youtube_open": "Visit our Youtube page",
+  "email_send": "Send a comment via email",
+  "discord_join": "Join our Discord",
+
+  "close_button_text": "Close",
+
+  "startup_viewmodel_acquire_token_fail": "Connection failed after multiple attempts. Please try again.",
+
+  "title_schedule": "Schedule",
+  "title_student": "Student",
+  "title_dashboard": "Dashboard",
+  "title_ets": "ÉTS",
+  "title_more": "More",
+
+  "title_ets_mobile": "ÉTSMobile",
+  
+  "login_title": "Login",
+  "login_prompt_universal_code": "Universal Code",
+  "login_prompt_password": "Password",
+  "login_action_sign_in": "Sign in",
+  "login_error_invalid_universal_code": "This universal code is invalid",
+  "login_error_field_required": "This field is required",
+  "login_error_invalid_credentials": "Universal code or password is invalid. Could be a server error.",
+  "login_info_universal_code": "The format of your universal code is AB12345. It was sent to you by the Bureau du registraire upon your admission.",
+  "login_msg_logout_success": "You have logged out",
+  "login_applets_logo": "Made by",
+  "login_password_forgotten": "Forgot your password?",
+  "login_password_show": "Show password",
+  "login_password_hide": "Hide password",
+
+  "dashboard_msg_card_removed": "Card removed",
+  "dashboard_restore_all_cards_title": "Restore all cards",
+
+  "card_schedule_tomorrow": " - tomorrow",
+
+  "card_applets_title": "ApplETS",
+  "card_applets_text": "ÉTSMobile was made by the club ApplETS. Support us by liking our Facebook page, contributing to GitHub or sending us your comments via email.",
+  "error_no_email_app": "No email application available",
+
+  "schedule_settings_title": "Schedule Settings",
+  "schedule_settings_show_today_btn_pref": "Show Today button",
+  "schedule_settings_calendar_format_pref": "Calendar format",
+  "schedule_settings_calendar_format_day": "Day",
+  "schedule_settings_calendar_format_month": "Month",
+  "schedule_settings_calendar_format_week": "Week",
+  "schedule_settings_starting_weekday_pref": "First day of the week",
+  "schedule_settings_show_weekend_day": "Show weekend days",
+  "schedule_settings_show_weekend_day_none": "None",
+  "schedule_settings_show_week_events_btn_pref": "Show activities for entire week",
+  "schedule_settings_list_view": "List View",
+  "schedule_no_event": "No events scheduled.",
+  "schedule_settings_starting_weekday_monday": "Monday",
+  "schedule_settings_starting_weekday_tuesday": "Tuesday",
+  "schedule_settings_starting_weekday_wednesday": "Wednesday",
+  "schedule_settings_starting_weekday_thursday": "Thursday",
+  "schedule_settings_starting_weekday_friday": "Friday",
+  "schedule_settings_starting_weekday_saturday": "Saturday",
+  "schedule_settings_starting_weekday_sunday": "Sunday",
+  "schedule_select_course_activity": "Select lab group",
+  "schedule_already_today_tooltip": "Go to today's schedule",
+  "schedule_already_today_toast": "Already showing today's schedule",
+  "schedule_calendar_from": "From",
+  "schedule_calendar_to": "To",
+  "schedule_calendar_from_time": "From",
+  "schedule_calendar_to_time": "To",
+  "schedule_calendar_by": "By",
+  "course_activity_group_a": "Group A",
+  "course_activity_group_b": "Group B",
+  "course_activity_group_both": "Both",
+
+  "calendar_new": "New calendar",
+  "calendar_export": "Export to calendar",
+  "calendar_export_success": "Schedule export successful",
+  "calendar_export_error": "One or more events could not be exported properly",
+  "calendar_export_question": "Which calendar do you want to export to?",
+  "calendar_name": "Calendar name",
+  "calendar_select": "Please select a calendar",
+  "calendar_cancel_button": "Cancel",
+  "calendar_export_button": "Export",
+  "calendar_permission_denied_modal_title": "Permission denied",
+  "calendar_permission_denied": "You denied the app the permission to edit your calendar. Change this preference in system settings to use this feature.",
+
+  "grades_title": "Grades",
+  "grades_in_schedule": "Navigate to schedule {sessionNameYear}",
+  "@grades_in_schedule": {
+    "placeholders": {
+      "sessionNameYear": {
+        "type": "String"
+      }
+    }
+  },
+  "grades_msg_no_grades": "No grade available\nPull to refresh",
+  "grades_msg_no_grade": "No grade available",
+  "grades_current_rating": "Your grade",
+  "grades_average": "Average",
+  "grades_grade_in_percentage": "{grade} %",
+  "@grades_grade_in_percentage": {
+    "placeholders": {
+      "grade": {
+        "type": "Object"
+      }
+    }
+  },
+  "grades_grade_with_percentage": "{grade}/{maxGrade} ({inPercentage}%)",
+  "@grades_grade_with_percentage": {
+    "placeholders": {
+      "grade": {
+        "type": "double"
+      },
+      "maxGrade": {
+        "type": "Object"
+      },
+      "inPercentage": {
+        "type": "double"
+      }
+    }
+  },
+  "grades_weight": "Weight: {weight} %",
+  "@grades_weight": {
+    "placeholders": {
+      "weight": {
+        "type": "double"
+      }
+    }
+  },
+  "grades_group": "Group",
+  "grades_grade": "Grade",
+  "grades_median": "Median",
+  "grades_weighted": "Weighted",
+  "grades_standard_deviation": "Standard Deviation",
+  "grades_percentile_rank": "Percentile Rank",
+  "grades_target_date": "Target Date",
+  "grades_ignored_evaluation_title": "Ignored evaluation",
+  "grades_ignored_evaluation_details": "This evaluation is ignored in the calculation of the final grade. This situation occurs when the teacher has decided to keep, for example, the top three marks of the six assignments he has asked for. The three lowest grades would then be ignored.",
+  "grades_error_failed_to_retrieve_data_course": "Failed to retrieve data for this course",
+  "grades_summary_section_title": "Summary",
+  "grades_evaluations_section_title": "Evaluations",
+  "grades_group_number": "Group {number}",
+  "@grades_group_number": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "credits_number": "Credits: {number}",
+  "@credits_number": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "grades_teacher": "Professor: {teacherName}",
+  "@grades_teacher": {
+    "placeholders": {
+      "teacherName": {
+        "type": "String"
+      }
+    }
+  },
+  "grades_error_course_evaluations_not_completed": "During the evaluation period, you will not be able access your grades if you haven't completed your evaluations.",
+  "grades_not_available": "N/A",
+
+  "profile_title": "Profile",
+  "profile_student_status_title": "Student Status",
+  "profile_personal_information_title": "Personal Information",
+  "profile_first_name": "First Name",
+  "profile_last_name": "Last Name",
+  "profile_permanent_code": "Permanent Code",
+  "profile_permanent_code_copied_to_clipboard": "Permanent code copied to clipboard",
+  "profile_universal_code_copied_to_clipboard": "Universal code copied to clipboard",
+  "profile_balance": "My balance",
+  "profile_code_program": "Code",
+  "profile_average_program": "Average",
+  "profile_number_accumulated_credits_program": "Accumulated Credits",
+  "profile_number_registered_credits_program": "Registered Credits",
+  "profile_number_completed_courses_program": "Completed Courses",
+  "profile_number_failed_courses_program": "Failed Courses",
+  "profile_number_equivalent_courses_program": "Equivalent Courses",
+  "profile_status_program": "Status",
+  "profile_program_completion": "Program completion",
+  "profile_program_completion_not_available": "N/A",
+  "profile_other_programs": "Other Programs",
+
+  "useful_link_title": "Useful links",
+  "ets_security_title": "Security",
+  "ets_monets_title": "MonÉTS",
+  "ets_bibliotech_title": "Bibliotech",
+  "ets_news_title": "News",
+  "ets_moodle_title": "Moodle",
+  "ets_directory_title": "Directory",
+  "ets_heuristique_title": "L'heuristique",
+  "ets_schedule_generator": "HorairÉTS",
+  "ets_gus": "GUS",
+  "ets_papercut_title":"PaperCut",
+  "ets_aeets_title": "AÉÉTS",
+  "ets_100genies_title": "Pub 100 Génies",
+  "ets_stages_et_emplois_title": "Jobs and internships",
+  "ets_eportfolio_title": "ePortfolio",
+  "ets_ebourses_title": "eBourses",
+  "ets_appui_reussite_title": "Student Success Support",
+  "ets_nimbus_title": "Nimbus",
+  "ets_centre_sportif_title": "Sport center",
+  "ets_etudiants_actuels_title": "Current students",
+  "ets_cafe_sans_filtre_title": "Cafe sans filtre",
+  "ets_hide_quick_link": "Hide link {quickLinkName}",
+  "@ets_hide_quick_link": {
+    "placeholders": {
+      "quickLinkName": {
+        "type": "String"
+      }
+    }
+  },
+  "ets_add_quick_link": "Add the link {quickLinkName}",
+  "@ets_add_quick_link": {
+    "placeholders": {
+      "quickLinkName": {
+        "type": "String"
+      }
+    }
+  },
+
+  "news_title" : "News",
+  "news_error_not_found_title" : "Oh oh!",
+  "news_error_not_found" : "Something went wrong while trying to retrieve the news. Please try again later.",
+  "news_no_more_card_title": "You're all set!",
+  "news_no_more_card": "You have reached the end of the news list. Come back another time for more news!",
+  "news_details_title" : "News",
+  "news_event_date": "Event date",
+
+  "news_export_success": "Event successfuly exported",
+  "news_export_error": "An error occured while exporting the event",
+
+  "share": "Share",
+  "export": "Export",
+
+  "report_news": "Why are you reporting this news?",
+  "report_as": "Report as",
+  "report": "Report",
+  "report_toast": "Thank you for your report !",
+  "report_reason_hint": "Comment",
+
+  "report_inappropriate_content": "Inappropriate Content",
+  "report_inappropriate_content_description": "News containing hate speech, shocking images, or adult content.",
+  "report_false_information": "False or Misleading Information",
+  "report_false_information_description": "Ad that appears to be false or misleading.",
+  "report_harassment_or_abuse": "Harassment or Abuse",
+  "report_harassment_or_abuse_description": "News targeting a person or group in an abusive manner.",
+  "report_outdated_content": "Outdated Content",
+  "report_outdated_content_description": "Ad that is no longer up-to-date or relevant.",
+  
+  "search": "Search",
+
+  "news_author_notify_me": "Notify me",
+  "news_author_dont_notify_me": "No longer receive notifications",
+  "news_author_join_us": "Join us",
+  "news_author_notified_for": "You will receive a notification when {author} publishes an announcement.",
+  "@news_author_notified_for": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+  "news_author_not_notified_for": "You will no longer receive a notification when {author} publishes an announcement.",
+  "@news_author_not_notified_for": {
+    "placeholders": {
+      "author": {
+        "type": "String"
+      }
+    }
+  },
+
+  "more_about_applets_title": "About ApplETS",
+  "more_report_bug": "Report a bug or request a feature",
+  "more_report_bug_steps_title": "How does it work?\n\n",
+  "more_report_bug_button": "Provide feedback",
+  "more_prompt_report_bug_method": "How would you like to report the bug?",
+  "more_report_bug_method_screenshot": "Screenshot",
+  "more_report_bug_method_video": "Video recording",
+  "more_contributors": "Contributors",
+  "more_open_source_licenses": "Open source licenses",
+  "more_settings": "Settings",
+  "more_log_out": "Log out",
+  "more_prompt_log_out_confirmation": "Are you sure you want to log out?",
+  "more_log_out_progress": "Logging you out",
+
+  "more_applets_about_details": "ÉTSMobile was conceived by the ApplETS scientific club from the École de technologie supérieure.\n\nApplets is, most importantly, a gathering of students who share a typical enthusiasm for the field of telecommunications and mobile applications. The mission of ApplETS is to train students in mobile development and promote the production of mobile applications within the student community.\n\nFollow us on: ",
+
+  "more_report_bug_bug": "Report a bug",
+  "more_report_bug_bug_subtitle": "\nLet us know so we can forward this to our bug list.",
+  "more_report_bug_feature": "Request a feature",
+  "more_report_bug_feature_subtitle": "\nDo you have an idea that would make our app better ? We would love to know !",
+  "more_report_tips": "Tips",
+  "more_report_bug_step1": "After selecting the option, the feedback view will open.\n\nYou can choose between ",
+  "more_report_bug_step2": "Navigate ",
+  "more_report_bug_step3": "and ",
+  "more_report_bug_step4": "Draw ",
+  "more_report_bug_step5": "mode on the right side. \n\nWhen in navigation mode, you can freely navigate in the app.\n\nTo switch to the drawing mode just press the 'Draw' button. Now you can draw on the screen.\n\nTo finish your feedback just write a description below and send it by pressing the 'Submit' button.",
+
+  "security_bomb_threat_title": "Bomb threat",
+  "security_bomb_threat_detail": "bomb_threat_en.md",
+  "security_suspicious_packages_title": "Suspicious packages",
+  "security_suspicious_packages_detail": "suspicious_packages_en.md",
+  "security_evacuation_title": "Evacuation",
+  "security_evacuation_detail": "evacuation_en.md",
+  "security_gas_leak_title": "Gas leak",
+  "security_gas_leak_detail": "gas_leak_en.md",
+  "security_fire_title": "Fire",
+  "security_fire_detail": "fire_en.md",
+  "security_broken_elevator_title": "Broken elevator",
+  "security_broken_elevator_detail": "broken_elevator_en.md",
+  "security_electrical_outage_title": "Electrical outage",
+  "security_electrical_outage_detail": "electrical_outage_en.md",
+  "security_armed_person_title": "Armed person",
+  "security_armed_person_detail": "armed_person_en.md",
+  "security_earthquake_title": "Earthquake",
+  "security_earthquake_detail": "earthquake_en.md",
+  "security_medical_emergency_title": "Medical emergency",
+  "security_medical_emergency_detail": "medical_emergency_en.md",
+
+  "security_emergency_call": "Emergency call",
+  "security_reach_security": "Reach security",
+  "security_emergency_number": "514 396–8900",
+  "security_emergency_intern_call": "From inside campus",
+  "security_emergency_intern_number": "Ex. 55",
+  "security_emergency_procedures": "Emergency procedures",
+  "security_station": "Security station",
+
+  "settings_title": "Settings",
+  "settings_display_pref_category": "Display",
+  "settings_dark_theme_pref": "Theme",
+  "settings_miscellaneous_category": "Miscellaneous",
+  "settings_language_pref": "Language",
+  "settings_french": "Français",
+  "settings_english": "English",
+  "dark_theme": "Dark",
+  "light_theme": "Light",
+  "system_theme": "System",
+
+  "thank_you_for_the_feedback": "Thank you for the feedback",
+
+  "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
+  "flutter_website": "https://flutter.dev",
+
+  "choose_language_title": "Choose your preferred language",
+  "choose_language_subtitle": "Please select your language",
+  
+  "not_found_title": "Inaccessible Page",
+  "not_found_message": "Oh oh... it seems that the page {pageName} you requested is not accessible.",
+  "@not_found_message": {
+    "placeholders": {
+      "pageName": {
+        "type": "String"
+      }
+    }
+  },
+  "go_to_dashboard": "Go to Dashboard",
+  "go_back": "Back",
+
+  "no_connectivity": "No internet connection",
+  "service_outage": "Sorry, we are currently experiencing connection problems. Please try again later.",
+  "service_outage_contact": "We are aware of the situation. We are doing our best to resolve it as soon as possible.",
+  "service_outage_refresh": "Refresh",
+
+  "progress_bar_title": "Semester progress",
+  "progress_bar_message": "{elapsedDays} days elapsed / {totalDays} days",
+  "@progress_bar_message": {
+    "placeholders": {
+      "elapsedDays": {
+        "type": "int"
+      },
+      "totalDays": {
+        "type": "int"
+      }
+    }
+  },
+  "progress_bar_message_percentage": "{percentage} %",
+  "@progress_bar_message_percentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "progress_bar_message_remaining_days": "{remainingDays} remaining days",
+  "@progress_bar_message_remaining_days": {
+    "placeholders": {
+      "remainingDays": {
+        "type": "int"
+      }
+    }
+  },
+  "progress_bar_suffix": "days",
+
+  "in_app_review_title": "Rate us!",
+  "need_help": "Need help?",
+  "privacy_policy": "Privacy policy",
+  "universal_code_example": "Ex: AB12345",
+  "my_tickets": "My tickets",
+  "no_ticket": "No ticket",
+  "ticket_status_open": "Open",
+  "ticket_status_closed": "Closed",
+  "loading": "Loading...",
+
+  "no_schedule_available": "There are no events scheduled at the moment",
+
+  "social_links_name": "Social link {linkName}",
+  "@social_links_name": {
+    "placeholders": {
+      "linkName": {
+        "type": "String"
+      }
+    }
+  }
+}

@@ -5,11 +5,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
@@ -34,12 +34,7 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> with TickerPr
   void initState() {
     super.initState();
 
-    controller = AnimationController(
-        vsync: this,
-        duration: const Duration(
-          milliseconds: 200,
-        ),
-        value: 1.0);
+    controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 200), value: 1.0);
 
     rotateAnimation = Tween(begin: pi, end: 0.0).animate(CurvedAnimation(parent: controller, curve: Curves.easeIn));
   }
@@ -52,86 +47,73 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> with TickerPr
 
   @override
   Widget build(BuildContext context) => Column(
-        children: [
-          Theme(
-            data: Theme.of(context).copyWith(
-              dividerColor: Colors.transparent,
-            ),
-            child: Card(
-              clipBehavior: Clip.antiAlias,
-              child: ExpansionTile(
-                onExpansionChanged: (value) {
-                  setState(() {
-                    showEvaluationDetails = !showEvaluationDetails;
+    children: [
+      Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: ExpansionTile(
+            onExpansionChanged: (value) {
+              setState(() {
+                showEvaluationDetails = !showEvaluationDetails;
 
-                    if (showEvaluationDetails) {
-                      controller.reverse(from: pi);
-                    } else {
-                      controller.forward(from: 0.0);
-                    }
-                  });
-                },
-                leading: FractionallySizedBox(
-                  heightFactor: 1.3,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => GradeCircularProgress(
-                      constraints.maxHeight / 100,
-                      completed: widget.completed,
-                      key: Key("GradeCircularProgress_${widget.evaluation.title}"),
-                      studentGrade: Utils.getGradeInPercentage(
-                        widget.evaluation.mark,
-                        widget.evaluation.correctedEvaluationOutOfFormatted,
-                      ),
-                      averageGrade: Utils.getGradeInPercentage(
-                        widget.evaluation.passMark,
-                        widget.evaluation.correctedEvaluationOutOfFormatted,
-                      ),
-                    ),
+                if (showEvaluationDetails) {
+                  controller.reverse(from: pi);
+                } else {
+                  controller.forward(from: 0.0);
+                }
+              });
+            },
+            leading: FractionallySizedBox(
+              heightFactor: 1.3,
+              child: LayoutBuilder(
+                builder: (context, constraints) => GradeCircularProgress(
+                  constraints.maxHeight / 100,
+                  completed: widget.completed,
+                  key: Key("GradeCircularProgress_${widget.evaluation.title}"),
+                  studentGrade: Utils.getGradeInPercentage(
+                    widget.evaluation.mark,
+                    widget.evaluation.correctedEvaluationOutOfFormatted,
+                  ),
+                  averageGrade: Utils.getGradeInPercentage(
+                    widget.evaluation.passMark,
+                    widget.evaluation.correctedEvaluationOutOfFormatted,
                   ),
                 ),
-                title: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        widget.evaluation.title,
-                        style: TextStyle(fontSize: 16, color: context.theme.textTheme.bodyMedium!.color),
-                      ),
-                      Text(
-                        AppIntl.of(context)!.grades_weight(widget.evaluation.weight),
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: context.theme.textTheme.bodyMedium!.color,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                trailing: AnimatedBuilder(
-                  animation: rotateAnimation,
-                  builder: (BuildContext context, Widget? child) {
-                    return Transform.rotate(
-                      angle: rotateAnimation.value,
-                      child: const Icon(
-                        Icons.keyboard_arrow_down_sharp,
-                        color: AppPalette.etsLightRed,
-                      ),
-                    );
-                  },
-                  child: const Icon(
-                    Icons.keyboard_arrow_down_sharp,
-                    color: AppPalette.etsLightRed,
-                  ),
-                ),
+              ),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _buildEvaluationSummary(context, widget.evaluation),
+                  Text(
+                    widget.evaluation.title,
+                    style: TextStyle(fontSize: 16, color: context.theme.textTheme.bodyMedium!.color),
+                  ),
+                  Text(
+                    AppIntl.of(context)!.grades_weight(widget.evaluation.weight),
+                    style: TextStyle(fontSize: 14, color: context.theme.textTheme.bodyMedium!.color),
+                  ),
                 ],
               ),
             ),
+            trailing: AnimatedBuilder(
+              animation: rotateAnimation,
+              builder: (BuildContext context, Widget? child) {
+                return Transform.rotate(
+                  angle: rotateAnimation.value,
+                  child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
+                );
+              },
+              child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
+            ),
+            children: <Widget>[_buildEvaluationSummary(context, widget.evaluation)],
           ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 
   Widget _buildEvaluationSummary(BuildContext context, CourseEvaluation evaluation) {
     return Padding(
@@ -140,30 +122,48 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> with TickerPr
         children: [
           _buildSummary(
             AppIntl.of(context)!.grades_grade,
-            Utils.validateResultWithPercentage(context, evaluation.mark, evaluation.correctedEvaluationOutOfFormatted,
-                Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0),
+            Utils.validateResultWithPercentage(
+              context,
+              evaluation.mark,
+              evaluation.correctedEvaluationOutOfFormatted,
+              Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+            ),
           ),
           _buildSummary(
             AppIntl.of(context)!.grades_average,
             Utils.validateResultWithPercentage(
-                context,
-                evaluation.passMark,
-                evaluation.correctedEvaluationOutOfFormatted,
-                Utils.getGradeInPercentage(evaluation.passMark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0),
+              context,
+              evaluation.passMark,
+              evaluation.correctedEvaluationOutOfFormatted,
+              Utils.getGradeInPercentage(evaluation.passMark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+            ),
           ),
           _buildSummary(
             AppIntl.of(context)!.grades_median,
-            Utils.validateResultWithPercentage(context, evaluation.median, evaluation.correctedEvaluationOutOfFormatted,
-                Utils.getGradeInPercentage(evaluation.median, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0),
+            Utils.validateResultWithPercentage(
+              context,
+              evaluation.median,
+              evaluation.correctedEvaluationOutOfFormatted,
+              Utils.getGradeInPercentage(evaluation.median, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+            ),
           ),
           _buildSummary(
-              AppIntl.of(context)!.grades_weighted,
-              Utils.validateResultWithPercentage(context, evaluation.weightedGrade, evaluation.weight,
-                  Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0)),
-          _buildSummary(AppIntl.of(context)!.grades_standard_deviation,
-              validateResult(context, evaluation.standardDeviation.toString())),
-          _buildSummary(AppIntl.of(context)!.grades_percentile_rank,
-              validateResult(context, evaluation.percentileRank.toString())),
+            AppIntl.of(context)!.grades_weighted,
+            Utils.validateResultWithPercentage(
+              context,
+              evaluation.weightedGrade,
+              evaluation.weight,
+              Utils.getGradeInPercentage(evaluation.mark, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+            ),
+          ),
+          _buildSummary(
+            AppIntl.of(context)!.grades_standard_deviation,
+            validateResult(context, evaluation.standardDeviation.toString()),
+          ),
+          _buildSummary(
+            AppIntl.of(context)!.grades_percentile_rank,
+            validateResult(context, evaluation.percentileRank.toString()),
+          ),
           _buildSummary(AppIntl.of(context)!.grades_target_date, getDate(evaluation.targetDate, context)),
         ],
       ),

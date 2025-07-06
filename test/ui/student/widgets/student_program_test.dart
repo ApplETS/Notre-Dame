@@ -2,24 +2,25 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
 import '../../../helpers.dart';
 
 final _program = Program(
-    name: 'Bac',
-    average: '3.01/4.30',
-    status: 'Actif',
-    code: '7425',
-    completedCourses: '34',
-    registeredCredits: '31',
-    accumulatedCredits: '75',
-    equivalentCourses: '0',
-    failedCourses: '0');
+  name: 'Bac',
+  average: '3.01/4.30',
+  status: 'Actif',
+  code: '7425',
+  completedCourses: '34',
+  registeredCredits: '31',
+  accumulatedCredits: '75',
+  equivalentCourses: '0',
+  failedCourses: '0',
+);
 
 void main() {
   late AppIntl intl;

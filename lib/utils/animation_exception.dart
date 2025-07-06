@@ -5,9 +5,9 @@ class AnimationException implements Exception {
   final Exception? _nestedException;
 
   const AnimationException({required String prefix, required String message, Exception? nestedException})
-      : _message = message,
-        _prefix = prefix,
-        _nestedException = nestedException;
+    : _message = message,
+      _prefix = prefix,
+      _nestedException = nestedException;
 
   @override
   String toString() {

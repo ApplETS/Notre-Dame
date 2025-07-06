@@ -10,8 +10,9 @@ import 'auth_service_mock.mocks.dart';
 @GenerateNiceMocks([MockSpec<AuthService>()])
 class AuthServiceMock extends MockAuthService {
   static void stubCreatePublicClientApplication(AuthServiceMock mock, {bool success = true}) {
-    when(mock.createPublicClientApplication(authorityType: anyNamed('authorityType'), broker: anyNamed('broker')))
-        .thenAnswer((_) async => (success, null));
+    when(
+      mock.createPublicClientApplication(authorityType: anyNamed('authorityType'), broker: anyNamed('broker')),
+    ).thenAnswer((_) async => (success, null));
   }
 
   static void stubAcquireTokenSilent(AuthServiceMock mock, {bool success = true}) {
@@ -19,15 +20,16 @@ class AuthServiceMock extends MockAuthService {
     MsalException? exception;
     if (success) {
       result = AuthenticationResult(
-          accessToken: '',
-          authenticationScheme: '',
-          expiresOn: DateTime.now(),
-          idToken: '',
-          authority: '',
-          tenantId: '',
-          scopes: [''],
-          correlationId: '',
-          account: Account(id: '', username: '', name: ''));
+        accessToken: '',
+        authenticationScheme: '',
+        expiresOn: DateTime.now(),
+        idToken: '',
+        authority: '',
+        tenantId: '',
+        scopes: [''],
+        correlationId: '',
+        account: Account(id: '', username: '', name: ''),
+      );
     } else {
       exception = MsalException(message: 'Error');
     }
@@ -39,19 +41,43 @@ class AuthServiceMock extends MockAuthService {
     MsalException? exception;
     if (success) {
       result = AuthenticationResult(
-          accessToken: '',
-          authenticationScheme: '',
-          expiresOn: DateTime.now(),
-          idToken: '',
-          authority: '',
-          tenantId: '',
-          scopes: [''],
-          correlationId: '',
-          account: Account(id: '', username: '', name: ''));
+        accessToken: '',
+        authenticationScheme: '',
+        expiresOn: DateTime.now(),
+        idToken: '',
+        authority: '',
+        tenantId: '',
+        scopes: [''],
+        correlationId: '',
+        account: Account(id: '', username: '', name: ''),
+      );
     } else {
       exception = MsalException(message: 'Error');
     }
     when(mock.acquireToken()).thenAnswer((_) async => (result, exception));
+  }
+
+  static void stubAcquireTokenWithCacheReset(AuthServiceMock mock, {bool success = true}) {
+    AuthenticationResult? result;
+    MsalException? exception;
+
+    if (success) {
+      result = AuthenticationResult(
+        accessToken: '',
+        authenticationScheme: '',
+        expiresOn: DateTime.now(),
+        idToken: '',
+        authority: '',
+        tenantId: '',
+        scopes: [''],
+        correlationId: '',
+        account: Account(id: '', username: '', name: ''),
+      );
+    } else {
+      exception = MsalException(message: 'Error');
+    }
+
+    when(mock.acquireTokenWithCacheReset()).thenAnswer((_) async => (result, exception));
   }
 
   static void stubSignOut(AuthServiceMock mock) {

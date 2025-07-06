@@ -1,10 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/student/grades/widgets/grades_view.dart';
@@ -43,21 +41,12 @@ class _StudentViewState extends State<StudentView> {
                 bottom: TabBar(
                   indicatorColor: context.theme.appColors.tabBarIndicator,
                   labelColor: context.theme.appColors.tabBarLabel,
-                  tabs: List.generate(
-                    tabs.length,
-                    (index) => Tab(text: tabs[index]),
-                  ),
+                  tabs: List.generate(tabs.length, (index) => Tab(text: tabs[index])),
                 ),
               ),
             ];
           },
-          body: SafeArea(
-            top: false,
-            bottom: false,
-            child: TabBarView(
-              children: tabsView,
-            ),
-          ),
+          body: SafeArea(top: false, bottom: false, child: TabBarView(children: tabsView)),
         ),
       ),
     );

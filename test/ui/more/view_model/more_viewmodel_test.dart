@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -18,6 +17,7 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -49,35 +49,43 @@ void main() {
 
   final List<Session> sessions = [
     Session(
-        name: 'Hivers 2XXX',
-        shortName: 'H1',
-        deadlineCancellationASEQ: now,
-        deadlineCancellationWithoutRefundNewStudent: now,
-        deadlineCancellationWithRefund: now,
-        deadlineCancellationWithRefundNewStudent: now,
-        deadlineRegistration: now,
-        startDate: now,
-        startDateCancellationWithoutRefundNewStudent: now,
-        startDateCancellationWithRefund: now,
-        startDateRegistration: now,
-        endDate: now,
-        endDateCourses: now),
+      name: 'Hivers 2XXX',
+      shortName: 'H1',
+      deadlineCancellationASEQ: now,
+      deadlineCancellationWithoutRefundNewStudent: now,
+      deadlineCancellationWithRefund: now,
+      deadlineCancellationWithRefundNewStudent: now,
+      deadlineRegistration: now,
+      startDate: now,
+      startDateCancellationWithoutRefundNewStudent: now,
+      startDateCancellationWithRefund: now,
+      startDateRegistration: now,
+      endDate: now,
+      endDateCourses: now,
+    ),
   ];
 
   final List<CourseActivity> coursesActivities = [
     CourseActivity(
-        courseName: 'sample course',
-        courseGroup: '',
-        activityName: '',
-        activityDescription: '',
-        activityLocation: '',
-        startDateTime: now,
-        endDateTime: now.add(const Duration(hours: 1))),
+      courseName: 'sample course',
+      courseGroup: '',
+      activityName: '',
+      activityDescription: '',
+      activityLocation: '',
+      startDateTime: now,
+      endDateTime: now.add(const Duration(hours: 1)),
+    ),
   ];
 
   final List<Course> courses = [
     Course(
-        acronym: "ABC123", title: "testCourse", group: "09", session: "H2021", programCode: "XYZ", numberOfCredits: 3),
+      acronym: "ABC123",
+      title: "testCourse",
+      group: "09",
+      session: "H2021",
+      programCode: "XYZ",
+      numberOfCredits: 3,
+    ),
   ];
 
   /// Verify all the required functions that are called from the logout function

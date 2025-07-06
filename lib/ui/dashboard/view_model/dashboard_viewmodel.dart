@@ -5,7 +5,6 @@ import 'dart:collection';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/logic/session_progress_use_case.dart';
@@ -25,6 +24,7 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
@@ -136,8 +136,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait(
-        [futureToRunBroadcast(), futureToRunGrades(), _sessionProgressUseCase.fetch(forceUpdate: true), futureToRunSchedule()]);
+    return Future.wait([
+      futureToRunBroadcast(),
+      futureToRunGrades(),
+      _sessionProgressUseCase.fetch(forceUpdate: true),
+      futureToRunSchedule(),
+    ]);
   }
 
   @override
@@ -194,8 +198,10 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     _cardsToDisplay = [];
 
     if (_cards != null) {
-      final orderedCards =
-          SplayTreeMap<PreferencesFlag, int>.from(_cards!, (a, b) => _cards![a]!.compareTo(_cards![b]!));
+      final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
+        _cards!,
+        (a, b) => _cards![a]!.compareTo(_cards![b]!),
+      );
 
       orderedCards.forEach((key, value) {
         if (value >= 0) {
@@ -217,7 +223,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       final tomorrow = now.add(const Duration(days: 1)).withoutTime;
       final twoDaysFromNow = now.add(const Duration(days: 2)).withoutTime;
 
-      final courseActivities = _courseRepository.coursesActivities
+      final courseActivities =
+          _courseRepository.coursesActivities
               ?.where((activity) => activity.endDateTime.isAfter(now) && activity.endDateTime.isBefore(twoDaysFromNow))
               .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
               .toList() ??
@@ -246,14 +253,16 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   Future<bool> _isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
     final courseKey = courseActivity.courseGroup.split('-').first;
 
-    final activityCodeToUse =
-        await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseKey);
+    final activityCodeToUse = await _settingsManager.getDynamicString(
+      PreferencesFlag.scheduleLaboratoryGroup,
+      courseKey,
+    );
 
     return activityCodeToUse == ActivityCode.labGroupA
         ? courseActivity.activityDescription != ActivityDescriptionName.labB
         : activityCodeToUse == ActivityCode.labGroupB
-            ? courseActivity.activityDescription != ActivityDescriptionName.labA
-            : true;
+        ? courseActivity.activityDescription != ActivityDescriptionName.labA
+        : true;
   }
 
   /// Update cards order and display status in preferences

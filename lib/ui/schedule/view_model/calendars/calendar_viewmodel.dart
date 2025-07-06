@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
@@ -16,6 +15,7 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
@@ -56,13 +56,14 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
     return CalendarEventData(
-        title: "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
-        description:
-            "${eventData.courseGroup};$courseLocation;${eventData.activityName};${associatedCourse?.teacherName}",
-        date: eventData.startDateTime,
-        startTime: eventData.startDateTime,
-        endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
-        color: getCourseColor(eventData.courseGroup.split('-')[0]));
+      title: "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
+      description:
+          "${eventData.courseGroup};$courseLocation;${eventData.activityName};${associatedCourse?.teacherName}",
+      date: eventData.startDateTime,
+      startTime: eventData.startDateTime,
+      endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
+      color: getCourseColor(eventData.courseGroup.split('-')[0]),
+    );
   }
 
   Color getCourseColor(String courseName) {
@@ -100,8 +101,9 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Future _assignScheduleActivities(List<ScheduleActivity> listOfSchedules) async {
     if (listOfSchedules.isEmpty ||
-        !listOfSchedules
-            .any((element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode))) {
+        !listOfSchedules.any(
+          (element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode),
+        )) {
       return;
     }
 
@@ -128,10 +130,13 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   Future loadSettingsScheduleActivities() async {
     for (final courseAcronym in scheduleActivitiesByCourse.keys) {
-      final String? activityCodeToUse =
-          await _settingsManager.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
-      final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]
-          ?.firstWhereOrNull((element) => element.activityCode == activityCodeToUse);
+      final String? activityCodeToUse = await _settingsManager.getDynamicString(
+        PreferencesFlag.scheduleLaboratoryGroup,
+        courseAcronym,
+      );
+      final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
+        (element) => element.activityCode == activityCodeToUse,
+      );
       if (scheduleActivityToSet != null) {
         settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.name;
       } else {
@@ -157,8 +162,9 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         }
 
         _coursesActivities.update(dateOnly, (value) {
-          final scheduleActivitiesContainsGroup =
-              settingsScheduleActivities.containsKey(course.courseGroup.split("-").first);
+          final scheduleActivitiesContainsGroup = settingsScheduleActivities.containsKey(
+            course.courseGroup.split("-").first,
+          );
 
           if (scheduleActivitiesContainsGroup) {
             if (_scheduleActivityIsSelected(course)) {
@@ -199,5 +205,5 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   bool returnToCurrentDate();
 
-  handleDateSelectedChanged(DateTime newDate);
+  void handleDateSelectedChanged(DateTime newDate);
 }

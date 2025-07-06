@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart' as table_calendar;
@@ -16,6 +15,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
@@ -48,7 +48,7 @@ void main() {
       activityLocation: 'Room 102',
       activityName: 'Lab Session',
       activityDescription: 'Regular',
-    )
+    ),
   ];
 
   group("day calendar view - ", () {
@@ -63,22 +63,25 @@ void main() {
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
     });
 
-    tearDown(() => {
-          unregister<NavigationService>(),
-          unregister<SettingsRepository>(),
-          unregister<CourseRepository>(),
-          unregister<RemoteConfigService>(),
-          unregister<NetworkingService>(),
-          unregister<AnalyticsService>(),
-        });
+    tearDown(
+      () => {
+        unregister<NavigationService>(),
+        unregister<SettingsRepository>(),
+        unregister<CourseRepository>(),
+        unregister<RemoteConfigService>(),
+        unregister<NetworkingService>(),
+        unregister<AnalyticsService>(),
+      },
+    );
 
     group("list view", () {
       testWidgets("list view", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester
-              .pumpWidget(localizedWidget(child: DayCalendar(listView: true, controller: ScheduleController())));
+          await tester.pumpWidget(
+            localizedWidget(child: DayCalendar(listView: true, controller: ScheduleController())),
+          );
           await tester.pumpAndSettle();
         });
 
@@ -89,8 +92,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester
-              .pumpWidget(localizedWidget(child: DayCalendar(listView: true, controller: ScheduleController())));
+          await tester.pumpWidget(
+            localizedWidget(child: DayCalendar(listView: true, controller: ScheduleController())),
+          );
           await tester.pumpAndSettle();
         });
 
@@ -103,8 +107,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester
-              .pumpWidget(localizedWidget(child: DayCalendar(listView: true, controller: ScheduleController())));
+          await tester.pumpWidget(
+            localizedWidget(child: DayCalendar(listView: true, controller: ScheduleController())),
+          );
           await tester.pumpAndSettle();
         });
 
@@ -118,8 +123,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester
-              .pumpWidget(localizedWidget(child: DayCalendar(listView: false, controller: ScheduleController())));
+          await tester.pumpWidget(
+            localizedWidget(child: DayCalendar(listView: false, controller: ScheduleController())),
+          );
           await tester.pumpAndSettle();
         });
 
@@ -131,8 +137,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester
-              .pumpWidget(localizedWidget(child: DayCalendar(listView: false, controller: ScheduleController())));
+          await tester.pumpWidget(
+            localizedWidget(child: DayCalendar(listView: false, controller: ScheduleController())),
+          );
           await tester.pumpAndSettle();
         });
 
@@ -146,8 +153,9 @@ void main() {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
-          await tester
-              .pumpWidget(localizedWidget(child: DayCalendar(listView: false, controller: ScheduleController())));
+          await tester.pumpWidget(
+            localizedWidget(child: DayCalendar(listView: false, controller: ScheduleController())),
+          );
           await tester.pumpAndSettle();
         });
 

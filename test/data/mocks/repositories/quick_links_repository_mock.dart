@@ -17,10 +17,13 @@ class QuickLinkRepositoryMock extends MockQuickLinkRepository {
   }
 
   /// Stub the function [getQuickLinkDataFromCache] of [mock] when called will throw [toThrow].
-  static void stubGetQuickLinkDataFromCacheException(QuickLinkRepositoryMock mock,
-      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
-    when(mock.getQuickLinkDataFromCache())
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
+  static void stubGetQuickLinkDataFromCacheException(
+    QuickLinkRepositoryMock mock, {
+    Exception toThrow = const ApiException(prefix: 'ApiException'),
+  }) {
+    when(
+      mock.getQuickLinkDataFromCache(),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 
   /// Stub the function [getDefaultQuickLinks] of [mock] when called will return [toReturn].
@@ -34,9 +37,12 @@ class QuickLinkRepositoryMock extends MockQuickLinkRepository {
   }
 
   /// Stub the function [updateQuickLinkDataToCache] of [mock] when called will throw [toThrow].
-  static void stubUpdateQuickLinkDataToCacheException(QuickLinkRepositoryMock mock,
-      {Exception toThrow = const ApiException(prefix: 'ApiException')}) {
-    when(mock.updateQuickLinkDataToCache(any))
-        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
+  static void stubUpdateQuickLinkDataToCacheException(
+    QuickLinkRepositoryMock mock, {
+    Exception toThrow = const ApiException(prefix: 'ApiException'),
+  }) {
+    when(
+      mock.updateQuickLinkDataToCache(any),
+    ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 }

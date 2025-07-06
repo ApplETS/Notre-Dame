@@ -17,27 +17,29 @@ class PaginatedNews {
   /// News
   final List<News> news;
 
-  PaginatedNews(
-      {required this.pageNumber,
-      required this.pageSize,
-      required this.totalPages,
-      required this.totalRecords,
-      required this.news});
+  PaginatedNews({
+    required this.pageNumber,
+    required this.pageSize,
+    required this.totalPages,
+    required this.totalRecords,
+    required this.news,
+  });
 
   factory PaginatedNews.fromJson(Map<String, dynamic> map) => PaginatedNews(
-      pageNumber: map['pageNumber'] as int,
-      pageSize: map['pageSize'] as int,
-      totalPages: map['totalPages'] as int,
-      totalRecords: map['totalRecords'] as int,
-      news: (map['data'] as List<dynamic>).map((e) => News.fromJson(e as Map<String, dynamic>)).toList());
+    pageNumber: map['pageNumber'] as int,
+    pageSize: map['pageSize'] as int,
+    totalPages: map['totalPages'] as int,
+    totalRecords: map['totalRecords'] as int,
+    news: (map['data'] as List<dynamic>).map((e) => News.fromJson(e as Map<String, dynamic>)).toList(),
+  );
 
   Map<String, dynamic> toJson() => {
-        'pageNumber': pageNumber,
-        'pageSize': pageSize,
-        'totalPages': totalPages,
-        'totalRecords': totalRecords,
-        'data': news,
-      };
+    'pageNumber': pageNumber,
+    'pageSize': pageSize,
+    'totalPages': totalPages,
+    'totalRecords': totalRecords,
+    'data': news,
+  };
 
   @override
   bool operator ==(Object other) =>

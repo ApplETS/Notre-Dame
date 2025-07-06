@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:stacked/stacked.dart';
@@ -9,6 +8,7 @@ import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/repositories/author_repository.dart';
 import 'package:notredame/data/repositories/news_repository.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class AuthorViewModel extends BaseViewModel implements Initialisable {
@@ -60,10 +60,14 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
     isNotified = !isNotified;
     if (isNotified) {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_notified_for(author?.organization ?? ""), toastLength: Toast.LENGTH_LONG);
+        msg: appIntl.news_author_notified_for(author?.organization ?? ""),
+        toastLength: Toast.LENGTH_LONG,
+      );
     } else {
       Fluttertoast.showToast(
-          msg: appIntl.news_author_not_notified_for(author?.organization ?? ""), toastLength: Toast.LENGTH_LONG);
+        msg: appIntl.news_author_not_notified_for(author?.organization ?? ""),
+        toastLength: Toast.LENGTH_LONG,
+      );
     }
   }
 

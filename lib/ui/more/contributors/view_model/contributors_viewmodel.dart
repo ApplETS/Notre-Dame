@@ -14,9 +14,7 @@ class ContributorsViewModel extends FutureViewModel {
   @override
   Future futureToRun() {
     return _contributors = github.repositories
-        .listContributors(
-          RepositorySlug.full("ApplETS/Notre-Dame"),
-        )
+        .listContributors(RepositorySlug.full("ApplETS/Notre-Dame"))
         .where((cont) => cont.id != 49699333) // Remove dependabot
         .toList();
   }

@@ -19,40 +19,48 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
   final Program program1 = Program(
-      name: 'program1',
-      code: '0000',
-      average: '0.00',
-      accumulatedCredits: '99',
-      registeredCredits: '99',
-      completedCourses: '99',
-      failedCourses: '0',
-      equivalentCourses: '0',
-      status: 'Actif');
+    name: 'program1',
+    code: '0000',
+    average: '0.00',
+    accumulatedCredits: '99',
+    registeredCredits: '99',
+    completedCourses: '99',
+    failedCourses: '0',
+    equivalentCourses: '0',
+    status: 'Actif',
+  );
   final Program program2 = Program(
-      name: 'program2',
-      code: '0001',
-      average: '0.00',
-      accumulatedCredits: '99',
-      registeredCredits: '99',
-      completedCourses: '99',
-      failedCourses: '0',
-      equivalentCourses: '0',
-      status: 'Actif');
+    name: 'program2',
+    code: '0001',
+    average: '0.00',
+    accumulatedCredits: '99',
+    registeredCredits: '99',
+    completedCourses: '99',
+    failedCourses: '0',
+    equivalentCourses: '0',
+    status: 'Actif',
+  );
   final Program program3 = Program(
-      name: 'program3',
-      code: '0002',
-      average: '0.00',
-      accumulatedCredits: '99',
-      registeredCredits: '99',
-      completedCourses: '99',
-      failedCourses: '99',
-      equivalentCourses: '99',
-      status: 'Actif');
+    name: 'program3',
+    code: '0002',
+    average: '0.00',
+    accumulatedCredits: '99',
+    registeredCredits: '99',
+    completedCourses: '99',
+    failedCourses: '99',
+    equivalentCourses: '99',
+    status: 'Actif',
+  );
 
   final List<Program> programs = [program1, program2, program3];
 
   final ProfileStudent info = ProfileStudent(
-      balance: '99.99', firstName: 'John', lastName: 'Doe', permanentCode: 'DOEJ00000000', universalCode: 'AA000000');
+    balance: '99.99',
+    firstName: 'John',
+    lastName: 'Doe',
+    permanentCode: 'DOEJ00000000',
+    universalCode: 'AA000000',
+  );
 
   group("ProfileViewModel - ", () {
     setUp(() async {
@@ -78,7 +86,7 @@ void main() {
           userRepositoryMock.getInfo(fromCacheOnly: true),
           userRepositoryMock.getPrograms(fromCacheOnly: true),
           userRepositoryMock.getInfo(),
-          userRepositoryMock.getPrograms()
+          userRepositoryMock.getPrograms(),
         ]);
 
         verifyNoMoreInteractions(userRepositoryMock);
@@ -97,7 +105,7 @@ void main() {
           userRepositoryMock.getInfo(fromCacheOnly: true),
           userRepositoryMock.getPrograms(fromCacheOnly: true),
           userRepositoryMock.getInfo(),
-          userRepositoryMock.programs
+          userRepositoryMock.programs,
         ]);
 
         verifyNoMoreInteractions(userRepositoryMock);
@@ -207,13 +215,168 @@ void main() {
 
         expect(viewModel.profileStudent, info);
 
-        verifyInOrder([
-          userRepositoryMock.getInfo(),
-          userRepositoryMock.getPrograms(),
-          userRepositoryMock.info,
-        ]);
+        verifyInOrder([userRepositoryMock.getInfo(), userRepositoryMock.getPrograms(), userRepositoryMock.info]);
 
         verifyNoMoreInteractions(userRepositoryMock);
+      });
+    });
+
+    group('Programs with "Microprogramme [...] enseignement cooperatif" should not be the default program', () {
+      test('Bac program with no internships (microprogramme)', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Baccalauréat en génie logiciel ',
+            code: '7084',
+            average: '3.00',
+            accumulatedCredits: '20',
+            registeredCredits: '0',
+            completedCourses: '10',
+            failedCourses: '1',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+
+        expect(testPrograms.first, viewModel.getCurrentProgram());
+      });
+
+      test('Bac program with 1 active internship (microprogramme)', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Baccalauréat en génie logiciel ',
+            code: '7084',
+            average: '3.00',
+            accumulatedCredits: '20',
+            registeredCredits: '0',
+            completedCourses: '10',
+            failedCourses: '1',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif I',
+            code: '0725',
+            average: '',
+            accumulatedCredits: '0',
+            registeredCredits: '9',
+            completedCourses: '0',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+
+        expect(testPrograms.first, viewModel.getCurrentProgram());
+      });
+
+      test('Bac program with 1 active internship (microprogramme) and 1 completed', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Baccalauréat en génie logiciel ',
+            code: '7084',
+            average: '3.00',
+            accumulatedCredits: '20',
+            registeredCredits: '0',
+            completedCourses: '10',
+            failedCourses: '1',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif I',
+            code: '0725',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '0',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'Dossier fermé',
+          ),
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif II',
+            code: '0726',
+            average: '',
+            accumulatedCredits: '0',
+            registeredCredits: '9',
+            completedCourses: '0',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+
+        expect(testPrograms.first, viewModel.getCurrentProgram());
+      });
+
+      test('Maitrise program with 3 completed internships', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Baccalauréat en génie logiciel ',
+            code: '7084',
+            average: '3.00',
+            accumulatedCredits: '116',
+            registeredCredits: '0',
+            completedCourses: '40',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'Diplome',
+          ),
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif I',
+            code: '0725',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '0',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'Dossier fermé',
+          ),
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif II',
+            code: '0726',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '0',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'Dossier fermé',
+          ),
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif III',
+            code: '0727',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '0',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'Dossier fermé',
+          ),
+          Program(
+            name: 'Maîtrise en génie logiciel',
+            code: '1822',
+            average: '3.00',
+            accumulatedCredits: '4',
+            registeredCredits: '12',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+
+        expect(testPrograms.last, viewModel.getCurrentProgram());
       });
     });
   });

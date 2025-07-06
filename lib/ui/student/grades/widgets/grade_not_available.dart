@@ -1,10 +1,8 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class GradeNotAvailable extends StatelessWidget {
@@ -22,11 +20,7 @@ class GradeNotAvailable extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.school,
-            size: 100,
-            color: AppPalette.etsLightRed,
-          ),
+          const Icon(Icons.school, size: 100, color: AppPalette.etsLightRed),
           const SizedBox(height: 25),
           Text(
             isEvaluationPeriod
@@ -38,10 +32,13 @@ class GradeNotAvailable extends StatelessWidget {
           ),
           const SizedBox(height: 25),
           ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: AppPalette.etsLightRed, foregroundColor: AppPalette.grey.white),
-              onPressed: onPressed,
-              child: Text(AppIntl.of(context)!.retry))
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppPalette.etsLightRed,
+              foregroundColor: AppPalette.grey.white,
+            ),
+            onPressed: onPressed,
+            child: Text(AppIntl.of(context)!.retry),
+          ),
         ],
       ),
     );

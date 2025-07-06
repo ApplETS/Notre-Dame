@@ -3,13 +3,11 @@ import 'dart:async';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +19,7 @@ import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/services/navigation_history_observer.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/router.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
@@ -47,13 +46,14 @@ Future<void> main() async {
   final HelloService helloApiClient = locator<HelloService>();
   helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
-  runZonedGuarded(() {
-    runApp(
-      ETSMobile(settingsManager),
-    );
-  }, (error, stackTrace) {
-    FirebaseCrashlytics.instance.recordError(error, stackTrace);
-  });
+  runZonedGuarded(
+    () {
+      runApp(ETSMobile(settingsManager));
+    },
+    (error, stackTrace) {
+      FirebaseCrashlytics.instance.recordError(error, stackTrace);
+    },
+  );
 }
 
 class ETSMobile extends StatelessWidget {
@@ -64,49 +64,36 @@ class ETSMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    addEdgeToEdgeEffect();
     final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
     final bool outage = remoteConfigService.outage;
     return ChangeNotifierProvider<SettingsRepository>(
       create: (_) => settingsManager,
-      child: Consumer<SettingsRepository>(builder: (context, model, child) {
-        return CalendarControllerProvider(
-          controller: EventController(),
-          child: MaterialApp(
-            title: 'ÉTS Mobile',
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: model.themeMode,
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: const [
-              AppIntl.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            locale: model.locale,
-            supportedLocales: AppIntl.supportedLocales,
-            navigatorKey: locator<NavigationService>().navigatorKey,
-            navigatorObservers: [
-              locator<AnalyticsService>().getAnalyticsObserver(),
-              NavigationHistoryObserver(),
-            ],
-            home: outage ? OutageView() : StartUpView(),
-            onGenerateRoute: generateRoute,
-          ),
-        );
-      }),
+      child: Consumer<SettingsRepository>(
+        builder: (context, model, child) {
+          return CalendarControllerProvider(
+            controller: EventController(),
+            child: MaterialApp(
+              title: 'ÉTS Mobile',
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: model.themeMode,
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: const [
+                AppIntl.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              locale: model.locale,
+              supportedLocales: AppIntl.supportedLocales,
+              navigatorKey: locator<NavigationService>().navigatorKey,
+              navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver(), NavigationHistoryObserver()],
+              home: outage ? OutageView() : StartUpView(),
+              onGenerateRoute: generateRoute,
+            ),
+          );
+        },
+      ),
     );
-  }
-
-  void addEdgeToEdgeEffect() {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarContrastEnforced: false,
-      systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark,
-    ));
   }
 }

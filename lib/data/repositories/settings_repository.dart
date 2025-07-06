@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 
@@ -12,6 +11,7 @@ import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class SettingsRepository with ChangeNotifier {
@@ -37,9 +37,13 @@ class SettingsRepository with ChangeNotifier {
 
   /// Get ThemeMode
   ThemeMode? get themeMode {
-    _preferencesService.getString(PreferencesFlag.theme).then((value) => {
-          if (value != null) {_themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value)}
-        });
+    _preferencesService
+        .getString(PreferencesFlag.theme)
+        .then(
+          (value) => {
+            if (value != null) {_themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value)},
+          },
+        );
 
     return _themeMode;
   }
@@ -85,17 +89,20 @@ class SettingsRepository with ChangeNotifier {
   /// Get Dashboard
   Future<Map<PreferencesFlag, int>> getDashboard() async {
     final Map<PreferencesFlag, int> dashboard = {};
-    final aboutUsIndex = await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
+    final aboutUsIndex =
+        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
         getDefaultCardIndex(PreferencesFlag.aboutUsCard);
 
     dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
 
-    final scheduleCardIndex = await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
+    final scheduleCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
         getDefaultCardIndex(PreferencesFlag.scheduleCard);
 
     dashboard.putIfAbsent(PreferencesFlag.scheduleCard, () => scheduleCardIndex);
 
-    final progressBarCardIndex = await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
+    final progressBarCardIndex =
+        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
         getDefaultCardIndex(PreferencesFlag.progressBarCard);
 
     dashboard.putIfAbsent(PreferencesFlag.progressBarCard, () => progressBarCardIndex);
@@ -139,8 +146,8 @@ class SettingsRepository with ChangeNotifier {
         .getString(PreferencesFlag.scheduleCalendarFormat)
         .then((value) => value == null ? CalendarTimeFormat.week : CalendarTimeFormat.values.byName(value))
         .catchError((error) {
-      return CalendarTimeFormat.week;
-    });
+          return CalendarTimeFormat.week;
+        });
     settings.putIfAbsent(PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
     final showTodayBtn = await _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;

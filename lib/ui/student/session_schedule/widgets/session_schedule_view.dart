@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/student/session_schedule/view_model/session_schedule_viewmodel.dart';
 import 'package:notredame/ui/student/session_schedule/widgets/session_schedule.dart';
@@ -50,7 +50,8 @@ class _ScheduleDefaultViewState extends State<SessionScheduleView> {
                   calendarEvents: model.calendarEvents,
                   loaded: !model.busy(model.isLoadingEvents),
                   displaySaturday: model.displaySaturday,
-                  displaySunday: model.displaySunday),
+                  displaySunday: model.displaySunday,
+                ),
           onRefresh: () => model.refresh(),
         ),
       ),

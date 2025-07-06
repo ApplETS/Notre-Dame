@@ -46,8 +46,12 @@ class SignetsAPIClient {
   /// results to get only the activities for this course.
   /// If the [startDate] and/or [endDate] are specified the results will contains
   /// all the activities between these dates
-  Future<List<CourseActivity>> getCoursesActivities(
-      {String session = "", String courseGroup = "", DateTime? startDate, DateTime? endDate}) async {
+  Future<List<CourseActivity>> getCoursesActivities({
+    String session = "",
+    String courseGroup = "",
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
     final command = GetCoursesActivitiesCommand(
       this,
       _httpClient,
@@ -83,8 +87,11 @@ class SignetsAPIClient {
 
   /// Call the SignetsAPI to get all the evaluations (exams) and the summary
   /// of [course] for the student.
-  Future<CourseSummary> getCourseSummary(
-      {required String session, required String acronym, required String group}) async {
+  Future<CourseSummary> getCourseSummary({
+    required String session,
+    required String acronym,
+    required String group,
+  }) async {
     final command = GetCourseSummaryCommand(
       this,
       _httpClient,
@@ -117,12 +124,7 @@ class SignetsAPIClient {
   /// Call the SignetsAPI to get the list of all [CourseReview] for the [session]
   /// of the student.
   Future<List<CourseReview>> getCourseReviews({required String session}) async {
-    final command = GetCourseReviewsCommand(
-      this,
-      _httpClient,
-      token: await _authService.getToken(),
-      session: session,
-    );
+    final command = GetCourseReviewsCommand(this, _httpClient, token: await _authService.getToken(), session: session);
     return command.execute();
   }
 }
