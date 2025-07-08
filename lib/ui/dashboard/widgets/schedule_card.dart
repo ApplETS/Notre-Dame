@@ -40,7 +40,7 @@ class ScheduleCard extends StatelessWidget {
               courseName: "Développement mobile (ÉTSMobile)",
               activityName: '',
               activityDescription: '5 à 7',
-              activityLocation: '100 Génies',
+              activityLocation: ['100 Génies'],
               startDateTime: DateTime.now(),
               endDateTime: DateTime.now(),
             ),
