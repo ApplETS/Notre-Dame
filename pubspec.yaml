@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.60.4
+version: 4.60.5
 
 environment:
   sdk: '>=3.8.0 <4.0.0'
@@ -28,7 +28,7 @@ dependencies:
   firebase_remote_config: ^5.4.6
 
   # Web
-  url_launcher: ^6.3.1
+  url_launcher: ^6.3.2
 
   # Utils
   logger: ^2.5.0
