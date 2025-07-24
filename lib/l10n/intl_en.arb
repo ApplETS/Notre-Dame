@@ -406,35 +406,7 @@
   "service_outage_contact": "We are aware of the situation. We are doing our best to resolve it as soon as possible.",
   "service_outage_refresh": "Refresh",
 
-  "progress_bar_title": "Semester progress",
-  "progress_bar_message": "{elapsedDays} days elapsed / {totalDays} days",
-  "@progress_bar_message": {
-    "placeholders": {
-      "elapsedDays": {
-        "type": "int"
-      },
-      "totalDays": {
-        "type": "int"
-      }
-    }
-  },
-  "progress_bar_message_percentage": "{percentage} %",
-  "@progress_bar_message_percentage": {
-    "placeholders": {
-      "percentage": {
-        "type": "int"
-      }
-    }
-  },
-  "progress_bar_message_remaining_days": "{remainingDays} remaining days",
-  "@progress_bar_message_remaining_days": {
-    "placeholders": {
-      "remainingDays": {
-        "type": "int"
-      }
-    }
-  },
-  "progress_bar_suffix": "days",
+  "progress_bar": "days remaining",
 
   "in_app_review_title": "Rate us!",
   "need_help": "Need help?",
