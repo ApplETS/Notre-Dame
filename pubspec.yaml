@@ -31,7 +31,7 @@ dependencies:
   url_launcher: ^6.3.2
 
   # Utils
-  logger: ^2.5.0
+  logger: ^2.6.1
   fluttertoast: ^8.2.12
 
   # Widgets
