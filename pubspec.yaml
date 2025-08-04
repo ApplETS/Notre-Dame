@@ -28,7 +28,7 @@ dependencies:
   firebase_remote_config: ^5.4.6
 
   # Web
-  url_launcher: ^6.3.1
+  url_launcher: ^6.3.2
 
   # Utils
   logger: ^2.5.0
