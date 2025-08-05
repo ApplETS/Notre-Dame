@@ -111,7 +111,7 @@ mixin CalendarService {
         title: course.courseName,
         start: TZDateTime.from(course.startDateTime, getLocation('America/Toronto')),
         end: TZDateTime.from(course.endDateTime, getLocation('America/Toronto')),
-        location: course.activityLocation,
+        location: course.activityLocation.join(", "),
         description:
             "${course.courseGroup} \n${course.activityDescription}\n N'EFFACEZ PAS CETTE LIGNE: ${course.hashCode}",
       );

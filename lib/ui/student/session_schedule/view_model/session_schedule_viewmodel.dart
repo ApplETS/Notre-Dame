@@ -40,8 +40,6 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
   }
 
   CalendarEventData<Object> calendarEventData(ScheduleActivity eventData) {
-    final courseLocation = eventData.activityLocation == "Non assign" ? "N/A" : eventData.activityLocation;
-
     final DateTime now = DateTime.now();
     final int daysToAdd = eventData.dayOfTheWeek - (now.weekday % 7);
     final DateTime targetDate = now.add(Duration(days: daysToAdd));
@@ -60,13 +58,9 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
       eventData.endTime.minute,
     ).subtract(const Duration(minutes: 1));
 
-    final durationInHours = newEndTime.difference(newStartTime).inHours;
-
-    final String title = durationInHours == 0 ? eventData.courseAcronym : "${eventData.courseAcronym}\n$courseLocation";
-
     return CalendarEventData(
-      title: title,
-      description: "${eventData.courseAcronym};$courseLocation;${eventData.courseTitle};null",
+      title: eventData.courseAcronym,
+      description: "${eventData.courseAcronym};;${eventData.courseTitle};null",
       date: targetDate,
       startTime: newStartTime,
       endTime: newEndTime,
