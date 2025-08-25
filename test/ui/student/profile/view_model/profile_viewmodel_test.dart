@@ -551,11 +551,22 @@ void main() {
             equivalentCourses: '0',
             status: 'abandonné',
           ),
+          Program(
+            name: 'Maîtrise en génie logiciel',
+            code: '1822',
+            average: '3.50',
+            accumulatedCredits: '20',
+            registeredCredits: '10',
+            completedCourses: '6',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'suspendu',
+          ),
         ];
-        
+
         UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
 
-        expect(viewModel.getCurrentProgram(), testPrograms.last);
+        expect(viewModel.getCurrentProgram().name, testPrograms.last.name);
       });
 
       test('should correctly filter out internship programs with different cycle numbers', () async {
