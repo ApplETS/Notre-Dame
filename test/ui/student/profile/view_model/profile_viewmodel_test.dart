@@ -379,5 +379,226 @@ void main() {
         expect(testPrograms.last, viewModel.getCurrentProgram());
       });
     });
+
+    group('getCurrentProgram', () {
+      test('should throw null when no non-internship programs exist', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif I',
+            code: '0725',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '0',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+          Program(
+            name: 'Microprogramme de 2e cycle en enseignement coopératif II',
+            code: '0726',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '0',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'Dossier fermé',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+
+        expect(() => viewModel.getCurrentProgram(), throwsStateError);
+      });
+
+      test('should prioritize "diplômé" over other non-active statuses', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Baccalauréat en informatique',
+            code: '7084',
+            average: '3.00',
+            accumulatedCredits: '90',
+            registeredCredits: '0',
+            completedCourses: '30',
+            failedCourses: '1',
+            equivalentCourses: '0',
+            status: 'suspendu',
+          ),
+          Program(
+            name: 'Baccalauréat en génie logiciel',
+            code: '7625',
+            average: '3.50',
+            accumulatedCredits: '120',
+            registeredCredits: '0',
+            completedCourses: '40',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'diplômé',
+          ),
+          Program(
+            name: 'Certificat en programmation',
+            code: '4000',
+            average: '2.80',
+            accumulatedCredits: '30',
+            registeredCredits: '0',
+            completedCourses: '10',
+            failedCourses: '2',
+            equivalentCourses: '0',
+            status: 'abandonné',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+
+        expect(viewModel.getCurrentProgram(), testPrograms[1]);
+      });
+
+      test('should return last program when multiple active programs exist', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Baccalauréat en informatique',
+            code: '7084',
+            average: '3.00',
+            accumulatedCredits: '60',
+            registeredCredits: '15',
+            completedCourses: '20',
+            failedCourses: '1',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+          Program(
+            name: 'Certificat en programmation',
+            code: '4000',
+            average: '3.20',
+            accumulatedCredits: '20',
+            registeredCredits: '10',
+            completedCourses: '6',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+          Program(
+            name: 'Programme C',
+            code: '4264',
+            average: '3.10',
+            accumulatedCredits: '15',
+            registeredCredits: '20',
+            completedCourses: '7',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+
+        expect(viewModel.getCurrentProgram(), testPrograms.last);
+      });
+
+      test('should return last program when multiple graduated programs exist', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Baccalauréat en informatique',
+            code: '7084',
+            average: '3.00',
+            accumulatedCredits: '120',
+            registeredCredits: '0',
+            completedCourses: '40',
+            failedCourses: '2',
+            equivalentCourses: '0',
+            status: 'diplômé',
+          ),
+          Program(
+            name: 'Certificat en programmation',
+            code: '4000',
+            average: '3.50',
+            accumulatedCredits: '30',
+            registeredCredits: '0',
+            completedCourses: '10',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'diplômé',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+
+        expect(viewModel.getCurrentProgram(), testPrograms.last);
+      });
+
+      test('should fallback to last program with any status when no active or graduated programs exist', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Baccalauréat en informatique',
+            code: '7084',
+            average: '2.50',
+            accumulatedCredits: '45',
+            registeredCredits: '0',
+            completedCourses: '15',
+            failedCourses: '3',
+            equivalentCourses: '0',
+            status: 'suspendu',
+          ),
+          Program(
+            name: 'Certificat en programmation',
+            code: '4000',
+            average: '2.80',
+            accumulatedCredits: '15',
+            registeredCredits: '0',
+            completedCourses: '5',
+            failedCourses: '2',
+            equivalentCourses: '0',
+            status: 'abandonné',
+          ),
+        ];
+        
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+
+        expect(viewModel.getCurrentProgram(), testPrograms.last);
+      });
+
+      test('should correctly filter out internship programs with different cycle numbers', () async {
+        final List<Program> testPrograms = [
+          Program(
+            name: 'Maîtrise en génie logiciel',
+            code: '1822',
+            average: '3.50',
+            accumulatedCredits: '20',
+            registeredCredits: '10',
+            completedCourses: '6',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+          Program(
+            name: 'Microprogramme de 2e cycle en enseignement coopératif',
+            code: '0825',
+            average: '',
+            accumulatedCredits: '0',
+            registeredCredits: '9',
+            completedCourses: '0',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+          Program(
+            name: 'Microprogramme de 3e cycle en enseignement coopératif',
+            code: '0925',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '0',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'abandonné',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+
+        expect(viewModel.getCurrentProgram(), testPrograms.first);
+      });
+    });
   });
 }
