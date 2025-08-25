@@ -67,10 +67,30 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   }
 
   Program getCurrentProgram() {
-    RegExp regExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
-    List<Program> nonInternshipPrograms = programList
-        .where((item) => !regExp.hasMatch(item.name) && item.status.toLowerCase() == "actif")
+    final RegExp regExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
+    final List<Program> nonInternshipPrograms = programList
+        .where((item) => !regExp.hasMatch(item.name))
         .toList();
+
+    // First try to find an active program
+    List<Program> activePrograms = nonInternshipPrograms
+        .where((item) => item.status.toLowerCase() == "actif")
+        .toList();
+    
+    if (activePrograms.isNotEmpty) {
+      return activePrograms.last;
+    }
+    
+    // If no active program, try to find a graduated program
+    List<Program> graduatedPrograms = nonInternshipPrograms
+        .where((item) => item.status.toLowerCase() == "diplômé")
+        .toList();
+    
+    if (graduatedPrograms.isNotEmpty) {
+      return graduatedPrograms.last;
+    }
+    
+    // Fallback to the last non internship program regardless of status
     return nonInternshipPrograms.last;
   }
 
