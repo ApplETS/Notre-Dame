@@ -73,7 +73,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
         .toList();
 
     // First try to find an active program
-    List<Program> activePrograms = nonInternshipPrograms
+    final activePrograms = nonInternshipPrograms
         .where((item) => item.status.toLowerCase() == "actif")
         .toList();
     
@@ -82,7 +82,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     }
     
     // If no active program, try to find a graduated program
-    List<Program> graduatedPrograms = nonInternshipPrograms
+    final graduatedPrograms = nonInternshipPrograms
         .where((item) => item.status.toLowerCase() == "diplômé")
         .toList();
     
@@ -90,7 +90,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
       return graduatedPrograms.last;
     }
     
-    // Fallback to the last non internship program regardless of status
+    // Fallback to the last non-internship program regardless of status
     return nonInternshipPrograms.last;
   }
 
