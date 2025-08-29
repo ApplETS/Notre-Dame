@@ -139,7 +139,7 @@ void main() {
     group("programProgression - ", () {
       test("calculates program progression correctly", () {
         // Create a list of programs for testing
-        final List<Program> testPrograms = [
+        final List<Program> programsWithKnownCodes = [
           Program(
             name: 'Program A',
             code: '7625', // Program code with matching entry in ProgramCredits
@@ -164,7 +164,7 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: programsWithKnownCodes);
 
         // Create an instance of ProgramCredits
         final ProgramCredits programCredits = ProgramCredits();
@@ -181,7 +181,7 @@ void main() {
 
       test("handles no matching program code", () {
         // Create a list of programs with no matching program code
-        final List<Program> testPrograms = [
+        final List<Program> programWithUnknownCode = [
           Program(
             name: 'Program X',
             code: '9999', // Program code with no matching entry in ProgramCredits
@@ -195,7 +195,7 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: programWithUnknownCode);
 
         // Calculate the program progression
         final int progression = viewModel.programProgression;
@@ -223,7 +223,7 @@ void main() {
 
     group('Programs with "Microprogramme [...] enseignement cooperatif" should not be the default program', () {
       test('Bac program with no internships (microprogramme)', () async {
-        final List<Program> testPrograms = [
+        final List<Program> bacProgramOnly = [
           Program(
             name: 'Baccalauréat en génie logiciel ',
             code: '7084',
@@ -237,13 +237,13 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: bacProgramOnly);
 
-        expect(testPrograms.first, viewModel.getCurrentProgram());
+        expect(bacProgramOnly.first, viewModel.getCurrentProgram());
       });
 
       test('Bac program with 1 active internship (microprogramme)', () async {
-        final List<Program> testPrograms = [
+        final List<Program> bacProgramWithActiveInternship = [
           Program(
             name: 'Baccalauréat en génie logiciel ',
             code: '7084',
@@ -268,13 +268,13 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: bacProgramWithActiveInternship);
 
-        expect(testPrograms.first, viewModel.getCurrentProgram());
+        expect(bacProgramWithActiveInternship.first, viewModel.getCurrentProgram());
       });
 
       test('Bac program with 1 active internship (microprogramme) and 1 completed', () async {
-        final List<Program> testPrograms = [
+        final List<Program> bacProgramWithMixedInternships = [
           Program(
             name: 'Baccalauréat en génie logiciel ',
             code: '7084',
@@ -310,13 +310,13 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: bacProgramWithMixedInternships);
 
-        expect(testPrograms.first, viewModel.getCurrentProgram());
+        expect(bacProgramWithMixedInternships.first, viewModel.getCurrentProgram());
       });
 
       test('Maitrise program with 3 completed internships', () async {
-        final List<Program> testPrograms = [
+        final List<Program> maitriseWithCompletedInternships = [
           Program(
             name: 'Baccalauréat en génie logiciel ',
             code: '7084',
@@ -374,15 +374,15 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: testPrograms);
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: maitriseWithCompletedInternships);
 
-        expect(testPrograms.last, viewModel.getCurrentProgram());
+        expect(maitriseWithCompletedInternships.last, viewModel.getCurrentProgram());
       });
     });
 
     group('getCurrentProgram', () {
       test('should throw null when no non-internship programs exist', () async {
-        final List<Program> testPrograms = [
+        final List<Program> onlyInternshipPrograms = [
           Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif I',
             code: '0725',
@@ -407,13 +407,13 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(onlyInternshipPrograms));
 
         expect(() => viewModel.getCurrentProgram(), throwsStateError);
       });
 
       test('should prioritize "diplômé" over other non-active statuses', () async {
-        final List<Program> testPrograms = [
+        final List<Program> programsWithMixedStatuses = [
           Program(
             name: 'Baccalauréat en informatique',
             code: '7084',
@@ -449,13 +449,13 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(programsWithMixedStatuses));
 
-        expect(viewModel.getCurrentProgram(), testPrograms[1]);
+        expect(viewModel.getCurrentProgram(), programsWithMixedStatuses[1]);
       });
 
       test('should return last program when multiple active programs exist', () async {
-        final List<Program> testPrograms = [
+        final List<Program> multipleActivePrograms = [
           Program(
             name: 'Baccalauréat en informatique',
             code: '7084',
@@ -479,7 +479,7 @@ void main() {
             status: 'actif',
           ),
           Program(
-            name: 'Programme C',
+            name: 'Baccalauréat en Génie Logiciel',
             code: '4264',
             average: '3.10',
             accumulatedCredits: '15',
@@ -491,13 +491,13 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(multipleActivePrograms));
 
-        expect(viewModel.getCurrentProgram(), testPrograms.last);
+        expect(viewModel.getCurrentProgram(), multipleActivePrograms.last);
       });
 
       test('should return last program when multiple graduated programs exist', () async {
-        final List<Program> testPrograms = [
+        final List<Program> multipleGraduatedPrograms = [
           Program(
             name: 'Baccalauréat en informatique',
             code: '7084',
@@ -522,13 +522,13 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(multipleGraduatedPrograms));
 
-        expect(viewModel.getCurrentProgram(), testPrograms.last);
+        expect(viewModel.getCurrentProgram(), multipleGraduatedPrograms.last);
       });
 
       test('should fallback to last program with any status when no active or graduated programs exist', () async {
-        final List<Program> testPrograms = [
+        final List<Program> programsWithNonActiveStatuses = [
           Program(
             name: 'Baccalauréat en informatique',
             code: '7084',
@@ -564,13 +564,13 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(programsWithNonActiveStatuses));
 
-        expect(viewModel.getCurrentProgram().name, testPrograms.last.name);
+        expect(viewModel.getCurrentProgram().name, programsWithNonActiveStatuses.last.name);
       });
 
       test('should correctly filter out internship programs with different cycle numbers', () async {
-        final List<Program> testPrograms = [
+        final List<Program> programsWithMultiCycleInternships = [
           Program(
             name: 'Maîtrise en génie logiciel',
             code: '1822',
@@ -606,9 +606,9 @@ void main() {
           ),
         ];
 
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(testPrograms));
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(programsWithMultiCycleInternships));
 
-        expect(viewModel.getCurrentProgram(), testPrograms.first);
+        expect(viewModel.getCurrentProgram(), programsWithMultiCycleInternships.first);
       });
     });
   });
