@@ -67,17 +67,20 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   }
 
   Program getCurrentProgram() {
-    final RegExp regExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
-    final List<Program> nonInternshipPrograms = programList.where((item) => !regExp.hasMatch(item.name)).toList();
+    final RegExp internshipRegExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
+    final List<Program> nonInternshipPrograms = programList.where((item) => !internshipRegExp.hasMatch(item.name)).toList();
+
+    final activeStatusName = "actif";
+    final graduatedStatusName = "diplômé";
     
     // First try to find a non-internship active program
-    final activePrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == "actif").toList();
+    final activePrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == activeStatusName).toList();
     if (activePrograms.isNotEmpty) {
       return activePrograms.last;
     }
     
     // If no active program, try to find a non-internship graduated program
-    final graduatedPrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == "diplômé").toList();
+    final graduatedPrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == graduatedStatusName).toList();
     if (graduatedPrograms.isNotEmpty) {
       return graduatedPrograms.last;
     }
@@ -88,7 +91,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     }
     
     // If no non-internship programs exist, expand search to include internship programs with active status
-    final allActivePrograms = programList.where((item) => item.status.toLowerCase() == "actif").toList();
+    final allActivePrograms = programList.where((item) => item.status.toLowerCase() == activeStatusName).toList();
     if (allActivePrograms.isNotEmpty) {
       return allActivePrograms.last;
     }
