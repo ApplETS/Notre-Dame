@@ -76,9 +76,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     final graduatedStatus = "diplômé";
 
     // First try to find an active program
-    final activePrograms = nonInternshipPrograms
-        .where((item) => item.status.toLowerCase() == activeStatus)
-        .toList();
+    final activePrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == activeStatus).toList();
     if (activePrograms.isNotEmpty) {
       return activePrograms.last;
     }
@@ -97,9 +95,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     }
 
     // If no programs exist, expand search to include internships with active status
-    final allActivePrograms = programList
-        .where((item) => item.status.toLowerCase() == activeStatus)
-        .toList();
+    final allActivePrograms = programList.where((item) => item.status.toLowerCase() == activeStatus).toList();
     if (allActivePrograms.isNotEmpty) {
       return allActivePrograms.last;
     }
