@@ -70,13 +70,13 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     final RegExp regExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
     final List<Program> nonInternshipPrograms = programList.where((item) => !regExp.hasMatch(item.name)).toList();
     
-    // First try to find an active program
+    // First try to find a non-internship active program
     final activePrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == "actif").toList();
     if (activePrograms.isNotEmpty) {
       return activePrograms.last;
     }
     
-    // If no active program, try to find a graduated program
+    // If no active program, try to find a non-internship graduated program
     final graduatedPrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == "diplômé").toList();
     if (graduatedPrograms.isNotEmpty) {
       return graduatedPrograms.last;
