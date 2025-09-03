@@ -93,7 +93,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
       return allActivePrograms.last;
     }
     
-    // Last resort: return the most recently added program regardless of type or status
+    // Last resort: return the last program regardless of type or status
     return programList.last;
   }
  

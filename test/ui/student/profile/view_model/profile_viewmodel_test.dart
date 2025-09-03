@@ -381,37 +381,6 @@ void main() {
     });
 
     group('getCurrentProgram', () {
-      test('should throw null when no non-internship programs exist', () async {
-        final List<Program> onlyInternshipPrograms = [
-          Program(
-            name: 'Microprogramme de 1er cycle en enseignement coopératif I',
-            code: '0725',
-            average: '',
-            accumulatedCredits: '9',
-            registeredCredits: '0',
-            completedCourses: '1',
-            failedCourses: '0',
-            equivalentCourses: '0',
-            status: 'actif',
-          ),
-          Program(
-            name: 'Microprogramme de 2e cycle en enseignement coopératif II',
-            code: '0726',
-            average: '',
-            accumulatedCredits: '9',
-            registeredCredits: '0',
-            completedCourses: '1',
-            failedCourses: '0',
-            equivalentCourses: '0',
-            status: 'Dossier fermé',
-          ),
-        ];
-
-        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(onlyInternshipPrograms));
-
-        expect(() => viewModel.getCurrentProgram(), throwsStateError);
-      });
-
       test('should prioritize "diplômé" over other non-active statuses', () async {
         final List<Program> programsWithMixedStatuses = [
           Program(
@@ -609,6 +578,79 @@ void main() {
         UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(programsWithMultiCycleInternships));
 
         expect(viewModel.getCurrentProgram(), programsWithMultiCycleInternships.first);
+      });
+
+      test('should return active internship if no active non-internship programs exist', () async {
+        final List<Program> onlyInternshipPrograms = [
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif I',
+            code: '0725',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '1',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'actif',
+          ),
+          Program(
+            name: 'Microprogramme de 2e cycle en enseignement coopératif II',
+            code: '0726',
+            average: '',
+            accumulatedCredits: '9',
+            registeredCredits: '2',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'Dossier fermé',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(onlyInternshipPrograms));
+
+        expect(viewModel.getCurrentProgram(), onlyInternshipPrograms.first);
+      });
+
+      test('should correctly filter out internship programs with different cycle numbers', () async {
+        final List<Program> onlyCompletedInternships = [
+          Program(
+            name: 'Microprogramme de 1er cycle en enseignement coopératif I',
+            code: '0725',
+            average: '',
+            accumulatedCredits: '0',
+            registeredCredits: '9',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'gradué',
+          ),
+          Program(
+            name: 'Microprogramme de 2e cycle en enseignement coopératif',
+            code: '0825',
+            average: '',
+            accumulatedCredits: '0',
+            registeredCredits: '9',
+            completedCourses: '0',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'gradué',
+          ),
+          Program(
+            name: 'Microprogramme de 3e cycle en enseignement coopératif',
+            code: '0925',
+            average: '',
+            accumulatedCredits: '0',
+            registeredCredits: '9',
+            completedCourses: '1',
+            failedCourses: '0',
+            equivalentCourses: '0',
+            status: 'gradué',
+          ),
+        ];
+
+        UserRepositoryMock.stubPrograms(userRepositoryMock, toReturn: List.from(onlyCompletedInternships));
+
+        expect(viewModel.getCurrentProgram(), onlyCompletedInternships.last);
       });
     });
   });
