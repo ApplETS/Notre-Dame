@@ -75,13 +75,15 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     final activeStatus = "actif";
     final graduatedStatus = "diplômé";
 
-    // First try to find a non-internship active program
-    final activePrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == activeStatus).toList();
+    // First try to find an active program
+    final activePrograms = nonInternshipPrograms
+        .where((item) => item.status.toLowerCase() == activeStatus)
+        .toList();
     if (activePrograms.isNotEmpty) {
       return activePrograms.last;
     }
 
-    // If no active program, try to find a non-internship graduated program
+    // If no active program, try to find a graduated program
     final graduatedPrograms = nonInternshipPrograms
         .where((item) => item.status.toLowerCase() == graduatedStatus)
         .toList();
@@ -89,18 +91,20 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
       return graduatedPrograms.last;
     }
 
-    // If no active or graduated non-internship programs found, return most recent non-internship program
+    // If no active or graduated programs, return last program
     if (nonInternshipPrograms.isNotEmpty) {
       return nonInternshipPrograms.last;
     }
 
-    // If no non-internship programs exist, expand search to include internship programs with active status
-    final allActivePrograms = programList.where((item) => item.status.toLowerCase() == activeStatus).toList();
+    // If no programs exist, expand search to include internships with active status
+    final allActivePrograms = programList
+        .where((item) => item.status.toLowerCase() == activeStatus)
+        .toList();
     if (allActivePrograms.isNotEmpty) {
       return allActivePrograms.last;
     }
 
-    // Last resort: return the last program regardless of type or status
+    // Last resort: return the last program/internship regardless of status
     return programList.last;
   }
 
