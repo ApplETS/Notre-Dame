@@ -49,7 +49,6 @@ Future<void> main() async {
       final HelloService helloApiClient = locator<HelloService>();
       helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
-      // WidgetsFlutterBinding.ensureInitialized();
       runApp(ETSMobile(settingsManager));
     },
     (error, stackTrace) {
