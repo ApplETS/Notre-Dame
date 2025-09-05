@@ -21,8 +21,10 @@ import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 class DayCalendar extends StatefulWidget {
   final bool listView;
   final ScheduleController controller;
+  final List<calendar_view.CalendarEventData<Object?>>? events;
+  final DateTime? selectedDate;
 
-  const DayCalendar({super.key, required this.listView, required this.controller});
+  const DayCalendar({super.key, required this.listView, required this.controller, this.events, this.selectedDate});
 
   @override
   State<DayCalendar> createState() => _DayCalendarState();
@@ -48,11 +50,12 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!);
+    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!, skipRepositoryLoad: widget.events != null);
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => model,
-      builder: (context, model, child) => Column(children: [_dayViewHeader(model), _buildEvents(model)]),
+      builder: (context, model, child) =>
+          Column(children: [widget.events == null ? _dayViewHeader(model) : const SizedBox(), _buildEvents(model)]),
     );
   }
 
@@ -77,14 +80,16 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         showVerticalLine: false,
         dayTitleBuilder: calendar_view.DayHeader.hidden,
         key: dayViewKey,
-        controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+        controller: model.eventController..addAll(widget.events ?? model.selectedDayCalendarEvents()),
         onPageChange: (date, _) => ({
           setState(() {
             model.handleDateSelectedChanged(date);
           }),
         }),
         backgroundColor: context.theme.scaffoldBackgroundColor,
-        initialDay: model.daySelected,
+        initialDay: widget.selectedDate ?? model.daySelected,
+        minDay: widget.selectedDate,
+        maxDay: widget.selectedDate,
         hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
         liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
           color: context.theme.textTheme.bodyMedium!.color!,
@@ -99,7 +104,13 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         timeStringBuilder: (date, {secondaryDate}) {
           return DateFormat('H:mm').format(date);
         },
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) {
+          if (events.isNotEmpty) {
+            return _buildEventTile(events[0]);
+          } else {
+            return Container();
+          }
+        },
       ),
     );
   }
@@ -154,20 +165,16 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     );
   }
 
-  Widget _buildEventTile(List<calendar_view.CalendarEventData<dynamic>> events) {
-    if (events.isNotEmpty) {
-      return ScheduleCalendarTile(
-        title: events[0].title,
-        description: events[0].description,
-        start: events[0].startTime,
-        end: events[0].endTime,
-        padding: const EdgeInsets.all(12.0),
-        backgroundColor: events[0].color,
-        buildContext: context,
-      );
-    } else {
-      return Container();
-    }
+  Widget _buildEventTile(calendar_view.CalendarEventData<dynamic> event) {
+    return ScheduleCalendarTile(
+      title: event.title,
+      description: event.description,
+      start: event.startTime,
+      end: event.endTime,
+      padding: const EdgeInsets.all(12.0),
+      backgroundColor: event.color,
+      buildContext: context,
+    );
   }
 
   /// Build the list of the events for the selected day.
@@ -201,7 +208,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           titleCentered: true,
           formatButtonVisible: false,
         ),
-        eventLoader: model.calendarEventsFromDate,
+        eventLoader: widget.events != null ? null : model.calendarEventsFromDate,
         calendarFormat: CalendarFormat.week,
         focusedDay: model.daySelected,
         calendarBuilders: CalendarBuilders(
