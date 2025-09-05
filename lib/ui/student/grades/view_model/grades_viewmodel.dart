@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
@@ -7,6 +6,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/constants/semester_codes.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
@@ -66,17 +66,21 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   /// Sort [courses] by session.
   void _buildCoursesBySession(List<Course> courses) {
     for (final Course course in courses) {
-      coursesBySession.update(course.session, (value) {
-        // Remove the current version of the course
-        value.removeWhere((element) => element.acronym == course.acronym);
-        // Add the updated version of the course
-        value.add(course);
-        value.sort((a, b) => a.acronym.compareTo(b.acronym));
-        return value;
-      }, ifAbsent: () {
-        sessionOrder.add(course.session);
-        return [course];
-      });
+      coursesBySession.update(
+        course.session,
+        (value) {
+          // Remove the current version of the course
+          value.removeWhere((element) => element.acronym == course.acronym);
+          // Add the updated version of the course
+          value.add(course);
+          value.sort((a, b) => a.acronym.compareTo(b.acronym));
+          return value;
+        },
+        ifAbsent: () {
+          sessionOrder.add(course.session);
+          return [course];
+        },
+      );
     }
 
     sessionOrder.sort((a, b) {

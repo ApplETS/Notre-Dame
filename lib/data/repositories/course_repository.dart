@@ -63,7 +63,7 @@ class CourseRepository {
   List<Course>? get courses => _courses;
 
   /// List of the courses activities for the student
-  List<CourseActivity>? _coursesActivities;
+  List<CourseActivity>? _coursesActivities = [];
 
   List<CourseActivity>? get coursesActivities => _coursesActivities;
 
@@ -105,21 +105,17 @@ class CourseRepository {
     }
 
     // Load the activities from the cache if the list doesn't exist
-    if (_coursesActivities == null) {
-      _coursesActivities = [];
+    if (fromCacheOnly) {
       try {
         final List responseCache = jsonDecode(await _cacheManager.get(coursesActivitiesCacheKey)) as List<dynamic>;
 
         // Build list of activities loaded from the cache.
         _coursesActivities = responseCache.map((e) => CourseActivity.fromJson(e as Map<String, dynamic>)).toList();
         _logger.d("$tag - getCoursesActivities: ${_coursesActivities?.length ?? 0} activities loaded from cache");
+        return _coursesActivities;
       } on CacheException catch (_) {
         _logger.e("$tag - getCoursesActivities: exception raised while trying to load activities from cache.");
       }
-    }
-
-    if (fromCacheOnly) {
-      return _coursesActivities;
     }
 
     final List<CourseActivity> fetchedCoursesActivities = [];
@@ -170,10 +166,7 @@ class CourseRepository {
   /// Get and update the list of schedule activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheService]
   /// is updated with the latest version of the schedule activities.
-  Future<List<ScheduleActivity>> getDefaultScheduleActivities({
-    String? session,
-    bool fromCacheOnly = false,
-  }) async {
+  Future<List<ScheduleActivity>> getDefaultScheduleActivities({String? session, bool fromCacheOnly = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       // ignore: parameter_assignments
@@ -192,10 +185,12 @@ class CourseRepository {
           jsonDecode(await _cacheManager.get(scheduleDefaultActivitiesCacheKey + session)) as List<dynamic>;
 
       // Build list of activities loaded from the cache.
-      _scheduleDefaultActivities =
-          responseCache.map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>)).toList();
-      _logger
-          .d("$tag - getScheduleDefaultActivities: ${_scheduleDefaultActivities.length} activities loaded from cache");
+      _scheduleDefaultActivities = responseCache
+          .map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>))
+          .toList();
+      _logger.d(
+        "$tag - getScheduleDefaultActivities: ${_scheduleDefaultActivities.length} activities loaded from cache",
+      );
     } on CacheException catch (_) {
       _logger.e("$tag - getDefaultScheduleActivities: exception raised while trying to load activities from cache.");
     }
@@ -392,8 +387,10 @@ class CourseRepository {
         try {
           await getCourseSummary(course);
         } on ApiException catch (_) {
-          _logger.e("$tag - getCourses: Exception raised while trying to get summary "
-              "of ${course.acronym}.");
+          _logger.e(
+            "$tag - getCourses: Exception raised while trying to get summary "
+            "of ${course.acronym}.",
+          );
           _courses!.add(course);
         }
       } else {
@@ -425,7 +422,10 @@ class CourseRepository {
 
     try {
       summary = await _signetsApiClient.getCourseSummary(
-          session: course.session, acronym: course.acronym, group: course.group);
+        session: course.session,
+        acronym: course.acronym,
+        group: course.group,
+      );
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
@@ -473,8 +473,10 @@ class CourseRepository {
       for (final Session session in _sessions!) {
         sessionReviews = await _signetsApiClient.getCourseReviews(session: session.shortName);
         reviews.putIfAbsent(session.shortName, () => sessionReviews);
-        _logger.d("$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "
-            "evaluations for session ${session.shortName}.");
+        _logger.d(
+          "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "
+          "evaluations for session ${session.shortName}.",
+        );
       }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, e.toString(), e, stacktrace);

@@ -4,12 +4,12 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/utils/utils.dart';
@@ -101,32 +101,44 @@ void main() {
         expect(label2, findsOneWidget);
 
         final String formattedMark = evaluation.mark!.toStringAsFixed(2);
-        final label3 = find.text(intl.grades_grade_with_percentage(
+        final label3 = find.text(
+          intl.grades_grade_with_percentage(
             evaluation.mark!,
             evaluation.correctedEvaluationOutOfFormatted,
             Utils.getGradeInPercentage(double.parse(formattedMark), evaluation.correctedEvaluationOutOfFormatted) ??
-                0.0));
+                0.0,
+          ),
+        );
         expect(label3, findsOneWidget);
 
         final String formattedPassMark = evaluation.passMark!.toStringAsFixed(2);
-        final label4 = find.text(intl.grades_grade_with_percentage(
+        final label4 = find.text(
+          intl.grades_grade_with_percentage(
             double.parse(formattedPassMark),
             evaluation.correctedEvaluationOutOfFormatted,
-            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+          ),
+        );
         expect(label4, findsOneWidget);
 
         final String formattedAverage = evaluation.passMark!.toStringAsFixed(2);
-        final label5 = find.text(intl.grades_grade_with_percentage(
+        final label5 = find.text(
+          intl.grades_grade_with_percentage(
             double.parse(formattedAverage),
             evaluation.correctedEvaluationOutOfFormatted,
-            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+            Utils.getGradeInPercentage(evaluation.passMark!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+          ),
+        );
         expect(label5, findsOneWidget);
 
         final String formattedMedian = evaluation.median!.toStringAsFixed(2);
-        final label6 = find.text(intl.grades_grade_with_percentage(
+        final label6 = find.text(
+          intl.grades_grade_with_percentage(
             double.parse(formattedMedian),
             evaluation.correctedEvaluationOutOfFormatted,
-            Utils.getGradeInPercentage(evaluation.median!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0));
+            Utils.getGradeInPercentage(evaluation.median!, evaluation.correctedEvaluationOutOfFormatted) ?? 0.0,
+          ),
+        );
         expect(label6, findsOneWidget);
 
         final label7 = find.text(evaluation.standardDeviation.toString());

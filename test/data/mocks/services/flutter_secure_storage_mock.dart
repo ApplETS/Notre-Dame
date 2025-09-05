@@ -15,20 +15,29 @@ class FlutterSecureStorageMock extends MockFlutterSecureStorage {
   }
 
   /// Stub the read function of [FlutterSecureStorage] with an [Exception]
-  static void stubReadException(FlutterSecureStorageMock mock,
-      {required String key, required Exception exceptionToThrow}) {
+  static void stubReadException(
+    FlutterSecureStorageMock mock, {
+    required String key,
+    required Exception exceptionToThrow,
+  }) {
     when(mock.read(key: key)).thenThrow(exceptionToThrow);
   }
 
   /// Stub the write function of [FlutterSecureStorage] with an [Exception]
-  static void stubWriteException(FlutterSecureStorageMock mock,
-      {required String key, required Exception exceptionToThrow}) {
+  static void stubWriteException(
+    FlutterSecureStorageMock mock, {
+    required String key,
+    required Exception exceptionToThrow,
+  }) {
     when(mock.write(key: key, value: anyNamed("value"))).thenThrow(exceptionToThrow);
   }
 
   /// Stub the delete function of [FlutterSecureStorage] with an [Exception]
-  static void stubDeleteException(FlutterSecureStorageMock mock,
-      {required String key, required Exception exceptionToThrow}) {
+  static void stubDeleteException(
+    FlutterSecureStorageMock mock, {
+    required String key,
+    required Exception exceptionToThrow,
+  }) {
     when(mock.delete(key: key)).thenThrow(exceptionToThrow);
   }
 }

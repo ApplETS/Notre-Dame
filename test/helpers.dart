@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,6 +26,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'data/mocks/repositories/author_repository_mock.dart';
 import 'data/mocks/repositories/broadcast_message_repository_mock.dart';
@@ -55,20 +55,23 @@ void unregister<T extends Object>() {
 }
 
 /// Load the l10n classes. Take the [child] widget to test
-Widget localizedWidget(
-        {required Widget child, bool useScaffold = true, String locale = 'en', double textScaleFactor = 0.9}) =>
-    RepaintBoundary(
-      child: MaterialApp(
-        localizationsDelegates: const [
-          AppIntl.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: Locale(locale),
-        home: useScaffold ? Scaffold(body: child) : child,
-      ),
-    );
+Widget localizedWidget({
+  required Widget child,
+  bool useScaffold = true,
+  String locale = 'en',
+  double textScaleFactor = 0.9,
+}) => RepaintBoundary(
+  child: MaterialApp(
+    localizationsDelegates: const [
+      AppIntl.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    locale: Locale(locale),
+    home: useScaffold ? Scaffold(body: child) : child,
+  ),
+);
 
 /// Load a mock of the [SignetsAPIClient]
 SignetsAPIClientMock setupSignetsApiMock() {

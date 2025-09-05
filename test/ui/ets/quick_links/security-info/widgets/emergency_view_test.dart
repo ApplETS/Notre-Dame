@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gpt_markdown/gpt_markdown.dart';
 
 // Project imports:
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/emergency_view.dart';
@@ -21,10 +21,11 @@ void main() {
     group('UI - ', () {
       testWidgets('has call button and markdown view', (WidgetTester tester) async {
         await tester.pumpWidget(
-            localizedWidget(child: const EmergencyView('testEmergency', 'assets/markdown/armed_person_en.md')));
+          localizedWidget(child: const EmergencyView('testEmergency', 'assets/markdown/armed_person_en.md')),
+        );
         await tester.pumpAndSettle();
 
-        final markdown = find.byType(Markdown);
+        final markdown = find.byType(GptMarkdown);
         expect(markdown, findsOneWidget);
 
         final Finder phoneButton = find.byType(FloatingActionButton);

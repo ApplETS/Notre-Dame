@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
@@ -9,6 +8,7 @@ import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class ProfileViewModel extends FutureViewModel<List<Program>> {
@@ -24,8 +24,13 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   List<Program> _programList = List.empty();
 
   /// Student's profile
-  final ProfileStudent _student =
-      ProfileStudent(balance: "", firstName: "", lastName: "", permanentCode: "", universalCode: "");
+  final ProfileStudent _student = ProfileStudent(
+    balance: "",
+    firstName: "",
+    lastName: "",
+    permanentCode: "",
+    universalCode: "",
+  );
 
   /// Return the profileStudent
   ProfileStudent get profileStudent {
@@ -39,12 +44,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     int percentage = 0;
 
     if (programList.isNotEmpty) {
-      Program currentProgram = programList.first;
-      for (final program in programList) {
-        if (int.parse(program.registeredCredits) > int.parse(currentProgram.registeredCredits)) {
-          currentProgram = program;
-        }
-      }
+      Program currentProgram = getCurrentProgram();
       final int numberOfCreditsCompleted = int.parse(currentProgram.accumulatedCredits);
       final String code = currentProgram.code;
       bool foundMatch = false;
@@ -64,6 +64,14 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
     }
 
     return percentage;
+  }
+
+  Program getCurrentProgram() {
+    RegExp regExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
+    List<Program> nonInternshipPrograms = programList
+        .where((item) => !regExp.hasMatch(item.name) && item.status.toLowerCase() == "actif")
+        .toList();
+    return nonInternshipPrograms.last;
   }
 
   @override
@@ -110,10 +118,12 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   Future refresh() async {
     try {
       setBusyForObject(isLoadingEvents, true);
-      _userRepository.getInfo().then((value) => _userRepository.getPrograms().then((value) {
-            setBusyForObject(isLoadingEvents, false);
-            notifyListeners();
-          }));
+      _userRepository.getInfo().then(
+        (value) => _userRepository.getPrograms().then((value) {
+          setBusyForObject(isLoadingEvents, false);
+          notifyListeners();
+        }),
+      );
     } on Exception catch (error) {
       onError(error);
     }

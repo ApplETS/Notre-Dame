@@ -26,10 +26,7 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
 
   Future<void> fetchPage(int pageNumber) async {
     try {
-      final pagination = await _newsRepository.getNews(
-        pageNumber: pageNumber,
-        title: title != "" ? title : null,
-      );
+      final pagination = await _newsRepository.getNews(pageNumber: pageNumber, title: title != "" ? title : null);
       final isLastPage = pagination?.totalPages == pageNumber;
       if (isLastPage) {
         pagingController.appendLastPage(pagination?.news ?? []);

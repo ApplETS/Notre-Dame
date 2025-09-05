@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:device_calendar/device_calendar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class CalendarSelectionViewModel {
@@ -22,10 +22,7 @@ class CalendarSelectionViewModel {
   String? selectedCalendarId;
   News? news;
 
-  CalendarSelectionViewModel({
-    required this.translations,
-    this.news,
-  });
+  CalendarSelectionViewModel({required this.translations, this.news});
 
   Future<void> fetchCalendars() async {
     _calendars = await CalendarService.nativeCalendars;
@@ -35,10 +32,7 @@ class CalendarSelectionViewModel {
     if (_calendars == null) return [];
     return _calendars!
         .map<DropdownMenuItem<String>>(
-          (Calendar value) => DropdownMenuItem<String>(
-            value: value.name,
-            child: Text(value.name ?? ""),
-          ),
+          (Calendar value) => DropdownMenuItem<String>(value: value.name, child: Text(value.name ?? "")),
         )
         .toList();
   }
@@ -78,8 +72,6 @@ class CalendarSelectionViewModel {
   }
 
   void _showToast(String message) {
-    Fluttertoast.showToast(
-      msg: message,
-    );
+    Fluttertoast.showToast(msg: message);
   }
 }

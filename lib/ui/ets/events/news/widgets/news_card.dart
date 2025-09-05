@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -10,6 +9,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class NewsCard extends StatefulWidget {
@@ -85,10 +85,7 @@ class _NewsCardState extends State<NewsCard> {
       enabled: true,
       child: Container(
         height: 200,
-        decoration: BoxDecoration(
-          color: Colors.grey,
-          borderRadius: BorderRadius.circular(16),
-        ),
+        decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(16)),
       ),
     );
   }
@@ -100,17 +97,9 @@ class _NewsCardState extends State<NewsCard> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Flexible(
-          child: Text(
-            news.title,
-            style: textStyle,
-          ),
-        ),
+        Flexible(child: Text(news.title, style: textStyle)),
         const SizedBox(width: 10),
-        Text(
-          timeago.format(news.publicationDate, locale: AppIntl.of(context)!.localeName),
-          style: textStyle,
-        ),
+        Text(timeago.format(news.publicationDate, locale: AppIntl.of(context)!.localeName), style: textStyle),
       ],
     );
   }

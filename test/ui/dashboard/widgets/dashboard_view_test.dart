@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/domain/broadcast_icon_type.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/widgets/broadcast_message_card.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import '../../../data/mocks/repositories/broadcast_message_repository_mock.dart';
@@ -27,7 +27,7 @@ void main() {
     PreferencesFlag.aboutUsCard: 0,
     PreferencesFlag.scheduleCard: 1,
     PreferencesFlag.progressBarCard: 2,
-    PreferencesFlag.gradesCard: 3
+    PreferencesFlag.gradesCard: 3,
   };
 
   final numberOfCards = dashboard.entries.length;
@@ -61,7 +61,7 @@ void main() {
       PreferencesFlag.aboutUsCard,
       PreferencesFlag.scheduleCard,
       PreferencesFlag.progressBarCard,
-      PreferencesFlag.gradesCard
+      PreferencesFlag.gradesCard,
     ]) {
       SettingsRepositoryMock.stubSetInt(settingsManagerMock, flag);
     }
@@ -76,10 +76,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Find Dashboard Title
-      final dashboardTitle = find.descendant(
-        of: find.byType(AppBar),
-        matching: find.byType(Text),
-      );
+      final dashboardTitle = find.descendant(of: find.byType(AppBar), matching: find.byType(Text));
       expect(dashboardTitle, findsOneWidget);
 
       // Find restoreCards Button
@@ -98,8 +95,12 @@ void main() {
   }
 
   group("Dismiss and restore - ", () {
-    Future<void> swipeAndRestore(WidgetTester tester, String cardTitle, int index,
-        {bool dragUntilVisible = false}) async {
+    Future<void> swipeAndRestore(
+      WidgetTester tester,
+      String cardTitle,
+      int index, {
+      bool dragUntilVisible = false,
+    }) async {
       await tester.pumpWidget(localizedWidget(child: const DashboardView()));
       await tester.pumpAndSettle();
 
@@ -162,7 +163,10 @@ void main() {
       final destinationCard = find.widgetWithText(Dismissible, destinationCardTitle);
 
       await longPressDrag(
-          tester, tester.getCenter(initialCard), tester.getCenter(destinationCard) + const Offset(0.0, 1000));
+        tester,
+        tester.getCenter(initialCard),
+        tester.getCenter(destinationCard) + const Offset(0.0, 1000),
+      );
       await tester.pumpAndSettle();
 
       await tester.tap(find.byIcon(Icons.restore));
@@ -170,37 +174,51 @@ void main() {
     }
 
     testWidgets('AboutUsCard is reorderable and can be restored', (tester) async {
-      await reorderAndRestore(tester,
-          initialCardTitle: intl.card_applets_title, destinationCardTitle: intl.progress_bar_title);
+      await reorderAndRestore(
+        tester,
+        initialCardTitle: intl.card_applets_title,
+        destinationCardTitle: intl.progress_bar_title,
+      );
     });
 
     testWidgets('ScheduleCard is reorderable and can be restored', (tester) async {
-      await reorderAndRestore(tester,
-          initialCardTitle: intl.title_schedule, destinationCardTitle: intl.card_applets_title);
+      await reorderAndRestore(
+        tester,
+        initialCardTitle: intl.title_schedule,
+        destinationCardTitle: intl.card_applets_title,
+      );
     });
 
     testWidgets('ProgressBarCard is reorderable and can be restored', (tester) async {
-      await reorderAndRestore(tester,
-          initialCardTitle: intl.progress_bar_title, destinationCardTitle: intl.title_schedule);
+      await reorderAndRestore(
+        tester,
+        initialCardTitle: intl.progress_bar_title,
+        destinationCardTitle: intl.title_schedule,
+      );
     });
 
     testWidgets('GradesCard is reorderable and can be restored', (tester) async {
-      await reorderAndRestore(tester,
-          initialCardTitle: intl.progress_bar_title, destinationCardTitle: intl.title_schedule);
+      await reorderAndRestore(
+        tester,
+        initialCardTitle: intl.progress_bar_title,
+        destinationCardTitle: intl.title_schedule,
+      );
     });
   });
 
   testWidgets('Broadcast message displays BroadcastMessageCard when not empty', (tester) async {
     RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock, toReturn: true);
     BroadcastMessageRepositoryMock.stubGetBroadcastMessage(
-        broadcastMessageRepositoryMock,
-        "en",
-        BroadcastMessage(
-            message: "Test",
-            title: "Test title",
-            color: Color(0xFFFF9000),
-            url: "https://example.com",
-            type: BroadcastIconType.alert));
+      broadcastMessageRepositoryMock,
+      "en",
+      BroadcastMessage(
+        message: "Test",
+        title: "Test title",
+        color: Color(0xFFFF9000),
+        url: "https://example.com",
+        type: BroadcastIconType.alert,
+      ),
+    );
 
     await tester.pumpWidget(localizedWidget(child: const DashboardView()));
     await tester.pumpAndSettle();

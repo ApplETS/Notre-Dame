@@ -9,24 +9,30 @@ class ActivityArea {
 
   final DateTime updatedAt;
 
-  ActivityArea(
-      {required this.id, required this.nameFr, required this.nameEn, required this.createdAt, required this.updatedAt});
+  ActivityArea({
+    required this.id,
+    required this.nameFr,
+    required this.nameEn,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
   /// Used to create [ActivityArea] instance from a JSON file
   factory ActivityArea.fromJson(Map<String, dynamic> map) => ActivityArea(
-      id: map['id'] as String,
-      nameFr: map['nameFr'] as String,
-      nameEn: map['nameEn'] as String,
-      createdAt: DateTime.parse(map['createdAt'] as String),
-      updatedAt: DateTime.parse(map['updatedAt'] as String));
+    id: map['id'] as String,
+    nameFr: map['nameFr'] as String,
+    nameEn: map['nameEn'] as String,
+    createdAt: DateTime.parse(map['createdAt'] as String),
+    updatedAt: DateTime.parse(map['updatedAt'] as String),
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'nameFr': nameFr,
-        'nameEn': nameEn,
-        'createdAt': createdAt.toString(),
-        'updatedAt': updatedAt.toString(),
-      };
+    'id': id,
+    'nameFr': nameFr,
+    'nameEn': nameEn,
+    'createdAt': createdAt.toString(),
+    'updatedAt': updatedAt.toString(),
+  };
 
   @override
   bool operator ==(Object other) =>

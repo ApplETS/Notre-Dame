@@ -28,19 +28,13 @@ class DayViewModel extends CalendarViewModel {
   @override
   handleDateSelectedChanged(DateTime newDate) {
     daySelected = newDate.withoutTime;
-
-    eventController.removeWhere((event) => event.date.withoutTime.difference(daySelected).inDays.abs() > 1);
-
-    List<CalendarEventData> eventsToAdd = selectedDayCalendarEvents();
-
-    eventController.addAll(eventsToAdd);
+    eventController.removeWhere((event) => true);
   }
 
   List<CalendarEventData> selectedDayCalendarEvents() {
     final List<CalendarEventData> events = [];
 
     // We want to put events of previous and next day in memory to make transitions smoother
-    // TODO fix duplicate events
     for (int i = -1; i <= 1; i++) {
       final date = daySelected.add(Duration(days: i));
       events.addAll(calendarEventsFromDate(date));

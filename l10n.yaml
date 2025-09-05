@@ -1,4 +1,4 @@
-arb-dir: l10n
+arb-dir: lib/l10n
 template-arb-file: intl_fr.arb
 output-localization-file: app_localizations.dart
 output-class: AppIntl

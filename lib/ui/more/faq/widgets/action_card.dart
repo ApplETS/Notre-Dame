@@ -1,14 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Project imports:
-import 'package:notredame/ui/more/faq/models/faq_actions.dart';
-
 class ActionCard extends StatelessWidget {
   final String title;
   final String description;
-  final ActionType type;
-  final String link;
   final IconData iconName;
   final Color iconColor;
   final Color circleColor;
@@ -18,8 +13,6 @@ class ActionCard extends StatelessWidget {
     super.key,
     required this.title,
     required this.description,
-    required this.type,
-    required this.link,
     required this.iconName,
     required this.iconColor,
     required this.circleColor,
@@ -41,14 +34,7 @@ class ActionCard extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontSize: 18,
-                            ),
-                      ),
-                    ),
+                    Expanded(child: Text(title, style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18))),
                     const SizedBox(width: 16),
                     CircleAvatar(
                       backgroundColor: circleColor,
@@ -58,10 +44,7 @@ class ActionCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12.0),
-                Text(
-                  description,
-                  style: Theme.of(context).textTheme.bodyLarge!,
-                )
+                Text(description, style: Theme.of(context).textTheme.bodyLarge!),
               ],
             ),
           ),

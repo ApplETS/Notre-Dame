@@ -1,5 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 
+// Dart imports:
+import 'dart:convert';
+
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+
 // Package imports:
 import 'package:xml/xml.dart';
 
@@ -20,7 +26,7 @@ class CourseActivity {
   final String activityDescription;
 
   /// Place where the activity is given
-  final String activityLocation;
+  final List<String> activityLocation;
 
   /// Date when the activity start
   final DateTime startDateTime;
@@ -28,44 +34,59 @@ class CourseActivity {
   /// Date when the activity end
   final DateTime endDateTime;
 
-  CourseActivity(
-      {required this.courseGroup,
-      required this.courseName,
-      required this.activityName,
-      required this.activityDescription,
-      required this.activityLocation,
-      required this.startDateTime,
-      required this.endDateTime});
+  CourseActivity({
+    required this.courseGroup,
+    required this.courseName,
+    required this.activityName,
+    required this.activityDescription,
+    required this.activityLocation,
+    required this.startDateTime,
+    required this.endDateTime,
+  });
 
   /// Used to create a new [CourseActivity] instance from a [XMLElement].
   factory CourseActivity.fromXmlNode(XmlElement node) => CourseActivity(
-      courseGroup: node.getElement('coursGroupe')!.innerText,
-      courseName: node.getElement('libelleCours')!.innerText,
-      activityName: node.getElement('nomActivite')!.innerText,
-      activityDescription: node.getElement('descriptionActivite')!.innerText,
-      activityLocation: node.getElement('local')!.innerText,
-      startDateTime: DateTime.parse(node.getElement('dateDebut')!.innerText),
-      endDateTime: DateTime.parse(node.getElement('dateFin')!.innerText));
+    courseGroup: node.getElement('coursGroupe')!.innerText,
+    courseName: node.getElement('libelleCours')!.innerText,
+    activityName: node.getElement('nomActivite')!.innerText,
+    activityDescription: node.getElement('descriptionActivite')!.innerText,
+    activityLocation: [node.getElement('local')!.innerText],
+    startDateTime: DateTime.parse(node.getElement('dateDebut')!.innerText),
+    endDateTime: DateTime.parse(node.getElement('dateFin')!.innerText),
+  );
 
   /// Used to create [CourseActivity] instance from a JSON file
   factory CourseActivity.fromJson(Map<String, dynamic> map) => CourseActivity(
-      courseGroup: map['courseGroup'] as String,
-      courseName: map['courseName'] as String,
-      activityName: map['activityName'] as String,
-      activityDescription: map['activityDescription'] as String,
-      activityLocation: map['activityLocation'] as String,
-      startDateTime: DateTime.parse(map['startDateTime'] as String),
-      endDateTime: DateTime.parse(map['endDateTime'] as String));
+    courseGroup: map['courseGroup'] as String,
+    courseName: map['courseName'] as String,
+    activityName: map['activityName'] as String,
+    activityDescription: map['activityDescription'] as String,
+    activityLocation: jsonDecode(map['activityLocation'] as String).cast<String>() as List<String>,
+    startDateTime: DateTime.parse(map['startDateTime'] as String),
+    endDateTime: DateTime.parse(map['endDateTime'] as String),
+  );
 
   Map<String, dynamic> toJson() => {
-        'courseGroup': courseGroup,
-        'courseName': courseName,
-        'activityName': activityName,
-        'activityDescription': activityDescription,
-        'activityLocation': activityLocation,
-        'startDateTime': startDateTime.toString(),
-        'endDateTime': endDateTime.toString()
-      };
+    'courseGroup': courseGroup,
+    'courseName': courseName,
+    'activityName': activityName,
+    'activityDescription': activityDescription,
+    'activityLocation': jsonEncode(activityLocation),
+    'startDateTime': startDateTime.toString(),
+    'endDateTime': endDateTime.toString(),
+  };
+
+  CourseActivity copyWithLocations(List<String> activityLocation) {
+    return CourseActivity(
+      courseGroup: courseGroup,
+      courseName: courseName,
+      activityName: activityName,
+      activityDescription: activityDescription,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      activityLocation: activityLocation,
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -76,7 +97,7 @@ class CourseActivity {
           courseName == other.courseName &&
           activityName == other.activityName &&
           activityDescription == other.activityDescription &&
-          activityLocation == other.activityLocation &&
+          listEquals(activityLocation, other.activityLocation) &&
           startDateTime == other.startDateTime &&
           endDateTime == other.endDateTime;
 

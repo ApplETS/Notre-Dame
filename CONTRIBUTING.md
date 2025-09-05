@@ -1,33 +1,39 @@
 # Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change. 
+email, or any other method with the owners of this repository before making a change.
 
 Please note we have a code of conduct, please follow it in all your interactions with the project.
 
 ## Coding Process
 
-1. Name your branch using the following format: `{feature/patch/bugfix}/#{issue number}-{issue description}`
- - Example: `feature/#68-migration-to-null-safety`
-2. Leave the code in a better state than before your changes. That does mean performing refactoring in the areas around the modified code.
+1. Name your branch using the following format:
+   `{feature/patch/bugfix}/#{issue number}-{issue description}`
+    - Example: `feature/#68-migration-to-null-safety`
+2. Leave the code in a better state than before your changes. That does mean performing refactoring
+   in the areas around the modified code.
 3. Test your changes using unit tests.
 4. Run `flutter analyze` before submitting a pull request and fix any discovered issues.
 
 ### Versioning
 
-The CI automatically updates the version in the `pubspec.yaml` file when opening a pull-request using the specified label: `version: Major`,`version: Minor` or `version: Patch`.
+The CI automatically updates the version in the `pubspec.yaml` file when opening a pull-request
+using the specified label: `version: Major`,`version: Minor` or `version: Patch`.
 
-  - `version: Major`: used when a complete UI redesign is done or when a complete rewrite is done in the project;
-  - `version: Minor`: used when adding a feature in the application;
-  - `version: Patch`: used when no feature was added to the project. This includes refactoring, patches, bug fixes, etc.
+- `version: Major`: used when a complete UI redesign is done or when a complete rewrite is done in
+  the project;
+- `version: Minor`: used when adding a feature in the application;
+- `version: Patch`: used when no feature was added to the project. This includes refactoring,
+  patches, bug fixes, etc.
 
 ## Pull Request Process
 
 1. **Define a related Issue**
 
-If suggesting a new feature or change, please discuss it in an issue first
-For more explanation: https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword
-Please link the issue here: (use keyword `closes: #12345`)
+If suggesting a new feature or change, please discuss it in an issue first.
+<br/>For more explanation: 
+[GitHub Issue Documentation](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
+<br/>Please link the issue here: (use keyword `closes: #12345`)
 
 2. **Description**
 
@@ -42,10 +48,11 @@ see how your change affects other areas of the code, etc.
 4. **Checklist before requesting a review**
 
 Make sure to fill out the following checklist for a change request:
-  - [ ] I have performed a self-review of my code.
-  - [ ] If it is a core feature, I have added thorough tests.
-  - [ ] Do we need to implement analytics?
-  - [ ] Make sure to add either one of the following labels: `version: Major`,`version: Minor` or `version: Patch`. 
+
+- [ ] I have performed a self-review of my code.
+- [ ] If it is a core feature, I have added thorough tests.
+- [ ] Do we need to implement analytics?
+- [ ] Make sure to add either one of the following labels: `version: Major`,`version: Minor` or `version: Patch`.
 
 5. **Screenshots (if useful)**
 
@@ -76,7 +83,7 @@ include:
 Examples of unacceptable behavior by participants include:
 
 * The use of sexualized language or imagery and unwelcome sexual attention or
-advances
+  advances
 * Trolling, insulting/derogatory comments, and personal or political attacks
 * Public or private harassment
 * Publishing others' private information, such as a physical or electronic
@@ -108,7 +115,7 @@ further defined and clarified by project maintainers.
 ### Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at applets@etsmtl.ca. All
+reported by contacting the project team at [applets@etsmtl.ca](mailto:applets@etsmtl.ca). All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
@@ -124,4 +131,5 @@ This Code of Conduct is adapted from the [Contributor Covenant][homepage], versi
 available at [http://contributor-covenant.org/version/1/4][version]
 
 [homepage]: http://contributor-covenant.org
+
 [version]: http://contributor-covenant.org/version/1/4/

@@ -28,7 +28,7 @@ void main() {
       startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
       endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
       courseGroup: 'LOG100',
-      activityLocation: 'Room 102',
+      activityLocation: ['Room 102'],
       activityName: 'Lab Session',
       activityDescription: 'Regular',
     ),
@@ -37,10 +37,10 @@ void main() {
       startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
       endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
       courseGroup: 'ING150-01',
-      activityLocation: 'Room 101',
+      activityLocation: ['Room 101'],
       activityName: 'Lecture 1',
       activityDescription: 'Regular',
-    )
+    ),
   ];
 
   group("week calendar view - ", () {
@@ -55,14 +55,16 @@ void main() {
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
     });
 
-    tearDown(() => {
-          unregister<NavigationService>(),
-          unregister<SettingsRepository>(),
-          unregister<CourseRepository>(),
-          unregister<RemoteConfigService>(),
-          unregister<NetworkingService>(),
-          unregister<AnalyticsService>(),
-        });
+    tearDown(
+      () => {
+        unregister<NavigationService>(),
+        unregister<SettingsRepository>(),
+        unregister<CourseRepository>(),
+        unregister<RemoteConfigService>(),
+        unregister<NetworkingService>(),
+        unregister<AnalyticsService>(),
+      },
+    );
 
     testWidgets("displays saturday and sunday", (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);

@@ -5,14 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:notredame/data/models/quick_link.dart';
 
 class SocialLink extends QuickLink {
-  SocialLink({
-    required super.id,
-    required super.name,
-    required super.link,
-  }) : super(
-            image: SvgPicture.asset(
-          "assets/images/${name.toLowerCase()}_logo.svg",
-          height: 55,
-          width: 55,
-        ));
+  SocialLink({required super.id, required super.name, required super.link})
+    : super(image: SvgPicture.asset("assets/images/${name.toLowerCase()}_logo.svg", height: 55, width: 55));
 }

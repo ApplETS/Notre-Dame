@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 
 class MonthCalendar extends StatelessWidget {
   final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
@@ -44,31 +43,24 @@ class MonthCalendar extends StatelessWidget {
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
       onPageChange: (date, page) => model.handleDateSelectedChanged(date),
       weekDayBuilder: (int value) => WeekDayTile(
-          dayIndex: value,
-          displayBorder: false,
-          textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
-          backgroundColor: context.theme.appColors.appBar,
-          weekDayStringBuilder: (p0) => weekTitles[p0]),
+        dayIndex: value,
+        displayBorder: false,
+        textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
+        backgroundColor: context.theme.appColors.appBar,
+        weekDayStringBuilder: (p0) => weekTitles[p0],
+      ),
       headerStringBuilder: (date, {secondaryDate}) {
         final locale = AppIntl.of(context)!.localeName;
         return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
       },
       headerStyle: HeaderStyle(
-          decoration: BoxDecoration(
-            color: context.theme.appColors.appBar,
-          ),
-          leftIconConfig: IconDataConfig(
-            color: context.theme.textTheme.bodyMedium!.color!,
-            size: 30,
-          ),
-          rightIconConfig: IconDataConfig(
-            color: context.theme.textTheme.bodyMedium!.color!,
-            size: 30,
-          )),
+        decoration: BoxDecoration(color: context.theme.appColors.appBar),
+        leftIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
+        rightIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
+      ),
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
-      cellBuilder: (date, events, _, __, ___) => FilledCell(
-        onTileTap: (events, date) => _navigateToDayView(context, date),
+      cellBuilder: (date, events, _, _, _) => FilledCell(
         hideDaysNotInMonth: false,
         titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,
@@ -77,21 +69,6 @@ class MonthCalendar extends StatelessWidget {
         isInMonth: date.month == DateTime.now().month,
         events: events,
         backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
-      ),
-      onCellTap: (events, date) => _navigateToDayView(context, date),
-      onEventTap: (event, date) => _navigateToDayView(context, date),
-    );
-  }
-
-  void _navigateToDayView(BuildContext context, DateTime date) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => DayCalendar(
-          listView: false,
-          controller: controller,
-          selectedDate: date,
-          showBackButton: true,
-        ),
       ),
     );
   }

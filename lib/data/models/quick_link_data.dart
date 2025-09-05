@@ -5,16 +5,10 @@ class QuickLinkData {
   QuickLinkData({required this.id, required this.index});
 
   factory QuickLinkData.fromJson(Map<String, dynamic> json) {
-    return QuickLinkData(
-      id: json['id'] as int,
-      index: json['index'] as int,
-    );
+    return QuickLinkData(id: json['id'] as int, index: json['index'] as int);
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'index': index,
-    };
+    return {'id': id, 'index': index};
   }
 }

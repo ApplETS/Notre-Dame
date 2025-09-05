@@ -25,56 +25,40 @@ void main() {
       mockCourseRepository = setupCourseRepositoryMock();
 
       lectureActivity = ScheduleActivity(
-          courseAcronym: 'COURSE101',
-          courseGroup: '01',
-          courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 2,
-          day: 'Tuesday',
-          startTime: DateTime(2023, 1, 1, 10),
-          endTime: DateTime(2023, 1, 1, 11),
-          activityCode: 'Lecture',
-          isPrincipalActivity: true,
-          activityLocation: 'Room 202',
-          name: 'Lecture Session');
+        courseAcronym: 'COURSE101',
+        courseTitle: 'Intro to Dart',
+        dayOfTheWeek: 2,
+        startTime: DateTime(2023, 1, 1, 10),
+        endTime: DateTime(2023, 1, 1, 11),
+        activityCode: 'Lecture',
+      );
 
       examActivity = ScheduleActivity(
-          courseAcronym: 'COURSE101',
-          courseGroup: '01',
-          courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 2,
-          day: 'Tuesday',
-          startTime: DateTime(2023, 1, 1, 10),
-          endTime: DateTime(2023, 1, 1, 11),
-          activityCode: 'Exam',
-          isPrincipalActivity: true,
-          activityLocation: 'Room 202',
-          name: 'Final Exam');
+        courseAcronym: 'COURSE101',
+        courseTitle: 'Intro to Dart',
+        dayOfTheWeek: 2,
+        startTime: DateTime(2023, 1, 1, 10),
+        endTime: DateTime(2023, 1, 1, 11),
+        activityCode: 'Exam',
+      );
 
       saturdayActivity = ScheduleActivity(
-          courseAcronym: 'COURSE101',
-          courseGroup: '01',
-          courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 6,
-          day: 'Saturday',
-          startTime: DateTime(2023, 1, 5, 10),
-          endTime: DateTime(2023, 1, 5, 11),
-          activityCode: 'Lecture',
-          isPrincipalActivity: true,
-          activityLocation: 'Room 202',
-          name: 'Lecture Session');
+        courseAcronym: 'COURSE101',
+        courseTitle: 'Intro to Dart',
+        dayOfTheWeek: 6,
+        startTime: DateTime(2023, 1, 5, 10),
+        endTime: DateTime(2023, 1, 5, 11),
+        activityCode: 'Lecture',
+      );
 
       sundayActivity = ScheduleActivity(
-          courseAcronym: 'COURSE101',
-          courseGroup: '01',
-          courseTitle: 'Intro to Dart',
-          dayOfTheWeek: 7,
-          day: 'Sunday',
-          startTime: DateTime(2023, 1, 5, 10),
-          endTime: DateTime(2023, 1, 5, 11),
-          activityCode: 'Lecture',
-          isPrincipalActivity: true,
-          activityLocation: 'Room 202',
-          name: 'Lecture Session');
+        courseAcronym: 'COURSE101',
+        courseTitle: 'Intro to Dart',
+        dayOfTheWeek: 7,
+        startTime: DateTime(2023, 1, 5, 10),
+        endTime: DateTime(2023, 1, 5, 11),
+        activityCode: 'Lecture',
+      );
 
       viewModel = SessionScheduleViewModel(sessionCode: 'A2023');
     });
@@ -90,8 +74,9 @@ void main() {
 
     group('futureToRun -', () {
       test('When called, sets busy state and fetches events', () async {
-        when(mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'))
-            .thenAnswer((_) async => [lectureActivity]);
+        when(
+          mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'),
+        ).thenAnswer((_) async => [lectureActivity]);
 
         await viewModel.futureToRun();
 
@@ -102,8 +87,9 @@ void main() {
       });
 
       test('Filters out exam activities', () async {
-        when(mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'))
-            .thenAnswer((_) async => [examActivity]);
+        when(
+          mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'),
+        ).thenAnswer((_) async => [examActivity]);
 
         await viewModel.futureToRun();
 
@@ -111,16 +97,18 @@ void main() {
       });
 
       test('Sets displaySaturday to true', () async {
-        when(mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'))
-            .thenAnswer((_) async => [saturdayActivity]);
+        when(
+          mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'),
+        ).thenAnswer((_) async => [saturdayActivity]);
 
         await viewModel.futureToRun();
         expect(viewModel.displaySaturday, true);
       });
 
       test('Sets displaySunday to true', () async {
-        when(mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'))
-            .thenAnswer((_) async => [sundayActivity]);
+        when(
+          mockCourseRepository.getDefaultScheduleActivities(session: 'A2023'),
+        ).thenAnswer((_) async => [sundayActivity]);
 
         await viewModel.futureToRun();
         expect(viewModel.displaySunday, true);

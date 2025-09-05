@@ -21,15 +21,17 @@ void main() {
     eventEndDate: DateTime.now().add(const Duration(days: 2, hours: 2)),
     tags: <NewsTags>[
       NewsTags(
-          id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-          name: "tag 1",
-          createdAt: DateTime.now().subtract(const Duration(days: 180)),
-          updatedAt: DateTime.now().subtract(const Duration(days: 180))),
+        id: 'e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+        name: "tag 1",
+        createdAt: DateTime.now().subtract(const Duration(days: 180)),
+        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+      ),
       NewsTags(
-          id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
-          name: "tag 2",
-          createdAt: DateTime.now().subtract(const Duration(days: 180)),
-          updatedAt: DateTime.now().subtract(const Duration(days: 180)))
+        id: 'faaaaaaa-e3e3-e3e3-e3e3-e3e3e3e3e3e3',
+        name: "tag 2",
+        createdAt: DateTime.now().subtract(const Duration(days: 180)),
+        updatedAt: DateTime.now().subtract(const Duration(days: 180)),
+      ),
     ],
     organizer: Organizer(
       id: "e3e3e3e3-e3e3-e3e3-e3e3-e3e3e3e3e3e3",

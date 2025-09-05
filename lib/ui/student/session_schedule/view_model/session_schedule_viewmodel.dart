@@ -40,28 +40,32 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
   }
 
   CalendarEventData<Object> calendarEventData(ScheduleActivity eventData) {
-    final courseLocation = eventData.activityLocation == "Non assign" ? "N/A" : eventData.activityLocation;
-
     final DateTime now = DateTime.now();
     final int daysToAdd = eventData.dayOfTheWeek - (now.weekday % 7);
     final DateTime targetDate = now.add(Duration(days: daysToAdd));
     final DateTime newStartTime = DateTime(
-        targetDate.year, targetDate.month, targetDate.day, eventData.startTime.hour, eventData.startTime.minute);
-    final DateTime newEndTime =
-        DateTime(targetDate.year, targetDate.month, targetDate.day, eventData.endTime.hour, eventData.endTime.minute)
-            .subtract(const Duration(minutes: 1));
-
-    final durationInHours = newEndTime.difference(newStartTime).inHours;
-
-    final String title = durationInHours == 0 ? eventData.courseAcronym : "${eventData.courseAcronym}\n$courseLocation";
+      targetDate.year,
+      targetDate.month,
+      targetDate.day,
+      eventData.startTime.hour,
+      eventData.startTime.minute,
+    );
+    final DateTime newEndTime = DateTime(
+      targetDate.year,
+      targetDate.month,
+      targetDate.day,
+      eventData.endTime.hour,
+      eventData.endTime.minute,
+    ).subtract(const Duration(minutes: 1));
 
     return CalendarEventData(
-        title: title,
-        description: "${eventData.courseAcronym};$courseLocation;${eventData.courseTitle};null",
-        date: targetDate,
-        startTime: newStartTime,
-        endTime: newEndTime,
-        color: getCourseColor(eventData.courseAcronym.split('-')[0]) ?? AppPalette.grey.darkGrey);
+      title: eventData.courseAcronym,
+      description: "${eventData.courseAcronym};;${eventData.courseTitle};null",
+      date: targetDate,
+      startTime: newStartTime,
+      endTime: newEndTime,
+      color: getCourseColor(eventData.courseAcronym.split('-')[0]) ?? AppPalette.grey.darkGrey,
+    );
   }
 
   Color? getCourseColor(String courseName) {
@@ -77,8 +81,9 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
 
       if (_sessionCode != null) {
         final defaultScheduleActivities = await _courseRepository.getDefaultScheduleActivities(session: _sessionCode);
-        final filteredScheduleActivities =
-            defaultScheduleActivities.where((activity) => activity.activityCode.toLowerCase() != "exam").toList();
+        final filteredScheduleActivities = defaultScheduleActivities
+            .where((activity) => activity.activityCode.toLowerCase() != "exam")
+            .toList();
 
         for (final activity in filteredScheduleActivities) {
           final event = calendarEventData(activity);
