@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -13,6 +12,7 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 
 class MonthCalendar extends StatelessWidget {
   final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
