@@ -27,7 +27,7 @@ jobs:
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/composite/flutter-setup
         with:
           encrypted-signets-api-cert-password: ${{ secrets.ENCRYPTED_SIGNETS_API_CERT_PASSWORD }}
