@@ -67,11 +67,41 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   }
 
   Program getCurrentProgram() {
-    RegExp regExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
-    List<Program> nonInternshipPrograms = programList
-        .where((item) => !regExp.hasMatch(item.name) && item.status.toLowerCase() == "actif")
+    final RegExp internshipRegExp = RegExp(r"^Microprogramme de \d+\w* cycle en enseignement coopératif");
+    final List<Program> nonInternshipPrograms = programList
+        .where((item) => !internshipRegExp.hasMatch(item.name))
         .toList();
-    return nonInternshipPrograms.last;
+
+    final activeStatus = "actif";
+    final graduatedStatus = "diplômé";
+
+    // First try to find an active program
+    final activePrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == activeStatus).toList();
+    if (activePrograms.isNotEmpty) {
+      return activePrograms.last;
+    }
+
+    // If no active program, try to find a graduated program
+    final graduatedPrograms = nonInternshipPrograms
+        .where((item) => item.status.toLowerCase() == graduatedStatus)
+        .toList();
+    if (graduatedPrograms.isNotEmpty) {
+      return graduatedPrograms.last;
+    }
+
+    // If no active or graduated programs, return last program
+    if (nonInternshipPrograms.isNotEmpty) {
+      return nonInternshipPrograms.last;
+    }
+
+    // If no programs exist, expand search to include internships with active status
+    final allActivePrograms = programList.where((item) => item.status.toLowerCase() == activeStatus).toList();
+    if (allActivePrograms.isNotEmpty) {
+      return allActivePrograms.last;
+    }
+
+    // Last resort: return the last program/internship regardless of status
+    return programList.last;
   }
 
   @override
