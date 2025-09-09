@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -28,7 +30,11 @@ class GradesDetailsView extends StatefulWidget {
 
 class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _ignoredEvaluationsAnimationController;
   bool _completed = false;
+  final GlobalKey _expansionTileKey = GlobalKey();
+  late Animation<double> _rotateAnimation;
+  bool _isIgnoredEvaluationsExpanded = false;
 
   @override
   void initState() {
@@ -42,6 +48,25 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         });
       }
     });
+
+    _ignoredEvaluationsAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+      value: 1.0,
+    );
+    _ignoredEvaluationsAnimationController.forward();
+
+    _rotateAnimation = Tween(
+      begin: pi,
+      end: 0.0,
+    ).animate(CurvedAnimation(parent: _ignoredEvaluationsAnimationController, curve: Curves.easeIn));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _ignoredEvaluationsAnimationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -239,32 +264,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
                         completed: _completed,
                         key: Key("GradeEvaluationTile_${evaluation.title}"),
                       ),
-                    if (ignoredEvaluations.isNotEmpty) ...[
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              AppIntl.of(context)!.ignored_evaluations_section_title,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Spacer(),
-                            Tooltip(
-                              triggerMode: TooltipTriggerMode.tap,
-                              message: AppIntl.of(context)!.ignored_evaluations_section_tooltip_text,
-                              child: const Icon(Icons.info, size: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                      for (final CourseEvaluation evaluation in ignoredEvaluations)
-                        GradeEvaluationTile(
-                          evaluation,
-                          completed: _completed,
-                          key: Key("GradeEvaluationTile_${evaluation.title}"),
-                        ),
-                    ],
+                    if (ignoredEvaluations.isNotEmpty) ...[_buildIgnoredEvaluationsExpansionTile(ignoredEvaluations)],
                     const SizedBox(height: 24),
                   ],
                 ),
@@ -343,5 +343,75 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         ),
       ),
     );
+  }
+
+  Widget _buildIgnoredEvaluationsExpansionTile(List<CourseEvaluation> ignoredEvaluations) {
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        key: _expansionTileKey,
+        onExpansionChanged: (value) {
+          _isIgnoredEvaluationsExpanded = !_isIgnoredEvaluationsExpanded;
+          if (value) {
+            _ignoredEvaluationsAnimationController.reverse(from: pi);
+            _scrollToSelectedContent(expansionTileKey: _expansionTileKey);
+          } else {
+            _ignoredEvaluationsAnimationController.forward(from: 0.0);
+          }
+        },
+        trailing: AnimatedBuilder(
+          animation: _rotateAnimation,
+          builder: (BuildContext context, Widget? child) {
+            return Transform.rotate(
+              angle: _rotateAnimation.value,
+              child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
+            );
+          },
+          child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
+        ),
+        tilePadding: EdgeInsets.only(left: 8.0, right: 28),
+        title: Row(
+          children: [
+            Text(
+              AppIntl.of(context)!.ignored_evaluations_section_title,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(width: 8),
+            Container(
+              constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+              decoration: BoxDecoration(color: Colors.grey[800], shape: BoxShape.circle),
+              child: IntrinsicWidth(
+                child: IntrinsicHeight(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      child: Text(ignoredEvaluations.length.toString()),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+            child: Text(AppIntl.of(context)!.ignored_evaluations_section_tooltip_text),
+          ),
+          for (final CourseEvaluation evaluation in ignoredEvaluations)
+            GradeEvaluationTile(evaluation, completed: _completed, key: Key("GradeEvaluationTile_${evaluation.title}")),
+          const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
+    final keyContext = expansionTileKey.currentContext;
+    if (keyContext != null) {
+      Future.delayed(Duration(milliseconds: 200)).then((value) {
+        Scrollable.ensureVisible(keyContext, duration: Duration(milliseconds: 200));
+      });
+    }
   }
 }

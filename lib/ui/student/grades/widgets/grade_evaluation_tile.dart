@@ -51,7 +51,6 @@ class _GradeEvaluationTileState extends State<GradeEvaluationTile> with TickerPr
       Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: Card(
-          color: widget.evaluation.ignore ? Colors.grey[850] : null,
           clipBehavior: Clip.antiAlias,
           child: ExpansionTile(
             onExpansionChanged: (value) {
