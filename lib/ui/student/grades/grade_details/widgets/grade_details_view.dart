@@ -396,7 +396,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
     final keyContext = expansionTileKey.currentContext;
     if (keyContext != null) {
       Future.delayed(Duration(milliseconds: 200)).then((value) {
-        Scrollable.ensureVisible(keyContext, duration: Duration(milliseconds: 200));
+        if (keyContext.mounted) {
+          Scrollable.ensureVisible(keyContext, duration: Duration(milliseconds: 200));
+        }
       });
     }
   }
