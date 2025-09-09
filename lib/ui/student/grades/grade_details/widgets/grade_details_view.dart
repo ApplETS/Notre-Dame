@@ -147,10 +147,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         ),
       );
     } else if (model.course.summary != null) {
-      final allEvaluations = model.course.summary?.evaluations ?? [];
-      final ignoredEvaluations = allEvaluations.where((e) => e.ignore).toList();
-      final nonIgnoredEvaluations = allEvaluations.where((e) => !e.ignore).toList();
-
       return RefreshIndicator(
         onRefresh: () => model.refresh(),
         child: ListView(
@@ -259,13 +255,15 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
                 const SizedBox(height: 8.0),
                 Column(
                   children: <Widget>[
-                    for (final CourseEvaluation evaluation in nonIgnoredEvaluations)
+                    for (final CourseEvaluation evaluation in model.nonIgnoredEvaluations)
                       GradeEvaluationTile(
                         evaluation,
                         completed: _completed,
                         key: Key("GradeEvaluationTile_${evaluation.title}"),
                       ),
-                    if (ignoredEvaluations.isNotEmpty) ...[_buildIgnoredEvaluationsExpansionTile(ignoredEvaluations)],
+                    if (model.ignoredEvaluations.isNotEmpty) ...[
+                      _buildIgnoredEvaluationsExpansionTile(model.ignoredEvaluations),
+                    ],
                     const SizedBox(height: 24),
                   ],
                 ),
