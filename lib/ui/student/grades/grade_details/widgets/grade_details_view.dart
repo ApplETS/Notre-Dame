@@ -373,30 +373,15 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         title: Row(
           children: [
             Text(
-              AppIntl.of(context)!.ignored_evaluations_section_title,
+              AppIntl.of(context)!.ignored_evaluations_section_title(ignoredEvaluations.length),
               style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(width: 8),
-            Container(
-              constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
-              decoration: BoxDecoration(color: Colors.grey[800], shape: BoxShape.circle),
-              child: IntrinsicWidth(
-                child: IntrinsicHeight(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      child: Text(ignoredEvaluations.length.toString()),
-                    ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-            child: Text(AppIntl.of(context)!.ignored_evaluations_section_tooltip_text),
+            child: Text(AppIntl.of(context)!.ignored_evaluations_section_description_text),
           ),
           for (final CourseEvaluation evaluation in ignoredEvaluations)
             GradeEvaluationTile(evaluation, completed: _completed, key: Key("GradeEvaluationTile_${evaluation.title}")),
