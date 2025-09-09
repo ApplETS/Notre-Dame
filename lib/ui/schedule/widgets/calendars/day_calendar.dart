@@ -23,8 +23,16 @@ class DayCalendar extends StatefulWidget {
   final ScheduleController controller;
   final List<calendar_view.CalendarEventData<Object?>>? events;
   final DateTime? selectedDate;
+  final bool skipRepositoryLoad;
 
-  const DayCalendar({super.key, required this.listView, required this.controller, this.events, this.selectedDate});
+  const DayCalendar({
+    super.key,
+    required this.listView,
+    required this.controller,
+    this.events,
+    this.selectedDate,
+    this.skipRepositoryLoad = false,
+  });
 
   @override
   State<DayCalendar> createState() => _DayCalendarState();
@@ -50,7 +58,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!, skipRepositoryLoad: widget.events != null);
+    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!, skipRepositoryLoad: widget.skipRepositoryLoad);
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => model,

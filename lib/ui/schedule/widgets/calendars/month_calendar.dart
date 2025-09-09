@@ -125,7 +125,13 @@ class MonthCalendar extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: DayCalendar(listView: false, controller: controller, events: events, selectedDate: date),
+                  child: DayCalendar(
+                    listView: false,
+                    controller: controller,
+                    events: events,
+                    selectedDate: date,
+                    skipRepositoryLoad: true,
+                  ),
                 ),
               ],
             ),
