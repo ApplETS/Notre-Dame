@@ -121,6 +121,10 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         ),
       );
     } else if (model.course.summary != null) {
+      final allEvaluations = model.course.summary?.evaluations ?? [];
+      final ignoredEvaluations = allEvaluations.where((e) => e.ignore).toList();
+      final nonIgnoredEvaluations = allEvaluations.where((e) => !e.ignore).toList();
+
       return RefreshIndicator(
         onRefresh: () => model.refresh(),
         child: ListView(
@@ -229,12 +233,38 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
                 const SizedBox(height: 8.0),
                 Column(
                   children: <Widget>[
-                    for (final CourseEvaluation evaluation in model.course.summary?.evaluations ?? [])
+                    for (final CourseEvaluation evaluation in nonIgnoredEvaluations)
                       GradeEvaluationTile(
                         evaluation,
                         completed: _completed,
                         key: Key("GradeEvaluationTile_${evaluation.title}"),
                       ),
+                    if (ignoredEvaluations.isNotEmpty) ...[
+                      const SizedBox(height: 16),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              AppIntl.of(context)!.ignored_evaluations_section_title,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Spacer(),
+                            Tooltip(
+                              triggerMode: TooltipTriggerMode.tap,
+                              message: AppIntl.of(context)!.ignored_evaluations_section_tooltip_text,
+                              child: const Icon(Icons.info, size: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                      for (final CourseEvaluation evaluation in ignoredEvaluations)
+                        GradeEvaluationTile(
+                          evaluation,
+                          completed: _completed,
+                          key: Key("GradeEvaluationTile_${evaluation.title}"),
+                        ),
+                    ],
                     const SizedBox(height: 24),
                   ],
                 ),

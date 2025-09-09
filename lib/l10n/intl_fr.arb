@@ -23,7 +23,6 @@
   "youtube_open": "Visiter notre page Youtube",
   "email_send": "Envoyer un commentaire via courriel",
   "discord_join": "Rejoidre notre Discord",
-
   "faq_questions_and_answers": "Questions et réponses",
   "faq_questions_no_access_title": "Je n’ai pas accès au cours et au programme.",
   "faq_questions_no_access_description": "Les nouveaux étudiants pourraient ne pas voir l’horaire et les cours inscrits avant le début de la première session de cours. Cependant, ces informations apparaissent dès le début de la première session de cours.",
@@ -36,25 +35,19 @@
   "faq_actions_contact_registrar_description": "Veuillez contacter le Bureau de la registraire.",
   "faq_actions_contact_applets_title": "Questions concernant l’application ÉTSMobile",
   "faq_actions_contact_applets_description": "Veuillez contacter App|ETS.",
-
   "need_help_notice_title": "Attention",
   "need_help_notice_description": "Veuillez noter que si votre question concerne l'accès à votre compte, le club App|ETS ne peut pas vous aider. \n\nAppuyez sur le bouton \"Assistance mot de passe\" pour obtenir de l'aide",
   "need_help_notice_password_assistance": "Assistance mot de passe",
   "need_help_notice_send_email": "Rédiger un courriel",
   "need_help_notice_cancel": "Annuler",
-
   "close_button_text": "Fermer",
-
   "startup_viewmodel_acquire_token_fail": "Échec de la connexion après plusieurs tentatives. Veuillez réessayer.",
-
   "title_schedule": "Horaire",
   "title_student": "Étudiant",
   "title_dashboard": "Accueil",
   "title_ets": "ÉTS",
   "title_more": "Plus",
-
   "title_ets_mobile": "ÉTSMobile",
-  
   "login_title": "Connexion",
   "login_prompt_universal_code": "Code universel",
   "login_prompt_password": "Mot de passe",
@@ -68,16 +61,12 @@
   "login_password_forgotten": "Mot de passe oublié?",
   "login_password_show": "Afficher le mot de passe",
   "login_password_hide": "Cacher le mot de passe",
-
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
-
   "card_schedule_tomorrow": " - demain",
-
   "card_applets_title": "ApplETS",
   "card_applets_text": "ÉTSMobile a été conçue par le club ApplETS. Supportez-nous en aimant notre page Facebook, en contribuant sur GitHub ou en nous faisant part de vos commentaires par courriel.",
   "error_no_email_app": "Aucune application de courriel disponible",
-  
   "schedule_settings_title": "Paramètres de l'horaire",
   "schedule_settings_show_today_btn_pref": "Afficher le bouton Aujourd'hui",
   "schedule_settings_calendar_format_pref": "Format du calendrier",
@@ -108,7 +97,6 @@
   "course_activity_group_a": "Groupe A",
   "course_activity_group_b": "Groupe B",
   "course_activity_group_both": "Les deux",
-
   "calendar_new": "Nouveau calendrier",
   "calendar_export": "Exporter vers le calendrier",
   "calendar_export_success": "Horaire exporté avec succès",
@@ -120,7 +108,6 @@
   "calendar_export_button": "Exporter",
   "calendar_permission_denied_modal_title": "Permission Refusée",
   "calendar_permission_denied": "Vous n'avez pas accordé la permission d'accéder à votre calendrier. Veuillez l'activer dans les paramètres système de l'application.",
-
   "grades_title": "Notes",
   "grades_in_schedule": "Naviguer à l'horaire : {sessionNameYear}",
   "@grades_in_schedule": {
@@ -202,7 +189,6 @@
   },
   "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
   "grades_not_available": "ND",
-  
   "profile_title": "Profil",
   "profile_student_status_title": "État du dossier étudiant",
   "profile_personal_information_title": "Informations personnelles",
@@ -223,7 +209,6 @@
   "profile_program_completion": "Complétion du programme",
   "profile_program_completion_not_available": "ND",
   "profile_other_programs": "Autres Programmes",
-  
   "useful_link_title": "Liens utiles",
   "ets_security_title": "Sécurité",
   "ets_monets_title": "MonÉTS",
@@ -234,7 +219,7 @@
   "ets_heuristique_title": "L'heuristique",
   "ets_schedule_generator": "HorairÉTS",
   "ets_gus": "GUS",
-  "ets_papercut_title":"PaperCut",
+  "ets_papercut_title": "PaperCut",
   "ets_aeets_title": "AÉÉTS",
   "ets_100genies_title": "Pub 100 Génies",
   "ets_stages_et_emplois_title": "Stages et emplois",
@@ -261,27 +246,22 @@
       }
     }
   },
-
   "share": "Partager",
   "export": "Exporter",
-
-  "news_title" : "Annonces",
-  "news_details_title" : "Annonce",
+  "news_title": "Annonces",
+  "news_details_title": "Annonce",
   "news_event_date": "Date de l'événement",
-  "news_error_not_found_title" : "Oh oh!",
-  "news_error_not_found" : "Une erreur est survenue lors de la récupération des annonces. Veuillez réessayer plus tard.",
+  "news_error_not_found_title": "Oh oh!",
+  "news_error_not_found": "Une erreur est survenue lors de la récupération des annonces. Veuillez réessayer plus tard.",
   "news_no_more_card_title": "Vous êtes à jour!",
   "news_no_more_card": "Vous avez atteint la fin des annonces. Revenez plus tard pour voir les prochaines annonces!",
-
   "news_export_success": "L'annonce a été exporté avec succès",
   "news_export_error": "Une erreur est survenue lors de l'exportation de l'événement",
-
   "report_news": "Pourquoi signalez-vous cette annonce ?",
   "report_as": "Signaler comme",
   "report": "Signaler",
   "report_toast": "Merci pour votre signalement ! ",
   "report_reason_hint": "Commentaire",
-
   "report_inappropriate_content": "Contenu inapproprié",
   "report_inappropriate_content_description": "Annonce contenant des discours haineux, des images choquantes, ou du contenu adulte.",
   "report_false_information": "Information fausse ou trompeuse",
@@ -290,9 +270,7 @@
   "report_harassment_or_abuse_description": "Annonce ciblant une personne ou un groupe de manière abusive.",
   "report_outdated_content": "Contenu obsolète",
   "report_outdated_content_description": "Annonce qui n’est plus d'actualité ou pertinente.",
-
   "search": "Rechercher",
-
   "news_author_notify_me": "Me notifier",
   "news_author_dont_notify_me": "Ne plus recevoir de notifications",
   "news_author_join_us": "Nous rejoindre",
@@ -312,7 +290,6 @@
       }
     }
   },
-
   "more_about_applets_title": "À propos d'ApplETS",
   "more_report_bug": "Rapporter un bogue ou une amélioration",
   "more_report_bug_steps_title": "Comment faire?\n\n",
@@ -326,20 +303,17 @@
   "more_log_out": "Se déconnecter",
   "more_prompt_log_out_confirmation": "Êtes-vous certain de vouloir vous déconnecter?",
   "more_log_out_progress": "Déconnexion en cours",
-  
   "more_applets_about_details": "ÉTSMobile a été réalisée par le club scientifique ApplETS de l'École de technologie supérieure.\n\nApplETS se veut, avant tout, un regroupement d’étudiants qui partagent un intérêt commun pour le domaine des télécommunications et des applications mobiles. La mission d'ApplETS est de former les étudiants au développement mobile et de promouvoir la production d'applications mobiles au sein de la communauté étudiante.\n\nSuivez-nous sur : ",
-  
   "more_report_bug_bug": "Rapporter un bogue",
   "more_report_bug_bug_subtitle": "\nFaites-le nous savoir afin que nous puissions l'ajouter à notre liste de bogues.",
   "more_report_bug_feature": "Demander une fonctionnalité",
-  "more_report_bug_feature_subtitle": "\nAvez-vous une idée qui améliorerait notre application ? Nous aimerions savoir !",  
+  "more_report_bug_feature_subtitle": "\nAvez-vous une idée qui améliorerait notre application ? Nous aimerions savoir !",
   "more_report_tips": "Astuce",
   "more_report_bug_step1": "Après avoir sélectionné l'option, la vue des commentaires s'ouvrira.\n\nVous pouvez choisir entre le mode ",
   "more_report_bug_step2": "Naviguer ",
   "more_report_bug_step3": "et ",
   "more_report_bug_step4": "Dessiner ",
-  "more_report_bug_step5": "sur le côté droit. \n\nEn mode navigation, vous pouvez naviguer librement dans l'application.\n\nPour passer en mode dessin, appuyez simplement sur le bouton 'Dessiner'. Vous pouvez maintenant dessiner sur l'écran.\n\nPour terminer votre commentaire, écrivez simplement une description ci-dessous et envoyez-la en appuyant sur le bouton 'Soumettre'.",  
-
+  "more_report_bug_step5": "sur le côté droit. \n\nEn mode navigation, vous pouvez naviguer librement dans l'application.\n\nPour passer en mode dessin, appuyez simplement sur le bouton 'Dessiner'. Vous pouvez maintenant dessiner sur l'écran.\n\nPour terminer votre commentaire, écrivez simplement une description ci-dessous et envoyez-la en appuyant sur le bouton 'Soumettre'.",
   "security_bomb_threat_title": "Alerte à la bombe",
   "security_bomb_threat_detail": "bomb_threat_fr.md",
   "security_suspicious_packages_title": "Colis suspect",
@@ -360,7 +334,6 @@
   "security_earthquake_detail": "earthquake_fr.md",
   "security_medical_emergency_title": "Urgence médicale",
   "security_medical_emergency_detail": "medical_emergency_fr.md",
-  
   "security_emergency_call": "Appel d'urgence",
   "security_reach_security": "Joindre la sécurité",
   "security_emergency_number": "514 396–8900",
@@ -368,7 +341,6 @@
   "security_emergency_intern_number": "Poste 55",
   "security_emergency_procedures": "Procédures d'urgence",
   "security_station": "Poste de sécurité",
-
   "settings_title": "Paramètres",
   "settings_display_pref_category": "Affichage",
   "settings_dark_theme_pref": "Thème",
@@ -379,15 +351,11 @@
   "dark_theme": "Foncé",
   "light_theme": "Pâle",
   "system_theme": "Système",
-
   "thank_you_for_the_feedback": "Merci pour le signalement",
-
   "flutter_license": "Flutter est la boîte à outils d'interface utilisateur de Google pour créer de superbes applications compilées en natif pour mobile, Web et bureau à partir d'une seule base de code. En savoir plus sur Flutter à ",
   "flutter_website": "https://flutter.dev",
-
   "choose_language_title": "Choisissez votre langue préférée",
   "choose_language_subtitle": "Veuillez sélectionner votre langue",
-  
   "not_found_title": "Page introuvable",
   "not_found_message": "Oh oh... il semblerait que la page {pageName} n'est pas accessible.",
   "@not_found_message": {
@@ -399,12 +367,10 @@
   },
   "go_to_dashboard": "Retour à l'accueil",
   "go_back": "Retour",
-
   "no_connectivity": "Aucune connexion internet",
   "service_outage": "Désolé, nous éprouvons actuellement des problèmes de connexion. Veuillez réessayer plus tard.",
   "service_outage_contact": "Nous sommes au courant de la situation. Nous faisons notre possible pour la régler dans les plus courts délais.",
   "service_outage_refresh": "Rafraichir",
-
   "progress_bar_title": "Progression de la session",
   "progress_bar_message": "{elapsedDays} jours écoulés / {totalDays} jours",
   "@progress_bar_message": {
@@ -434,7 +400,6 @@
     }
   },
   "progress_bar_suffix": "jours",
-
   "in_app_review_title": "Évaluez-nous!",
   "need_help": "Besoin d'aide?",
   "privacy_policy": "Politique de confidentialité",
@@ -444,9 +409,7 @@
   "ticket_status_open": "Ouvert",
   "ticket_status_closed": "Fermé",
   "loading": "Chargement...",
-
   "no_schedule_available": "Il n'y a aucun événement à l'horaire pour l'instant",
-
   "social_links_name": "Lien social : {linkName}",
   "@social_links_name": {
     "placeholders": {
@@ -454,5 +417,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "ignored_evaluations_section_title": "Éléments ignorés",
+  "ignored_evaluations_section_tooltip_text": "Les éléments suivants sont ignorés dans le calcul de la note finale."
 }

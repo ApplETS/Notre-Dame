@@ -15,7 +15,6 @@
   "github": "GitHub",
   "email": "Email",
   "email_subject": "ÉTSMobile Problem",
-
   "faq_questions_and_answers": "Questions and answers",
   "faq_questions_no_access_title": "I don't have access to the courses and program.",
   "faq_questions_no_access_description": "New students may not see the schedule and courses before the start of the first course session. However, this information becomes available at the beginning of the first course session.",
@@ -28,13 +27,11 @@
   "faq_actions_contact_registrar_description": "Please contact the Office of the Registrar.",
   "faq_actions_contact_applets_title": "Questions about the ÉTSMobile app",
   "faq_actions_contact_applets_description": "Please contact App|ETS.",
-
   "need_help_notice_title": "Notice",
   "need_help_notice_description": "Please note that if your question is about gaining access to your account, App|ETS cannot help you. \n\nTap on the \"Password assistance\" button to get help",
   "need_help_notice_password_assistance": "Password assistance",
   "need_help_notice_send_email": "Write an email",
   "need_help_notice_cancel": "Cancel",
-
   "website_open": "Visit the website",
   "website_club_open": "Visit our club website",
   "facebook_open": "Visit our Facebook page",
@@ -43,19 +40,14 @@
   "youtube_open": "Visit our Youtube page",
   "email_send": "Send a comment via email",
   "discord_join": "Join our Discord",
-
   "close_button_text": "Close",
-
   "startup_viewmodel_acquire_token_fail": "Connection failed after multiple attempts. Please try again.",
-
   "title_schedule": "Schedule",
   "title_student": "Student",
   "title_dashboard": "Dashboard",
   "title_ets": "ÉTS",
   "title_more": "More",
-
   "title_ets_mobile": "ÉTSMobile",
-  
   "login_title": "Login",
   "login_prompt_universal_code": "Universal Code",
   "login_prompt_password": "Password",
@@ -69,16 +61,12 @@
   "login_password_forgotten": "Forgot your password?",
   "login_password_show": "Show password",
   "login_password_hide": "Hide password",
-
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
-
   "card_schedule_tomorrow": " - tomorrow",
-
   "card_applets_title": "ApplETS",
   "card_applets_text": "ÉTSMobile was made by the club ApplETS. Support us by liking our Facebook page, contributing to GitHub or sending us your comments via email.",
   "error_no_email_app": "No email application available",
-
   "schedule_settings_title": "Schedule Settings",
   "schedule_settings_show_today_btn_pref": "Show Today button",
   "schedule_settings_calendar_format_pref": "Calendar format",
@@ -109,7 +97,6 @@
   "course_activity_group_a": "Group A",
   "course_activity_group_b": "Group B",
   "course_activity_group_both": "Both",
-
   "calendar_new": "New calendar",
   "calendar_export": "Export to calendar",
   "calendar_export_success": "Schedule export successful",
@@ -121,7 +108,6 @@
   "calendar_export_button": "Export",
   "calendar_permission_denied_modal_title": "Permission denied",
   "calendar_permission_denied": "You denied the app the permission to edit your calendar. Change this preference in system settings to use this feature.",
-
   "grades_title": "Grades",
   "grades_in_schedule": "Navigate to schedule {sessionNameYear}",
   "@grades_in_schedule": {
@@ -203,7 +189,6 @@
   },
   "grades_error_course_evaluations_not_completed": "During the evaluation period, you will not be able access your grades if you haven't completed your evaluations.",
   "grades_not_available": "N/A",
-
   "profile_title": "Profile",
   "profile_student_status_title": "Student Status",
   "profile_personal_information_title": "Personal Information",
@@ -224,7 +209,6 @@
   "profile_program_completion": "Program completion",
   "profile_program_completion_not_available": "N/A",
   "profile_other_programs": "Other Programs",
-
   "useful_link_title": "Useful links",
   "ets_security_title": "Security",
   "ets_monets_title": "MonÉTS",
@@ -235,7 +219,7 @@
   "ets_heuristique_title": "L'heuristique",
   "ets_schedule_generator": "HorairÉTS",
   "ets_gus": "GUS",
-  "ets_papercut_title":"PaperCut",
+  "ets_papercut_title": "PaperCut",
   "ets_aeets_title": "AÉÉTS",
   "ets_100genies_title": "Pub 100 Génies",
   "ets_stages_et_emplois_title": "Jobs and internships",
@@ -262,27 +246,22 @@
       }
     }
   },
-
-  "news_title" : "News",
-  "news_error_not_found_title" : "Oh oh!",
-  "news_error_not_found" : "Something went wrong while trying to retrieve the news. Please try again later.",
+  "news_title": "News",
+  "news_error_not_found_title": "Oh oh!",
+  "news_error_not_found": "Something went wrong while trying to retrieve the news. Please try again later.",
   "news_no_more_card_title": "You're all set!",
   "news_no_more_card": "You have reached the end of the news list. Come back another time for more news!",
-  "news_details_title" : "News",
+  "news_details_title": "News",
   "news_event_date": "Event date",
-
   "news_export_success": "Event successfuly exported",
   "news_export_error": "An error occured while exporting the event",
-
   "share": "Share",
   "export": "Export",
-
   "report_news": "Why are you reporting this news?",
   "report_as": "Report as",
   "report": "Report",
   "report_toast": "Thank you for your report !",
   "report_reason_hint": "Comment",
-
   "report_inappropriate_content": "Inappropriate Content",
   "report_inappropriate_content_description": "News containing hate speech, shocking images, or adult content.",
   "report_false_information": "False or Misleading Information",
@@ -291,9 +270,7 @@
   "report_harassment_or_abuse_description": "News targeting a person or group in an abusive manner.",
   "report_outdated_content": "Outdated Content",
   "report_outdated_content_description": "Ad that is no longer up-to-date or relevant.",
-  
   "search": "Search",
-
   "news_author_notify_me": "Notify me",
   "news_author_dont_notify_me": "No longer receive notifications",
   "news_author_join_us": "Join us",
@@ -313,7 +290,6 @@
       }
     }
   },
-
   "more_about_applets_title": "About ApplETS",
   "more_report_bug": "Report a bug or request a feature",
   "more_report_bug_steps_title": "How does it work?\n\n",
@@ -327,9 +303,7 @@
   "more_log_out": "Log out",
   "more_prompt_log_out_confirmation": "Are you sure you want to log out?",
   "more_log_out_progress": "Logging you out",
-
   "more_applets_about_details": "ÉTSMobile was conceived by the ApplETS scientific club from the École de technologie supérieure.\n\nApplets is, most importantly, a gathering of students who share a typical enthusiasm for the field of telecommunications and mobile applications. The mission of ApplETS is to train students in mobile development and promote the production of mobile applications within the student community.\n\nFollow us on: ",
-
   "more_report_bug_bug": "Report a bug",
   "more_report_bug_bug_subtitle": "\nLet us know so we can forward this to our bug list.",
   "more_report_bug_feature": "Request a feature",
@@ -340,7 +314,6 @@
   "more_report_bug_step3": "and ",
   "more_report_bug_step4": "Draw ",
   "more_report_bug_step5": "mode on the right side. \n\nWhen in navigation mode, you can freely navigate in the app.\n\nTo switch to the drawing mode just press the 'Draw' button. Now you can draw on the screen.\n\nTo finish your feedback just write a description below and send it by pressing the 'Submit' button.",
-
   "security_bomb_threat_title": "Bomb threat",
   "security_bomb_threat_detail": "bomb_threat_en.md",
   "security_suspicious_packages_title": "Suspicious packages",
@@ -361,7 +334,6 @@
   "security_earthquake_detail": "earthquake_en.md",
   "security_medical_emergency_title": "Medical emergency",
   "security_medical_emergency_detail": "medical_emergency_en.md",
-
   "security_emergency_call": "Emergency call",
   "security_reach_security": "Reach security",
   "security_emergency_number": "514 396–8900",
@@ -369,7 +341,6 @@
   "security_emergency_intern_number": "Ex. 55",
   "security_emergency_procedures": "Emergency procedures",
   "security_station": "Security station",
-
   "settings_title": "Settings",
   "settings_display_pref_category": "Display",
   "settings_dark_theme_pref": "Theme",
@@ -380,15 +351,11 @@
   "dark_theme": "Dark",
   "light_theme": "Light",
   "system_theme": "System",
-
   "thank_you_for_the_feedback": "Thank you for the feedback",
-
   "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
   "flutter_website": "https://flutter.dev",
-
   "choose_language_title": "Choose your preferred language",
   "choose_language_subtitle": "Please select your language",
-  
   "not_found_title": "Inaccessible Page",
   "not_found_message": "Oh oh... it seems that the page {pageName} you requested is not accessible.",
   "@not_found_message": {
@@ -400,12 +367,10 @@
   },
   "go_to_dashboard": "Go to Dashboard",
   "go_back": "Back",
-
   "no_connectivity": "No internet connection",
   "service_outage": "Sorry, we are currently experiencing connection problems. Please try again later.",
   "service_outage_contact": "We are aware of the situation. We are doing our best to resolve it as soon as possible.",
   "service_outage_refresh": "Refresh",
-
   "progress_bar_title": "Semester progress",
   "progress_bar_message": "{elapsedDays} days elapsed / {totalDays} days",
   "@progress_bar_message": {
@@ -435,7 +400,6 @@
     }
   },
   "progress_bar_suffix": "days",
-
   "in_app_review_title": "Rate us!",
   "need_help": "Need help?",
   "privacy_policy": "Privacy policy",
@@ -445,9 +409,7 @@
   "ticket_status_open": "Open",
   "ticket_status_closed": "Closed",
   "loading": "Loading...",
-
   "no_schedule_available": "There are no events scheduled at the moment",
-
   "social_links_name": "Social link {linkName}",
   "@social_links_name": {
     "placeholders": {
@@ -455,5 +417,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "ignored_evaluations_section_title": "Ignored elements",
+  "ignored_evaluations_section_tooltip_text": "The following elements are ignored in the final grade calculation."
 }
