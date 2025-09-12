@@ -1126,10 +1126,10 @@ packages:
     dependency: "direct main"
     description:
       name: stacked
-      sha256: fe77da8b5dae6488a0caa0feea59c4f79a0fb11cd88a211f87f653411a4c142b
+      sha256: "5f4a6ba6cfa43c5854690de0f946eef1694250cf46ecf7859519d90bf764b1e4"
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.4"
+    version: "3.5.0"
   stacked_shared:
     dependency: transitive
     description:
