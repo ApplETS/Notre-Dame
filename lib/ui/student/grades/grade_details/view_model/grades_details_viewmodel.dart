@@ -23,9 +23,9 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
 
   GradesDetailsViewModel({required this.course, required AppIntl intl}) : _appIntl = intl;
 
-  List<CourseEvaluation> get allEvaluations => course.summary?.evaluations ?? [];
-  List<CourseEvaluation> get ignoredEvaluations => allEvaluations.where((e) => e.ignore).toList();
-  List<CourseEvaluation> get nonIgnoredEvaluations => allEvaluations.where((e) => !e.ignore).toList();
+  List<CourseEvaluation> get _allEvaluations => course.summary?.evaluations ?? [];
+  List<CourseEvaluation> get ignoredEvaluations => _allEvaluations.where((e) => e.ignore).toList();
+  List<CourseEvaluation> get nonIgnoredEvaluations => _allEvaluations.where((e) => !e.ignore).toList();
 
   @override
   Future<Course> futureToRun() async {
