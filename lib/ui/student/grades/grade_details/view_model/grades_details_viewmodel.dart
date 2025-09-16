@@ -5,6 +5,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -21,6 +22,10 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
   Course course;
 
   GradesDetailsViewModel({required this.course, required AppIntl intl}) : _appIntl = intl;
+
+  List<CourseEvaluation> get _allEvaluations => course.summary?.evaluations ?? [];
+  List<CourseEvaluation> get ignoredEvaluations => _allEvaluations.where((e) => e.ignore).toList();
+  List<CourseEvaluation> get nonIgnoredEvaluations => _allEvaluations.where((e) => !e.ignore).toList();
 
   @override
   Future<Course> futureToRun() async {

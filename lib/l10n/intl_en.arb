@@ -455,5 +455,15 @@
         "type": "String"
       }
     }
-  }
+  },
+  
+  "ignored_evaluations_section_title": "{count,plural, =1{1 ignored grade} other{{count} ignored grades}}",
+  "@ignored_evaluations_section_title": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ignored_evaluations_section_description_text": "The following elements are ignored in the final grade calculation."
 }
