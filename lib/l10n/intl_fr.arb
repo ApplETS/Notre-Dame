@@ -454,5 +454,15 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "ignored_evaluations_section_title": "{count,plural, =1{1 note ignorée} other{{count} notes ignorées}}",
+  "@ignored_evaluations_section_title": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ignored_evaluations_section_description_text": "Les éléments suivants sont ignorés dans le calcul de la note finale."
 }
