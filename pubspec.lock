@@ -745,10 +745,10 @@ packages:
     dependency: "direct main"
     description:
       name: msal_auth
-      sha256: f12f180bdb07e84d96776ac8a15e92e2bbda5583e7512b279c923ebc27b8125e
+      sha256: "3e563ef107e9d87a9645b7e21e23b8af50786786762d9f37324057c36c44f5c0"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.7"
+    version: "3.3.0"
   nested:
     dependency: transitive
     description:
