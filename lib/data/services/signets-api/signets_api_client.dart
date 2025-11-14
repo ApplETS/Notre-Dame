@@ -1,9 +1,14 @@
 // Dart imports:
 import 'dart:io';
+import 'dart:typed_data';
+
+// Flutter imports:
+import 'package:flutter/services.dart' show rootBundle;
 
 // Package imports:
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:notredame/data/services/auth_service.dart';
@@ -30,10 +35,32 @@ class SignetsAPIClient {
   static const String tag = "SignetsApi";
   static const String tagError = "$tag - Error";
 
-  final http.Client _httpClient;
+  late final http.Client _httpClient;
   final _authService = locator<AuthService>();
+  final Logger _logger = locator<Logger>();
 
-  SignetsAPIClient({http.Client? client}) : _httpClient = client ?? IOClient(HttpClient());
+  /// Constructor
+  SignetsAPIClient({http.Client? httpClient}) {
+    _httpClient = httpClient ?? IOClient(_createHttpClientWithCert());
+  }
+
+  /// Load and attach a custom certificate to the [HttpClient]
+  HttpClient _createHttpClientWithCert() {
+    final context = SecurityContext.defaultContext;
+
+    try {
+      rootBundle.load('assets/certificates/signets_cert.crt').then((ByteData data) {
+        context.setTrustedCertificatesBytes(data.buffer.asUint8List());
+        _logger.d("$tag - SignetsAPI certificate loaded successfully.");
+      });
+    } catch (e) {
+      _logger.e("$tag - Failed to load SignetsAPI certificate.");
+    }
+
+    final httpClient = HttpClient(context: context);
+
+    return httpClient;
+  }
 
   /// Expression to validate the format of a session short name (ex: A2020)
   final RegExp _sessionShortNameRegExp = RegExp("^([A-É-H][0-9]{4})");
@@ -44,7 +71,7 @@ class SignetsAPIClient {
   /// Call the SignetsAPI to get the courses activities for the [session] for
   /// the student. By specifying [courseGroup] we can filter the
   /// results to get only the activities for this course.
-  /// If the [startDate] and/or [endDate] are specified the results will contains
+  /// If the [startDate] and/or [endDate] are specified the results will contain
   /// all the activities between these dates
   Future<List<CourseActivity>> getCoursesActivities({
     String session = "",
