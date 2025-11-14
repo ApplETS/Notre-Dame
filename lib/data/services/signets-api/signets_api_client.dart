@@ -1,6 +1,5 @@
 // Dart imports:
 import 'dart:io';
-import 'dart:typed_data';
 
 // Flutter imports:
 import 'package:flutter/services.dart' show rootBundle;
