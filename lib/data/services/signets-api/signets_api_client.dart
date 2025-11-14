@@ -39,7 +39,6 @@ class SignetsAPIClient {
   final _authService = locator<AuthService>();
   final Logger _logger = locator<Logger>();
 
-  /// Constructor
   SignetsAPIClient({http.Client? httpClient}) {
     _httpClient = httpClient ?? IOClient(_createHttpClientWithCert());
   }
