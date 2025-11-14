@@ -6,6 +6,7 @@ import 'package:github/github.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
@@ -59,12 +60,14 @@ void main() {
 
   group('SignetsApi - ', () {
     setUp(() {
+      setupLogger();
       authServiceMock = setupAuthServiceMock();
       service = buildService(MockClient((_) => Future.value(http.Response('', 500))));
     });
 
     tearDown(() {
       unregister<AuthService>();
+      unregister<Logger>();
       clientMock.close();
     });
 
@@ -875,7 +878,7 @@ void main() {
   });
 }
 
-SignetsAPIClient buildService(MockClient client) => SignetsAPIClient(client: client);
+SignetsAPIClient buildService(MockClient client) => SignetsAPIClient(httpClient: client);
 
 String buildResponse(String operation, String body, {String? firstElement}) =>
     '<?xml version="1.0" encoding="UTF-8" standalone="no"?> '
