@@ -48,18 +48,17 @@ class SignetsAPIClient {
   HttpClient _createHttpClientWithCert() {
     final context = SecurityContext.defaultContext;
 
-    try {
-      rootBundle.load('assets/certificates/signets_cert.crt').then((ByteData data) {
-        context.setTrustedCertificatesBytes(data.buffer.asUint8List());
-        _logger.d("$tag - SignetsAPI certificate loaded successfully.");
-      });
-    } catch (e) {
-      _logger.e("$tag - Failed to load SignetsAPI certificate.");
-    }
+    rootBundle
+        .load('assets/certificates/signets_cert.crt')
+        .then((data) {
+          context.setTrustedCertificatesBytes(data.buffer.asUint8List());
+          _logger.d("$tag - Certificate loaded successfully");
+        })
+        .catchError((e) {
+          _logger.e("$tag - Failed to load certificate: $e");
+        });
 
-    final httpClient = HttpClient(context: context);
-
-    return httpClient;
+    return HttpClient(context: context);
   }
 
   /// Expression to validate the format of a session short name (ex: A2020)
