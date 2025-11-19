@@ -129,4 +129,10 @@ List<QuickLink> quickLinks(AppIntl intl) => [
     image: Image.asset('assets/images/cafe_sans_filtre_logo.png', color: AppPalette.etsLightRed),
     link: 'https://cafesansfiltre.com/',
   ),
+  QuickLink(
+    id: 20,
+    name: intl.ets_fablab_title,
+    image: Image.asset('assets/images/fablab_logo.png', color: AppPalette.etsLightRed),
+    link: 'https://fablab.etsmtl.ca/',
+  ),
 ];
