@@ -24,7 +24,7 @@ jobs:
     # The version label can't contain a ":" because of the YAML specification
     if: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'version - Unversioned') }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ secrets.PTA }}
       - name: Bump version using labels
