@@ -132,7 +132,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
   QuickLink(
     id: 20,
     name: intl.ets_fablab_title,
-    image: Image.asset('assets/images/fablab_logo.png', color: AppPalette.etsLightRed),
+    image: SvgPicture.asset('assets/images/fablab_logo.svg'),
     link: 'https://fablab.etsmtl.ca/',
   ),
 ];
