@@ -5,7 +5,7 @@ description: The 4th generation of ÉTSMobile, the main gateway between the Éco
 # pub.dev using `pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.61.12
+version: 4.62.1
 
 environment:
   sdk: '>=3.9.0 <4.0.0'
@@ -41,7 +41,7 @@ dependencies:
 
   # Animations
   skeletonizer: ^2.0.1+1
-  animations: ^2.0.11
+  animations: ^2.1.0
 
   # Google
   shared_preferences: ^2.5.3
@@ -94,4 +94,5 @@ flutter:
     - assets/markdown/
     - assets/icons/
     - assets/animations/
+    - assets/certificates/
     - assets/
