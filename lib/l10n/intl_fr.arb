@@ -245,6 +245,7 @@
   "ets_centre_sportif_title": "Centre sportif",
   "ets_etudiants_actuels_title": "Étudiants actuels",
   "ets_cafe_sans_filtre_title": "Cafe sans filtre",
+  "ets_fablab_title": "FabLAB",
   "ets_hide_quick_link": "Masquer le lien : {quickLinkName}",
   "@ets_hide_quick_link": {
     "placeholders": {
@@ -454,5 +455,15 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "ignored_evaluations_section_title": "{count,plural, =1{1 note ignorée} other{{count} notes ignorées}}",
+  "@ignored_evaluations_section_title": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ignored_evaluations_section_description_text": "Les éléments suivants sont ignorés dans le calcul de la note finale."
 }
