@@ -94,7 +94,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       final scheduleActivities = await _courseRepository.getScheduleActivities();
       await _assignScheduleActivities(scheduleActivities);
     } catch (e) {
-      onError(e);
+      onError(e, null);
     } finally {
       setBusyForObject(isLoadingEvents, false);
     }
@@ -126,7 +126,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   @override
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: appIntl.error);
   }
 
