@@ -34,7 +34,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       course = await _courseRepository.getCourseSummary(course);
       notifyListeners();
     } catch (e) {
-      onError(e);
+      onError(e, null);
     } finally {
       setBusyForObject(course, false);
     }
@@ -43,7 +43,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
 
   @override
   // ignore: type_annotate_public_apis
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     if (error is ApiException) {
       if (error.message.startsWith(SignetsError.gradesNotAvailable) || error.errorCode == SignetsError.gradesEmpty) {
         Fluttertoast.showToast(msg: _appIntl.grades_msg_no_grade);
@@ -59,8 +59,8 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       course = await _courseRepository.getCourseSummary(course);
       notifyListeners();
       return true;
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
       return false;
     } finally {
       setBusyForObject(course, false);
