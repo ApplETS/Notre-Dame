@@ -31,7 +31,7 @@ void main() {
     courseName: "Generic course",
     activityName: "TD",
     activityDescription: "Activity description",
-    activityLocation: "location",
+    activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 9),
     endDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12),
   );
@@ -40,7 +40,7 @@ void main() {
     courseName: "Generic course",
     activityName: "TD",
     activityDescription: "Activity description",
-    activityLocation: "location",
+    activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 13),
     endDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 16),
   );
@@ -49,7 +49,7 @@ void main() {
     courseName: "Generic course",
     activityName: "TD",
     activityDescription: "Activity description",
-    activityLocation: "location",
+    activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
     endDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 21),
   );
@@ -58,7 +58,7 @@ void main() {
     courseName: "Generic course",
     activityName: "TD",
     activityDescription: ActivityDescriptionName.labA,
-    activityLocation: "location",
+    activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
     endDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 21),
   );
@@ -67,7 +67,7 @@ void main() {
     courseName: "Generic course",
     activityName: "TD",
     activityDescription: ActivityDescriptionName.labB,
-    activityLocation: "location",
+    activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
     endDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 21),
   );
@@ -76,7 +76,7 @@ void main() {
     courseName: "Generic course",
     activityName: "TD",
     activityDescription: "Activity description",
-    activityLocation: "location",
+    activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 8),
     endDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 12),
   );
@@ -85,7 +85,7 @@ void main() {
     courseName: "Generic course",
     activityName: "TD",
     activityDescription: "Activity description",
-    activityLocation: "location",
+    activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 13),
     endDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1, 16),
   );
@@ -94,7 +94,7 @@ void main() {
     courseName: "Generic course",
     activityName: "TD",
     activityDescription: "Activity description",
-    activityLocation: "location",
+    activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2, 13),
     endDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 2, 16),
   );

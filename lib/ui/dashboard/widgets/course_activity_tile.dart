@@ -26,7 +26,7 @@ class CourseActivityTile extends StatelessWidget {
       dense: false,
       title: Text(activity.courseGroup, style: Theme.of(context).textTheme.titleSmall),
       subtitle: Text("${activity.courseName}\n${activity.activityDescription}"),
-      trailing: Text(activity.activityLocation, style: Theme.of(context).textTheme.bodySmall),
+      trailing: Text(activity.activityLocation.join("\n"), style: Theme.of(context).textTheme.bodySmall),
     ),
   );
 

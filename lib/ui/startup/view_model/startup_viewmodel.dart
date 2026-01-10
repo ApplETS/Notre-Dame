@@ -49,7 +49,7 @@ class StartUpViewModel extends BaseViewModel {
 
     if (isLogin) {
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
       AuthenticationResult? token;
       int attempts = 0;
@@ -66,7 +66,7 @@ class StartUpViewModel extends BaseViewModel {
       }
 
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     }
   }
 
@@ -78,7 +78,7 @@ class StartUpViewModel extends BaseViewModel {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
     final wasLoggedIn = (await _settingsManager.getBool(PreferencesFlag.isLoggedIn)) ?? false;
     if (hasConnectivityIssues && wasLoggedIn) {
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
       return true;
     }
     return false;

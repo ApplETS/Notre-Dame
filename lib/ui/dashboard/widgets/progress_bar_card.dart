@@ -78,7 +78,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                   LayoutBuilder(
                     builder: (BuildContext context, BoxConstraints constraints) {
                       final textPainter = TextPainter(
-                        text: TextSpan(text: AppIntl.of(context)!.progress_bar, style: smallTextStyle),
+                        text: TextSpan(text: AppIntl.of(context)!.progress_bar_title, style: smallTextStyle),
                         textDirection: TextDirection.ltr,
                       )..layout();
                       double size = constraints.maxWidth - textPainter.height - 12;
@@ -95,7 +95,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                       );
                     },
                   ),
-                  Text(AppIntl.of(context)!.progress_bar, style: smallTextStyle),
+                  Text(AppIntl.of(context)!.progress_bar_title, style: smallTextStyle),
                 ],
               )
             else

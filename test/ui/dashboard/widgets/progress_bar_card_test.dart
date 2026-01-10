@@ -24,7 +24,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Find progress card
-      final progressCard = find.widgetWithText(Card, intl.progress_bar);
+      final progressCard = find.widgetWithText(Card, intl.progress_bar_title);
       expect(progressCard, findsOneWidget);
 
       // Find progress card linearProgressBar
