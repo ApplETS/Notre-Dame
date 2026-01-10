@@ -19,7 +19,7 @@ class AppTheme with ChangeNotifier {
     final defaultTheme = ThemeData.light();
 
     return defaultTheme.copyWith(
-      appBarTheme: AppBarTheme(color: _lightAppColors.appBar),
+      appBarTheme: AppBarTheme(backgroundColor: _lightAppColors.appBar),
       tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xffeeebeb),
       cardTheme: defaultTheme.cardTheme.copyWith(
@@ -87,7 +87,7 @@ class AppTheme with ChangeNotifier {
     final defaultTheme = ThemeData.dark();
 
     return defaultTheme.copyWith(
-      appBarTheme: AppBarTheme(color: _darkAppColors.appBar),
+      appBarTheme: AppBarTheme(backgroundColor: _darkAppColors.appBar),
       tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
       cardTheme: defaultTheme.cardTheme.copyWith(color: Color(0xff242326)),

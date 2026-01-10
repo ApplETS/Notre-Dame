@@ -6,20 +6,26 @@ import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/choose_language/widgets/choose_language_view.dart';
-import 'package:notredame/ui/core/ui/root_view.dart';
+import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/events/author/widgets/author_view.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_view.dart';
 import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/security_view.dart';
+import 'package:notredame/ui/ets/quick_links/widgets/quick_links_view.dart';
+import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import 'package:notredame/ui/more/about/widgets/about_view.dart';
 import 'package:notredame/ui/more/contributors/widgets/contributors_view.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
 import 'package:notredame/ui/more/settings/widgets/settings_view.dart';
+import 'package:notredame/ui/more/widgets/more_view.dart';
 import 'package:notredame/ui/not_found/widgets/not_found_view.dart';
 import 'package:notredame/ui/outage/widgets/outage_view.dart';
+import 'package:notredame/ui/schedule/schedule_controller.dart';
+import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import 'package:notredame/ui/startup/widgets/startup_view.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
 import 'package:notredame/ui/student/session_schedule/widgets/session_schedule_view.dart';
+import 'package:notredame/ui/student/widgets/student_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -38,21 +44,44 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         settings: RouteSettings(name: routeSettings.name),
         builder: (_) => FaqView(),
       );
-    case RouterPaths.root:
+    case RouterPaths.dashboard:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
         transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
-        pageBuilder: (_, _, _) => RootView(),
+        pageBuilder: (_, _, _) => const DashboardView(),
+      );
+    case RouterPaths.schedule:
+      return PageRouteBuilder(
+        settings: RouteSettings(name: routeSettings.name),
+        transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, _, _) => ScheduleView(controller: routeSettings.arguments as ScheduleController),
       );
     case RouterPaths.defaultSchedule:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
         builder: (_) => SessionScheduleView(sessionCode: routeSettings.arguments as String?),
       );
+    case RouterPaths.student:
+      return PageRouteBuilder(
+        settings: RouteSettings(name: routeSettings.name),
+        transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, _, _) => StudentView(),
+      );
     case RouterPaths.gradeDetails:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
         builder: (context) => GradesDetailsView(course: routeSettings.arguments! as Course),
+      );
+    case RouterPaths.ets:
+      return PageRouteBuilder(
+        settings: RouteSettings(name: routeSettings.name),
+        transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, _, _) => ETSView(),
+      );
+    case RouterPaths.usefulLinks:
+      return PageRouteBuilder(
+        settings: RouteSettings(name: routeSettings.name),
+        pageBuilder: (_, _, _) => QuickLinksView(),
       );
     case RouterPaths.news:
       return PageRouteBuilder(
@@ -73,6 +102,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
         builder: (_) => SecurityView(),
+      );
+    case RouterPaths.more:
+      return PageRouteBuilder(
+        settings: RouteSettings(name: routeSettings.name),
+        transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
+        pageBuilder: (_, _, _) => MoreView(),
       );
     case RouterPaths.settings:
       return MaterialPageRoute(

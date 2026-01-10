@@ -30,6 +30,8 @@ class _SecurityViewState extends State<SecurityView> {
     viewModelBuilder: () => SecurityViewModel(intl: AppIntl.of(context)!),
     builder: (context, model, child) => BaseScaffold(
       appBar: AppBar(title: Text(AppIntl.of(context)!.ets_security_title)),
+      showBottomBar: false,
+      safeArea: false,
       body: SafeArea(
         top: false,
         bottom: false,

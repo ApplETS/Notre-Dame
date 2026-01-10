@@ -12,7 +12,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/bottom_bar.dart';
+import 'package:notredame/ui/core/ui/navigation_rail.dart';
+import 'package:notredame/utils/loading.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
@@ -25,7 +28,29 @@ class BaseScaffold extends StatefulWidget {
 
   final FloatingActionButtonLocation? fabPosition;
 
-  const BaseScaffold({super.key, this.appBar, this.body, this.fab, this.fabPosition});
+  final bool _showBottomBar;
+
+  final bool _safeArea;
+
+  final bool _isLoading;
+
+  /// If true, interactions with the UI is limited while loading.
+  final bool _isInteractionLimitedWhileLoading;
+
+  const BaseScaffold({
+    super.key,
+    this.appBar,
+    this.body,
+    this.fab,
+    this.fabPosition,
+    bool isLoading = false,
+    bool safeArea = true,
+    bool isInteractionLimitedWhileLoading = true,
+    bool showBottomBar = true,
+  }) : _showBottomBar = showBottomBar,
+       _isLoading = isLoading,
+       _safeArea = safeArea,
+       _isInteractionLimitedWhileLoading = isInteractionLimitedWhileLoading;
 
   @override
   State<BaseScaffold> createState() => _BaseScaffoldState();
@@ -63,10 +88,16 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
-    body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-    floatingActionButton: widget.fab,
-    floatingActionButtonLocation: widget.fabPosition,
+    body: Scaffold(
+      appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
+      body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
+      bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait && widget._showBottomBar)
+          ? BottomBar()
+          : null,
+      floatingActionButton: widget.fab,
+      floatingActionButtonLocation: widget.fabPosition,
+    ),
+    bottomNavigationBar: _isOffline ? buildOfflineBar(context) : null,
   );
 
   Widget bodyPortraitMode() {
@@ -74,8 +105,16 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
     return SafeArea(
       top: false,
-      bottom: false,
-      child: Stack(alignment: Alignment.center, children: [widget.body!, if (_isOffline) _buildOfflineBar()]),
+      bottom: widget._safeArea,
+      child: Stack(
+        children: [
+          widget.body!,
+          if (widget._isLoading)
+            buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
+          else
+            const SizedBox(),
+        ],
+      ),
     );
   }
 
@@ -83,27 +122,45 @@ class _BaseScaffoldState extends State<BaseScaffold> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
 
     return Stack(
-      alignment: Alignment.center,
       children: [
-        Column(
+        Row(
           children: [
-            if (widget.appBar != null) widget.appBar!,
-            Expanded(child: SafeArea(bottom: false, top: false, child: widget.body!)),
+            if (widget._showBottomBar)
+              ColoredBox(
+                color: context.theme.appColors.navBar,
+                child: SafeArea(top: false, bottom: false, right: false, child: NavRail()),
+              ),
+            Expanded(
+              child: Column(
+                children: [
+                  if (widget.appBar != null) widget.appBar!,
+                  Expanded(
+                    child: widget._safeArea ? SafeArea(bottom: false, top: false, child: widget.body!) : widget.body!,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
-        if (_isOffline) _buildOfflineBar(),
+        if (widget._isLoading)
+          buildLoading(isInteractionLimitedWhileLoading: widget._isInteractionLimitedWhileLoading)
+        else
+          const SizedBox(),
       ],
     );
   }
 
-  Widget _buildOfflineBar() {
-    return Positioned(
-      bottom: 32,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
-        decoration: BoxDecoration(color: AppPalette.etsLightRed, borderRadius: BorderRadius.circular(12.0)),
-        child: Text(AppIntl.of(context)!.no_connectivity, textAlign: TextAlign.center),
-      ),
+  Widget buildOfflineBar(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          color: context.theme.appColors.backgroundAlt,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 30,
+        ),
+        Text(AppIntl.of(context)!.no_connectivity, textAlign: TextAlign.center),
+      ],
     );
   }
 

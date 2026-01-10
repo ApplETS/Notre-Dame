@@ -28,6 +28,8 @@ class _EmergencyViewState extends State<EmergencyView> {
   @override
   Widget build(BuildContext context) => BaseScaffold(
     appBar: AppBar(title: Text(widget.title)),
+    showBottomBar: false,
+    safeArea: false,
     fabPosition: FloatingActionButtonLocation.centerFloat,
     fab: FloatingActionButton.extended(
       onPressed: () {

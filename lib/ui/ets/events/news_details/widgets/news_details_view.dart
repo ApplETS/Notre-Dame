@@ -54,6 +54,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   Widget build(BuildContext context) => ViewModelBuilder<NewsDetailsViewModel>.reactive(
     viewModelBuilder: () => NewsDetailsViewModel(news: widget.news),
     builder: (context, model, child) => BaseScaffold(
+      showBottomBar: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

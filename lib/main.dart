@@ -16,6 +16,7 @@ import 'package:notredame/data/models/firebase_options.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/hello/hello_service.dart';
+import 'package:notredame/data/services/navigation_history_observer.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
@@ -27,26 +28,27 @@ import 'package:notredame/ui/startup/widgets/startup_view.dart';
 
 Future<void> main() async {
   setupLocator();
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final analyticsService = locator<AnalyticsService>();
-  await analyticsService.setUserProperties();
-
-  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
-  await remoteConfigService.initialize();
-
-  // Manage the settings
-  final SettingsRepository settingsManager = locator<SettingsRepository>();
-  await settingsManager.fetchLanguageAndThemeMode();
-
-  // Initialize hello
-  final HelloService helloApiClient = locator<HelloService>();
-  helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
   runZonedGuarded(
-    () {
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+
+      // Initialize firebase
+      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+      final analyticsService = locator<AnalyticsService>();
+      await analyticsService.setUserProperties();
+
+      final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+      await remoteConfigService.initialize();
+
+      // Manage the settings
+      final SettingsRepository settingsManager = locator<SettingsRepository>();
+      await settingsManager.fetchLanguageAndThemeMode();
+
+      // Initialize hello
+      final HelloService helloApiClient = locator<HelloService>();
+      helloApiClient.apiLink = remoteConfigService.helloApiUrl;
+
       runApp(ETSMobile(settingsManager));
     },
     (error, stackTrace) {
@@ -86,7 +88,7 @@ class ETSMobile extends StatelessWidget {
               locale: model.locale,
               supportedLocales: AppIntl.supportedLocales,
               navigatorKey: locator<NavigationService>().navigatorKey,
-              navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver()],
+              navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver(), NavigationHistoryObserver()],
               home: outage ? OutageView() : StartUpView(),
               onGenerateRoute: generateRoute,
             ),
