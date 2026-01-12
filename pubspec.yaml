@@ -57,7 +57,7 @@ dependencies:
   flutter_cache_manager: ^3.4.1
   flutter_secure_storage: ^9.2.4
   github: ^9.25.0
-  in_app_review: ^2.0.10
+  in_app_review: ^2.0.11
   timeago: ^3.7.1
   calendar_view: ^1.4.0
   reorderable_grid_view: ^2.2.8
