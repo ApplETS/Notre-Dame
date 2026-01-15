@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download coverage file
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: lcov.info
       - name: Comment the coverage of the PR
