@@ -5,6 +5,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -22,6 +23,10 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
 
   GradesDetailsViewModel({required this.course, required AppIntl intl}) : _appIntl = intl;
 
+  List<CourseEvaluation> get _allEvaluations => course.summary?.evaluations ?? [];
+  List<CourseEvaluation> get ignoredEvaluations => _allEvaluations.where((e) => e.ignore).toList();
+  List<CourseEvaluation> get nonIgnoredEvaluations => _allEvaluations.where((e) => !e.ignore).toList();
+
   @override
   Future<Course> futureToRun() async {
     try {
@@ -29,7 +34,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       course = await _courseRepository.getCourseSummary(course);
       notifyListeners();
     } catch (e) {
-      onError(e);
+      onError(e, null);
     } finally {
       setBusyForObject(course, false);
     }
@@ -38,7 +43,7 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
 
   @override
   // ignore: type_annotate_public_apis
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     if (error is ApiException) {
       if (error.message.startsWith(SignetsError.gradesNotAvailable) || error.errorCode == SignetsError.gradesEmpty) {
         Fluttertoast.showToast(msg: _appIntl.grades_msg_no_grade);
@@ -54,8 +59,8 @@ class GradesDetailsViewModel extends FutureViewModel<Course> {
       course = await _courseRepository.getCourseSummary(course);
       notifyListeners();
       return true;
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
       return false;
     } finally {
       setBusyForObject(course, false);

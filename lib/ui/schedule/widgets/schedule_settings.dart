@@ -174,7 +174,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
       trailing: Switch(
         value: model.showTodayBtn,
         onChanged: (value) => model.showTodayBtn = value,
-        activeColor: AppPalette.etsLightRed,
+        activeThumbColor: AppPalette.etsLightRed,
       ),
       title: Text(
         style: Theme.of(context).textTheme.bodyMedium,
@@ -187,7 +187,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
     trailing: Switch(
       value: model.toggleCalendarView,
       onChanged: (value) => {model.toggleCalendarView = value},
-      activeColor: AppPalette.etsLightRed,
+      activeThumbColor: AppPalette.etsLightRed,
     ),
     title: Text(style: Theme.of(context).textTheme.bodyMedium, AppIntl.of(context)!.schedule_settings_list_view),
   );

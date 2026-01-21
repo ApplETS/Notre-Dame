@@ -71,7 +71,7 @@ void main() {
       courseGroup: '',
       activityName: '',
       activityDescription: '',
-      activityLocation: '',
+      activityLocation: [''],
       startDateTime: now,
       endDateTime: now.add(const Duration(hours: 1)),
     ),
