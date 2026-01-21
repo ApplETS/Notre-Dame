@@ -245,6 +245,7 @@
   "ets_centre_sportif_title": "Centre sportif",
   "ets_etudiants_actuels_title": "Étudiants actuels",
   "ets_cafe_sans_filtre_title": "Cafe sans filtre",
+  "ets_fablab_title": "FabLAB",
   "ets_hide_quick_link": "Masquer le lien : {quickLinkName}",
   "@ets_hide_quick_link": {
     "placeholders": {
@@ -405,7 +406,35 @@
   "service_outage_contact": "Nous sommes au courant de la situation. Nous faisons notre possible pour la régler dans les plus courts délais.",
   "service_outage_refresh": "Rafraichir",
 
-  "progress_bar": "jours restants",
+  "progress_bar_title": "Progression de la session",
+  "progress_bar_message": "{elapsedDays} jours écoulés / {totalDays} jours",
+  "@progress_bar_message": {
+    "placeholders": {
+      "elapsedDays": {
+        "type": "int"
+      },
+      "totalDays": {
+        "type": "int"
+      }
+    }
+  },
+  "progress_bar_message_percentage": "{percentage} %",
+  "@progress_bar_message_percentage": {
+    "placeholders": {
+      "percentage": {
+        "type": "int"
+      }
+    }
+  },
+  "progress_bar_message_remaining_days": "{remainingDays} jours restants",
+  "@progress_bar_message_remaining_days": {
+    "placeholders": {
+      "remainingDays": {
+        "type": "int"
+      }
+    }
+  },
+  "progress_bar_suffix": "jours",
 
   "in_app_review_title": "Évaluez-nous!",
   "need_help": "Besoin d'aide?",
@@ -426,5 +455,15 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "ignored_evaluations_section_title": "{count,plural, =1{1 note ignorée} other{{count} notes ignorées}}",
+  "@ignored_evaluations_section_title": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ignored_evaluations_section_description_text": "Les éléments suivants sont ignorés dans le calcul de la note finale."
 }

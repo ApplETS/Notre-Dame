@@ -27,29 +27,30 @@ import 'package:notredame/ui/startup/widgets/startup_view.dart';
 
 Future<void> main() async {
   setupLocator();
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final analyticsService = locator<AnalyticsService>();
-  await analyticsService.setUserProperties();
-
-  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
-  await remoteConfigService.initialize();
-
-  // Manage the settings
-  final SettingsRepository settingsManager = locator<SettingsRepository>();
-  await settingsManager.fetchLanguageAndThemeMode();
-
-  // Initialize hello
-  final HelloService helloApiClient = locator<HelloService>();
-  helloApiClient.apiLink = remoteConfigService.helloApiUrl;
 
   runZonedGuarded(
-    () {
+        () async {
+      WidgetsFlutterBinding.ensureInitialized();
+
+      // Initialize firebase
+      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+      final analyticsService = locator<AnalyticsService>();
+      await analyticsService.setUserProperties();
+
+      final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+      await remoteConfigService.initialize();
+
+      // Manage the settings
+      final SettingsRepository settingsManager = locator<SettingsRepository>();
+      await settingsManager.fetchLanguageAndThemeMode();
+
+      // Initialize hello
+      final HelloService helloApiClient = locator<HelloService>();
+      helloApiClient.apiLink = remoteConfigService.helloApiUrl;
+
       runApp(ETSMobile(settingsManager));
     },
-    (error, stackTrace) {
+        (error, stackTrace) {
       FirebaseCrashlytics.instance.recordError(error, stackTrace);
     },
   );
