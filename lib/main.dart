@@ -29,7 +29,7 @@ Future<void> main() async {
   setupLocator();
 
   runZonedGuarded(
-        () async {
+    () async {
       WidgetsFlutterBinding.ensureInitialized();
 
       // Initialize firebase
@@ -50,7 +50,7 @@ Future<void> main() async {
 
       runApp(ETSMobile(settingsManager));
     },
-        (error, stackTrace) {
+    (error, stackTrace) {
       FirebaseCrashlytics.instance.recordError(error, stackTrace);
     },
   );
