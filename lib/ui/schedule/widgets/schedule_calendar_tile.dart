@@ -100,14 +100,10 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
       child: Container(
         decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(6.0)),
         padding: widget.padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(widget.title ?? "", style: widget.titleStyle, maxLines: 3),
-            ),
-          ],
+        child: Container(
+          decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(6.0)),
+          padding: widget.padding,
+          child: AutoSizeText(widget.title!, minFontSize: 12),
         ),
       ),
     );

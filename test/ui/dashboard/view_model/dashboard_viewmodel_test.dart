@@ -56,7 +56,7 @@ void main() {
   final gen104LabA = CourseActivity(
     courseGroup: "GEN103",
     courseName: "Generic course",
-    activityName: "TD",
+    activityName: ActivityName.labA,
     activityDescription: ActivityDescriptionName.labA,
     activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
@@ -65,7 +65,7 @@ void main() {
   final gen104LabB = CourseActivity(
     courseGroup: "GEN103",
     courseName: "Generic course",
-    activityName: "TD",
+    activityName: ActivityName.labB,
     activityDescription: ActivityDescriptionName.labB,
     activityLocation: ["location"],
     startDateTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 18),
