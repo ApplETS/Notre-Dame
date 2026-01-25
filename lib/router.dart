@@ -13,6 +13,7 @@ import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.d
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/security_view.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/quick_links_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
+import 'package:notredame/ui/login/widgets/login_view.dart';
 import 'package:notredame/ui/more/about/widgets/about_view.dart';
 import 'package:notredame/ui/more/contributors/widgets/contributors_view.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
@@ -26,7 +27,6 @@ import 'package:notredame/ui/startup/widgets/startup_view.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
 import 'package:notredame/ui/student/session_schedule/widgets/session_schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
-import 'package:notredame/ui/login/widgets/login_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {

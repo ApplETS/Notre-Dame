@@ -6,9 +6,9 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/login/view_model/login_viewmodel.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/login/view_model/login_viewmodel.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -43,33 +43,19 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 Text(
                   'AppETS',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 26,
-                    color: AppPalette.grey.white,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26, color: AppPalette.grey.white),
                 ),
                 Text(
                   'Veuillez vous authentifier pour continuer',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 18,
-                    color: AppPalette.grey.white,
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, color: AppPalette.grey.white),
                 ),
                 TextField(
                   controller: _usernameController,
-                  decoration: InputDecoration(
-                    labelText: 'Nom d\'utilisateur',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: InputDecoration(labelText: 'Nom d\'utilisateur', border: OutlineInputBorder()),
                 ),
                 TextField(
                   controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Mot de passe',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: InputDecoration(labelText: 'Mot de passe', border: OutlineInputBorder()),
                   obscureText: true,
                 ),
                 SizedBox(
@@ -81,17 +67,11 @@ class _LoginViewState extends State<LoginView> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF3B62FF),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child: Text(
                       'Se connecter',
-                      style: TextStyle(
-                        color: AppPalette.grey.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: AppPalette.grey.white, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
