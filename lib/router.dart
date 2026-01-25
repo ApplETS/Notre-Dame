@@ -26,6 +26,7 @@ import 'package:notredame/ui/startup/widgets/startup_view.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
 import 'package:notredame/ui/student/session_schedule/widgets/session_schedule_view.dart';
 import 'package:notredame/ui/student/widgets/student_view.dart';
+import 'package:notredame/ui/login/widgets/login_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -128,6 +129,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
         builder: (_) => ChooseLanguageView(),
+      );
+    case RouterPaths.login:
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => LoginView(),
       );
     default:
       return PageRouteBuilder(
