@@ -41,22 +41,46 @@ class _LoginViewState extends State<LoginView> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'AppETS',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26, color: AppPalette.grey.white),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: Text(
+                    'AppETS',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26, color: AppPalette.grey.white),
+                  ),
                 ),
-                Text(
-                  'Veuillez vous authentifier pour continuer',
-                  style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, color: AppPalette.grey.white),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Text(
+                    'Veuillez vous authentifier pour continuer',
+                    style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, color: AppPalette.grey.white),
+                  ),
                 ),
-                TextField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(labelText: 'Nom d\'utilisateur', border: OutlineInputBorder()),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: TextField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      labelText: 'Nom d\'utilisateur',
+                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: AppPalette.grey.white),
+                      filled: true,
+                      fillColor: AppPalette.grey.darkGrey,
+                    ),
+                  ),
                 ),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'Mot de passe', border: OutlineInputBorder()),
-                  obscureText: true,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: TextField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Mot de passe',
+                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: AppPalette.grey.white),
+                      filled: true,
+                      fillColor: AppPalette.grey.darkGrey,
+                    ),
+                    obscureText: true,
+                  ),
                 ),
                 SizedBox(
                   width: double.infinity,
@@ -66,7 +90,7 @@ class _LoginViewState extends State<LoginView> {
                       // fait rient pour l'instant
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF3B62FF),
+                      backgroundColor: AppPalette.grey.black,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child: Text(
