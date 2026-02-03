@@ -1,7 +1,9 @@
+// Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:stacked/stacked.dart';
 
+// Project imports:
 import 'package:notredame/data/models/hello/news.dart';
 import 'package:notredame/data/models/hello/organizer.dart';
 import 'package:notredame/data/repositories/author_repository.dart';
@@ -23,10 +25,7 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
 
   bool isNotified = false;
 
-  AuthorViewModel({
-    required this.authorId,
-    required this.appIntl,
-  });
+  AuthorViewModel({required this.authorId, required this.appIntl});
 
   @override
   Future<void> initialise() async {
@@ -40,10 +39,7 @@ class AuthorViewModel extends BaseViewModel implements Initialisable {
   }
 
   Future<List<News>> _fetchPage(int pageNumber) async {
-    final pagination = await _newsRepository.getNews(
-      pageNumber: pageNumber,
-      organizerId: authorId,
-    );
+    final pagination = await _newsRepository.getNews(pageNumber: pageNumber, organizerId: authorId);
 
     return pagination?.news ?? [];
   }

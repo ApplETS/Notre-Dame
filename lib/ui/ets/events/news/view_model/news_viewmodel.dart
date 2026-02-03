@@ -30,10 +30,7 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
   }
 
   Future<List<News>> fetchPage(int pageNumber) async {
-    final pagination = await _newsRepository.getNews(
-      pageNumber: pageNumber,
-      title: title.isNotEmpty ? title : null,
-    );
+    final pagination = await _newsRepository.getNews(pageNumber: pageNumber, title: title.isNotEmpty ? title : null);
 
     return pagination?.news ?? [];
   }
