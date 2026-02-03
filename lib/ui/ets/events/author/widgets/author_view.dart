@@ -36,19 +36,6 @@ class _AuthorViewState extends State<AuthorView> {
     viewModelBuilder: () => AuthorViewModel(authorId: widget.authorId, appIntl: AppIntl.of(context)!),
     onViewModelReady: (model) {
       model.fetchAuthorData();
-      model.pagingController.addStatusListener((status) {
-        if (status == PagingStatus.subsequentPageError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppIntl.of(context)!.news_error_not_found),
-              action: SnackBarAction(
-                label: AppIntl.of(context)!.retry,
-                onPressed: () => model.pagingController.retryLastFailedRequest(),
-              ),
-            ),
-          );
-        }
-      });
     },
     builder: (context, model, child) => BaseScaffold(
       showBottomBar: false,
@@ -63,17 +50,36 @@ class _AuthorViewState extends State<AuthorView> {
               children: [
                 Stack(children: [_buildBackButton(), _buildAuthorInfo(model), _buildAvatar(model, widget.authorId)]),
                 Expanded(
-                  child: PagedListView<int, News>(
-                    key: const Key("pagedListView"),
-                    pagingController: model.pagingController,
-                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
-                    builderDelegate: PagedChildBuilderDelegate<News>(
-                      itemBuilder: (context, item, index) => NewsCard(item),
-                      firstPageProgressIndicatorBuilder: (context) => _buildSkeletonLoader(),
-                      newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
-                      noMoreItemsIndicatorBuilder: (context) => _buildNoMoreNewsCard(),
-                      firstPageErrorIndicatorBuilder: (context) => _buildError(model.pagingController),
-                    ),
+                  child: PagingListener(
+                    controller: model.pagingController,
+                    builder: (context, state, fetchNextPage) {
+                      if (state.error != null) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(AppIntl.of(context)!.news_error_not_found),
+                              action: SnackBarAction(
+                                label: AppIntl.of(context)!.retry,
+                                onPressed: () => model.pagingController.fetchNextPage(),
+                              ),
+                            ),
+                          );
+                        });
+                      }
+                      return PagedListView<int, News>(
+                        key: const Key("pagedListView"),
+                        padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                        builderDelegate: PagedChildBuilderDelegate<News>(
+                          itemBuilder: (context, item, index) => NewsCard(item),
+                          firstPageProgressIndicatorBuilder: (context) => _buildSkeletonLoader(),
+                          newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
+                          noMoreItemsIndicatorBuilder: (context) => _buildNoMoreNewsCard(),
+                          firstPageErrorIndicatorBuilder: (context) => _buildError(model.pagingController),
+                        ),
+                        state: state,
+                        fetchNextPage: fetchNextPage,
+                      );
+                    },
                   ),
                 ),
               ],
@@ -293,7 +299,7 @@ class _AuthorViewState extends State<AuthorView> {
               Flexible(
                 child: ElevatedButton(
                   onPressed: () {
-                    pagingController.retryLastFailedRequest();
+                    pagingController.fetchNextPage();
                   },
                   child: Text(AppIntl.of(context)!.retry),
                 ),
