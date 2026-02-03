@@ -89,12 +89,13 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
 
   @override
   Widget build(BuildContext context) {
+    int nbLines = widget.title!.split(RegExp(r'\r?\n')).length;
     return GestureDetector(
       onTap: _showTileInfo,
       child: Container(
         decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(6.0)),
         padding: widget.padding,
-        child: AutoSizeText(widget.title!, minFontSize: 12),
+        child: AutoSizeText(widget.title!, minFontSize: 10, maxLines: nbLines),
       ),
     );
   }

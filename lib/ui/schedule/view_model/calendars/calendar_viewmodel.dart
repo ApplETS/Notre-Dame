@@ -52,15 +52,18 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   CalendarViewModel({required AppIntl intl}) : appIntl = intl;
 
   CalendarEventData<Object> calendarEventData(CourseActivity eventData) {
-    final courseLocation = eventData.activityLocation.contains("Non assign")
+    final courseLocationMultiline = eventData.activityLocation.contains("Non assign")
+        ? "N/A"
+        : eventData.activityLocation.join("\n");
+    final courseLocationInline = eventData.activityLocation.contains("Non assign")
         ? "N/A"
         : eventData.activityLocation.join(", ");
     final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
     return CalendarEventData(
-      title: "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
+      title: "${eventData.courseGroup.split('-')[0]}\n$courseLocationMultiline\n${eventData.activityName}",
       description:
-          "${eventData.courseGroup};$courseLocation;${eventData.activityName};${associatedCourse?.teacherName}",
+          "${eventData.courseGroup};$courseLocationInline;${eventData.activityName};${associatedCourse?.teacherName}",
       date: eventData.startDateTime,
       startTime: eventData.startDateTime,
       endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
