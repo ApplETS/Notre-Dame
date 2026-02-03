@@ -179,8 +179,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
@@ -260,8 +259,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
       return sessions;
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusyForObject(progress, false);
     }
@@ -297,8 +296,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
       }
       return scheduleEvents;
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusyForObject(scheduleEvents, false);
     }
@@ -372,8 +371,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
         // Will remove duplicated courses in the list
         courses = courses.toSet().toList();
-      } catch (error) {
-        onError(error);
+      } catch (e) {
+        onError(e, null);
       } finally {
         setBusyForObject(courses, false);
       }
@@ -386,8 +385,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     try {
       broadcastMessage = _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusyForObject(broadcastMessage, false);
     }
