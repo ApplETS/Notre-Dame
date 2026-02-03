@@ -99,8 +99,8 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
         setBusyForObject(isLoadingEvents, false);
         notifyListeners();
       }
-    } on Exception catch (error) {
-      onError(error);
+    } on Exception catch (e) {
+      onError(e, null);
     }
   }
 }

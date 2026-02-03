@@ -105,8 +105,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   }
 
   @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
@@ -137,8 +136,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
 
       await _userRepository.getInfo();
       return await _userRepository.getPrograms();
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusyForObject(isLoadingEvents, false);
     }
@@ -154,8 +153,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
           notifyListeners();
         }),
       );
-    } on Exception catch (error) {
-      onError(error);
+    } on Exception catch (e) {
+      onError(e, null);
     }
   }
 }
