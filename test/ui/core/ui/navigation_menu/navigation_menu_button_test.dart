@@ -44,7 +44,12 @@ void main() {
       expect(find.byIcon(Icons.home), findsNothing);
 
       // Verify text is initially hidden (opacity 0)
-      final fadeTransition = tester.widget<FadeTransition>(find.byType(FadeTransition));
+      final fadeTransition = tester.widget<FadeTransition>(
+        find.byWidgetPredicate(
+          (widget) => widget is FadeTransition && widget.child is Text && (widget.child as Text).data == 'Test',
+        ),
+      );
+
       expect(fadeTransition.opacity.value, 0.0);
     });
 
@@ -97,7 +102,12 @@ void main() {
       expect(backgroundColor, AppPalette.etsLightRed);
 
       // Verify text is visible
-      final fadeTransition = tester.widget<FadeTransition>(find.byType(FadeTransition));
+      final fadeTransition = tester.widget<FadeTransition>(
+        find.byWidgetPredicate(
+          (widget) => widget is FadeTransition && widget.child is Text && (widget.child as Text).data == 'Test',
+        ),
+      );
+
       expect(fadeTransition.opacity.value, 1.0);
 
       // Verify shadow in portrait
@@ -132,7 +142,12 @@ void main() {
       expect(elevatedButton.style?.backgroundColor?.resolve({}), Colors.transparent);
 
       // Verify text is hidden
-      final fadeTransition = tester.widget<FadeTransition>(find.byType(FadeTransition));
+      final fadeTransition = tester.widget<FadeTransition>(
+        find.byWidgetPredicate(
+          (widget) => widget is FadeTransition && widget.child is Text && (widget.child as Text).data == 'Test',
+        ),
+      );
+
       expect(fadeTransition.opacity.value, 0.0);
     });
 

@@ -85,7 +85,7 @@ void main() {
         courseName: "Generic course",
         activityName: "TD",
         activityDescription: "Activity description",
-        activityLocation: "location",
+        activityLocation: ["location"],
         startDateTime: DateTime(2020, 1, 1, 18),
         endDateTime: DateTime(2020, 1, 1, 21),
       );
@@ -108,7 +108,7 @@ void main() {
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -122,7 +122,7 @@ void main() {
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities(fromCacheOnly: true);
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -142,7 +142,7 @@ void main() {
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -150,7 +150,6 @@ void main() {
         expect(manager.coursesActivities, isEmpty, reason: "The list of activities should be empty");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any),
         ]);
@@ -172,7 +171,7 @@ void main() {
         clearInteractions(userRepositoryMock);
         clearInteractions(signetsApiMock);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -180,7 +179,6 @@ void main() {
         expect(manager.coursesActivities, activities, reason: "The list of activities should not be empty");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any),
         ]);
@@ -199,7 +197,7 @@ void main() {
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         expect(manager.getCoursesActivities(), throwsA(isInstanceOf<ApiException>()));
 
         await untilCalled(networkingServiceMock.hasConnectivity());
@@ -207,10 +205,7 @@ void main() {
 
         await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
-        verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
-          analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
-        ]);
+        verifyInOrder([analyticsServiceMock.logError(CourseRepository.tag, any, any, any)]);
       });
 
       test("SignetsAPI returns new activities, the old ones should be maintained and the cache updated.", () async {
@@ -222,7 +217,7 @@ void main() {
           courseName: "Generic course",
           activityName: "Another activity name",
           activityDescription: "Activity description",
-          activityLocation: "Another location",
+          activityLocation: ["Another location"],
           startDateTime: DateTime(2020, 1, 2, 18),
           endDateTime: DateTime(2020, 1, 2, 21),
         );
@@ -230,7 +225,7 @@ void main() {
         // Stub the SignetsAPI to return 2 activities
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [activity, courseActivity]);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -241,7 +236,6 @@ void main() {
         ], reason: "The list of activities should not be empty");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([activity, courseActivity])),
         ]);
@@ -254,7 +248,7 @@ void main() {
         // Stub the SignetsAPI to return the same activity as the cache
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, activities);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -262,7 +256,6 @@ void main() {
         expect(manager.coursesActivities, activities, reason: "The list of activities should not have duplicata");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities)),
         ]);
@@ -284,7 +277,7 @@ void main() {
           courseName: activity.courseName,
           activityName: activity.activityName,
           activityDescription: 'Another description',
-          activityLocation: 'Changed location',
+          activityLocation: ['Changed location'],
           startDateTime: activity.startDateTime,
           endDateTime: activity.endDateTime,
         );
@@ -292,7 +285,7 @@ void main() {
         // Stub the SignetsAPI to return the same activity as the cache
         SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [changedActivity]);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
@@ -300,7 +293,6 @@ void main() {
         expect(manager.coursesActivities, [changedActivity], reason: "The list of activities should be updated");
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([changedActivity])),
         ]);
@@ -317,7 +309,7 @@ void main() {
           exceptionToThrow: const ApiException(prefix: CourseRepository.tag),
         );
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         expect(manager.getCoursesActivities(), throwsA(isInstanceOf<ApiException>()));
 
         await untilCalled(networkingServiceMock.hasConnectivity());
@@ -326,7 +318,6 @@ void main() {
         await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
           signetsApiMock.getCoursesActivities(session: session.shortName),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
@@ -341,17 +332,14 @@ void main() {
 
         CacheServiceMock.stubUpdateException(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
 
         expect(results, isInstanceOf<List<CourseActivity>>());
         expect(results, activities);
         expect(manager.coursesActivities, activities, reason: "The list of activities should not be empty");
 
-        verifyInOrder([
-          cacheManagerMock.get(CourseRepository.coursesActivitiesCacheKey),
-          signetsApiMock.getCoursesActivities(session: session.shortName),
-        ]);
+        verifyInOrder([signetsApiMock.getCoursesActivities(session: session.shortName)]);
       });
 
       test("Should force fromCacheOnly mode when user has no connectivity", () async {
@@ -386,15 +374,10 @@ void main() {
 
       final ScheduleActivity scheduleActivity = ScheduleActivity(
         courseAcronym: 'GEN101',
-        courseGroup: '01',
         dayOfTheWeek: 1,
-        day: 'Lundi',
         activityCode: ActivityCode.labEvery2Weeks,
-        name: 'Laboratoire aux 2 semaines',
-        isPrincipalActivity: false,
         startTime: DateFormat('HH:mm').parse("08:30"),
         endTime: DateFormat('HH:mm').parse("12:30"),
-        activityLocation: 'À distance',
         courseTitle: 'Generic title',
       );
 
@@ -420,7 +403,7 @@ void main() {
         // Stub the SignetsAPI to return 0 activities
         SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.coursesActivities, []);
         final List<ScheduleActivity> results = await manager.getScheduleActivities();
 
         expect(results, isInstanceOf<List<ScheduleActivity>>());

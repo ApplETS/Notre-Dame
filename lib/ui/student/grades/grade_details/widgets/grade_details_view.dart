@@ -1,3 +1,6 @@
+// Dart imports:
+import 'dart:math';
+
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -28,7 +31,11 @@ class GradesDetailsView extends StatefulWidget {
 
 class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _ignoredEvaluationsAnimationController;
   bool _completed = false;
+  final GlobalKey _expansionTileKey = GlobalKey();
+  late Animation<double> _rotateAnimation;
+  bool _isIgnoredEvaluationsExpanded = false;
 
   @override
   void initState() {
@@ -42,6 +49,25 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         });
       }
     });
+
+    _ignoredEvaluationsAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+      value: 1.0,
+    );
+    _ignoredEvaluationsAnimationController.forward();
+
+    _rotateAnimation = Tween(
+      begin: pi,
+      end: 0.0,
+    ).animate(CurvedAnimation(parent: _ignoredEvaluationsAnimationController, curve: Curves.easeIn));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _ignoredEvaluationsAnimationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -227,12 +253,15 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
                 const SizedBox(height: 8.0),
                 Column(
                   children: <Widget>[
-                    for (final CourseEvaluation evaluation in model.course.summary?.evaluations ?? [])
+                    for (final CourseEvaluation evaluation in model.nonIgnoredEvaluations)
                       GradeEvaluationTile(
                         evaluation,
                         completed: _completed,
                         key: Key("GradeEvaluationTile_${evaluation.title}"),
                       ),
+                    if (model.ignoredEvaluations.isNotEmpty) ...[
+                      _buildIgnoredEvaluationsExpansionTile(model.ignoredEvaluations),
+                    ],
                     const SizedBox(height: 24),
                   ],
                 ),
@@ -311,5 +340,62 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
         ),
       ),
     );
+  }
+
+  Widget _buildIgnoredEvaluationsExpansionTile(List<CourseEvaluation> ignoredEvaluations) {
+    return Theme(
+      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+      child: ExpansionTile(
+        key: _expansionTileKey,
+        onExpansionChanged: (value) {
+          _isIgnoredEvaluationsExpanded = !_isIgnoredEvaluationsExpanded;
+          if (value) {
+            _ignoredEvaluationsAnimationController.reverse(from: pi);
+            _scrollToSelectedContent(expansionTileKey: _expansionTileKey);
+          } else {
+            _ignoredEvaluationsAnimationController.forward(from: 0.0);
+          }
+        },
+        trailing: AnimatedBuilder(
+          animation: _rotateAnimation,
+          builder: (BuildContext context, Widget? child) {
+            return Transform.rotate(
+              angle: _rotateAnimation.value,
+              child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
+            );
+          },
+          child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
+        ),
+        tilePadding: EdgeInsets.only(left: 8.0, right: 28),
+        title: Row(
+          children: [
+            Text(
+              AppIntl.of(context)!.ignored_evaluations_section_title(ignoredEvaluations.length),
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ],
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
+            child: Text(AppIntl.of(context)!.ignored_evaluations_section_description_text),
+          ),
+          for (final CourseEvaluation evaluation in ignoredEvaluations)
+            GradeEvaluationTile(evaluation, completed: _completed, key: Key("GradeEvaluationTile_${evaluation.title}")),
+          const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
+    final keyContext = expansionTileKey.currentContext;
+    if (keyContext != null) {
+      Future.delayed(Duration(milliseconds: 200)).then((value) {
+        if (keyContext.mounted) {
+          Scrollable.ensureVisible(keyContext, duration: Duration(milliseconds: 200));
+        }
+      });
+    }
   }
 }
