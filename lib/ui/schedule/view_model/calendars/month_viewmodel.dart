@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Project imports:
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 
 class MonthViewModel extends CalendarViewModel {
   DateTime monthSelected = Utils.getFirstDayOfMonth(DateTime.now());
@@ -22,8 +23,8 @@ class MonthViewModel extends CalendarViewModel {
     eventController.addAll(selectedMonthEvents());
   }
 
-  List<CalendarEventData> selectedMonthEvents() {
-    List<CalendarEventData> events = [];
+  List<CalendarEventTile> selectedMonthEvents() {
+    List<CalendarEventTile> events = [];
 
     final List<DateTime> months = [
       monthSelected,

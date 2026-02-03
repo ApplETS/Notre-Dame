@@ -1,6 +1,6 @@
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
@@ -31,7 +31,7 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventData(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
             loaded: true,
             displaySaturday: true,
             displaySunday: false,
@@ -46,7 +46,7 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventData(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
             loaded: true,
             displaySaturday: false,
             displaySunday: true,
@@ -61,7 +61,7 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventData(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
             loaded: true,
             displaySaturday: false,
             displaySunday: false,

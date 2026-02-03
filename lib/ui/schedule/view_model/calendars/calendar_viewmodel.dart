@@ -18,6 +18,7 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 
 abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   /// Load the events
@@ -51,7 +52,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   CalendarViewModel({required AppIntl intl}) : appIntl = intl;
 
-  CalendarEventData<Object> calendarEventData(CourseActivity eventData) {
+  CalendarEventTile<Object> calendarEventTile(CourseActivity eventData) {
     final courseLocationMultiline = eventData.activityLocation.contains("Non assign")
         ? "N/A"
         : eventData.activityLocation.join("\n");
@@ -60,10 +61,12 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         : eventData.activityLocation.join(", ");
     final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
-    return CalendarEventData(
-      title: "${eventData.courseGroup.split('-')[0]}\n$courseLocationMultiline\n${eventData.activityName}",
+    return CalendarEventTile(
+      title: eventData.courseGroup.split('-')[0],
       description:
           "${eventData.courseGroup};$courseLocationInline;${eventData.activityName};${associatedCourse?.teacherName}",
+      cardDescription: "$courseLocationMultiline\n${eventData.activityName}",
+      nbLines: eventData.activityLocation.length + 1,
       date: eventData.startDateTime,
       startTime: eventData.startDateTime,
       endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
@@ -201,8 +204,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         (activityNameSelected == ActivityCode.labGroupB && ActivityName.labB == course.activityName);
   }
 
-  List<CalendarEventData> calendarEventsFromDate(DateTime date) {
-    return _coursesActivities[date.withoutTime]?.map((eventData) => calendarEventData(eventData)).toList() ?? [];
+  List<CalendarEventTile> calendarEventsFromDate(DateTime date) {
+    return _coursesActivities[date.withoutTime]?.map((eventData) => calendarEventTile(eventData)).toList() ?? [];
   }
 
   bool returnToCurrentDate();

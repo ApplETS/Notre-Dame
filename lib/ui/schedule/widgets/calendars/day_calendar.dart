@@ -17,6 +17,7 @@ import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;
@@ -164,6 +165,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         padding: const EdgeInsets.all(12.0),
         backgroundColor: events[0].color,
         buildContext: context,
+        nbLines: (events[0] as CalendarEventTile).nbLines,
+        cardDescription: (events[0] as CalendarEventTile).cardDescription,
       );
     } else {
       return Container();

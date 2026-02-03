@@ -12,6 +12,7 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 
 bool isAnimating = false;
 
@@ -135,6 +136,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
         padding: const EdgeInsets.all(6.0),
         backgroundColor: events[0].color,
         buildContext: context,
+        nbLines: (events[0] as CalendarEventTile).nbLines,
+        cardDescription: (events[0] as CalendarEventTile).cardDescription,
       );
     } else {
       return Container();

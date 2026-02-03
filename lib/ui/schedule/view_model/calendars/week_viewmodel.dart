@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Project imports:
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 
 class WeekViewModel extends CalendarViewModel {
   // Sunday of current week
@@ -61,8 +62,8 @@ class WeekViewModel extends CalendarViewModel {
     return !isThisWeekSelected;
   }
 
-  List<CalendarEventData> selectedWeekCalendarEvents() {
-    final List<CalendarEventData> events = [];
+  List<CalendarEventTile> selectedWeekCalendarEvents() {
+    final List<CalendarEventTile> events = [];
 
     // We want to put events of previous week and next week in memory to make transitions smoother
     for (int i = -7; i < 14; i++) {

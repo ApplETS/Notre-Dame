@@ -9,9 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 
 class SessionSchedule extends StatefulWidget {
-  final List<CalendarEventData<Object>> calendarEvents;
+  final List<CalendarEventTile<Object>> calendarEvents;
   final bool loaded;
   final bool displaySaturday;
   final bool displaySunday;
@@ -95,6 +96,8 @@ class _SessionScheduleState extends State<SessionSchedule> {
         padding: const EdgeInsets.all(6.0),
         backgroundColor: events[0].color,
         buildContext: context,
+        nbLines: (events[0] as CalendarEventTile).nbLines,
+        cardDescription: (events[0] as CalendarEventTile).cardDescription,
       );
     } else {
       return Container();

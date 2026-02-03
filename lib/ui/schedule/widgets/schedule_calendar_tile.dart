@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class ScheduleCalendarTile extends StatefulWidget {
   final String? title;
@@ -15,6 +16,8 @@ class ScheduleCalendarTile extends StatefulWidget {
   final Color? backgroundColor;
   final DateTime? start;
   final DateTime? end;
+  final int? nbLines;
+  final String? cardDescription;
   final BuildContext buildContext;
 
   const ScheduleCalendarTile({
@@ -25,6 +28,8 @@ class ScheduleCalendarTile extends StatefulWidget {
     this.backgroundColor,
     this.start,
     this.end,
+    this.nbLines,
+    this.cardDescription,
     required this.buildContext,
   });
 
@@ -78,7 +83,10 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              child: Text(
+                AppIntl.of(context)!.close_button_text,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
           actionsPadding: const EdgeInsets.all(10),
@@ -89,13 +97,36 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
 
   @override
   Widget build(BuildContext context) {
-    int nbLines = widget.title!.split(RegExp(r'\r?\n')).length;
     return GestureDetector(
       onTap: _showTileInfo,
       child: Container(
         decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(6.0)),
         padding: widget.padding,
-        child: AutoSizeText(widget.title!, minFontSize: 10, maxLines: nbLines),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AutoSizeText(
+                    widget.title!,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                    minFontSize: 10,
+                  ),
+                ],
+              ),
+            ),
+            if (widget.cardDescription != null)
+              Divider(color: context.theme.textTheme.bodyMedium!.color?.withAlpha(100), height: 4),
+            if (widget.cardDescription != null)
+              Flexible(
+                flex: 2,
+                child: AutoSizeText(widget.cardDescription!, minFontSize: 10, maxLines: widget.nbLines),
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -50,8 +50,8 @@ void main() {
       expect(activitiesByDate[DateTime(2023, 10, 1)]?.length, 1);
     });
 
-    test('calendarEventData returns correct event data with valid location', () async {
-      // Arrange: create a dummy Course that will be picked up by calendarEventData.
+    test('calendarEventTile returns correct event data with valid location', () async {
+      // Arrange: create a dummy Course that will be picked up by calendarEventTile.
       final dummyCourse = Course(
         acronym: 'GEN101',
         group: '02',
@@ -78,7 +78,7 @@ void main() {
       await viewModel.futureToRun();
 
       // Act
-      final eventData = viewModel.calendarEventData(activity);
+      final eventData = viewModel.calendarEventTile(activity);
 
       // Assert
       expect(eventData.title, equals("ING150\nRoom 202\nLecture"));
@@ -89,7 +89,7 @@ void main() {
       expect(eventData.color, equals(viewModel.getCourseColor('ING150')));
     });
 
-    test('calendarEventData returns correct event data with "Non assign" location', () async {
+    test('calendarEventTile returns correct event data with "Non assign" location', () async {
       final dummyCourse = Course(
         acronym: 'GEN101',
         group: '02',
@@ -112,7 +112,7 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [activity]);
       await viewModel.futureToRun();
 
-      final eventData = viewModel.calendarEventData(activity);
+      final eventData = viewModel.calendarEventTile(activity);
       expect(eventData.title, equals("ING150\nN/A\nTutorial"));
       expect(eventData.description, equals("ING150-01;N/A;Tutorial;null"));
     });
