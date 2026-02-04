@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
+import '../../core/themes/app_theme.dart';
+
 class WidgetComponent extends StatelessWidget {
   final Widget _child;
   final String _title;
@@ -20,38 +22,25 @@ class WidgetComponent extends StatelessWidget {
   /// TODO : This class needs to be entirely refactored
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-      child: Card(
-        elevation: 0,
-        margin: const EdgeInsets.fromLTRB(16, 13, 16, 13),
-        color: AppPalette.grey.darkGrey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
-              child: Container(
-                width: double.infinity,
-                alignment: Alignment.topCenter,
-                decoration: BoxDecoration(color: AppPalette.grey.darkGrey),
-                child: Container(
-                  color: AppPalette.etsLightRed,
-                  height: 35,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  child: Text(
-                    _title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-              ),
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      margin: const EdgeInsets.fromLTRB(16, 13, 16, 13),
+      color: context.theme.appColors.dashboardCard,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      child: Column(
+        children: [
+          Container(
+            color: AppPalette.etsLightRed,
+            height: 36,
+            alignment: Alignment.center,
+            child: Text(
+              _title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 18, color: Colors.white),
             ),
-            _child,
-          ],
-        ),
+          ),
+          _child,
+        ],
       ),
     );
   }

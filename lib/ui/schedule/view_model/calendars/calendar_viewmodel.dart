@@ -81,13 +81,11 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return courseColors[courseName] ?? AppPalette.etsLightRed;
   }
 
-  bool isLoadingEvents = false;
 
   @override
   Future<List<CourseActivity>> futureToRun() async {
     List<CourseActivity>? activities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
     try {
-      setBusyForObject(isLoadingEvents, true);
       final fetchedCourseActivities = await _courseRepository.getCoursesActivities();
 
       if (fetchedCourseActivities != null) {
@@ -101,8 +99,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       await _assignScheduleActivities(scheduleActivities);
     } catch (e) {
       onError(e, null);
-    } finally {
-      setBusyForObject(isLoadingEvents, false);
     }
     return activities ?? [];
   }
@@ -115,7 +111,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       return;
     }
 
-    setBusy(true);
     scheduleActivitiesByCourse.clear();
     for (final activity in listOfSchedules) {
       if (activity.activityCode == ActivityCode.labGroupA || activity.activityCode == ActivityCode.labGroupB) {

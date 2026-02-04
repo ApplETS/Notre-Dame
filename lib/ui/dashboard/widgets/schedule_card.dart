@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 
 class ScheduleCard extends StatelessWidget {
   final SettingsRepository _settingsRepository = locator<SettingsRepository>();
@@ -33,36 +32,26 @@ class ScheduleCard extends StatelessWidget {
       date = tomorrowDate;
     }
 
-    late List<CourseActivity>? courseActivities = events;
+    // TODO set end hour according to last event
 
-
-    return WidgetComponent(
-      title: title,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 5),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-
-               SizedBox(
-                   height:300,
-                   child: DayCalendar(listView: false, controller: ScheduleController(), selectedDate: date))
-
-          ],
+    return SizedBox(
+      height: 400,
+      child: WidgetComponent(
+        title: title,
+        child: Expanded(
+          child: DayCalendar(
+            listView: false,
+            controller: ScheduleController(),
+            selectedDate: date,
+            heightPerMinute: 364 / ((22 - 7) * 60),
+            startHour: 8,
+            endHour: 22,
+            backgroundColor: context.theme.appColors.dashboardCard,
+            scrollOffset: 0,
+            scrollPhysics: NeverScrollableScrollPhysics(),
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildEventList(List<dynamic> events) {
-    return ListView.separated(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-      itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
-      separatorBuilder: (_, index) =>
-          (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
-      itemCount: events.length,
     );
   }
 }

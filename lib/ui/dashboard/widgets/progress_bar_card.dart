@@ -10,6 +10,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
 
+import '../../core/themes/app_theme.dart';
+
 class ProgressBarCard extends StatefulWidget {
   final String progressBarText;
   final double progress;
@@ -64,44 +66,41 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
   Widget build(BuildContext context) => AspectRatio(
     aspectRatio: 1,
     child: Card(
+      color: context.theme.appColors.dashboardCard,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (widget.loading || widget.progress >= 0.0)
-              Column(
+        child: (widget.loading || widget.progress >= 0.0)
+            ? Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints constraints) {
-                      final textPainter = TextPainter(
-                        text: TextSpan(text: AppIntl.of(context)!.progress_bar, style: smallTextStyle),
-                        textDirection: TextDirection.ltr,
-                      )..layout();
-                      double size = constraints.maxWidth - textPainter.height - 12;
-                      return Transform.translate(
-                        offset: const Offset(0, -12),
-                        child: Transform.scale(
-                          scale: size / 100,
-                          alignment: Alignment.bottomRight,
-                          child: AnimatedBuilder(
-                            animation: _animation,
-                            builder: (context, child) => _progress(_animation.value),
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (BuildContext context, BoxConstraints constraints) {
+                        final textPainter = TextPainter(
+                          text: TextSpan(text: AppIntl.of(context)!.progress_bar, style: smallTextStyle),
+                          textDirection: TextDirection.ltr,
+                        )..layout();
+                        double size = constraints.maxWidth - textPainter.height - 12;
+                        return Transform.translate(
+                          offset: const Offset(0, -12),
+                          child: Transform.scale(
+                            scale: size / 100,
+                            alignment: Alignment.bottomRight,
+                            child: AnimatedBuilder(
+                              animation: _animation,
+                              builder: (context, child) => _progress(_animation.value),
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
+                  // This overflows
                   Text(AppIntl.of(context)!.progress_bar, style: smallTextStyle),
                 ],
               )
-            else
-              Expanded(child: Center(child: Text(AppIntl.of(context)!.session_without))),
-          ],
-        ),
+            : Expanded(child: Center(child: Text(AppIntl.of(context)!.session_without))),
       ),
     ),
   );

@@ -55,9 +55,10 @@ class AppTheme with ChangeNotifier {
   static final _lightAppColors = AppColorsExtension(
     appBar: const Color(0xfff8f8f8),
     navBar: const Color(0xfffffdfd),
+    dashboardCard: const Color(0xfff3f3f3),
     backgroundAlt: const Color(0xffefefef),
     backgroundVibrant: AppPalette.etsLightRed,
-    scheduleLine: const Color(0xffd9d8d8),
+    scheduleLine: const Color(0xfff1f1f1),
     tabBarLabel: Colors.black,
     tabBarIndicator: Colors.black26,
     shimmerHighlight: const Color.fromARGB(255, 228, 225, 225),
@@ -115,6 +116,7 @@ class AppTheme with ChangeNotifier {
   static final _darkAppColors = AppColorsExtension(
     appBar: const Color(0xff16171a),
     navBar: const Color(0xff1c1d21),
+    dashboardCard: const Color(0xff232325),
     backgroundAlt: const Color(0xff2c2c2c),
     backgroundVibrant: const Color(0xff121212),
     scheduleLine: const Color(0xff2c2929),

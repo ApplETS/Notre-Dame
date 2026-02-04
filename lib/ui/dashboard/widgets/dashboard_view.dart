@@ -38,25 +38,22 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             onRefresh: () async {
               await model.loadDataAndUpdateWidget();
             },
-            child: Theme(
-              data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
-              child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Content positioned on top of the circle
-                    Stack(
-                      children: [
-                        /// Animated circle in the background
-                        _redCircle(model),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// Content positioned on top of the circle
+                  Stack(
+                    children: [
+                      /// Animated circle in the background
+                      _redCircle(model),
 
-                        // TODO create layouts for all sizes and orientations
-                        _phoneVertical(context, model),
-                      ],
-                    ),
-                  ],
-                ),
+                      // TODO create layouts for all sizes and orientations
+                      _phoneVertical(context, model),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
@@ -75,7 +72,6 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           child: PhysicalShape(
             clipper: CircleClipper(),
             elevation: 4,
-            shadowColor: const Color.fromRGBO(0, 0, 0, 1.0),
             color: AppPalette.etsLightRed,
             child: SizedBox(height: model.heightAnimation.value, width: double.infinity),
           ),
@@ -88,56 +84,34 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 100),
         AnimatedBuilder(
           animation: model.titleAnimation,
           builder: (context, child) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Transform.translate(
-                    offset: model.titleSlideOffset,
-                    child: Opacity(
-                      opacity: model.titleFadeOpacity,
-                      child: Text(
-                        'Accueil',
-                        style: TextStyle(fontSize: 28, fontWeight: FontWeight.normal, color: AppPalette.grey.white),
-                      ),
+              padding: const EdgeInsets.only(left: 32, right: 32, top: 80),
+              child: Transform.translate(
+                offset: model.titleSlideOffset,
+                child: Opacity(
+                  opacity: model.titleFadeOpacity,
+                  child: SkeletonLoader(
+                    loading: model.isLoading,
+                    child: Text(
+                      'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
+                      style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Transform.translate(
-                    offset: model.titleSlideOffset,
-                    child: Opacity(
-                      opacity: model.titleFadeOpacity,
-                      child: SkeletonLoader(
-                        loading: model.isLoading,
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 70,
-                          child: Text(
-                            'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
-                            style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             );
           },
         ),
-        const SizedBox(height: 0),
         Container(
-          padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+          padding: EdgeInsets.fromLTRB(32, 16, 32, 0),
           width: double.infinity,
           child: Row(
-            spacing: 12,
+            spacing: 18,
             children: [
               Expanded(child: AspectRatio(aspectRatio: 1, child: Card(child: null))),
               Expanded(
@@ -150,12 +124,9 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 6),
         ScheduleCard(events: model.scheduleEvents),
-        WidgetComponent(
-          title: "Notes",
-          child: GradesCard(courses: model.courses, onDismissed: () => {}, loading: model.busy(model.courses)),
-        ),
+        GradesCard(courses: model.courses, loading: model.busy(model.courses))
       ],
     );
   }
