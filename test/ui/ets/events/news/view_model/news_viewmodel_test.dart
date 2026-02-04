@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
 import 'package:mockito/mockito.dart';
 
@@ -85,19 +86,20 @@ void main() {
     test('NewsViewModel fetch first page', () async {
       expect(viewModel.isBusy, isFalse);
 
+      viewModel.initialise();
       await viewModel.fetchPage(1);
 
       verify(newsRepository.getNews()).called(1);
-      expect(viewModel.pagingController.nextPageKey, 2);
+      expect(viewModel.pagingController.hasNextPage, true);
     });
 
     test('NewsViewModel fetch last page', () async {
       expect(viewModel.isBusy, isFalse);
 
+      viewModel.initialise();
       await viewModel.fetchPage(2);
 
       verify(newsRepository.getNews(pageNumber: 2)).called(1);
-      expect(viewModel.pagingController.nextPageKey, 3);
     });
   });
 }
