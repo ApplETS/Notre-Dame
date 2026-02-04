@@ -32,6 +32,11 @@ class ScheduleCard extends StatelessWidget {
       date = tomorrowDate;
     }
 
+    int endHour = 18;
+
+    if (events.isNotEmpty && events.last.endDateTime.hour > 18) {
+      endHour = events.last.endDateTime.hour + 1;
+    }
     // TODO set end hour according to last event
 
     return SizedBox(
@@ -43,9 +48,9 @@ class ScheduleCard extends StatelessWidget {
             listView: false,
             controller: ScheduleController(),
             selectedDate: date,
-            heightPerMinute: 364 / ((22 - 7) * 60),
+            heightPerMinute: 364 / ((endHour - 7) * 60),
             startHour: 8,
-            endHour: 22,
+            endHour: endHour,
             backgroundColor: context.theme.appColors.dashboardCard,
             scrollOffset: 0,
             scrollPhysics: NeverScrollableScrollPhysics(),
