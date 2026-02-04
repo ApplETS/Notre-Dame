@@ -9,8 +9,17 @@ import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.da
 class DayViewModel extends CalendarViewModel {
   DateTime daySelected = DateTime.now().withoutTime;
   final EventController eventController = EventController();
+  final bool skipRepositoryLoad;
 
-  DayViewModel({required super.intl});
+  DayViewModel({required super.intl, this.skipRepositoryLoad = false});
+
+  @override
+  Future<List<CourseActivity>> futureToRun() async {
+    if (skipRepositoryLoad) {
+      return [];
+    }
+    return super.futureToRun();
+  }
 
   @override
   bool returnToCurrentDate() {
