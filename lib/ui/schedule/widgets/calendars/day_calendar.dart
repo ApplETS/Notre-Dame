@@ -22,7 +22,7 @@ import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 class DayCalendar extends StatefulWidget {
   final bool listView;
   final ScheduleController controller;
-  final List<CalendarEventTile>? events;
+  final List<calendar_view.CalendarEventData>? events;
   final DateTime? selectedDate;
   final bool skipRepositoryLoad;
 

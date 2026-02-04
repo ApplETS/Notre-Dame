@@ -151,16 +151,10 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           ),
         ),
         const SizedBox(height: 16),
-        WidgetComponent(
-          title: "Horaire - Aujourd'hui",
-          childWidget: ScheduleCard(
-            events: model.scheduleEvents,
-            loading: model.busy(model.scheduleEvents),
-          ),
-        ),
+        ScheduleCard(events: model.scheduleEvents),
         WidgetComponent(
           title: "Notes",
-          childWidget: GradesCard(courses: model.courses, onDismissed: () => {}, loading: model.busy(model.courses)),
+          child: GradesCard(courses: model.courses, onDismissed: () => {}, loading: model.busy(model.courses)),
         ),
       ],
     );

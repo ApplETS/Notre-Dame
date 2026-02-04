@@ -63,7 +63,7 @@ class MonthCalendar extends StatelessWidget {
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, _, _) => FilledCell(
-        onTileTap: (event, date) => _onDayTapped(context, events as List<CalendarEventTile>, date),
+        onTileTap: (event, date) => _onDayTapped(context, events, date),
         hideDaysNotInMonth: false,
         titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,
@@ -73,11 +73,11 @@ class MonthCalendar extends StatelessWidget {
         events: events,
         backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
       ),
-      onCellTap: (events, date) => _onDayTapped(context, events as List<CalendarEventTile>, date),
+      onCellTap: (events, date) => _onDayTapped(context, events, date),
     );
   }
 
-  void _onDayTapped(BuildContext context, List<CalendarEventTile> events, DateTime date) {
+  void _onDayTapped(BuildContext context, List<CalendarEventData> events, DateTime date) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,

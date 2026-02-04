@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class WidgetComponent extends StatelessWidget {
-  final Widget _childWidget;
+  final Widget _child;
   final String _title;
 
-  const WidgetComponent({super.key, Widget? childWidget, required String title})
+  const WidgetComponent({super.key, Widget? child, required String title})
     : _title = title,
-      _childWidget =
-          childWidget ??
+      _child =
+          child ??
           const SizedBox(
             height: 125,
             child: Text("TODO", style: TextStyle(color: Colors.white)),
@@ -49,7 +49,7 @@ class WidgetComponent extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(padding: const EdgeInsets.all(16), child: _childWidget),
+            _child,
           ],
         ),
       ),
