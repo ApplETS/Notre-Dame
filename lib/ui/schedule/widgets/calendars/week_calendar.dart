@@ -7,12 +7,12 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/data/models/calendar_event_tile.dart';
 
 bool isAnimating = false;
 

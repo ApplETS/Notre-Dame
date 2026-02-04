@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -17,7 +18,6 @@ import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/data/models/calendar_event_tile.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;

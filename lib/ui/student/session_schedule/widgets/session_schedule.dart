@@ -6,10 +6,10 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
-import 'package:notredame/data/models/calendar_event_tile.dart';
 
 class SessionSchedule extends StatefulWidget {
   final List<CalendarEventTile<Object>> calendarEvents;

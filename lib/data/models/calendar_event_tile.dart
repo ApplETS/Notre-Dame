@@ -1,8 +1,10 @@
-import 'package:calendar_view/calendar_view.dart';
+// Flutter imports:
 import 'package:flutter/material.dart';
 
-@immutable
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
 
+@immutable
 class CalendarEventTile<T extends Object?> extends CalendarEventData {
   final int? nbLines;
   final String? cardDescription;
@@ -20,6 +22,6 @@ class CalendarEventTile<T extends Object?> extends CalendarEventData {
     super.startTime,
     super.titleStyle,
     this.nbLines,
-    this.cardDescription
+    this.cardDescription,
   });
 }

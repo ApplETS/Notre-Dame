@@ -1,8 +1,8 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/models/calendar_event_tile.dart';
 
 // Project imports:
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/session_schedule/widgets/session_schedule.dart';
 import '../../../../helpers.dart';
