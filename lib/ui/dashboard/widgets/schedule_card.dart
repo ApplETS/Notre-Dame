@@ -10,17 +10,15 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/core/ui/dismissible_card.dart';
 import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 
 class ScheduleCard extends StatelessWidget {
   final SettingsRepository _settingsRepository = locator<SettingsRepository>();
 
-  final VoidCallback onDismissed;
   final List<CourseActivity> events;
   final bool loading;
 
-  ScheduleCard({super.key, required this.onDismissed, required this.events, required this.loading});
+  ScheduleCard({super.key, required this.events, required this.loading});
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +45,7 @@ class ScheduleCard extends StatelessWidget {
           ]
         : events;
 
-    return DismissibleCard(
-      onDismissed: (DismissDirection direction) => onDismissed(),
+    return Card(
       key: UniqueKey(),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 5),

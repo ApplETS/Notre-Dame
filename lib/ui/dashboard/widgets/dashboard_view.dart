@@ -154,7 +154,6 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
         WidgetComponent(
           title: "Horaire - Aujourd'hui",
           childWidget: ScheduleCard(
-            onDismissed: () => {},
             events: model.scheduleEvents,
             loading: model.busy(model.scheduleEvents),
           ),
