@@ -55,8 +55,8 @@ class MoreViewModel extends FutureViewModel {
       setBusy(true);
       final packageInfo = await PackageInfo.fromPlatform();
       _appVersion = packageInfo.version;
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusy(false);
     }
@@ -64,8 +64,7 @@ class MoreViewModel extends FutureViewModel {
   }
 
   @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
@@ -79,7 +78,7 @@ class MoreViewModel extends FutureViewModel {
     try {
       await _cacheManager.empty();
     } on Exception catch (e) {
-      onError(e);
+      onError(e, null);
     }
 
     await _preferencesService.clearWithoutPersistentKey();

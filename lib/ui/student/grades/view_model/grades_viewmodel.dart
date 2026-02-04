@@ -36,8 +36,8 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         // Update the courses list
         _buildCoursesBySession(_courseRepository.courses!);
       }
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusy(false);
     }
@@ -45,8 +45,7 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
   }
 
   @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
@@ -58,8 +57,8 @@ class GradesViewModel extends FutureViewModel<Map<String, List<Course>>> {
         _buildCoursesBySession(_courseRepository.courses!);
       }
       notifyListeners();
-    } on Exception catch (error) {
-      onError(error);
+    } on Exception catch (e) {
+      onError(e, null);
     }
   }
 

@@ -277,7 +277,7 @@ class _TestCalendarViewModelWithError extends _TestCalendarViewModel {
   _TestCalendarViewModelWithError({required super.intl});
 
   @override
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     errorMessage = error.toString();
   }
 }
