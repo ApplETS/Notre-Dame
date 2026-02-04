@@ -82,6 +82,9 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   Widget _buildCalendar(DayViewModel model) {
     final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+    // Sets the initial day: widget.selectedDate is an external date from parent (nullable),
+    // model.daySelected is the internal date managed by ViewModel (never null, defaults to today)
+    final DateTime initialDay = widget.selectedDate ?? model.daySelected;
 
     return Expanded(
       child: calendar_view.DayView(
@@ -95,7 +98,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           }),
         }),
         backgroundColor: context.theme.scaffoldBackgroundColor,
-        initialDay: widget.selectedDate ?? model.daySelected,
+        initialDay: initialDay,
         minDay: widget.selectedDate,
         maxDay: widget.selectedDate,
         hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
