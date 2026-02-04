@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -21,7 +22,7 @@ import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 class DayCalendar extends StatefulWidget {
   final bool listView;
   final ScheduleController controller;
-  final List<calendar_view.CalendarEventData<Object?>>? events;
+  final List<CalendarEventTile>? events;
   final DateTime? selectedDate;
   final bool skipRepositoryLoad;
 
@@ -117,7 +118,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         },
         eventTileBuilder: (date, events, boundary, startDuration, endDuration) {
           if (events.isNotEmpty) {
-            return _buildEventTile(events[0]);
+            return _buildEventTile(events);
           } else {
             return Container();
           }
@@ -176,16 +177,22 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     );
   }
 
-  Widget _buildEventTile(calendar_view.CalendarEventData<dynamic> event) {
-    return ScheduleCalendarTile(
-      title: event.title,
-      description: event.description,
-      start: event.startTime,
-      end: event.endTime,
-      padding: const EdgeInsets.all(12.0),
-      backgroundColor: event.color,
-      buildContext: context,
-    );
+  Widget _buildEventTile(List<calendar_view.CalendarEventData> events) {
+    if (events.isNotEmpty) {
+      return ScheduleCalendarTile(
+        title: events[0].title,
+        description: events[0].description,
+        start: events[0].startTime,
+        end: events[0].endTime,
+        padding: const EdgeInsets.all(12.0),
+        backgroundColor: events[0].color,
+        buildContext: context,
+        nbLines: (events[0] as CalendarEventTile).nbLines,
+        cardDescription: (events[0] as CalendarEventTile).cardDescription,
+      );
+    } else {
+      return Container();
+    }
   }
 
   /// Build the list of the events for the selected day.

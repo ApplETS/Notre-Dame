@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -62,7 +63,7 @@ class MonthCalendar extends StatelessWidget {
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, _, _) => FilledCell(
-        onTileTap: (event, date) => _onDayTapped(context, events, date),
+        onTileTap: (event, date) => _onDayTapped(context, events as List<CalendarEventTile>, date),
         hideDaysNotInMonth: false,
         titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,
@@ -72,11 +73,11 @@ class MonthCalendar extends StatelessWidget {
         events: events,
         backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
       ),
-      onCellTap: (events, date) => _onDayTapped(context, events, date),
+      onCellTap: (events, date) => _onDayTapped(context, events as List<CalendarEventTile>, date),
     );
   }
 
-  void _onDayTapped(BuildContext context, List<CalendarEventData<Object?>> events, DateTime date) {
+  void _onDayTapped(BuildContext context, List<CalendarEventTile> events, DateTime date) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
