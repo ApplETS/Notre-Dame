@@ -3,7 +3,6 @@ import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/dashboard/services/dynamic_messages_service.dart';
 
 // Package imports:
 import 'package:skeletonizer/skeletonizer.dart';
@@ -140,67 +139,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
             ),
           ),
         ),
-<<<<<<< HEAD
-
-        FutureBuilder<String>(
-          future: DynamicMessagesService(AppIntl.of(context)!).getDynamicMessage(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Padding(padding: EdgeInsets.fromLTRB(17, 10, 17, 0), child: LinearProgressIndicator());
-            }
-            if (snapshot.hasError || (snapshot.data?.isEmpty ?? true)) {
-              return const SizedBox.shrink();
-            }
-
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(17, 10, 17, 0),
-              child: Text(snapshot.data!, style: Theme.of(context).textTheme.bodyMedium),
-            );
-          },
-        ),
-
-        if (loading || progress >= 0.0)
-          Skeletonizer(
-            enabled: loading,
-            ignoreContainers: true,
-            child: Stack(
-              children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(17, 10, 15, 20),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: GestureDetector(
-                      onTap: () => changeProgressBarText(),
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        minHeight: 30,
-                        valueColor: const AlwaysStoppedAnimation<Color>(AppPalette.gradeGoodMax),
-                        backgroundColor: AppPalette.grey.darkGrey,
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => changeProgressBarText(),
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Center(
-                      child: Text(progressBarText, style: const TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        else
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: Center(child: Text(AppIntl.of(context)!.session_without)),
-          ),
-      ],
-=======
       ),
->>>>>>> v5
     ),
   );
 }
