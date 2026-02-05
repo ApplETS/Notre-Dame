@@ -5,6 +5,7 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 class SessionContext {
   final Session session;
   final List<CourseActivity> courseActivities;
+  final DateTime now;
 
   final bool isSessionStarted;
   final int daysRemaining;
@@ -20,6 +21,7 @@ class SessionContext {
   SessionContext({
     required this.session,
     required this.courseActivities,
+    required this.now,
     required this.isSessionStarted,
     required this.daysRemaining,
     required this.daysSinceStart,
@@ -40,6 +42,7 @@ class SessionContext {
     return SessionContext(
       session: session,
       courseActivities: activities,
+      now: now,
       isSessionStarted: now.isAfter(session.startDate),
       daysRemaining: session.startDate.difference(now).inDays,
       daysSinceStart: session.endDate.difference(now).inDays,
@@ -96,7 +99,7 @@ class SessionContext {
     final thisWeek = _getActivitiesForCurrentWeek();
     if (thisWeek.isEmpty) return false;
 
-    final today = _dateOnly(DateTime.now());
+    final today = _dateOnly(now);
     final daysWithActivities = _getUniqueDays(thisWeek);
 
     return daysWithActivities.isNotEmpty && daysWithActivities.last.isAtSameMomentAs(today);
@@ -144,21 +147,18 @@ class SessionContext {
   }
 
   List<CourseActivity> _getActivitiesForCurrentWeek() {
-    final now = DateTime.now();
     final start = _startOfWeek(now);
     final end = start.add(const Duration(days: 7));
     return _getActivitiesInRange(courseActivities, start, end);
   }
 
   List<CourseActivity> _getActivitiesForNextWeek() {
-    final now = DateTime.now();
     final startOfNextWeek = _startOfWeek(now).add(const Duration(days: 7));
     final endOfNextWeek = startOfNextWeek.add(const Duration(days: 7));
     return _getActivitiesInRange(courseActivities, startOfNextWeek, endOfNextWeek);
   }
 
   DateTime? _findNextActivity() {
-    final now = DateTime.now();
     final endOfWeek = now.add(Duration(days: 7 - now.weekday));
 
     final futureActivities = courseActivities.where((a) => a.startDateTime.isAfter(endOfWeek)).toList()
