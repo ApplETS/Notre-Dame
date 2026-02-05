@@ -53,10 +53,19 @@ class SessionContext {
     );
   }
 
-  bool get hasNextWeekSchedule {
-    final nextWeekActivities = _getActivitiesForNextWeek();
-    return nextWeekActivities.isNotEmpty;
+  static DateTime _dateOnly(DateTime date) => DateTime(date.year, date.month, date.day);
+
+  static DateTime _startOfWeek(DateTime date) => _dateOnly(date).subtract(Duration(days: date.weekday - 1));
+
+  static List<CourseActivity> _getActivitiesInRange(List<CourseActivity> activities, DateTime start, DateTime end) {
+    return activities.where((a) => !a.startDateTime.isBefore(start) && a.startDateTime.isBefore(end)).toList();
   }
+
+  static List<DateTime> _getUniqueDays(List<CourseActivity> activities) {
+    return activities.map((a) => _dateOnly(a.startDateTime)).toSet().toList()..sort();
+  }
+
+  bool get hasNextWeekSchedule => _getActivitiesForNextWeek().isNotEmpty;
 
   bool get isLongWeekend {
     final thisWeek = _getActivitiesForCurrentWeek();
@@ -73,93 +82,79 @@ class SessionContext {
 
     final firstActivityNextWeek = nextWeek.map((a) => a.startDateTime).reduce((a, b) => a.isBefore(b) ? a : b);
 
-    final gapDays = firstActivityNextWeek.difference(lastActivityThisWeek).inDays;
-
-    return gapDays > 2;
+    return firstActivityNextWeek.difference(lastActivityThisWeek).inDays > 2;
   }
 
   bool get isNextWeekShorter {
     final nextWeek = _getActivitiesForNextWeek();
     if (nextWeek.isEmpty) return true;
 
-    final uniqueDays = nextWeek
-        .map((a) => DateTime(a.startDateTime.year, a.startDateTime.month, a.startDateTime.day))
-        .toSet()
-        .length;
-
-    return uniqueDays < 5;
+    return _getUniqueDays(nextWeek).length < 5;
   }
 
   bool get isLastCourseDayOfWeek {
     final thisWeek = _getActivitiesForCurrentWeek();
     if (thisWeek.isEmpty) return false;
 
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-
-    final daysWithActivities =
-        thisWeek.map((a) => DateTime(a.startDateTime.year, a.startDateTime.month, a.startDateTime.day)).toSet().toList()
-          ..sort();
+    final today = _dateOnly(DateTime.now());
+    final daysWithActivities = _getUniqueDays(thisWeek);
 
     return daysWithActivities.isNotEmpty && daysWithActivities.last.isAtSameMomentAs(today);
   }
 
   static int _calculateCourseDaysThisWeek(List<CourseActivity> activities, DateTime now) {
-    final startOfWeek = DateTime(now.year, now.month, now.day).subtract(Duration(days: now.weekday - 1));
-    final endOfWeek = startOfWeek.add(const Duration(days: 7));
-
-    final thisWeekActivities = activities.where((activity) {
-      return activity.startDateTime.isAfter(startOfWeek) && activity.startDateTime.isBefore(endOfWeek);
-    }).toList();
-
-    return thisWeekActivities
-        .map((a) => DateTime(a.startDateTime.year, a.startDateTime.month, a.startDateTime.day))
-        .toSet()
-        .length;
+    final start = _startOfWeek(now);
+    final end = start.add(const Duration(days: 7));
+    final thisWeekActivities = _getActivitiesInRange(activities, start, end);
+    return _getUniqueDays(thisWeekActivities).length;
   }
 
   static bool _isLastCourseDayOfWeek(List<CourseActivity> activities, DateTime now) {
-    final today = DateTime(now.year, now.month, now.day);
-    final startOfWeek = today.subtract(Duration(days: now.weekday - 1));
-    final endOfWeek = startOfWeek.add(const Duration(days: 7));
-
-    final thisWeekActivities = activities.where((activity) {
-      return activity.startDateTime.isAfter(startOfWeek) && activity.startDateTime.isBefore(endOfWeek);
-    }).toList();
+    final today = _dateOnly(now);
+    final start = _startOfWeek(now);
+    final end = start.add(const Duration(days: 7));
+    final thisWeekActivities = _getActivitiesInRange(activities, start, end);
 
     if (thisWeekActivities.isEmpty) return false;
 
-    final daysWithActivities =
-        thisWeekActivities
-            .map((a) => DateTime(a.startDateTime.year, a.startDateTime.month, a.startDateTime.day))
-            .toSet()
-            .toList()
-          ..sort();
-
+    final daysWithActivities = _getUniqueDays(thisWeekActivities);
     return daysWithActivities.last.isAtSameMomentAs(today);
+  }
+
+  static int _calculateMonthsCompleted(DateTime startDate, DateTime now) {
+    return (now.year - startDate.year) * 12 + now.month - startDate.month;
+  }
+
+  static int _calculateMonthsRemaining(DateTime endDate, DateTime now) {
+    final months = (endDate.year - now.year) * 12 + (endDate.month - now.month);
+    return months < 0 ? 0 : months;
+  }
+
+  static int _calculateWeeksCompleted(DateTime startDate, DateTime now) {
+    return now.difference(startDate).inDays ~/ 7;
+  }
+
+  static int _calculateWeeksRemaining(DateTime endDate, DateTime now) {
+    final weeks = endDate.difference(now).inDays ~/ 7;
+    return weeks < 0 ? 0 : weeks;
+  }
+
+  static bool _isFirstWeek(DateTime startDate, DateTime now) {
+    return now.difference(startDate).inDays < 7;
   }
 
   List<CourseActivity> _getActivitiesForCurrentWeek() {
     final now = DateTime.now();
-    final startOfWeek = DateTime(now.year, now.month, now.day).subtract(Duration(days: now.weekday - 1));
-    final endOfWeek = startOfWeek.add(const Duration(days: 7));
-
-    return courseActivities.where((activity) {
-      return activity.startDateTime.isAfter(startOfWeek) && activity.startDateTime.isBefore(endOfWeek);
-    }).toList();
+    final start = _startOfWeek(now);
+    final end = start.add(const Duration(days: 7));
+    return _getActivitiesInRange(courseActivities, start, end);
   }
 
   List<CourseActivity> _getActivitiesForNextWeek() {
     final now = DateTime.now();
-
-    final startOfThisWeek = DateTime(now.year, now.month, now.day).subtract(Duration(days: now.weekday - 1));
-
-    final startOfNextWeek = startOfThisWeek.add(const Duration(days: 7));
+    final startOfNextWeek = _startOfWeek(now).add(const Duration(days: 7));
     final endOfNextWeek = startOfNextWeek.add(const Duration(days: 7));
-
-    return courseActivities.where((activity) {
-      return !activity.startDateTime.isBefore(startOfNextWeek) && activity.startDateTime.isBefore(endOfNextWeek);
-    }).toList();
+    return _getActivitiesInRange(courseActivities, startOfNextWeek, endOfNextWeek);
   }
 
   DateTime? _findNextActivity() {
@@ -170,31 +165,5 @@ class SessionContext {
       ..sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
     return futureActivities.isNotEmpty ? futureActivities.first.startDateTime : null;
-  }
-
-  static int _calculateMonthsCompleted(DateTime startDate, DateTime now) {
-    return ((now.year - startDate.year) * 12 + now.month - startDate.month);
-  }
-
-  static int _calculateMonthsRemaining(DateTime endDate, DateTime now) {
-    final months = (endDate.year - now.year) * 12 + (endDate.month - now.month);
-
-    return months < 0 ? 0 : months;
-  }
-
-  static int _calculateWeeksCompleted(DateTime startDate, DateTime now) {
-    final differenceInDays = now.difference(startDate).inDays;
-    return differenceInDays ~/ 7;
-  }
-
-  static int _calculateWeeksRemaining(DateTime endDate, DateTime now) {
-    final differenceInDays = endDate.difference(now).inDays;
-    final weeks = differenceInDays ~/ 7;
-
-    return weeks < 0 ? 0 : weeks;
-  }
-
-  static bool _isFirstWeek(DateTime startDate, DateTime now) {
-    return now.difference(startDate).inDays < 7;
   }
 }

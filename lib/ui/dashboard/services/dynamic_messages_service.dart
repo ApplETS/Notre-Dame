@@ -14,9 +14,6 @@ class MessageFlowEngine {
       return "Une longue fin de semaine s'en vient!";
     }
 
-    // if is holiday coming
-    //return "Jour férié mardi!";
-
     if (context.isLastCourseDayOfWeek && context.courseDaysThisWeek >= 3) {
       return "Fabuleux, c'est vendredi! Dernière journée de cours de la semaine!";
     }
@@ -32,8 +29,6 @@ class MessageFlowEngine {
         }
         return "${context.weeksCompleted} ieme semaine complétée!";
       }
-
-      return _getGenericEncouragement();
     }
 
     if (context.monthsRemaining <= 1) {
