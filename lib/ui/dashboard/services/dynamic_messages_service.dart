@@ -3,34 +3,42 @@ import 'package:notredame/ui/dashboard/services/session_context.dart';
 class MessageFlowEngine {
   String? determineMessage(SessionContext context) {
     if (!context.isSessionStarted) {
-      return "Repose-toi bien ! La session recommence le 5 septembre !";
+      return "Repose-toi bien! La session recommence le ${context.session.startDate}";
     }
-    
+
     if (context.daysRemaining <= 7) {
       return "Encore ${context.daysRemaining} jours et c'est fini !";
     }
-    
-    if (!context.hasNextWeekSchedule) {
-      if (context.isLastDayOfWeek) {
-        return "Une longue fin de semaine s'en vient !";
-      }
-      
-      if (!context.isLastDayOfWeek) {
-        return "Jour férié mardi !";
-      }
+
+    if (context.isLongWeekend) {
+      return "Une longue fin de semaine s'en vient!";
     }
-    
-    if (context.sessionStartedMonthsAgo >= 1) {
-      return "Très bon, il ne reste que 2 semaines !";
-    }
-    
-    if (context.sessionStartedMonthsAgo > 1) {
+
+    // if is holiday coming
+    //return "Jour férié mardi!";
+
+    if (context.monthsCompleted <= 1) {
+      if (context.weeksCompleted < 1) {
+        return "Bon début de session!";
+      }
+
+      if (context.daysSinceStart % 7 == 0) {
+        if (context.weeksCompleted == 1) {
+          return "Première semaine de la session complétée, continue!";
+        }
+        return "${context.weeksCompleted} ieme semaine complétée!";
+      }
+
       return _getGenericEncouragement();
     }
-    
-    return null;
+
+    if (context.monthsRemaining <= 1) {
+      return "Tiens bon, il ne reste que ${context.weeksRemaining} semaines";
+    }
+
+    return _getGenericEncouragement();
   }
-  
+
   String _getGenericEncouragement() {
     return "Message d'encouragement générique";
   }

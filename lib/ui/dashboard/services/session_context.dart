@@ -7,8 +7,12 @@ class SessionContext {
 
   final bool isSessionStarted;
   final int daysRemaining;
+  final int daysSinceStart;
   final bool isLastDayOfWeek;
-  final int sessionStartedMonthsAgo;
+  final int monthsCompleted;
+  final int monthsRemaining;
+  final int weeksCompleted;
+  final int weeksRemaining;
   final bool isFirstWeek;
 
   SessionContext({
@@ -16,8 +20,12 @@ class SessionContext {
     required this.courseActivities,
     required this.isSessionStarted,
     required this.daysRemaining,
+    required this.daysSinceStart,
     required this.isLastDayOfWeek,
-    required this.sessionStartedMonthsAgo,
+    required this.monthsCompleted,
+    required this.monthsRemaining,
+    required this.weeksCompleted,
+    required this.weeksRemaining,
     required this.isFirstWeek,
   });
 
@@ -28,21 +36,25 @@ class SessionContext {
       session: session,
       courseActivities: activities,
       isSessionStarted: now.isAfter(session.startDate),
-      daysRemaining: session.endDate.difference(now).inDays,
+      daysRemaining: session.startDate.difference(now).inDays,
+      daysSinceStart: session.endDate.difference(now).inDays,
       isLastDayOfWeek: now.weekday == DateTime.friday,
-      sessionStartedMonthsAgo: _calculateMonthsSince(session.startDate, now),
+      monthsCompleted: _calculateMonthsCompleted(session.startDate, now),
+      monthsRemaining: _calculateMonthsRemaining(session.startDate, now),
+      weeksCompleted: _calculateWeeksCompleted(session.startDate, now),
+      weeksRemaining: _calculateWeeksRemaining(session.startDate, now),
       isFirstWeek: _isFirstWeek(session.startDate, now),
     );
   }
 
   bool get hasNextWeekSchedule {
-    final nextWeekActivities = getActivitiesForNextWeek();
+    final nextWeekActivities = _getActivitiesForNextWeek();
     return nextWeekActivities.isNotEmpty;
   }
 
   bool get isLongWeekend {
-    final thisWeek = getActivitiesForCurrentWeek();
-    final nextWeek = getActivitiesForNextWeek();
+    final thisWeek = _getActivitiesForCurrentWeek();
+    final nextWeek = _getActivitiesForNextWeek();
 
     if (thisWeek.isEmpty) return false;
 
@@ -61,7 +73,7 @@ class SessionContext {
   }
 
   bool get isNextWeekShorter {
-    final nextWeek = getActivitiesForNextWeek();
+    final nextWeek = _getActivitiesForNextWeek();
     if (nextWeek.isEmpty) return true;
 
     final uniqueDays = nextWeek
@@ -72,23 +84,26 @@ class SessionContext {
     return uniqueDays < 5;
   }
 
-  List<CourseActivity> getActivitiesForCurrentWeek() {
+  List<CourseActivity> _getActivitiesForCurrentWeek() {
     final now = DateTime.now();
-    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-    final endOfWeek = startOfWeek.add(Duration(days: 7));
+    final startOfWeek = DateTime(now.year, now.month, now.day).subtract(Duration(days: now.weekday - 1));
+    final endOfWeek = startOfWeek.add(const Duration(days: 7));
 
     return courseActivities.where((activity) {
       return activity.startDateTime.isAfter(startOfWeek) && activity.startDateTime.isBefore(endOfWeek);
     }).toList();
   }
 
-  List<CourseActivity> getActivitiesForNextWeek() {
+  List<CourseActivity> _getActivitiesForNextWeek() {
     final now = DateTime.now();
-    final startOfNextWeek = now.add(Duration(days: 7 - now.weekday + 1));
-    final endOfNextWeek = startOfNextWeek.add(Duration(days: 7));
+
+    final startOfThisWeek = DateTime(now.year, now.month, now.day).subtract(Duration(days: now.weekday - 1));
+
+    final startOfNextWeek = startOfThisWeek.add(const Duration(days: 7));
+    final endOfNextWeek = startOfNextWeek.add(const Duration(days: 7));
 
     return courseActivities.where((activity) {
-      return activity.startDateTime.isAfter(startOfNextWeek) && activity.startDateTime.isBefore(endOfNextWeek);
+      return !activity.startDateTime.isBefore(startOfNextWeek) && activity.startDateTime.isBefore(endOfNextWeek);
     }).toList();
   }
 
@@ -102,8 +117,26 @@ class SessionContext {
     return futureActivities.isNotEmpty ? futureActivities.first.startDateTime : null;
   }
 
-  static int _calculateMonthsSince(DateTime startDate, DateTime now) {
+  static int _calculateMonthsCompleted(DateTime startDate, DateTime now) {
     return ((now.year - startDate.year) * 12 + now.month - startDate.month);
+  }
+
+  static int _calculateMonthsRemaining(DateTime endDate, DateTime now) {
+    final months = (endDate.year - now.year) * 12 + (endDate.month - now.month);
+
+    return months < 0 ? 0 : months;
+  }
+
+  static int _calculateWeeksCompleted(DateTime startDate, DateTime now) {
+    final differenceInDays = now.difference(startDate).inDays;
+    return differenceInDays ~/ 7;
+  }
+
+  static int _calculateWeeksRemaining(DateTime endDate, DateTime now) {
+    final differenceInDays = endDate.difference(now).inDays;
+    final weeks = differenceInDays ~/ 7;
+
+    return weeks < 0 ? 0 : weeks;
   }
 
   static bool _isFirstWeek(DateTime startDate, DateTime now) {
