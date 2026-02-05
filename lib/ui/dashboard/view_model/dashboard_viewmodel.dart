@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:collection';
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -16,7 +13,6 @@ import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
@@ -27,26 +23,30 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart';
 
-class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
+class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
   static const String abandonedGradeCode = "XX";
 
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
 
-  /// All dashboard displayable cards
-  Map<PreferencesFlag, int>? _cards;
+  /// Animation controller for the circle
+  AnimationController? _controller;
+  late Animation<double> heightAnimation;
+  late Animation<double> opacityAnimation;
+  late Animation<double> titleAnimation;
+
+  /// Getter for the animation controller
+  AnimationController get controller => _controller!;
+
+  /// Check if the controller is initialized
+  bool get _isControllerInitialized => _controller != null;
 
   /// Localization class of the application.
   final AppIntl _appIntl;
-
-  /// Cards to display on dashboard
-  List<PreferencesFlag>? _cardsToDisplay;
 
   /// Percentage of completed days for the session
   double _progress = 0.0;
@@ -69,14 +69,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     return _scheduleEvents;
   }
 
-  /// Get the status of all displayable cards
-  Map<PreferencesFlag, int>? get cards => _cards;
-
-  /// Get cards to display
-  List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
-
-  ProgressBarText _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
@@ -84,6 +76,66 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     } else {
       return sessionDays[0] / sessionDays[1];
     }
+  }
+
+  /// Static flag to track if the animation has been played
+  static bool hasAnimationPlayed = false;
+
+  /// Tracks if the animation should be played
+  final bool shouldPlayAnimation;
+
+  /// TODO : add AppIntl to the messages
+  DashboardViewModel({required AppIntl intl})
+    : _appIntl = intl,
+
+      /// if the animation has not been played, play it
+      shouldPlayAnimation = !hasAnimationPlayed {
+    hasAnimationPlayed = true;
+  }
+
+  /// Loading state of the widget
+  bool isLoading = false;
+
+  /// Slide offset for title and subtitle animations (slide from top)
+  /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
+  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
+
+  /// Fade-in opacity based on title animation progress
+  double get titleFadeOpacity => titleAnimation.value;
+
+  /// Initialize the animation controller for the circle
+  void init(TickerProvider ticker) {
+    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
+
+    heightAnimation = Tween<double>(
+      begin: 0,
+      end: 330,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
+
+    opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    titleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    if (shouldPlayAnimation) {
+      _controller!.forward();
+    } else {
+      _controller!.value = 1.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose the controller only if it has been initialized and its not null
+    if (_isControllerInitialized) {
+      _controller!.dispose();
+    }
+    super.dispose();
   }
 
   static Future<bool> launchInAppReview() async {
@@ -119,17 +171,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     launchUrlService.launchInBrowser(url);
   }
 
-  void changeProgressBarText() {
-    if (_currentProgressBarText.index <= 1) {
-      _currentProgressBarText = ProgressBarText.values[_currentProgressBarText.index + 1];
-    } else {
-      _currentProgressBarText = ProgressBarText.values[0];
-    }
-
-    notifyListeners();
-    _settingsManager.setString(PreferencesFlag.progressBarText, _currentProgressBarText.toString());
-  }
-
   /// Returns a list containing the number of elapsed days in the active session
   /// and the total number of days in the session
   List<int> getSessionDays() {
@@ -156,17 +197,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// List of courses for the current session
   List<Course> courses = [];
 
-  DashboardViewModel({required AppIntl intl}) : _appIntl = intl;
-
   @override
-  Future<Map<PreferencesFlag, int>> futureToRun() async {
-    _cards = await _settingsManager.getDashboard();
-
-    getCardsToDisplay();
-
+  Future futureToRun() async {
     await loadDataAndUpdateWidget();
-
-    return _cards!;
   }
 
   Future loadDataAndUpdateWidget() async {
@@ -179,89 +212,19 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   @override
-  // ignore: type_annotate_public_apis
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
-  }
-
-  /// Change the order of [flag] card from [oldIndex] to [newIndex].
-  void setOrder(PreferencesFlag flag, int newIndex) {
-    _cardsToDisplay?.remove(flag);
-    _cardsToDisplay?.insert(newIndex, flag);
-
-    updatePreferences();
-
-    notifyListeners();
-
-    _analyticsService.logEvent(tag, "Reordoring ${flag.name}");
-  }
-
-  /// Hide [flag] card from dashboard by setting int value -1
-  void hideCard(PreferencesFlag flag) {
-    _cards?.update(flag, (value) => -1);
-
-    _cardsToDisplay?.remove(flag);
-
-    updatePreferences();
-
-    notifyListeners();
-
-    _analyticsService.logEvent(tag, "Deleting ${flag.name}");
-  }
-
-  /// Reset all card indexes to their default values
-  void setAllCardsVisible() {
-    _cards?.updateAll((key, value) {
-      _settingsManager.setInt(key, key.index - PreferencesFlag.aboutUsCard.index).then((value) {
-        if (!value) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      });
-      return key.index - PreferencesFlag.aboutUsCard.index;
-    });
-
-    getCardsToDisplay();
-
-    loadDataAndUpdateWidget();
-
-    notifyListeners();
-  }
-
-  /// Populate list of cards used in view
-  void getCardsToDisplay() {
-    _cardsToDisplay = [];
-
-    if (_cards != null) {
-      final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
-        _cards!,
-        (a, b) => _cards![a]!.compareTo(_cards![b]!),
-      );
-
-      orderedCards.forEach((key, value) {
-        if (value >= 0) {
-          _cardsToDisplay?.insert(value, key);
-        }
-      });
-    }
-
-    _analyticsService.logEvent(tag, "Restoring cards");
   }
 
   Future<List<Session>> futureToRunSessionProgressBar() async {
     try {
-      final progressBarText =
-          await _settingsManager.getString(PreferencesFlag.progressBarText) ??
-          ProgressBarText.daysElapsedWithTotalDays.toString();
-
-      _currentProgressBarText = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
-
       setBusyForObject(progress, true);
       final sessions = await _courseRepository.getSessions();
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
       return sessions;
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusyForObject(progress, false);
     }
@@ -297,8 +260,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
       }
       return scheduleEvents;
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusyForObject(scheduleEvents, false);
     }
@@ -314,29 +277,11 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     );
 
     return activityCodeToUse == ActivityCode.labGroupA
-        ? courseActivity.activityDescription != ActivityDescriptionName.labB
+        ? courseActivity.activityName != ActivityName.labB
         : activityCodeToUse == ActivityCode.labGroupB
-        ? courseActivity.activityDescription != ActivityDescriptionName.labA
+        ? courseActivity.activityName != ActivityName.labA
         : true;
   }
-
-  /// Update cards order and display status in preferences
-  void updatePreferences() {
-    if (_cards == null || _cardsToDisplay == null) {
-      return;
-    }
-    for (final MapEntry<PreferencesFlag, int> element in _cards!.entries) {
-      _cards![element.key] = _cardsToDisplay!.indexOf(element.key);
-      _settingsManager.setInt(element.key, _cardsToDisplay!.indexOf(element.key)).then((value) {
-        if (!value) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      });
-    }
-  }
-
-  /// Returns true if dates [a] and [b] are on the same day
-  bool isSameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
@@ -372,8 +317,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         }
         // Will remove duplicated courses in the list
         courses = courses.toSet().toList();
-      } catch (error) {
-        onError(error);
+      } catch (e) {
+        onError(e, null);
       } finally {
         setBusyForObject(courses, false);
       }
@@ -386,42 +331,14 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
     try {
       broadcastMessage = _broadcastMessageRepository.getBroadcastMessage(_appIntl.localeName);
-    } catch (error) {
-      onError(error);
+    } catch (e) {
+      onError(e, null);
     } finally {
       setBusyForObject(broadcastMessage, false);
     }
   }
 
-  void onCardReorder(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) {
-      // ignore: parameter_assignments
-      newIndex -= 1;
-    }
-
-    // Should not happen becase dismiss card will not be called if the card is null.
-    if (cards == null) {
-      _analyticsService.logError("DashboardView", "Cards list is null");
-      throw Exception("Cards is null");
-    }
-
-    final PreferencesFlag elementMoved = cards!.keys.firstWhere((element) => cards![element] == oldIndex);
-
-    setOrder(elementMoved, newIndex);
-  }
-
   String getProgressBarText(BuildContext context) {
-    switch (_currentProgressBarText) {
-      case ProgressBarText.daysElapsedWithTotalDays:
-        _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-        return AppIntl.of(context)!.progress_bar_message(sessionDays[0], sessionDays[1]);
-      case ProgressBarText.percentage:
-        _currentProgressBarText = ProgressBarText.percentage;
-        final percentage = sessionDays[1] == 0 ? 0 : ((sessionDays[0] / sessionDays[1]) * 100).round();
-        return AppIntl.of(context)!.progress_bar_message_percentage(percentage);
-      default:
-        _currentProgressBarText = ProgressBarText.remainingDays;
-        return AppIntl.of(context)!.progress_bar_message_remaining_days(sessionDays[1] - sessionDays[0]);
-    }
+    return (sessionDays[1] - sessionDays[0]).toString();
   }
 }

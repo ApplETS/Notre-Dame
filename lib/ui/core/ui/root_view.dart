@@ -24,6 +24,7 @@ enum NavigationView {
   more(4);
 
   final int buttonIndex;
+
   const NavigationView(this.buttonIndex);
 }
 

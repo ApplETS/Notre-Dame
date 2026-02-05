@@ -39,7 +39,7 @@ void main() {
         startDateTime: DateTime(2023, 10, 1, 8),
         endDateTime: DateTime(2023, 10, 1, 10),
         courseGroup: 'ING150-01',
-        activityLocation: 'Room 101',
+        activityLocation: ['Room 101'],
         activityName: 'Lecture',
         activityDescription: '',
       );
@@ -68,7 +68,7 @@ void main() {
         startDateTime: DateTime(2023, 10, 2, 9),
         endDateTime: DateTime(2023, 10, 2, 10),
         courseGroup: 'ING150-01',
-        activityLocation: 'Room 202',
+        activityLocation: ['Room 202'],
         activityName: 'Lecture',
         activityDescription: 'Regular lecture',
       );
@@ -105,7 +105,7 @@ void main() {
         startDateTime: DateTime(2023, 10, 3, 11),
         endDateTime: DateTime(2023, 10, 3, 12),
         courseGroup: 'ING150-01',
-        activityLocation: 'Non assign',
+        activityLocation: ['Non assign'],
         activityName: 'Tutorial',
         activityDescription: 'Session',
       );
@@ -123,7 +123,7 @@ void main() {
         startDateTime: DateTime(2023, 10, 4, 8),
         endDateTime: DateTime(2023, 10, 4, 9),
         courseGroup: 'ING150-01',
-        activityLocation: 'Room 101',
+        activityLocation: ['Room 101'],
         activityName: 'Lecture 1',
         activityDescription: 'Regular',
       );
@@ -132,7 +132,7 @@ void main() {
         startDateTime: DateTime(2023, 10, 4, 10),
         endDateTime: DateTime(2023, 10, 4, 11),
         courseGroup: 'ING150-01',
-        activityLocation: 'Room 102',
+        activityLocation: ['Room 102'],
         activityName: 'Lab Session',
         activityDescription: 'Regular',
       );
@@ -155,7 +155,7 @@ void main() {
         startDateTime: DateTime(2025, 3, 6, 8),
         endDateTime: DateTime(2025, 3, 6, 9),
         courseGroup: 'ING150-01',
-        activityLocation: 'Room 103',
+        activityLocation: ['Room 103'],
         activityName: 'Lecture',
         activityDescription: 'Regular',
       );
@@ -191,16 +191,11 @@ void main() {
       // Arrange: create a dummy schedule activity.
       final scheduleActivity = ScheduleActivity(
         courseAcronym: "XYZ321",
-        courseGroup: "01",
         courseTitle: "Sample Course",
         dayOfTheWeek: 1,
-        day: "Lundi",
         startTime: DateFormat("hh:mm").parse("08:30"),
         endTime: DateFormat("hh:mm").parse("12:00"),
         activityCode: ActivityCode.labGroupA,
-        isPrincipalActivity: true,
-        activityLocation: "En ligne",
-        name: "Laboratoire (Groupe A)",
       );
       // Set the scheduleActivitiesByCourse manually.
       viewModel.scheduleActivitiesByCourse['XYZ321'] = [scheduleActivity];
@@ -213,22 +208,17 @@ void main() {
       );
 
       await viewModel.loadSettingsScheduleActivities();
-      expect(viewModel.settingsScheduleActivities['XYZ321'], equals('Laboratoire (Groupe A)'));
+      expect(viewModel.settingsScheduleActivities['XYZ321'], equals(ActivityCode.labGroupA));
     });
 
     test('loadSettingsScheduleActivities removes settings when no matching activity found', () async {
       final scheduleActivity = ScheduleActivity(
         courseAcronym: "XYZ321",
-        courseGroup: "01",
         courseTitle: "Sample Course",
         dayOfTheWeek: 1,
-        day: "Lundi",
         startTime: DateFormat("hh:mm").parse("08:30"),
         endTime: DateFormat("hh:mm").parse("12:00"),
         activityCode: ActivityCode.lectureCourse,
-        isPrincipalActivity: true,
-        activityLocation: "En ligne",
-        name: "Activité de cours",
       );
       viewModel.scheduleActivitiesByCourse['XYZ321'] = [scheduleActivity];
       // Stub settingsManager to return a non-matching activity code (for example, labGroupB).
@@ -244,7 +234,7 @@ void main() {
         startDateTime: date,
         endDateTime: date.add(const Duration(hours: 1)),
         courseGroup: 'ING150-01',
-        activityLocation: 'Room 104',
+        activityLocation: ['Room 104'],
         activityName: 'Lecture',
         activityDescription: 'Regular',
       );
@@ -253,7 +243,7 @@ void main() {
         startDateTime: date.add(const Duration(hours: 2)),
         endDateTime: date.add(const Duration(hours: 3)),
         courseGroup: 'ING150-01',
-        activityLocation: 'Room 105',
+        activityLocation: ['Room 105'],
         activityName: 'Lab',
         activityDescription: ActivityDescriptionName.labA,
       );
@@ -287,7 +277,7 @@ class _TestCalendarViewModelWithError extends _TestCalendarViewModel {
   _TestCalendarViewModelWithError({required super.intl});
 
   @override
-  void onError(error) {
+  void onError(error, StackTrace? stackTrace) {
     errorMessage = error.toString();
   }
 }

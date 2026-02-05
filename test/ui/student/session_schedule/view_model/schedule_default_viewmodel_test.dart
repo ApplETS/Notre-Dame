@@ -26,58 +26,38 @@ void main() {
 
       lectureActivity = ScheduleActivity(
         courseAcronym: 'COURSE101',
-        courseGroup: '01',
         courseTitle: 'Intro to Dart',
         dayOfTheWeek: 2,
-        day: 'Tuesday',
         startTime: DateTime(2023, 1, 1, 10),
         endTime: DateTime(2023, 1, 1, 11),
         activityCode: 'Lecture',
-        isPrincipalActivity: true,
-        activityLocation: 'Room 202',
-        name: 'Lecture Session',
       );
 
       examActivity = ScheduleActivity(
         courseAcronym: 'COURSE101',
-        courseGroup: '01',
         courseTitle: 'Intro to Dart',
         dayOfTheWeek: 2,
-        day: 'Tuesday',
         startTime: DateTime(2023, 1, 1, 10),
         endTime: DateTime(2023, 1, 1, 11),
         activityCode: 'Exam',
-        isPrincipalActivity: true,
-        activityLocation: 'Room 202',
-        name: 'Final Exam',
       );
 
       saturdayActivity = ScheduleActivity(
         courseAcronym: 'COURSE101',
-        courseGroup: '01',
         courseTitle: 'Intro to Dart',
         dayOfTheWeek: 6,
-        day: 'Saturday',
         startTime: DateTime(2023, 1, 5, 10),
         endTime: DateTime(2023, 1, 5, 11),
         activityCode: 'Lecture',
-        isPrincipalActivity: true,
-        activityLocation: 'Room 202',
-        name: 'Lecture Session',
       );
 
       sundayActivity = ScheduleActivity(
         courseAcronym: 'COURSE101',
-        courseGroup: '01',
         courseTitle: 'Intro to Dart',
         dayOfTheWeek: 7,
-        day: 'Sunday',
         startTime: DateTime(2023, 1, 5, 10),
         endTime: DateTime(2023, 1, 5, 11),
         activityCode: 'Lecture',
-        isPrincipalActivity: true,
-        activityLocation: 'Room 202',
-        name: 'Lecture Session',
       );
 
       viewModel = SessionScheduleViewModel(sessionCode: 'A2023');

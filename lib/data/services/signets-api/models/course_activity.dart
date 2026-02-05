@@ -1,5 +1,11 @@
 // FLUTTER / DART / THIRD-PARTIES
 
+// Dart imports:
+import 'dart:convert';
+
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+
 // Package imports:
 import 'package:xml/xml.dart';
 
@@ -20,7 +26,7 @@ class CourseActivity {
   final String activityDescription;
 
   /// Place where the activity is given
-  final String activityLocation;
+  final List<String> activityLocation;
 
   /// Date when the activity start
   final DateTime startDateTime;
@@ -44,7 +50,7 @@ class CourseActivity {
     courseName: node.getElement('libelleCours')!.innerText,
     activityName: node.getElement('nomActivite')!.innerText,
     activityDescription: node.getElement('descriptionActivite')!.innerText,
-    activityLocation: node.getElement('local')!.innerText,
+    activityLocation: [node.getElement('local')!.innerText],
     startDateTime: DateTime.parse(node.getElement('dateDebut')!.innerText),
     endDateTime: DateTime.parse(node.getElement('dateFin')!.innerText),
   );
@@ -55,7 +61,7 @@ class CourseActivity {
     courseName: map['courseName'] as String,
     activityName: map['activityName'] as String,
     activityDescription: map['activityDescription'] as String,
-    activityLocation: map['activityLocation'] as String,
+    activityLocation: jsonDecode(map['activityLocation'] as String).cast<String>() as List<String>,
     startDateTime: DateTime.parse(map['startDateTime'] as String),
     endDateTime: DateTime.parse(map['endDateTime'] as String),
   );
@@ -65,10 +71,22 @@ class CourseActivity {
     'courseName': courseName,
     'activityName': activityName,
     'activityDescription': activityDescription,
-    'activityLocation': activityLocation,
+    'activityLocation': jsonEncode(activityLocation),
     'startDateTime': startDateTime.toString(),
     'endDateTime': endDateTime.toString(),
   };
+
+  CourseActivity copyWithLocations(List<String> activityLocation) {
+    return CourseActivity(
+      courseGroup: courseGroup,
+      courseName: courseName,
+      activityName: activityName,
+      activityDescription: activityDescription,
+      startDateTime: startDateTime,
+      endDateTime: endDateTime,
+      activityLocation: activityLocation,
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -79,7 +97,7 @@ class CourseActivity {
           courseName == other.courseName &&
           activityName == other.activityName &&
           activityDescription == other.activityDescription &&
-          activityLocation == other.activityLocation &&
+          listEquals(activityLocation, other.activityLocation) &&
           startDateTime == other.startDateTime &&
           endDateTime == other.endDateTime;
 

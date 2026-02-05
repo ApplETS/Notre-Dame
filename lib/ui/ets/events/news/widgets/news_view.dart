@@ -50,21 +50,6 @@ class _NewsViewState extends State<NewsView> {
   @override
   Widget build(BuildContext context) => ViewModelBuilder<NewsViewModel>.reactive(
     viewModelBuilder: () => NewsViewModel(),
-    onViewModelReady: (model) {
-      model.pagingController.addStatusListener((status) {
-        if (status == PagingStatus.subsequentPageError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppIntl.of(context)!.news_error_not_found),
-              action: SnackBarAction(
-                label: AppIntl.of(context)!.retry,
-                onPressed: () => model.pagingController.retryLastFailedRequest(),
-              ),
-            ),
-          );
-        }
-      });
-    },
     builder: (context, model, child) {
       return Scaffold(
         floatingActionButton: _showBackToTopButton
@@ -113,18 +98,37 @@ class _NewsViewState extends State<NewsView> {
                   ),
                 ),
                 Expanded(
-                  child: PagedListView<int, News>(
-                    key: const Key("pagedListView"),
-                    pagingController: model.pagingController,
-                    scrollController: _scrollController,
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                    builderDelegate: PagedChildBuilderDelegate<News>(
-                      itemBuilder: (context, item, index) => NewsCard(item),
-                      firstPageProgressIndicatorBuilder: (context) => _buildSkeletonLoader(),
-                      newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
-                      noMoreItemsIndicatorBuilder: (context) => _buildNoMoreNewsCard(),
-                      firstPageErrorIndicatorBuilder: (context) => _buildError(model.pagingController),
-                    ),
+                  child: PagingListener(
+                    controller: model.pagingController,
+                    builder: (context, state, fetchNextPage) {
+                      if (state.error != null) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(AppIntl.of(context)!.news_error_not_found),
+                              action: SnackBarAction(
+                                label: AppIntl.of(context)!.retry,
+                                onPressed: () => model.pagingController.fetchNextPage(),
+                              ),
+                            ),
+                          );
+                        });
+                      }
+                      return PagedListView<int, News>(
+                        key: const Key("pagedListView"),
+                        scrollController: _scrollController,
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                        builderDelegate: PagedChildBuilderDelegate<News>(
+                          itemBuilder: (context, item, index) => NewsCard(item),
+                          firstPageProgressIndicatorBuilder: (context) => _buildSkeletonLoader(),
+                          newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
+                          noMoreItemsIndicatorBuilder: (context) => _buildNoMoreNewsCard(),
+                          firstPageErrorIndicatorBuilder: (context) => _buildError(model.pagingController),
+                        ),
+                        state: state,
+                        fetchNextPage: fetchNextPage,
+                      );
+                    },
                   ),
                 ),
               ],
@@ -207,7 +211,7 @@ class _NewsViewState extends State<NewsView> {
               Flexible(
                 child: ElevatedButton(
                   onPressed: () {
-                    pagingController.retryLastFailedRequest();
+                    pagingController.fetchNextPage();
                   },
                   child: Text(AppIntl.of(context)!.retry),
                 ),
