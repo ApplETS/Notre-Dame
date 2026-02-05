@@ -116,9 +116,9 @@ void main() {
     });
 
     group('ScheduleDefaultViewModel - Additional Methods', () {
-      // Test pour la méthode 'calendarEventData'
-      test('calendarEventData returns correctly formatted CalendarEventData', () {
-        final eventData = viewModel.calendarEventData(lectureActivity);
+      // Test pour la méthode 'calendarEventTile'
+      test('calendarEventTile returns correctly formatted CalendarEventTile', () {
+        final eventData = viewModel.calendarEventTile(lectureActivity);
 
         expect(eventData.title, contains('COURSE101'));
         expect(eventData.color, isNotNull);

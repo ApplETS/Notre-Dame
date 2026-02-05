@@ -3,6 +3,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 
@@ -30,8 +31,8 @@ class DayViewModel extends CalendarViewModel {
     eventController.removeWhere((event) => true);
   }
 
-  List<CalendarEventData> selectedDayCalendarEvents() {
-    final List<CalendarEventData> events = [];
+  List<CalendarEventTile> selectedDayCalendarEvents() {
+    final List<CalendarEventTile> events = [];
 
     // We want to put events of previous and next day in memory to make transitions smoother
     for (int i = -1; i <= 1; i++) {

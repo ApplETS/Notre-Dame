@@ -75,8 +75,10 @@ void main() {
         await tester.pumpAndSettle();
       });
 
-      expect(find.text("ING150\nRoom 101\nLecture 1"), findsOneWidget);
-      expect(find.text("LOG100\nRoom 102\nLab Session"), findsOneWidget);
+      expect(find.text("LOG100"), findsOneWidget);
+      expect(find.text("Room 102\nLab Session"), findsOneWidget);
+      expect(find.text("ING150"), findsOneWidget);
+      expect(find.text("Room 101\nLecture 1"), findsOneWidget);
       // Saturday and sunday displayed
       expect(find.text("S"), findsOneWidget);
       expect(find.text("D"), findsOneWidget);

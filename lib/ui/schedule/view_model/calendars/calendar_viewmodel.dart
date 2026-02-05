@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
@@ -51,16 +52,21 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   CalendarViewModel({required AppIntl intl}) : appIntl = intl;
 
-  CalendarEventData<Object> calendarEventData(CourseActivity eventData) {
-    final courseLocation = eventData.activityLocation.contains("Non assign")
+  CalendarEventTile<Object> calendarEventTile(CourseActivity eventData) {
+    final courseLocationMultiline = eventData.activityLocation.contains("Non assign")
+        ? "N/A"
+        : eventData.activityLocation.join("\n");
+    final courseLocationInline = eventData.activityLocation.contains("Non assign")
         ? "N/A"
         : eventData.activityLocation.join(", ");
     final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
-    return CalendarEventData(
-      title: "${eventData.courseGroup.split('-')[0]}\n$courseLocation\n${eventData.activityName}",
+    return CalendarEventTile(
+      title: eventData.courseGroup.split('-')[0],
       description:
-          "${eventData.courseGroup};$courseLocation;${eventData.activityName};${associatedCourse?.teacherName}",
+          "${eventData.courseGroup};$courseLocationInline;${eventData.activityName};${associatedCourse?.teacherName}",
+      cardDescription: "$courseLocationMultiline\n${eventData.activityName}",
+      nbLines: eventData.activityLocation.length + 1,
       date: eventData.startDateTime,
       startTime: eventData.startDateTime,
       endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
@@ -198,8 +204,8 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         (activityNameSelected == ActivityCode.labGroupB && ActivityName.labB == course.activityName);
   }
 
-  List<CalendarEventData> calendarEventsFromDate(DateTime date) {
-    return _coursesActivities[date.withoutTime]?.map((eventData) => calendarEventData(eventData)).toList() ?? [];
+  List<CalendarEventTile> calendarEventsFromDate(DateTime date) {
+    return _coursesActivities[date.withoutTime]?.map((eventData) => calendarEventTile(eventData)).toList() ?? [];
   }
 
   bool returnToCurrentDate();

@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
+import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -164,6 +165,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         padding: const EdgeInsets.all(12.0),
         backgroundColor: events[0].color,
         buildContext: context,
+        nbLines: (events[0] as CalendarEventTile).nbLines,
+        cardDescription: (events[0] as CalendarEventTile).cardDescription,
       );
     } else {
       return Container();
