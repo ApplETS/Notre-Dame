@@ -1,3 +1,4 @@
+// Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
 
 sealed class DynamicMessage {

@@ -1,7 +1,8 @@
+// Project imports:
 import 'package:notredame/ui/dashboard/services/dynamic_message.dart';
 import 'package:notredame/ui/dashboard/services/session_context.dart';
 
-class MessageFlowEngine {
+class DynamicMessagesService {
   DynamicMessage? determineMessage(SessionContext context) {
     if (!context.isSessionStarted) {
       return SessionStartsSoonMessage(_formatDate(context.session.startDate));
