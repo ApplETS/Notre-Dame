@@ -3,9 +3,9 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/data/services/signets-api/models/session.dart';
 
 class SessionContext {
+  final DateTime now;
   final Session session;
   final List<CourseActivity> courseActivities;
-  final DateTime now;
 
   final bool isSessionStarted;
   final int daysRemaining;
@@ -19,9 +19,9 @@ class SessionContext {
   final bool isFirstWeek;
 
   SessionContext({
+    required this.now,
     required this.session,
     required this.courseActivities,
-    required this.now,
     required this.isSessionStarted,
     required this.daysRemaining,
     required this.daysSinceStart,

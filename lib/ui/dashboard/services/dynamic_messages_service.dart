@@ -1,44 +1,50 @@
+import 'package:notredame/ui/dashboard/services/dynamic_message.dart';
 import 'package:notredame/ui/dashboard/services/session_context.dart';
 
 class MessageFlowEngine {
-  String? determineMessage(SessionContext context) {
+  DynamicMessage? determineMessage(SessionContext context) {
     if (!context.isSessionStarted) {
-      return "Repose-toi bien! La session recommence le ${context.session.startDate}";
+      return SessionStartsSoonMessage(_formatDate(context.session.startDate));
     }
 
     if (context.daysRemaining <= 7) {
-      return "Encore ${context.daysRemaining} jours et c'est fini !";
+      return DaysBeforeSessionEndsMessage(context.daysRemaining);
     }
 
     if (context.isLongWeekend) {
-      return "Une longue fin de semaine s'en vient!";
+      return LongWeekendIncomingMessage();
     }
 
     if (context.isLastCourseDayOfWeek && context.courseDaysThisWeek >= 3) {
-      return "Fabuleux, c'est vendredi! Dernière journée de cours de la semaine!";
+      return LastCourseDayOfWeekMessage(_getWeekdayName(context.now));
     }
 
     if (context.monthsCompleted <= 1) {
       if (context.weeksCompleted < 1) {
-        return "Bon début de session!";
+        return FirstWeekOfSessionMessage();
       }
 
       if (context.daysSinceStart % 7 == 0) {
         if (context.weeksCompleted == 1) {
-          return "Première semaine de la session complétée, continue!";
+          return FirstWeekCompletedMessage();
         }
-        return "${context.weeksCompleted} ieme semaine complétée!";
+        return WeekCompletedMessage(context.weeksCompleted);
       }
     }
 
     if (context.monthsRemaining <= 1) {
-      return "Tiens bon, il ne reste que ${context.weeksRemaining} semaines";
+      return LessOneMonthRemainingMessage(context.weeksRemaining);
     }
 
-    return _getGenericEncouragement();
+    return GenericEncouragementMessage();
   }
 
-  String _getGenericEncouragement() {
-    return "Message d'encouragement générique";
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}';
+  }
+
+  String _getWeekdayName(DateTime date) {
+    const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return weekdays[date.weekday - 1];
   }
 }

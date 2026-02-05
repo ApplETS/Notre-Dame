@@ -136,6 +136,8 @@
     }
   },
 
+  "dynamic_message_generic_encouragement": "Continue comme ça !",
+
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
 

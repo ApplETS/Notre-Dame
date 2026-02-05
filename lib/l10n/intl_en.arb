@@ -136,6 +136,8 @@
       }
     }
   },
+
+  "dynamic_message_generic_encouragement": "Keep up the good work!",
   
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
