@@ -114,7 +114,7 @@ void main() {
         });
 
         expect(find.text(intl.schedule_no_event), findsNothing);
-        expect(find.byType(CourseActivityTile), findsExactly(2));
+        expect(find.byType(EventTile), findsExactly(2));
       });
     });
 

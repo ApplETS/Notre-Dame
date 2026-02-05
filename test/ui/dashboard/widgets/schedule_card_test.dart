@@ -82,7 +82,7 @@ void main() {
 
       // Find three activities in the card
       expect(
-        find.descendant(of: find.byType(Dismissible, skipOffstage: false), matching: find.byType(CourseActivityTile)),
+        find.descendant(of: find.byType(Dismissible, skipOffstage: false), matching: find.byType(EventTile)),
         findsNWidgets(3),
       );
     });
@@ -107,7 +107,7 @@ void main() {
 
       // Find one activities in the card
       expect(
-        find.descendant(of: find.byType(Dismissible, skipOffstage: false), matching: find.byType(CourseActivityTile)),
+        find.descendant(of: find.byType(Dismissible, skipOffstage: false), matching: find.byType(EventTile)),
         findsNWidgets(1),
       );
     });

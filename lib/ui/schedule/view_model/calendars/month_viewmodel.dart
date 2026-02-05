@@ -23,8 +23,8 @@ class MonthViewModel extends CalendarViewModel {
     eventController.addAll(selectedMonthEvents());
   }
 
-  List<CalendarEventTile> selectedMonthEvents() {
-    List<CalendarEventTile> events = [];
+  List<EventData> selectedMonthEvents() {
+    List<EventData> events = [];
 
     final List<DateTime> months = [
       monthSelected,

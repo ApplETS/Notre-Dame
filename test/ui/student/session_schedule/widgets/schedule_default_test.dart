@@ -31,7 +31,7 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [EventData(title: "My Event", date: DateTime(2024))],
             loaded: true,
             displaySaturday: true,
             displaySunday: false,
@@ -46,7 +46,7 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [EventData(title: "My Event", date: DateTime(2024))],
             loaded: true,
             displaySaturday: false,
             displaySunday: true,
@@ -61,7 +61,7 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [EventData(title: "My Event", date: DateTime(2024))],
             loaded: true,
             displaySaturday: false,
             displaySunday: false,

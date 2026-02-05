@@ -12,7 +12,7 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 
 class SessionSchedule extends StatefulWidget {
-  final List<CalendarEventTile<Object>> calendarEvents;
+  final List<EventData> calendarEvents;
   final bool loaded;
   final bool displaySaturday;
   final bool displaySunday;
@@ -80,24 +80,18 @@ class _SessionScheduleState extends State<SessionSchedule> {
           rightIconConfig: null,
         ),
         heightPerMinute: heightPerMinute,
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events, context),
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events as List<EventData>, context),
         weekDayBuilder: (DateTime date) => Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date)),
       ),
     );
   }
 
-  Widget _buildEventTile(List<CalendarEventData<dynamic>> events, BuildContext context) {
+  Widget _buildEventTile(List<EventData> events, BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
-        title: events[0].title,
-        description: events[0].description,
-        start: events[0].startTime,
-        end: events[0].endTime,
         padding: const EdgeInsets.all(6.0),
-        backgroundColor: events[0].color,
         buildContext: context,
-        nbLines: (events[0] as CalendarEventTile).nbLines,
-        cardDescription: (events[0] as CalendarEventTile).cardDescription,
+        event: events[0],
       );
     } else {
       return Container();

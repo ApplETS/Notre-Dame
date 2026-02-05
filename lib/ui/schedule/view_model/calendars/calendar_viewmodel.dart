@@ -52,21 +52,17 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
 
   CalendarViewModel({required AppIntl intl}) : appIntl = intl;
 
-  CalendarEventTile<Object> calendarEventTile(CourseActivity eventData) {
-    final courseLocationMultiline = eventData.activityLocation.contains("Non assign")
-        ? "N/A"
-        : eventData.activityLocation.join("\n");
-    final courseLocationInline = eventData.activityLocation.contains("Non assign")
-        ? "N/A"
-        : eventData.activityLocation.join(", ");
+  EventData calendarEventTile(CourseActivity eventData) {
     final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
-    return CalendarEventTile(
-      title: eventData.courseGroup.split('-')[0],
-      description:
-          "${eventData.courseGroup};$courseLocationInline;${eventData.activityName};${associatedCourse?.teacherName}",
-      cardDescription: "$courseLocationMultiline\n${eventData.activityName}",
-      nbLines: eventData.activityLocation.length + 1,
+
+    return EventData(
+      courseAcronym: eventData.courseGroup.split('-')[0],
+      group: eventData.courseGroup,
+      locations: eventData.activityLocation,
+      activityName: eventData.activityName,
+      courseName: eventData.courseName,
+      teacherName: associatedCourse?.teacherName,
       date: eventData.startDateTime,
       startTime: eventData.startDateTime,
       endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
@@ -198,7 +194,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         (activityNameSelected == ActivityCode.labGroupB && ActivityName.labB == course.activityName);
   }
 
-  List<CalendarEventTile> calendarEventsFromDate(DateTime date) {
+  List<EventData> calendarEventsFromDate(DateTime date) {
     return _coursesActivities[date.withoutTime]?.map((eventData) => calendarEventTile(eventData)).toList() ?? [];
   }
 

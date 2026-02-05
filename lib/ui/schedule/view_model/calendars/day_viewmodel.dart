@@ -31,8 +31,8 @@ class DayViewModel extends CalendarViewModel {
     eventController.removeWhere((event) => true);
   }
 
-  List<CalendarEventTile> selectedDayCalendarEvents() {
-    final List<CalendarEventTile> events = [];
+  List<EventData> selectedDayCalendarEvents() {
+    final List<EventData> events = [];
 
     // We want to put events of previous and next day in memory to make transitions smoother
     for (int i = -1; i <= 1; i++) {
@@ -40,15 +40,5 @@ class DayViewModel extends CalendarViewModel {
       events.addAll(calendarEventsFromDate(date));
     }
     return events;
-  }
-
-  /// Get the activities for a specific [date], return empty if there is no activity for this [date]
-  List<CourseActivity> coursesActivitiesFor(DateTime date) {
-    // Populate the _coursesActivities
-    if (coursesActivities.isEmpty) {
-      coursesActivities;
-    }
-
-    return coursesActivities[date.withoutTime] ?? [];
   }
 }

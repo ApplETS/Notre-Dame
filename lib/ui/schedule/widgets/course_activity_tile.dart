@@ -6,17 +6,17 @@ import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import '../../../data/models/calendar_event_tile.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display
-  final CourseActivity activity;
+  final EventData event;
 
   DateFormat get timeFormat => DateFormat.Hm();
 
-  /// Display an [activity] with the start and end time of the activity,
+  /// Display an [event] with the start and end time of the activity,
   /// it name, shortname, type of activity and local.
-  const CourseActivityTile(this.activity, {super.key});
+  const CourseActivityTile(this.event, {super.key});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -24,9 +24,9 @@ class CourseActivityTile extends StatelessWidget {
     child: ListTile(
       leading: _buildLeading(context),
       dense: false,
-      title: Text(activity.courseGroup, style: Theme.of(context).textTheme.titleSmall),
-      subtitle: Text("${activity.courseName}\n${activity.activityDescription}"),
-      trailing: Text(activity.activityLocation.join("\n"), style: Theme.of(context).textTheme.bodySmall),
+      title: Text(event.group!, style: Theme.of(context).textTheme.titleSmall),
+      subtitle: Text("${event.courseName}\n${event.activityName}"),
+      trailing: Text(event.locations!.join(", "), style: Theme.of(context).textTheme.bodySmall),
     ),
   );
 
@@ -40,11 +40,11 @@ class CourseActivityTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(timeFormat.format(activity.startDateTime), style: Theme.of(context).textTheme.bodySmall),
-            Text(timeFormat.format(activity.endDateTime), style: Theme.of(context).textTheme.bodySmall),
+            Text(timeFormat.format(event.startTime!), style: Theme.of(context).textTheme.bodySmall),
+            Text(timeFormat.format(event.endTime!), style: Theme.of(context).textTheme.bodySmall),
           ],
         ),
-        Skeleton.shade(child: VerticalDivider(color: colorFor(activity.courseName), thickness: 2)),
+        Skeleton.shade(child: VerticalDivider(color: colorFor(event.courseName!), thickness: 2)),
       ],
     ),
   );

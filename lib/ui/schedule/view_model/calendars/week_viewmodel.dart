@@ -62,8 +62,8 @@ class WeekViewModel extends CalendarViewModel {
     return !isThisWeekSelected;
   }
 
-  List<CalendarEventTile> selectedWeekCalendarEvents() {
-    final List<CalendarEventTile> events = [];
+  List<EventData> selectedWeekCalendarEvents() {
+    final List<EventData> events = [];
 
     // We want to put events of previous week and next week in memory to make transitions smoother
     for (int i = -7; i < 14; i++) {

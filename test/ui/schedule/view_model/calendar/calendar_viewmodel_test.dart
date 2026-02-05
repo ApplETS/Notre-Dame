@@ -82,7 +82,7 @@ void main() {
 
       // Assert
       expect(eventData.title, equals("ING150"));
-      expect(eventData.cardDescription, equals("Room 202\nLecture"));
+      expect(eventData.calendarDescription, equals("Room 202\nLecture"));
       expect(eventData.description, equals("ING150-01;Room 202;Lecture;null"));
       expect(eventData.date, equals(activity.startDateTime.withoutTime));
       expect(eventData.startTime, equals(activity.startDateTime));
@@ -115,7 +115,7 @@ void main() {
 
       final eventData = viewModel.calendarEventTile(activity);
       expect(eventData.title, equals("ING150"));
-      expect(eventData.cardDescription, equals("N/A\nTutorial"));
+      expect(eventData.calendarDescription, equals("N/A\nTutorial"));
       expect(eventData.description, equals("ING150-01;N/A;Tutorial;null"));
     });
 

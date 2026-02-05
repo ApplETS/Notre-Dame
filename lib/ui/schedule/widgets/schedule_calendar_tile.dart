@@ -4,34 +4,18 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class ScheduleCalendarTile extends StatefulWidget {
-  final String? title;
-  final String? description;
-  final EdgeInsets? padding;
-  final Color? backgroundColor;
-  final DateTime? start;
-  final DateTime? end;
-  final int? nbLines;
-  final String? cardDescription;
+  final EventData event;
   final BuildContext buildContext;
+  final EdgeInsets? padding;
 
-  const ScheduleCalendarTile({
-    super.key,
-    this.title,
-    this.description,
-    this.padding,
-    this.backgroundColor,
-    this.start,
-    this.end,
-    this.nbLines,
-    this.cardDescription,
-    required this.buildContext,
-  });
+  const ScheduleCalendarTile({super.key, required this.buildContext, required this.event, this.padding});
 
   @override
   State<ScheduleCalendarTile> createState() => _ScheduleCalendarTileState();
@@ -39,17 +23,16 @@ class ScheduleCalendarTile extends StatefulWidget {
 
 class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
   void _showTileInfo() {
-    final courseInfos = widget.description?.split(";") ?? [];
-    final courseName = courseInfos[0].split("-")[0];
-    final courseLocation = courseInfos[1];
-    final courseType = courseInfos[2];
-    final teacherName = courseInfos[3];
-    final startTime = widget.start == null
+    final courseName = widget.event.courseName;
+    final courseLocation = widget.event.locations?.join(", ");
+    final courseType = widget.event.activityName;
+    final teacherName = widget.event.teacherName;
+    final startTime = widget.event.startTime == null
         ? AppIntl.of(widget.buildContext)!.grades_not_available
-        : "${widget.start!.hour}:${widget.start!.minute.toString().padLeft(2, '0')}";
-    final endTime = widget.end == null
+        : "${widget.event.startTime!.hour}:${widget.event.startTime!.minute.toString().padLeft(2, '0')}";
+    final endTime = widget.event.endTime == null
         ? AppIntl.of(widget.buildContext)!.grades_not_available
-        : DateFormat.Hm().format(widget.end!.add(const Duration(minutes: 1)));
+        : DateFormat.Hm().format(widget.event.endTime!.add(const Duration(minutes: 1)));
 
     showDialog(
       context: context,
@@ -60,7 +43,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
             fit: BoxFit.scaleDown,
             alignment: Alignment.topLeft,
             child: Text(
-              courseLocation.isEmpty ? courseName : "$courseName ($courseLocation)",
+              "xxcfd",
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
@@ -68,7 +51,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(courseType, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              Text("courseType", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
               if (teacherName != "null")
                 Text(
                   "${AppIntl.of(widget.buildContext)!.schedule_calendar_by} $teacherName",
@@ -100,7 +83,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     return GestureDetector(
       onTap: _showTileInfo,
       child: Container(
-        decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(6.0)),
+        decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
         padding: widget.padding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +93,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AutoSizeText(
-                    widget.title!,
+                    widget.event.courseAcronym,
                     style: TextStyle(fontWeight: FontWeight.bold),
                     maxLines: 2,
                     minFontSize: 10,
@@ -118,12 +101,12 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                 ],
               ),
             ),
-            if (widget.cardDescription != null)
+            if (widget.event.calendarDescription != null)
               Divider(color: context.theme.textTheme.bodyMedium!.color?.withAlpha(100), height: 4),
-            if (widget.cardDescription != null)
+            if (widget.event.calendarDescription != null)
               Flexible(
                 flex: 2,
-                child: AutoSizeText(widget.cardDescription!, minFontSize: 10, maxLines: widget.nbLines),
+                child: AutoSizeText(widget.event.calendarDescription!, minFontSize: 10, maxLines: widget.event.calendarDescriptionLines),
               ),
           ],
         ),

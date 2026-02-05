@@ -29,7 +29,7 @@ void main() {
         localizedWidget(
           child: MediaQuery(
             data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
-            child: CourseActivityTile(course),
+            child: EventTile(course),
           ),
         ),
       );

@@ -5,16 +5,15 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:intl/intl.dart';
+import 'package:notredame/ui/schedule/widgets/course_activity_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
 import 'package:notredame/data/models/calendar_event_tile.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
@@ -176,13 +175,13 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       padding: EdgeInsets.zero,
       children: [
         const SizedBox(height: 8.0),
-        if (model.coursesActivitiesFor(date).isEmpty && !model.isBusy)
+        if (model.calendarEventsFromDate(date).isEmpty && !model.isBusy)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 64.0),
             child: Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
           )
         else
-          _buildEventList(model.coursesActivitiesFor(date)),
+          _buildEventList(model.calendarEventsFromDate(date)),
         const SizedBox(height: 16.0),
       ],
     );
@@ -191,15 +190,9 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   Widget _buildEventTile(List<calendar_view.CalendarEventData> events) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
-        title: events[0].title,
-        description: events[0].description,
-        start: events[0].startTime,
-        end: events[0].endTime,
-        padding: const EdgeInsets.all(12.0),
-        backgroundColor: events[0].color,
+        padding: const EdgeInsets.all(6.0),
         buildContext: context,
-        nbLines: (events[0] as CalendarEventTile).nbLines,
-        cardDescription: (events[0] as CalendarEventTile).cardDescription,
+        event: events[0] as EventData,
       );
     } else {
       return Container();
@@ -211,7 +204,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     return ListView.separated(
       physics: const ScrollPhysics(),
       shrinkWrap: true,
-      itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
+      itemBuilder: (_, index) => CourseActivityTile(events[index] as EventData),
       separatorBuilder: (_, index) =>
           (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
       itemCount: events.length,
