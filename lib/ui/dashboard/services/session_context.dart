@@ -1,3 +1,4 @@
+// Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 
@@ -13,6 +14,7 @@ class SessionContext {
   final int monthsRemaining;
   final int weeksCompleted;
   final int weeksRemaining;
+  final int courseDaysThisWeek;
   final bool isFirstWeek;
 
   SessionContext({
@@ -26,23 +28,27 @@ class SessionContext {
     required this.monthsRemaining,
     required this.weeksCompleted,
     required this.weeksRemaining,
+    required this.courseDaysThisWeek,
     required this.isFirstWeek,
   });
 
-  factory SessionContext.fromSession({required Session session, required List<CourseActivity> activities}) {
-    final now = DateTime.now();
-
+  factory SessionContext.fromSession({
+    required Session session,
+    required List<CourseActivity> activities,
+    required DateTime now,
+  }) {
     return SessionContext(
       session: session,
       courseActivities: activities,
       isSessionStarted: now.isAfter(session.startDate),
       daysRemaining: session.startDate.difference(now).inDays,
       daysSinceStart: session.endDate.difference(now).inDays,
-      isLastDayOfWeek: now.weekday == DateTime.friday,
+      isLastDayOfWeek: _isLastCourseDayOfWeek(activities, now),
       monthsCompleted: _calculateMonthsCompleted(session.startDate, now),
       monthsRemaining: _calculateMonthsRemaining(session.startDate, now),
       weeksCompleted: _calculateWeeksCompleted(session.startDate, now),
       weeksRemaining: _calculateWeeksRemaining(session.startDate, now),
+      courseDaysThisWeek: _calculateCourseDaysThisWeek(activities, now),
       isFirstWeek: _isFirstWeek(session.startDate, now),
     );
   }
@@ -82,6 +88,55 @@ class SessionContext {
         .length;
 
     return uniqueDays < 5;
+  }
+
+  bool get isLastCourseDayOfWeek {
+    final thisWeek = _getActivitiesForCurrentWeek();
+    if (thisWeek.isEmpty) return false;
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+
+    final daysWithActivities =
+        thisWeek.map((a) => DateTime(a.startDateTime.year, a.startDateTime.month, a.startDateTime.day)).toSet().toList()
+          ..sort();
+
+    return daysWithActivities.isNotEmpty && daysWithActivities.last.isAtSameMomentAs(today);
+  }
+
+  static int _calculateCourseDaysThisWeek(List<CourseActivity> activities, DateTime now) {
+    final startOfWeek = DateTime(now.year, now.month, now.day).subtract(Duration(days: now.weekday - 1));
+    final endOfWeek = startOfWeek.add(const Duration(days: 7));
+
+    final thisWeekActivities = activities.where((activity) {
+      return activity.startDateTime.isAfter(startOfWeek) && activity.startDateTime.isBefore(endOfWeek);
+    }).toList();
+
+    return thisWeekActivities
+        .map((a) => DateTime(a.startDateTime.year, a.startDateTime.month, a.startDateTime.day))
+        .toSet()
+        .length;
+  }
+
+  static bool _isLastCourseDayOfWeek(List<CourseActivity> activities, DateTime now) {
+    final today = DateTime(now.year, now.month, now.day);
+    final startOfWeek = today.subtract(Duration(days: now.weekday - 1));
+    final endOfWeek = startOfWeek.add(const Duration(days: 7));
+
+    final thisWeekActivities = activities.where((activity) {
+      return activity.startDateTime.isAfter(startOfWeek) && activity.startDateTime.isBefore(endOfWeek);
+    }).toList();
+
+    if (thisWeekActivities.isEmpty) return false;
+
+    final daysWithActivities =
+        thisWeekActivities
+            .map((a) => DateTime(a.startDateTime.year, a.startDateTime.month, a.startDateTime.day))
+            .toSet()
+            .toList()
+          ..sort();
+
+    return daysWithActivities.last.isAtSameMomentAs(today);
   }
 
   List<CourseActivity> _getActivitiesForCurrentWeek() {

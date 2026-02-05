@@ -17,6 +17,10 @@ class MessageFlowEngine {
     // if is holiday coming
     //return "Jour férié mardi!";
 
+    if (context.isLastCourseDayOfWeek && context.courseDaysThisWeek >= 3) {
+      return "Fabuleux, c'est vendredi! Dernière journée de cours de la semaine!";
+    }
+
     if (context.monthsCompleted <= 1) {
       if (context.weeksCompleted < 1) {
         return "Bon début de session!";
