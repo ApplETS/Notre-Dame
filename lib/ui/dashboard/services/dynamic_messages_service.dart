@@ -32,10 +32,6 @@ class DynamicMessagesService {
       return LongWeekendIncomingMessage();
     }
 
-    if (context.isLastCourseDayOfWeek && context.courseDaysThisWeek >= 3) {
-      return LastCourseDayOfWeekMessage(_getWeekdayName(context.now));
-    }
-
     if (context.weeksCompleted < 1) {
       return FirstWeekOfSessionMessage();
     }
@@ -45,6 +41,10 @@ class DynamicMessagesService {
         return FirstWeekCompletedMessage();
       }
       return WeekCompletedMessage(context.weeksCompleted);
+    }
+
+    if (context.isLastCourseDayOfWeek && context.courseDaysThisWeek >= 3) {
+      return LastCourseDayOfWeekMessage(_getWeekdayName(context.now));
     }
 
     if (context.monthsRemaining <= 1) {
