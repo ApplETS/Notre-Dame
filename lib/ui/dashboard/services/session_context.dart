@@ -49,13 +49,13 @@ class SessionContext {
       replacedDays: replacedDays,
       now: now,
       isSessionStarted: now.isAfter(session.startDate),
-      daysRemaining: session.startDate.difference(now).inDays,
-      daysSinceStart: session.endDate.difference(now).inDays,
+      daysRemaining: session.endDate.difference(now).inDays,
+      daysSinceStart: now.difference(session.startDate).inDays,
       isLastDayOfWeek: _isLastCourseDayOfWeek(activities, now),
       monthsCompleted: _calculateMonthsCompleted(session.startDate, now),
-      monthsRemaining: _calculateMonthsRemaining(session.startDate, now),
+      monthsRemaining: _calculateMonthsRemaining(session.endDate, now),
       weeksCompleted: _calculateWeeksCompleted(session.startDate, now),
-      weeksRemaining: _calculateWeeksRemaining(session.startDate, now),
+      weeksRemaining: _calculateWeeksRemaining(session.endDate, now),
       courseDaysThisWeek: _calculateCourseDaysThisWeek(activities, now),
       isFirstWeek: _isFirstWeek(session.startDate, now),
     );
@@ -103,6 +103,8 @@ class SessionContext {
     if (pastActivities.isEmpty) return false;
 
     final lastActivity = pastActivities.last;
+
+    if (now.isBefore(lastActivity.endDateTime)) return false;
 
     final futureActivities = sortedActivities.where((a) => a.startDateTime.isAfter(now));
     if (futureActivities.isEmpty) return false;

@@ -214,7 +214,7 @@ void main() {
         final now = DateTime(2024, 2, 15, 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
-        final activities = [createActivity(DateTime(2024, 2, 15, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+        final activities = [createActivity(DateTime(2024, 2, 15, 9)), createActivity(DateTime(2024, 2, 16, 9))];
 
         final context = SessionContext.fromSession(
           session: session,
@@ -476,6 +476,55 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isA<NoCoursesOnDayMessage>());
+      });
+
+      test('LongWeekendIncomingMessage takes priority over LastCourseDayOfWeekMessage', () {
+        final now = DateTime(2024, 5, 17, 10); // Friday
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 5, 17, 9)), // Friday
+          createActivity(DateTime(2024, 5, 21, 9)), // Tuesday
+          createActivity(DateTime(2024, 5, 15, 9)), // Wed
+          createActivity(DateTime(2024, 5, 13, 9)), // Mon
+        ];
+
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.isLongWeekendIncoming, isTrue, reason: 'Should be long weekend incoming');
+        expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Should be last course day');
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendIncomingMessage>());
+      });
+    });
+
+    group('Integration with SessionContext -', () {
+      test('does not trigger DaysBeforeSessionEndsMessage in middle of session', () {
+        final now = DateTime(2024, 2, 15);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
+        expect(message, isA<GenericEncouragementMessage>());
+      });
+
+      test('triggers FirstWeekCompletedMessage exactly one week after start', () {
+        final startDate = DateTime(2024, 1, 8); // Monday
+        final now = DateTime(2024, 1, 15); // Next Monday
+        final session = createSession(startDate: startDate, endDate: DateTime(2024, 4, 30));
+
+        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstWeekCompletedMessage>());
       });
     });
 
