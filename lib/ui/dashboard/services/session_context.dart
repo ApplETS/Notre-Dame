@@ -250,14 +250,18 @@ class SessionContext {
     final today = _dateOnly(now);
     final sevenDaysFromNow = today.add(const Duration(days: 7));
 
-    for (final replacedDay in replacedDays) {
+    final upcoming = replacedDays.where((replacedDay) {
       final originalDate = _dateOnly(replacedDay.originalDate);
-      if (!originalDate.isBefore(today) && originalDate.isBefore(sevenDaysFromNow)) {
-        return replacedDay;
-      }
-    }
+      return !originalDate.isBefore(today) && originalDate.isBefore(sevenDaysFromNow);
+    }).toList();
 
-    return null;
+    if (upcoming.isEmpty) return null;
+
+    upcoming.sort(
+      (a, b) => _dateOnly(a.originalDate).compareTo(_dateOnly(b.originalDate)),
+    );
+
+    return upcoming.first;
   }
 
   bool isReplacedDayCancellation(ReplacedDay replacedDay) {

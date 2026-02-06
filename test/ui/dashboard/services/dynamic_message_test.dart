@@ -192,6 +192,48 @@ void main() {
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<NoCoursesOnDayMessage>()));
       });
+
+      test('returns earliest upcoming replaced day when list is unsorted', () {
+        final reference = DateTime(2024, 3, 25);
+        final now = weekday(reference, DateTime.monday);
+
+        final early = ReplacedDay(
+          originalDate: weekday(reference, DateTime.wednesday),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Early holiday',
+        );
+
+        final late = ReplacedDay(
+          originalDate: weekday(reference, DateTime.friday),
+          replacementDate: weekday(reference, DateTime.monday, week: 1),
+          description: 'Later schedule',
+        );
+
+        final context = createContext(now: now, replacedDays: [late, early], daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
+        final msg = message as NoCoursesOnDayMessage;
+        expect(msg.weekday, 'Wednesday');
+        expect(msg.reason, 'Early holiday');
+      });
+
+      test('returns NoCoursesOnDayMessage when replaced day is today', () {
+        final reference = DateTime(2024, 3, 25);
+        final now = weekday(reference, DateTime.wednesday);
+
+        final replacedDay = ReplacedDay(
+          originalDate: now,
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
+        expect((message as NoCoursesOnDayMessage).weekday, 'Wednesday');
+      });
     });
 
     group('LongWeekendIncomingMessage -', () {
