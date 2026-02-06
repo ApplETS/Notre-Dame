@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/ui/dashboard/services/dynamic_message.dart';
 import 'package:notredame/ui/dashboard/services/dynamic_messages_service.dart';
@@ -41,6 +42,42 @@ void main() {
     );
   }
 
+  SessionContext createContext({
+    DateTime? now,
+    Session? session,
+    List<CourseActivity>? courseActivities,
+    List<ReplacedDay>? replacedDays,
+    bool? isSessionStarted,
+    int? daysRemaining,
+    int? daysSinceStart,
+    bool? isLastDayOfWeek,
+    int? monthsCompleted,
+    int? monthsRemaining,
+    int? weeksCompleted,
+    int? weeksRemaining,
+    int? courseDaysThisWeek,
+    bool? isFirstWeek,
+  }) {
+    final defaultSession = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+    return SessionContext(
+      now: now ?? DateTime(2024, 3, 15),
+      session: session ?? defaultSession,
+      courseActivities: courseActivities ?? [],
+      replacedDays: replacedDays ?? [],
+      isSessionStarted: isSessionStarted ?? true,
+      daysRemaining: daysRemaining ?? 107,
+      daysSinceStart: daysSinceStart ?? 74,
+      isLastDayOfWeek: isLastDayOfWeek ?? false,
+      monthsCompleted: monthsCompleted ?? 2,
+      monthsRemaining: monthsRemaining ?? 3,
+      weeksCompleted: weeksCompleted ?? 10,
+      weeksRemaining: weeksRemaining ?? 15,
+      courseDaysThisWeek: courseDaysThisWeek ?? 3,
+      isFirstWeek: isFirstWeek ?? false,
+    );
+  }
+
   setUp(() {
     engine = DynamicMessagesService();
   });
@@ -51,7 +88,7 @@ void main() {
         final now = DateTime(2024, 1, 1);
         final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
 
-        final context = SessionContext.fromSession(session: session, activities: [], now: now);
+        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
@@ -60,7 +97,12 @@ void main() {
 
       test('formats start date correctly', () {
         final session = createSession(startDate: DateTime(2024, 12, 25), endDate: DateTime(2025, 4, 30));
-        final context = SessionContext.fromSession(session: session, activities: [], now: DateTime(2024, 12, 1));
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: [],
+          replacedDays: [],
+          now: DateTime(2024, 12, 1),
+        );
 
         final message = engine.determineMessage(context) as SessionStartsSoonMessage;
         expect(message.formattedDate, '25/12/2024');
@@ -69,20 +111,15 @@ void main() {
 
     group('DaysBeforeSessionEndsMessage -', () {
       test('returns DaysBeforeSessionEndsMessage when daysRemaining <= 7', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 4, 23),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 7,
           daysSinceStart: 112,
-          isLastDayOfWeek: false,
           monthsCompleted: 3,
           monthsRemaining: 0,
           weeksCompleted: 16,
           weeksRemaining: 1,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -91,20 +128,16 @@ void main() {
       });
 
       test('returns DaysBeforeSessionEndsMessage when 0 days remaining', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 4, 30),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 0,
           daysSinceStart: 119,
-          isLastDayOfWeek: false,
           monthsCompleted: 3,
           monthsRemaining: 0,
           weeksCompleted: 17,
           weeksRemaining: 0,
           courseDaysThisWeek: 1,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -113,20 +146,15 @@ void main() {
       });
 
       test('does not trigger when more than 7 days remaining', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 2, 15),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 74,
           daysSinceStart: 45,
-          isLastDayOfWeek: false,
           monthsCompleted: 1,
           monthsRemaining: 2,
           weeksCompleted: 6,
           weeksRemaining: 10,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -144,20 +172,17 @@ void main() {
           createActivity(DateTime(2024, 2, 20, 9)), // Tuesday next week
         ];
 
-        final context = SessionContext(
+        final context = createContext(
           now: now,
           session: session,
           courseActivities: activities,
-          isSessionStarted: true,
           daysRemaining: 135,
           daysSinceStart: 45,
-          isLastDayOfWeek: false,
           monthsCompleted: 1,
           monthsRemaining: 4,
           weeksCompleted: 6,
           weeksRemaining: 19,
           courseDaysThisWeek: 2,
-          isFirstWeek: false,
         );
 
         expect(context.isLongWeekend, isTrue);
@@ -175,7 +200,12 @@ void main() {
           createActivity(DateTime(2024, 2, 19, 9)), // Monday next week (2 days gap)
         ];
 
-        final context = SessionContext.fromSession(session: session, activities: activities, now: now);
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<LongWeekendIncomingMessage>()));
@@ -194,20 +224,17 @@ void main() {
           createActivity(DateTime(2024, 2, 19, 9)), // Monday next week (1 day gap from Sun to Mon)
         ];
 
-        final context = SessionContext(
+        final context = createContext(
           now: now,
           session: session,
           courseActivities: activities,
-          isSessionStarted: true,
           daysRemaining: 132,
           daysSinceStart: 48,
-          isLastDayOfWeek: false,
           monthsCompleted: 1,
           monthsRemaining: 4,
           weeksCompleted: 6,
           weeksRemaining: 19,
           courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         expect(context.isLongWeekend, isFalse);
@@ -228,7 +255,12 @@ void main() {
           createActivity(DateTime(2024, 2, 19, 9)), // Monday next week
         ];
 
-        final context = SessionContext.fromSession(session: session, activities: activities, now: now);
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<LastCourseDayOfWeekMessage>()));
@@ -246,7 +278,12 @@ void main() {
           createActivity(DateTime(2024, 2, 19, 9)), // Monday next week
         ];
 
-        final context = SessionContext.fromSession(session: session, activities: activities, now: now);
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
 
         expect(context.isLastCourseDayOfWeek, isFalse);
 
@@ -257,14 +294,11 @@ void main() {
 
     group('FirstWeekOfSessionMessage -', () {
       test('returns FirstWeekOfSessionMessage in the first week', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 1, 13),
           session: createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 168,
           daysSinceStart: 3,
-          isLastDayOfWeek: false,
           monthsCompleted: 0,
           monthsRemaining: 5,
           weeksCompleted: 0,
@@ -278,20 +312,15 @@ void main() {
       });
 
       test('does not return after first week', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 1, 20),
           session: createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 161,
           daysSinceStart: 10,
-          isLastDayOfWeek: false,
           monthsCompleted: 0,
           monthsRemaining: 5,
           weeksCompleted: 1,
           weeksRemaining: 23,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -301,20 +330,15 @@ void main() {
 
     group('FirstWeekCompletedMessage -', () {
       test('returns FirstWeekCompletedMessage when exactly 1 week completed', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 1, 17),
           session: createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 164,
           daysSinceStart: 7,
-          isLastDayOfWeek: false,
           monthsCompleted: 0,
           monthsRemaining: 5,
           weeksCompleted: 1,
           weeksRemaining: 23,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -322,20 +346,16 @@ void main() {
       });
 
       test('does not return on non-multiple of 7 days', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 1, 18),
           session: createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 163,
           daysSinceStart: 8,
-          isLastDayOfWeek: false,
           monthsCompleted: 0,
           monthsRemaining: 5,
           weeksCompleted: 1,
           weeksRemaining: 23,
           courseDaysThisWeek: 4,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -345,20 +365,15 @@ void main() {
 
     group('WeekCompletedMessage -', () {
       test('returns WeekCompletedMessage when 2 weeks completed', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 1, 24),
           session: createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 157,
           daysSinceStart: 14,
-          isLastDayOfWeek: false,
           monthsCompleted: 0,
           monthsRemaining: 5,
           weeksCompleted: 2,
           weeksRemaining: 22,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -367,20 +382,15 @@ void main() {
       });
 
       test('does not return after first month', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 3, 11),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 111,
           daysSinceStart: 70,
-          isLastDayOfWeek: false,
           monthsCompleted: 2,
           monthsRemaining: 3,
           weeksCompleted: 10,
           weeksRemaining: 15,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -390,20 +400,15 @@ void main() {
 
     group('LessOneMonthRemainingMessage -', () {
       test('returns LessOneMonthRemainingMessage when monthsRemaining <= 1', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 4, 5),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 25,
           daysSinceStart: 94,
-          isLastDayOfWeek: false,
           monthsCompleted: 3,
           monthsRemaining: 0,
           weeksCompleted: 13,
           weeksRemaining: 3,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -414,20 +419,15 @@ void main() {
 
     group('GenericEncouragementMessage -', () {
       test('returns GenericEncouragementMessage as fallback', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 3, 15),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 107,
           daysSinceStart: 74,
-          isLastDayOfWeek: false,
           monthsCompleted: 2,
           monthsRemaining: 3,
           weeksCompleted: 10,
           weeksRemaining: 15,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -437,10 +437,9 @@ void main() {
 
     group('Priority order -', () {
       test('SessionStartsSoonMessage takes priority when session not started', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 1, 5),
           session: createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 1, 17)),
-          courseActivities: [],
           isSessionStarted: false,
           daysRemaining: 5,
           daysSinceStart: 0,
@@ -450,7 +449,6 @@ void main() {
           weeksCompleted: 0,
           weeksRemaining: 1,
           courseDaysThisWeek: 5,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -463,7 +461,12 @@ void main() {
 
         final activities = [createActivity(DateTime(2024, 4, 24, 9)), createActivity(DateTime(2024, 4, 30, 9))];
 
-        final context = SessionContext.fromSession(session: session, activities: activities, now: now);
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
 
         final message = engine.determineMessage(context);
         expect(message, isA<DaysBeforeSessionEndsMessage>());
@@ -472,20 +475,16 @@ void main() {
 
     group('Edge cases -', () {
       test('handles empty activities list', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 2, 15),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 135,
           daysSinceStart: 45,
-          isLastDayOfWeek: false,
           monthsCompleted: 1,
           monthsRemaining: 4,
           weeksCompleted: 6,
           weeksRemaining: 19,
           courseDaysThisWeek: 0,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -493,20 +492,16 @@ void main() {
       });
 
       test('handles leap year date', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 2, 29),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 122,
           daysSinceStart: 59,
-          isLastDayOfWeek: false,
           monthsCompleted: 1,
           monthsRemaining: 4,
           weeksCompleted: 8,
           weeksRemaining: 17,
           courseDaysThisWeek: 4,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -514,20 +509,15 @@ void main() {
       });
 
       test('handles year boundary session', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2025, 2, 1),
           session: createSession(startDate: DateTime(2024, 11, 1), endDate: DateTime(2025, 2, 28)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: 27,
           daysSinceStart: 92,
-          isLastDayOfWeek: false,
           monthsCompleted: 3,
           monthsRemaining: 0,
           weeksCompleted: 13,
           weeksRemaining: 3,
-          courseDaysThisWeek: 3,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -535,20 +525,16 @@ void main() {
       });
 
       test('handles negative daysRemaining (past end date)', () {
-        final context = SessionContext(
+        final context = createContext(
           now: DateTime(2024, 5, 5),
           session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30)),
-          courseActivities: [],
-          isSessionStarted: true,
           daysRemaining: -5,
           daysSinceStart: 124,
-          isLastDayOfWeek: false,
           monthsCompleted: 4,
           monthsRemaining: 0,
           weeksCompleted: 17,
           weeksRemaining: 0,
           courseDaysThisWeek: 0,
-          isFirstWeek: false,
         );
 
         final message = engine.determineMessage(context);
@@ -573,20 +559,17 @@ void main() {
 
           final activities = activityDates.map((d) => createActivity(d)).toList();
 
-          final context = SessionContext(
+          final context = createContext(
             now: date,
             session: createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30)),
             courseActivities: activities,
-            isSessionStarted: true,
             daysRemaining: 100 - i,
             daysSinceStart: 70 + i,
-            isLastDayOfWeek: false,
             monthsCompleted: 2,
             monthsRemaining: 3,
             weeksCompleted: 10,
             weeksRemaining: 14,
             courseDaysThisWeek: 4,
-            isFirstWeek: false,
           );
 
           expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Day ${weekdays[i]} should be last course day');
