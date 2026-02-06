@@ -134,6 +134,56 @@ void main() {
       });
     });
 
+    group('ReplacedDayMessage -', () {
+      test('returns NoCoursesOnDayMessage when cancellation', () {
+        final now = DateTime(2024, 3, 27); // Wednesday
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 3, 29), // Friday
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
+        expect((message as NoCoursesOnDayMessage).weekday, 'Friday');
+        expect(message.reason, 'Holiday');
+      });
+
+      test('returns DayFollowsScheduleMessage when schedule follows another day', () {
+        final now = DateTime(2024, 4, 1); // Monday
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 4, 3), // Wednesday
+          replacementDate: DateTime(2024, 4, 5), // Friday schedule
+          description: 'Special Day',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DayFollowsScheduleMessage>());
+        final msg = message as DayFollowsScheduleMessage;
+        expect(msg.originalDay, 'Wednesday');
+        expect(msg.replacementDay, 'Friday');
+        expect(msg.reason, 'Special Day');
+      });
+
+      test('does not return message when replaced day is outside upcoming range', () {
+        final now = DateTime(2024, 3, 27);
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 4, 10), // Too far in future
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay]);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<NoCoursesOnDayMessage>()));
+      });
+    });
+
     group('LongWeekendIncomingMessage -', () {
       test('returns LongWeekendIncomingMessage when isLongWeekend is true', () {
         final now = DateTime(2024, 2, 15, 10); // Thursday
@@ -342,6 +392,46 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isA<DaysBeforeSessionEndsMessage>());
+      });
+
+      test('DaysBeforeSessionEndsMessage takes priority over ReplacedDayMessage', () {
+        final now = DateTime(2024, 4, 25);
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 4, 26),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Test',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeSessionEndsMessage>());
+      });
+
+      test('ReplacedDayMessage takes priority over LongWeekend', () {
+        final now = DateTime(2024, 5, 17, 10); // Friday
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [createActivity(DateTime(2024, 5, 17, 9)), createActivity(DateTime(2024, 5, 21, 9))];
+
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 5, 20),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          replacedDays: [replacedDay],
+          daysRemaining: 20,
+        );
+
+        expect(context.isLongWeekend, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
       });
     });
 
