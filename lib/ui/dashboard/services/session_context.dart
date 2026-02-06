@@ -4,6 +4,8 @@ import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 
 class SessionContext {
+  static const int _defaultWeekendGapDays = 3;
+
   final DateTime now;
   final Session session;
   final List<CourseActivity> courseActivities;
@@ -65,6 +67,10 @@ class SessionContext {
 
   static DateTime _startOfWeek(DateTime date) => _dateOnly(date).subtract(Duration(days: date.weekday - 1));
 
+  static int _daysBetweenCourseDays(DateTime start, DateTime end) {
+    return _dateOnly(end).difference(_dateOnly(start)).inDays;
+  }
+
   static List<CourseActivity> _getActivitiesInRange(List<CourseActivity> activities, DateTime start, DateTime end) {
     return activities.where((a) => !a.startDateTime.isBefore(start) && a.startDateTime.isBefore(end)).toList();
   }
@@ -82,15 +88,19 @@ class SessionContext {
     if (thisWeek.isEmpty) return false;
 
     final lastActivityThisWeek = thisWeek.map((a) => a.startDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
+    final nextActivity = nextWeek.isNotEmpty
+        ? nextWeek.map((a) => a.startDateTime).reduce((a, b) => a.isBefore(b) ? a : b)
+        : _findNextActivity();
 
-    if (nextWeek.isEmpty) {
-      final daysUntilNextActivity = _findNextActivity()?.difference(lastActivityThisWeek).inDays ?? 0;
-      return daysUntilNextActivity > 2;
-    }
+    if (nextActivity == null) return false;
 
-    final firstActivityNextWeek = nextWeek.map((a) => a.startDateTime).reduce((a, b) => a.isBefore(b) ? a : b);
+    final upcomingGapDays = _daysBetweenCourseDays(lastActivityThisWeek, nextActivity);
+    final usualGapDays = _calculateUsualWeekendGapDays(
+      excludeStart: lastActivityThisWeek,
+      excludeEnd: nextActivity,
+    );
 
-    return firstActivityNextWeek.difference(lastActivityThisWeek).inDays > 2;
+    return upcomingGapDays > usualGapDays;
   }
 
   bool get isInsideLongWeekend {
@@ -111,7 +121,13 @@ class SessionContext {
 
     final nextActivity = futureActivities.first;
 
-    return nextActivity.startDateTime.difference(lastActivity.endDateTime).inDays > 2;
+    final upcomingGapDays = _daysBetweenCourseDays(lastActivity.endDateTime, nextActivity.startDateTime);
+    final usualGapDays = _calculateUsualWeekendGapDays(
+      excludeStart: lastActivity.startDateTime,
+      excludeEnd: nextActivity.startDateTime,
+    );
+
+    return upcomingGapDays > usualGapDays;
   }
 
   bool get isNextWeekShorter {
@@ -182,6 +198,41 @@ class SessionContext {
     final startOfNextWeek = _startOfWeek(now).add(const Duration(days: 7));
     final endOfNextWeek = startOfNextWeek.add(const Duration(days: 7));
     return _getActivitiesInRange(courseActivities, startOfNextWeek, endOfNextWeek);
+  }
+
+  int _calculateUsualWeekendGapDays({required DateTime excludeStart, required DateTime excludeEnd}) {
+    if (courseActivities.length < 2) return _defaultWeekendGapDays;
+
+    final sortedActivities = List<CourseActivity>.from(courseActivities)
+      ..sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+    final gaps = <int>[];
+    final excludeStartDate = _dateOnly(excludeStart);
+    final excludeEndDate = _dateOnly(excludeEnd);
+
+    for (int i = 0; i < sortedActivities.length - 1; i++) {
+      final current = sortedActivities[i].startDateTime;
+      final next = sortedActivities[i + 1].startDateTime;
+
+      if (_startOfWeek(current).isAtSameMomentAs(_startOfWeek(next))) {
+        continue;
+      }
+
+      if (_dateOnly(current).isAtSameMomentAs(excludeStartDate) &&
+          _dateOnly(next).isAtSameMomentAs(excludeEndDate)) {
+        continue;
+      }
+
+      final gapDays = _daysBetweenCourseDays(current, next);
+      if (gapDays > 0) {
+        gaps.add(gapDays);
+      }
+    }
+
+    if (gaps.isEmpty) return _defaultWeekendGapDays;
+
+    gaps.sort();
+    return gaps[(gaps.length - 1) ~/ 2];
   }
 
   DateTime? _findNextActivity() {

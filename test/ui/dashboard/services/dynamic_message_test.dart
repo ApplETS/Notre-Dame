@@ -236,6 +236,60 @@ void main() {
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<LongWeekendIncomingMessage>()));
       });
+
+      test('does not trigger when upcoming gap matches usual weekend gap', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, week: -2, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 0, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 10,
+          courseDaysThisWeek: 3,
+        );
+
+        expect(context.isLongWeekendIncoming, isFalse);
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LongWeekendIncomingMessage>()));
+      });
+
+      test('triggers when upcoming gap is longer than usual weekend gap', () {
+        final now = weekday(referenceDate, DateTime.thursday, hour: 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, week: -2, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 0, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 10,
+          courseDaysThisWeek: 2,
+        );
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendIncomingMessage>());
+      });
     });
 
     group('LongWeekendCurrentlyMessage -', () {
@@ -252,6 +306,22 @@ void main() {
 
         expect(context.isInsideLongWeekend, isTrue);
 
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendCurrentlyMessage>());
+      });
+
+      test('detects long weekend immediately after last course ends', () {
+        final now = weekday(referenceDate, DateTime.friday, hour: 12);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
+
+        expect(context.isInsideLongWeekend, isTrue);
         final message = engine.determineMessage(context);
         expect(message, isA<LongWeekendCurrentlyMessage>());
       });
