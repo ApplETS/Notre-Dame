@@ -68,6 +68,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   ThemeExtension<AppColorsExtension> copyWith({
     Color? appBar,
     Color? navBar,
+    Color? dashboardCard,
     Color? backgroundAlt,
     Color? backgroundVibrant,
     Color? scheduleLine,

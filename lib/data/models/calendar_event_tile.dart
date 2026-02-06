@@ -13,18 +13,20 @@ class EventData extends CalendarEventData {
   final String? courseName;
   final String? teacherName;
 
-  String? get calendarDescription {
+  String? calendarDescription(bool mutliline) {
     if (locations == null) {
       return null;
     }
     // TODO should already be N/A
-    final courseLocation = locations!.contains("Non assign") ? "N/A" : locations!.join("\n");
-    return "$courseLocation\n$activityName";
+    List<String> withoutBreakableSpaces = locations!.map((str) {
+      return str.replaceAll(" ", "\u{00A0}");
+    }).toList();
+
+    final courseLocation = locations!.contains("Non assign") ? "N/A" : withoutBreakableSpaces.join(mutliline ? "\n" : ", ");
+
+    final name = activityName?.replaceAll(" ", "\u{00A0}");
+    return "$courseLocation\n$name";
   }
-
-  int? get calendarDescriptionLines => calendarDescription?.split(RegExp(r'\r?\n')).length ?? 0;
-
-  String get modalTitle => "TODO";
 
   EventData({
     required this.courseAcronym,

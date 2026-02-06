@@ -8,7 +8,7 @@ import 'package:notredame/data/models/calendar_event_tile.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 
 class ScheduleCalendarTile extends StatefulWidget {
   final EventData event;
@@ -23,7 +23,6 @@ class ScheduleCalendarTile extends StatefulWidget {
 
 class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
   void _showTileInfo() {
-    final courseName = widget.event.courseName;
     final courseLocation = widget.event.locations?.join(", ");
     final courseType = widget.event.activityName;
     final teacherName = widget.event.teacherName;
@@ -42,25 +41,31 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
           title: FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.topLeft,
-            child: Text(
-              "xxcfd",
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.event.group!, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(widget.event.courseName!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ],
             ),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("courseType", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-              if (teacherName != "null")
-                Text(
-                  "${AppIntl.of(widget.buildContext)!.schedule_calendar_by} $teacherName",
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                ),
               Text(
                 "${AppIntl.of(widget.buildContext)!.schedule_calendar_from_time} $startTime ${AppIntl.of(widget.buildContext)!.schedule_calendar_to_time} $endTime",
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
+              if (courseLocation != null)
+                Text(courseLocation, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              if (courseType != null)
+                Text(courseType, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              if (teacherName != null)
+                Text(
+                  "${AppIntl.of(widget.buildContext)!.schedule_calendar_by} $teacherName",
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                ),
             ],
           ),
           actions: <Widget>[
@@ -82,34 +87,77 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _showTileInfo,
-      child: Container(
-        decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
-        padding: widget.padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Flexible(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AutoSizeText(
-                    widget.event.courseAcronym,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                    minFontSize: 10,
+      child: LayoutBuilder(
+          builder: (context, constraints) {
+            final width = constraints.maxWidth;
+            final height = constraints.maxHeight;
+            final aspectRatio = width / height;
+            final isWide = aspectRatio > 4 || height < 60;
+            final isSmall = (width < 80 && height < 80) || width < 40 || height < 40;
+
+            final description = widget.event.calendarDescription(!isWide);
+
+            if (isSmall) {
+              return Container(
+                decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
+                child: Center(
+                  child: RotatedBox(
+                    quarterTurns: isWide ? 0 : 1,
+                    child: AutoSizeText(
+                      widget.event.courseAcronym,
+                      minFontSize: 12,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white),
+                    ),
                   ),
+                ),
+              );
+            }
+
+            return Container(
+              decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
+              child: Flex(
+                direction: isWide ? Axis.horizontal : Axis.vertical,
+                crossAxisAlignment: isWide ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: isWide ? 70 : null,
+                    child: DecoratedBox(
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(0, 0, 0, 0.2),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(2.5), topRight: Radius.circular(2.5)),
+                      ),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: AutoSizeText(
+                            widget.event.courseAcronym,
+                            minFontSize: 12,
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (description != null)
+                    Flexible(
+                      child: Container(
+                        padding: widget.padding,
+                        child: AutoSizeText(
+                          description,
+                          minFontSize: 10,
+                          maxLines: widget.event.locations!.length + 1,
+                          style: TextStyle(color: AppPalette.grey.white),
+                        ),
+                      ),
+                    ),
                 ],
               ),
-            ),
-            if (widget.event.calendarDescription != null)
-              Divider(color: context.theme.textTheme.bodyMedium!.color?.withAlpha(100), height: 4),
-            if (widget.event.calendarDescription != null)
-              Flexible(
-                flex: 2,
-                child: AutoSizeText(widget.event.calendarDescription!, minFontSize: 10, maxLines: widget.event.calendarDescriptionLines),
-              ),
-          ],
-        ),
+            );
+        }
       ),
     );
   }
