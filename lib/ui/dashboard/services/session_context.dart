@@ -95,10 +95,7 @@ class SessionContext {
     if (nextActivity == null) return false;
 
     final upcomingGapDays = _daysBetweenCourseDays(lastActivityThisWeek, nextActivity);
-    final usualGapDays = _calculateUsualWeekendGapDays(
-      excludeStart: lastActivityThisWeek,
-      excludeEnd: nextActivity,
-    );
+    final usualGapDays = _calculateUsualWeekendGapDays(excludeStart: lastActivityThisWeek, excludeEnd: nextActivity);
 
     return upcomingGapDays > usualGapDays;
   }
@@ -128,6 +125,15 @@ class SessionContext {
     );
 
     return upcomingGapDays > usualGapDays;
+  }
+
+  bool get isAfterLastCourseOfWeek {
+    final thisWeek = _getActivitiesForCurrentWeek();
+    if (thisWeek.isEmpty) return false;
+
+    final lastActivityThisWeek = thisWeek.map((a) => a.endDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
+
+    return now.isAfter(lastActivityThisWeek) || now.isAtSameMomentAs(lastActivityThisWeek);
   }
 
   bool get isNextWeekShorter {
@@ -218,8 +224,7 @@ class SessionContext {
         continue;
       }
 
-      if (_dateOnly(current).isAtSameMomentAs(excludeStartDate) &&
-          _dateOnly(next).isAtSameMomentAs(excludeEndDate)) {
+      if (_dateOnly(current).isAtSameMomentAs(excludeStartDate) && _dateOnly(next).isAtSameMomentAs(excludeEndDate)) {
         continue;
       }
 
@@ -257,9 +262,7 @@ class SessionContext {
 
     if (upcoming.isEmpty) return null;
 
-    upcoming.sort(
-      (a, b) => _dateOnly(a.originalDate).compareTo(_dateOnly(b.originalDate)),
-    );
+    upcoming.sort((a, b) => _dateOnly(a.originalDate).compareTo(_dateOnly(b.originalDate)));
 
     return upcoming.first;
   }
