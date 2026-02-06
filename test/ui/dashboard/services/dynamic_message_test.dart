@@ -203,7 +203,7 @@ void main() {
           courseDaysThisWeek: 2,
         );
 
-        expect(context.isLongWeekend, isTrue);
+        expect(context.isLongWeekendIncoming, isTrue);
         expect(context.isInsideLongWeekend, isFalse);
 
         final message = engine.determineMessage(context);
@@ -284,7 +284,7 @@ void main() {
           daysRemaining: 8,
         );
 
-        expect(context.isLongWeekend, isFalse);
+        expect(context.isLongWeekendIncoming, isFalse);
         expect(context.isLastCourseDayOfWeek, isTrue);
 
         final message = engine.determineMessage(context);
@@ -472,7 +472,7 @@ void main() {
           daysRemaining: 20,
         );
 
-        expect(context.isLongWeekend, isTrue);
+        expect(context.isLongWeekendIncoming, isTrue);
 
         final message = engine.determineMessage(context);
         expect(message, isA<NoCoursesOnDayMessage>());
@@ -535,7 +535,7 @@ void main() {
           );
 
           expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Day ${weekdays[i]} should be last course day');
-          expect(context.isLongWeekend, isFalse, reason: 'Day ${weekdays[i]} should not be long weekend');
+          expect(context.isLongWeekendIncoming, isFalse, reason: 'Day ${weekdays[i]} should not be long weekend');
           final message = engine.determineMessage(context) as LastCourseDayOfWeekMessage;
           expect(message.weekday, weekdays[i]);
         }

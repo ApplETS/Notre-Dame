@@ -75,7 +75,7 @@ class SessionContext {
 
   bool get hasNextWeekSchedule => _getActivitiesForNextWeek().isNotEmpty;
 
-  bool get isLongWeekend {
+  bool get isLongWeekendIncoming {
     final thisWeek = _getActivitiesForCurrentWeek();
     final nextWeek = _getActivitiesForNextWeek();
 
