@@ -12,6 +12,18 @@ class DynamicMessagesService {
       return DaysBeforeSessionEndsMessage(context.daysRemaining);
     }
 
+    final replacedDay = context.getUpcomingReplacedDay();
+    if (replacedDay != null) {
+      final originalWeekday = _getWeekdayName(replacedDay.originalDate);
+
+      if (context.isReplacedDayCancellation(replacedDay)) {
+        return NoCoursesOnDayMessage(originalWeekday, replacedDay.description);
+      } else {
+        final replacementWeekday = _getWeekdayName(replacedDay.replacementDate);
+        return DayFollowsScheduleMessage(originalWeekday, replacementWeekday, replacedDay.description);
+      }
+    }
+
     if (context.isLongWeekend) {
       return LongWeekendIncomingMessage();
     }

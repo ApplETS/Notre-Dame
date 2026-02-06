@@ -138,6 +138,33 @@
 
   "dynamic_message_generic_encouragement": "Continue comme ça !",
 
+  "dynamic_message_no_courses_on_day": "Il n'y a pas de cours le {weekday} ({reason})",
+  "@dynamic_message_no_courses_on_day": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+
+  "dynamic_message_day_follows_schedule": "Les cours du {originalDay} suivent l'horaire du {replacementDay} ({reason})",
+  "@dynamic_message_day_follows_schedule": {
+    "placeholders": {
+      "originalDay": {
+        "type": "String"
+      },
+      "replacementDay": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
 

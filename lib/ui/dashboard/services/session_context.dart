@@ -1,11 +1,13 @@
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 
 class SessionContext {
   final DateTime now;
   final Session session;
   final List<CourseActivity> courseActivities;
+  final List<ReplacedDay> replacedDays;
 
   final bool isSessionStarted;
   final int daysRemaining;
@@ -22,6 +24,7 @@ class SessionContext {
     required this.now,
     required this.session,
     required this.courseActivities,
+    required this.replacedDays,
     required this.isSessionStarted,
     required this.daysRemaining,
     required this.daysSinceStart,
@@ -37,11 +40,13 @@ class SessionContext {
   factory SessionContext.fromSession({
     required Session session,
     required List<CourseActivity> activities,
+    required List<ReplacedDay> replacedDays,
     required DateTime now,
   }) {
     return SessionContext(
       session: session,
       courseActivities: activities,
+      replacedDays: replacedDays,
       now: now,
       isSessionStarted: now.isAfter(session.startDate),
       daysRemaining: session.startDate.difference(now).inDays,
@@ -165,5 +170,25 @@ class SessionContext {
       ..sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
     return futureActivities.isNotEmpty ? futureActivities.first.startDateTime : null;
+  }
+
+  ReplacedDay? getUpcomingReplacedDay() {
+    if (replacedDays.isEmpty) return null;
+
+    final today = _dateOnly(now);
+    final sevenDaysFromNow = today.add(const Duration(days: 7));
+
+    for (final replacedDay in replacedDays) {
+      final originalDate = _dateOnly(replacedDay.originalDate);
+      if (!originalDate.isBefore(today) && originalDate.isBefore(sevenDaysFromNow)) {
+        return replacedDay;
+      }
+    }
+
+    return null;
+  }
+
+  bool isReplacedDayCancellation(ReplacedDay replacedDay) {
+    return replacedDay.replacementDate.isBefore(replacedDay.originalDate);
   }
 }

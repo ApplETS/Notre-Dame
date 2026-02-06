@@ -46,6 +46,19 @@ class GenericEncouragementMessage extends DynamicMessage {
   const GenericEncouragementMessage();
 }
 
+class NoCoursesOnDayMessage extends DynamicMessage {
+  final String weekday;
+  final String reason;
+  const NoCoursesOnDayMessage(this.weekday, this.reason);
+}
+
+class DayFollowsScheduleMessage extends DynamicMessage {
+  final String originalDay;
+  final String replacementDay;
+  final String reason;
+  const DayFollowsScheduleMessage(this.originalDay, this.replacementDay, this.reason);
+}
+
 extension DynamicMessageResolver on DynamicMessage {
   String resolve(AppIntl intl) {
     return switch (this) {
@@ -61,6 +74,9 @@ extension DynamicMessageResolver on DynamicMessage {
       LessOneMonthRemainingMessage(:final weeksRemaining) => intl.dynamic_message_less_one_month_remaining(
         weeksRemaining,
       ),
+      NoCoursesOnDayMessage(:final weekday, :final reason) => intl.dynamic_message_no_courses_on_day(weekday, reason),
+      DayFollowsScheduleMessage(:final originalDay, :final replacementDay, :final reason) =>
+        intl.dynamic_message_day_follows_schedule(originalDay, replacementDay, reason),
       GenericEncouragementMessage() => intl.dynamic_message_generic_encouragement,
     };
   }
