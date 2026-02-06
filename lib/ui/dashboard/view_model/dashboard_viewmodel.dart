@@ -23,6 +23,9 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/dashboard/services/dynamic_message.dart';
+import 'package:notredame/ui/dashboard/services/dynamic_messages_service.dart';
+import 'package:notredame/ui/dashboard/services/session_context.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
@@ -32,6 +35,7 @@ class DashboardViewModel extends FutureViewModel {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
+  final DynamicMessagesService _dynamicMessagesService = DynamicMessagesService();
 
   /// Animation controller for the circle
   AnimationController? _controller;
@@ -55,6 +59,9 @@ class DashboardViewModel extends FutureViewModel {
   List<int> _sessionDays = [0, 0];
 
   BroadcastMessage? broadcastMessage;
+
+  /// Dynamic message text resolved from SessionContext
+  String? dynamicMessageText;
 
   /// Get progress of the session
   double get progress => _progress;
@@ -203,12 +210,39 @@ class DashboardViewModel extends FutureViewModel {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait([
+    await Future.wait([
       futureToRunBroadcast(),
       futureToRunGrades(),
       futureToRunSessionProgressBar(),
       futureToRunSchedule(),
     ]);
+    // Load dynamic message after session data is available
+    await loadDynamicMessage();
+  }
+
+  /// Load the dynamic message based on session context
+  Future<void> loadDynamicMessage() async {
+    if (_courseRepository.activeSessions.isEmpty) {
+      dynamicMessageText = null;
+      return;
+    }
+
+    final session = _courseRepository.activeSessions.first;
+    final activities = _courseRepository.coursesActivities ?? [];
+    await _courseRepository.getReplacedDays();
+    final replacedDays = _courseRepository.replacedDays ?? [];
+    final now = _settingsManager.dateTimeNow;
+
+    final context = SessionContext.fromSession(
+      session: session,
+      activities: activities,
+      replacedDays: replacedDays,
+      now: now,
+    );
+
+    final message = _dynamicMessagesService.determineMessage(context);
+    dynamicMessageText = message?.resolve(_appIntl);
+    notifyListeners();
   }
 
   @override

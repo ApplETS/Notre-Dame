@@ -118,7 +118,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
                           width: double.infinity,
                           height: 70,
                           child: Text(
-                            'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
+                            model.dynamicMessageText ?? 'No messages found...',
                             style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
