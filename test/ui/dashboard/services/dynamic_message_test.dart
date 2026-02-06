@@ -12,6 +12,8 @@ import 'package:notredame/ui/dashboard/services/session_context.dart';
 void main() {
   late DynamicMessagesService engine;
 
+  final referenceDate = DateTime(2024, 2, 12);
+
   Session createSession({required DateTime startDate, required DateTime endDate}) {
     return Session(
       shortName: 'TEST',
@@ -78,6 +80,12 @@ void main() {
     );
   }
 
+  DateTime weekday(DateTime reference, int targetWeekday, {int week = 0, int hour = 0}) {
+    final startOfWeek = reference.subtract(Duration(days: reference.weekday - 1));
+    final target = startOfWeek.add(Duration(days: (week * 7) + (targetWeekday - 1)));
+    return DateTime(target.year, target.month, target.day, hour);
+  }
+
   setUp(() {
     engine = DynamicMessagesService();
   });
@@ -136,9 +144,10 @@ void main() {
 
     group('ReplacedDayMessage -', () {
       test('returns NoCoursesOnDayMessage when cancellation', () {
-        final now = DateTime(2024, 3, 27); // Wednesday
+        final reference = DateTime(2024, 3, 25);
+        final now = weekday(reference, DateTime.wednesday);
         final replacedDay = ReplacedDay(
-          originalDate: DateTime(2024, 3, 29), // Friday
+          originalDate: weekday(reference, DateTime.friday),
           replacementDate: DateTime(2024, 1, 1),
           description: 'Holiday',
         );
@@ -152,10 +161,11 @@ void main() {
       });
 
       test('returns DayFollowsScheduleMessage when schedule follows another day', () {
-        final now = DateTime(2024, 4, 1); // Monday
+        final reference = DateTime(2024, 4, 1);
+        final now = weekday(reference, DateTime.monday);
         final replacedDay = ReplacedDay(
-          originalDate: DateTime(2024, 4, 3), // Wednesday
-          replacementDate: DateTime(2024, 4, 5), // Friday schedule
+          originalDate: weekday(reference, DateTime.wednesday),
+          replacementDate: weekday(reference, DateTime.friday),
           description: 'Special Day',
         );
 
@@ -172,7 +182,7 @@ void main() {
       test('does not return message when replaced day is outside upcoming range', () {
         final now = DateTime(2024, 3, 27);
         final replacedDay = ReplacedDay(
-          originalDate: DateTime(2024, 4, 10), // Too far in future
+          originalDate: DateTime(2024, 4, 10),
           replacementDate: DateTime(2024, 1, 1),
           description: 'Holiday',
         );
@@ -186,13 +196,13 @@ void main() {
 
     group('LongWeekendIncomingMessage -', () {
       test('returns LongWeekendIncomingMessage when isLongWeekend is true', () {
-        final now = DateTime(2024, 2, 14, 10); // Wednesday
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
-          createActivity(DateTime(2024, 2, 14, 9)), // Wednesday
-          createActivity(DateTime(2024, 2, 15, 9)), // Thursday
-          createActivity(DateTime(2024, 2, 20, 9)), // Tuesday next week
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
         ];
 
         final context = createContext(
@@ -230,12 +240,12 @@ void main() {
 
     group('LongWeekendCurrentlyMessage -', () {
       test('returns LongWeekendCurrentlyMessage when inside a long weekend gap', () {
-        final now = DateTime(2024, 2, 18); // Sunday
+        final now = weekday(referenceDate, DateTime.sunday);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
-          createActivity(DateTime(2024, 2, 16, 9)), // Friday
-          createActivity(DateTime(2024, 2, 20, 9)), // Tuesday
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
         ];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
@@ -247,12 +257,12 @@ void main() {
       });
 
       test('does not return during normal weekend', () {
-        final now = DateTime(2024, 2, 18); // Sunday
+        final now = weekday(referenceDate, DateTime.sunday);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
-          createActivity(DateTime(2024, 2, 16, 9)), // Friday
-          createActivity(DateTime(2024, 2, 19, 9)), // Monday
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
         ];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
@@ -266,14 +276,14 @@ void main() {
 
     group('LastCourseDayOfWeekMessage -', () {
       test('returns LastCourseDayOfWeekMessage when last course day and >= 3 course days', () {
-        final now = DateTime(2024, 2, 18, 10); // Sunday
+        final now = weekday(referenceDate, DateTime.sunday, hour: 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
-          createActivity(DateTime(2024, 2, 12, 9)), // Monday
-          createActivity(DateTime(2024, 2, 14, 9)), // Wednesday
-          createActivity(DateTime(2024, 2, 18, 9)), // Sunday (today) - last day of week
-          createActivity(DateTime(2024, 2, 19, 9)), // Monday next week (1 day gap from Sun to Mon)
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.sunday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
         ];
 
         final context = createContext(
@@ -293,13 +303,13 @@ void main() {
       });
 
       test('does not return when less than 3 course days', () {
-        final now = DateTime(2024, 2, 14, 10); // Wednesday
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
-          createActivity(DateTime(2024, 2, 12, 9)), // Monday
-          createActivity(DateTime(2024, 2, 14, 9)), // Wednesday
-          createActivity(DateTime(2024, 2, 19, 9)), // Monday next week
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
         ];
 
         final context = SessionContext.fromSession(
@@ -314,15 +324,15 @@ void main() {
       });
 
       test('does not return when not last course day of week', () {
-        final now = DateTime(2024, 2, 14, 10); // Wednesday
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
-          createActivity(DateTime(2024, 2, 12, 9)), // Monday
-          createActivity(DateTime(2024, 2, 14, 9)), // Wednesday
-          createActivity(DateTime(2024, 2, 15, 9)), // Thursday
-          createActivity(DateTime(2024, 2, 16, 9)), // Friday
-          createActivity(DateTime(2024, 2, 19, 9)), // Monday next week
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
         ];
 
         final context = SessionContext.fromSession(
@@ -453,13 +463,17 @@ void main() {
       });
 
       test('ReplacedDayMessage takes priority over LongWeekend', () {
-        final now = DateTime(2024, 5, 17, 10); // Friday
+        final reference = DateTime(2024, 5, 13);
+        final now = weekday(reference, DateTime.friday, hour: 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
-        final activities = [createActivity(DateTime(2024, 5, 17, 9)), createActivity(DateTime(2024, 5, 21, 9))];
+        final activities = [
+          createActivity(weekday(reference, DateTime.friday, hour: 9)),
+          createActivity(weekday(reference, DateTime.tuesday, week: 1, hour: 9)),
+        ];
 
         final replacedDay = ReplacedDay(
-          originalDate: DateTime(2024, 5, 20),
+          originalDate: weekday(reference, DateTime.monday, week: 1),
           replacementDate: DateTime(2024, 1, 1),
           description: 'Holiday',
         );
@@ -479,14 +493,15 @@ void main() {
       });
 
       test('LongWeekendIncomingMessage takes priority over LastCourseDayOfWeekMessage', () {
-        final now = DateTime(2024, 5, 17, 10); // Friday
+        final reference = DateTime(2024, 5, 13);
+        final now = weekday(reference, DateTime.friday, hour: 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
-          createActivity(DateTime(2024, 5, 17, 9)), // Friday
-          createActivity(DateTime(2024, 5, 21, 9)), // Tuesday
-          createActivity(DateTime(2024, 5, 15, 9)), // Wed
-          createActivity(DateTime(2024, 5, 13, 9)), // Mon
+          createActivity(weekday(reference, DateTime.friday, hour: 9)),
+          createActivity(weekday(reference, DateTime.tuesday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
         ];
 
         final context = SessionContext.fromSession(
@@ -517,8 +532,9 @@ void main() {
       });
 
       test('triggers FirstWeekCompletedMessage exactly one week after start', () {
-        final startDate = DateTime(2024, 1, 8); // Monday
-        final now = DateTime(2024, 1, 15); // Next Monday
+        final reference = DateTime(2024, 1, 8);
+        final startDate = weekday(reference, DateTime.monday);
+        final now = weekday(reference, DateTime.monday, week: 1);
         final session = createSession(startDate: startDate, endDate: DateTime(2024, 4, 30));
 
         final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
