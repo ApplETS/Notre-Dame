@@ -24,6 +24,10 @@ class DynamicMessagesService {
       }
     }
 
+    if (context.isInsideLongWeekend) {
+      return LongWeekendCurrentlyMessage(context.weeksCompleted);
+    }
+
     if (context.isLongWeekend) {
       return LongWeekendIncomingMessage();
     }

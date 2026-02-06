@@ -186,17 +186,25 @@ void main() {
 
     group('LongWeekendIncomingMessage -', () {
       test('returns LongWeekendIncomingMessage when isLongWeekend is true', () {
-        final now = DateTime(2024, 2, 15, 10); // Thursday
+        final now = DateTime(2024, 2, 14, 10); // Wednesday
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
+          createActivity(DateTime(2024, 2, 14, 9)), // Wednesday
           createActivity(DateTime(2024, 2, 15, 9)), // Thursday
           createActivity(DateTime(2024, 2, 20, 9)), // Tuesday next week
         ];
 
-        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 8);
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 10,
+          courseDaysThisWeek: 2,
+        );
 
         expect(context.isLongWeekend, isTrue);
+        expect(context.isInsideLongWeekend, isFalse);
 
         final message = engine.determineMessage(context);
         expect(message, isA<LongWeekendIncomingMessage>());
@@ -217,6 +225,42 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<LongWeekendIncomingMessage>()));
+      });
+    });
+
+    group('LongWeekendCurrentlyMessage -', () {
+      test('returns LongWeekendCurrentlyMessage when inside a long weekend gap', () {
+        final now = DateTime(2024, 2, 18); // Sunday
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 2, 16, 9)), // Friday
+          createActivity(DateTime(2024, 2, 20, 9)), // Tuesday
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
+
+        expect(context.isInsideLongWeekend, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendCurrentlyMessage>());
+      });
+
+      test('does not return during normal weekend', () {
+        final now = DateTime(2024, 2, 18); // Sunday
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 2, 16, 9)), // Friday
+          createActivity(DateTime(2024, 2, 19, 9)), // Monday
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
+
+        expect(context.isInsideLongWeekend, isFalse);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LongWeekendCurrentlyMessage>()));
       });
     });
 

@@ -19,6 +19,11 @@ class LongWeekendIncomingMessage extends DynamicMessage {
   const LongWeekendIncomingMessage();
 }
 
+class LongWeekendCurrentlyMessage extends DynamicMessage {
+  final int weeksCompleted;
+  const LongWeekendCurrentlyMessage(this.weeksCompleted);
+}
+
 class LastCourseDayOfWeekMessage extends DynamicMessage {
   final String weekday;
   const LastCourseDayOfWeekMessage(this.weekday);
@@ -78,6 +83,7 @@ extension DynamicMessageResolver on DynamicMessage {
       DayFollowsScheduleMessage(:final originalDay, :final replacementDay, :final reason) =>
         intl.dynamic_message_day_follows_schedule(originalDay, replacementDay, reason),
       GenericEncouragementMessage() => intl.dynamic_message_generic_encouragement,
+      LongWeekendCurrentlyMessage(:final weeksCompleted) => intl.dynamic_message_long_weekend_currently(weeksCompleted),
     };
   }
 }

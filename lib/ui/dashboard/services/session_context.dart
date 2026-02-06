@@ -93,6 +93,25 @@ class SessionContext {
     return firstActivityNextWeek.difference(lastActivityThisWeek).inDays > 2;
   }
 
+  bool get isInsideLongWeekend {
+    if (courseActivities.isEmpty) return false;
+
+    final sortedActivities = List<CourseActivity>.from(courseActivities)
+      ..sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
+
+    final pastActivities = sortedActivities.where((a) => a.startDateTime.isBefore(now));
+    if (pastActivities.isEmpty) return false;
+
+    final lastActivity = pastActivities.last;
+
+    final futureActivities = sortedActivities.where((a) => a.startDateTime.isAfter(now));
+    if (futureActivities.isEmpty) return false;
+
+    final nextActivity = futureActivities.first;
+
+    return nextActivity.startDateTime.difference(lastActivity.endDateTime).inDays > 2;
+  }
+
   bool get isNextWeekShorter {
     final nextWeek = _getActivitiesForNextWeek();
     if (nextWeek.isEmpty) return true;
