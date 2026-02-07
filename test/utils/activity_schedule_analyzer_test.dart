@@ -33,7 +33,7 @@ void main() {
       test('returns activities within range', () {
         final monday = DateTime(2024, 3, 11);
         final activities = createWeekActivities(monday);
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         final result = analyzer.getActivitiesInRange(monday, monday.add(const Duration(days: 3)));
 
@@ -43,7 +43,7 @@ void main() {
       test('returns empty list when no activities in range', () {
         final monday = DateTime(2024, 3, 11);
         final activities = createWeekActivities(monday);
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         final result = analyzer.getActivitiesInRange(
           monday.add(const Duration(days: 7)),
@@ -56,7 +56,7 @@ void main() {
       test('includes activities starting at range start, excludes at range end', () {
         final monday = DateTime(2024, 3, 11, 9);
         final activity = createActivity(monday);
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: [activity], now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: [activity], now: monday);
 
         // Activity at start is included
         expect(analyzer.getActivitiesInRange(monday, monday.add(const Duration(days: 1))), contains(activity));
@@ -74,7 +74,7 @@ void main() {
           createActivity(monday.add(const Duration(hours: 2))), // Same day
           createActivity(monday.add(const Duration(days: 1, hours: 9))),
         ];
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         final result = analyzer.getUniqueDays(activities);
 
@@ -85,7 +85,7 @@ void main() {
       });
 
       test('returns empty list for empty activities', () {
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: [], now: DateTime(2024, 3, 11));
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: DateTime(2024, 3, 11));
 
         expect(analyzer.getUniqueDays([]), isEmpty);
       });
@@ -96,7 +96,7 @@ void main() {
         final monday = DateTime(2024, 3, 11);
         final nextMonday = monday.add(const Duration(days: 7));
         final activities = [...createWeekActivities(monday), ...createWeekActivities(nextMonday)];
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         expect(analyzer.hasNextWeekSchedule, isTrue);
       });
@@ -104,7 +104,7 @@ void main() {
       test('returns false when next week has no activities', () {
         final monday = DateTime(2024, 3, 11);
         final activities = createWeekActivities(monday);
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         expect(analyzer.hasNextWeekSchedule, isFalse);
       });
@@ -116,7 +116,7 @@ void main() {
         final activities = createWeekActivities(monday);
         // Friday at 15:00 (after Friday 9:00 + 2h course)
         final now = monday.add(const Duration(days: 4, hours: 15));
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: now);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
 
         expect(analyzer.isAfterLastCourseOfWeek, isTrue);
       });
@@ -126,14 +126,14 @@ void main() {
         final activities = createWeekActivities(monday);
         // Friday at 10:00 (during Friday 9:00-11:00 course)
         final now = monday.add(const Duration(days: 4, hours: 10));
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: now);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
 
         expect(analyzer.isAfterLastCourseOfWeek, isFalse);
       });
 
       test('returns false when no activities this week', () {
         final monday = DateTime(2024, 3, 11);
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: [], now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
 
         expect(analyzer.isAfterLastCourseOfWeek, isFalse);
       });
@@ -145,7 +145,7 @@ void main() {
         final activities = createWeekActivities(monday);
         // Friday (the last course day)
         final now = monday.add(const Duration(days: 4, hours: 10));
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: now);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
 
         expect(analyzer.isLastCourseDayOfWeek, isTrue);
       });
@@ -155,7 +155,7 @@ void main() {
         final activities = createWeekActivities(monday);
         // Thursday
         final now = monday.add(const Duration(days: 3, hours: 10));
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: now);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
 
         expect(analyzer.isLastCourseDayOfWeek, isFalse);
       });
@@ -163,7 +163,7 @@ void main() {
       test('returns true when only one course day and its today', () {
         final monday = DateTime(2024, 3, 11);
         final activities = [createActivity(monday.add(const Duration(hours: 9)))];
-        final analyzer = ActivityScheduleAnalyzer(
+        final analyzer = ScheduleAnalyzer(
           courseActivities: activities,
           now: monday.add(const Duration(hours: 10)),
         );
@@ -183,7 +183,7 @@ void main() {
           createActivity(nextMonday.add(const Duration(days: 1, hours: 9))),
           createActivity(nextMonday.add(const Duration(days: 2, hours: 9))),
         ];
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         expect(analyzer.isNextWeekShorter, isTrue);
       });
@@ -192,7 +192,7 @@ void main() {
         final monday = DateTime(2024, 3, 11);
         final nextMonday = monday.add(const Duration(days: 7));
         final activities = [...createWeekActivities(monday), ...createWeekActivities(nextMonday)];
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         expect(analyzer.isNextWeekShorter, isFalse);
       });
@@ -200,7 +200,7 @@ void main() {
       test('returns true when next week has no activities', () {
         final monday = DateTime(2024, 3, 11);
         final activities = createWeekActivities(monday);
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         expect(analyzer.isNextWeekShorter, isTrue);
       });
@@ -210,7 +210,7 @@ void main() {
       test('returns number of unique course days', () {
         final monday = DateTime(2024, 3, 11);
         final activities = createWeekActivities(monday);
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         expect(analyzer.courseDaysThisWeek, 5);
       });
@@ -222,14 +222,14 @@ void main() {
           createActivity(monday.add(const Duration(hours: 13))),
           createActivity(monday.add(const Duration(days: 1, hours: 9))),
         ];
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
         expect(analyzer.courseDaysThisWeek, 2);
       });
 
       test('returns 0 when no activities this week', () {
         final monday = DateTime(2024, 3, 11);
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: [], now: monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
 
         expect(analyzer.courseDaysThisWeek, 0);
       });
@@ -237,7 +237,7 @@ void main() {
 
     group('calculateUsualWeekendGapDays -', () {
       test('returns default when less than 2 activities', () {
-        final analyzer = ActivityScheduleAnalyzer(
+        final analyzer = ScheduleAnalyzer(
           courseActivities: [createActivity(DateTime(2024, 3, 11, 9))],
           now: DateTime(2024, 3, 11),
         );
@@ -259,7 +259,7 @@ void main() {
           // Week 3: Monday March 18 (4 days gap)
           createActivity(DateTime(2024, 3, 18, 9)),
         ];
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: DateTime(2024, 3, 11));
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: DateTime(2024, 3, 11));
 
         // Both cross-week gaps are 4 days (Thu to Mon)
         expect(
@@ -279,7 +279,7 @@ void main() {
           // Week 3: Wednesday March 20 (6 days gap - long weekend)
           createActivity(DateTime(2024, 3, 20, 9)),
         ];
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: DateTime(2024, 3, 14));
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: DateTime(2024, 3, 14));
 
         // Exclude the long weekend gap (March 14 to March 20)
         final result = analyzer.calculateUsualWeekendGapDays(
@@ -305,7 +305,7 @@ void main() {
           createActivity(DateTime(2024, 3, 20, 9)),
         ];
         // Now is Thursday of week 2
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: DateTime(2024, 3, 14));
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: DateTime(2024, 3, 14));
 
         expect(analyzer.isLongWeekendIncoming, isTrue);
       });
@@ -314,7 +314,7 @@ void main() {
         final monday = DateTime(2024, 3, 11);
         final nextMonday = monday.add(const Duration(days: 7));
         final activities = [...createWeekActivities(monday), ...createWeekActivities(nextMonday)];
-        final analyzer = ActivityScheduleAnalyzer(
+        final analyzer = ScheduleAnalyzer(
           courseActivities: activities,
           now: monday.add(const Duration(days: 4)), // Friday
         );
@@ -323,7 +323,7 @@ void main() {
       });
 
       test('returns false when no activities this week', () {
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: [], now: DateTime(2024, 3, 11));
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: DateTime(2024, 3, 11));
 
         expect(analyzer.isLongWeekendIncoming, isFalse);
       });
@@ -342,7 +342,7 @@ void main() {
           createActivity(DateTime(2024, 3, 20, 9)),
         ];
         // Now is Saturday of week 2 (inside the long weekend)
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: DateTime(2024, 3, 16, 12));
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: DateTime(2024, 3, 16, 12));
 
         expect(analyzer.isInsideLongWeekend, isTrue);
       });
@@ -352,7 +352,7 @@ void main() {
         final nextMonday = monday.add(const Duration(days: 7));
         final activities = [...createWeekActivities(monday), ...createWeekActivities(nextMonday)];
         // Saturday (normal weekend)
-        final analyzer = ActivityScheduleAnalyzer(
+        final analyzer = ScheduleAnalyzer(
           courseActivities: activities,
           now: monday.add(const Duration(days: 5, hours: 12)), // Saturday
         );
@@ -361,7 +361,7 @@ void main() {
       });
 
       test('returns false when no activities', () {
-        final analyzer = ActivityScheduleAnalyzer(courseActivities: [], now: DateTime(2024, 3, 11));
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: DateTime(2024, 3, 11));
 
         expect(analyzer.isInsideLongWeekend, isFalse);
       });
@@ -370,7 +370,7 @@ void main() {
         final monday = DateTime(2024, 3, 11, 9);
         final activities = [createActivity(monday, duration: const Duration(hours: 3))];
         // During the activity
-        final analyzer = ActivityScheduleAnalyzer(
+        final analyzer = ScheduleAnalyzer(
           courseActivities: activities,
           now: monday.add(const Duration(hours: 1)),
         );
@@ -382,7 +382,7 @@ void main() {
         final monday = DateTime(2024, 3, 11, 9);
         final activities = [createActivity(monday)];
         // After the only activity
-        final analyzer = ActivityScheduleAnalyzer(
+        final analyzer = ScheduleAnalyzer(
           courseActivities: activities,
           now: monday.add(const Duration(days: 1)),
         );

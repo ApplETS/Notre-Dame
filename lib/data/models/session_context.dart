@@ -3,6 +3,7 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/utils/activity_schedule_analyzer.dart';
+import 'package:notredame/utils/replaced_day_analyzer.dart';
 import 'package:notredame/utils/utils.dart';
 
 class SessionContext {
@@ -18,10 +19,14 @@ class SessionContext {
   final int weeksRemaining;
   final int courseDaysThisWeek;
 
-  ActivityScheduleAnalyzer? _analyzer;
+  ScheduleAnalyzer? _scheduleAnalyzerCache;
+  ReplacedDayAnalyzer? _replacedDayAnalyzerCache;
 
-  ActivityScheduleAnalyzer get _scheduleAnalyzer =>
-      _analyzer ??= ActivityScheduleAnalyzer(courseActivities: courseActivities, now: now);
+  ScheduleAnalyzer get _scheduleAnalyzer =>
+      _scheduleAnalyzerCache ??= ScheduleAnalyzer(courseActivities: courseActivities, now: now);
+
+  ReplacedDayAnalyzer get _replacedDayAnalyzer =>
+      _replacedDayAnalyzerCache ??= ReplacedDayAnalyzer(replacedDays: replacedDays, now: now);
 
   SessionContext({
     required this.now,
@@ -42,7 +47,7 @@ class SessionContext {
     required List<ReplacedDay> replacedDays,
     required DateTime now,
   }) {
-    final analyzer = ActivityScheduleAnalyzer(courseActivities: activities, now: now);
+    final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
 
     return SessionContext(
       session: session,
@@ -70,25 +75,7 @@ class SessionContext {
 
   bool get isNextWeekShorter => _scheduleAnalyzer.isNextWeekShorter;
 
-  ReplacedDay? getUpcomingReplacedDay() {
-    if (replacedDays.isEmpty) return null;
+  ReplacedDay? getUpcomingReplacedDay() => _replacedDayAnalyzer.getUpcoming();
 
-    final today = Utils.dateOnly(now);
-    final sevenDaysFromNow = today.add(const Duration(days: 7));
-
-    final upcoming = replacedDays.where((replacedDay) {
-      final originalDate = Utils.dateOnly(replacedDay.originalDate);
-      return !originalDate.isBefore(today) && originalDate.isBefore(sevenDaysFromNow);
-    }).toList();
-
-    if (upcoming.isEmpty) return null;
-
-    upcoming.sort((a, b) => Utils.dateOnly(a.originalDate).compareTo(Utils.dateOnly(b.originalDate)));
-
-    return upcoming.first;
-  }
-
-  bool isReplacedDayCancellation(ReplacedDay replacedDay) {
-    return replacedDay.replacementDate.isBefore(replacedDay.originalDate);
-  }
+  bool isReplacedDayCancellation(ReplacedDay replacedDay) => _replacedDayAnalyzer.isCancellation(replacedDay);
 }

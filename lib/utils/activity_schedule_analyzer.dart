@@ -3,32 +3,28 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/utils/utils.dart';
 
 /// Analyzes course activity schedules to determine patterns and gaps.
-class ActivityScheduleAnalyzer {
+class ScheduleAnalyzer {
   static const int _defaultWeekendGapDays = 3;
 
   final List<CourseActivity> courseActivities;
   final DateTime now;
 
-  ActivityScheduleAnalyzer({required this.courseActivities, required this.now});
+  ScheduleAnalyzer({required this.courseActivities, required this.now});
 
-  /// Returns activities that start within the given range [start, end).
   List<CourseActivity> getActivitiesInRange(DateTime start, DateTime end) {
     return courseActivities.where((a) => !a.startDateTime.isBefore(start) && a.startDateTime.isBefore(end)).toList();
   }
 
-  /// Returns unique days (date only, no time) from the given activities, sorted.
   List<DateTime> getUniqueDays(List<CourseActivity> activities) {
     return activities.map((a) => Utils.dateOnly(a.startDateTime)).toSet().toList()..sort();
   }
 
-  /// Returns activities for the current week (Monday to Sunday).
   List<CourseActivity> getActivitiesForCurrentWeek() {
     final start = Utils.startOfWeek(now);
     final end = start.add(const Duration(days: 7));
     return getActivitiesInRange(start, end);
   }
 
-  /// Returns activities for the next week.
   List<CourseActivity> getActivitiesForNextWeek() {
     final startOfNextWeek = Utils.startOfWeek(now).add(const Duration(days: 7));
     final endOfNextWeek = startOfNextWeek.add(const Duration(days: 7));
@@ -70,7 +66,6 @@ class ActivityScheduleAnalyzer {
     return gaps[(gaps.length - 1) ~/ 2];
   }
 
-  /// Finds the first activity after the current week.
   DateTime? findNextActivityAfterCurrentWeek() {
     final endOfWeek = Utils.startOfWeek(now).add(const Duration(days: 7));
 
@@ -80,11 +75,8 @@ class ActivityScheduleAnalyzer {
     return futureActivities.isNotEmpty ? futureActivities.first.startDateTime : null;
   }
 
-  /// Whether there are activities scheduled for next week.
   bool get hasNextWeekSchedule => getActivitiesForNextWeek().isNotEmpty;
 
-  /// Whether a long weekend is coming up (gap between this week's last activity
-  /// and next activity is longer than usual).
   bool get isLongWeekendIncoming {
     final thisWeek = getActivitiesForCurrentWeek();
     final nextWeek = getActivitiesForNextWeek();
@@ -104,8 +96,6 @@ class ActivityScheduleAnalyzer {
     return upcomingGapDays > usualGapDays;
   }
 
-  /// Whether we are currently inside a long weekend (gap between last activity
-  /// and next activity is longer than usual).
   bool get isInsideLongWeekend {
     if (courseActivities.isEmpty) return false;
 
@@ -133,7 +123,6 @@ class ActivityScheduleAnalyzer {
     return upcomingGapDays > usualGapDays;
   }
 
-  /// Whether we are after the last course of the current week.
   bool get isAfterLastCourseOfWeek {
     final thisWeek = getActivitiesForCurrentWeek();
     if (thisWeek.isEmpty) return false;
@@ -143,7 +132,6 @@ class ActivityScheduleAnalyzer {
     return now.isAfter(lastActivityThisWeek) || now.isAtSameMomentAs(lastActivityThisWeek);
   }
 
-  /// Whether today is the last day with courses this week.
   bool get isLastCourseDayOfWeek {
     final thisWeek = getActivitiesForCurrentWeek();
     if (thisWeek.isEmpty) return false;
@@ -154,7 +142,6 @@ class ActivityScheduleAnalyzer {
     return daysWithActivities.isNotEmpty && daysWithActivities.last.isAtSameMomentAs(today);
   }
 
-  /// Whether next week has fewer course days than a full week (5 days).
   bool get isNextWeekShorter {
     final nextWeek = getActivitiesForNextWeek();
     if (nextWeek.isEmpty) return true;
@@ -162,7 +149,6 @@ class ActivityScheduleAnalyzer {
     return getUniqueDays(nextWeek).length < 5;
   }
 
-  /// Number of unique course days this week.
   int get courseDaysThisWeek {
     final thisWeekActivities = getActivitiesForCurrentWeek();
     return getUniqueDays(thisWeekActivities).length;
