@@ -56,38 +56,10 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: TextField(
-                    controller: _usernameController,
-                    decoration: InputDecoration(
-                      labelText: 'Nom d\'utilisateur',
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(color: AppPalette.grey.white),
-                      filled: true,
-                      fillColor: AppPalette.grey.darkGrey,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: 'Mot de passe',
-                      border: OutlineInputBorder(),
-                      labelStyle: TextStyle(color: AppPalette.grey.white),
-                      filled: true,
-                      fillColor: AppPalette.grey.darkGrey,
-                    ),
-                    obscureText: true,
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 49,
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      // fait rient pour l'instant
+                      model.authenticate();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppPalette.grey.black,
@@ -95,6 +67,22 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     child: Text(
                       'Se connecter',
+                      style: TextStyle(color: AppPalette.grey.white, fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      model.navigateToFAQ();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppPalette.grey.black,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                    child: Text(
+                      'FAQ',
                       style: TextStyle(color: AppPalette.grey.white, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),

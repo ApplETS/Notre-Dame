@@ -64,10 +64,9 @@ class StartUpViewModel extends BaseViewModel {
       //     await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
       //     return;
       //   }
-      //}
-
-      //_settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+      // }
+      //
+      // _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
     }
   }
 
