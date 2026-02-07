@@ -18,7 +18,7 @@ class DayViewModel extends CalendarViewModel {
     final bool isTodaySelected = DateTime.now().withoutTime == daySelected;
 
     if (isTodaySelected) {
-      Fluttertoast.showToast(msg: appIntl.schedule_already_today_toast);
+      Fluttertoast.showToast(msg: intl.schedule_already_today_toast);
     }
 
     daySelected = DateTime.now().withoutTime;

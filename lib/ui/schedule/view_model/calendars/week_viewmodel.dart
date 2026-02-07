@@ -56,7 +56,7 @@ class WeekViewModel extends CalendarViewModel {
     final bool isThisWeekSelected = dateToReturnTo == weekSelected;
 
     isThisWeekSelected
-        ? Fluttertoast.showToast(msg: super.appIntl.schedule_already_today_toast)
+        ? Fluttertoast.showToast(msg: super.intl.schedule_already_today_toast)
         : handleDateSelectedChanged(dateToReturnTo);
 
     return !isThisWeekSelected;

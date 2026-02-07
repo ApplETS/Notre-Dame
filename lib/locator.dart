@@ -22,6 +22,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/services/schedule_service.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -36,6 +37,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => RemoteConfigService());
   locator.registerLazySingleton(() => LaunchUrlService());
   locator.registerLazySingleton(() => AuthService());
+  locator.registerLazySingleton(() => ScheduleService());
 
   // Managers
   locator.registerLazySingleton(() => UserRepository());

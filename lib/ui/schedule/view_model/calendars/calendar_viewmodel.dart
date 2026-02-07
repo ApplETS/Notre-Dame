@@ -3,202 +3,42 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:collection/collection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/models/calendar_event_tile.dart';
-import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/data/services/schedule_service.dart';
 
-abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
-  /// Load the events
-  final CourseRepository _courseRepository = locator<CourseRepository>();
-
-  /// Manage de settings
-  final SettingsRepository _settingsManager = locator<SettingsRepository>();
-
-  /// Localization class of the application.
+abstract class CalendarViewModel extends FutureViewModel<Map<DateTime, List<EventData>>> {
   @protected
-  final AppIntl appIntl;
+  final AppIntl intl;
 
-  /// Activities sorted by day
-  Map<DateTime, List<CourseActivity>> _coursesActivities = {};
+  final ScheduleService _scheduleService = locator<ScheduleService>();
 
-  /// Courses associated to the student
-  List<Course>? _courses;
+  Map<DateTime, List<EventData>> _events = {};
 
-  /// This map contains the courses that has the group A or group B mark
-  final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
-
-  /// This map contains the direct settings as string for each course that are grouped
-  /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
-  final Map<String, String> _settingsScheduleActivities = {};
-
-  /// A map that contains a color from the AppTheme.SchedulePalette palette associated with each course.
-  final Map<String, Color> _courseColors = {};
-
-  /// The color palette corresponding to the schedule courses.
-  List<Color> _schedulePaletteTheme = AppPalette.schedule.toList();
-
-  CalendarViewModel({required AppIntl intl}) : appIntl = intl;
-
-  EventData _calendarEventTile(CourseActivity eventData) {
-    final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
-    final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
-
-    return EventData(
-      courseAcronym: eventData.courseGroup.split('-')[0],
-      group: eventData.courseGroup,
-      locations: eventData.activityLocation,
-      activityName: eventData.activityName,
-      courseName: eventData.courseName,
-      teacherName: associatedCourse?.teacherName,
-      date: eventData.startDateTime,
-      startTime: eventData.startDateTime,
-      endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
-      color: _getCourseColor(eventData.courseGroup.split('-')[0]),
-    );
-  }
-
-  Color _getCourseColor(String courseName) {
-    if (!_courseColors.containsKey(courseName)) {
-      _courseColors[courseName] = _schedulePaletteTheme.removeLast();
-    }
-    return _courseColors[courseName] ?? AppPalette.etsLightRed;
-  }
+  CalendarViewModel({required this.intl});
 
   @override
-  Future<List<CourseActivity>> futureToRun() async {
-    List<CourseActivity>? activities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
-    try {
-      final fetchedCourseActivities = await _courseRepository.getCoursesActivities();
-
-      if (fetchedCourseActivities != null) {
-        activities = fetchedCourseActivities;
-        // Reload the list of activities
-        coursesActivities;
-
-        _courses = await _courseRepository.getCourses(fromCacheOnly: true);
-      }
-      final scheduleActivities = await _courseRepository.getScheduleActivities();
-      await _assignScheduleActivities(scheduleActivities);
-    } catch (e) {
-      onError(e, null);
-    }
-    return activities ?? [];
-  }
-
-  Future _assignScheduleActivities(List<ScheduleActivity> listOfSchedules) async {
-    if (listOfSchedules.isEmpty ||
-        !listOfSchedules.any(
-          (element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode),
-        )) {
-      return;
-    }
-
-    _scheduleActivitiesByCourse.clear();
-    for (final activity in listOfSchedules) {
-      if (activity.activityCode == ActivityCode.labGroupA || activity.activityCode == ActivityCode.labGroupB) {
-        // Create the list with the new activity inside or add the activity to an existing group
-        if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
-          _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
-        } else {
-          _scheduleActivitiesByCourse[activity.courseAcronym]?.add(activity);
-        }
-      }
-    }
-
-    await loadSettingsScheduleActivities();
-  }
-
-  @override
-  void onError(error, StackTrace? stackTrace) {
-    Fluttertoast.showToast(msg: appIntl.error);
-  }
-
-  Future loadSettingsScheduleActivities() async {
-    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
-      final String? activityCodeToUse = await _settingsManager.getDynamicString(
-        PreferencesFlag.scheduleLaboratoryGroup,
-        courseAcronym,
-      );
-      final scheduleActivityToSet = _scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
-        (element) => element.activityCode == activityCodeToUse,
-      );
-      if (scheduleActivityToSet != null) {
-        _settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.activityCode;
-      } else {
-        // All group selected
-        _settingsScheduleActivities.removeWhere((key, value) => key == courseAcronym);
-      }
-
-      coursesActivities;
-    }
-  }
-
-  /// Return the list of all the courses activities arranged by date.
-  Map<DateTime, List<CourseActivity>> get coursesActivities {
-    _coursesActivities = {};
-
-    // Build the map
-    if (_courseRepository.coursesActivities != null) {
-      for (final CourseActivity course in _courseRepository.coursesActivities!) {
-        final DateTime dateOnly = course.startDateTime.withoutTime;
-
-        if (!_coursesActivities.containsKey(dateOnly)) {
-          _coursesActivities[dateOnly] = [];
-        }
-
-        _coursesActivities.update(dateOnly, (value) {
-          final scheduleActivitiesContainsGroup = _settingsScheduleActivities.containsKey(
-            course.courseGroup.split("-").first,
-          );
-
-          if (scheduleActivitiesContainsGroup && _scheduleActivityIsSelected(course) ||
-              !scheduleActivitiesContainsGroup) {
-            value.add(course);
-          }
-
-          return value;
-        }, ifAbsent: () => [course]);
-      }
-    }
-
-    _coursesActivities.updateAll((key, value) {
-      value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-
-      return value;
-    });
-
-    return _coursesActivities;
-  }
-
-  bool _scheduleActivityIsSelected(CourseActivity course) {
-    if (course.activityName != ActivityName.labA && course.activityName != ActivityName.labB) {
-      return true;
-    }
-
-    final activityNameSelected = _settingsScheduleActivities[course.courseGroup.split("-").first];
-    return (activityNameSelected == ActivityCode.labGroupA && ActivityName.labA == course.activityName) ||
-        (activityNameSelected == ActivityCode.labGroupB && ActivityName.labB == course.activityName);
+  Future<Map<DateTime, List<EventData>>> futureToRun() async {
+    _events = await _scheduleService.events;
+    return _events;
   }
 
   @protected
   List<EventData> calendarEventsFromDate(DateTime date) {
-    return _coursesActivities[date.withoutTime]?.map((eventData) => _calendarEventTile(eventData)).toList() ?? [];
+    return _events[date.withoutTime] ?? [];
   }
 
   bool returnToCurrentDate();
 
   void handleDateSelectedChanged(DateTime newDate);
+
+  @override
+  void onError(error, StackTrace? stackTrace) {
+    Fluttertoast.showToast(msg: intl.error);
+  }
 }
