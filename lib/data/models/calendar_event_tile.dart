@@ -13,16 +13,24 @@ class EventData extends CalendarEventData {
   final String? group;
   final String? teacherName;
 
+  @override
+  DateTime get startTime => super.startTime!;
+
+  @override
+  DateTime get endTime => super.endTime!;
+
   String? calendarDescription(bool mutliline) {
     if (locations == null) {
       return null;
     }
-    // TODO should already be N/A
+
     List<String> withoutBreakableSpaces = locations!.map((str) {
       return str.replaceAll(" ", "\u{00A0}");
     }).toList();
 
-    final courseLocation = locations!.contains("Non assign") ? "N/A" : withoutBreakableSpaces.join(mutliline ? "\n" : ", ");
+    final courseLocation = locations!.contains("Non assign")
+        ? "N/A"
+        : withoutBreakableSpaces.join(mutliline ? "\n" : ", ");
 
     final name = activityName?.replaceAll(" ", "\u{00A0}");
     return "$courseLocation\n$name";
@@ -39,5 +47,8 @@ class EventData extends CalendarEventData {
     this.activityName,
     this.group,
     this.teacherName,
-  }) : super(title: courseAcronym);
+  }) : super(title: courseAcronym) {
+    assert(super.startTime != null);
+    assert(super.endTime != null);
+  }
 }

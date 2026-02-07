@@ -28,12 +28,8 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     final courseLocation = widget.event.locations?.join(", ");
     final courseType = widget.event.activityName;
     final teacherName = widget.event.teacherName;
-    final startTime = widget.event.startTime == null
-        ? AppIntl.of(widget.buildContext)!.grades_not_available
-        : "${widget.event.startTime!.hour}:${widget.event.startTime!.minute.toString().padLeft(2, '0')}";
-    final endTime = widget.event.endTime == null
-        ? AppIntl.of(widget.buildContext)!.grades_not_available
-        : DateFormat.Hm().format(widget.event.endTime!.add(const Duration(minutes: 1)));
+    final startTime = "${widget.event.startTime.hour}:${widget.event.startTime.minute.toString().padLeft(2, '0')}";
+    final endTime = DateFormat.Hm().format(widget.event.endTime.add(const Duration(minutes: 1)));
 
     showDialog(
       context: context,

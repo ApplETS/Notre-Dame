@@ -40,8 +40,8 @@ class CourseActivityTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(timeFormat.format(event.startTime!), style: Theme.of(context).textTheme.bodySmall),
-            Text(timeFormat.format(event.endTime!), style: Theme.of(context).textTheme.bodySmall),
+            Text(timeFormat.format(event.startTime), style: Theme.of(context).textTheme.bodySmall),
+            Text(timeFormat.format(event.endTime), style: Theme.of(context).textTheme.bodySmall),
           ],
         ),
         Skeleton.shade(child: VerticalDivider(color: event.color, thickness: 2)),
