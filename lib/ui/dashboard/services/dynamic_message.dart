@@ -99,8 +99,10 @@ extension DynamicMessageResolver on DynamicMessage {
       LessOneMonthRemainingMessage(:final weeksRemaining) => intl.dynamic_message_less_one_month_remaining(
         weeksRemaining,
       ),
-      NoCoursesOnDayMessage(:final weekday, :final reason) =>
-        intl.dynamic_message_no_courses_on_day(weekdayName(weekday), reason),
+      NoCoursesOnDayMessage(:final weekday, :final reason) => intl.dynamic_message_no_courses_on_day(
+        weekdayName(weekday),
+        reason,
+      ),
       DayFollowsScheduleMessage(:final originalWeekday, :final replacementWeekday, :final reason) =>
         intl.dynamic_message_day_follows_schedule(
           weekdayName(originalWeekday),

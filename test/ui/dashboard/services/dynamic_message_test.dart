@@ -665,11 +665,7 @@ void main() {
 
     group('GenericEncouragementMessage -', () {
       test('returns GenericEncouragementMessage as fallback', () {
-        final context = createContext(
-          daysRemaining: 30,
-          monthsRemaining: 2,
-          weeksCompleted: 10,
-        );
+        final context = createContext(daysRemaining: 30, monthsRemaining: 2, weeksCompleted: 10);
 
         final message = engine.determineMessage(context);
         expect(message, isA<GenericEncouragementMessage>());
