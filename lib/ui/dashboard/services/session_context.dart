@@ -50,7 +50,7 @@ class SessionContext {
       courseActivities: activities,
       replacedDays: replacedDays,
       now: now,
-      isSessionStarted: now.isAfter(session.startDate),
+      isSessionStarted: now.compareTo(session.startDate) >= 0,
       daysRemaining: session.endDate.difference(now).inDays,
       daysSinceStart: now.difference(session.startDate).inDays,
       isLastDayOfWeek: _isLastCourseDayOfWeek(activities, now),

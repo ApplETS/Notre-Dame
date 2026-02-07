@@ -80,10 +80,10 @@ void main() {
     );
   }
 
-  DateTime weekday(DateTime reference, int targetWeekday, {int week = 0, int hour = 0}) {
+  DateTime weekday(DateTime reference, int targetWeekday, {int week = 0, int hour = 0, int minute = 0}) {
     final startOfWeek = reference.subtract(Duration(days: reference.weekday - 1));
     final target = startOfWeek.add(Duration(days: (week * 7) + (targetWeekday - 1)));
-    return DateTime(target.year, target.month, target.day, hour);
+    return DateTime(target.year, target.month, target.day, hour, minute);
   }
 
   setUp(() {
@@ -101,6 +101,26 @@ void main() {
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
         expect((message as SessionStartsSoonMessage).formattedDate, '10/1/2024');
+      });
+
+      test('does not return SessionStartsSoonMessage when it is the session start day', () {
+        final now = DateTime(2024, 1, 10);
+        final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
+
+        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<SessionStartsSoonMessage>()));
+      });
+
+      test('does not return SessionStartsSoonMessage when session has started', () {
+        final now = DateTime(2024, 1, 11);
+        final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
+
+        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<SessionStartsSoonMessage>()));
       });
 
       test('formats start date correctly', () {
@@ -126,6 +146,13 @@ void main() {
         expect((message as DaysBeforeSessionEndsMessage).daysRemaining, 7);
       });
 
+      test('returns DaysBeforeSessionEndsMessage when daysRemaining is 6', () {
+        final context = createContext(daysRemaining: 6);
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeSessionEndsMessage>());
+        expect((message as DaysBeforeSessionEndsMessage).daysRemaining, 6);
+      });
+
       test('returns DaysBeforeSessionEndsMessage when 0 days remaining', () {
         final context = createContext(daysRemaining: 0);
 
@@ -134,8 +161,15 @@ void main() {
         expect((message as DaysBeforeSessionEndsMessage).daysRemaining, 0);
       });
 
+      test('does not trigger when negative days remaining', () {
+        final context = createContext(daysRemaining: -1);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
+      });
+
       test('does not trigger when more than 7 days remaining', () {
-        final context = createContext(daysRemaining: 74);
+        final context = createContext(daysRemaining: 8);
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
@@ -353,7 +387,7 @@ void main() {
       });
 
       test('detects long weekend immediately after last course ends', () {
-        final now = weekday(referenceDate, DateTime.friday, hour: 12);
+        final now = weekday(referenceDate, DateTime.friday, hour: 13);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
@@ -366,6 +400,22 @@ void main() {
         expect(context.isInsideLongWeekend, isTrue);
         final message = engine.determineMessage(context);
         expect(message, isA<LongWeekendCurrentlyMessage>());
+      });
+
+      test('does not detect long weekend before last course of the day ends', () {
+        final now = weekday(referenceDate, DateTime.friday, hour: 11, minute: 59);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
+
+        expect(context.isInsideLongWeekend, isFalse);
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LongWeekendCurrentlyMessage>()));
       });
 
       test('does not return during normal weekend', () {
@@ -811,7 +861,7 @@ void main() {
         final context = createContext(daysRemaining: -5);
 
         final message = engine.determineMessage(context);
-        expect(message, isA<DaysBeforeSessionEndsMessage>());
+        expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
       });
     });
 

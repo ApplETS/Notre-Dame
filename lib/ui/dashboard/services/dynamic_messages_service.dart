@@ -8,7 +8,7 @@ class DynamicMessagesService {
       return SessionStartsSoonMessage(_formatDate(context.session.startDate));
     }
 
-    if (context.daysRemaining <= 7) {
+    if (context.daysRemaining <= 7 && context.daysRemaining >= 0) {
       return DaysBeforeSessionEndsMessage(context.daysRemaining);
     }
 
