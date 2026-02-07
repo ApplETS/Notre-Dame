@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/utils/api_exception.dart';
@@ -122,5 +123,19 @@ class CourseRepositoryMock extends MockCourseRepository {
     when(
       mock.getScheduleActivities(),
     ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
+  }
+
+  /// Stub the getter [replacedDays] of [mock] when called will return [toReturn].
+  static void stubReplacedDays(CourseRepositoryMock mock, {List<ReplacedDay>? toReturn = const []}) {
+    when(mock.replacedDays).thenReturn(toReturn);
+  }
+
+  /// Stub the function [getReplacedDays] of [mock] when called will return [toReturn].
+  static void stubGetReplacedDays(
+    CourseRepositoryMock mock, {
+    List<ReplacedDay>? toReturn = const [],
+    bool fromCacheOnly = false,
+  }) {
+    when(mock.getReplacedDays(fromCacheOnly: fromCacheOnly)).thenAnswer((_) async => toReturn);
   }
 }

@@ -1695,7 +1695,7 @@ void main() {
         // Stub the SignetsAPI to return the same replaced day as the cache
         SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.replacedDays, isNull);
         final List<ReplacedDay>? results = await manager.getReplacedDays();
 
         expect(results, isInstanceOf<List<ReplacedDay>>());
@@ -1729,7 +1729,7 @@ void main() {
         // Stub the SignetsAPI to return the same replaced days as the cache
         SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, [changedReplacedDay]);
 
-        expect(manager.coursesActivities, isNull);
+        expect(manager.replacedDays, isNull);
         final List<ReplacedDay>? results = await manager.getReplacedDays();
 
         expect(results, isInstanceOf<List<ReplacedDay>>());

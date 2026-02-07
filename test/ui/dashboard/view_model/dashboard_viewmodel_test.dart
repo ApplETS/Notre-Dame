@@ -158,6 +158,9 @@ void main() {
       setupBroadcastMessageRepositoryMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
+      CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: false);
+      CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: true);
+      CourseRepositoryMock.stubReplacedDays(courseRepositoryMock);
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
       CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
@@ -299,7 +302,7 @@ void main() {
 
         await viewModel.futureToRun();
 
-        verify(settingsManagerMock.dateTimeNow).called(2);
+        verify(settingsManagerMock.dateTimeNow).called(3);
       });
 
       test("build the list todays activities sorted by time", () async {
@@ -320,7 +323,7 @@ void main() {
 
         verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepositoryMock.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
       });
 
       test("build the list todays activities (doesnt remove activity when pending completion)", () async {
@@ -341,7 +344,7 @@ void main() {
 
         verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepositoryMock.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
       });
 
       test("build the list todays activities (remove activity when finished)", () async {
@@ -363,7 +366,7 @@ void main() {
 
         verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepositoryMock.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
       });
 
       test("build the list tomorrow activities sorted by time", () async {
@@ -384,7 +387,7 @@ void main() {
 
         verify(courseRepositoryMock.getCoursesActivities()).called(1);
 
-        verify(courseRepositoryMock.coursesActivities).called(1);
+        verify(courseRepositoryMock.coursesActivities).called(2);
       });
 
       test("build the list todays activities with the right course activities (should not have labo A)", () async {
