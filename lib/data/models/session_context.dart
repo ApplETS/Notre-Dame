@@ -2,7 +2,7 @@
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/ui/dashboard/services/activity_schedule_analyzer.dart';
+import 'package:notredame/utils/activity_schedule_analyzer.dart';
 import 'package:notredame/utils/utils.dart';
 
 class SessionContext {

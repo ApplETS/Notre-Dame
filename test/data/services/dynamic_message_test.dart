@@ -5,9 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/ui/dashboard/services/dynamic_message.dart';
-import 'package:notredame/ui/dashboard/services/dynamic_messages_service.dart';
-import 'package:notredame/ui/dashboard/services/session_context.dart';
+import 'package:notredame/data/models/dynamic_message.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
+import 'package:notredame/data/models/session_context.dart';
 
 void main() {
   late DynamicMessagesService engine;

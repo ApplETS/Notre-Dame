@@ -1,6 +1,6 @@
 // Project imports:
-import 'package:notredame/ui/dashboard/services/dynamic_message.dart';
-import 'package:notredame/ui/dashboard/services/session_context.dart';
+import 'package:notredame/data/models/dynamic_message.dart';
+import 'package:notredame/data/models/session_context.dart';
 
 class DynamicMessagesService {
   DynamicMessage? determineMessage(SessionContext context) {

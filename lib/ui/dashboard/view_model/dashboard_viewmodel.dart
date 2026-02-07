@@ -23,9 +23,9 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/dashboard/services/dynamic_message.dart';
-import 'package:notredame/ui/dashboard/services/dynamic_messages_service.dart';
-import 'package:notredame/ui/dashboard/services/session_context.dart';
+import 'package:notredame/data/models/dynamic_message.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
+import 'package:notredame/data/models/session_context.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";

@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/ui/dashboard/services/activity_schedule_analyzer.dart';
+import 'package:notredame/utils/activity_schedule_analyzer.dart';
 
 void main() {
   CourseActivity createActivity(DateTime start, {Duration duration = const Duration(hours: 2)}) {
