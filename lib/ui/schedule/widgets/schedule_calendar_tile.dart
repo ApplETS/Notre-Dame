@@ -46,8 +46,8 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.event.group!, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                Text(widget.event.courseName!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text(widget.event.group ?? widget.event.courseAcronym, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(widget.event.courseName, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ],
             ),
           ),

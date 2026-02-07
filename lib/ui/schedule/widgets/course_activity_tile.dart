@@ -44,7 +44,7 @@ class CourseActivityTile extends StatelessWidget {
             Text(timeFormat.format(event.endTime!), style: Theme.of(context).textTheme.bodySmall),
           ],
         ),
-        Skeleton.shade(child: VerticalDivider(color: colorFor(event.courseName!), thickness: 2)),
+        Skeleton.shade(child: VerticalDivider(color: colorFor(event.courseName), thickness: 2)),
       ],
     ),
   );

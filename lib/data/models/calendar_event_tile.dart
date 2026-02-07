@@ -7,10 +7,10 @@ import 'package:calendar_view/calendar_view.dart';
 @immutable
 class EventData extends CalendarEventData {
   final String courseAcronym;
+  final String courseName;
   final List<String>? locations;
   final String? activityName;
   final String? group;
-  final String? courseName;
   final String? teacherName;
 
   String? calendarDescription(bool mutliline) {
@@ -30,6 +30,7 @@ class EventData extends CalendarEventData {
 
   EventData({
     required this.courseAcronym,
+    required this.courseName,
     required super.date,
     required super.startTime,
     required super.endTime,
@@ -37,7 +38,6 @@ class EventData extends CalendarEventData {
     this.locations,
     this.activityName,
     this.group,
-    this.courseName,
     this.teacherName,
   }) : super(title: courseAcronym);
 }

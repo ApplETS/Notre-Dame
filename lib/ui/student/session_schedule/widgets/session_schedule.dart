@@ -80,18 +80,18 @@ class _SessionScheduleState extends State<SessionSchedule> {
           rightIconConfig: null,
         ),
         heightPerMinute: heightPerMinute,
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events as List<EventData>, context),
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events as List<CalendarEventData>, context),
         weekDayBuilder: (DateTime date) => Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date)),
       ),
     );
   }
 
-  Widget _buildEventTile(List<EventData> events, BuildContext context) {
+  Widget _buildEventTile(List<CalendarEventData> events, BuildContext context) {
     if (events.isNotEmpty) {
       return ScheduleCalendarTile(
         padding: const EdgeInsets.all(6.0),
         buildContext: context,
-        event: events[0],
+        event: events[0] as EventData,
       );
     } else {
       return Container();
