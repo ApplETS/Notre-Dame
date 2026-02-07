@@ -94,17 +94,17 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
             final width = constraints.maxWidth;
             final height = constraints.maxHeight;
             final aspectRatio = width / height;
-            final isWide = aspectRatio > 4 || height < 60;
+            final wideLayout = aspectRatio > 4 || height < 60;
             final isSmall = (width < 80 && height < 80) || width < 40 || height < 40;
 
-            final description = widget.event.calendarDescription(!isWide);
+            final description = widget.event.calendarDescription(!wideLayout);
 
-            if (isSmall) {
+            if (isSmall || description == null) {
               return Container(
                 decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
                 child: Center(
                   child: RotatedBox(
-                    quarterTurns: isWide ? 0 : 1,
+                    quarterTurns: aspectRatio > 1 ? 0 : 1,
                     child: AutoSizeText(
                       widget.event.courseAcronym,
                       minFontSize: 12,
@@ -120,14 +120,14 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
             return Container(
               decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
               child: Flex(
-                direction: isWide ? Axis.horizontal : Axis.vertical,
-                crossAxisAlignment: isWide ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+                direction: wideLayout ? Axis.horizontal : Axis.vertical,
+                crossAxisAlignment: wideLayout ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: isWide ? min(70, width/2.5) : null,
+                    width: wideLayout ? min(70, width/2.5) : null,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
-                        color: description != null ? const Color.fromRGBO(0, 0, 0, 0.2) : Colors.transparent,
+                        color: const Color.fromRGBO(0, 0, 0, 0.2),
                         borderRadius: const BorderRadius.only(topLeft: Radius.circular(2.5), topRight: Radius.circular(2.5)),
                       ),
                       child: Center(
@@ -144,7 +144,6 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                       ),
                     ),
                   ),
-                  if (description != null)
                     Flexible(
                       child: Container(
                         padding: widget.padding,
