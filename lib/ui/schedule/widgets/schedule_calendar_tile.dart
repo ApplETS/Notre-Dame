@@ -46,7 +46,10 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.event.group ?? widget.event.courseAcronym, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                Text(
+                  widget.event.group ?? widget.event.courseAcronym,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
                 Text(widget.event.courseName, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ],
             ),
@@ -90,75 +93,78 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     return GestureDetector(
       onTap: _showTileInfo,
       child: LayoutBuilder(
-          builder: (context, constraints) {
-            final width = constraints.maxWidth;
-            final height = constraints.maxHeight;
-            final aspectRatio = width / height;
-            final wideLayout = aspectRatio > 4 || height < 60;
-            final isSmall = (width < 80 && height < 80) || width < 40 || height < 40;
+        builder: (context, constraints) {
+          final width = constraints.maxWidth;
+          final height = constraints.maxHeight;
+          final aspectRatio = width / height;
+          final wideLayout = aspectRatio > 4 || height < 60;
+          final isSmall = (width < 80 && height < 80) || width < 40 || height < 40;
 
-            final description = widget.event.calendarDescription(!wideLayout);
+          final description = widget.event.calendarDescription(!wideLayout);
 
-            if (isSmall || description == null) {
-              return Container(
-                decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
-                child: Center(
-                  child: RotatedBox(
-                    quarterTurns: aspectRatio > 1 ? 0 : 1,
-                    child: AutoSizeText(
-                      widget.event.courseAcronym,
-                      minFontSize: 12,
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white),
+          if (isSmall || description == null) {
+            return Container(
+              decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
+              child: Center(
+                child: RotatedBox(
+                  quarterTurns: width > 40 ? 0 : 1,
+                  child: AutoSizeText(
+                    widget.event.courseAcronym,
+                    minFontSize: 8,
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white),
+                  ),
+                ),
+              ),
+            );
+          }
+
+          return Container(
+            decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
+            child: Flex(
+              direction: wideLayout ? Axis.horizontal : Axis.vertical,
+              crossAxisAlignment: wideLayout ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: wideLayout ? min(70, width / 2.5) : null,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(0, 0, 0, 0.2),
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(2.5),
+                        topRight: Radius.circular(2.5),
+                      ),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: AutoSizeText(
+                          widget.event.courseAcronym,
+                          minFontSize: 8,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              );
-            }
-
-            return Container(
-              decoration: BoxDecoration(color: widget.event.color, borderRadius: BorderRadius.circular(6.0)),
-              child: Flex(
-                direction: wideLayout ? Axis.horizontal : Axis.vertical,
-                crossAxisAlignment: wideLayout ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: wideLayout ? min(70, width/2.5) : null,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(0, 0, 0, 0.2),
-                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(2.5), topRight: Radius.circular(2.5)),
-                      ),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: AutoSizeText(
-                            widget.event.courseAcronym,
-                            minFontSize: 8,
-                            maxLines: 1,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white),
-                          ),
-                        ),
-                      ),
+                Flexible(
+                  child: Container(
+                    padding: widget.padding,
+                    child: AutoSizeText(
+                      description,
+                      minFontSize: 8,
+                      maxLines: widget.event.locations!.length + 1,
+                      style: TextStyle(color: AppPalette.grey.white),
                     ),
                   ),
-                    Flexible(
-                      child: Container(
-                        padding: widget.padding,
-                        child: AutoSizeText(
-                          description,
-                          minFontSize: 8,
-                          maxLines: widget.event.locations!.length + 1,
-                          style: TextStyle(color: AppPalette.grey.white),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            );
-        }
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
