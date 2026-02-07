@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -122,19 +124,19 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                 crossAxisAlignment: isWide ? CrossAxisAlignment.center : CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: isWide ? 70 : null,
+                    width: isWide ? min(70, width/2.5) : null,
                     child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        color: Color.fromRGBO(0, 0, 0, 0.2),
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(2.5), topRight: Radius.circular(2.5)),
+                      decoration: BoxDecoration(
+                        color: description != null ? const Color.fromRGBO(0, 0, 0, 0.2) : Colors.transparent,
+                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(2.5), topRight: Radius.circular(2.5)),
                       ),
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: AutoSizeText(
                             widget.event.courseAcronym,
-                            minFontSize: 12,
-                            maxLines: 2,
+                            minFontSize: 8,
+                            maxLines: 1,
                             textAlign: TextAlign.center,
                             style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white),
                           ),
@@ -148,7 +150,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                         padding: widget.padding,
                         child: AutoSizeText(
                           description,
-                          minFontSize: 10,
+                          minFontSize: 8,
                           maxLines: widget.event.locations!.length + 1,
                           style: TextStyle(color: AppPalette.grey.white),
                         ),
