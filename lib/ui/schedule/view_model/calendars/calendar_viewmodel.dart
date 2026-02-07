@@ -38,21 +38,21 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   List<Course>? _courses;
 
   /// This map contains the courses that has the group A or group B mark
-  final Map<String, List<ScheduleActivity>> scheduleActivitiesByCourse = {};
+  final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
 
   /// This map contains the direct settings as string for each course that are grouped
   /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
-  final Map<String, String> settingsScheduleActivities = {};
+  final Map<String, String> _settingsScheduleActivities = {};
 
   /// A map that contains a color from the AppTheme.SchedulePalette palette associated with each course.
-  final Map<String, Color> courseColors = {};
+  final Map<String, Color> _courseColors = {};
 
   /// The color palette corresponding to the schedule courses.
-  List<Color> schedulePaletteTheme = AppPalette.schedule.toList();
+  List<Color> _schedulePaletteTheme = AppPalette.schedule.toList();
 
   CalendarViewModel({required AppIntl intl}) : appIntl = intl;
 
-  EventData calendarEventTile(CourseActivity eventData) {
+  EventData _calendarEventTile(CourseActivity eventData) {
     final associatedCourses = _courses?.where((element) => element.acronym == eventData.courseGroup.split('-')[0]);
     final associatedCourse = associatedCourses?.isNotEmpty == true ? associatedCourses?.first : null;
 
@@ -66,15 +66,15 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       date: eventData.startDateTime,
       startTime: eventData.startDateTime,
       endTime: eventData.endDateTime.subtract(const Duration(minutes: 1)),
-      color: getCourseColor(eventData.courseGroup.split('-')[0]),
+      color: _getCourseColor(eventData.courseGroup.split('-')[0]),
     );
   }
 
-  Color getCourseColor(String courseName) {
-    if (!courseColors.containsKey(courseName)) {
-      courseColors[courseName] = schedulePaletteTheme.removeLast();
+  Color _getCourseColor(String courseName) {
+    if (!_courseColors.containsKey(courseName)) {
+      _courseColors[courseName] = _schedulePaletteTheme.removeLast();
     }
-    return courseColors[courseName] ?? AppPalette.etsLightRed;
+    return _courseColors[courseName] ?? AppPalette.etsLightRed;
   }
 
   @override
@@ -106,14 +106,14 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       return;
     }
 
-    scheduleActivitiesByCourse.clear();
+    _scheduleActivitiesByCourse.clear();
     for (final activity in listOfSchedules) {
       if (activity.activityCode == ActivityCode.labGroupA || activity.activityCode == ActivityCode.labGroupB) {
         // Create the list with the new activity inside or add the activity to an existing group
-        if (!scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
-          scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
+        if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
+          _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
         } else {
-          scheduleActivitiesByCourse[activity.courseAcronym]?.add(activity);
+          _scheduleActivitiesByCourse[activity.courseAcronym]?.add(activity);
         }
       }
     }
@@ -127,19 +127,19 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
   }
 
   Future loadSettingsScheduleActivities() async {
-    for (final courseAcronym in scheduleActivitiesByCourse.keys) {
+    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
       final String? activityCodeToUse = await _settingsManager.getDynamicString(
         PreferencesFlag.scheduleLaboratoryGroup,
         courseAcronym,
       );
-      final scheduleActivityToSet = scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
+      final scheduleActivityToSet = _scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
         (element) => element.activityCode == activityCodeToUse,
       );
       if (scheduleActivityToSet != null) {
-        settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.activityCode;
+        _settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.activityCode;
       } else {
         // All group selected
-        settingsScheduleActivities.removeWhere((key, value) => key == courseAcronym);
+        _settingsScheduleActivities.removeWhere((key, value) => key == courseAcronym);
       }
 
       coursesActivities;
@@ -160,7 +160,7 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
         }
 
         _coursesActivities.update(dateOnly, (value) {
-          final scheduleActivitiesContainsGroup = settingsScheduleActivities.containsKey(
+          final scheduleActivitiesContainsGroup = _settingsScheduleActivities.containsKey(
             course.courseGroup.split("-").first,
           );
 
@@ -188,13 +188,14 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
       return true;
     }
 
-    final activityNameSelected = settingsScheduleActivities[course.courseGroup.split("-").first];
+    final activityNameSelected = _settingsScheduleActivities[course.courseGroup.split("-").first];
     return (activityNameSelected == ActivityCode.labGroupA && ActivityName.labA == course.activityName) ||
         (activityNameSelected == ActivityCode.labGroupB && ActivityName.labB == course.activityName);
   }
 
+  @protected
   List<EventData> calendarEventsFromDate(DateTime date) {
-    return _coursesActivities[date.withoutTime]?.map((eventData) => calendarEventTile(eventData)).toList() ?? [];
+    return _coursesActivities[date.withoutTime]?.map((eventData) => _calendarEventTile(eventData)).toList() ?? [];
   }
 
   bool returnToCurrentDate();

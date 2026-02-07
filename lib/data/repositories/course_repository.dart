@@ -98,14 +98,8 @@ class CourseRepository {
   /// After fetching the new activities from the [SignetsApi] the [CacheService]
   /// is updated with the latest version of the activities.
   Future<List<CourseActivity>?> getCoursesActivities({bool fromCacheOnly = false}) async {
-    // Force fromCacheOnly mode when user has no connectivity
-    if (!(await _networkingService.hasConnectivity())) {
-      // ignore: parameter_assignments
-      fromCacheOnly = true;
-    }
-
-    // Load the activities from the cache if the list doesn't exist
-    if (fromCacheOnly) {
+    // Load the activities from the cache if no connexion
+    if (fromCacheOnly || !(await _networkingService.hasConnectivity())) {
       try {
         final List responseCache = jsonDecode(await _cacheManager.get(coursesActivitiesCacheKey)) as List<dynamic>;
 
