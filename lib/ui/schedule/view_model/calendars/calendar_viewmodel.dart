@@ -77,7 +77,6 @@ abstract class CalendarViewModel extends FutureViewModel<List<CourseActivity>> {
     return courseColors[courseName] ?? AppPalette.etsLightRed;
   }
 
-
   @override
   Future<List<CourseActivity>> futureToRun() async {
     List<CourseActivity>? activities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
