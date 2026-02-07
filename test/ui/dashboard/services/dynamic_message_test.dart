@@ -5,9 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/services/dynamic_message.dart';
 import 'package:notredame/ui/dashboard/services/dynamic_messages_service.dart';
 import 'package:notredame/ui/dashboard/services/session_context.dart';
+import '../../../helpers.dart';
 
 void main() {
   late DynamicMessagesService engine;
@@ -51,14 +53,10 @@ void main() {
     List<ReplacedDay>? replacedDays,
     bool? isSessionStarted,
     int? daysRemaining,
-    int? daysSinceStart,
-    bool? isLastDayOfWeek,
-    int? monthsCompleted,
     int? monthsRemaining,
     int? weeksCompleted,
     int? weeksRemaining,
     int? courseDaysThisWeek,
-    bool? isFirstWeek,
   }) {
     final defaultSession = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
@@ -69,14 +67,10 @@ void main() {
       replacedDays: replacedDays ?? [],
       isSessionStarted: isSessionStarted ?? true,
       daysRemaining: daysRemaining ?? 107,
-      daysSinceStart: daysSinceStart ?? 74,
-      isLastDayOfWeek: isLastDayOfWeek ?? false,
-      monthsCompleted: monthsCompleted ?? 2,
       monthsRemaining: monthsRemaining ?? 3,
       weeksCompleted: weeksCompleted ?? 10,
       weeksRemaining: weeksRemaining ?? 15,
       courseDaysThisWeek: courseDaysThisWeek ?? 3,
-      isFirstWeek: isFirstWeek ?? false,
     );
   }
 
@@ -100,7 +94,7 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
-        expect((message as SessionStartsSoonMessage).formattedDate, '10/1/2024');
+        expect((message as SessionStartsSoonMessage).startDate, DateTime(2024, 1, 10));
       });
 
       test('does not return SessionStartsSoonMessage when it is the session start day', () {
@@ -121,19 +115,6 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<SessionStartsSoonMessage>()));
-      });
-
-      test('formats start date correctly', () {
-        final session = createSession(startDate: DateTime(2024, 12, 25), endDate: DateTime(2025, 4, 30));
-        final context = SessionContext.fromSession(
-          session: session,
-          activities: [],
-          replacedDays: [],
-          now: DateTime(2024, 12, 1),
-        );
-
-        final message = engine.determineMessage(context) as SessionStartsSoonMessage;
-        expect(message.formattedDate, '25/12/2024');
       });
     });
 
@@ -190,7 +171,7 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isA<NoCoursesOnDayMessage>());
-        expect((message as NoCoursesOnDayMessage).weekday, 'Friday');
+        expect((message as NoCoursesOnDayMessage).weekday, DateTime.friday);
         expect(message.reason, 'Holiday');
       });
 
@@ -208,8 +189,8 @@ void main() {
         final message = engine.determineMessage(context);
         expect(message, isA<DayFollowsScheduleMessage>());
         final msg = message as DayFollowsScheduleMessage;
-        expect(msg.originalDay, 'Wednesday');
-        expect(msg.replacementDay, 'Friday');
+        expect(msg.originalWeekday, DateTime.wednesday);
+        expect(msg.replacementWeekday, DateTime.friday);
         expect(msg.reason, 'Special Day');
       });
 
@@ -248,7 +229,7 @@ void main() {
         final message = engine.determineMessage(context);
         expect(message, isA<NoCoursesOnDayMessage>());
         final msg = message as NoCoursesOnDayMessage;
-        expect(msg.weekday, 'Wednesday');
+        expect(msg.weekday, DateTime.wednesday);
         expect(msg.reason, 'Early holiday');
       });
 
@@ -266,7 +247,7 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isA<NoCoursesOnDayMessage>());
-        expect((message as NoCoursesOnDayMessage).weekday, 'Wednesday');
+        expect((message as NoCoursesOnDayMessage).weekday, DateTime.wednesday);
       });
     });
 
@@ -461,7 +442,7 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isA<LastCourseDayOfWeekMessage>());
-        expect((message as LastCourseDayOfWeekMessage).weekday, 'Sunday');
+        expect((message as LastCourseDayOfWeekMessage).weekday, DateTime.sunday);
       });
 
       test('does not return when less than 3 course days', () {
@@ -513,14 +494,14 @@ void main() {
 
     group('FirstWeekOfSessionMessage -', () {
       test('returns FirstWeekOfSessionMessage in the first week', () {
-        final context = createContext(monthsCompleted: 0, weeksCompleted: 0, daysRemaining: 8);
+        final context = createContext(weeksCompleted: 0, daysRemaining: 8);
 
         final message = engine.determineMessage(context);
         expect(message, isA<FirstWeekOfSessionMessage>());
       });
 
       test('does not return after first week', () {
-        final context = createContext(isFirstWeek: false, daysRemaining: 8);
+        final context = createContext(weeksCompleted: 2, daysRemaining: 8);
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<FirstWeekOfSessionMessage>()));
@@ -632,7 +613,6 @@ void main() {
           session: session,
           courseActivities: activities,
           weeksCompleted: 10,
-          monthsCompleted: 2,
           daysRemaining: 100,
         );
 
@@ -690,9 +670,7 @@ void main() {
         final context = createContext(
           daysRemaining: 30,
           monthsRemaining: 2,
-          monthsCompleted: 2,
           weeksCompleted: 10,
-          daysSinceStart: 74,
         );
 
         final message = engine.determineMessage(context);
@@ -867,7 +845,15 @@ void main() {
 
     group('Weekday names -', () {
       test('returns correct weekday name for Saturday and Sunday through full flow', () {
-        final weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        final weekdays = [
+          DateTime.monday,
+          DateTime.tuesday,
+          DateTime.wednesday,
+          DateTime.thursday,
+          DateTime.friday,
+          DateTime.saturday,
+          DateTime.sunday,
+        ];
 
         for (int i = 5; i < 7; i++) {
           final date = DateTime(2024, 3, 11 + i, 10);
@@ -898,7 +884,15 @@ void main() {
       });
 
       test('returns correct weekday name for all days via direct message construction', () {
-        final weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        final weekdays = [
+          DateTime.monday,
+          DateTime.tuesday,
+          DateTime.wednesday,
+          DateTime.thursday,
+          DateTime.friday,
+          DateTime.saturday,
+          DateTime.sunday,
+        ];
 
         for (int i = 0; i < 7; i++) {
           final date = DateTime(2024, 3, 11 + i, 10);

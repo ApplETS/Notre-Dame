@@ -5,7 +5,7 @@ import 'package:notredame/ui/dashboard/services/session_context.dart';
 class DynamicMessagesService {
   DynamicMessage? determineMessage(SessionContext context) {
     if (!context.isSessionStarted) {
-      return SessionStartsSoonMessage(_formatDate(context.session.startDate));
+      return SessionStartsSoonMessage(context.session.startDate);
     }
 
     if (context.daysRemaining <= 7 && context.daysRemaining >= 0) {
@@ -14,14 +14,14 @@ class DynamicMessagesService {
 
     final replacedDay = context.getUpcomingReplacedDay();
     if (replacedDay != null) {
-      final originalWeekday = _getWeekdayName(replacedDay.originalDate);
+      final originalWeekday = replacedDay.originalDate.weekday;
 
       if (context.isReplacedDayCancellation(replacedDay)) {
         return NoCoursesOnDayMessage(originalWeekday, replacedDay.description);
-      } else {
-        final replacementWeekday = _getWeekdayName(replacedDay.replacementDate);
-        return DayFollowsScheduleMessage(originalWeekday, replacementWeekday, replacedDay.description);
       }
+
+      final replacementWeekday = replacedDay.replacementDate.weekday;
+      return DayFollowsScheduleMessage(originalWeekday, replacementWeekday, replacedDay.description);
     }
 
     if (context.isInsideLongWeekend) {
@@ -44,7 +44,7 @@ class DynamicMessagesService {
     }
 
     if (context.isLastCourseDayOfWeek && context.courseDaysThisWeek >= 3) {
-      return LastCourseDayOfWeekMessage(_getWeekdayName(context.now));
+      return LastCourseDayOfWeekMessage(context.now.weekday);
     }
 
     if (context.monthsRemaining <= 1) {
@@ -52,14 +52,5 @@ class DynamicMessagesService {
     }
 
     return GenericEncouragementMessage();
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
-  }
-
-  String _getWeekdayName(DateTime date) {
-    const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    return weekdays[date.weekday - 1];
   }
 }
