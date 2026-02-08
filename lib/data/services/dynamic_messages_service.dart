@@ -32,14 +32,14 @@ class DynamicMessagesService {
       return LongWeekendIncomingMessage();
     }
 
-    if (context.weeksCompleted < 1) {
+    if (context.weeksCompleted == 1) {
+      if (context.isAfterLastCourseOfWeek) {
+        return FirstWeekCompletedMessage();
+      }
       return FirstWeekOfSessionMessage();
     }
 
     if (context.isAfterLastCourseOfWeek) {
-      if (context.weeksCompleted == 1) {
-        return FirstWeekCompletedMessage();
-      }
       return WeekCompletedMessage(context.weeksCompleted);
     }
 

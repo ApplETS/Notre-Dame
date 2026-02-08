@@ -32,11 +32,9 @@ void main() {
 
     group('startOfWeek -', () {
       test('returns Monday for a Wednesday', () {
-        // Wednesday March 13, 2024
         final wednesday = DateTime(2024, 3, 13, 10, 30);
         final result = Utils.startOfWeek(wednesday);
 
-        // Monday March 11, 2024 (UTC)
         expect(result, DateTime.utc(2024, 3, 11));
         expect(result.weekday, DateTime.monday);
         expect(result.isUtc, isTrue);
@@ -51,31 +49,25 @@ void main() {
       });
 
       test('returns Monday for a Sunday', () {
-        // Sunday March 17, 2024
         final sunday = DateTime(2024, 3, 17, 18, 0);
         final result = Utils.startOfWeek(sunday);
 
-        // Monday March 11, 2024
         expect(result, DateTime.utc(2024, 3, 11));
         expect(result.weekday, DateTime.monday);
       });
 
       test('handles week crossing month boundary', () {
-        // Wednesday May 1, 2024
         final wednesday = DateTime(2024, 5, 1);
         final result = Utils.startOfWeek(wednesday);
 
-        // Monday April 29, 2024
         expect(result, DateTime.utc(2024, 4, 29));
         expect(result.weekday, DateTime.monday);
       });
 
       test('handles week crossing year boundary', () {
-        // Wednesday January 3, 2024
         final wednesday = DateTime(2024, 1, 3);
         final result = Utils.startOfWeek(wednesday);
 
-        // Monday January 1, 2024
         expect(result, DateTime.utc(2024, 1, 1));
         expect(result.weekday, DateTime.monday);
       });
@@ -86,7 +78,6 @@ void main() {
         final start = DateTime(2024, 3, 10);
         final end = DateTime(2024, 3, 15);
 
-        // March 10 to March 15 is 5 days difference
         expect(Utils.daysBetween(start, end), 5);
       });
 
@@ -107,7 +98,6 @@ void main() {
         final start = DateTime(2024, 3, 10, 8, 0);
         final end = DateTime(2024, 3, 10, 23, 59);
 
-        // Same day, different times should be 0 days
         expect(Utils.daysBetween(start, end), 0);
       });
 
@@ -157,53 +147,53 @@ void main() {
     });
 
     group('weeksCompleted -', () {
-      test('returns 0 for less than 7 days', () {
-        final startDate = DateTime(2024, 3, 10);
-        final now = DateTime(2024, 3, 15); // 5 days difference
-
-        expect(Utils.weeksCompleted(startDate, now), 0);
-      });
-
-      test('returns 1 for 7 days difference', () {
-        final startDate = DateTime(2024, 3, 10);
-        final now = DateTime(2024, 3, 17); // 7 days difference
+      test('returns 1 when in the same calendar week as start (first week)', () {
+        final startDate = DateTime(2024, 3, 14);
+        final now = DateTime(2024, 3, 16);
 
         expect(Utils.weeksCompleted(startDate, now), 1);
       });
 
-      test('returns 2 for 14 days difference', () {
-        final startDate = DateTime(2024, 3, 10);
-        final now = DateTime(2024, 3, 24); // 14 days difference
+      test('returns 2 when in the next calendar week after start', () {
+        final startDate = DateTime(2024, 3, 14);
+        final now = DateTime(2024, 3, 18);
 
         expect(Utils.weeksCompleted(startDate, now), 2);
       });
 
-      test('truncates partial weeks', () {
-        final startDate = DateTime(2024, 3, 10);
-        final now = DateTime(2024, 3, 20); // 10 days = 1 week + 3 days
+      test('returns 3 when two calendar weeks after start', () {
+        final startDate = DateTime(2024, 3, 14);
+        final now = DateTime(2024, 3, 25);
+
+        expect(Utils.weeksCompleted(startDate, now), 3);
+      });
+
+      test('returns 1 for entire first calendar week regardless of start day', () {
+        final startDate = DateTime(2024, 3, 11);
+        final now = DateTime(2024, 3, 17);
 
         expect(Utils.weeksCompleted(startDate, now), 1);
       });
 
-      test('handles negative when now is before start', () {
+      test('returns 0 when now is in previous calendar week', () {
         final startDate = DateTime(2024, 3, 20);
-        final now = DateTime(2024, 3, 6); // 14 days before
+        final now = DateTime(2024, 3, 11);
 
-        expect(Utils.weeksCompleted(startDate, now), -2);
+        expect(Utils.weeksCompleted(startDate, now), 0);
       });
     });
 
     group('weeksRemaining -', () {
       test('returns positive weeks when end is in future', () {
         final now = DateTime(2024, 3, 10);
-        final endDate = DateTime(2024, 3, 31); // 21 days difference
+        final endDate = DateTime(2024, 3, 31);
 
         expect(Utils.weeksRemaining(endDate, now), 3);
       });
 
       test('returns 0 for less than 7 days remaining', () {
         final now = DateTime(2024, 3, 26);
-        final endDate = DateTime(2024, 3, 31); // 5 days difference
+        final endDate = DateTime(2024, 3, 31);
 
         expect(Utils.weeksRemaining(endDate, now), 0);
       });
@@ -217,7 +207,7 @@ void main() {
 
       test('truncates partial weeks', () {
         final now = DateTime(2024, 3, 10);
-        final endDate = DateTime(2024, 3, 28); // 18 days = 2 weeks + 4 days
+        final endDate = DateTime(2024, 3, 28);
 
         expect(Utils.weeksRemaining(endDate, now), 2);
       });

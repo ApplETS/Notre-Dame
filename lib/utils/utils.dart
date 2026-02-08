@@ -84,7 +84,11 @@ mixin Utils {
     return months < 0 ? 0 : months;
   }
 
-  static int weeksCompleted(DateTime startDate, DateTime now) => daysBetween(startDate, now) ~/ 7;
+  static int weeksCompleted(DateTime startDate, DateTime now) {
+    final startWeekMonday = startOfWeek(startDate);
+    final currentWeekMonday = startOfWeek(now);
+    return (daysBetween(startWeekMonday, currentWeekMonday) ~/ 7) + 1;
+  }
 
   static int weeksRemaining(DateTime endDate, DateTime now) {
     final weeks = daysBetween(now, endDate) ~/ 7;
