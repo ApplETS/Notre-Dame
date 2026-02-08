@@ -108,7 +108,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           },
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(32, 16, 32, 0),
+          padding: EdgeInsets.fromLTRB(40, 16, 40, 0),
           width: double.infinity,
           child: Row(
             spacing: 18,
@@ -125,8 +125,17 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           ),
         ),
         const SizedBox(height: 6),
-        ScheduleCard(events: model.scheduleEvents),
-        GradesCard(courses: model.courses, loading: model.busy(model.courses))
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              ScheduleCard(events: model.scheduleEvents),
+              const SizedBox(height: 6),
+              GradesCard(courses: model.courses, loading: model.busy(model.courses))
+            ],
+          ),
+        )
+
       ],
     );
   }

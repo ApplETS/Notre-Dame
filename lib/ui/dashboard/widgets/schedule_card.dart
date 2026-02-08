@@ -40,7 +40,7 @@ class ScheduleCard extends StatelessWidget {
     // TODO set end hour according to last event
 
     return SizedBox(
-      height: 400,
+      height: 290,
       child: WidgetComponent(
         title: title,
         child: Expanded(
@@ -48,7 +48,7 @@ class ScheduleCard extends StatelessWidget {
             listView: false,
             controller: ScheduleController(),
             selectedDate: date,
-            heightPerMinute: 364 / ((endHour - 7) * 60),
+            heightPerMinute: 254 / ((endHour - 7) * 60),
             startHour: 8,
             endHour: endHour,
             backgroundColor: context.theme.appColors.dashboardCard,

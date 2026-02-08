@@ -85,6 +85,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       });
     };
 
+    widget.controller.refreshEvents = () async {
+      await model.refreshEvents();
+      setState(() {});
+    };
+
     return widget.listView ? _buildListView(model) : _buildCalendar(model);
   }
 

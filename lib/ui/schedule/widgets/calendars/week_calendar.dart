@@ -19,6 +19,7 @@ bool isAnimating = false;
 class WeekCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
+
   const WeekCalendar({super.key, required this.controller});
 
   @override
@@ -50,6 +51,11 @@ class _WeekCalendarState extends State<WeekCalendar> {
       model.returnToCurrentDate();
       isAnimating = true;
       weekViewKey.currentState?.animateToWeek(model.weekSelected).then((_) => isAnimating = false);
+    };
+
+    widget.controller.refreshEvents = () async {
+      await model.refreshEvents();
+      setState(() {});
     };
 
     return WeekView(
@@ -92,7 +98,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
         final locale = AppIntl.of(context)!.localeName;
         return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
       },
-      eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events as List<CalendarEventData>, context),
+      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
+          _buildEventTile(events, context),
       weekDayBuilder: (DateTime date) =>
           Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date, model, context)),
     );

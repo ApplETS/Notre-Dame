@@ -24,7 +24,6 @@ class WidgetComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.hardEdge,
-      margin: const EdgeInsets.fromLTRB(16, 13, 16, 13),
       color: context.theme.appColors.dashboardCard,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       child: Column(

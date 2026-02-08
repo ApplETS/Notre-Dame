@@ -1,20 +1,20 @@
 import 'dart:ui';
 
 import 'package:calendar_view/calendar_view.dart';
-import 'package:collection/collection.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-
-import '../../domain/constants/preferences_flags.dart';
-import '../../locator.dart';
-import '../../ui/core/themes/app_palette.dart';
-import '../models/activity_code.dart';
-import '../models/calendar_event_tile.dart';
-import '../repositories/course_repository.dart';
-import '../repositories/settings_repository.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/data/models/calendar_event_tile.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 
 class ScheduleService {
+  /// If true, will fetch course activies again instead of using in-memory data
+  bool _invalidateCache = false;
+
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -27,13 +27,6 @@ class ScheduleService {
   /// Courses associated to the student
   List<Course>? _courses;
 
-  /// This map contains the courses that has the group A or group B mark
-  final Map<String, List<ScheduleActivity>> _scheduleActivitiesByCourse = {};
-
-  /// This map contains the direct settings as string for each course that are grouped
-  /// (Example: (key, value) => ("ING150", "Laboratoire (Groupe A)"))
-  final Map<String, String> _settingsScheduleActivities = {};
-
   /// A map that contains a color from the AppTheme.SchedulePalette palette associated with each course.
   final Map<String, Color> _courseColors = {};
 
@@ -43,122 +36,54 @@ class ScheduleService {
   Map<DateTime, List<EventData>> _events = {};
 
   Future<Map<DateTime, List<EventData>>> get events async {
-    if (_events.isNotEmpty) {
+    if (_events.isNotEmpty && !_invalidateCache) {
       return _events;
     }
 
-    List<CourseActivity>? activities = await _courseRepository.getCoursesActivities(fromCacheOnly: true);
-
-    final fetchedCourseActivities = await _courseRepository.getCoursesActivities();
-
-    if (fetchedCourseActivities != null) {
-      activities = fetchedCourseActivities;
-      // Reload the list of activities
-      coursesActivities;
-
-      _courses = await _courseRepository.getCourses(fromCacheOnly: true);
-    }
-    final scheduleActivities = await _courseRepository.getScheduleActivities();
-    await _assignScheduleActivities(scheduleActivities);
-
-    _events = coursesActivities.map((key, value) => MapEntry(key, _calendarEventTile(value)));
-
-    // if (activities != null) {
-    //   _events = _coursesActivities[date.withoutTime]?.map((eventData) => _calendarEventTile(eventData)).toList() ?? [];
-    //   _events = activities!.map((eventData) => _calendarEventTile(eventData)).toList() ?? [];
-    // }
-
+    _invalidateCache = false;
+    _courses = await _courseRepository.getCourses(fromCacheOnly: true);
+    _events = (await coursesActivities).map((key, value) => MapEntry(key, _calendarEventTile(value)));
     return _events;
   }
 
   /// Return the list of all the courses activities arranged by date.
-  Map<DateTime, List<CourseActivity>> get coursesActivities {
+  Future<Map<DateTime, List<CourseActivity>>> get coursesActivities async {
+    List<CourseActivity> courseActivities = await _courseRepository.getCoursesActivities() ?? [];
     _coursesActivities = {};
+    for (final course in courseActivities) {
+      final DateTime date = course.startDateTime.withoutTime;
+      final String courseAcronym = course.courseGroup.split("-").first;
+      final isLabAorB = course.activityName == ActivityName.labA || course.activityName == ActivityName.labB;
 
-    // Build the map
-    if (_courseRepository.coursesActivities != null) {
-      for (final CourseActivity course in _courseRepository.coursesActivities!) {
-        final DateTime dateOnly = course.startDateTime.withoutTime;
+      // If user wants to display lab A or B only for the current course
+      final activitySelected = await _settingsManager.getDynamicString(
+        PreferencesFlag.scheduleLaboratoryGroup,
+        courseAcronym,
+      );
 
-        if (!_coursesActivities.containsKey(dateOnly)) {
-          _coursesActivities[dateOnly] = [];
-        }
-
-        _coursesActivities.update(dateOnly, (value) {
-          final scheduleActivitiesContainsGroup = _settingsScheduleActivities.containsKey(
-            course.courseGroup.split("-").first,
-          );
-
-          if (scheduleActivitiesContainsGroup && _scheduleActivityIsSelected(course) ||
-              !scheduleActivitiesContainsGroup) {
-            value.add(course);
-          }
-
-          return value;
-        }, ifAbsent: () => [course]);
+      if (isLabAorB &&
+          (activitySelected == ActivityCode.labGroupA && ActivityName.labA != course.activityName ||
+              activitySelected == ActivityCode.labGroupB && ActivityName.labB != course.activityName)) {
+        continue;
       }
+
+      // Populate the map
+      _coursesActivities.update(date, (v) {
+        v.add(course);
+        return v;
+      }, ifAbsent: () => [course]);
     }
 
     _coursesActivities.updateAll((key, value) {
       value.sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
-
       return value;
     });
 
     return _coursesActivities;
   }
 
-  Future _assignScheduleActivities(List<ScheduleActivity> listOfSchedules) async {
-    if (listOfSchedules.isEmpty ||
-        !listOfSchedules.any(
-          (element) => [ActivityCode.labGroupA, ActivityCode.labGroupB].contains(element.activityCode),
-        )) {
-      return;
-    }
-
-    _scheduleActivitiesByCourse.clear();
-    for (final activity in listOfSchedules) {
-      if (activity.activityCode == ActivityCode.labGroupA || activity.activityCode == ActivityCode.labGroupB) {
-        // Create the list with the new activity inside or add the activity to an existing group
-        if (!_scheduleActivitiesByCourse.containsKey(activity.courseAcronym)) {
-          _scheduleActivitiesByCourse[activity.courseAcronym] = [activity];
-        } else {
-          _scheduleActivitiesByCourse[activity.courseAcronym]?.add(activity);
-        }
-      }
-    }
-
-    await _loadSettingsScheduleActivities();
-  }
-
-  Future _loadSettingsScheduleActivities() async {
-    for (final courseAcronym in _scheduleActivitiesByCourse.keys) {
-      final String? activityCodeToUse = await _settingsManager.getDynamicString(
-        PreferencesFlag.scheduleLaboratoryGroup,
-        courseAcronym,
-      );
-      final scheduleActivityToSet = _scheduleActivitiesByCourse[courseAcronym]?.firstWhereOrNull(
-        (element) => element.activityCode == activityCodeToUse,
-      );
-      if (scheduleActivityToSet != null) {
-        _settingsScheduleActivities[courseAcronym] = scheduleActivityToSet.activityCode;
-      } else {
-        // All group selected
-        _settingsScheduleActivities.removeWhere((key, value) => key == courseAcronym);
-      }
-
-      coursesActivities;
-    }
-  }
-
-  bool _scheduleActivityIsSelected(CourseActivity course) {
-    if (course.activityName != ActivityName.labA && course.activityName != ActivityName.labB) {
-      return true;
-    }
-
-    final activityNameSelected = _settingsScheduleActivities[course.courseGroup.split("-").first];
-    return (activityNameSelected == ActivityCode.labGroupA && ActivityName.labA == course.activityName) ||
-        (activityNameSelected == ActivityCode.labGroupB && ActivityName.labB == course.activityName);
+  void invalidateCache() {
+    _invalidateCache = true;
   }
 
   Color _getCourseColor(String courseName) {

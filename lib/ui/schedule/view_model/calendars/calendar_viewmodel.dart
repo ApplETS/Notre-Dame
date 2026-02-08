@@ -28,7 +28,6 @@ abstract class CalendarViewModel extends FutureViewModel<Map<DateTime, List<Even
     return _events;
   }
 
-  @protected
   List<EventData> calendarEventsFromDate(DateTime date) {
     return _events[date.withoutTime] ?? [];
   }
@@ -36,6 +35,11 @@ abstract class CalendarViewModel extends FutureViewModel<Map<DateTime, List<Even
   bool returnToCurrentDate();
 
   void handleDateSelectedChanged(DateTime newDate);
+
+  Future<void> refreshEvents() async {
+    _scheduleService.invalidateCache();
+    _events = await _scheduleService.events;
+  }
 
   @override
   void onError(error, StackTrace? stackTrace) {

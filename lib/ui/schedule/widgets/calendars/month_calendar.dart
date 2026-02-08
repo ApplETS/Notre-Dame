@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/data/models/calendar_event_tile.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -15,12 +14,18 @@ import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 
-class MonthCalendar extends StatelessWidget {
-  final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
+class MonthCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
 
-  MonthCalendar({super.key, required this.controller});
+  const MonthCalendar({super.key, required this.controller});
+
+  @override
+  State<MonthCalendar> createState() => _MonthCalendarState();
+}
+
+class _MonthCalendarState extends State<MonthCalendar> {
+  final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +36,15 @@ class MonthCalendar extends StatelessWidget {
   }
 
   Widget _buildMonthView(BuildContext context, MonthViewModel model) {
-    controller.returnToToday = () {
+    widget.controller.returnToToday = () {
       model.returnToCurrentDate();
       monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
+    };
+
+    widget.controller.refreshEvents = () async {
+      // TODO figure out why this is not working like day or week view
+      await model.refreshEvents();
+      setState(() {});
     };
 
     return MonthView(
@@ -49,7 +60,7 @@ class MonthCalendar extends StatelessWidget {
         displayBorder: false,
         textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
         backgroundColor: context.theme.appColors.appBar,
-        weekDayStringBuilder: (p0) => weekTitles[p0],
+        weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
       ),
       headerStringBuilder: (date, {secondaryDate}) {
         final locale = AppIntl.of(context)!.localeName;
@@ -128,7 +139,7 @@ class MonthCalendar extends StatelessWidget {
                 Expanded(
                   child: DayCalendar(
                     listView: false,
-                    controller: controller,
+                    controller: widget.controller,
                     selectedDate: date,
                   ),
                 ),
