@@ -19,7 +19,7 @@ class EventData extends CalendarEventData {
   @override
   DateTime get endTime => super.endTime!;
 
-  String? calendarDescription(bool mutliline) {
+  String? calendarDescription(bool multiline) {
     if (locations == null) {
       return null;
     }
@@ -30,7 +30,7 @@ class EventData extends CalendarEventData {
 
     final courseLocation = locations!.contains("Non assign")
         ? "N/A"
-        : withoutBreakableSpaces.join(mutliline ? "\n" : ", ");
+        : withoutBreakableSpaces.join(multiline ? "\n" : ", ");
 
     final name = activityName?.replaceAll(" ", "\u{00A0}");
     return "$courseLocation\n$name";

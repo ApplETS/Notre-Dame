@@ -20,8 +20,6 @@ class WeekViewModel extends CalendarViewModel {
 
   bool _firstLoad = true;
 
-  final EventController eventController = EventController();
-
   WeekViewModel({required super.intl});
 
   @override

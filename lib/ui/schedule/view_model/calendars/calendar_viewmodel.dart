@@ -12,20 +12,21 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/data/services/schedule_service.dart';
 
-abstract class CalendarViewModel extends FutureViewModel<Map<DateTime, List<EventData>>> {
+abstract class CalendarViewModel extends FutureViewModel {
   @protected
   final AppIntl intl;
 
   final ScheduleService _scheduleService = locator<ScheduleService>();
+
+  final EventController eventController = EventController();
 
   Map<DateTime, List<EventData>> _events = {};
 
   CalendarViewModel({required this.intl});
 
   @override
-  Future<Map<DateTime, List<EventData>>> futureToRun() async {
+  Future<void> futureToRun() async {
     _events = await _scheduleService.events;
-    return _events;
   }
 
   List<EventData> calendarEventsFromDate(DateTime date) {
@@ -39,6 +40,7 @@ abstract class CalendarViewModel extends FutureViewModel<Map<DateTime, List<Even
   Future<void> refreshEvents() async {
     _scheduleService.invalidateCache();
     _events = await _scheduleService.events;
+    eventController.removeWhere((event) => true);
   }
 
   @override

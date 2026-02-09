@@ -9,7 +9,6 @@ import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.da
 
 class DayViewModel extends CalendarViewModel {
   DateTime daySelected = DateTime.now().withoutTime;
-  final EventController eventController = EventController();
 
   DayViewModel({required super.intl});
 

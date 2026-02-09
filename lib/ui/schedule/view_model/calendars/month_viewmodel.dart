@@ -9,7 +9,6 @@ import 'package:notredame/utils/utils.dart';
 
 class MonthViewModel extends CalendarViewModel {
   DateTime monthSelected = Utils.getFirstDayOfMonth(DateTime.now());
-  final EventController eventController = EventController();
 
   MonthViewModel({required super.intl});
 

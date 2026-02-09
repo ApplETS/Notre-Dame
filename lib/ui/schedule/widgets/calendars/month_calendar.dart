@@ -42,7 +42,6 @@ class _MonthCalendarState extends State<MonthCalendar> {
     };
 
     widget.controller.refreshEvents = () async {
-      // TODO figure out why this is not working like day or week view
       await model.refreshEvents();
       setState(() {});
     };
