@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/data/models/calendar_event_tile.dart';
+import 'package:notredame/data/models/event_data.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';

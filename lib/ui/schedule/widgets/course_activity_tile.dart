@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
-import '../../../data/models/calendar_event_tile.dart';
+import '../../../data/models/event_data.dart';
 
 class CourseActivityTile extends StatelessWidget {
   /// Course to display
