@@ -1546,7 +1546,7 @@ void main() {
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
       });
 
-      test("Replaced days are loaded from cache.", () async {
+      test("Replaced days are loaded from cache when fromCacheOnly is true.", () async {
         // Stub the cache to return 1 replaced day
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
@@ -1563,7 +1563,7 @@ void main() {
         verifyInOrder([cacheManagerMock.get(CourseRepository.replacedDaysCacheKey)]);
       });
 
-      test("Replaced days are only loaded from cache.", () async {
+      test("Replaced days are only loaded from cache when fromCacheOnly is true.", () async {
         // Stub the cache to return 1 replaced day
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
@@ -1580,7 +1580,7 @@ void main() {
         verifyNoMoreInteractions(userRepositoryMock);
       });
 
-      test("Trying to recover replaced days from cache but an exception is raised.", () async {
+      test("Falls back to API and retrieves sessions when cache throws exception.", () async {
         // Stub the cache to throw an exception
         CacheServiceMock.stubGetException(cacheManagerMock, CourseRepository.replacedDaysCacheKey);
 
@@ -1633,7 +1633,7 @@ void main() {
         verifyNoMoreInteractions(signetsApiMock);
       });
 
-      test("getSessions fails", () async {
+      test("Throws ApiException when getSessions fails during getReplacedDays", () async {
         // Stub SignetsApi to throw an exception
         reset(signetsApiMock);
         SignetsAPIClientMock.stubGetSessionsException(signetsApiMock);
@@ -1743,7 +1743,7 @@ void main() {
         ]);
       });
 
-      test("SignetsAPI raise a exception.", () async {
+      test("SignetsAPI raise an exception.", () async {
         // Stub the cache to return no replaced days
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode([]));
 

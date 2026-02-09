@@ -103,14 +103,6 @@ class CourseRepository {
         [];
   }
 
-  /// Return the upcoming sessions which means the sessions that the startDate hasn't already started.
-  List<Session> get upcomingSessions {
-    DateTime now = DateTime.now();
-    now = DateTime(now.year, now.month, now.day);
-
-    return _sessions?.where((session) => session.startDate.isAfter(now)).toList() ?? [];
-  }
-
   /// Get and update the list of courses activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheService]
   /// is updated with the latest version of the activities.

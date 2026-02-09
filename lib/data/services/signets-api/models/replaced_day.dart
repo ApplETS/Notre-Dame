@@ -9,7 +9,7 @@ class ReplacedDay {
   /// New date when classes will be held instead.
   final DateTime replacementDate;
 
-  /// Reason for the replacement (ex: "Action de grâces").
+  /// Reason for the replacement (ex: "Action de graces").
   final String description;
 
   ReplacedDay({required this.originalDate, required this.replacementDate, required this.description});
