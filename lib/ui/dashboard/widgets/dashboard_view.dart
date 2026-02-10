@@ -38,23 +38,14 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             onRefresh: () async {
               await model.loadDataAndUpdateWidget();
             },
-            child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Content positioned on top of the circle
-                  Stack(
-                    children: [
-                      /// Animated circle in the background
-                      _redCircle(model),
+            child: Stack(
+              children: [
+                /// Animated circle in the background
+                _redCircle(model),
 
-                      // TODO create layouts for all sizes and orientations
-                      _phoneVertical(context, model),
-                    ],
-                  ),
-                ],
-              ),
+                // TODO create layouts for all sizes and orientations
+                _phoneVertical(context, model),
+              ],
             ),
           ),
         );
@@ -124,15 +115,16 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             ],
           ),
         ),
-        const SizedBox(height: 6),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            children: [
-              ScheduleCard(events: model.scheduleEvents),
-              const SizedBox(height: 6),
-              GradesCard(courses: model.courses, loading: model.busy(model.courses))
-            ],
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 6, 12, 32),
+            child: Column(
+              spacing: 6,
+              children: [
+                Expanded(child: ScheduleCard(events: model.scheduleEvents)),
+                GradesCard(courses: model.courses, loading: model.busy(model.courses))
+              ],
+            ),
           ),
         )
 

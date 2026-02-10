@@ -39,22 +39,23 @@ class ScheduleCard extends StatelessWidget {
     }
     // TODO set end hour according to last event
 
-    return SizedBox(
-      height: 290,
-      child: WidgetComponent(
-        title: title,
-        child: Expanded(
-          child: DayCalendar(
-            listView: false,
-            controller: ScheduleController(),
-            selectedDate: date,
-            heightPerMinute: 254 / ((endHour - 7) * 60),
-            startHour: 8,
-            endHour: endHour,
-            backgroundColor: context.theme.appColors.dashboardCard,
-            scrollOffset: 0,
-            scrollPhysics: NeverScrollableScrollPhysics(),
-          ),
+    return WidgetComponent(
+      title: title,
+      child: Expanded(
+        child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+            return DayCalendar(
+              listView: false,
+              controller: ScheduleController(),
+              selectedDate: date,
+              heightPerMinute: constraints.maxHeight / ((endHour - 7) * 60),
+              startHour: 8,
+              endHour: endHour,
+              backgroundColor: context.theme.appColors.dashboardCard,
+              scrollOffset: 0,
+              scrollPhysics: NeverScrollableScrollPhysics(),
+            );
+          }
         ),
       ),
     );
