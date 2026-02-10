@@ -1,10 +1,11 @@
 // Package imports:
+import 'dart:math';
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 
 class DayViewModel extends CalendarViewModel {
@@ -39,5 +40,29 @@ class DayViewModel extends CalendarViewModel {
       events.addAll(calendarEventsFromDate(date));
     }
     return events;
+  }
+
+  int getStartHour() {
+    List<EventData> eventsFromDay = calendarEventsFromDate(daySelected);
+    int defaultStartHour = 8;
+
+    if (eventsFromDay.isEmpty) {
+      return defaultStartHour;
+    }
+
+    int firstEventHour = calendarEventsFromDate(daySelected).first.startTime.hour - 1;
+    return min(defaultStartHour, firstEventHour);
+  }
+
+  int getEndHour() {
+    List<EventData> eventsFromDay = calendarEventsFromDate(daySelected);
+    int defaultEndHour = 18;
+
+    if (eventsFromDay.isEmpty) {
+      return defaultEndHour;
+    }
+
+    int lastEventHour = calendarEventsFromDate(daySelected).last.endTime.hour + 1;
+    return max(defaultEndHour, lastEventHour);
   }
 }

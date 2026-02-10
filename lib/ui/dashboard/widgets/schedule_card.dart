@@ -30,29 +30,14 @@ class ScheduleCard extends StatelessWidget {
       date = tomorrowDate;
     }
 
-    int endHour = 18;
-
-    if (events.isNotEmpty && events.last.endDateTime.hour > 18) {
-      endHour = events.last.endDateTime.hour + 1;
-    }
-
     return WidgetComponent(
       title: title,
       child: Expanded(
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            return DayCalendar(
-              listView: false,
-              controller: ScheduleController(),
-              selectedDate: date,
-              heightPerMinute: constraints.maxHeight / ((endHour - 7) * 60),
-              startHour: 8,
-              endHour: endHour,
-              backgroundColor: context.theme.appColors.dashboardCard,
-              scrollOffset: 0,
-              scrollPhysics: NeverScrollableScrollPhysics(),
-            );
-          },
+        child: DayCalendar(
+          listView: false,
+          controller: ScheduleController(),
+          selectedDate: date,
+          backgroundColor: context.theme.appColors.dashboardCard,
         ),
       ),
     );

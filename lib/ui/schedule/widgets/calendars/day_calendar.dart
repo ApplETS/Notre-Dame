@@ -22,24 +22,14 @@ class DayCalendar extends StatefulWidget {
   final bool listView;
   final ScheduleController controller;
   final DateTime? selectedDate;
-  final double? heightPerMinute;
   final Color? backgroundColor;
-  final int startHour;
-  final int endHour;
-  final double? scrollOffset;
-  final ScrollPhysics scrollPhysics;
 
   const DayCalendar({
     super.key,
     required this.listView,
     required this.controller,
     this.selectedDate,
-    this.heightPerMinute,
     this.backgroundColor,
-    this.startHour = 0,
-    this.endHour = 24,
-    this.scrollOffset,
-    this.scrollPhysics = const AlwaysScrollableScrollPhysics()
   });
 
   @override
@@ -49,6 +39,7 @@ class DayCalendar extends StatefulWidget {
 class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin {
   late AnimationController _animationController;
   final GlobalKey<calendar_view.DayViewState> dayViewKey = GlobalKey<calendar_view.DayViewState>();
+  late final showEntireDay = widget.selectedDate == null;
 
   @override
   void initState() {
@@ -70,8 +61,9 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => model,
-      builder: (context, model, child) =>
-          Column(children: [widget.selectedDate == null ? _dayViewHeader(model) : const SizedBox(), _buildEvents(model)]),
+      builder: (context, model, child) => Column(
+        children: [widget.selectedDate == null ? _dayViewHeader(model) : const SizedBox(), _buildEvents(model)],
+      ),
     );
   }
 
@@ -94,51 +86,55 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   }
 
   Widget _buildCalendar(DayViewModel model) {
-    final double heightPerMinute = widget.heightPerMinute ?? (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     // Sets the initial day: widget.selectedDate is an external date from parent (nullable),
     // model.daySelected is the internal date managed by ViewModel (never null, defaults to today)
     if (widget.selectedDate != null) {
       model.handleDateSelectedChanged(widget.selectedDate!);
     }
     return Expanded(
-        child: calendar_view.DayView(
-          showVerticalLine: false,
-          dayTitleBuilder: calendar_view.DayHeader.hidden,
-          key: dayViewKey,
-          controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
-          onPageChange: (date, _) => ({
-            setState(() {
-              model.handleDateSelectedChanged(date);
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final double heightPerMinute = showEntireDay
+              ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
+              : constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60);
+          return calendar_view.DayView(
+            showVerticalLine: false,
+            dayTitleBuilder: calendar_view.DayHeader.hidden,
+            key: dayViewKey,
+            controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+            onPageChange: (date, _) => ({
+              setState(() {
+                model.handleDateSelectedChanged(date);
+              }),
             }),
-          }),
-          scrollPhysics: widget.scrollPhysics,
-          safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false),
-          backgroundColor: widget.backgroundColor ?? context.theme.scaffoldBackgroundColor,
-          initialDay: model.daySelected,
-          minDay: widget.selectedDate,
-          maxDay: widget.selectedDate,
-          startHour: widget.startHour,
-          endHour: widget.endHour,
-          hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
-          liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-            color: context.theme.textTheme.bodyMedium!.color!,
-          ),
-          heightPerMinute: heightPerMinute,
-          scrollOffset: widget.scrollOffset ?? heightPerMinute * 60 * 7.5,
-          keepScrollOffset: true,
-          dateStringBuilder: (date, {secondaryDate}) {
-            final locale = AppIntl.of(context)!.localeName;
-            return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
-          },
-          timeStringBuilder: (date, {secondaryDate}) {
-            return DateFormat('H:mm').format(date);
-          },
-          eventTileBuilder: (date, events, boundary, startDuration, endDuration) {
-            return _buildEventTile(events);
-          },
-        ),
-
-
+            scrollPhysics: showEntireDay ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
+            safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false),
+            backgroundColor: widget.backgroundColor ?? context.theme.scaffoldBackgroundColor,
+            initialDay: model.daySelected,
+            minDay: widget.selectedDate,
+            maxDay: widget.selectedDate,
+            startHour: showEntireDay ? 0 : model.getStartHour(),
+            endHour: showEntireDay ? 24 : model.getEndHour(),
+            hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
+            liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
+              color: context.theme.textTheme.bodyMedium!.color!,
+            ),
+            heightPerMinute: heightPerMinute,
+            scrollOffset: showEntireDay ? heightPerMinute * 60 * model.getStartHour() : 0,
+            keepScrollOffset: true,
+            dateStringBuilder: (date, {secondaryDate}) {
+              final locale = AppIntl.of(context)!.localeName;
+              return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
+            },
+            timeStringBuilder: (date, {secondaryDate}) {
+              return DateFormat('H:mm').format(date);
+            },
+            eventTileBuilder: (date, events, boundary, startDuration, endDuration) {
+              return _buildEventTile(events);
+            },
+          );
+        },
+      ),
     );
   }
 

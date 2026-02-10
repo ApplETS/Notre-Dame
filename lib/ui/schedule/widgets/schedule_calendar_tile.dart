@@ -29,7 +29,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
     final courseType = widget.event.activityName;
     final teacherName = widget.event.teacherName;
     final startTime = "${widget.event.startTime.hour}:${widget.event.startTime.minute.toString().padLeft(2, '0')}";
-    final endTime = DateFormat.Hm().format(widget.event.endTime.add(const Duration(minutes: 1)));
+    final endTime = DateFormat.Hm().format(widget.event.endTime);
 
     showDialog(
       context: context,

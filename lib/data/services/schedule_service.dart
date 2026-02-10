@@ -109,7 +109,7 @@ class ScheduleService {
           teacherName: associatedCourse?.teacherName,
           date: course.startDateTime,
           startTime: course.startDateTime,
-          endTime: course.endDateTime.subtract(const Duration(minutes: 1)),
+          endTime: course.endDateTime,
           color: _getCourseColor(course.courseGroup.split('-')[0]),
         ),
       );
