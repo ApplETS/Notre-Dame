@@ -41,7 +41,7 @@ class ScheduleService {
     }
 
     _invalidateCache = false;
-    _courses = await _courseRepository.getCourses(fromCacheOnly: true);
+    _courses = await _courseRepository.getCourses();
     _events = (await coursesActivities).map((key, value) => MapEntry(key, _calendarEventTile(value)));
     return _events;
   }
