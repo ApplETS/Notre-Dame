@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:intl/intl.dart';
-import 'package:notredame/ui/schedule/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -16,7 +16,7 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;
@@ -108,7 +108,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
               }),
             }),
             scrollPhysics: showEntireDay ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
-            safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false),
+            safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false,),
             backgroundColor: widget.backgroundColor ?? context.theme.scaffoldBackgroundColor,
             initialDay: model.daySelected,
             minDay: widget.selectedDate,
@@ -190,7 +190,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   Widget _buildEventTile(List<calendar_view.CalendarEventData> events) {
     if (events.isNotEmpty) {
-      return ScheduleCalendarTile(
+      return CalendarEventTile(
         padding: const EdgeInsets.all(6.0),
         buildContext: context,
         event: events[0] as EventData,
@@ -205,7 +205,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     return ListView.separated(
       physics: const ScrollPhysics(),
       shrinkWrap: true,
-      itemBuilder: (_, index) => CourseActivityTile(events[index] as EventData),
+      itemBuilder: (_, index) => ListViewEventTile(events[index] as EventData),
       separatorBuilder: (_, index) =>
           (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
       itemCount: events.length,

@@ -51,7 +51,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
       cellAspectRatio: 0.8,
       borderColor: context.theme.appColors.scheduleLine,
       controller: model.eventController..addAll(model.selectedMonthEvents()),
-      safeAreaOption: const SafeAreaOption(top: false, bottom: false),
+      safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
       onPageChange: (date, page) => model.handleDateSelectedChanged(date),
       weekDayBuilder: (int value) => WeekDayTile(

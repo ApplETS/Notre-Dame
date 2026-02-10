@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 
 class SessionSchedule extends StatefulWidget {
   final List<EventData> calendarEvents;
@@ -88,7 +88,7 @@ class _SessionScheduleState extends State<SessionSchedule> {
 
   Widget _buildEventTile(List<CalendarEventData> events, BuildContext context) {
     if (events.isNotEmpty) {
-      return ScheduleCalendarTile(
+      return CalendarEventTile(
         padding: const EdgeInsets.all(6.0),
         buildContext: context,
         event: events[0] as EventData,

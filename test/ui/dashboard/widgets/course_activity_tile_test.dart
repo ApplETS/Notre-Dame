@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/dashboard/widgets/listview_event_tile.dart';
 import '../../../helpers.dart';
 
 final CourseActivity course = CourseActivity(

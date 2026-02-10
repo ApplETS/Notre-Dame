@@ -12,18 +12,18 @@ import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-class ScheduleCalendarTile extends StatefulWidget {
+class CalendarEventTile extends StatefulWidget {
   final EventData event;
   final BuildContext buildContext;
   final EdgeInsets? padding;
 
-  const ScheduleCalendarTile({super.key, required this.buildContext, required this.event, this.padding});
+  const CalendarEventTile({super.key, required this.buildContext, required this.event, this.padding});
 
   @override
-  State<ScheduleCalendarTile> createState() => _ScheduleCalendarTileState();
+  State<CalendarEventTile> createState() => _CalendarEventTileState();
 }
 
-class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
+class _CalendarEventTileState extends State<CalendarEventTile> {
   void _showTileInfo() {
     final courseLocation = widget.event.locations?.join(", ");
     final courseType = widget.event.activityName;

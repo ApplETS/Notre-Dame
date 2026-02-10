@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/ui/schedule/widgets/calendar_event_tile.dart';
 import '../../../helpers.dart';
 
 void main() {
@@ -23,7 +23,7 @@ void main() {
         home: localizedWidget(
           child: Builder(
             builder: (context) {
-              return ScheduleCalendarTile(
+              return CalendarEventTile(
                 buildContext: context,
                 title: 'Test Title',
                 description: 'Math101-Algebra;Room 101;Lecture;John Doe',
@@ -51,7 +51,7 @@ void main() {
           home: localizedWidget(
             child: Builder(
               builder: (context) {
-                return ScheduleCalendarTile(
+                return CalendarEventTile(
                   buildContext: context,
                   title: 'Test Title',
                   description: 'Math101-Algebra;Room 101;Lecture;John Doe',
@@ -68,7 +68,7 @@ void main() {
     );
 
     // Tap the tile.
-    await tester.tap(find.byType(ScheduleCalendarTile));
+    await tester.tap(find.byType(CalendarEventTile));
     await tester.pumpAndSettle();
 
     // The dialog title should display the course name and location.
@@ -91,7 +91,7 @@ void main() {
       localizedWidget(
         child: Builder(
           builder: (context) {
-            return ScheduleCalendarTile(
+            return CalendarEventTile(
               buildContext: context,
               title: 'PHY335',
               cardDescription: 'D-2020\nLabo A',
@@ -107,7 +107,7 @@ void main() {
     );
 
     // Tap the tile.
-    await tester.tap(find.byType(ScheduleCalendarTile));
+    await tester.tap(find.byType(CalendarEventTile));
     await tester.pumpAndSettle();
 
     expect(find.textContaining('N/A'), findsOneWidget);
@@ -123,7 +123,7 @@ void main() {
       localizedWidget(
         child: Builder(
           builder: (context) {
-            return ScheduleCalendarTile(
+            return CalendarEventTile(
               buildContext: context,
               title: 'Test Title',
               description: 'History101-History;Room 201;Seminar;null',
@@ -138,7 +138,7 @@ void main() {
     );
 
     // Tap the tile.
-    await tester.tap(find.byType(ScheduleCalendarTile));
+    await tester.tap(find.byType(CalendarEventTile));
     await tester.pumpAndSettle();
 
     // Verify that no teacher info (i.e. text containing the word "by") is displayed.

@@ -16,10 +16,10 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
+import 'package:notredame/ui/dashboard/widgets/listview_event_tile.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/ui/schedule/widgets/calendar_event_tile.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../helpers.dart';
@@ -143,7 +143,7 @@ void main() {
           await tester.pumpAndSettle();
         });
 
-        expect(find.byType(ScheduleCalendarTile), findsExactly(2));
+        expect(find.byType(CalendarEventTile), findsExactly(2));
       });
     });
 

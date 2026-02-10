@@ -6,17 +6,17 @@ import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
-import '../../../data/models/event_data.dart';
+import '../../../../data/models/event_data.dart';
 
-class CourseActivityTile extends StatelessWidget {
+class ListViewEventTile extends StatelessWidget {
   /// Course to display
   final EventData event;
 
   DateFormat get timeFormat => DateFormat.Hm();
 
-  /// Display an [event] with the start and end time of the activity,
+  /// Display an [tiles] with the start and end time of the activity,
   /// it name, shortname, type of activity and local.
-  const CourseActivityTile(this.event, {super.key});
+  const ListViewEventTile(this.event, {super.key});
 
   @override
   Widget build(BuildContext context) => Padding(

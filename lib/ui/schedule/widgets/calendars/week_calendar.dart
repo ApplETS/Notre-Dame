@@ -12,7 +12,7 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 
 bool isAnimating = false;
 
@@ -67,7 +67,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
       }),
       backgroundColor: context.theme.scaffoldBackgroundColor,
       weekTitleHeight: (MediaQuery.of(context).orientation == Orientation.portrait) ? 60 : 35,
-      safeAreaOption: const SafeAreaOption(top: false, bottom: false),
+      safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: context.theme.appColors.appBar),
         leftIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
@@ -135,7 +135,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
 
   Widget _buildEventTile(List<CalendarEventData> events, BuildContext context) {
     if (events.isNotEmpty) {
-      return ScheduleCalendarTile(
+      return CalendarEventTile(
         padding: const EdgeInsets.all(6.0),
         buildContext: context,
         event: events[0] as EventData,
