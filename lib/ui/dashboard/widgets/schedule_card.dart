@@ -15,18 +15,16 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class ScheduleCard extends StatelessWidget {
-  final SettingsRepository _settingsRepository = locator<SettingsRepository>();
-
   final List<CourseActivity> events;
 
-  ScheduleCard({super.key, required this.events});
+  const ScheduleCard({super.key, required this.events});
 
   @override
   Widget build(BuildContext context) {
     var title = AppIntl.of(context)!.title_schedule;
-    var date = _settingsRepository.dateTimeNow;
+    var date = DateTime.now();
 
-    var tomorrowDate = _settingsRepository.dateTimeNow.add(Duration(days: 1)).withoutTime;
+    var tomorrowDate = date.add(Duration(days: 1)).withoutTime;
     if (events.isNotEmpty && events.first.startDateTime.withoutTime == tomorrowDate) {
       title += AppIntl.of(context)!.card_schedule_tomorrow;
       date = tomorrowDate;
@@ -37,13 +35,12 @@ class ScheduleCard extends StatelessWidget {
     if (events.isNotEmpty && events.last.endDateTime.hour > 18) {
       endHour = events.last.endDateTime.hour + 1;
     }
-    // TODO set end hour according to last event
 
     return WidgetComponent(
       title: title,
       child: Expanded(
         child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
+          builder: (BuildContext context, BoxConstraints constraints) {
             return DayCalendar(
               listView: false,
               controller: ScheduleController(),
@@ -55,7 +52,7 @@ class ScheduleCard extends StatelessWidget {
               scrollOffset: 0,
               scrollPhysics: NeverScrollableScrollPhysics(),
             );
-          }
+          },
         ),
       ),
     );
