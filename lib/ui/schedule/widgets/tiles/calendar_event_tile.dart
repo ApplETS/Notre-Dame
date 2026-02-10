@@ -102,7 +102,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
             return Card(
               color: widget.event.color,
               clipBehavior: Clip.hardEdge,
-              margin: EdgeInsets.all(3),
+              margin: EdgeInsets.all(3.0),
               child: InkWell(
                 onTap: _showTileInfo,
                 child: Center(
@@ -124,7 +124,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
           return Card(
             color: widget.event.color,
             clipBehavior: Clip.hardEdge,
-            margin: EdgeInsets.all(3),
+            margin: EdgeInsets.all(3.0),
             child: InkWell(
               onTap: _showTileInfo,
               child: Flex(
@@ -137,13 +137,13 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                       decoration: BoxDecoration(color: const Color.fromRGBO(0, 0, 0, 0.2)),
                       child: Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 6.0),
                           child: AutoSizeText(
                             widget.event.courseAcronym,
                             minFontSize: 8,
                             maxLines: 1,
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white),
+                            style: TextStyle(fontWeight: FontWeight.bold, color: AppPalette.grey.white, height: 1),
                           ),
                         ),
                       ),
