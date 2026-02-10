@@ -19,6 +19,7 @@ class EventData extends CalendarEventData {
   @override
   DateTime get endTime => super.endTime!;
 
+  // Unfortunately AutoSizeText can't put line breaks in the right places, hence the need for the multiline hack
   String? calendarDescription(bool multiline) {
     if (locations == null) {
       return null;

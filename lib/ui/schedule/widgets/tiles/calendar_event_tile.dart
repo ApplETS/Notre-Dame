@@ -91,8 +91,10 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
           final width = constraints.maxWidth;
           final height = constraints.maxHeight;
           final aspectRatio = width / height;
+          // If the card is 4 times wider than tall and is smaller than 60 in height
           final wideLayout = aspectRatio > 4 || height < 60;
-          final isSmall = (width < 80 && height < 80) || width < 40 || height < 40;
+          // If both dimensions are smaller than 80 or a dimension is smaller than 40
+          final isSmall = max(width, height) < 80 || min(width, height) < 40;
 
           final description = widget.event.calendarDescription(!wideLayout);
 
