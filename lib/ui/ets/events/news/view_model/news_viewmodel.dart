@@ -11,36 +11,38 @@ class NewsViewModel extends BaseViewModel implements Initialisable {
   /// Load the events
   final NewsRepository _newsRepository = locator<NewsRepository>();
 
-  final PagingController<int, News> pagingController = PagingController(firstPageKey: 1);
+  late final PagingController<int, News> pagingController;
 
-  bool isLoadingEvents = false;
   String title = "";
 
   @override
   void initialise() {
-    // This will be called when init state cycle runs
-    pagingController.addPageRequestListener((pageKey) {
-      fetchPage(pageKey);
-    });
+    pagingController = PagingController<int, News>(
+      getNextPageKey: (state) {
+        // Stop pagination if last fetched page was empty
+        if (state.lastPageIsEmpty) return null;
+
+        // Pages are 1-based
+        return state.nextIntPageKey;
+      },
+      fetchPage: fetchPage,
+    );
   }
 
-  Future<void> fetchPage(int pageNumber) async {
-    try {
-      final pagination = await _newsRepository.getNews(pageNumber: pageNumber, title: title != "" ? title : null);
-      final isLastPage = pagination?.totalPages == pageNumber;
-      if (isLastPage) {
-        pagingController.appendLastPage(pagination?.news ?? []);
-      } else {
-        final nextPageKey = pageNumber + 1;
-        pagingController.appendPage(pagination?.news ?? [], nextPageKey);
-      }
-    } catch (error) {
-      pagingController.error = error;
-    }
+  Future<List<News>> fetchPage(int pageNumber) async {
+    final pagination = await _newsRepository.getNews(pageNumber: pageNumber, title: title.isNotEmpty ? title : null);
+
+    return pagination?.news ?? [];
   }
 
   void searchNews(String title) {
     this.title = title;
     pagingController.refresh();
+  }
+
+  @override
+  void dispose() {
+    pagingController.dispose();
+    super.dispose();
   }
 }

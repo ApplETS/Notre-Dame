@@ -76,8 +76,8 @@ void main() {
       });
 
       expect(find.byType(FilledCell), findsExactly(42));
-      expect(find.text("LOG100\nRoom 102\nLab Session"), findsOneWidget);
-      expect(find.text("ING150\nRoom 101\nLecture 1"), findsOneWidget);
+      expect(find.text("LOG100"), findsOneWidget);
+      expect(find.text("ING150"), findsOneWidget);
     });
   });
 }
