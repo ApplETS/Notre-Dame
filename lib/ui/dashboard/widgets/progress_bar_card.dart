@@ -2,6 +2,7 @@
 import 'dart:math';
 
 // Flutter imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -26,8 +27,6 @@ class ProgressBarCard extends StatefulWidget {
 class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-
-  final TextStyle smallTextStyle = TextStyle(fontSize: 18, height: 1);
 
   @override
   void initState() {
@@ -73,31 +72,28 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
+                spacing: 12.0,
                 children: [
                   Expanded(
                     child: LayoutBuilder(
                       builder: (BuildContext context, BoxConstraints constraints) {
-                        final textPainter = TextPainter(
-                          text: TextSpan(text: AppIntl.of(context)!.progress_bar, style: smallTextStyle),
-                          textDirection: TextDirection.ltr,
-                        )..layout();
-                        double size = constraints.maxWidth - textPainter.height - 12;
-                        return Transform.translate(
-                          offset: const Offset(0, -12),
-                          child: Transform.scale(
-                            scale: size / 100,
-                            alignment: Alignment.bottomRight,
-                            child: AnimatedBuilder(
-                              animation: _animation,
-                              builder: (context, child) => _progress(_animation.value),
-                            ),
+                        double size = constraints.maxHeight;
+                        return Transform.scale(
+                          scale: size / 100,
+                          alignment: Alignment.centerRight,
+                          child: AnimatedBuilder(
+                            animation: _animation,
+                            builder: (context, child) => _progress(_animation.value),
                           ),
                         );
                       },
                     ),
                   ),
-                  // This overflows
-                  Text(AppIntl.of(context)!.progress_bar, style: smallTextStyle),
+                  AutoSizeText(
+                    AppIntl.of(context)!.progress_bar,
+                    style: TextStyle(fontSize: 18, height: 1),
+                    maxLines: 1,
+                  ),
                 ],
               )
             : Expanded(child: Center(child: Text(AppIntl.of(context)!.session_without))),
