@@ -32,6 +32,7 @@ class DynamicMessagesService {
       return LongWeekendIncomingMessage();
     }
 
+    // TODO: If not a lot of courses during week, wait until actual weekend to display message
     if (context.weeksCompleted == 1) {
       if (context.isAfterLastCourseOfWeek) {
         return FirstWeekCompletedMessage();
