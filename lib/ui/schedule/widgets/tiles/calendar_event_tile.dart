@@ -29,8 +29,8 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
     final courseLocation = widget.event.locations?.join(", ");
     final courseType = widget.event.activityName;
     final teacherName = widget.event.teacherName;
-    final startTime = DateFormat.Hm().format(widget.event.startTime);
-    final endTime = DateFormat.Hm().format(widget.event.endTime);
+    final startTime = "${widget.event.startTime.hour}:${widget.event.startTime.minute.toString().padLeft(2, '0')}";
+    final endTime = "${widget.event.endTime.hour}:${widget.event.endTime.minute.toString().padLeft(2, '0')}";
 
     showModalBottomSheet(
       context: context,

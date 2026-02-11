@@ -20,7 +20,7 @@ class ScheduleCard extends StatelessWidget {
     String title = AppIntl.of(context)!.title_schedule;
 
     return ViewModelBuilder<ScheduleCardViewmodel>.reactive(
-      viewModelBuilder: () => ScheduleCardViewmodel(),
+      viewModelBuilder: () => ScheduleCardViewmodel(intl: AppIntl.of(context)!),
       builder: (context, model, child) {
         if (model.tomorrow) {
           title += AppIntl.of(context)!.card_schedule_tomorrow;

@@ -56,7 +56,7 @@ class SessionScheduleViewModel extends FutureViewModel<List<EventData>> {
       targetDate.day,
       eventData.endTime.hour,
       eventData.endTime.minute,
-    ).subtract(const Duration(minutes: 1));
+    );
 
     return EventData(
       courseAcronym: eventData.courseAcronym,

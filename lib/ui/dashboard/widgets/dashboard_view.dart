@@ -12,7 +12,7 @@ import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
-import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -22,6 +22,12 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> with SingleTickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    DashboardViewModel.launchInAppReview();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(

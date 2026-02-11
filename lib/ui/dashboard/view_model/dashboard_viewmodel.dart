@@ -17,6 +17,10 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
+import '../../../data/services/in_app_review_service.dart';
+import '../../../data/services/preferences_service.dart';
+import '../../../domain/constants/preferences_flags.dart';
+
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
   static const String abandonedGradeCode = "XX";
@@ -51,6 +55,35 @@ class DashboardViewModel extends FutureViewModel {
 
   List<int> get sessionDays => _sessionDays;
 
+  static Future<bool> launchInAppReview() async {
+    final PreferencesService preferencesService = locator<PreferencesService>();
+    final InAppReviewService inAppReviewService = locator<InAppReviewService>();
+
+    DateTime? ratingTimerFlagDate = await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+
+    final hasRatingBeenRequested = await preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
+
+    // If the user is already logged in while doing the update containing the In_App_Review PR.
+    if (ratingTimerFlagDate == null) {
+      final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
+      preferencesService.setDateTime(PreferencesFlag.ratingTimer, sevenDaysLater);
+      ratingTimerFlagDate = sevenDaysLater;
+    }
+
+    if (await inAppReviewService.isAvailable() &&
+        !hasRatingBeenRequested &&
+        DateTime.now().isAfter(ratingTimerFlagDate)) {
+      await Future.delayed(const Duration(seconds: 2), () async {
+        await inAppReviewService.requestReview();
+        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
+      });
+
+      return true;
+    }
+    return false;
+  }
+
+
   /// Return session progress based on today's [date]
   double getSessionProgress() {
     if (_courseRepository.activeSessions.isEmpty) {
@@ -66,7 +99,6 @@ class DashboardViewModel extends FutureViewModel {
   /// Tracks if the animation should be played
   final bool shouldPlayAnimation;
 
-  /// TODO : add AppIntl to the messages
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
 
