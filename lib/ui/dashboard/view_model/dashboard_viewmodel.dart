@@ -209,7 +209,7 @@ class DashboardViewModel extends FutureViewModel {
     await loadDataAndUpdateWidget();
   }
 
-  Future loadDataAndUpdateWidget() async {
+  Future loadDataAndUpdateWidget({bool forceRefresh = false}) async {
     await Future.wait([
       futureToRunBroadcast(),
       futureToRunGrades(),
@@ -217,11 +217,11 @@ class DashboardViewModel extends FutureViewModel {
       futureToRunSchedule(),
     ]);
     // Load dynamic message after session data is available
-    await loadDynamicMessage();
+    await loadDynamicMessage(forceRefresh: forceRefresh);
   }
 
   /// Load the dynamic message based on session context
-  Future<void> loadDynamicMessage() async {
+  Future<void> loadDynamicMessage({bool forceRefresh = false}) async {
     if (_courseRepository.activeSessions.isEmpty) {
       dynamicMessageText = null;
       return;
@@ -229,7 +229,7 @@ class DashboardViewModel extends FutureViewModel {
 
     final session = _courseRepository.activeSessions.first;
     final activities = _courseRepository.coursesActivities ?? [];
-    await _courseRepository.getReplacedDays();
+    await _courseRepository.getReplacedDays(forceRefresh: forceRefresh);
     final replacedDays = _courseRepository.replacedDays ?? [];
     final now = _settingsManager.dateTimeNow;
 

@@ -11,6 +11,7 @@ import 'package:logger/logger.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/course_review.dart';
@@ -20,6 +21,7 @@ import 'package:notredame/data/services/signets-api/models/schedule_activity.dar
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/semester_codes.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/utils/api_exception.dart';
@@ -28,6 +30,9 @@ import 'package:notredame/utils/cache_exception.dart';
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {
   static const String tag = "CourseRepository";
+
+  /// Cache duration for replaced days
+  static const Duration replacedDaysCacheDuration = Duration(days: 7);
 
   @visibleForTesting
   static const String coursesActivitiesCacheKey = "coursesActivitiesCache";
@@ -60,6 +65,9 @@ class CourseRepository {
 
   /// Used to access the Signets API
   final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
+
+  /// Used to access preferences for cache timestamps
+  final PreferencesService _preferencesService = locator<PreferencesService>();
 
   /// Student list of courses
   List<Course>? _courses;
@@ -476,10 +484,12 @@ class CourseRepository {
     return course;
   }
 
-  /// Get and update the list of replaced days for the active sessions.
-  /// After fetching the replaced days from the [SignetsApi] the [CacheService]
-  /// is updated with the latest version of the replaced days.
-  Future<List<ReplacedDay>?> getReplacedDays({bool fromCacheOnly = false}) async {
+  /// [fromCacheOnly] - If true, only returns cached data without API call.
+  /// [forceRefresh] - If true, bypasses cache validity check and fetches from API.
+  Future<List<ReplacedDay>?> getReplacedDays({
+    bool fromCacheOnly = false,
+    bool forceRefresh = false,
+  }) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       fromCacheOnly = true;
@@ -500,6 +510,12 @@ class CourseRepository {
     }
 
     if (fromCacheOnly) {
+      return _replacedDays;
+    }
+
+    // Check if cache is still valid (time-wise)
+    if (!forceRefresh && await _isReplacedDaysCacheValid()) {
+      _logger.d("$tag - getReplacedDays: using cached data (still valid)");
       return _replacedDays;
     }
 
@@ -540,12 +556,23 @@ class CourseRepository {
     try {
       // Update cache
       _cacheManager.update(replacedDaysCacheKey, jsonEncode(_replacedDays));
+      // Update cache timestamp
+      await _preferencesService.setDateTime(
+          PreferencesFlag.replacedDaysCacheTimestamp, DateTime.now());
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e("$tag - getReplacedDays: exception raised while trying to update the cache.");
     }
 
     return _replacedDays;
+  }
+
+  /// Checks if the replaced days cache is still valid based on time.
+  Future<bool> _isReplacedDaysCacheValid() async {
+    final DateTime? lastFetch = await _preferencesService.getDateTime(
+        PreferencesFlag.replacedDaysCacheTimestamp);
+    if (lastFetch == null) return false;
+    return DateTime.now().isBefore(lastFetch.add(replacedDaysCacheDuration));
   }
 
   /// Retrieve the evaluation filtered by sessions.

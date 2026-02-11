@@ -12,6 +12,7 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
@@ -21,12 +22,14 @@ import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/utils/api_exception.dart';
 import '../../helpers.dart';
 import '../mocks/repositories/user_repository_mock.dart';
 import '../mocks/services/analytics_service_mock.dart';
 import '../mocks/services/cache_service_mock.dart';
 import '../mocks/services/networking_service_mock.dart';
+import '../mocks/services/preferences_service_mock.dart';
 import '../mocks/services/signets_api_mock.dart';
 
 void main() {
@@ -35,6 +38,7 @@ void main() {
   late UserRepositoryMock userRepositoryMock;
   late CacheServiceMock cacheManagerMock;
   late SignetsAPIClientMock signetsApiMock;
+  late PreferencesServiceMock preferencesServiceMock;
 
   late CourseRepository manager;
 
@@ -62,6 +66,7 @@ void main() {
       userRepositoryMock = setupUserRepositoryMock();
       cacheManagerMock = setupCacheManagerMock();
       networkingServiceMock = setupNetworkingServiceMock();
+      preferencesServiceMock = setupPreferencesServiceMock();
       setupLogger();
 
       manager = CourseRepository();
@@ -78,6 +83,8 @@ void main() {
       unregister<CacheService>();
       clearInteractions(networkingServiceMock);
       unregister<NetworkingServiceMock>();
+      clearInteractions(preferencesServiceMock);
+      unregister<PreferencesService>();
     });
 
     group("getCoursesActivities - ", () {
@@ -1801,6 +1808,125 @@ void main() {
 
         final replacedDaysCache = await manager.getReplacedDays();
         expect(replacedDaysCache, replacedDays);
+      });
+
+      group("Time-based caching - ", () {
+        test("Returns cached data when cache is still valid (no API call)", () async {
+          // Stub the cache to return replaced days
+          CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+          // Stub the timestamp to be recent (within cache duration)
+          PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock,
+            PreferencesFlag.replacedDaysCacheTimestamp,
+            toReturn: DateTime.now().subtract(const Duration(days: 1)),
+          );
+
+          expect(manager.replacedDays, isNull);
+          final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+          expect(results, isInstanceOf<List<ReplacedDay>>());
+          expect(results, replacedDays);
+          expect(manager.replacedDays, replacedDays);
+
+          // Verify no API call was made (only checked for sessions, not replaced days)
+          verifyNever(signetsApiMock.getReplacedDays(session: session.shortName));
+        });
+
+        test("Fetches from API when cache is expired", () async {
+          // Stub the cache to return replaced days
+          CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+          // Stub the timestamp to be expired (older than cache duration)
+          PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock,
+            PreferencesFlag.replacedDaysCacheTimestamp,
+            toReturn: DateTime.now().subtract(const Duration(days: 8)),
+          );
+
+          // Stub the SignetsAPI to return the same replaced days
+          SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+
+          expect(manager.replacedDays, isNull);
+          final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+          expect(results, isInstanceOf<List<ReplacedDay>>());
+          expect(results, replacedDays);
+
+          // Verify API call was made
+          verify(signetsApiMock.getReplacedDays(session: session.shortName)).called(1);
+        });
+
+        test("Fetches from API when forceRefresh is true", () async {
+          // Stub the cache to return replaced days
+          CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+          // Stub the timestamp to be recent (within cache duration)
+          PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock,
+            PreferencesFlag.replacedDaysCacheTimestamp,
+            toReturn: DateTime.now().subtract(const Duration(days: 1)),
+          );
+
+          // Stub the SignetsAPI to return the same replaced days
+          SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+
+          expect(manager.replacedDays, isNull);
+          final List<ReplacedDay>? results = await manager.getReplacedDays(forceRefresh: true);
+
+          expect(results, isInstanceOf<List<ReplacedDay>>());
+          expect(results, replacedDays);
+
+          // Verify API call was made despite valid cache
+          verify(signetsApiMock.getReplacedDays(session: session.shortName)).called(1);
+        });
+
+        test("Fetches from API when no timestamp exists", () async {
+          // Stub the cache to return replaced days
+          CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+          // Stub the timestamp to be null (no previous fetch)
+          PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock,
+            PreferencesFlag.replacedDaysCacheTimestamp,
+            toReturn: null,
+          );
+
+          // Stub the SignetsAPI to return the same replaced days
+          SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+
+          expect(manager.replacedDays, isNull);
+          final List<ReplacedDay>? results = await manager.getReplacedDays();
+
+          expect(results, isInstanceOf<List<ReplacedDay>>());
+          expect(results, replacedDays);
+
+          // Verify API call was made
+          verify(signetsApiMock.getReplacedDays(session: session.shortName)).called(1);
+        });
+
+        test("Updates cache timestamp after successful API fetch", () async {
+          // Stub the cache to return replaced days
+          CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
+
+          // Stub the timestamp to be null (no previous fetch)
+          PreferencesServiceMock.stubGetDateTime(
+            preferencesServiceMock,
+            PreferencesFlag.replacedDaysCacheTimestamp,
+            toReturn: null,
+          );
+
+          // Stub the SignetsAPI to return the same replaced days
+          SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+
+          await manager.getReplacedDays();
+
+          // Verify cache timestamp was updated
+          verify(preferencesServiceMock.setDateTime(
+            PreferencesFlag.replacedDaysCacheTimestamp,
+            any,
+          )).called(1);
+        });
       });
     });
   });

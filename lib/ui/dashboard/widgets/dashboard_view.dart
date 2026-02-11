@@ -36,7 +36,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
         return BaseScaffold(
           body: RefreshIndicator(
             onRefresh: () async {
-              await model.loadDataAndUpdateWidget();
+              await model.loadDataAndUpdateWidget(forceRefresh: true);
             },
             child: Theme(
               data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
