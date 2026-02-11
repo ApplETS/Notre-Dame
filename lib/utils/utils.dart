@@ -46,30 +46,6 @@ mixin Utils {
     return AppIntl.of(context)!.grades_grade_with_percentage(double.parse(formattedResult), maxGrade, percentage);
   }
 
-  static String getOrdinal(int number, String languageCode) {
-    if (languageCode == 'en') {
-      if (number % 100 >= 11 && number % 100 <= 13) {
-        return '${number}th';
-      }
-      switch (number % 10) {
-        case 1:
-          return '${number}st';
-        case 2:
-          return '${number}nd';
-        case 3:
-          return '${number}rd';
-        default:
-          return '${number}th';
-      }
-    } else {
-      if (number == 1) {
-        return '${number}re';
-      } else {
-        return '${number}e';
-      }
-    }
-  }
-
   static DateTime dateOnly(DateTime date) => DateTime.utc(date.year, date.month, date.day);
 
   static DateTime startOfWeek(DateTime date) {
