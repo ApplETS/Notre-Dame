@@ -65,11 +65,11 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                     ),
                   ),
                 ),
-
                 Container(
                   margin: EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 24.0,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +91,6 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                             ),
                         ],
                       ),
-
                       Align(
                         alignment: Alignment.centerRight,
                         child: ElevatedButton.icon(
