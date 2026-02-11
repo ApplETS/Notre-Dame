@@ -22,8 +22,18 @@ import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
 class DayCalendar extends StatefulWidget {
   final bool listView;
   final ScheduleController controller;
+  final List<calendar_view.CalendarEventData<Object?>>? events;
+  final DateTime? selectedDate;
+  final bool skipRepositoryLoad;
 
-  const DayCalendar({super.key, required this.listView, required this.controller});
+  const DayCalendar({
+    super.key,
+    required this.listView,
+    required this.controller,
+    this.events,
+    this.selectedDate,
+    this.skipRepositoryLoad = false,
+  });
 
   @override
   State<DayCalendar> createState() => _DayCalendarState();
@@ -49,11 +59,12 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!);
+    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!, skipRepositoryLoad: widget.skipRepositoryLoad);
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => model,
-      builder: (context, model, child) => Column(children: [_dayViewHeader(model), _buildEvents(model)]),
+      builder: (context, model, child) =>
+          Column(children: [widget.events == null ? _dayViewHeader(model) : const SizedBox(), _buildEvents(model)]),
     );
   }
 
@@ -72,20 +83,25 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   Widget _buildCalendar(DayViewModel model) {
     final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
+    // Sets the initial day: widget.selectedDate is an external date from parent (nullable),
+    // model.daySelected is the internal date managed by ViewModel (never null, defaults to today)
+    final DateTime initialDay = widget.selectedDate ?? model.daySelected;
 
     return Expanded(
       child: calendar_view.DayView(
         showVerticalLine: false,
         dayTitleBuilder: calendar_view.DayHeader.hidden,
         key: dayViewKey,
-        controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+        controller: model.eventController..addAll(widget.events ?? model.selectedDayCalendarEvents()),
         onPageChange: (date, _) => ({
           setState(() {
             model.handleDateSelectedChanged(date);
           }),
         }),
         backgroundColor: context.theme.scaffoldBackgroundColor,
-        initialDay: model.daySelected,
+        initialDay: initialDay,
+        minDay: widget.selectedDate,
+        maxDay: widget.selectedDate,
         hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
         liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
           color: context.theme.textTheme.bodyMedium!.color!,
@@ -204,7 +220,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           titleCentered: true,
           formatButtonVisible: false,
         ),
-        eventLoader: model.calendarEventsFromDate,
+        eventLoader: widget.events != null ? null : model.calendarEventsFromDate,
         calendarFormat: CalendarFormat.week,
         focusedDay: model.daySelected,
         calendarBuilders: CalendarBuilders(
