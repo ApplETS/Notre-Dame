@@ -2,25 +2,18 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
-import 'package:collection/collection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
@@ -42,9 +35,6 @@ class DashboardViewModel extends FutureViewModel {
   /// Getter for the animation controller
   AnimationController get controller => _controller!;
 
-  /// Check if the controller is initialized
-  bool get _isControllerInitialized => _controller != null;
-
   /// Localization class of the application.
   final AppIntl _appIntl;
 
@@ -60,14 +50,6 @@ class DashboardViewModel extends FutureViewModel {
   double get progress => _progress;
 
   List<int> get sessionDays => _sessionDays;
-
-  /// Activities for today
-  final List<CourseActivity> _scheduleEvents = [];
-
-  /// Get the list of activities for today
-  List<CourseActivity> get scheduleEvents {
-    return _scheduleEvents;
-  }
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -132,38 +114,10 @@ class DashboardViewModel extends FutureViewModel {
   @override
   void dispose() {
     // Dispose the controller only if it has been initialized and its not null
-    if (_isControllerInitialized) {
+    if (_controller != null) {
       _controller!.dispose();
     }
     super.dispose();
-  }
-
-  static Future<bool> launchInAppReview() async {
-    final PreferencesService preferencesService = locator<PreferencesService>();
-    final InAppReviewService inAppReviewService = locator<InAppReviewService>();
-
-    DateTime? ratingTimerFlagDate = await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
-
-    final hasRatingBeenRequested = await preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
-
-    // If the user is already logged in while doing the update containing the In_App_Review PR.
-    if (ratingTimerFlagDate == null) {
-      final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
-      preferencesService.setDateTime(PreferencesFlag.ratingTimer, sevenDaysLater);
-      ratingTimerFlagDate = sevenDaysLater;
-    }
-
-    if (await inAppReviewService.isAvailable() &&
-        !hasRatingBeenRequested &&
-        DateTime.now().isAfter(ratingTimerFlagDate)) {
-      await Future.delayed(const Duration(seconds: 2), () async {
-        await inAppReviewService.requestReview();
-        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
-      });
-
-      return true;
-    }
-    return false;
   }
 
   static Future<void> launchBroadcastUrl(String url) async {
@@ -207,7 +161,6 @@ class DashboardViewModel extends FutureViewModel {
       futureToRunBroadcast(),
       futureToRunGrades(),
       futureToRunSessionProgressBar(),
-      futureToRunSchedule(),
     ]);
   }
 
@@ -229,58 +182,6 @@ class DashboardViewModel extends FutureViewModel {
       setBusyForObject(progress, false);
     }
     return [];
-  }
-
-  Future<List<CourseActivity>> futureToRunSchedule() async {
-    try {
-      setBusyForObject(scheduleEvents, true);
-      scheduleEvents.clear();
-      await _courseRepository.getCoursesActivities();
-
-      final now = _settingsManager.dateTimeNow;
-      final tomorrow = now.add(const Duration(days: 1)).withoutTime;
-      final twoDaysFromNow = now.add(const Duration(days: 2)).withoutTime;
-
-      final courseActivities =
-          _courseRepository.coursesActivities
-              ?.where((activity) => activity.endDateTime.isAfter(now) && activity.endDateTime.isBefore(twoDaysFromNow))
-              .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
-              .toList() ??
-          [];
-
-      for (final activity in courseActivities) {
-        final isToday = now.compareWithoutTime(activity.startDateTime);
-        final isTomorrow = activity.startDateTime.withoutTime == tomorrow;
-
-        if ((isToday || isTomorrow) && await _isLaboratoryGroupToAdd(activity)) {
-          if (isTomorrow && scheduleEvents.isNotEmpty && scheduleEvents.first.startDateTime.compareWithoutTime(now)) {
-            return scheduleEvents;
-          }
-          scheduleEvents.add(activity);
-        }
-      }
-      return scheduleEvents;
-    } catch (e) {
-      onError(e, null);
-    } finally {
-      setBusyForObject(scheduleEvents, false);
-    }
-    return [];
-  }
-
-  Future<bool> _isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
-    final courseKey = courseActivity.courseGroup.split('-').first;
-
-    final activityCodeToUse = await _settingsManager.getDynamicString(
-      PreferencesFlag.scheduleLaboratoryGroup,
-      courseKey,
-    );
-
-    return activityCodeToUse == ActivityCode.labGroupA
-        ? courseActivity.activityName != ActivityName.labB
-        : activityCodeToUse == ActivityCode.labGroupB
-        ? courseActivity.activityName != ActivityName.labA
-        : true;
   }
 
   /// Get the list of courses for the Grades card.

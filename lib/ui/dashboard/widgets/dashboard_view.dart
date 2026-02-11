@@ -13,7 +13,6 @@ import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/schedule_card.dart';
-import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -121,7 +120,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             child: Column(
               spacing: 6,
               children: [
-                Expanded(child: ScheduleCard(events: model.scheduleEvents)),
+                Expanded(child: ScheduleCard()),
                 GradesCard(courses: model.courses, loading: model.busy(model.courses))
               ],
             ),

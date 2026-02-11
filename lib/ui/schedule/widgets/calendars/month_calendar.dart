@@ -91,7 +91,6 @@ class _MonthCalendarState extends State<MonthCalendar> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent, // Needed for rounded corners
       builder: (context) => ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         child: DraggableScrollableSheet(

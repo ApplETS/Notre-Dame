@@ -47,33 +47,51 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
               children: [
                 Container(
                   decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
                   child: Center(
                     child: Column(
                       children: [
-                        Text(
-                          widget.event.group ?? widget.event.courseAcronym,
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Container(
+                              height: 5,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: context.theme.appColors.modalHandle,
+                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                              ),
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          widget.event.courseName,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.event.group ?? widget.event.courseAcronym,
+                                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                widget.event.courseName,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(20.0),
+                  margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 48.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 24.0,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 6.0,
+                        spacing: 12.0,
                         children: [
                           _sheetRow(
                             "${AppIntl.of(widget.buildContext)!.schedule_calendar_from_time} "
@@ -90,17 +108,6 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                               Icons.person,
                             ),
                         ],
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton.icon(
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(Icons.close),
-                          label: Text(
-                            AppIntl.of(context)!.close_button_text,
-                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ),
                       ),
                     ],
                   ),
@@ -131,7 +138,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
         final height = constraints.maxHeight;
         final aspectRatio = width / height;
         // If the card is 4 times wider than tall and is smaller than 60 in height
-        final wideLayout = aspectRatio > 4 || height < 60;
+        final wideLayout = aspectRatio > 3 || height < 60;
         // If both dimensions are smaller than 80 or a dimension is smaller than 40
         final isSmall = max(width, height) < 80 || min(width, height) < 40;
 
