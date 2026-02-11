@@ -116,13 +116,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         timeStringBuilder: (date, {secondaryDate}) {
           return DateFormat('H:mm').format(date);
         },
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) {
-          if (events.isNotEmpty) {
-            return _buildEventTile(events);
-          } else {
-            return Container();
-          }
-        },
+        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
       ),
     );
   }
