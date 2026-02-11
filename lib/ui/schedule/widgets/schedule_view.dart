@@ -69,10 +69,9 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
         icon: const Icon(Icons.ios_share),
         tooltip: AppIntl.of(context)!.calendar_export,
         onPressed: () {
-          final translations = AppIntl.of(context)!;
           showDialog(
             context: context,
-            builder: (_) => CalendarSelectionWidget(translations: translations),
+            builder: (_) => CalendarSelectionWidget(intl: AppIntl.of(context)!),
           );
         },
       ),

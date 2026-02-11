@@ -58,6 +58,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                         const SizedBox(height: 4),
                         Text(
                           widget.event.courseName,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ],
