@@ -160,9 +160,16 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         final intl = AppIntl.of(context)!;
         final viewModel = CalendarSelectionViewModel(intl: intl);
         viewModel.news = news;
-        showDialog(
+        showModalBottomSheet(
           context: context,
-          builder: (_) => CalendarSelectionWidget(intl: intl),
+          isScrollControlled: true,
+          useSafeArea: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          builder: (context) {
+            return CalendarSelectionSheet(intl: intl);
+          },
         );
       case Menu.report:
         showModalBottomSheet(

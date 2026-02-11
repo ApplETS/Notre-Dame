@@ -69,11 +69,17 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
         icon: const Icon(Icons.ios_share),
         tooltip: AppIntl.of(context)!.calendar_export,
         onPressed: () {
-          showDialog(
+          showModalBottomSheet(
             context: context,
-            builder: (_) => CalendarSelectionWidget(intl: AppIntl.of(context)!),
-          );
-        },
+            isScrollControlled: true,
+            useSafeArea: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            builder: (context) {
+              return CalendarSelectionSheet(intl: AppIntl.of(context)!);
+            },
+          );        },
       ),
       if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool))
         IconButton(
