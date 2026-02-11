@@ -118,7 +118,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         },
         eventTileBuilder: (date, events, boundary, startDuration, endDuration) {
           if (events.isNotEmpty) {
-            return _buildEventTile(events[0]);
+            return _buildEventTile(events);
           } else {
             return Container();
           }
