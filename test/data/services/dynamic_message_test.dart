@@ -415,6 +415,82 @@ void main() {
       });
     });
 
+    group('ExtendedBreakMessage -', () {
+      test('returns ExtendedBreakMessage when total break is 6+ days', () {
+        final now = DateTime(2024, 2, 12, 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 2, 9, 9)),
+          createActivity(DateTime(2024, 2, 19, 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.totalBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+      });
+
+      test('returns LongWeekendCurrentlyMessage when total break is less than 6 days', () {
+        final now = DateTime(2024, 2, 10, 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 2, 9, 9)),
+          createActivity(DateTime(2024, 2, 13, 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.totalBreakDuration, lessThan(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendCurrentlyMessage>());
+      });
+
+      test('ExtendedBreakMessage contains correct days until resume', () {
+        final now = DateTime(2024, 2, 12, 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 2, 9, 9)),
+          createActivity(DateTime(2024, 2, 19, 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+        expect((message as ExtendedBreakMessage).daysUntilResume, 7);
+      });
+
+      test('ExtendedBreakMessage persists even when less than 6 days remain', () {
+        final now = DateTime(2024, 2, 16, 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 2, 9, 9)),
+          createActivity(DateTime(2024, 2, 19, 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.totalBreakDuration, greaterThanOrEqualTo(6));
+        expect(context.daysUntilNextCourse, lessThan(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+        expect((message as ExtendedBreakMessage).daysUntilResume, 3);
+      });
+    });
+
     group('LastCourseDayOfWeekMessage -', () {
       test('returns LastCourseDayOfWeekMessage when last course day and >= 3 course days', () {
         final now = weekday(referenceDate, DateTime.sunday, hour: 10);
@@ -719,12 +795,19 @@ void main() {
     });
 
     group('LessOneMonthRemainingMessage -', () {
-      test('returns LessOneMonthRemainingMessage when monthsRemaining <= 1', () {
-        final context = createContext(monthsRemaining: 0, weeksRemaining: 3, daysRemaining: 25);
+      test('returns LessOneMonthRemainingMessage when weeksRemaining <= 4', () {
+        final context = createContext(weeksRemaining: 3, daysRemaining: 25);
 
         final message = engine.determineMessage(context);
         expect(message, isA<LessOneMonthRemainingMessage>());
         expect((message as LessOneMonthRemainingMessage).weeksRemaining, 3);
+      });
+
+      test('does not return LessOneMonthRemainingMessage when weeksRemaining > 4', () {
+        final context = createContext(weeksRemaining: 5, daysRemaining: 40);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LessOneMonthRemainingMessage>()));
       });
     });
 

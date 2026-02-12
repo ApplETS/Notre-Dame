@@ -110,6 +110,17 @@
     }
   },
 
+  "dynamic_message_extended_break": "Enjoy your break! Classes resume in {days} days.",
+  "@dynamic_message_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_extended_break_tomorrow": "Enjoy your break! Classes resume tomorrow.",
+
   "dynamic_message_last_course_day_of_session": "It's {weekday}! Last day of classes of the week!",
   "@dynamic_message_last_course_day_of_session": {
     "placeholders": {
@@ -151,7 +162,7 @@
     }
   },
 
-  "dynamic_message_day_follows_schedule": "The courses of {originalDay} follow the schedule of {replacementDay} ({reason})",
+  "dynamic_message_day_follows_schedule": "The courses of {replacementDay} follow the schedule of {originalDay} ({reason})",
   "@dynamic_message_day_follows_schedule": {
     "placeholders": {
       "originalDay": {

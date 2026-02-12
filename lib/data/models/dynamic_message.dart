@@ -27,6 +27,11 @@ class LongWeekendCurrentlyMessage extends DynamicMessage {
   const LongWeekendCurrentlyMessage(this.weeksCompleted);
 }
 
+class ExtendedBreakMessage extends DynamicMessage {
+  final int daysUntilResume;
+  const ExtendedBreakMessage(this.daysUntilResume);
+}
+
 class LastCourseDayOfWeekMessage extends DynamicMessage {
   final int weekday;
   const LastCourseDayOfWeekMessage(this.weekday);
@@ -114,6 +119,9 @@ extension DynamicMessageResolver on DynamicMessage {
         ),
       GenericEncouragementMessage() => intl.dynamic_message_generic_encouragement,
       LongWeekendCurrentlyMessage(:final weeksCompleted) => intl.dynamic_message_long_weekend_currently(weeksCompleted),
+      ExtendedBreakMessage(:final daysUntilResume) => daysUntilResume == 1
+          ? intl.dynamic_message_extended_break_tomorrow
+          : intl.dynamic_message_extended_break(daysUntilResume),
     };
   }
 }

@@ -215,9 +215,8 @@ class DashboardViewModel extends FutureViewModel {
       futureToRunGrades(),
       futureToRunSessionProgressBar(),
       futureToRunSchedule(),
+    loadDynamicMessage(forceRefresh: forceRefresh),
     ]);
-    // Load dynamic message after session data is available
-    await loadDynamicMessage(forceRefresh: forceRefresh);
   }
 
   /// Load the dynamic message based on session context

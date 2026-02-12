@@ -109,6 +109,17 @@
     }
   },
 
+  "dynamic_message_extended_break": "Profite de ta pause ! Les cours reprennent dans {days} jours.",
+  "@dynamic_message_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_extended_break_tomorrow": "Profite de ta pause ! Les cours reprennent demain.",
+
   "dynamic_message_last_course_day_of_session": "C'est {weekday} ! Dernière journée de cours de la semaine !",
   "@dynamic_message_last_course_day_of_session": {
     "placeholders": {
@@ -150,7 +161,7 @@
     }
   },
 
-  "dynamic_message_day_follows_schedule": "Les cours du {originalDay} suivent l'horaire du {replacementDay} ({reason})",
+  "dynamic_message_day_follows_schedule": "Les cours du {replacementDay} suivent l'horaire du {originalDay} ({reason})",
   "@dynamic_message_day_follows_schedule": {
     "placeholders": {
       "originalDay": {

@@ -75,6 +75,10 @@ class SessionContext {
 
   bool get isNextWeekShorter => _scheduleAnalyzer.isNextWeekShorter;
 
+  int? get daysUntilNextCourse => _scheduleAnalyzer.daysUntilNextCourse;
+
+  int? get totalBreakDuration => _scheduleAnalyzer.totalBreakDuration;
+
   ReplacedDay? getUpcomingReplacedDay() => _replacedDayAnalyzer.getUpcoming();
 
   bool isReplacedDayCancellation(ReplacedDay replacedDay) => _replacedDayAnalyzer.isCancellation(replacedDay);

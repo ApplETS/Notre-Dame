@@ -97,20 +97,43 @@ class ScheduleAnalyzer {
   }
 
   bool get isInsideLongWeekend {
-    if (courseActivities.isEmpty) return false;
+    final gapInfo = _getCurrentGapInfo();
+    if (gapInfo == null) return false;
+
+    return gapInfo.isLongerThanUsual;
+  }
+
+  /// Returns the number of days until the next course, or null if not in a break
+  int? get daysUntilNextCourse {
+    final gapInfo = _getCurrentGapInfo();
+    if (gapInfo == null || !gapInfo.isLongerThanUsual) return null;
+
+    return Utils.daysBetween(now, gapInfo.nextActivityStart);
+  }
+
+  /// Returns the total gap duration in days, or null if not in a break
+  int? get totalBreakDuration {
+    final gapInfo = _getCurrentGapInfo();
+    if (gapInfo == null || !gapInfo.isLongerThanUsual) return null;
+
+    return gapInfo.upcomingGapDays;
+  }
+
+  _GapInfo? _getCurrentGapInfo() {
+    if (courseActivities.isEmpty) return null;
 
     final sortedActivities = List<CourseActivity>.from(courseActivities)
       ..sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
     final pastActivities = sortedActivities.where((a) => a.startDateTime.isBefore(now));
-    if (pastActivities.isEmpty) return false;
+    if (pastActivities.isEmpty) return null;
 
     final lastActivity = pastActivities.last;
 
-    if (now.isBefore(lastActivity.endDateTime)) return false;
+    if (now.isBefore(lastActivity.endDateTime)) return null;
 
     final futureActivities = sortedActivities.where((a) => a.startDateTime.isAfter(now));
-    if (futureActivities.isEmpty) return false;
+    if (futureActivities.isEmpty) return null;
 
     final nextActivity = futureActivities.first;
 
@@ -120,7 +143,11 @@ class ScheduleAnalyzer {
       excludeEnd: nextActivity.startDateTime,
     );
 
-    return upcomingGapDays > usualGapDays;
+    return _GapInfo(
+      upcomingGapDays: upcomingGapDays,
+      usualGapDays: usualGapDays,
+      nextActivityStart: nextActivity.startDateTime,
+    );
   }
 
   bool get isAfterLastCourseOfWeek {
@@ -153,4 +180,18 @@ class ScheduleAnalyzer {
     final thisWeekActivities = getActivitiesForCurrentWeek();
     return getUniqueDays(thisWeekActivities).length;
   }
+}
+
+class _GapInfo {
+  final int upcomingGapDays;
+  final int usualGapDays;
+  final DateTime nextActivityStart;
+
+  _GapInfo({
+    required this.upcomingGapDays,
+    required this.usualGapDays,
+    required this.nextActivityStart,
+  });
+
+  bool get isLongerThanUsual => upcomingGapDays > usualGapDays;
 }

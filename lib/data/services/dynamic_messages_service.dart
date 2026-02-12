@@ -25,6 +25,11 @@ class DynamicMessagesService {
     }
 
     if (context.isInsideLongWeekend) {
+      final totalBreakDuration = context.totalBreakDuration ?? 0;
+      if (totalBreakDuration >= 6) {
+        final daysUntilResume = context.daysUntilNextCourse ?? 0;
+        return ExtendedBreakMessage(daysUntilResume);
+      }
       return LongWeekendCurrentlyMessage(context.weeksCompleted);
     }
 
@@ -47,7 +52,7 @@ class DynamicMessagesService {
       return LastCourseDayOfWeekMessage(context.now.weekday);
     }
 
-    if (context.monthsRemaining <= 1) {
+    if (context.weeksRemaining <= 4) {
       return LessOneMonthRemainingMessage(context.weeksRemaining);
     }
 
