@@ -109,7 +109,7 @@
     }
   },
 
-  "dynamic_message_last_course_day_of_session": "Fabuleux c'est {weekday} ! Dernière journée de cours de la semaine !",
+  "dynamic_message_last_course_day_of_session": "C'est {weekday} ! Dernière journée de cours de la semaine !",
   "@dynamic_message_last_course_day_of_session": {
     "placeholders": {
       "weekday": {

@@ -110,7 +110,7 @@
     }
   },
 
-  "dynamic_message_last_course_day_of_session": "Fabulous it's {weekday}! Last day of classes of the week!",
+  "dynamic_message_last_course_day_of_session": "It's {weekday}! Last day of classes of the week!",
   "@dynamic_message_last_course_day_of_session": {
     "placeholders": {
       "weekday": {
