@@ -168,7 +168,7 @@ void main() {
       });
 
       test('returns true when only one course day and its today', () {
-        final monday = weekday(reference, DateTime.monday);
+        weekday(reference, DateTime.monday);
         final activities = [createActivity(weekday(reference, DateTime.monday, hour: 9))];
         final analyzer = ScheduleAnalyzer(courseActivities: activities, now: weekday(reference, DateTime.monday, hour: 10));
 
