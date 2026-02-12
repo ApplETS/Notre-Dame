@@ -69,7 +69,10 @@ class DayFollowsScheduleMessage extends DynamicMessage {
 
 extension DynamicMessageResolver on DynamicMessage {
   String resolve(AppIntl intl) {
-    String formatDate(DateTime date) => DateFormat('d MMMM yyyy', intl.localeName).format(date);
+    String formatDate(DateTime date) {
+      final pattern = intl.localeName == 'en' ? 'MMMM d, yyyy' : 'd MMMM yyyy';
+      return DateFormat(pattern, intl.localeName).format(date);
+    }
 
     String weekdayName(int weekday) {
       return switch (weekday) {
