@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
@@ -12,38 +13,39 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../../helpers.dart';
 
 void main() {
   late CalendarViewModel viewModel;
   late CourseRepositoryMock courseRepositoryMock;
+  late ScheduleServiceMock scheduleServiceMock;
 
   setUp(() async {
     courseRepositoryMock = setupCourseRepositoryMock();
     setupSettingsRepositoryMock();
-    setupScheduleServiceMock();
+    scheduleServiceMock = setupScheduleServiceMock();
 
     viewModel = _TestCalendarViewModel(intl: await setupAppIntl());
   });
 
   group('CalendarViewModel', () {
-    test('coursesActivities groups activities by date', () {
-      final activity = CourseActivity(
-        courseName: 'LOG100',
-        startDateTime: DateTime(2023, 10, 1, 8),
-        endDateTime: DateTime(2023, 10, 1, 10),
-        courseGroup: 'ING150-01',
-        activityLocation: ['Room 101'],
-        activityName: 'Lecture',
-        activityDescription: '',
-      );
+    test('coursesActivities groups activities by date', () async {
+      final Map<DateTime, List<EventData>> events = {
+        DateTime(2023, 10, 1): [
+          EventData(
+            courseAcronym: "LOG100",
+            courseName: "Programmation et réseautique en génie logiciel",
+            date: DateTime(2023, 10, 1),
+            startTime: DateTime(2023, 10, 1, 8),
+            endTime: DateTime(2023, 10, 1, 10),
+          ),
+        ],
+      };
 
-      // TODO mock service instead
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [activity]);
-
-      expect(viewModel
-          .calendarEventsFromDate(DateTime(2023, 10, 1))
-          .length, 1);
+      ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
+      await viewModel.futureToRun();
+      expect(viewModel.calendarEventsFromDate(DateTime(2023, 10, 1)).length, 1);
     });
   });
 }

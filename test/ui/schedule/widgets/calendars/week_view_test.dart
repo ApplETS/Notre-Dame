@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/data/models/event_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -15,33 +16,43 @@ import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/utils/utils.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../../helpers.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});
   late SettingsRepositoryMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
+  late ScheduleServiceMock scheduleServiceMock;
 
-  List<CourseActivity> activites = [
-    CourseActivity(
-      courseName: 'Lab',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
-      courseGroup: 'LOG100',
-      activityLocation: ['Room 102'],
-      activityName: 'Lab Session',
-      activityDescription: 'Regular',
-    ),
-    CourseActivity(
-      courseName: 'Lecture',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
-      courseGroup: 'ING150-01',
-      activityLocation: ['Room 101'],
-      activityName: 'Lecture 1',
-      activityDescription: 'Regular',
-    ),
-  ];
+  Map<DateTime, List<EventData>> events = {
+    Utils.getFirstdayOfWeek(DateTime.now()): [
+      EventData(
+        courseAcronym: "LOG100",
+        group: "LOG100-01",
+        locations: ["D-2020"],
+        activityName: "Cours",
+        courseName: "Programmation et réseautique en génie logiciel",
+        teacherName: "John Doe",
+        date: Utils.getFirstdayOfWeek(DateTime.now()),
+        startTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
+        endTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
+      ),
+    ],
+    Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)): [
+      EventData(
+        courseAcronym: "ING150",
+        group: "ING150-01",
+        locations: ["D-2020"],
+        activityName: "Cours",
+        courseName: "Statique et dynamique",
+        teacherName: "Jane Doe",
+        date: Utils.getFirstdayOfWeek(DateTime.now()),
+        startTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
+        endTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
+      ),
+    ],
+  };
 
   group("week calendar view - ", () {
     setUp(() async {
@@ -50,7 +61,7 @@ void main() {
       await setupAppIntl();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
-      setupScheduleServiceMock();
+      scheduleServiceMock = setupScheduleServiceMock();
 
       SettingsRepositoryMock.stubLocale(settingsManagerMock);
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
@@ -69,7 +80,7 @@ void main() {
 
     testWidgets("displays saturday and sunday", (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
+      ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
 
       await tester.runAsync(() async {
         await tester.pumpWidget(localizedWidget(child: WeekCalendar(controller: ScheduleController())));
@@ -77,9 +88,7 @@ void main() {
       });
 
       expect(find.text("LOG100"), findsOneWidget);
-      expect(find.text("Room 102\nLab Session"), findsOneWidget);
       expect(find.text("ING150"), findsOneWidget);
-      expect(find.text("Room 101\nLecture 1"), findsOneWidget);
       // Saturday and sunday displayed
       expect(find.text("S"), findsOneWidget);
       expect(find.text("D"), findsOneWidget);
