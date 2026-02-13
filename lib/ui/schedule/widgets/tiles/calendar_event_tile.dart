@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:intl/intl.dart';
 import 'package:notredame/data/models/event_data.dart';
 
 // Project imports:
@@ -37,53 +36,55 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
       isScrollControlled: true,
       backgroundColor: context.theme.scaffoldBackgroundColor,
       builder: (context) {
-        return SafeArea(
-          child: Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Container(
-                              height: 5,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                color: context.theme.appColors.modalHandle,
-                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                              ),
+        return Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container(
+                            height: 5,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              color: context.theme.appColors.modalHandle,
+                              borderRadius: BorderRadius.all(Radius.circular(8.0)),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            children: [
-                              Text(
-                                widget.event.group ?? widget.event.courseAcronym,
-                                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                widget.event.courseName,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          children: [
+                            Text(
+                              widget.event.group ?? widget.event.courseAcronym,
+                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              widget.event.courseName,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                Container(
+              ),
+              SafeArea(
+                left: false,
+                right: false,
+                child: Container(
                   margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 48.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,8 +113,8 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
