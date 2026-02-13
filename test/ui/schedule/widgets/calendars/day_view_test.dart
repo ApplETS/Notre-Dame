@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +23,7 @@ import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../../helpers.dart';
 
 void main() {
@@ -58,6 +60,7 @@ void main() {
       intl = await setupAppIntl();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
+      setupScheduleServiceMock();
 
       SettingsRepositoryMock.stubLocale(settingsManagerMock);
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
@@ -71,6 +74,7 @@ void main() {
         unregister<RemoteConfigService>(),
         unregister<NetworkingService>(),
         unregister<AnalyticsService>(),
+        unregister<ScheduleService>(),
       },
     );
 

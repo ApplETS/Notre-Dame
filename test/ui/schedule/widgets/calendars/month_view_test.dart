@@ -50,6 +50,7 @@ void main() {
       await setupAppIntl();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
+      setupScheduleServiceMock();
 
       SettingsRepositoryMock.stubLocale(settingsManagerMock);
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);

@@ -12,7 +12,7 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 
 class ScheduleService {
-  /// If true, will fetch course activies again instead of using in-memory data
+  /// If true, will fetch course activities again instead of using in-memory data
   bool _invalidateCache = false;
 
   /// Load the events

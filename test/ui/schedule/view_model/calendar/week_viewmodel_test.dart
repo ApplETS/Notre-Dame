@@ -20,6 +20,7 @@ void main() {
     courseRepositoryMock = setupCourseRepositoryMock();
     setupSettingsRepositoryMock();
     setupFlutterToastMock();
+    setupScheduleServiceMock();
 
     viewModel = WeekViewModel(intl: await setupAppIntl());
   });

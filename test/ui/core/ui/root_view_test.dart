@@ -16,11 +16,13 @@ import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/ui/core/ui/root_view.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../helpers.dart';
 
 void main() {
@@ -38,6 +40,7 @@ void main() {
       analyticsServiceMock = setupAnalyticsServiceMock();
       setupInAppReviewServiceMock();
       setupQuickLinkRepositoryMock();
+      setupScheduleServiceMock();
 
       // Stub the date time now
       final settingRepository = setupSettingsRepositoryMock();
@@ -55,6 +58,7 @@ void main() {
       unregister<InAppReviewService>();
       unregister<QuickLinkRepository>();
       unregister<SettingsRepository>();
+      unregister<ScheduleService>();
     });
 
     testWidgets('Initial view is DashboardView', (WidgetTester tester) async {

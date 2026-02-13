@@ -17,11 +17,11 @@ import '../../../../helpers.dart';
 void main() {
   late CalendarViewModel viewModel;
   late CourseRepositoryMock courseRepositoryMock;
-  late SettingsRepositoryMock settingsManagerMock;
 
   setUp(() async {
     courseRepositoryMock = setupCourseRepositoryMock();
-    settingsManagerMock = setupSettingsRepositoryMock();
+    setupSettingsRepositoryMock();
+    setupScheduleServiceMock();
 
     viewModel = _TestCalendarViewModel(intl: await setupAppIntl());
   });
@@ -38,6 +38,7 @@ void main() {
         activityDescription: '',
       );
 
+      // TODO mock service instead
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [activity]);
 
       expect(viewModel
@@ -56,16 +57,4 @@ class _TestCalendarViewModel extends CalendarViewModel {
 
   @override
   handleDateSelectedChanged(DateTime newDate) {}
-}
-
-// Subclass for testing error handling by capturing the error message.
-class _TestCalendarViewModelWithError extends _TestCalendarViewModel {
-  String? errorMessage;
-
-  _TestCalendarViewModelWithError({required super.intl});
-
-  @override
-  void onError(error, StackTrace? stackTrace) {
-    errorMessage = error.toString();
-  }
 }

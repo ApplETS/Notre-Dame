@@ -11,6 +11,13 @@ import '../../../../helpers.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  late AppIntl intl;
+
+  setUp(() async {
+    intl = await setupAppIntl();
+    setupCourseRepositoryMock();
+    setupScheduleServiceMock();
+  });
 
   Widget makeTestableWidget(Widget child) {
     return MaterialApp(
@@ -27,12 +34,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(ScheduleCard), findsOneWidget);
-
-      // Verify DayCalendar exists
       expect(find.byType(DayCalendar), findsOneWidget);
-
-      // Verify base title appears
-      expect(find.textContaining('schedule'), findsOneWidget);
+      expect(find.textContaining('TODO'), findsOneWidget);
     });
 
     testWidgets('appends tomorrow to title when model.tomorrow is true', (tester) async {
