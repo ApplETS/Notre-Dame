@@ -96,7 +96,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         builder: (BuildContext context, BoxConstraints constraints) {
           final double heightPerMinute = showEntireDay
               ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
-              : constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60);
+              : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(0.1, double.infinity);
           return calendar_view.DayView(
             showVerticalLine: false,
             dayTitleBuilder: calendar_view.DayHeader.hidden,
