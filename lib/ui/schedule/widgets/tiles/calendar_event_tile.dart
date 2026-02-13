@@ -14,10 +14,9 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class CalendarEventTile extends StatefulWidget {
   final EventData event;
-  final BuildContext buildContext;
   final EdgeInsets? padding;
 
-  const CalendarEventTile({super.key, required this.buildContext, required this.event, this.padding});
+  const CalendarEventTile({super.key, required this.event, this.padding});
 
   @override
   State<CalendarEventTile> createState() => _CalendarEventTileState();
@@ -85,7 +84,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                 left: false,
                 right: false,
                 child: Container(
-                  margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 48.0),
+                  margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 32.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 24.0,
@@ -95,9 +94,9 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                         spacing: 12.0,
                         children: [
                           _sheetRow(
-                            "${AppIntl.of(widget.buildContext)!.schedule_calendar_from_time} "
+                            "${AppIntl.of(context)!.schedule_calendar_from_time} "
                             "$startTime "
-                            "${AppIntl.of(widget.buildContext)!.schedule_calendar_to_time} "
+                            "${AppIntl.of(context)!.schedule_calendar_to_time} "
                             "$endTime",
                             Icons.access_time,
                           ),
@@ -105,7 +104,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                           if (courseType != null) _sheetRow(courseType, Icons.book),
                           if (teacherName != null)
                             _sheetRow(
-                              "${AppIntl.of(widget.buildContext)!.schedule_calendar_by} $teacherName",
+                              "${AppIntl.of(context)!.schedule_calendar_by} $teacherName",
                               Icons.person,
                             ),
                         ],

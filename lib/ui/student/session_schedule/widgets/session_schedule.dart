@@ -90,7 +90,6 @@ class _SessionScheduleState extends State<SessionSchedule> {
     if (events.isNotEmpty) {
       return CalendarEventTile(
         padding: const EdgeInsets.all(6.0),
-        buildContext: context,
         event: events[0] as EventData,
       );
     } else {
