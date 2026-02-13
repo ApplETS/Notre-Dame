@@ -30,81 +30,117 @@ class _CalendarSelectionSheetState extends State<CalendarSelectionSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 16, right: 16, bottom: MediaQuery.of(context).viewInsets.bottom + 16, top: 16),
-      child: FutureBuilder(
-        future: CalendarService.nativeCalendars,
-        builder: (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
-          if (calendars.error != null) {
-            return _permissionDeniedContent(context);
-          }
+    return FutureBuilder(
+      future: CalendarService.nativeCalendars,
+      builder: (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
+        if (calendars.error != null) {
+          return _permissionDeniedContent(context);
+        }
 
-          if (!calendars.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        if (!calendars.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          final items = calendars.data!
-              .map<DropdownMenuItem<String>>(
-                (calendar) => DropdownMenuItem(value: calendar.name, child: Text(calendar.name!)),
-              )
-              .toList();
+        final items = calendars.data!
+            .map<DropdownMenuItem<String>>(
+              (calendar) => DropdownMenuItem(value: calendar.name, child: Text(calendar.name!)),
+            )
+            .toList();
 
-          items.add(DropdownMenuItem(value: "new", child: Text(widget.intl.calendar_new)));
+        items.add(DropdownMenuItem(value: "new", child: Text(widget.intl.calendar_new)));
 
-          selectedCalendarId = selectedCalendarId.isEmpty ? items.first.value! : selectedCalendarId;
+        selectedCalendarId = selectedCalendarId.isEmpty ? items.first.value! : selectedCalendarId;
 
-          return Column(
+        return Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.intl.calendar_export, style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 8),
-              Text(widget.intl.calendar_export_question),
-              const SizedBox(height: 12),
-
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: context.theme.appBarTheme.backgroundColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: DropdownButton(
-                  value: selectedCalendarId,
-                  underline: const SizedBox(),
-                  isExpanded: true,
-                  items: items,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCalendarId = value!;
-                    });
-                  },
+                decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+                          height: 5,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: context.theme.appColors.modalHandle,
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        widget.intl.calendar_export,
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-              if (selectedCalendarId == "new") ...[
-                const SizedBox(height: 8),
-                TextField(
-                  decoration: InputDecoration(labelText: widget.intl.calendar_name),
-                  onChanged: (value) {
-                    selectedCalendarId = value;
-                  },
+              SafeArea(
+                left: false,
+                right: false,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 32.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 12.0,
+                    children: [
+                      Text(widget.intl.calendar_export_question),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: context.theme.appBarTheme.backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: DropdownButton(
+                          value: selectedCalendarId,
+                          underline: const SizedBox(),
+                          isExpanded: true,
+                          items: items,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedCalendarId = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      if (selectedCalendarId == "new") ...[
+                        const SizedBox(height: 8),
+                        TextField(
+                          decoration: InputDecoration(labelText: widget.intl.calendar_name),
+                          onChanged: (value) {
+                            selectedCalendarId = value;
+                          },
+                        ),
+                      ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(widget.intl.calendar_cancel_button),
+                          ),
+                          const SizedBox(width: 8),
+                          FilledButton(onPressed: _export, child: Text(widget.intl.calendar_export_button)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-
-              const SizedBox(height: 20),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(onPressed: () => Navigator.pop(context), child: Text(widget.intl.calendar_cancel_button)),
-                  const SizedBox(width: 8),
-                  FilledButton(onPressed: _export, child: Text(widget.intl.calendar_export_button)),
-                ],
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 

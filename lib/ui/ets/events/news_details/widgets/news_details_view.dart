@@ -163,10 +163,7 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
-          useSafeArea: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          ),
+          backgroundColor: context.theme.scaffoldBackgroundColor,
           builder: (context) {
             return CalendarSelectionSheet(intl: intl);
           },

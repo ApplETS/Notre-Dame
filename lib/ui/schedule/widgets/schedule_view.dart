@@ -19,8 +19,11 @@ import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 
+import '../../core/themes/app_theme.dart';
+
 class ScheduleView extends StatefulWidget {
   final ScheduleController controller;
+
   const ScheduleView({super.key, required this.controller});
 
   @override
@@ -72,14 +75,12 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            useSafeArea: true,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-            ),
+            backgroundColor: context.theme.scaffoldBackgroundColor,
             builder: (context) {
               return CalendarSelectionSheet(intl: AppIntl.of(context)!);
             },
-          );        },
+          );
+        },
       ),
       if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool))
         IconButton(
