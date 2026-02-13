@@ -29,7 +29,6 @@ void main() {
           child: Builder(
             builder: (context) {
               return CalendarEventTile(
-                buildContext: context,
                 padding: const EdgeInsets.all(8.0),
                 event: EventData(
                   courseAcronym: "GEN101",
@@ -62,7 +61,6 @@ void main() {
             child: Builder(
               builder: (context) {
                 return CalendarEventTile(
-                  buildContext: context,
                   padding: const EdgeInsets.all(8.0),
                   event: EventData(
                     courseAcronym: "GEN101",
