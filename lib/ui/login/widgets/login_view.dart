@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
@@ -20,6 +21,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -59,6 +62,9 @@ class _LoginViewState extends State<LoginView> {
                   padding: const EdgeInsets.only(bottom: 20),
                   child: ElevatedButton(
                     onPressed: () {
+                      setState(() {
+                        _isLoading = true;
+                      });
                       model.authenticate();
                     },
                     style: ElevatedButton.styleFrom(
@@ -75,7 +81,7 @@ class _LoginViewState extends State<LoginView> {
                   padding: const EdgeInsets.only(bottom: 20),
                   child: ElevatedButton(
                     onPressed: () {
-                      model.navigateToFAQ();
+                      model.navigationService.pushNamed(RouterPaths.faq);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppPalette.grey.black,
@@ -87,6 +93,10 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ),
+                if (_isLoading) ... [
+                  const SizedBox(height: 15),
+                  CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppPalette.grey.white)),
+                ]
               ],
             ),
           ),
