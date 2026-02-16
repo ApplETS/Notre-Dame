@@ -93,10 +93,10 @@ class _LoginViewState extends State<LoginView> {
                     ),
                   ),
                 ),
-                if (_isLoading) ... [
+                if (_isLoading) ...[
                   const SizedBox(height: 15),
                   CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppPalette.grey.white)),
-                ]
+                ],
               ],
             ),
           ),
