@@ -19,7 +19,6 @@ class WidgetComponent extends StatelessWidget {
             child: Text("TODO", style: TextStyle(color: Colors.white)),
           );
 
-  /// TODO : This class needs to be entirely refactored
   @override
   Widget build(BuildContext context) {
     return Card(
