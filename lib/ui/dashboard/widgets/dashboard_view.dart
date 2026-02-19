@@ -1,4 +1,6 @@
 // Flutter imports:
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -22,17 +24,36 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> with SingleTickerProviderStateMixin {
+  // Keys to measure dynamic widgets
+  final GlobalKey _titleKey = GlobalKey();
+  final GlobalKey _rowKey = GlobalKey();
+  final GlobalKey _gradesCardKey = GlobalKey();
+
+  double? _scheduleCardHeight;
+
   @override
   void initState() {
     super.initState();
     DashboardViewModel.launchInAppReview();
   }
 
+  void _updateScheduleCardHeight(double viewportHeight) {
+    final titleHeight = _titleKey.currentContext!.size!.height;
+    final cardsRowHeight = _rowKey.currentContext!.size!.height;
+    final gradesCardHeight = _gradesCardKey.currentContext!.size!.height;
+    final totalFixed = titleHeight + cardsRowHeight + gradesCardHeight + 44.0; // TODO fix magic number. Spacing + top + bottom
+
+    final remaining = viewportHeight - totalFixed;
+    final scheduleHeight = max(250.0, remaining);
+
+    if (scheduleHeight != _scheduleCardHeight) {
+      setState(() => _scheduleCardHeight = scheduleHeight);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       viewModelBuilder: () {
-        /// Single viewModelBuilder reference for the whole dashboard view
         final model = DashboardViewModel(intl: AppIntl.of(context)!);
         model.init(this);
         return model;
@@ -41,18 +62,22 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
         return BaseScaffold(
           body: RefreshIndicator(
             onRefresh: model.loadDataAndUpdateWidget,
-            child: CustomScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              slivers: [
-                SliverFillRemaining(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _updateScheduleCardHeight(constraints.maxHeight);
+                });
+
+                return SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   child: Stack(
                     children: [
                       _redCircle(model),
                       _phoneVertical(context, model),
                     ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         );
@@ -69,7 +94,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           opacity: model.opacityAnimation.value,
           child: PhysicalShape(
             clipper: CircleClipper(),
-            elevation: 4,
+            elevation: 4.0,
             color: AppPalette.etsLightRed,
             child: SizedBox(height: model.heightAnimation.value, width: double.infinity),
           ),
@@ -83,10 +108,11 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AnimatedBuilder(
+          key: _titleKey,
           animation: model.titleAnimation,
           builder: (context, child) {
             return Padding(
-              padding: const EdgeInsets.only(left: 32, right: 32, top: 80),
+              padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 80.0),
               child: Transform.translate(
                 offset: model.titleSlideOffset,
                 child: Opacity(
@@ -106,7 +132,8 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           },
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(40, 16, 40, 0),
+          key: _rowKey,
+          padding: EdgeInsets.fromLTRB(40.0, 16.0, 40.0, 0.0),
           child: Row(
             spacing: 18,
             children: [
@@ -121,16 +148,22 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             ],
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 6, 12, 32),
-            child: Column(
-              spacing: 6,
-              children: [
-                Expanded(child: ScheduleCard()),
-                GradesCard(courses: model.courses, loading: model.busy(model.courses)),
-              ],
-            ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 32.0),
+          child: Column(
+            spacing: 6.0,
+            children: [
+              if (_scheduleCardHeight != null)
+                SizedBox(
+                  height: _scheduleCardHeight,
+                  child: ScheduleCard(),
+                ),
+              GradesCard(
+                key: _gradesCardKey,
+                courses: model.courses,
+                loading: model.busy(model.courses),
+              ),
+            ],
           ),
         ),
       ],
