@@ -22,7 +22,6 @@ import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/analytics_service_mock.dart';
-import '../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../helpers.dart';
 
 void main() {

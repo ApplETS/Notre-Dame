@@ -57,10 +57,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!);
-
     return ViewModelBuilder.reactive(
-      viewModelBuilder: () => model,
+      viewModelBuilder: () => DayViewModel(intl: AppIntl.of(context)!),
       builder: (context, model, child) => Column(
         children: [widget.selectedDate == null ? _dayViewHeader(model) : const SizedBox(), _buildEvents(model)],
       ),

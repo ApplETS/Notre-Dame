@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_test/flutter_test.dart';
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
@@ -17,11 +18,9 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
-import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../../helpers.dart';
@@ -29,41 +28,47 @@ import '../../../../helpers.dart';
 void main() {
   SharedPreferences.setMockInitialValues({});
   late SettingsRepositoryMock settingsManagerMock;
-  late CourseRepositoryMock courseRepositoryMock;
+  late ScheduleServiceMock scheduleServiceMock;
+
   late AppIntl intl;
 
-  List<CourseActivity> activites = [
-    CourseActivity(
-      courseName: 'Lecture',
-      startDateTime: DateTime.now().withoutTime.add(Duration(hours: 14)),
-      endDateTime: DateTime.now().withoutTime.add(Duration(hours: 17)),
-      courseGroup: 'ING150-01',
-      activityLocation: ['Room 101'],
-      activityName: 'Lecture 1',
-      activityDescription: 'Regular',
-    ),
-    CourseActivity(
-      courseName: 'Lab',
-      startDateTime: DateTime.now().withoutTime.add(Duration(hours: 9)),
-      endDateTime: DateTime.now().withoutTime.add(Duration(hours: 12)),
-      courseGroup: 'ING150-01',
-      activityLocation: ['Room 102'],
-      activityName: 'Lab Session',
-      activityDescription: 'Regular',
-    ),
-  ];
+  Map<DateTime, List<EventData>> events = {
+    DateTime.now().withoutTime: [
+      EventData(
+        courseAcronym: "LOG100",
+        group: "LOG100-01",
+        locations: ["D-2020"],
+        activityName: "Cours",
+        courseName: "Programmation et réseautique en génie logiciel",
+        teacherName: "John Doe",
+        date: DateTime.now().withoutTime,
+        startTime: DateTime.now().withoutTime.add(Duration(hours: 9)),
+        endTime: DateTime.now().withoutTime.add(Duration(hours: 12)),
+      ),
+      EventData(
+        courseAcronym: "ING150",
+        group: "ING150-01",
+        locations: ["D-2020"],
+        activityName: "Cours",
+        courseName: "Statique et dynamique",
+        teacherName: "Jane Doe",
+        date: DateTime.now().withoutTime,
+        startTime: DateTime.now().withoutTime.add(Duration(hours: 14)),
+        endTime: DateTime.now().withoutTime.add(Duration(hours: 17)),
+      ),
+    ],
+  };
 
   group("day calendar view - ", () {
     setUp(() async {
       settingsManagerMock = setupSettingsRepositoryMock();
-      courseRepositoryMock = setupCourseRepositoryMock();
+      scheduleServiceMock = setupScheduleServiceMock();
+      setupCourseRepositoryMock();
       intl = await setupAppIntl();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
-      setupScheduleServiceMock();
 
       SettingsRepositoryMock.stubLocale(settingsManagerMock);
-      CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
     });
 
     tearDown(
@@ -80,7 +85,7 @@ void main() {
 
     group("list view", () {
       testWidgets("list view", (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
@@ -93,7 +98,7 @@ void main() {
       });
 
       testWidgets("list view with no event in selected day", (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        ScheduleServiceMock.stubEvents(scheduleServiceMock, {});
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
@@ -106,9 +111,7 @@ void main() {
       });
 
       testWidgets("list view with event in selected day", (WidgetTester tester) async {
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
-
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
@@ -124,7 +127,7 @@ void main() {
 
     group("calendar view", () {
       testWidgets("calendar view", (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
+        ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
@@ -137,8 +140,7 @@ void main() {
       });
 
       testWidgets("calendar view with event in selected day", (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
+        ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(
@@ -153,8 +155,7 @@ void main() {
 
     group("header", () {
       testWidgets("calendar view with event in selected day", (WidgetTester tester) async {
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
+        ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(

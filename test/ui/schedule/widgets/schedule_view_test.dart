@@ -23,7 +23,6 @@ import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/remote_config_service_mock.dart';
-import '../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../helpers.dart';
 
 void main() {
@@ -31,7 +30,6 @@ void main() {
   late SettingsRepositoryMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
-  late ScheduleServiceMock scheduleServiceMock;
 
   // Some settings
   Map<PreferencesFlag, dynamic> settingsWeek = {
@@ -67,7 +65,7 @@ void main() {
       settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
-      scheduleServiceMock = setupScheduleServiceMock();
+      setupScheduleServiceMock();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
 

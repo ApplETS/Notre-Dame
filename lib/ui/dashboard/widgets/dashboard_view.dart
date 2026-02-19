@@ -40,16 +40,18 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
       builder: (context, model, child) {
         return BaseScaffold(
           body: RefreshIndicator(
-            onRefresh: () async {
-              await model.loadDataAndUpdateWidget();
-            },
-            child: Stack(
-              children: [
-                /// Animated circle in the background
-                _redCircle(model),
-
-                // TODO create layouts for all sizes and orientations
-                _phoneVertical(context, model),
+            onRefresh: model.loadDataAndUpdateWidget,
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                SliverFillRemaining(
+                  child: Stack(
+                    children: [
+                      _redCircle(model),
+                      _phoneVertical(context, model),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -105,7 +107,6 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
         ),
         Container(
           padding: EdgeInsets.fromLTRB(40, 16, 40, 0),
-          width: double.infinity,
           child: Row(
             spacing: 18,
             children: [
@@ -127,12 +128,11 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
               spacing: 6,
               children: [
                 Expanded(child: ScheduleCard()),
-                GradesCard(courses: model.courses, loading: model.busy(model.courses))
+                GradesCard(courses: model.courses, loading: model.busy(model.courses)),
               ],
             ),
           ),
-        )
-
+        ),
       ],
     );
   }
