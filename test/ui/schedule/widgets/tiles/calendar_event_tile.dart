@@ -92,36 +92,9 @@ void main() {
     // It should also display the teacher info.
     expect(find.textContaining('By John Doe'), findsOneWidget);
     // And the time info should be formatted correctly.
-    // TODO fix this
     expect(
       find.textContaining('${intl.schedule_calendar_from_time} 9:00 ${intl.schedule_calendar_to_time} 12:00'),
       findsOneWidget,
     );
   });
-
-  // Test that when teacherName equals the literal "null", no teacher info is displayed.
-  // testWidgets('Does not display teacher info if teacherName is "null"', (WidgetTester tester) async {
-  //   final start = DateTime(2025, 3, 1, 11, 30);
-  //   final end = DateTime(2025, 3, 1, 12, 30);
-  //
-  //   await tester.pumpWidget(
-  //     localizedWidget(
-  //       child: Builder(
-  //         builder: (context) {
-  //           return CalendarEventTile(
-  //             buildContext: context,
-  //             padding: const EdgeInsets.all(8.0),
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-  //
-  //   // Tap the tile.
-  //   await tester.tap(find.byType(CalendarEventTile));
-  //   await tester.pumpAndSettle();
-  //
-  //   // Verify that no teacher info (i.e. text containing the word "by") is displayed.
-  //   expect(find.textContaining('by'), findsNothing);
-  // });
 }
