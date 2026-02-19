@@ -24,10 +24,13 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> with SingleTickerProviderStateMixin {
-  // Keys to measure dynamic widgets
   final GlobalKey _titleKey = GlobalKey();
   final GlobalKey _rowKey = GlobalKey();
   final GlobalKey _gradesCardKey = GlobalKey();
+
+  final double paddingAboveSchedule = 6.0;
+  final double spacingBetweenGradesAndSchedule = 6.0;
+  final double paddingUnderGrades = 32.0;
 
   double? _scheduleCardHeight;
 
@@ -41,7 +44,14 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
     final titleHeight = _titleKey.currentContext!.size!.height;
     final cardsRowHeight = _rowKey.currentContext!.size!.height;
     final gradesCardHeight = _gradesCardKey.currentContext!.size!.height;
-    final totalFixed = titleHeight + cardsRowHeight + gradesCardHeight + 44.0; // TODO fix magic number. Spacing + top + bottom
+    
+    final totalFixed =
+        titleHeight +
+        cardsRowHeight +
+        gradesCardHeight +
+        paddingAboveSchedule +
+        paddingUnderGrades +
+        spacingBetweenGradesAndSchedule;
 
     final remaining = viewportHeight - totalFixed;
     final scheduleHeight = max(250.0, remaining);
@@ -50,6 +60,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
       setState(() => _scheduleCardHeight = scheduleHeight);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
@@ -70,12 +81,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
 
                 return SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: Stack(
-                    children: [
-                      _redCircle(model),
-                      _phoneVertical(context, model),
-                    ],
-                  ),
+                  child: Stack(children: [_redCircle(model), _phoneVertical(context, model)]),
                 );
               },
             ),
@@ -149,20 +155,12 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 32.0),
+          padding: EdgeInsets.fromLTRB(12.0, paddingAboveSchedule, 12.0, paddingUnderGrades),
           child: Column(
-            spacing: 6.0,
+            spacing: spacingBetweenGradesAndSchedule,
             children: [
-              if (_scheduleCardHeight != null)
-                SizedBox(
-                  height: _scheduleCardHeight,
-                  child: ScheduleCard(),
-                ),
-              GradesCard(
-                key: _gradesCardKey,
-                courses: model.courses,
-                loading: model.busy(model.courses),
-              ),
+              if (_scheduleCardHeight != null) SizedBox(height: _scheduleCardHeight, child: ScheduleCard()),
+              GradesCard(key: _gradesCardKey, courses: model.courses, loading: model.busy(model.courses)),
             ],
           ),
         ),
