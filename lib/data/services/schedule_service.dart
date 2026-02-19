@@ -1,15 +1,19 @@
+// Dart imports:
 import 'dart:ui';
 
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
+
+// Project imports:
+import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/data/models/event_data.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/data/models/activity_code.dart';
-import 'package:notredame/data/models/event_data.dart';
-import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
 
 class ScheduleService {
   /// If true, will fetch course activities again instead of using in-memory data

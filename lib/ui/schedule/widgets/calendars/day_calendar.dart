@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:intl/intl.dart';
-import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -17,6 +16,7 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;
@@ -94,7 +94,10 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         builder: (BuildContext context, BoxConstraints constraints) {
           final double heightPerMinute = showEntireDay
               ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
-              : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(0.1, double.infinity);
+              : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(
+                  0.1,
+                  double.infinity,
+                );
           return calendar_view.DayView(
             showVerticalLine: false,
             dayTitleBuilder: calendar_view.DayHeader.hidden,
@@ -106,7 +109,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
               }),
             }),
             scrollPhysics: showEntireDay ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
-            safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false,),
+            safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
             backgroundColor: widget.backgroundColor ?? context.theme.scaffoldBackgroundColor,
             initialDay: model.daySelected,
             minDay: widget.selectedDate,
@@ -188,10 +191,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   Widget _buildEventTile(List<calendar_view.CalendarEventData> events) {
     if (events.isNotEmpty) {
-      return CalendarEventTile(
-        padding: const EdgeInsets.all(6.0),
-        event: events[0] as EventData,
-      );
+      return CalendarEventTile(padding: const EdgeInsets.all(6.0), event: events[0] as EventData);
     } else {
       return Container();
     }

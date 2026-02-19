@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
-
 import '../../core/themes/app_theme.dart';
 
 class WidgetComponent extends StatelessWidget {

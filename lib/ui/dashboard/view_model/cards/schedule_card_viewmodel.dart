@@ -1,21 +1,19 @@
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-
+// Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/locator.dart';
-
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/locator.dart';
 
 class ScheduleCardViewmodel extends FutureViewModel {
   List<CourseActivity> _scheduleEvents = [];
 
   bool _tomorrow = false;
-  DateTime _date = DateTime
-      .now()
-      .withoutTime;
+  DateTime _date = DateTime.now().withoutTime;
 
   /// Localization class of the application.
   final AppIntl _appIntl;
@@ -30,8 +28,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
     return _tomorrow;
   }
 
-  ScheduleCardViewmodel({required AppIntl intl})
-      : _appIntl = intl;
+  ScheduleCardViewmodel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future<void> futureToRun() async {
@@ -44,18 +41,14 @@ class ScheduleCardViewmodel extends FutureViewModel {
 
       final nowDate = DateTime.now();
       // The extra hours prevents daylight savings problems
-      final tomorrowDate = nowDate.withoutTime
-          .add(const Duration(days: 1, hours: 1))
-          .withoutTime;
-      final twoDaysFromNow = nowDate.withoutTime
-          .add(const Duration(days: 2, hours: 1))
-          .withoutTime;
+      final tomorrowDate = nowDate.withoutTime.add(const Duration(days: 1, hours: 1)).withoutTime;
+      final twoDaysFromNow = nowDate.withoutTime.add(const Duration(days: 2, hours: 1)).withoutTime;
 
       bool hasActivitiesTodayAfterNow =
           _courseRepository.coursesActivities?.any(
-                (activity) => activity.endDateTime.isAfter(nowDate) && activity.endDateTime.isBefore(tomorrowDate),
+            (activity) => activity.endDateTime.isAfter(nowDate) && activity.endDateTime.isBefore(tomorrowDate),
           ) ??
-              false;
+          false;
 
       if (hasActivitiesTodayAfterNow) {
         return;
@@ -63,10 +56,9 @@ class ScheduleCardViewmodel extends FutureViewModel {
 
       bool hasActivitiesTomorrow =
           _courseRepository.coursesActivities?.any(
-                (activity) =>
-            activity.endDateTime.isAfter(tomorrowDate) && activity.endDateTime.isBefore(twoDaysFromNow),
+            (activity) => activity.endDateTime.isAfter(tomorrowDate) && activity.endDateTime.isBefore(twoDaysFromNow),
           ) ??
-              false;
+          false;
 
       if (hasActivitiesTomorrow) {
         _tomorrow = true;

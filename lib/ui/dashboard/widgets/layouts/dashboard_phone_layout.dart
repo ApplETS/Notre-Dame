@@ -1,6 +1,13 @@
+// Dart imports:
 import 'dart:math';
+
+// Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:stacked/stacked.dart';
+
+// Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
@@ -11,11 +18,7 @@ class DashboardPhoneLayout extends StatefulWidget {
   final DashboardViewModel model;
   final double viewportHeight;
 
-  const DashboardPhoneLayout({
-    super.key,
-    required this.model,
-    required this.viewportHeight,
-  });
+  const DashboardPhoneLayout({super.key, required this.model, required this.viewportHeight});
 
   @override
   State<DashboardPhoneLayout> createState() => _DashboardPhoneLayoutState();
@@ -57,7 +60,8 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
     final cardsRowHeight = _rowKey.currentContext?.size?.height ?? 0;
     final gradesCardHeight = _gradesCardKey.currentContext?.size?.height ?? 0;
 
-    final totalFixed = titleHeight +
+    final totalFixed =
+        titleHeight +
         cardsRowHeight +
         gradesCardHeight +
         paddingAboveSchedule +
@@ -125,8 +129,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
           child: Column(
             spacing: spacingBetweenGradesAndSchedule,
             children: [
-              if (_scheduleCardHeight != null)
-                SizedBox(height: _scheduleCardHeight, child: const ScheduleCard()),
+              if (_scheduleCardHeight != null) SizedBox(height: _scheduleCardHeight, child: const ScheduleCard()),
               GradesCard(
                 key: _gradesCardKey,
                 courses: widget.model.courses,

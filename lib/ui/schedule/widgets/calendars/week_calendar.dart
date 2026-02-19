@@ -98,8 +98,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
         final locale = AppIntl.of(context)!.localeName;
         return '$from ${date.day} ${DateFormat.MMMM(locale).format(date)} $to ${secondaryDate?.day} ${DateFormat.MMMM(locale).format(secondaryDate ?? date)}';
       },
-      eventTileBuilder: (date, events, boundary, startDuration, endDuration) =>
-          _buildEventTile(events, context),
+      eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events, context),
       weekDayBuilder: (DateTime date) =>
           Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date, model, context)),
     );
@@ -135,10 +134,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
 
   Widget _buildEventTile(List<CalendarEventData> events, BuildContext context) {
     if (events.isNotEmpty) {
-      return CalendarEventTile(
-        padding: const EdgeInsets.all(6.0),
-        event: events[0] as EventData,
-      );
+      return CalendarEventTile(padding: const EdgeInsets.all(6.0), event: events[0] as EventData);
     } else {
       return Container();
     }

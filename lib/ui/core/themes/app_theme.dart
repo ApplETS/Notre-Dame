@@ -109,11 +109,7 @@ class AppTheme with ChangeNotifier {
         surface: const Color(0xff1e1e1e),
         surfaceTint: const Color(0xff1e1e1e),
       ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          foregroundColor: AppPalette.grey.black,
-        ),
-      ),
+      filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(foregroundColor: AppPalette.grey.black)),
       extensions: [_darkAppColors],
     );
   }();

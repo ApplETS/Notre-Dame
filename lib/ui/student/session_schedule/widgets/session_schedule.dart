@@ -88,10 +88,7 @@ class _SessionScheduleState extends State<SessionSchedule> {
 
   Widget _buildEventTile(List<CalendarEventData> events, BuildContext context) {
     if (events.isNotEmpty) {
-      return CalendarEventTile(
-        padding: const EdgeInsets.all(6.0),
-        event: events[0] as EventData,
-      );
+      return CalendarEventTile(padding: const EdgeInsets.all(6.0), event: events[0] as EventData);
     } else {
       return Container();
     }

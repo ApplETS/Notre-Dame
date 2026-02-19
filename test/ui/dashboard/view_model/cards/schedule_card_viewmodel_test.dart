@@ -6,7 +6,6 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/schedule_card_viewmodel.dart';
-
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../helpers.dart';
 

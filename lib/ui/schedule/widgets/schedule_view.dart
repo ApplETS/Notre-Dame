@@ -18,7 +18,6 @@ import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
-
 import '../../core/themes/app_theme.dart';
 
 class ScheduleView extends StatefulWidget {

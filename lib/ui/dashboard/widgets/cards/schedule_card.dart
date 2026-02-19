@@ -2,15 +2,15 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/schedule_card_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
-
-// Project imports:
-import 'package:notredame/l10n/app_localizations.dart';
-import 'package:stacked/stacked.dart';
 
 class ScheduleCard extends StatelessWidget {
   const ScheduleCard({super.key});

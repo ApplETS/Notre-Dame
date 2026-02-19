@@ -8,9 +8,9 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
+import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/data/services/schedule_service.dart';
 
 abstract class CalendarViewModel extends FutureViewModel {
   @protected

@@ -135,11 +135,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
                   ),
                 ),
                 Expanded(
-                  child: DayCalendar(
-                    listView: false,
-                    controller: widget.controller,
-                    selectedDate: date,
-                  ),
+                  child: DayCalendar(listView: false, controller: widget.controller, selectedDate: date),
                 ),
               ],
             ),

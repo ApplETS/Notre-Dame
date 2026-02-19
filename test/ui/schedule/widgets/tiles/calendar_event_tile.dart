@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/models/event_data.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 import '../../../../helpers.dart';
@@ -70,7 +70,7 @@ void main() {
                     endTime: end,
                     teacherName: "John Doe",
                     activityName: "Cours",
-                    locations: ["D-2020"]
+                    locations: ["D-2020"],
                   ),
                 );
               },

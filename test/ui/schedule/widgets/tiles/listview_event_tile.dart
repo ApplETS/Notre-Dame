@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/models/event_data.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
 import '../../../../helpers.dart';
 
@@ -25,15 +25,14 @@ final EventData event = EventData(
 void main() {
   group("ListViewEventTile - ", () {
     testWidgets("display the short title, entire title, type of activity, hours and local of the course", (
-        WidgetTester tester,) async {
+      WidgetTester tester,
+    ) async {
       // Set the textScaleFactor to 0.5 otherwise the row overflow, only happen in test.
       await tester.pumpWidget(
         localizedWidget(
           child: MediaQuery(
             data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
-            child: ListViewEventTile(
-              event
-            ),
+            child: ListViewEventTile(event),
           ),
         ),
       );

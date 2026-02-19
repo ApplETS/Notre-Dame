@@ -1,13 +1,14 @@
-// Flutter imports:
+// Dart imports:
 import 'dart:math';
 
+// Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:notredame/data/models/event_data.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
@@ -97,10 +98,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                       if (courseLocation != null) _sheetRow(courseLocation, Icons.location_pin),
                       if (courseType != null) _sheetRow(courseType, Icons.book),
                       if (teacherName != null)
-                        _sheetRow(
-                          "${AppIntl.of(context)!.schedule_calendar_by} $teacherName",
-                          Icons.person,
-                        ),
+                        _sheetRow("${AppIntl.of(context)!.schedule_calendar_by} $teacherName", Icons.person),
                     ],
                   ),
                 ),

@@ -16,7 +16,6 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-
 import '../../../data/services/in_app_review_service.dart';
 import '../../../data/services/preferences_service.dart';
 import '../../../domain/constants/preferences_flags.dart';
@@ -82,7 +81,6 @@ class DashboardViewModel extends FutureViewModel {
     }
     return false;
   }
-
 
   /// Return session progress based on today's [date]
   double getSessionProgress() {
@@ -189,11 +187,7 @@ class DashboardViewModel extends FutureViewModel {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait([
-      futureToRunBroadcast(),
-      futureToRunGrades(),
-      futureToRunSessionProgressBar(),
-    ]);
+    return Future.wait([futureToRunBroadcast(), futureToRunGrades(), futureToRunSessionProgressBar()]);
   }
 
   @override

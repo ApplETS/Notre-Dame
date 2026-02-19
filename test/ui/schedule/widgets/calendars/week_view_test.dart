@@ -1,9 +1,9 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/models/event_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';

@@ -2,15 +2,14 @@
 import 'dart:math';
 
 // Flutter imports:
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-
 import '../../core/themes/app_theme.dart';
 
 class ProgressBarCard extends StatefulWidget {

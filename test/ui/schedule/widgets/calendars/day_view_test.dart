@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/models/event_data.dart';
-import 'package:notredame/data/services/schedule_service.dart';
-import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
-import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart' as table_calendar;
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../../helpers.dart';
