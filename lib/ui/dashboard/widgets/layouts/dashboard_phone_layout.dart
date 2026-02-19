@@ -107,7 +107,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
           key: _rowKey,
           padding: const EdgeInsets.fromLTRB(40.0, 16.0, 40.0, 0.0),
           child: Row(
-            spacing: 18,
+            spacing: 18.0,
             children: [
               Expanded(child: AspectRatio(aspectRatio: 1, child: Card(child: null))),
               Expanded(

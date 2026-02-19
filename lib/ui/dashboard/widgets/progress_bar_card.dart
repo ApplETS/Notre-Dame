@@ -96,7 +96,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                   ),
                 ],
               )
-            : Expanded(child: Center(child: Text(AppIntl.of(context)!.session_without))),
+            : Center(child: Text(AppIntl.of(context)!.session_without)),
       ),
     ),
   );
