@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
@@ -17,25 +18,33 @@ void main() {
     scheduleServiceMock = setupScheduleServiceMock();
 
     viewModel = _TestCalendarViewModel(intl: await setupAppIntl());
+
+    final Map<DateTime, List<EventData>> events = {
+      DateTime(2023, 10, 1): [
+        EventData(
+          courseAcronym: "LOG100",
+          courseName: "Programmation et réseautique en génie logiciel",
+          date: DateTime(2023, 10, 1),
+          startTime: DateTime(2023, 10, 1, 8),
+          endTime: DateTime(2023, 10, 1, 10),
+        ),
+      ],
+    };
+
+    ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
   });
 
   group('CalendarViewModel', () {
     test('coursesActivities groups activities by date', () async {
-      final Map<DateTime, List<EventData>> events = {
-        DateTime(2023, 10, 1): [
-          EventData(
-            courseAcronym: "LOG100",
-            courseName: "Programmation et réseautique en génie logiciel",
-            date: DateTime(2023, 10, 1),
-            startTime: DateTime(2023, 10, 1, 8),
-            endTime: DateTime(2023, 10, 1, 10),
-          ),
-        ],
-      };
-
-      ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
       await viewModel.futureToRun();
       expect(viewModel.calendarEventsFromDate(DateTime(2023, 10, 1)).length, 1);
+      verify(scheduleServiceMock.events).called(1);
+    });
+
+    test('clears cache', () async {
+      await viewModel.futureToRun();
+      viewModel.refreshEvents();
+      verify(scheduleServiceMock.events).called(2);
     });
   });
 }
