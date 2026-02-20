@@ -31,7 +31,6 @@ void main() {
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
 
-  // Some settings
   Map<PreferencesFlag, dynamic> settingsWeek = {
     PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
     PreferencesFlag.scheduleShowTodayBtn: true,
@@ -115,7 +114,6 @@ void main() {
         expect(find.byIcon(Icons.today_outlined), findsOneWidget);
 
         final analyticsService = locator<AnalyticsService>();
-        // Assuming AnalyticsService is a Mockito mock
         verifyNever(analyticsService.logEvent("ScheduleView", "Select today clicked"));
 
         await tester.tap(find.byIcon(Icons.today_outlined));
