@@ -73,7 +73,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, _, _) => FilledCell(
-        onTileTap: (event, date) => _onDayTapped(context, events, date),
+        onTileTap: (event, date) => _onDayTapped(context, date),
         hideDaysNotInMonth: false,
         titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,
@@ -83,11 +83,11 @@ class _MonthCalendarState extends State<MonthCalendar> {
         events: events,
         backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
       ),
-      onCellTap: (events, date) => _onDayTapped(context, events, date),
+      onCellTap: (events, date) => _onDayTapped(context, date),
     );
   }
 
-  void _onDayTapped(BuildContext context, List<CalendarEventData> events, DateTime date) {
+  void _onDayTapped(BuildContext context, DateTime date) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
