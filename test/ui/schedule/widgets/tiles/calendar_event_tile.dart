@@ -84,14 +84,11 @@ void main() {
     await tester.tap(find.byType(CalendarEventTile));
     await tester.pumpAndSettle();
 
-    // The dialog title should display the course name and location.
+    expect(find.byType(BottomSheet), findsOneWidget);
     expect(find.text('GEN101'), findsExactly(2));
-    // The dialog content should show the course type.
     expect(find.text('Cours'), findsOneWidget);
     expect(find.text('D-2020'), findsOneWidget);
-    // It should also display the teacher info.
-    expect(find.textContaining('By John Doe'), findsOneWidget);
-    // And the time info should be formatted correctly.
+    expect(find.textContaining('${intl.schedule_calendar_by} John Doe'), findsOneWidget);
     expect(
       find.textContaining('${intl.schedule_calendar_from_time} 9:00 ${intl.schedule_calendar_to_time} 12:00'),
       findsOneWidget,

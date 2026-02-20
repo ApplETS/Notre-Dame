@@ -40,17 +40,14 @@ class _ScheduleDefaultViewState extends State<SessionScheduleView> {
           ),
           titleSpacing: 0,
         ),
-        body: RefreshIndicator(
-          child: model.isBusy
-              ? const Center(child: CircularProgressIndicator())
-              : SessionSchedule(
-                  calendarEvents: model.calendarEvents,
-                  loaded: !model.busy(model.isLoadingEvents),
-                  displaySaturday: model.displaySaturday,
-                  displaySunday: model.displaySunday,
-                ),
-          onRefresh: () => model.refresh(),
-        ),
+        body: model.isBusy
+            ? const Center(child: CircularProgressIndicator())
+            : SessionSchedule(
+                calendarEvents: model.calendarEvents,
+                loaded: !model.busy(model.isLoadingEvents),
+                displaySaturday: model.displaySaturday,
+                displaySunday: model.displaySunday,
+              ),
       ),
     );
   }
