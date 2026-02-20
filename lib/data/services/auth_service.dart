@@ -98,6 +98,23 @@ class AuthService {
     }
   }
 
+   Future<(AuthenticationResult?, MsalException?)> acquireTokenWithCacheReset() async {
+    try {
+      _token = null;
+
+      await signOut();
+
+      final result = await singleAccountPca?.acquireToken(scopes: _scopes, prompt: Prompt.login);
+
+      _token = result?.accessToken;
+      _logger.d('Token acquired with cache reset => ${result?.toJson()}');
+      return (result, null);
+    } on MsalException catch (e) {
+      _logger.e('Token acquisition with cache reset failed => $e');
+      return (null, e);
+    }
+  }
+
   void _setupToken() {
     locator<Dio>().options.headers['Authorization'] = 'Bearer $_token';
   }
