@@ -1,17 +1,19 @@
+// Flutter imports:
+import 'package:flutter/cupertino.dart';
+
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../data/mocks/services/schedule_service_mock.dart';
@@ -39,7 +41,7 @@ void main() {
         startTime: firstDayOfTheMonth.add(Duration(hours: 9)),
         endTime: firstDayOfTheMonth.add(Duration(hours: 12)),
       ),
-    ]
+    ],
   };
 
   group("month calendar view - ", () {
@@ -52,12 +54,7 @@ void main() {
       ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
     });
 
-    tearDown(
-      () => {
-        unregister<NavigationService>(),
-        unregister<SettingsRepository>(),
-      },
-    );
+    tearDown(() => {unregister<NavigationService>(), unregister<SettingsRepository>()});
 
     testWidgets("displays events", (WidgetTester tester) async {
       await tester.runAsync(() async {
@@ -71,11 +68,7 @@ void main() {
 
     testWidgets("opens bottom sheet when a day is tapped", (WidgetTester tester) async {
       await tester.runAsync(() async {
-        await tester.pumpWidget(
-          localizedWidget(
-            child: MonthCalendar(controller: ScheduleController()),
-          ),
-        );
+        await tester.pumpWidget(localizedWidget(child: MonthCalendar(controller: ScheduleController())));
         await tester.pumpAndSettle();
       });
 
