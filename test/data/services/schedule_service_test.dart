@@ -2,16 +2,16 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// Project imports:
 import 'package:notredame/data/models/activity_code.dart';
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-// Project imports:
-import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
 import '../../helpers.dart';
 import '../mocks/repositories/course_repository_mock.dart';
 import '../mocks/repositories/settings_repository_mock.dart';
