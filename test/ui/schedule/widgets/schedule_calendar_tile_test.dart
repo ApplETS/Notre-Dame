@@ -46,20 +46,22 @@ void main() {
     final end = DateTime(2025, 3, 1, 10, 0);
 
     await tester.pumpWidget(
-      MaterialApp(
-        home: localizedWidget(
-          child: Builder(
-            builder: (context) {
-              return ScheduleCalendarTile(
-                buildContext: context,
-                title: 'Test Title',
-                description: 'Math101-Algebra;Room 101;Lecture;John Doe',
-                start: start,
-                end: end,
-                backgroundColor: Colors.white,
-                padding: const EdgeInsets.all(8.0),
-              );
-            },
+      localizedWidget(
+        child: MaterialApp(
+          home: localizedWidget(
+            child: Builder(
+              builder: (context) {
+                return ScheduleCalendarTile(
+                  buildContext: context,
+                  title: 'Test Title',
+                  description: 'Math101-Algebra;Room 101;Lecture;John Doe',
+                  start: start,
+                  end: end,
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.all(8.0),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -86,20 +88,20 @@ void main() {
   // Test that when start and end times are null, the dialog shows the "not available" text.
   testWidgets('Displays N/A for null start and end times', (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        home: localizedWidget(
-          child: Builder(
-            builder: (context) {
-              return ScheduleCalendarTile(
-                buildContext: context,
-                title: 'Test Title',
-                description: 'Science101-Physics;Lab 1;Practical;Jane Doe',
-                backgroundColor: Colors.white,
-                padding: const EdgeInsets.all(8.0),
-                // start and end are intentionally null
-              );
-            },
-          ),
+      localizedWidget(
+        child: Builder(
+          builder: (context) {
+            return ScheduleCalendarTile(
+              buildContext: context,
+              title: 'PHY335',
+              cardDescription: 'D-2020\nLabo A',
+              description: 'PHY335;Labo A;Practical;Jane Doe',
+              nbLines: 3,
+              backgroundColor: Colors.red,
+              padding: const EdgeInsets.all(8.0),
+              // start and end are intentionally null
+            );
+          },
         ),
       ),
     );
@@ -109,7 +111,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining('N/A'), findsOneWidget);
-    expect(find.text('Science101 (Lab 1)'), findsOneWidget);
+    expect(find.text('PHY335 (Labo A)'), findsOneWidget);
   });
 
   // Test that when teacherName equals the literal "null", no teacher info is displayed.
@@ -118,21 +120,19 @@ void main() {
     final end = DateTime(2025, 3, 1, 12, 30);
 
     await tester.pumpWidget(
-      MaterialApp(
-        home: localizedWidget(
-          child: Builder(
-            builder: (context) {
-              return ScheduleCalendarTile(
-                buildContext: context,
-                title: 'Test Title',
-                description: 'History101-History;Room 201;Seminar;null',
-                start: start,
-                end: end,
-                backgroundColor: Colors.white,
-                padding: const EdgeInsets.all(8.0),
-              );
-            },
-          ),
+      localizedWidget(
+        child: Builder(
+          builder: (context) {
+            return ScheduleCalendarTile(
+              buildContext: context,
+              title: 'Test Title',
+              description: 'History101-History;Room 201;Seminar;null',
+              start: start,
+              end: end,
+              backgroundColor: Colors.white,
+              padding: const EdgeInsets.all(8.0),
+            );
+          },
         ),
       ),
     );
