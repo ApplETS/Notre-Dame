@@ -138,7 +138,7 @@ List<QuickLink> quickLinks(AppIntl intl) => [
   QuickLink(
     id: 21,
     name: intl.ets_bureau_respect_personne_title,
-    image: Image.asset('assets/images/brp_logo.png', color: AppPalette.etsLightRed),
+    image: FittedBox(child: FaIcon(FontAwesomeIcons.peopleRoof, color: AppPalette.etsLightRed)),
     link: 'https://www.etsmtl.ca/a-propos/bureau-du-respect-de-la-personne',
   ),
 ];
