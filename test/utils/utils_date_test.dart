@@ -198,11 +198,11 @@ void main() {
         expect(Utils.weeksRemaining(endDate, now), 0);
       });
 
-      test('returns 0 when end is in past', () {
+      test('returns -1 when end is in past', () {
         final now = DateTime(2024, 3, 31);
         final endDate = DateTime(2024, 3, 10);
 
-        expect(Utils.weeksRemaining(endDate, now), 0);
+        expect(Utils.weeksRemaining(endDate, now), -1);
       });
 
       test('truncates partial weeks', () {
