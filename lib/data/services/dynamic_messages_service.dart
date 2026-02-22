@@ -52,7 +52,7 @@ class DynamicMessagesService {
       return LastCourseDayOfWeekMessage(context.now.weekday);
     }
 
-    if (context.weeksRemaining <= 4) {
+    if (context.weeksRemaining <= 4 && context.weeksRemaining > 0) {
       return LessOneMonthRemainingMessage(context.weeksRemaining);
     }
 
