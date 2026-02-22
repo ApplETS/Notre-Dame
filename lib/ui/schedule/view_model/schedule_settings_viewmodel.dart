@@ -1,3 +1,6 @@
+// Dart imports:
+import 'dart:async';
+
 // Package imports:
 import 'package:collection/collection.dart';
 import 'package:stacked/stacked.dart';
@@ -86,8 +89,8 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
       );
       _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
-    _controller.settingsUpdated();
     setBusy(false);
+    _controller.refreshEvents();
   }
 
   @override

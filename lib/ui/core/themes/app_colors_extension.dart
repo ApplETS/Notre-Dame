@@ -5,6 +5,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   AppColorsExtension({
     required this.appBar,
     required this.navBar,
+    required this.dashboardCard,
     required this.backgroundAlt,
     required this.backgroundVibrant,
     required this.scheduleLine,
@@ -35,6 +36,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
 
   final Color appBar;
   final Color navBar;
+  final Color dashboardCard;
   final Color backgroundAlt;
   final Color backgroundVibrant;
   final Color scheduleLine;
@@ -66,6 +68,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   ThemeExtension<AppColorsExtension> copyWith({
     Color? appBar,
     Color? navBar,
+    Color? dashboardCard,
     Color? backgroundAlt,
     Color? backgroundVibrant,
     Color? scheduleLine,
@@ -96,6 +99,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
       navBar: navBar ?? this.navBar,
+      dashboardCard: dashboardCard ?? this.dashboardCard,
       backgroundAlt: backgroundAlt ?? this.backgroundAlt,
       backgroundVibrant: backgroundVibrant ?? this.backgroundVibrant,
       scheduleLine: scheduleLine ?? this.scheduleLine,
@@ -136,6 +140,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     return AppColorsExtension(
       appBar: _lerp(appBar, other.appBar, t),
       navBar: _lerp(navBar, other.navBar, t),
+      dashboardCard: _lerp(dashboardCard, other.dashboardCard, t),
       backgroundAlt: _lerp(backgroundAlt, other.backgroundAlt, t),
       backgroundVibrant: _lerp(backgroundVibrant, other.backgroundVibrant, t),
       scheduleLine: _lerp(scheduleLine, other.scheduleLine, t),

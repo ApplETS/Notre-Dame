@@ -45,5 +45,5 @@ class _GreyColors {
   final Color white = const Color(0xfffafafa);
   final Color lightGrey = const Color(0xff807f83);
   final Color darkGrey = const Color(0xff636467);
-  final Color black = const Color(0xff2e2a25);
+  final Color black = const Color(0xff10100e);
 }

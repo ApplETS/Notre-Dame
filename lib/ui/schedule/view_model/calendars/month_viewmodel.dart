@@ -3,12 +3,12 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
 import 'package:notredame/utils/utils.dart';
 
 class MonthViewModel extends CalendarViewModel {
   DateTime monthSelected = Utils.getFirstDayOfMonth(DateTime.now());
-  final EventController eventController = EventController();
 
   MonthViewModel({required super.intl});
 
@@ -22,8 +22,8 @@ class MonthViewModel extends CalendarViewModel {
     eventController.addAll(selectedMonthEvents());
   }
 
-  List<CalendarEventData> selectedMonthEvents() {
-    List<CalendarEventData> events = [];
+  List<EventData> selectedMonthEvents() {
+    List<EventData> events = [];
 
     final List<DateTime> months = [
       monthSelected,
@@ -46,7 +46,7 @@ class MonthViewModel extends CalendarViewModel {
     final bool isThisMonthSelected = currentMonth == monthSelected;
 
     isThisMonthSelected
-        ? Fluttertoast.showToast(msg: super.appIntl.schedule_already_today_toast)
+        ? Fluttertoast.showToast(msg: super.intl.schedule_already_today_toast)
         : monthSelected = currentMonth;
 
     return !isThisMonthSelected;

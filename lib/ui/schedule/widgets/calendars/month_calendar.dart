@@ -12,13 +12,20 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
+import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 
-class MonthCalendar extends StatelessWidget {
-  final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
+class MonthCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
 
-  MonthCalendar({super.key, required this.controller});
+  const MonthCalendar({super.key, required this.controller});
+
+  @override
+  State<MonthCalendar> createState() => _MonthCalendarState();
+}
+
+class _MonthCalendarState extends State<MonthCalendar> {
+  final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +36,14 @@ class MonthCalendar extends StatelessWidget {
   }
 
   Widget _buildMonthView(BuildContext context, MonthViewModel model) {
-    controller.returnToToday = () {
+    widget.controller.returnToToday = () {
       model.returnToCurrentDate();
       monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
+    };
+
+    widget.controller.refreshEvents = () async {
+      await model.refreshEvents();
+      setState(() {});
     };
 
     return MonthView(
@@ -39,7 +51,7 @@ class MonthCalendar extends StatelessWidget {
       cellAspectRatio: 0.8,
       borderColor: context.theme.appColors.scheduleLine,
       controller: model.eventController..addAll(model.selectedMonthEvents()),
-      safeAreaOption: const SafeAreaOption(top: false, bottom: false),
+      safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
       useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
       onPageChange: (date, page) => model.handleDateSelectedChanged(date),
       weekDayBuilder: (int value) => WeekDayTile(
@@ -47,7 +59,7 @@ class MonthCalendar extends StatelessWidget {
         displayBorder: false,
         textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
         backgroundColor: context.theme.appColors.appBar,
-        weekDayStringBuilder: (p0) => weekTitles[p0],
+        weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
       ),
       headerStringBuilder: (date, {secondaryDate}) {
         final locale = AppIntl.of(context)!.localeName;
@@ -61,6 +73,7 @@ class MonthCalendar extends StatelessWidget {
       startDay: WeekDays.sunday,
       initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
       cellBuilder: (date, events, _, _, _) => FilledCell(
+        onTileTap: (event, date) => _onDayTapped(context, date),
         hideDaysNotInMonth: false,
         titleColor: context.theme.textTheme.bodyMedium!.color!,
         highlightColor: AppPalette.etsLightRed,
@@ -69,6 +82,65 @@ class MonthCalendar extends StatelessWidget {
         isInMonth: date.month == DateTime.now().month,
         events: events,
         backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
+      ),
+      onCellTap: (events, date) => _onDayTapped(context, date),
+    );
+  }
+
+  void _onDayTapped(BuildContext context, DateTime date) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        child: DraggableScrollableSheet(
+          maxChildSize: 0.85,
+          minChildSize: 0.5,
+          initialChildSize: 0.85,
+          expand: false,
+          builder: (context, scrollController) => Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Container(
+                        height: 5,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: context.theme.appColors.modalHandle,
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        DateFormat.yMMMMd(AppIntl.of(context)!.localeName).format(date),
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: DayCalendar(listView: false, controller: widget.controller, selectedDate: date),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

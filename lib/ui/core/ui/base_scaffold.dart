@@ -88,7 +88,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         Column(
           children: [
             if (widget.appBar != null) widget.appBar!,
-            Expanded(child: SafeArea(bottom: false, top: false, child: widget.body!)),
+            Expanded(child: SafeArea(bottom: false, top: false, left: false, child: widget.body!)),
           ],
         ),
         if (_isOffline) _buildOfflineBar(),

@@ -6,12 +6,13 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 
 class SessionSchedule extends StatefulWidget {
-  final List<CalendarEventData<Object>> calendarEvents;
+  final List<EventData> calendarEvents;
   final bool loaded;
   final bool displaySaturday;
   final bool displaySunday;
@@ -85,17 +86,9 @@ class _SessionScheduleState extends State<SessionSchedule> {
     );
   }
 
-  Widget _buildEventTile(List<CalendarEventData<dynamic>> events, BuildContext context) {
+  Widget _buildEventTile(List<CalendarEventData> events, BuildContext context) {
     if (events.isNotEmpty) {
-      return ScheduleCalendarTile(
-        title: events[0].title,
-        description: events[0].description,
-        start: events[0].startTime,
-        end: events[0].endTime,
-        padding: const EdgeInsets.all(6.0),
-        backgroundColor: events[0].color,
-        buildContext: context,
-      );
+      return CalendarEventTile(padding: const EdgeInsets.all(6.0), event: events[0] as EventData);
     } else {
       return Container();
     }

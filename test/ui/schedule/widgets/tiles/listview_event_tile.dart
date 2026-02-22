@@ -5,22 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
-import '../../../helpers.dart';
+import 'package:notredame/data/models/event_data.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
+import '../../../../helpers.dart';
 
-final CourseActivity course = CourseActivity(
-  courseGroup: 'GEN101-01',
-  courseName: 'Libelle du cours',
+final date = DateTime(2020, 9, 3);
+
+final EventData event = EventData(
+  courseAcronym: 'GEN101',
+  group: 'GEN101-01',
   activityName: 'TP',
-  activityDescription: 'Travaux pratiques',
-  activityLocation: ['À distance'],
-  startDateTime: DateTime(2020, 9, 3, 18),
-  endDateTime: DateTime(2020, 9, 3, 20),
+  locations: ['D-2020'],
+  startTime: date.add(Duration(hours: 18)),
+  endTime: date.add(Duration(hours: 20)),
+  courseName: 'Generic course',
+  date: date,
 );
 
 void main() {
-  group("CourseActivityTile - ", () {
+  group("ListViewEventTile - ", () {
     testWidgets("display the short title, entire title, type of activity, hours and local of the course", (
       WidgetTester tester,
     ) async {
@@ -29,15 +32,15 @@ void main() {
         localizedWidget(
           child: MediaQuery(
             data: const MediaQueryData(textScaler: TextScaler.linear(0.5)),
-            child: CourseActivityTile(course),
+            child: ListViewEventTile(event),
           ),
         ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.text(course.courseGroup), findsOneWidget);
-      expect(find.text("${course.courseName}\n${course.activityDescription}"), findsOneWidget);
-      expect(find.text(course.activityLocation.first), findsOneWidget);
+      expect(find.text(event.group!), findsOneWidget);
+      expect(find.text("${event.courseName}\n${event.activityName}"), findsOneWidget);
+      expect(find.text(event.locations!.first), findsOneWidget);
 
       expect(find.text("18:00"), findsOneWidget);
       expect(find.text("20:00"), findsOneWidget);

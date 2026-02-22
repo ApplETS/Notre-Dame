@@ -2,27 +2,23 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
-import 'package:collection/collection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import '../../../data/services/in_app_review_service.dart';
+import '../../../data/services/preferences_service.dart';
+import '../../../domain/constants/preferences_flags.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
@@ -42,9 +38,6 @@ class DashboardViewModel extends FutureViewModel {
   /// Getter for the animation controller
   AnimationController get controller => _controller!;
 
-  /// Check if the controller is initialized
-  bool get _isControllerInitialized => _controller != null;
-
   /// Localization class of the application.
   final AppIntl _appIntl;
 
@@ -60,83 +53,6 @@ class DashboardViewModel extends FutureViewModel {
   double get progress => _progress;
 
   List<int> get sessionDays => _sessionDays;
-
-  /// Activities for today
-  final List<CourseActivity> _scheduleEvents = [];
-
-  /// Get the list of activities for today
-  List<CourseActivity> get scheduleEvents {
-    return _scheduleEvents;
-  }
-
-  /// Return session progress based on today's [date]
-  double getSessionProgress() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return -1.0;
-    } else {
-      return sessionDays[0] / sessionDays[1];
-    }
-  }
-
-  /// Static flag to track if the animation has been played
-  static bool hasAnimationPlayed = false;
-
-  /// Tracks if the animation should be played
-  final bool shouldPlayAnimation;
-
-  /// TODO : add AppIntl to the messages
-  DashboardViewModel({required AppIntl intl})
-    : _appIntl = intl,
-
-      /// if the animation has not been played, play it
-      shouldPlayAnimation = !hasAnimationPlayed {
-    hasAnimationPlayed = true;
-  }
-
-  /// Loading state of the widget
-  bool isLoading = false;
-
-  /// Slide offset for title and subtitle animations (slide from top)
-  /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
-  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
-
-  /// Fade-in opacity based on title animation progress
-  double get titleFadeOpacity => titleAnimation.value;
-
-  /// Initialize the animation controller for the circle
-  void init(TickerProvider ticker) {
-    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
-
-    heightAnimation = Tween<double>(
-      begin: 0,
-      end: 330,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
-
-    opacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-
-    titleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-
-    if (shouldPlayAnimation) {
-      _controller!.forward();
-    } else {
-      _controller!.value = 1.0;
-    }
-  }
-
-  @override
-  void dispose() {
-    // Dispose the controller only if it has been initialized and its not null
-    if (_isControllerInitialized) {
-      _controller!.dispose();
-    }
-    super.dispose();
-  }
 
   static Future<bool> launchInAppReview() async {
     final PreferencesService preferencesService = locator<PreferencesService>();
@@ -164,6 +80,74 @@ class DashboardViewModel extends FutureViewModel {
       return true;
     }
     return false;
+  }
+
+  /// Return session progress based on today's [date]
+  double getSessionProgress() {
+    if (_courseRepository.activeSessions.isEmpty) {
+      return -1.0;
+    } else {
+      return sessionDays[0] / sessionDays[1];
+    }
+  }
+
+  /// Static flag to track if the animation has been played
+  static bool hasAnimationPlayed = false;
+
+  /// Tracks if the animation should be played
+  final bool shouldPlayAnimation;
+
+  DashboardViewModel({required AppIntl intl})
+    : _appIntl = intl,
+
+      /// if the animation has not been played, play it
+      shouldPlayAnimation = !hasAnimationPlayed {
+    hasAnimationPlayed = true;
+  }
+
+  /// Loading state of the widget
+  bool isLoading = false;
+
+  /// Slide offset for title and subtitle animations (slide from top)
+  /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
+  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
+
+  /// Fade-in opacity based on title animation progress
+  double get titleFadeOpacity => titleAnimation.value;
+
+  /// Initialize the animation controller for the circle
+  void init(TickerProvider ticker) {
+    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
+
+    heightAnimation = Tween<double>(
+      begin: 0,
+      end: 240,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
+
+    opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    titleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    if (shouldPlayAnimation) {
+      _controller!.forward();
+    } else {
+      _controller!.value = 1.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose the controller only if it has been initialized and its not null
+    if (_controller != null) {
+      _controller!.dispose();
+    }
+    super.dispose();
   }
 
   static Future<void> launchBroadcastUrl(String url) async {
@@ -203,12 +187,7 @@ class DashboardViewModel extends FutureViewModel {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait([
-      futureToRunBroadcast(),
-      futureToRunGrades(),
-      futureToRunSessionProgressBar(),
-      futureToRunSchedule(),
-    ]);
+    return Future.wait([futureToRunBroadcast(), futureToRunGrades(), futureToRunSessionProgressBar()]);
   }
 
   @override
@@ -229,58 +208,6 @@ class DashboardViewModel extends FutureViewModel {
       setBusyForObject(progress, false);
     }
     return [];
-  }
-
-  Future<List<CourseActivity>> futureToRunSchedule() async {
-    try {
-      setBusyForObject(scheduleEvents, true);
-      scheduleEvents.clear();
-      await _courseRepository.getCoursesActivities();
-
-      final now = _settingsManager.dateTimeNow;
-      final tomorrow = now.add(const Duration(days: 1)).withoutTime;
-      final twoDaysFromNow = now.add(const Duration(days: 2)).withoutTime;
-
-      final courseActivities =
-          _courseRepository.coursesActivities
-              ?.where((activity) => activity.endDateTime.isAfter(now) && activity.endDateTime.isBefore(twoDaysFromNow))
-              .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
-              .toList() ??
-          [];
-
-      for (final activity in courseActivities) {
-        final isToday = now.compareWithoutTime(activity.startDateTime);
-        final isTomorrow = activity.startDateTime.withoutTime == tomorrow;
-
-        if ((isToday || isTomorrow) && await _isLaboratoryGroupToAdd(activity)) {
-          if (isTomorrow && scheduleEvents.isNotEmpty && scheduleEvents.first.startDateTime.compareWithoutTime(now)) {
-            return scheduleEvents;
-          }
-          scheduleEvents.add(activity);
-        }
-      }
-      return scheduleEvents;
-    } catch (e) {
-      onError(e, null);
-    } finally {
-      setBusyForObject(scheduleEvents, false);
-    }
-    return [];
-  }
-
-  Future<bool> _isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
-    final courseKey = courseActivity.courseGroup.split('-').first;
-
-    final activityCodeToUse = await _settingsManager.getDynamicString(
-      PreferencesFlag.scheduleLaboratoryGroup,
-      courseKey,
-    );
-
-    return activityCodeToUse == ActivityCode.labGroupA
-        ? courseActivity.activityName != ActivityName.labB
-        : activityCodeToUse == ActivityCode.labGroupB
-        ? courseActivity.activityName != ActivityName.labA
-        : true;
   }
 
   /// Get the list of courses for the Grades card.

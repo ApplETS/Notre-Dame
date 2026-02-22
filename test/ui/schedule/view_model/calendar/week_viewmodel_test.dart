@@ -20,6 +20,7 @@ void main() {
     courseRepositoryMock = setupCourseRepositoryMock();
     setupSettingsRepositoryMock();
     setupFlutterToastMock();
+    setupScheduleServiceMock();
 
     viewModel = WeekViewModel(intl: await setupAppIntl());
   });
@@ -49,7 +50,6 @@ void main() {
       final DateTime saturday = Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 1)).withoutTime;
       coursesMapped[saturday]?.add(saturdayCourse);
 
-      viewModel.coursesActivities.addAll(coursesMapped);
       viewModel.weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
 
       final result = viewModel.returnToCurrentDate();
