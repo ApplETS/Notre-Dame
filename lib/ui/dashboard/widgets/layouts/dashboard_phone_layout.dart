@@ -96,7 +96,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                   child: SkeletonLoader(
                     loading: widget.model.isLoading,
                     child: Text(
-                      'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
+                      widget.model.dynamicMessageText ?? '',
                       style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
