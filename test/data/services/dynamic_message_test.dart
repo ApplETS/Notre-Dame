@@ -420,10 +420,7 @@ void main() {
         final now = DateTime(2024, 2, 12, 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
-        final activities = [
-          createActivity(DateTime(2024, 2, 9, 9)),
-          createActivity(DateTime(2024, 2, 19, 9)),
-        ];
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
@@ -438,10 +435,7 @@ void main() {
         final now = DateTime(2024, 2, 10, 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
-        final activities = [
-          createActivity(DateTime(2024, 2, 9, 9)),
-          createActivity(DateTime(2024, 2, 13, 9)),
-        ];
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 13, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
@@ -456,10 +450,7 @@ void main() {
         final now = DateTime(2024, 2, 12, 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
-        final activities = [
-          createActivity(DateTime(2024, 2, 9, 9)),
-          createActivity(DateTime(2024, 2, 19, 9)),
-        ];
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
@@ -474,10 +465,7 @@ void main() {
         final now = DateTime(2024, 2, 16, 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
-        final activities = [
-          createActivity(DateTime(2024, 2, 9, 9)),
-          createActivity(DateTime(2024, 2, 19, 9)),
-        ];
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
@@ -569,7 +557,10 @@ void main() {
     group('FirstWeekOfSessionMessage -', () {
       test('returns FirstWeekOfSessionMessage in the first week before weekend', () {
         final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
-        final session = createSession(startDate: weekday(referenceDate, DateTime.monday), endDate: DateTime(2024, 6, 30));
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday),
+          endDate: DateTime(2024, 6, 30),
+        );
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
@@ -600,7 +591,10 @@ void main() {
 
       test('does not return during first weekend (shows FirstWeekCompletedMessage instead)', () {
         final now = weekday(referenceDate, DateTime.saturday, hour: 10);
-        final session = createSession(startDate: weekday(referenceDate, DateTime.monday), endDate: DateTime(2024, 6, 30));
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday),
+          endDate: DateTime(2024, 6, 30),
+        );
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
@@ -859,22 +853,19 @@ void main() {
         expect(message, isA<DaysBeforeSessionEndsMessage>());
       });
 
-      test('ReplacedDayMessage takes priority over LongWeekend', () {
+      test('LongWeekend takes priority over ReplacedDayMessage', () {
         final reference = DateTime(2024, 5, 13);
         final now = weekday(reference, DateTime.friday, hour: 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
-
         final activities = [
           createActivity(weekday(reference, DateTime.friday, hour: 9)),
           createActivity(weekday(reference, DateTime.tuesday, week: 1, hour: 9)),
         ];
-
         final replacedDay = ReplacedDay(
           originalDate: weekday(reference, DateTime.monday, week: 1),
           replacementDate: DateTime(2024, 1, 1),
           description: 'Holiday',
         );
-
         final context = createContext(
           now: now,
           session: session,
@@ -882,11 +873,9 @@ void main() {
           replacedDays: [replacedDay],
           daysRemaining: 20,
         );
-
         expect(context.isLongWeekendIncoming, isTrue);
-
         final message = engine.determineMessage(context);
-        expect(message, isA<NoCoursesOnDayMessage>());
+        expect(message, isA<LongWeekendIncomingMessage>());
       });
 
       test('LongWeekendIncomingMessage takes priority over LastCourseDayOfWeekMessage', () {

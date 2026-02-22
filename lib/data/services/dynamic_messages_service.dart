@@ -12,18 +12,6 @@ class DynamicMessagesService {
       return DaysBeforeSessionEndsMessage(context.daysRemaining);
     }
 
-    final replacedDay = context.getUpcomingReplacedDay();
-    if (replacedDay != null) {
-      final originalWeekday = replacedDay.originalDate.weekday;
-
-      if (context.isReplacedDayCancellation(replacedDay)) {
-        return NoCoursesOnDayMessage(originalWeekday, replacedDay.description);
-      }
-
-      final replacementWeekday = replacedDay.replacementDate.weekday;
-      return DayFollowsScheduleMessage(originalWeekday, replacementWeekday, replacedDay.description);
-    }
-
     if (context.isInsideLongWeekend) {
       final totalBreakDuration = context.totalBreakDuration ?? 0;
       if (totalBreakDuration >= 6) {
@@ -35,6 +23,18 @@ class DynamicMessagesService {
 
     if (context.isLongWeekendIncoming) {
       return LongWeekendIncomingMessage();
+    }
+
+    final replacedDay = context.getUpcomingReplacedDay();
+    if (replacedDay != null) {
+      final originalWeekday = replacedDay.originalDate.weekday;
+
+      if (context.isReplacedDayCancellation(replacedDay)) {
+        return NoCoursesOnDayMessage(originalWeekday, replacedDay.description);
+      }
+
+      final replacementWeekday = replacedDay.replacementDate.weekday;
+      return DayFollowsScheduleMessage(originalWeekday, replacementWeekday, replacedDay.description);
     }
 
     if (context.weeksCompleted == 1) {
