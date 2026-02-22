@@ -67,8 +67,14 @@ mixin Utils {
   }
 
   static int weeksRemaining(DateTime endDate, DateTime now) {
-    final days = daysBetween(now, endDate);
-    if (days < 0) return -1;
-    return days ~/ 7;
+    final today = DateTime(now.year, now.month, now.day);
+    final end = DateTime(endDate.year, endDate.month, endDate.day);
+
+    if (end.isBefore(today)) return -1;
+
+    final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
+    final startOfEndWeek = end.subtract(Duration(days: end.weekday - 1));
+
+    return startOfEndWeek.difference(startOfWeek).inDays ~/ 7;
   }
 }

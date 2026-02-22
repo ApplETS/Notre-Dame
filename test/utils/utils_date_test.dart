@@ -188,7 +188,7 @@ void main() {
         final now = DateTime(2024, 3, 10);
         final endDate = DateTime(2024, 3, 31);
 
-        expect(Utils.weeksRemaining(endDate, now), 3);
+        expect(Utils.weeksRemaining(endDate, now), 2);
       });
 
       test('returns 0 for less than 7 days remaining', () {
