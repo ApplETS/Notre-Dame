@@ -7,17 +7,19 @@ import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 
 bool isAnimating = false;
 
 class WeekCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
+
   const WeekCalendar({super.key, required this.controller});
 
   @override
@@ -51,6 +53,11 @@ class _WeekCalendarState extends State<WeekCalendar> {
       weekViewKey.currentState?.animateToWeek(model.weekSelected).then((_) => isAnimating = false);
     };
 
+    widget.controller.refreshEvents = () async {
+      await model.refreshEvents();
+      setState(() {});
+    };
+
     return WeekView(
       key: weekViewKey,
       weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
@@ -60,7 +67,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
       }),
       backgroundColor: context.theme.scaffoldBackgroundColor,
       weekTitleHeight: (MediaQuery.of(context).orientation == Orientation.portrait) ? 60 : 35,
-      safeAreaOption: const SafeAreaOption(top: false, bottom: false),
+      safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
       headerStyle: HeaderStyle(
         decoration: BoxDecoration(color: context.theme.appColors.appBar),
         leftIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
@@ -125,17 +132,9 @@ class _WeekCalendarState extends State<WeekCalendar> {
     );
   }
 
-  Widget _buildEventTile(List<CalendarEventData<dynamic>> events, BuildContext context) {
+  Widget _buildEventTile(List<CalendarEventData> events, BuildContext context) {
     if (events.isNotEmpty) {
-      return ScheduleCalendarTile(
-        title: events[0].title,
-        description: events[0].description,
-        start: events[0].startTime,
-        end: events[0].endTime,
-        padding: const EdgeInsets.all(6.0),
-        backgroundColor: events[0].color,
-        buildContext: context,
-      );
+      return CalendarEventTile(padding: const EdgeInsets.all(6.0), event: events[0] as EventData);
     } else {
       return Container();
     }

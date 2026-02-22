@@ -25,6 +25,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -45,6 +46,7 @@ import 'data/mocks/services/navigation_service_mock.dart';
 import 'data/mocks/services/networking_service_mock.dart';
 import 'data/mocks/services/preferences_service_mock.dart';
 import 'data/mocks/services/remote_config_service_mock.dart';
+import 'data/mocks/services/schedule_service_mock.dart';
 import 'data/mocks/services/signets_api_mock.dart';
 
 /// Unregister the service [T] from GetIt
@@ -267,6 +269,16 @@ LaunchUrlServiceMock setupLaunchUrlServiceMock() {
   final service = LaunchUrlServiceMock();
 
   locator.registerSingleton<LaunchUrlService>(service);
+
+  return service;
+}
+
+/// Load a mock of the [ScheduleService]
+ScheduleServiceMock setupScheduleServiceMock() {
+  unregister<ScheduleService>();
+  final service = ScheduleServiceMock();
+
+  locator.registerSingleton<ScheduleService>(service);
 
   return service;
 }

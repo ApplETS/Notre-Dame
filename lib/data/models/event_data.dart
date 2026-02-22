@@ -1,0 +1,55 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+
+@immutable
+class EventData extends CalendarEventData {
+  final String courseAcronym;
+  final String courseName;
+  final List<String>? locations;
+  final String? activityName;
+  final String? group;
+  final String? teacherName;
+
+  @override
+  DateTime get startTime => super.startTime!;
+
+  @override
+  DateTime get endTime => super.endTime!;
+
+  // Unfortunately AutoSizeText can't put line breaks in the right places, hence the need for the multiline hack
+  String? calendarDescription(bool multiline) {
+    if (locations == null) {
+      return null;
+    }
+
+    List<String> withoutBreakableSpaces = locations!.map((str) {
+      return str.replaceAll(" ", "\u{00A0}");
+    }).toList();
+
+    final courseLocation = locations!.contains("Non assign")
+        ? "N/A"
+        : withoutBreakableSpaces.join(multiline ? "\n" : ", ");
+
+    final name = activityName?.replaceAll(" ", "\u{00A0}");
+    return "$courseLocation\n$name";
+  }
+
+  EventData({
+    required this.courseAcronym,
+    required this.courseName,
+    required super.date,
+    required super.startTime,
+    required super.endTime,
+    super.color,
+    this.locations,
+    this.activityName,
+    this.group,
+    this.teacherName,
+  }) : super(title: courseAcronym) {
+    assert(super.startTime != null);
+    assert(super.endTime != null);
+  }
+}

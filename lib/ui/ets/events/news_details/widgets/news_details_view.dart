@@ -157,12 +157,16 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
           ShareParams(text: "${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}"),
         );
       case Menu.export:
-        final translations = AppIntl.of(context)!;
-        final viewModel = CalendarSelectionViewModel(translations: translations);
+        final intl = AppIntl.of(context)!;
+        final viewModel = CalendarSelectionViewModel(intl: intl);
         viewModel.news = news;
-        showDialog(
+        showModalBottomSheet(
           context: context,
-          builder: (_) => CalendarSelectionWidget(translations: translations),
+          isScrollControlled: true,
+          backgroundColor: context.theme.scaffoldBackgroundColor,
+          builder: (context) {
+            return CalendarSelectionSheet(intl: intl);
+          },
         );
       case Menu.report:
         showModalBottomSheet(

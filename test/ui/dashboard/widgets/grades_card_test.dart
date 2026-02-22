@@ -48,11 +48,7 @@ void main() {
     });
 
     testWidgets('Has card grades displayed - with no courses', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        localizedWidget(
-          child: GradesCard(courses: [], onDismissed: () {}, loading: false),
-        ),
-      );
+      await tester.pumpWidget(localizedWidget(child: GradesCard(courses: [], loading: false)));
       await tester.pumpAndSettle();
 
       // Find grades card
@@ -69,11 +65,7 @@ void main() {
     });
 
     testWidgets('Has card grades displayed - with courses', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        localizedWidget(
-          child: GradesCard(courses: courses, onDismissed: () {}, loading: false),
-        ),
-      );
+      await tester.pumpWidget(localizedWidget(child: GradesCard(courses: courses, loading: false)));
       await tester.pumpAndSettle();
 
       // Find grades card

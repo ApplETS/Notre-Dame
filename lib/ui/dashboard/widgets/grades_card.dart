@@ -8,15 +8,14 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/core/ui/dismissible_card.dart';
+import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
   final List<Course> courses;
-  final VoidCallback onDismissed;
   final bool loading;
 
-  const GradesCard({super.key, required this.courses, required this.onDismissed, required this.loading});
+  const GradesCard({super.key, required this.courses, required this.loading});
 
   @override
   Widget build(BuildContext context) {
@@ -36,20 +35,12 @@ class GradesCard extends StatelessWidget {
       displayedCourses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
     }
 
-    return DismissibleCard(
-      key: UniqueKey(),
-      onDismissed: (DismissDirection direction) => onDismissed(),
+    return WidgetComponent(
+      title: AppIntl.of(context)!.grades_title,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(17, 15, 0, 0),
-              child: Text(AppIntl.of(context)!.grades_title, style: Theme.of(context).textTheme.titleLarge),
-            ),
-          ),
           if (courses.isEmpty && !loading)
             _buildNoGradesContent(context)
           else

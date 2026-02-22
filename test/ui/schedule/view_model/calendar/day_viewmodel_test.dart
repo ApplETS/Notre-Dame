@@ -14,6 +14,7 @@ void main() {
     setupCourseRepositoryMock();
     setupSettingsRepositoryMock();
     setupFlutterToastMock();
+    setupScheduleServiceMock();
 
     viewModel = DayViewModel(intl: await setupAppIntl());
   });

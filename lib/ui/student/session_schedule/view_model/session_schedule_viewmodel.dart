@@ -2,16 +2,16 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
-class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Object>>> {
+class SessionScheduleViewModel extends FutureViewModel<List<EventData>> {
   /// Load the events
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
@@ -23,7 +23,7 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
   bool displaySunday = false;
 
   /// List of currently loaded events
-  List<CalendarEventData<Object>> calendarEvents = [];
+  List<EventData> calendarEvents = [];
 
   /// A map that contains a color from the AppTheme.SchedulePalette palette associated with each course.
   final Map<String, Color> courseColors = {};
@@ -34,12 +34,12 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
   SessionScheduleViewModel({String? sessionCode}) : _sessionCode = sessionCode;
 
   @override
-  Future<List<CalendarEventData<Object>>> futureToRun() async {
+  Future<List<EventData>> futureToRun() async {
     refresh();
     return calendarEvents;
   }
 
-  CalendarEventData<Object> calendarEventData(ScheduleActivity eventData) {
+  EventData calendarEventTile(ScheduleActivity eventData) {
     final DateTime now = DateTime.now();
     final int daysToAdd = eventData.dayOfTheWeek - (now.weekday % 7);
     final DateTime targetDate = now.add(Duration(days: daysToAdd));
@@ -56,11 +56,11 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
       targetDate.day,
       eventData.endTime.hour,
       eventData.endTime.minute,
-    ).subtract(const Duration(minutes: 1));
+    );
 
-    return CalendarEventData(
-      title: eventData.courseAcronym,
-      description: "${eventData.courseAcronym};;${eventData.courseTitle};null",
+    return EventData(
+      courseAcronym: eventData.courseAcronym,
+      courseName: eventData.courseTitle,
       date: targetDate,
       startTime: newStartTime,
       endTime: newEndTime,
@@ -86,7 +86,7 @@ class SessionScheduleViewModel extends FutureViewModel<List<CalendarEventData<Ob
             .toList();
 
         for (final activity in filteredScheduleActivities) {
-          final event = calendarEventData(activity);
+          final event = calendarEventTile(activity);
           if (event.date.weekday == 6) {
             displaySaturday = true;
           }

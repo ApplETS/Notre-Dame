@@ -14,10 +14,19 @@ import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
-class CalendarSelectionWidget extends StatelessWidget {
-  final AppIntl translations;
-  const CalendarSelectionWidget({super.key, required this.translations});
+class CalendarSelectionSheet extends StatefulWidget {
+  final AppIntl intl;
+
+  const CalendarSelectionSheet({super.key, required this.intl});
+
+  @override
+  State<CalendarSelectionSheet> createState() => _CalendarSelectionSheetState();
+}
+
+class _CalendarSelectionSheetState extends State<CalendarSelectionSheet> {
+  String selectedCalendarId = '';
 
   @override
   Widget build(BuildContext context) {
@@ -25,106 +34,150 @@ class CalendarSelectionWidget extends StatelessWidget {
       future: CalendarService.nativeCalendars,
       builder: (context, AsyncSnapshot<UnmodifiableListView<Calendar>> calendars) {
         if (calendars.error != null) {
-          return lackingPermissionsDialog(context);
+          return _permissionDeniedContent(context);
         }
+
         if (!calendars.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
+
         final items = calendars.data!
             .map<DropdownMenuItem<String>>(
-              (Calendar value) => DropdownMenuItem<String>(value: value.name, child: Text(value.name!)),
+              (calendar) => DropdownMenuItem(value: calendar.name, child: Text(calendar.name!)),
             )
             .toList();
-        items.add(DropdownMenuItem<String>(value: "new", child: Text(translations.calendar_new)));
-        String selectedCalendarId = items[0].value ?? '';
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text(translations.calendar_export),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(translations.calendar_export_question),
-                  DropdownButton<String>(
-                    items: items,
-                    value: selectedCalendarId,
-                    onChanged: (calendar) {
-                      setState(() {
-                        selectedCalendarId = calendar!;
-                      });
-                    },
-                  ),
-                  Builder(
-                    builder: (context) {
-                      return selectedCalendarId == "new"
-                          ? TextField(
-                              onChanged: (value) {
-                                selectedCalendarId = value;
-                              },
-                              decoration: InputDecoration(labelText: translations.calendar_name),
-                            )
-                          : const SizedBox(height: 10);
-                    },
-                  ),
-                ],
+
+        items.add(DropdownMenuItem(value: "new", child: Text(widget.intl.calendar_new)));
+
+        selectedCalendarId = selectedCalendarId.isEmpty ? items.first.value! : selectedCalendarId;
+
+        return Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Container(
+                          height: 5,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: context.theme.appColors.modalHandle,
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Text(
+                        widget.intl.calendar_export,
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(translations.calendar_cancel_button),
+              SafeArea(
+                left: false,
+                right: false,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 32.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 12.0,
+                    children: [
+                      Text(widget.intl.calendar_export_question),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: context.theme.appBarTheme.backgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: DropdownButton(
+                          value: selectedCalendarId,
+                          underline: const SizedBox(),
+                          isExpanded: true,
+                          items: items,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedCalendarId = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      if (selectedCalendarId == "new") ...[
+                        const SizedBox(height: 8),
+                        TextField(
+                          decoration: InputDecoration(labelText: widget.intl.calendar_name),
+                          onChanged: (value) {
+                            selectedCalendarId = value;
+                          },
+                        ),
+                      ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(widget.intl.calendar_cancel_button),
+                          ),
+                          const SizedBox(width: 8),
+                          FilledButton(onPressed: _export, child: Text(widget.intl.calendar_export_button)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    if (selectedCalendarId.isEmpty) {
-                      Fluttertoast.showToast(
-                        msg: translations.calendar_select,
-                        backgroundColor: AppPalette.etsLightRed,
-                        textColor: AppPalette.grey.black,
-                      );
-                      return;
-                    }
-                    Navigator.of(context).pop();
-
-                    final CourseRepository courseRepository = locator<CourseRepository>();
-
-                    final result = CalendarService.export(courseRepository.coursesActivities!, selectedCalendarId);
-
-                    result.then((value) {
-                      if (value) {
-                        Fluttertoast.showToast(
-                          msg: translations.calendar_export_success,
-                          backgroundColor: AppPalette.gradeGoodMax,
-                          textColor: AppPalette.grey.black,
-                        );
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: translations.calendar_export_error,
-                          backgroundColor: AppPalette.etsLightRed,
-                          textColor: AppPalette.grey.black,
-                        );
-                      }
-                    });
-                  },
-                  child: Text(translations.calendar_export_button),
-                ),
-              ],
-            );
-          },
+              ),
+            ],
+          ),
         );
       },
     );
   }
 
-  AlertDialog lackingPermissionsDialog(BuildContext context) {
-    return AlertDialog(
-      title: Text(translations.calendar_permission_denied_modal_title),
-      content: Text(translations.calendar_permission_denied),
-      actions: <Widget>[
-        TextButton(
-          child: Text(translations.calendar_cancel_button),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+  void _export() {
+    if (selectedCalendarId.isEmpty) {
+      Fluttertoast.showToast(
+        msg: widget.intl.calendar_select,
+        backgroundColor: AppPalette.etsLightRed,
+        textColor: AppPalette.grey.black,
+      );
+      return;
+    }
+
+    Navigator.pop(context);
+
+    final courseRepository = locator<CourseRepository>();
+
+    CalendarService.export(courseRepository.coursesActivities!, selectedCalendarId).then((success) {
+      Fluttertoast.showToast(
+        msg: success ? widget.intl.calendar_export_success : widget.intl.calendar_export_error,
+        backgroundColor: success ? AppPalette.gradeGoodMax : AppPalette.etsLightRed,
+        textColor: AppPalette.grey.black,
+      );
+    });
+  }
+
+  Widget _permissionDeniedContent(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(widget.intl.calendar_permission_denied_modal_title, style: Theme.of(context).textTheme.titleLarge),
+        const SizedBox(height: 8),
+        Text(widget.intl.calendar_permission_denied),
+        const SizedBox(height: 16),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(onPressed: () => Navigator.pop(context), child: Text(widget.intl.calendar_cancel_button)),
         ),
       ],
     );
