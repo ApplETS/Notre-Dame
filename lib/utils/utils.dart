@@ -66,9 +66,9 @@ mixin Utils {
     return (daysBetween(startWeekMonday, currentWeekMonday) ~/ 7) + 1;
   }
 
-static int weeksRemaining(DateTime endDate, DateTime now) {
-  final days = daysBetween(now, endDate);
-  if (days < 0) return -1;
-  return days ~/ 7;
-}
+  static int weeksRemaining(DateTime endDate, DateTime now) {
+    final days = daysBetween(now, endDate);
+    if (days < 0) return -1;
+    return days ~/ 7;
+  }
 }
