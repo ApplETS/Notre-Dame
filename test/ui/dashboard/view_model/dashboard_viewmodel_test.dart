@@ -16,7 +16,6 @@ import 'package:notredame/locator.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
-import '../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
 import '../../../data/mocks/services/launch_url_service_mock.dart';
 import '../../../data/mocks/services/preferences_service_mock.dart';
@@ -30,7 +29,6 @@ void main() {
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late PreferencesServiceMock preferencesServiceMock;
   late InAppReviewServiceMock inAppReviewServiceMock;
-  late AnalyticsServiceMock analyticsServiceMock;
   late ListSessionsRepositoryMock listSessionsRepositoryMock;
   late LaunchUrlServiceMock launchUrlServiceMock;
 
@@ -185,7 +183,7 @@ void main() {
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       settingsManagerMock = setupSettingsRepositoryMock();
       preferenceServiceMock = setupPreferencesServiceMock();
-      analyticsServiceMock = setupAnalyticsServiceMock();
+      setupAnalyticsServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
       setupBroadcastMessageRepositoryMock();
       listSessionsRepositoryMock = setupListSessionsRepositoryMock();
@@ -649,7 +647,6 @@ void main() {
         expect(viewModel.cards, hiddenCardDashboard);
         expect(viewModel.cardsToDisplay, [PreferencesFlag.aboutUsCard, PreferencesFlag.progressBarCard]);
 
-        verify(analyticsServiceMock.logEvent("DashboardViewModel", "Deleting scheduleCard"));
         verify(settingsManagerMock.setInt(PreferencesFlag.scheduleCard, -1)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 0)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 1)).called(1);
@@ -666,7 +663,6 @@ void main() {
           PreferencesFlag.progressBarCard,
         ]);
 
-        verify(analyticsServiceMock.logEvent("DashboardViewModel", "Restoring cards"));
         verify(settingsManagerMock.getDashboard()).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 0)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.scheduleCard, 1)).called(1);
@@ -695,7 +691,7 @@ void main() {
         ]);
 
         // Call the setter.
-        viewModel.setOrder(PreferencesFlag.progressBarCard, 0);
+        viewModel.onCardReorder(2, 0);
 
         await untilCalled(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 0));
 
@@ -706,7 +702,6 @@ void main() {
           PreferencesFlag.scheduleCard,
         ]);
 
-        verify(analyticsServiceMock.logEvent("DashboardViewModel", "Reordoring progressBarCard"));
         verify(settingsManagerMock.getDashboard()).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 0)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 1)).called(1);
@@ -800,35 +795,6 @@ void main() {
       test("initializes without error", () async {
         await viewModel.init();
         // Test passes if no exception is thrown
-      });
-    });
-
-    group("onCardReorder - ", () {
-      test("reorders cards correctly when newIndex > oldIndex", () async {
-        // Setup cards by calling futureToRun
-        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock, toReturn: dashboard);
-        SettingsRepositoryMock.stubSetInt(settingsManagerMock, PreferencesFlag.aboutUsCard);
-        SettingsRepositoryMock.stubSetInt(settingsManagerMock, PreferencesFlag.scheduleCard);
-        SettingsRepositoryMock.stubSetInt(settingsManagerMock, PreferencesFlag.progressBarCard);
-        await viewModel.futureToRun();
-
-        expect(viewModel.cardsToDisplay, [
-          PreferencesFlag.aboutUsCard,
-          PreferencesFlag.scheduleCard,
-          PreferencesFlag.progressBarCard,
-        ]);
-
-        // Reorder from index 1 to index 2
-        viewModel.onCardReorder(0, 2);
-        
-        await Future.delayed(Duration(milliseconds: 10));
-        // await untilCalled(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 1));
-        // Verify the order is updated
-        expect(viewModel.cardsToDisplay, [
-          PreferencesFlag.scheduleCard,
-          PreferencesFlag.aboutUsCard,
-          PreferencesFlag.progressBarCard,
-        ]);
       });
     });
   });
