@@ -49,7 +49,6 @@ class StartUpViewModel extends BaseViewModel {
 
     if (isLogin) {
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
       AuthenticationResult? token;
@@ -67,7 +66,6 @@ class StartUpViewModel extends BaseViewModel {
       }
 
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     }
   }

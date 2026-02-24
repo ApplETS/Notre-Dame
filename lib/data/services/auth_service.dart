@@ -98,7 +98,7 @@ class AuthService {
     }
   }
 
-   Future<(AuthenticationResult?, MsalException?)> acquireTokenWithCacheReset() async {
+  Future<(AuthenticationResult?, MsalException?)> acquireTokenWithCacheReset() async {
     try {
       _token = null;
 

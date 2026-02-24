@@ -88,6 +88,5 @@ class SessionProgressUseCase {
   void dispose() {
     _controller.close();
     _subscription?.cancel();
-  }
-  
+  }  
 }

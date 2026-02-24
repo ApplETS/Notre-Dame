@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'dart:async';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
@@ -13,9 +14,11 @@ import 'package:notredame/ui/dashboard/widgets/broadcast_message_card.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import '../../../data/mocks/repositories/broadcast_message_repository_mock.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
 import '../../../data/mocks/services/remote_config_service_mock.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import '../../../helpers.dart';
 
 void main() {
@@ -37,6 +40,7 @@ void main() {
     final settingsManagerMock = setupSettingsRepositoryMock();
     remoteConfigServiceMock = setupRemoteConfigServiceMock();
     final courseRepositoryMock = setupCourseRepositoryMock();
+    final listSessionsRepositoryMock = setupListSessionsRepositoryMock();
 
     setupCourseRepositoryMock();
     setupNavigationServiceMock();
@@ -68,6 +72,26 @@ void main() {
 
     SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime.now());
     SettingsRepositoryMock.stubGetDashboard(settingsManagerMock, toReturn: dashboard);
+
+    // Stub ListSessionsRepository
+    final mockSession = Session(
+      shortName: 'H2024',
+      longName: 'Hiver 2024',
+      startDate: DateTime(2024, 1, 1),
+      endDate: DateTime(2024, 4, 30),
+      endDateCourses: DateTime(2024, 4, 20),
+      startDateRegistration: DateTime(2023, 11, 1),
+      deadlineRegistration: DateTime(2024, 1, 15),
+      startDateCancellationWithRefund: DateTime(2024, 1, 1),
+      deadlineCancellationWithRefund: DateTime(2024, 1, 31),
+      deadlineCancellationWithRefundNewStudent: DateTime(2024, 1, 31),
+      startDateCancellationWithoutRefundNewStudent: DateTime(2024, 2, 1),
+      deadlineCancellationWithoutRefundNewStudent: DateTime(2024, 4, 15),
+      deadlineCancellationASEQ: DateTime(2024, 4, 10),
+    );
+    ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: mockSession);
+    ListSessionsRepositoryMock.stubGetSessions(listSessionsRepositoryMock, controller: StreamController<List<Session>>(), sessions: [mockSession]);
+    ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: Stream.value([mockSession]));
   });
 
   group('UI - ', () {
