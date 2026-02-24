@@ -328,7 +328,7 @@ SignetsClientMock setupSignetsClientMock() {
 }
 
 ListSessionsRepositoryMock setupListSessionsRepositoryMock() {
-  unregister<ListSessionsRepositoryMock>();
+  unregister<ListSessionsRepository>();
   final repository = ListSessionsRepositoryMock();
 
   locator.registerSingleton<ListSessionsRepository>(repository);

@@ -63,6 +63,7 @@ void main() {
   setUp(() {
     mockSignetsClient = setupSignetsClientMock();
     mockSecureStorage = setupFlutterSecureStorageMock();
+    setupNetworkingServiceMock();
     setupLogger();
 
     repository = ListSessionsRepository();
@@ -73,9 +74,9 @@ void main() {
   });
 
   group('getSessions', () {
-    test('should call _getFromCache and _getFromApi', () async {
-      SignetsClientMock.stubGetSessionList(mockSignetsClient, []);
-      FlutterSecureStorageMock.stubRead(mockSecureStorage, key: ListSessionsRepository.sessionsKey, valueToReturn: '[]');
+    test('should fetch from API and emit data', () async {
+      SignetsClientMock.stubGetSessionList(mockSignetsClient, [activeSession]);
+      FlutterSecureStorageMock.stubRead(mockSecureStorage, key: ListSessionsRepository.sessionsKey, valueToReturn: null);
 
       int streamEvents = 0;
       repository.stream.listen((data) {
@@ -85,8 +86,9 @@ void main() {
       await repository.getSessions();
 
       verify(mockSignetsClient.getSessionList()).called(1);
-      expect(streamEvents, 2);
+      expect(streamEvents, 1);
     });
+
   });
 
   group('getActiveSession', () {

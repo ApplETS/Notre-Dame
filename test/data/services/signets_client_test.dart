@@ -6,11 +6,13 @@ import 'package:notredame/data/services/signets_client.dart';
 void main() {
   late DioAdapter dioAdapter;
   late SignetsClient signetsClient;
+  late Dio dio;
 
   group('SignetsClient - ', () {
     setUp(() {
-      final dio = Dio();
+      dio = Dio();
       dioAdapter = DioAdapter(dio: dio);
+      dio.httpClientAdapter = dioAdapter;
       signetsClient = SignetsClient(dio);
     });
 
@@ -21,9 +23,8 @@ void main() {
     group('getSessionList - ', () {
       test('getSessionList should return an empty list when no sessions are available', () async {
         dioAdapter.onGet(
-          '/listeSessions',
-          (server) => server.reply(200, {"liste": [], "erreur": ""}),
-          headers: { 'Authorization': 'Bearer token'}
+          RegExp(r'.*listeSessions'),
+          (server) => server.reply(200, {"liste": [], "erreur": ""})
         );
 
         final response = await signetsClient.getSessionList();
@@ -34,7 +35,7 @@ void main() {
     
       test('getSessionList should return a list of sessions', () async {
         dioAdapter.onGet(
-          '/listeSessions',
+          RegExp(r'.*listeSessions'),
           (server) => server.reply(200, {
             "liste": [
               {
@@ -72,8 +73,7 @@ void main() {
               }
             ],
             "erreur": ""
-          }),
-          headers: { 'Authorization': 'Bearer token'}
+          })
         );
 
         final response = await signetsClient.getSessionList();

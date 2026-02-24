@@ -11,6 +11,7 @@ import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:retry/retry.dart';
 import 'package:synchronized/synchronized.dart';
+import 'package:notredame/data/services/networking_service.dart';
 
 class BaseStreamRepository<T> {
   static const Duration _cacheDuration = Duration(minutes: 2);
@@ -39,71 +40,101 @@ class BaseStreamRepository<T> {
     };
   }
 
+  bool _isFirstFetch = true;
+  final NetworkingService _networkingService = locator<NetworkingService>();
+
+  bool _isCacheValid() {
+    if (_cacheTimestamp == null) return false;
+    return DateTime.now().difference(_cacheTimestamp!) < _cacheDuration;
+  }
+
+  Future<void> _setValueFromJson<RType>(dynamic decoded, RType Function(Map<String, dynamic>) fromJson) async {
+    await _itemsLock.synchronized(() async {
+      if (decoded is List) {
+        value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as T;
+      } else if (decoded is Map<String, dynamic>) {
+        value ??= fromJson(decoded) as T;
+      }
+      _controller.add(value);
+    });
+  }
+
+  Future<SignetsApiResponse<T>> _performApiCall(Future<SignetsApiResponse<T>> Function() apiCall) async {
+    return await retry(
+      () => apiCall().timeout(Duration(seconds: 3)),
+      maxAttempts: 5,
+      retryIf: (e) async {
+        _logger.e('Error while fetching data from API: $_cacheKey', error: e);
+        if (e is DioException && e.response?.statusCode == StatusCodes.UNAUTHORIZED) {
+          final authService = locator<AuthService>();
+          await authService.getToken();
+        }
+        return true;
+      },
+    );
+  }
+
+  Future<void> fetch<RType>(Future<SignetsApiResponse<T>> Function() apiCall, RType Function(Map<String, dynamic>) fromJson, {bool forceUpdate = false}) async {
+    if (_isFirstFetch) {
+      _isFirstFetch = false;
+      
+      await Future.wait([
+        getFromCache(fromJson),
+        getFromApi(apiCall, forceUpdate: true),
+      ]);
+    } else {
+      if (!forceUpdate && _isCacheValid() && value != null) {
+        return;
+      } else {
+        await getFromApi(apiCall, forceUpdate: true);
+      }
+    }
+  }
+
   @protected
-  Future<bool> getFromCache<RType>(RType Function(Map<String, dynamic>) fromJson) async {
-    if(value != null) {
-      return false;
+  Future<void> getFromCache<RType>(RType Function(Map<String, dynamic>) fromJson) async {
+    if (value != null) {
+      return;
     }
 
     final cache = await secureStorage.read(key: _cacheKey);
-    if(cache == null || cache.isEmpty) {
-      return false;
+    if (cache == null || cache.isEmpty) {
+      return;
     }
 
     try {
       final decoded = json.decode(cache);
-
-      await _itemsLock.synchronized(() async {
-        if(decoded is List) {
-          value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as T;
-        } else if (decoded is Map<String, dynamic>) {
-          value ??= fromJson(decoded) as T;
-        }
-        _controller.add(value);
-      });
-      return true;
-    } catch(e) {
-      _logger.e('Error while reading from cache: $_cacheKey', error: Exception);
+      await _setValueFromJson(decoded, fromJson);
+    } catch (e) {
+      _logger.e('Error while reading from cache: $_cacheKey', error: e);
       _controller.addError(e);
-      return false;
     }
-
   }
 
   @protected
-  Future<bool> getFromApi(Future<SignetsApiResponse<T>> Function() apiCall, {bool forceUpdate = false}) async {
-    if(_requestInProgress) {
-      return false;
+  Future<void> getFromApi(Future<SignetsApiResponse<T>> Function() apiCall, {bool forceUpdate = false}) async {
+    if (_requestInProgress) {
+      return;
     }
 
-    if(!forceUpdate) {
-      final now = DateTime.now();
-      if(_cacheTimestamp != null && now.difference(_cacheTimestamp!) < _cacheDuration) {
-        return false;
-      }
+    if (!forceUpdate && _isCacheValid()) {
+      return;
+    }
+
+    if (!await _networkingService.hasConnectivity()) {
+      _controller.addError('No internet connection');
+      return;
     }
 
     try {
       _requestInProgress = true;
-      final apiResponse = await retry(
-        () => apiCall().timeout(Duration(seconds: 3)),
-        maxAttempts: 5,
-        retryIf: (e) async {
-          _logger.e('Error while fetching data from API: $_cacheKey', error: e);
-
-          if(e is DioException && e.response?.statusCode == StatusCodes.UNAUTHORIZED) {
-            final authService = locator<AuthService>();
-            await authService.getToken();
-          }
-          return true;
-        },
-      );
+      final apiResponse = await _performApiCall(apiCall);
       _requestInProgress = false;
 
-      if(apiResponse.error != null && apiResponse.error!.isNotEmpty) {
+      if (apiResponse.error != null && apiResponse.error!.isNotEmpty) {
         _controller.addError(apiResponse.error as Object);
         _logger.e('Error while fetching data from API', error: apiResponse.error);
-        return false;
+        return;
       }
 
       await _itemsLock.synchronized(() async {
@@ -112,14 +143,11 @@ class BaseStreamRepository<T> {
         _controller.add(value);
       });
       await secureStorage.write(key: _cacheKey, value: json.encode(apiResponse.data));
-      return true;
-    } catch(e) {
+    } catch (e) {
       _logger.e('Error while fetching data from API: $_cacheKey', error: e);
       _controller.addError(e);
-      return false;
     } finally {
       _requestInProgress = false;
     }
-    
   }
 }

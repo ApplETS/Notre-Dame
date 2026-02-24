@@ -61,14 +61,11 @@ class SessionProgressUseCase {
 
     switch (_currentTextStyle) {
       case ProgressBarText.daysElapsedWithTotalDays:
-        _currentTextStyle = ProgressBarText.daysElapsedWithTotalDays;
         return _intl.progress_bar_message(elapsedDays, totalDays);
       case ProgressBarText.percentage:
-        _currentTextStyle = ProgressBarText.percentage;
         final percentage = (_getSessionProgressPercentage() * 100).round();
         return _intl.progress_bar_message_percentage(percentage);
       default:
-        _currentTextStyle = ProgressBarText.remainingDays;
         return _intl.progress_bar_message_remaining_days(totalDays - elapsedDays);
     }
   }

@@ -15,25 +15,9 @@ class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
   ListSessionsRepository() : super(sessionsKey);
 
   Future<void> getSessions({bool forceUpdate = false}) async {
-    List<Future> tasks = [
-      _getFromCache(),
-      _getFromApi(forceUpdate: forceUpdate)
-    ];
-
-    await Future.wait(tasks);
-  }
-
-  Future<void> _getFromCache() async {
-    var executed = await super.getFromCache(Session.fromJson);
-    if(executed) {
-      _logger.d("$tag - getSessions: ${value?.length ?? 0} sessions loaded from cache.");
-    }
-  }
-
-  Future<void> _getFromApi({bool forceUpdate = false}) async {
-    var executed = await super.getFromApi(() => _signetsClient.getSessionList(), forceUpdate: forceUpdate);
-    if (executed) {
-      _logger.d("$tag - getSessions: ${value?.length ?? 0} sessions fetched.");
+    await fetch(() => _signetsClient.getSessionList(), Session.fromJson, forceUpdate: forceUpdate);
+    if (value != null) {
+      _logger.d("$tag - getSessions: ${value!.length} sessions loaded.");
     }
   }
 

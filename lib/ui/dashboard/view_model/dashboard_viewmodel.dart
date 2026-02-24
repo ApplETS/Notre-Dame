@@ -105,10 +105,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   DashboardViewModel({required AppIntl intl}) : _appIntl = intl, _sessionProgressUseCase = SessionProgressUseCase(intl);
 
   Future<void> init() async {
-    await initSessionProgress();
-  }
-
-  Future<void> initSessionProgress() async {
     _sessionProgressSubscription = _sessionProgressUseCase.stream.listen((sessionProgress) {
       this.sessionProgress = sessionProgress;
       notifyListeners();
