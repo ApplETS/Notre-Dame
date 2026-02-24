@@ -104,9 +104,9 @@ extension DynamicMessageResolver on DynamicMessage {
       FirstWeekOfSessionMessage() => intl.dynamic_message_first_week_of_session,
       FirstWeekCompletedMessage() => intl.dynamic_message_first_week_of_session_completed,
       WeekCompletedMessage(:final weeksCompleted) => intl.dynamic_message_end_of_week(weeksCompleted),
-      LessOneMonthRemainingMessage(:final weeksRemaining) => intl.dynamic_message_less_one_month_remaining(
-        weeksRemaining,
-      ),
+      LessOneMonthRemainingMessage(:final weeksRemaining) => weeksRemaining == 1
+          ? intl.dynamic_message_last_week_remaining
+          : intl.dynamic_message_less_one_month_remaining(weeksRemaining),
       NoCoursesOnDayMessage(:final weekday, :final reason) => intl.dynamic_message_no_courses_on_day(
         weekdayName(weekday),
         reason,

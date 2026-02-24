@@ -148,6 +148,8 @@
     }
   },
 
+  "dynamic_message_last_week_remaining": "Keep going, it's the last week!",
+
   "dynamic_message_generic_encouragement": "Keep up the good work!",
 
   "dynamic_message_no_courses_on_day": "There are no courses on {weekday} ({reason})",
