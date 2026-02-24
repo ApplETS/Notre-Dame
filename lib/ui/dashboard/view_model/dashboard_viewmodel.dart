@@ -194,6 +194,12 @@ class DashboardViewModel extends FutureViewModel {
   }
 
   Future loadDataAndUpdateWidget({bool forceRefresh = false}) async {
+    // Ensure sessions are loaded before running parallel operations.
+    if (_courseRepository.sessions == null ||
+        _courseRepository.sessions!.isEmpty) {
+      await _courseRepository.getSessions();
+    }
+
     await Future.wait([
       futureToRunBroadcast(),
       futureToRunGrades(),
