@@ -22,6 +22,11 @@ class DynamicMessagesService {
     }
 
     if (context.isLongWeekendIncoming) {
+      final upcomingDuration = context.upcomingBreakDuration ?? 0;
+      if (upcomingDuration >= 6) {
+        final daysUntilBreak = context.daysUntilBreakStart ?? 0;
+        return UpcomingExtendedBreakMessage(daysUntilBreak);
+      }
       return LongWeekendIncomingMessage();
     }
 

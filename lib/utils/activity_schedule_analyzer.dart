@@ -77,23 +77,48 @@ class ScheduleAnalyzer {
 
   bool get hasNextWeekSchedule => getActivitiesForNextWeek().isNotEmpty;
 
-  bool get isLongWeekendIncoming {
+  _UpcomingBreakInfo? _getUpcomingBreakInfo() {
     final thisWeek = getActivitiesForCurrentWeek();
     final nextWeek = getActivitiesForNextWeek();
 
-    if (thisWeek.isEmpty) return false;
+    if (thisWeek.isEmpty) return null;
 
     final lastActivityThisWeek = thisWeek.map((a) => a.startDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
     final nextActivity = nextWeek.isNotEmpty
         ? nextWeek.map((a) => a.startDateTime).reduce((a, b) => a.isBefore(b) ? a : b)
         : findNextActivityAfterCurrentWeek();
 
-    if (nextActivity == null) return false;
+    if (nextActivity == null) return null;
 
     final upcomingGapDays = Utils.daysBetween(lastActivityThisWeek, nextActivity);
     final usualGapDays = calculateUsualWeekendGapDays(excludeStart: lastActivityThisWeek, excludeEnd: nextActivity);
 
-    return upcomingGapDays > usualGapDays;
+    return _UpcomingBreakInfo(
+      upcomingGapDays: upcomingGapDays,
+      usualGapDays: usualGapDays,
+      lastActivityThisWeek: lastActivityThisWeek,
+      nextActivityStart: nextActivity,
+    );
+  }
+
+  bool get isLongWeekendIncoming {
+    final info = _getUpcomingBreakInfo();
+    if (info == null) return false;
+    return info.upcomingGapDays > info.usualGapDays;
+  }
+
+  /// Returns the duration of the upcoming break in days, or null if no break
+  int? get upcomingBreakDuration {
+    final info = _getUpcomingBreakInfo();
+    if (info == null || info.upcomingGapDays <= info.usualGapDays) return null;
+    return info.upcomingGapDays;
+  }
+
+  /// Returns days until the break starts (first day with no class), or null if no break
+  int? get daysUntilBreakStart {
+    final info = _getUpcomingBreakInfo();
+    if (info == null || info.upcomingGapDays <= info.usualGapDays) return null;
+    return Utils.daysBetween(now, info.lastActivityThisWeek) + 1;
   }
 
   bool get isInsideLongWeekend {
@@ -208,4 +233,18 @@ class _GapInfo {
   });
 
   bool get isLongerThanUsual => upcomingGapDays > usualGapDays;
+}
+
+class _UpcomingBreakInfo {
+  final int upcomingGapDays;
+  final int usualGapDays;
+  final DateTime lastActivityThisWeek;
+  final DateTime nextActivityStart;
+
+  _UpcomingBreakInfo({
+    required this.upcomingGapDays,
+    required this.usualGapDays,
+    required this.lastActivityThisWeek,
+    required this.nextActivityStart,
+  });
 }

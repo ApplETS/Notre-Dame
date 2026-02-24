@@ -22,6 +22,11 @@ class LongWeekendIncomingMessage extends DynamicMessage {
   const LongWeekendIncomingMessage();
 }
 
+class UpcomingExtendedBreakMessage extends DynamicMessage {
+  final int daysUntilBreak;
+  const UpcomingExtendedBreakMessage(this.daysUntilBreak);
+}
+
 class LongWeekendCurrentlyMessage extends DynamicMessage {
   final int weeksCompleted;
   const LongWeekendCurrentlyMessage(this.weeksCompleted);
@@ -98,6 +103,9 @@ extension DynamicMessageResolver on DynamicMessage {
         daysRemaining,
       ),
       LongWeekendIncomingMessage() => intl.dynamic_message_long_weekend_incoming,
+      UpcomingExtendedBreakMessage(:final daysUntilBreak) => daysUntilBreak == 1
+          ? intl.dynamic_message_upcoming_extended_break_tomorrow
+          : intl.dynamic_message_upcoming_extended_break(daysUntilBreak),
       LastCourseDayOfWeekMessage(:final weekday) => intl.dynamic_message_last_course_day_of_session(
         weekdayName(weekday),
       ),

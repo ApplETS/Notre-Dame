@@ -73,6 +73,17 @@
   "dynamic_message_first_week_of_session_completed": "Première semaine de la session complétée, continue !",
   "dynamic_message_long_weekend_incoming": "Une longue fin de semaine s'en vient !",
 
+  "dynamic_message_upcoming_extended_break": "Une longue pause s'en vient ! {days} jours avant qu'elle commence.",
+  "@dynamic_message_upcoming_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_upcoming_extended_break_tomorrow": "Une longue pause commence demain !",
+
   "dynamic_message_session_starts_soon": "Repose-toi bien! La prochaine session débute le {date}",
   "@dynamic_message_session_starts_soon": {
     "placeholders": {

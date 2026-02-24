@@ -349,6 +349,112 @@ void main() {
       });
     });
 
+    group('UpcomingExtendedBreakMessage -', () {
+      test('returns UpcomingExtendedBreakMessage when upcoming break is 6+ days', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        // Last activity this week is Thursday, next activity is the following Monday week+1
+        // Gap: Thursday to Monday week+1 = 11 days (Fri, Sat, Sun, Mon, Tue, Wed, Thu, Fri, Sat, Sun, Mon)
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 60,
+        );
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<UpcomingExtendedBreakMessage>());
+      });
+
+      test('returns LongWeekendIncomingMessage when upcoming break is less than 6 days', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        // Last activity this week is Thursday, next activity is Tuesday next week
+        // Gap: Thursday to Tuesday = 5 days (Fri, Sat, Sun, Mon, Tue)
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 60,
+        );
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, lessThan(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendIncomingMessage>());
+      });
+
+      test('UpcomingExtendedBreakMessage contains correct daysUntilBreak', () {
+        final now = weekday(referenceDate, DateTime.monday, hour: 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 60,
+        );
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<UpcomingExtendedBreakMessage>());
+        // Monday to Friday (first break day) = 4 days
+        expect((message as UpcomingExtendedBreakMessage).daysUntilBreak, 4);
+      });
+
+      test('UpcomingExtendedBreakMessage with 1 day until break', () {
+        final now = weekday(referenceDate, DateTime.thursday, hour: 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 60,
+        );
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<UpcomingExtendedBreakMessage>());
+        expect((message as UpcomingExtendedBreakMessage).daysUntilBreak, 1);
+      });
+    });
+
     group('LongWeekendCurrentlyMessage -', () {
       test('returns LongWeekendCurrentlyMessage when inside a long weekend gap', () {
         final now = weekday(referenceDate, DateTime.sunday);

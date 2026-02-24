@@ -84,6 +84,10 @@ class SessionContext {
 
   int? get totalBreakDuration => _scheduleAnalyzer.totalBreakDuration;
 
+  int? get upcomingBreakDuration => _scheduleAnalyzer.upcomingBreakDuration;
+
+  int? get daysUntilBreakStart => _scheduleAnalyzer.daysUntilBreakStart;
+
   ReplacedDay? getUpcomingReplacedDay() => _replacedDayAnalyzer.getUpcoming();
 
   bool isReplacedDayCancellation(ReplacedDay replacedDay) => _replacedDayAnalyzer.isCancellation(replacedDay);
