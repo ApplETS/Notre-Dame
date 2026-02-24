@@ -1,14 +1,17 @@
+// Dart imports:
+import 'dart:async';
+
 // Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'dart:async';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/domain/broadcast_icon_type.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/widgets/broadcast_message_card.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
@@ -18,7 +21,6 @@ import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
 import '../../../data/mocks/services/remote_config_service_mock.dart';
-import 'package:notredame/domain/models/signets-api/session.dart';
 import '../../../helpers.dart';
 
 void main() {
@@ -90,7 +92,11 @@ void main() {
       deadlineCancellationASEQ: DateTime(2024, 4, 10),
     );
     ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: mockSession);
-    ListSessionsRepositoryMock.stubGetSessions(listSessionsRepositoryMock, controller: StreamController<List<Session>>(), sessions: [mockSession]);
+    ListSessionsRepositoryMock.stubGetSessions(
+      listSessionsRepositoryMock,
+      controller: StreamController<List<Session>>(),
+      sessions: [mockSession],
+    );
     ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: Stream.value([mockSession]));
   });
 

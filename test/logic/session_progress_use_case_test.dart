@@ -1,14 +1,17 @@
+// Dart imports:
 import 'dart:async';
 
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+// Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/models/progress_bar_text_options.dart';
 import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/logic/session_progress_use_case.dart';
 import 'package:notredame/locator.dart';
-
+import 'package:notredame/logic/session_progress_use_case.dart';
 import '../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../data/mocks/repositories/settings_repository_mock.dart';
 import '../helpers.dart';
@@ -52,27 +55,22 @@ void main() {
     });
 
     test('changeProgressBarText() cycles through text styles', () async {
-      SettingsRepositoryMock.stubSetString(
-        settingsRepository,
-        PreferencesFlag.progressBarText,
-        toReturn: true
-      );
+      SettingsRepositoryMock.stubSetString(settingsRepository, PreferencesFlag.progressBarText, toReturn: true);
       SettingsRepositoryMock.stubGetString(
         settingsRepository,
         PreferencesFlag.progressBarText,
         toReturn: ProgressBarText.daysElapsedWithTotalDays.toString(),
       );
-      
+
       ListSessionsRepositoryMock.stubGetStream(listSessionsRepository, stream: controller.stream);
       ListSessionsRepositoryMock.stubGetSessions(listSessionsRepository, controller: controller, sessions: []);
-      
+
       await useCase.init();
       useCase.changeProgressBarText();
 
-      verify(settingsRepository.setString(
-        PreferencesFlag.progressBarText,
-        ProgressBarText.percentage.toString(),
-      )).called(1);
+      verify(
+        settingsRepository.setString(PreferencesFlag.progressBarText, ProgressBarText.percentage.toString()),
+      ).called(1);
     });
 
     test('fetch() calls getSessions with forceUpdate', () async {
@@ -105,7 +103,7 @@ void main() {
       // After dispose, listening to the stream should not emit any events
       var emittedEvents = 0;
       useCase.stream.listen((_) => emittedEvents++);
-      
+
       expect(emittedEvents, 0);
     });
   });

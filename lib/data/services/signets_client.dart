@@ -1,7 +1,10 @@
+// Package imports:
 import 'package:dio/dio.dart';
-import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
-import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:retrofit/retrofit.dart';
+
+// Project imports:
+import 'package:notredame/domain/models/signets-api/session.dart';
+import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
 
 part 'signets_client.g.dart';
 
@@ -11,5 +14,5 @@ abstract class SignetsClient {
 
   /// Get the list of sessions
   @GET('/listeSessions')
-  Future<SignetsApiResponse<List<Session>>> getSessionList(); 
+  Future<SignetsApiResponse<List<Session>>> getSessionList();
 }

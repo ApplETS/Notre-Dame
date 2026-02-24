@@ -1,12 +1,15 @@
+// Dart imports:
 import 'dart:convert';
 
+// Package imports:
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+// Project imports:
 import 'package:notredame/data/repositories/base_stream_repository.dart';
 import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
 import 'package:notredame/locator.dart';
-
 import '../../helpers.dart';
 import '../mocks/services/auth_service_mock.dart';
 import '../mocks/services/flutter_secure_storage_mock.dart';
@@ -34,13 +37,13 @@ void main() {
   group('BaseStreamRepository', () {
     test('should send data to new listener', () async {
       repository.value = [
-        {'key': 'value'}
+        {'key': 'value'},
       ];
       var streamEvents = 0;
       repository.stream.listen((data) {
         streamEvents++;
         expect(data, [
-          {'key': 'value'}
+          {'key': 'value'},
         ]);
       });
 
@@ -63,7 +66,7 @@ void main() {
 
       test('should load lists from cache if it exists', () async {
         final cachedData = json.encode([
-          {'key': 'value'}
+          {'key': 'value'},
         ]);
         FlutterSecureStorageMock.stubRead(mockSecureStorage, key: 'test_cache_key', valueToReturn: cachedData);
         var streamEvents = 0;
@@ -73,17 +76,15 @@ void main() {
 
         expect(streamEvents, 1);
         expect(repository.value, [
-          {'key': 'value'}
+          {'key': 'value'},
         ]);
         verify(mockSecureStorage.read(key: 'test_cache_key')).called(1);
       });
 
       test('should load key value data from cache if it exists', () async {
         final repository = BaseStreamRepository<Map<String, dynamic>>('test_cache_key');
-        
-        final cachedData = json.encode(
-          {'key': 'value'}
-        );
+
+        final cachedData = json.encode({'key': 'value'});
         FlutterSecureStorageMock.stubRead(mockSecureStorage, key: 'test_cache_key', valueToReturn: cachedData);
         var streamEvents = 0;
         repository.stream.listen((data) => streamEvents++);
@@ -91,9 +92,7 @@ void main() {
         await repository.getFromCache((json) => json);
 
         expect(streamEvents, 1);
-        expect(repository.value,
-          {'key': 'value'}
-        );
+        expect(repository.value, {'key': 'value'});
         verify(mockSecureStorage.read(key: 'test_cache_key')).called(1);
       });
 
@@ -102,10 +101,7 @@ void main() {
         var streamEvents = 0;
         var streamErrors = 0;
 
-        repository.stream.listen(
-          (data) => streamEvents++,
-          onError: (error) => streamErrors++,
-        );
+        repository.stream.listen((data) => streamEvents++, onError: (error) => streamErrors++);
 
         await repository.getFromCache((json) => json);
 
@@ -117,12 +113,11 @@ void main() {
       });
     });
 
-
     group('getFromApi - ', () {
       test('should fetch data from API and cache it', () async {
         final apiResponse = SignetsApiResponse<List<Map<String, dynamic>>>(
           data: [
-            {'key': 'value'}
+            {'key': 'value'},
           ],
         );
         var streamEvents = 0;
@@ -131,14 +126,11 @@ void main() {
         await repository.getFromApi(() async => apiResponse);
 
         expect(repository.value, [
-          {'key': 'value'}
+          {'key': 'value'},
         ]);
 
         expect(streamEvents, 1);
-        verify(mockSecureStorage.write(
-          key: 'test_cache_key',
-          value: json.encode(apiResponse.data),
-        )).called(1);
+        verify(mockSecureStorage.write(key: 'test_cache_key', value: json.encode(apiResponse.data))).called(1);
       });
 
       test('should not fetch data if cache is still valid', () async {
@@ -171,14 +163,14 @@ void main() {
         final authService = setupAuthServiceMock();
         var streamEvents = 0;
         var streamErrors = 0;
-        repository.stream.listen(
-          (data) => streamEvents++,
-          onError: (error) => streamErrors++,
-        );
+        repository.stream.listen((data) => streamEvents++, onError: (error) => streamErrors++);
 
         AuthServiceMock.stubGetToken(authService, token: 'token');
 
-        apiCall() async => throw DioException(requestOptions: RequestOptions(path: 'test'), response: Response(statusCode: 401, requestOptions: RequestOptions(path: 'test')));
+        apiCall() async => throw DioException(
+          requestOptions: RequestOptions(path: 'test'),
+          response: Response(statusCode: 401, requestOptions: RequestOptions(path: 'test')),
+        );
 
         await repository.getFromApi(apiCall);
 
@@ -223,10 +215,16 @@ void main() {
 
     group('fetch - ', () {
       test('should perform parallel fetch on first call', () async {
-        final cachedData = json.encode([{'cached': 'data'}]);
+        final cachedData = json.encode([
+          {'cached': 'data'},
+        ]);
         FlutterSecureStorageMock.stubRead(mockSecureStorage, key: 'test_cache_key', valueToReturn: cachedData);
 
-        final apiResponse = SignetsApiResponse<List<Map<String, dynamic>>>(data: [{'api': 'data'}]);
+        final apiResponse = SignetsApiResponse<List<Map<String, dynamic>>>(
+          data: [
+            {'api': 'data'},
+          ],
+        );
 
         var streamEvents = [];
         repository.stream.listen((data) => streamEvents.add(data));
@@ -236,13 +234,21 @@ void main() {
         await Future.delayed(Duration(milliseconds: 10));
 
         expect(streamEvents.length, 2);
-        expect(streamEvents[0], [{'cached': 'data'}]);
-        expect(streamEvents[1], [{'api': 'data'}]);
+        expect(streamEvents[0], [
+          {'cached': 'data'},
+        ]);
+        expect(streamEvents[1], [
+          {'api': 'data'},
+        ]);
       });
 
       test('should use cache on subsequent calls if valid', () async {
         // First fetch to set cache
-        final apiResponse1 = SignetsApiResponse<List<Map<String, dynamic>>>(data: [{'cached': 'data'}]);
+        final apiResponse1 = SignetsApiResponse<List<Map<String, dynamic>>>(
+          data: [
+            {'cached': 'data'},
+          ],
+        );
         await repository.fetch(() async => apiResponse1, (json) => json);
 
         var streamEvents = [];
@@ -254,15 +260,25 @@ void main() {
         await Future.delayed(Duration(milliseconds: 10));
 
         expect(streamEvents.length, 1);
-        expect(streamEvents[0], [{'cached': 'data'}]);
+        expect(streamEvents[0], [
+          {'cached': 'data'},
+        ]);
       });
 
       test('should fetch from API on subsequent calls if force update', () async {
         // First fetch
-        final apiResponse1 = SignetsApiResponse<List<Map<String, dynamic>>>(data: [{'cached': 'data'}]);
+        final apiResponse1 = SignetsApiResponse<List<Map<String, dynamic>>>(
+          data: [
+            {'cached': 'data'},
+          ],
+        );
         await repository.fetch(() async => apiResponse1, (json) => json);
 
-        final apiResponse2 = SignetsApiResponse<List<Map<String, dynamic>>>(data: [{'api': 'data'}]);
+        final apiResponse2 = SignetsApiResponse<List<Map<String, dynamic>>>(
+          data: [
+            {'api': 'data'},
+          ],
+        );
 
         var streamEvents = [];
         repository.stream.listen((data) => streamEvents.add(data));
@@ -273,7 +289,9 @@ void main() {
         await Future.delayed(Duration(milliseconds: 10));
 
         expect(streamEvents.length, 2);
-        expect(streamEvents[1], [{'api': 'data'}]);
+        expect(streamEvents[1], [
+          {'api': 'data'},
+        ]);
       });
     });
   });

@@ -1,17 +1,23 @@
+// Dart imports:
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
+// Flutter imports:
 import 'package:flutter/cupertino.dart';
+
+// Package imports:
+import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
-import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
-import 'package:notredame/data/services/auth_service.dart';
-import 'package:notredame/locator.dart';
 import 'package:retry/retry.dart';
 import 'package:synchronized/synchronized.dart';
+
+// Project imports:
+import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
+import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
+import 'package:notredame/locator.dart';
 
 class BaseStreamRepository<T> {
   static const Duration _cacheDuration = Duration(minutes: 2);
@@ -30,11 +36,10 @@ class BaseStreamRepository<T> {
 
   DateTime? _cacheTimestamp;
   bool _requestInProgress = false;
-  
 
   BaseStreamRepository(this._cacheKey) {
     _controller.onListen = () {
-      if(value != null) {
+      if (value != null) {
         _controller.add(value);
       }
     };
@@ -74,14 +79,15 @@ class BaseStreamRepository<T> {
     );
   }
 
-  Future<void> fetch<RType>(Future<SignetsApiResponse<T>> Function() apiCall, RType Function(Map<String, dynamic>) fromJson, {bool forceUpdate = false}) async {
+  Future<void> fetch<RType>(
+    Future<SignetsApiResponse<T>> Function() apiCall,
+    RType Function(Map<String, dynamic>) fromJson, {
+    bool forceUpdate = false,
+  }) async {
     if (_isFirstFetch) {
       _isFirstFetch = false;
-      
-      await Future.wait([
-        getFromCache(fromJson),
-        getFromApi(apiCall, forceUpdate: true),
-      ]);
+
+      await Future.wait([getFromCache(fromJson), getFromApi(apiCall, forceUpdate: true)]);
     } else {
       if (!forceUpdate && _isCacheValid() && value != null) {
         return;

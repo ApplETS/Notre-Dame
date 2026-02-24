@@ -1,6 +1,7 @@
-// Package imports:
+// Dart imports:
 import 'dart:async';
 
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -10,9 +11,9 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/domain/models/progress_bar_text_options.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -188,13 +189,17 @@ void main() {
       setupBroadcastMessageRepositoryMock();
       listSessionsRepositoryMock = setupListSessionsRepositoryMock();
       launchUrlServiceMock = setupLaunchUrlServiceMock();
-      
+
       // Setup stubs for ListSessionsRepository
       ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: Stream.empty());
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
-      
+
       // Setup stub for settings repository for SessionProgressUseCase
-      SettingsRepositoryMock.stubGetString(settingsManagerMock, PreferencesFlag.progressBarText, toReturn: ProgressBarText.daysElapsedWithTotalDays.toString());
+      SettingsRepositoryMock.stubGetString(
+        settingsManagerMock,
+        PreferencesFlag.progressBarText,
+        toReturn: ProgressBarText.daysElapsedWithTotalDays.toString(),
+      );
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);

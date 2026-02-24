@@ -39,7 +39,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => RemoteConfigService());
   locator.registerLazySingleton(() => LaunchUrlService());
   locator.registerLazySingleton(() => AuthService());
-  
+
   Dio dio = Dio();
   locator.registerLazySingleton(() => dio);
   locator.registerLazySingleton(() => SignetsClient(dio));

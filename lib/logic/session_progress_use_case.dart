@@ -1,13 +1,13 @@
+// Dart imports:
 import 'dart:async';
 
+// Project imports:
 import 'package:notredame/data/repositories/list_sessions_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
-
 import 'package:notredame/domain/models/progress_bar_text_options.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/locator.dart';
-
 import '../l10n/app_localizations.dart';
 
 class SessionProgressUseCase {
@@ -24,22 +24,23 @@ class SessionProgressUseCase {
   SessionProgressUseCase(this._intl);
 
   Future<void> init() async {
-      final progressBarText = await _settingsRepository.getString(PreferencesFlag.progressBarText) ??
-          ProgressBarText.daysElapsedWithTotalDays.toString();
+    final progressBarText =
+        await _settingsRepository.getString(PreferencesFlag.progressBarText) ??
+        ProgressBarText.daysElapsedWithTotalDays.toString();
 
-      _currentTextStyle = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
+    _currentTextStyle = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
 
-      _subscription = _listSessionsRepository.stream.listen((sessions) => _runSessionProgressBar(), onError: (error) {
+    _subscription = _listSessionsRepository.stream.listen(
+      (sessions) => _runSessionProgressBar(),
+      onError: (error) {
         _controller.addError(error as Object);
-      });
-      await _listSessionsRepository.getSessions();
+      },
+    );
+    await _listSessionsRepository.getSessions();
   }
 
   void _runSessionProgressBar() {
-    _controller.add(SessionProgress(
-      _getSessionProgressPercentage(),
-      _getProgressBarText(),
-    ));
+    _controller.add(SessionProgress(_getSessionProgressPercentage(), _getProgressBarText()));
   }
 
   /// Return session progress based on today's [date]
@@ -53,7 +54,6 @@ class SessionProgressUseCase {
     return activeSession.daysCompleted / activeSession.totalDays;
   }
 
-  
   String _getProgressBarText() {
     final sessionDays = _listSessionsRepository.getActiveSession();
     final elapsedDays = sessionDays?.daysCompleted ?? 0;
@@ -88,5 +88,5 @@ class SessionProgressUseCase {
   void dispose() {
     _controller.close();
     _subscription?.cancel();
-  }  
+  }
 }

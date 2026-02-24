@@ -6,8 +6,6 @@ import 'dart:collection';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:collection/collection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/domain/models/session_progress.dart';
-import 'package:notredame/logic/session_progress_use_case.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -24,8 +22,10 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/logic/session_progress_use_case.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
@@ -105,18 +105,20 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   DashboardViewModel({required AppIntl intl}) : _appIntl = intl, _sessionProgressUseCase = SessionProgressUseCase(intl);
 
   Future<void> init() async {
-    _sessionProgressSubscription = _sessionProgressUseCase.stream.listen((sessionProgress) {
-      this.sessionProgress = sessionProgress;
-      notifyListeners();
-    },
-        onError: (error) {
-          if(error is Exception) {
-            _analyticsService.logError(tag, "SessionProgressWidget error", error);
-          }
-          if (error is String) {
-            Fluttertoast.showToast(msg: _appIntl.error);
-          }
-        });
+    _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
+      (sessionProgress) {
+        this.sessionProgress = sessionProgress;
+        notifyListeners();
+      },
+      onError: (error) {
+        if (error is Exception) {
+          _analyticsService.logError(tag, "SessionProgressWidget error", error);
+        }
+        if (error is String) {
+          Fluttertoast.showToast(msg: _appIntl.error);
+        }
+      },
+    );
     await _sessionProgressUseCase.init();
   }
 
@@ -132,8 +134,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   }
 
   Future loadDataAndUpdateWidget() async {
-    return Future.wait(
-        [futureToRunBroadcast(), futureToRunGrades(), _sessionProgressUseCase.fetch(forceUpdate: true), futureToRunSchedule()]);
+    return Future.wait([
+      futureToRunBroadcast(),
+      futureToRunGrades(),
+      _sessionProgressUseCase.fetch(forceUpdate: true),
+      futureToRunSchedule(),
+    ]);
   }
 
   @override

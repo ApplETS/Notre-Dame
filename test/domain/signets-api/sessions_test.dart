@@ -1,4 +1,7 @@
+// Package imports:
 import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
 import 'package:notredame/domain/models/signets-api/session.dart';
 
 void main() {
@@ -15,18 +18,16 @@ void main() {
     deadlineCancellationWithRefundNewStudent: DateTime(2025, 02, 02),
     startDateCancellationWithoutRefundNewStudent: DateTime(2025, 02, 03),
     deadlineCancellationWithoutRefundNewStudent: DateTime(2025, 03, 17),
-    deadlineCancellationASEQ: DateTime(2025,01, 31)
+    deadlineCancellationASEQ: DateTime(2025, 01, 31),
   );
 
   group("Session - ", () {
     test("Days completed should return correct value", () {
-      expect(session.daysCompleted, 100, 
-          reason: "The number of days completed should be 100");
+      expect(session.daysCompleted, 100, reason: "The number of days completed should be 100");
     });
 
     test("Total days should return correct value", () {
-      expect(session.totalDays, 105, 
-          reason: "The number of days completed should be 100");
+      expect(session.totalDays, 105, reason: "The number of days completed should be 100");
     });
   });
 }

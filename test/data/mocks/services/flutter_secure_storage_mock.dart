@@ -33,8 +33,7 @@ class FlutterSecureStorageMock extends MockFlutterSecureStorage {
   }
 
   /// Stub the write function of [FlutterSecureStorage]
-  static void stubWrite(FlutterSecureStorageMock mock,
-      {required String key, required String value}) {
+  static void stubWrite(FlutterSecureStorageMock mock, {required String key, required String value}) {
     when(mock.write(key: key, value: value));
   }
 

@@ -4,10 +4,7 @@ class SignetsApiResponse<T> {
 
   SignetsApiResponse({this.data, this.error});
 
-  factory SignetsApiResponse.fromJson(
-    Map<String, dynamic> json,
-    T Function(Object? json) fromJsonT,
-  ) {
+  factory SignetsApiResponse.fromJson(Map<String, dynamic> json, T Function(Object? json) fromJsonT) {
     final erreur = json['erreur'] as String?;
     final dataKeys = json.keys.where((k) => k != 'erreur').toList();
 
@@ -22,10 +19,7 @@ class SignetsApiResponse<T> {
       dataJson = dataMap;
     }
 
-    return SignetsApiResponse(
-      data: dataJson != null ? fromJsonT(dataJson) : null,
-      error: erreur,
-    );
+    return SignetsApiResponse(data: dataJson != null ? fromJsonT(dataJson) : null, error: erreur);
   }
 
   Map<String, dynamic> toJson(Object Function(T value) toJsonT) => {
