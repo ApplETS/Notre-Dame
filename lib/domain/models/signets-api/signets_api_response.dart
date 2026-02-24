@@ -24,6 +24,6 @@ class SignetsApiResponse<T> {
 
   Map<String, dynamic> toJson(Object Function(T value) toJsonT) => {
     'erreur': error,
-    if (data != null) 'data': toJsonT(data!),
+    if (data != null) 'data': toJsonT(data as T),
   };
 }
