@@ -17,6 +17,7 @@ class SessionContext {
   final int monthsRemaining;
   final int weeksCompleted;
   final int weeksRemaining;
+  final int courseWeeksRemaining;
   final int courseDaysThisWeek;
 
   ScheduleAnalyzer? _scheduleAnalyzerCache;
@@ -38,6 +39,7 @@ class SessionContext {
     required this.monthsRemaining,
     required this.weeksCompleted,
     required this.weeksRemaining,
+    required this.courseWeeksRemaining,
     required this.courseDaysThisWeek,
   });
 
@@ -48,6 +50,8 @@ class SessionContext {
     required DateTime now,
   }) {
     final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
+    final lastRegularCourseDate = analyzer.getLastRegularCourseDate();
+    final courseEndDate = lastRegularCourseDate ?? session.endDate;
 
     return SessionContext(
       session: session,
@@ -59,6 +63,7 @@ class SessionContext {
       monthsRemaining: Utils.monthsRemaining(session.endDate, now),
       weeksCompleted: Utils.weeksCompleted(session.startDate, now),
       weeksRemaining: Utils.weeksRemaining(session.endDate, now),
+      courseWeeksRemaining: Utils.weeksRemaining(courseEndDate, now),
       courseDaysThisWeek: analyzer.courseDaysThisWeek,
     );
   }

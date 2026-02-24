@@ -52,8 +52,8 @@ class DynamicMessagesService {
       return LastCourseDayOfWeekMessage(context.now.weekday);
     }
 
-    if (context.weeksRemaining <= 4 && context.weeksRemaining > 0) {
-      return LessOneMonthRemainingMessage(context.weeksRemaining);
+    if (context.courseWeeksRemaining <= 4 && context.courseWeeksRemaining > 0) {
+      return LessOneMonthRemainingMessage(context.courseWeeksRemaining);
     }
 
     return GenericEncouragementMessage();

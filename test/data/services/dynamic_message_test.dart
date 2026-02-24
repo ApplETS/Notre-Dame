@@ -54,6 +54,7 @@ void main() {
     int? monthsRemaining,
     int? weeksCompleted,
     int? weeksRemaining,
+    int? courseWeeksRemaining,
     int? courseDaysThisWeek,
   }) {
     final defaultSession = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
@@ -68,6 +69,7 @@ void main() {
       monthsRemaining: monthsRemaining ?? 3,
       weeksCompleted: weeksCompleted ?? 10,
       weeksRemaining: weeksRemaining ?? 15,
+      courseWeeksRemaining: courseWeeksRemaining ?? weeksRemaining ?? 15,
       courseDaysThisWeek: courseDaysThisWeek ?? 3,
     );
   }
@@ -789,16 +791,16 @@ void main() {
     });
 
     group('LessOneMonthRemainingMessage -', () {
-      test('returns LessOneMonthRemainingMessage when weeksRemaining <= 4', () {
-        final context = createContext(weeksRemaining: 3, daysRemaining: 25);
+      test('returns LessOneMonthRemainingMessage when courseWeeksRemaining <= 4', () {
+        final context = createContext(courseWeeksRemaining: 3, daysRemaining: 25);
 
         final message = engine.determineMessage(context);
         expect(message, isA<LessOneMonthRemainingMessage>());
         expect((message as LessOneMonthRemainingMessage).weeksRemaining, 3);
       });
 
-      test('does not return LessOneMonthRemainingMessage when weeksRemaining > 4', () {
-        final context = createContext(weeksRemaining: 5, daysRemaining: 40);
+      test('does not return LessOneMonthRemainingMessage when courseWeeksRemaining > 4', () {
+        final context = createContext(courseWeeksRemaining: 5, daysRemaining: 40);
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<LessOneMonthRemainingMessage>()));
@@ -944,6 +946,99 @@ void main() {
       });
     });
 
+    group('courseWeeksRemaining -', () {
+      CourseActivity createActivityWithName(DateTime date, String activityName) {
+        return CourseActivity(
+          courseGroup: 'TEST101',
+          courseName: 'Test Course',
+          activityName: activityName,
+          activityDescription: 'Test',
+          activityLocation: ['A-1234'],
+          startDateTime: date,
+          endDateTime: date.add(const Duration(hours: 3)),
+        );
+      }
+
+      test('uses last regular course date when finals exist', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 4, 8, 9)),
+          createActivity(DateTime(2024, 4, 15, 9)),
+          createActivityWithName(DateTime(2024, 4, 22, 9), 'Final'),
+          createActivityWithName(DateTime(2024, 4, 29, 9), 'FINAL'),
+        ];
+
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.courseWeeksRemaining, lessThan(context.weeksRemaining));
+      });
+
+      test('falls back to session end when no activities', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: [],
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.courseWeeksRemaining, context.weeksRemaining);
+      });
+
+      test('falls back to session end when only finals exist', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivityWithName(DateTime(2024, 4, 22, 9), 'Final'),
+          createActivityWithName(DateTime(2024, 4, 29, 9), 'final'),
+        ];
+
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.courseWeeksRemaining, context.weeksRemaining);
+      });
+
+      test('LessOneMonthRemainingMessage uses courseWeeksRemaining', () {
+        final now = DateTime(2024, 4, 8);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 5, 15));
+
+        final activities = [
+          createActivity(DateTime(2024, 4, 15, 9)),
+          createActivity(DateTime(2024, 4, 22, 9)),
+          createActivityWithName(DateTime(2024, 5, 6, 9), 'Final'),
+          createActivityWithName(DateTime(2024, 5, 13, 9), 'Final'),
+        ];
+
+        final context = SessionContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.courseWeeksRemaining, lessThanOrEqualTo(4));
+        expect(context.weeksRemaining, greaterThan(4));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LessOneMonthRemainingMessage>());
+      });
+    });
+
     group('Edge cases -', () {
       test('handles empty activities list', () {
         final context = createContext(courseActivities: [], daysRemaining: 30, monthsRemaining: 2);
@@ -960,7 +1055,7 @@ void main() {
       });
 
       test('handles year boundary session', () {
-        final context = createContext(daysRemaining: 27, monthsRemaining: 0, weeksRemaining: 3);
+        final context = createContext(daysRemaining: 27, monthsRemaining: 0, courseWeeksRemaining: 3);
 
         final message = engine.determineMessage(context);
         expect(message, isA<LessOneMonthRemainingMessage>());

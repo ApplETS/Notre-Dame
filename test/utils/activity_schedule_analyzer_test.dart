@@ -12,11 +12,11 @@ void main() {
     return DateTime(target.year, target.month, target.day, hour, minute);
   }
 
-  CourseActivity createActivity(DateTime start, {Duration duration = const Duration(hours: 2)}) {
+  CourseActivity createActivity(DateTime start, {Duration duration = const Duration(hours: 2), String activityName = 'Cours'}) {
     return CourseActivity(
       courseGroup: 'LOG430-01',
       courseName: 'Architecture logicielle',
-      activityName: 'Cours',
+      activityName: activityName,
       activityDescription: 'Cours magistral',
       activityLocation: ['A-1234'],
       startDateTime: start,
@@ -610,6 +610,69 @@ void main() {
         );
 
         expect(analyzer.isInsideLongWeekend, isFalse);
+      });
+    });
+
+    group('getLastRegularCourseDate -', () {
+      test('returns null when no activities exist', () {
+        final monday = weekday(reference, DateTime.monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
+
+        expect(analyzer.getLastRegularCourseDate(), isNull);
+      });
+
+      test('returns null when all activities are finals', () {
+        final monday = weekday(reference, DateTime.monday);
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9), activityName: 'Final'),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9), activityName: 'FINAL'),
+          createActivity(weekday(reference, DateTime.friday, hour: 9), activityName: 'final'),
+        ];
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        expect(analyzer.getLastRegularCourseDate(), isNull);
+      });
+
+      test('returns correct date when regular activities exist', () {
+        final monday = weekday(reference, DateTime.monday);
+        final activities = createWeekActivities(monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        final lastDate = analyzer.getLastRegularCourseDate();
+        expect(lastDate, isNotNull);
+        expect(lastDate!.day, weekday(reference, DateTime.friday, hour: 9).day);
+      });
+
+      test('excludes Final activities (case-insensitive)', () {
+        final monday = weekday(reference, DateTime.monday);
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 1, hour: 9), activityName: 'Final'),
+          createActivity(weekday(reference, DateTime.wednesday, week: 1, hour: 9), activityName: 'FINAL'),
+          createActivity(weekday(reference, DateTime.friday, week: 1, hour: 9), activityName: 'final'),
+        ];
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        final lastDate = analyzer.getLastRegularCourseDate();
+        expect(lastDate, isNotNull);
+        expect(lastDate!.day, weekday(reference, DateTime.friday, hour: 9).day);
+      });
+
+      test('returns the latest date among all regular activities', () {
+        final monday = weekday(reference, DateTime.monday);
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 2, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 3, hour: 9), activityName: 'Final'),
+        ];
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        final lastDate = analyzer.getLastRegularCourseDate();
+        expect(lastDate, isNotNull);
+        expect(lastDate!.day, weekday(reference, DateTime.friday, week: 2, hour: 9).day);
       });
     });
   });

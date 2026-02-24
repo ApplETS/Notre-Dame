@@ -180,6 +180,20 @@ class ScheduleAnalyzer {
     final thisWeekActivities = getActivitiesForCurrentWeek();
     return getUniqueDays(thisWeekActivities).length;
   }
+
+  /// Returns the date of the last regular course activity (excluding finals)
+  /// Returns null if no regular course activities exist
+  DateTime? getLastRegularCourseDate() {
+    final regularActivities = courseActivities
+        .where((a) => a.activityName.toLowerCase() != 'final')
+        .toList();
+
+    if (regularActivities.isEmpty) return null;
+
+    return regularActivities
+        .map((a) => a.startDateTime)
+        .reduce((a, b) => a.isAfter(b) ? a : b);
+  }
 }
 
 class _GapInfo {
