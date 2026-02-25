@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/utils/activity_schedule_analyzer.dart';
+import 'package:notredame/utils/schedule_analyzer.dart';
 
 void main() {
   DateTime weekday(DateTime reference, int targetWeekday, {int week = 0, int hour = 0, int minute = 0}) {
