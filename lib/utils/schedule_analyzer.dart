@@ -13,12 +13,13 @@ class ScheduleAnalyzer {
 
   /// Returns all course activities whose startDateTime falls within the given range [start, end).
   List<CourseActivity> getActivitiesInRange(DateTime start, DateTime end) {
-    return courseActivities.where((a) => !a.startDateTime.isBefore(start) && a.startDateTime.isBefore(end)).toList();
+    return courseActivities
+        .where((activity) => !activity.startDateTime.isBefore(start) && activity.startDateTime.isBefore(end))
+        .toList();
   }
 
-  /// Returns unique calendar days from the provided activities.
   List<DateTime> getUniqueDays(List<CourseActivity> activities) {
-    return activities.map((a) => Utils.dateOnly(a.startDateTime)).toSet().toList()..sort();
+    return activities.map((activity) => Utils.dateOnly(activity.startDateTime)).toSet().toList()..sort();
   }
 
   List<CourseActivity> getActivitiesForCurrentWeek() {
@@ -68,13 +69,15 @@ class ScheduleAnalyzer {
     if (weekendGapDurationsInDays.isEmpty) return _defaultWeekendGapDays;
 
     weekendGapDurationsInDays.sort();
+    
+    // Return the median gap
     return weekendGapDurationsInDays[(weekendGapDurationsInDays.length - 1) ~/ 2];
   }
 
   DateTime? findNextActivityAfterCurrentWeek() {
     final endOfWeek = Utils.startOfWeek(now).add(const Duration(days: 7));
 
-    final futureActivities = courseActivities.where((a) => !a.startDateTime.isBefore(endOfWeek)).toList()
+    final futureActivities = courseActivities.where((activity) => !activity.startDateTime.isBefore(endOfWeek)).toList()
       ..sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
     return futureActivities.isNotEmpty ? futureActivities.first.startDateTime : null;
@@ -88,9 +91,11 @@ class ScheduleAnalyzer {
 
     if (thisWeek.isEmpty) return null;
 
-    final lastActivityThisWeek = thisWeek.map((a) => a.startDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
+    final lastActivityThisWeek = thisWeek
+        .map((activity) => activity.startDateTime)
+        .reduce((a, b) => a.isAfter(b) ? a : b);
     final nextActivity = nextWeek.isNotEmpty
-        ? nextWeek.map((a) => a.startDateTime).reduce((a, b) => a.isBefore(b) ? a : b)
+        ? nextWeek.map((activity) => activity.startDateTime).reduce((a, b) => a.isBefore(b) ? a : b)
         : findNextActivityAfterCurrentWeek();
 
     if (nextActivity == null) return null;
@@ -107,23 +112,22 @@ class ScheduleAnalyzer {
   }
 
   bool get isLongWeekendIncoming {
-    final info = _getUpcomingBreakInfo();
-    if (info == null) return false;
-    return info.upcomingGapDays > info.usualGapDays;
+    final breakInfo = _getUpcomingBreakInfo();
+    if (breakInfo == null) return false;
+    return breakInfo.upcomingGapDays > breakInfo.usualGapDays;
   }
 
-  /// Returns the duration of the upcoming break in days, or null if no break.
   int? get upcomingBreakDuration {
-    final info = _getUpcomingBreakInfo();
-    if (info == null || info.upcomingGapDays <= info.usualGapDays) return null;
-    return info.upcomingGapDays;
+    final breakInfo = _getUpcomingBreakInfo();
+    if (breakInfo == null || breakInfo.upcomingGapDays <= breakInfo.usualGapDays) return null;
+    return breakInfo.upcomingGapDays;
   }
 
   /// Returns days until the break starts (first day with no class), or null if no break.
   int? get daysUntilBreakStart {
-    final info = _getUpcomingBreakInfo();
-    if (info == null || info.upcomingGapDays <= info.usualGapDays) return null;
-    return Utils.daysBetween(now, info.lastActivityThisWeek) + 1;
+    final breakInfo = _getUpcomingBreakInfo();
+    if (breakInfo == null || breakInfo.upcomingGapDays <= breakInfo.usualGapDays) return null;
+    return Utils.daysBetween(now, breakInfo.lastActivityThisWeek) + 1;
   }
 
   bool get isInsideLongWeekend {
@@ -133,7 +137,6 @@ class ScheduleAnalyzer {
     return gapInfo.isLongerThanUsual;
   }
 
-  /// Returns the number of days until the next course, or null if not in a break.
   int? get daysUntilNextCourse {
     final gapInfo = _getCurrentGapInfo();
     if (gapInfo == null || !gapInfo.isLongerThanUsual) return null;
@@ -141,7 +144,6 @@ class ScheduleAnalyzer {
     return Utils.daysBetween(now, gapInfo.nextActivityStart);
   }
 
-  /// Returns the total gap duration in days, or null if not in a break.
   int? get totalBreakDuration {
     final gapInfo = _getCurrentGapInfo();
     if (gapInfo == null || !gapInfo.isLongerThanUsual) return null;
@@ -155,14 +157,14 @@ class ScheduleAnalyzer {
     final sortedActivities = List<CourseActivity>.from(courseActivities)
       ..sort((a, b) => a.startDateTime.compareTo(b.startDateTime));
 
-    final pastActivities = sortedActivities.where((a) => a.startDateTime.isBefore(now));
+    final pastActivities = sortedActivities.where((activity) => activity.startDateTime.isBefore(now));
     if (pastActivities.isEmpty) return null;
 
     final lastActivity = pastActivities.last;
 
     if (now.isBefore(lastActivity.endDateTime)) return null;
 
-    final futureActivities = sortedActivities.where((a) => a.startDateTime.isAfter(now));
+    final futureActivities = sortedActivities.where((activity) => activity.startDateTime.isAfter(now));
     if (futureActivities.isEmpty) return null;
 
     final nextActivity = futureActivities.first;
@@ -184,7 +186,9 @@ class ScheduleAnalyzer {
     final thisWeek = getActivitiesForCurrentWeek();
     if (thisWeek.isEmpty) return false;
 
-    final lastActivityThisWeek = thisWeek.map((a) => a.endDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
+    final lastActivityThisWeek = thisWeek
+        .map((activity) => activity.endDateTime)
+        .reduce((a, b) => a.isAfter(b) ? a : b);
 
     return now.isAfter(lastActivityThisWeek) || now.isAtSameMomentAs(lastActivityThisWeek);
   }
@@ -207,11 +211,13 @@ class ScheduleAnalyzer {
   /// Returns the end date of the last regular course activity (excluding finals).
   /// Returns null if no regular course activities exist
   DateTime? getLastRegularCourseDate() {
-    final regularActivities = courseActivities.where((a) => a.activityName.toLowerCase() != 'final').toList();
+    final regularActivities = courseActivities
+        .where((activity) => activity.activityName.toLowerCase() != 'final')
+        .toList();
 
     if (regularActivities.isEmpty) return null;
 
-    return regularActivities.map((a) => a.endDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
+    return regularActivities.map((activity) => activity.endDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
   }
 }
 
