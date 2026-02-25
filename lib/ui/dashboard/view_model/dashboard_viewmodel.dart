@@ -216,6 +216,7 @@ class DashboardViewModel extends FutureViewModel {
     }
 
     final session = _courseRepository.activeSessions.first;
+    await _courseRepository.getCoursesActivities(fromCacheOnly: true);
     final activities = _courseRepository.coursesActivities ?? [];
     await _courseRepository.getReplacedDays(forceRefresh: forceRefresh);
     final replacedDays = _courseRepository.replacedDays ?? [];
