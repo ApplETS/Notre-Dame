@@ -52,7 +52,7 @@ class ScheduleAnalyzer {
         continue;
       }
 
-      // Skip specified gap. This prevents the gap we are currently calculating or modifying from
+      // Skip specified gap. For example, this prevents the gap we are currently calculating from
       // influencing the usual historical average.
       if (Utils.dateOnly(currentActivityDate).isAtSameMomentAs(excludeStartDate) &&
           Utils.dateOnly(nextActivityDate).isAtSameMomentAs(excludeEndDate)) {
