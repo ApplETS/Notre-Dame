@@ -75,6 +75,6 @@ mixin Utils {
     final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
     final startOfEndWeek = end.subtract(Duration(days: end.weekday - 1));
 
-    return startOfEndWeek.difference(startOfWeek).inDays ~/ 7;
+    return (startOfEndWeek.difference(startOfWeek).inDays ~/ 7) + 1;
   }
 }

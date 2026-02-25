@@ -184,18 +184,18 @@ void main() {
     });
 
     group('weeksRemaining -', () {
-      test('returns positive weeks when end is in future', () {
+      test('returns weeks remaining including current week', () {
         final now = DateTime(2024, 3, 10);
         final endDate = DateTime(2024, 3, 31);
 
-        expect(Utils.weeksRemaining(endDate, now), 2);
+        expect(Utils.weeksRemaining(endDate, now), 3);
       });
 
-      test('returns 0 for less than 7 days remaining', () {
+      test('returns 1 when in the same week as end date (last week)', () {
         final now = DateTime(2024, 3, 26);
         final endDate = DateTime(2024, 3, 31);
 
-        expect(Utils.weeksRemaining(endDate, now), 0);
+        expect(Utils.weeksRemaining(endDate, now), 1);
       });
 
       test('returns -1 when end is in past', () {
@@ -205,9 +205,16 @@ void main() {
         expect(Utils.weeksRemaining(endDate, now), -1);
       });
 
-      test('truncates partial weeks', () {
+      test('counts weeks including current week', () {
         final now = DateTime(2024, 3, 10);
         final endDate = DateTime(2024, 3, 28);
+
+        expect(Utils.weeksRemaining(endDate, now), 3);
+      });
+
+      test('weekend before last week shows 2 weeks remaining', () {
+        final now = DateTime(2024, 4, 11);
+        final endDate = DateTime(2024, 4, 17);
 
         expect(Utils.weeksRemaining(endDate, now), 2);
       });
