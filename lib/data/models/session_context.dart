@@ -78,8 +78,6 @@ class SessionContext {
 
   bool get isLastCourseDayOfWeek => _scheduleAnalyzer.isLastCourseDayOfWeek;
 
-  bool get isNextWeekShorter => _scheduleAnalyzer.isNextWeekShorter;
-
   int? get daysUntilNextCourse => _scheduleAnalyzer.daysUntilNextCourse;
 
   int? get totalBreakDuration => _scheduleAnalyzer.totalBreakDuration;

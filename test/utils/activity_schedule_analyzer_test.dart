@@ -203,39 +203,6 @@ void main() {
       });
     });
 
-    group('isNextWeekShorter -', () {
-      test('returns true when next week has fewer than 5 course days', () {
-        final monday = weekday(reference, DateTime.monday);
-        final activities = [
-          ...createWeekActivities(monday),
-
-          createActivity(weekday(reference, DateTime.monday, week: 1, hour: 9)),
-          createActivity(weekday(reference, DateTime.tuesday, week: 1, hour: 9)),
-          createActivity(weekday(reference, DateTime.wednesday, week: 1, hour: 9)),
-        ];
-        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
-
-        expect(analyzer.isNextWeekShorter, isTrue);
-      });
-
-      test('returns false when next week has 5 course days', () {
-        final monday = weekday(reference, DateTime.monday);
-        final nextMonday = weekday(reference, DateTime.monday, week: 1);
-        final activities = [...createWeekActivities(monday), ...createWeekActivities(nextMonday)];
-        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
-
-        expect(analyzer.isNextWeekShorter, isFalse);
-      });
-
-      test('returns true when next week has no activities', () {
-        final monday = weekday(reference, DateTime.monday);
-        final activities = createWeekActivities(monday);
-        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
-
-        expect(analyzer.isNextWeekShorter, isTrue);
-      });
-    });
-
     group('courseDaysThisWeek -', () {
       test('returns number of unique course days', () {
         final monday = weekday(reference, DateTime.monday);

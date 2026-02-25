@@ -194,13 +194,6 @@ class ScheduleAnalyzer {
     return daysWithActivities.isNotEmpty && daysWithActivities.last.isAtSameMomentAs(today);
   }
 
-  bool get isNextWeekShorter {
-    final nextWeek = getActivitiesForNextWeek();
-    if (nextWeek.isEmpty) return true;
-
-    return getUniqueDays(nextWeek).length < 5;
-  }
-
   int get courseDaysThisWeek {
     final thisWeekActivities = getActivitiesForCurrentWeek();
     return getUniqueDays(thisWeekActivities).length;
