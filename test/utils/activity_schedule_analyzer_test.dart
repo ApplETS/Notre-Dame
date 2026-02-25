@@ -36,10 +36,10 @@ void main() {
 
   group('ActivityScheduleAnalyzer -', () {
     final reference = DateTime(2024, 3, 4);
+    final monday = weekday(reference, DateTime.monday);
 
     group('getActivitiesInRange -', () {
       test('returns activities within range', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
         final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
@@ -49,7 +49,6 @@ void main() {
       });
 
       test('returns empty list when no activities in range', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
         final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
@@ -91,7 +90,6 @@ void main() {
       });
 
       test('returns empty list for empty activities', () {
-        final monday = weekday(reference, DateTime.monday);
         final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
 
         expect(analyzer.getUniqueDays([]), isEmpty);
@@ -100,7 +98,6 @@ void main() {
 
     group('hasNextWeekSchedule -', () {
       test('returns true when next week has activities', () {
-        final monday = weekday(reference, DateTime.monday);
         final nextMonday = weekday(reference, DateTime.monday, week: 1);
         final activities = [...createWeekActivities(monday), ...createWeekActivities(nextMonday)];
         final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
@@ -109,7 +106,6 @@ void main() {
       });
 
       test('returns false when next week has no activities', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
         final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
@@ -119,7 +115,6 @@ void main() {
 
     group('isAfterLastCourseOfWeek -', () {
       test('returns true when after last course', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
 
         final now = weekday(reference, DateTime.friday, hour: 15);
@@ -129,7 +124,6 @@ void main() {
       });
 
       test('returns false when before last course ends', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
 
         final now = weekday(reference, DateTime.friday, hour: 10);
@@ -139,7 +133,6 @@ void main() {
       });
 
       test('returns true when now equals exact end time of last course', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
 
         // Last activity starts Friday at 9:00 with 2h duration, ends at 11:00
@@ -150,7 +143,6 @@ void main() {
       });
 
       test('returns false when no activities this week', () {
-        final monday = weekday(reference, DateTime.monday);
         final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
 
         expect(analyzer.isAfterLastCourseOfWeek, isFalse);
@@ -159,7 +151,6 @@ void main() {
 
     group('isLastCourseDayOfWeek -', () {
       test('returns true on the last day with courses', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
 
         final now = weekday(reference, DateTime.friday, hour: 10);
@@ -169,7 +160,6 @@ void main() {
       });
 
       test('returns false on a day before the last course day', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
 
         final now = weekday(reference, DateTime.thursday, hour: 10);
@@ -186,7 +176,6 @@ void main() {
       });
 
       test('returns false on a weekend day with no courses', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
 
         final now = weekday(reference, DateTime.saturday, hour: 10);
@@ -196,7 +185,6 @@ void main() {
       });
 
       test('returns false when no activities this week', () {
-        final monday = weekday(reference, DateTime.monday);
         final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
 
         expect(analyzer.isLastCourseDayOfWeek, isFalse);
@@ -205,7 +193,6 @@ void main() {
 
     group('courseDaysThisWeek -', () {
       test('returns number of unique course days', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
         final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
@@ -213,7 +200,6 @@ void main() {
       });
 
       test('counts multiple activities on same day as one day', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = [
           createActivity(weekday(reference, DateTime.monday, hour: 9)),
           createActivity(weekday(reference, DateTime.monday, hour: 13)),
@@ -225,7 +211,6 @@ void main() {
       });
 
       test('returns 0 when no activities this week', () {
-        final monday = weekday(reference, DateTime.monday);
         final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
 
         expect(analyzer.courseDaysThisWeek, 0);
@@ -234,7 +219,6 @@ void main() {
 
     group('calculateUsualWeekendGapDays -', () {
       test('returns default when less than 2 activities', () {
-        final monday = weekday(reference, DateTime.monday);
         final analyzer = ScheduleAnalyzer(
           courseActivities: [createActivity(weekday(reference, DateTime.monday, hour: 9))],
           now: monday,
@@ -769,14 +753,12 @@ void main() {
 
     group('getLastRegularCourseDate -', () {
       test('returns null when no activities exist', () {
-        final monday = weekday(reference, DateTime.monday);
         final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
 
         expect(analyzer.getLastRegularCourseDate(), isNull);
       });
 
       test('returns null when all activities are finals', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = [
           createActivity(weekday(reference, DateTime.monday, hour: 9), activityName: 'Final'),
           createActivity(weekday(reference, DateTime.wednesday, hour: 9), activityName: 'FINAL'),
@@ -788,7 +770,6 @@ void main() {
       });
 
       test('returns correct date when regular activities exist', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = createWeekActivities(monday);
         final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
 
@@ -798,7 +779,6 @@ void main() {
       });
 
       test('excludes Final activities (case-insensitive)', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = [
           createActivity(weekday(reference, DateTime.monday, hour: 9)),
           createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
@@ -815,7 +795,6 @@ void main() {
       });
 
       test('returns the latest date among all regular activities', () {
-        final monday = weekday(reference, DateTime.monday);
         final activities = [
           createActivity(weekday(reference, DateTime.monday, hour: 9)),
           createActivity(weekday(reference, DateTime.friday, week: 2, hour: 9)),
