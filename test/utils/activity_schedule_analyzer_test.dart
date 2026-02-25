@@ -138,6 +138,17 @@ void main() {
         expect(analyzer.isAfterLastCourseOfWeek, isFalse);
       });
 
+      test('returns true when now equals exact end time of last course', () {
+        final monday = weekday(reference, DateTime.monday);
+        final activities = createWeekActivities(monday);
+
+        // Last activity starts Friday at 9:00 with 2h duration, ends at 11:00
+        final now = weekday(reference, DateTime.friday, hour: 11);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
+
+        expect(analyzer.isAfterLastCourseOfWeek, isTrue);
+      });
+
       test('returns false when no activities this week', () {
         final monday = weekday(reference, DateTime.monday);
         final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
@@ -168,11 +179,27 @@ void main() {
       });
 
       test('returns true when only one course day and its today', () {
-        weekday(reference, DateTime.monday);
         final activities = [createActivity(weekday(reference, DateTime.monday, hour: 9))];
         final analyzer = ScheduleAnalyzer(courseActivities: activities, now: weekday(reference, DateTime.monday, hour: 10));
 
         expect(analyzer.isLastCourseDayOfWeek, isTrue);
+      });
+
+      test('returns false on a weekend day with no courses', () {
+        final monday = weekday(reference, DateTime.monday);
+        final activities = createWeekActivities(monday);
+
+        final now = weekday(reference, DateTime.saturday, hour: 10);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
+
+        expect(analyzer.isLastCourseDayOfWeek, isFalse);
+      });
+
+      test('returns false when no activities this week', () {
+        final monday = weekday(reference, DateTime.monday);
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
+
+        expect(analyzer.isLastCourseDayOfWeek, isFalse);
       });
     });
 
@@ -353,6 +380,8 @@ void main() {
       });
 
       test('returns true for Tuesday/Thursday pattern with Monday holiday', () {
+        // Weeks 0-4: Tue/Thu pattern (usual gap: 4 days, Thu→Tue)
+        // Week 5: no Tuesday → gap from Thu week 4 to Thu week 5 = 7 days
         final activities = [
           createActivity(weekday(reference, DateTime.tuesday, hour: 9)),
           createActivity(weekday(reference, DateTime.thursday, hour: 9)),
@@ -414,7 +443,7 @@ void main() {
         expect(analyzer.isLongWeekendIncoming, isFalse);
       });
 
-      test('returns false when no activities next week but looking at activity beyond', () {
+      test('returns true when gap to next activity is longer than usual', () {
         final activities = [
           for (int week = 0; week < 4; week++) ...[
             createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
@@ -610,6 +639,164 @@ void main() {
         );
 
         expect(analyzer.isInsideLongWeekend, isFalse);
+      });
+    });
+
+    group('upcomingBreakDuration -', () {
+      test('returns gap days when upcoming break is longer than usual', () {
+        final activities = [
+          for (int week = 0; week < 5; week++) ...[
+            createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.friday, week: week, hour: 9)),
+          ],
+          createActivity(weekday(reference, DateTime.monday, week: 6, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 6, hour: 9)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.thursday, week: 4, hour: 10),
+        );
+
+        expect(analyzer.upcomingBreakDuration, isNotNull);
+        expect(analyzer.upcomingBreakDuration, greaterThan(3));
+      });
+
+      test('returns null when no break is upcoming', () {
+        final activities = [
+          for (int week = 0; week < 4; week++) ...createWeekActivities(weekday(reference, DateTime.monday, week: week)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.friday, week: 1, hour: 10),
+        );
+
+        expect(analyzer.upcomingBreakDuration, isNull);
+      });
+
+      test('returns null when no activities this week', () {
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: weekday(reference, DateTime.monday));
+
+        expect(analyzer.upcomingBreakDuration, isNull);
+      });
+    });
+
+    group('daysUntilBreakStart -', () {
+      test('returns days until break starts when break is upcoming', () {
+        final activities = [
+          for (int week = 0; week < 5; week++) ...[
+            createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.friday, week: week, hour: 9)),
+          ],
+          createActivity(weekday(reference, DateTime.monday, week: 6, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 6, hour: 9)),
+        ];
+        final now = weekday(reference, DateTime.thursday, week: 4, hour: 10);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
+
+        // Last activity this week is Friday, daysBetween(Thu, Fri) + 1
+        expect(analyzer.daysUntilBreakStart, isNotNull);
+        expect(analyzer.daysUntilBreakStart, greaterThan(0));
+      });
+
+      test('returns null when no break is upcoming', () {
+        final activities = [
+          for (int week = 0; week < 4; week++) ...createWeekActivities(weekday(reference, DateTime.monday, week: week)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.friday, week: 1, hour: 10),
+        );
+
+        expect(analyzer.daysUntilBreakStart, isNull);
+      });
+
+      test('returns 1 when on the last activity day before break', () {
+        final activities = [
+          for (int week = 0; week < 5; week++) ...[
+            createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.friday, week: week, hour: 9)),
+          ],
+          createActivity(weekday(reference, DateTime.monday, week: 6, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 6, hour: 9)),
+        ];
+        final now = weekday(reference, DateTime.friday, week: 4, hour: 8);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
+
+        expect(analyzer.daysUntilBreakStart, 1);
+      });
+    });
+
+    group('daysUntilNextCourse -', () {
+      test('returns days until next course when inside a long break', () {
+        final activities = [
+          for (int week = 0; week < 5; week++) ...[
+            createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.friday, week: week, hour: 9)),
+          ],
+          createActivity(weekday(reference, DateTime.monday, week: 6, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 6, hour: 9)),
+        ];
+        final now = weekday(reference, DateTime.wednesday, week: 5, hour: 12);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
+
+        // Next course is Monday week 6
+        expect(analyzer.daysUntilNextCourse, isNotNull);
+        expect(analyzer.daysUntilNextCourse, greaterThan(0));
+      });
+
+      test('returns null during a normal weekend', () {
+        final activities = [
+          for (int week = 0; week < 6; week++) ...createWeekActivities(weekday(reference, DateTime.monday, week: week)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.saturday, week: 2, hour: 12),
+        );
+
+        expect(analyzer.daysUntilNextCourse, isNull);
+      });
+
+      test('returns null when no activities', () {
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: weekday(reference, DateTime.monday));
+
+        expect(analyzer.daysUntilNextCourse, isNull);
+      });
+    });
+
+    group('totalBreakDuration -', () {
+      test('returns total gap days when inside a long break', () {
+        // Reading week gap: week 5 empty
+        final activities = [
+          for (int week = 0; week < 5; week++) ...[
+            createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.friday, week: week, hour: 9)),
+          ],
+          createActivity(weekday(reference, DateTime.monday, week: 6, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 6, hour: 9)),
+        ];
+        final now = weekday(reference, DateTime.wednesday, week: 5, hour: 12);
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
+
+        expect(analyzer.totalBreakDuration, isNotNull);
+        expect(analyzer.totalBreakDuration, greaterThan(3));
+      });
+
+      test('returns null during a normal weekend', () {
+        final activities = [
+          for (int week = 0; week < 6; week++) ...createWeekActivities(weekday(reference, DateTime.monday, week: week)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.saturday, week: 2, hour: 12),
+        );
+
+        expect(analyzer.totalBreakDuration, isNull);
+      });
+
+      test('returns null when no activities', () {
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: weekday(reference, DateTime.monday));
+
+        expect(analyzer.totalBreakDuration, isNull);
       });
     });
 
