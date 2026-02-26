@@ -45,4 +45,36 @@ mixin Utils {
     final String formattedResult = result.toStringAsFixed(2);
     return AppIntl.of(context)!.grades_grade_with_percentage(double.parse(formattedResult), maxGrade, percentage);
   }
+
+  static DateTime dateOnly(DateTime date) => DateTime.utc(date.year, date.month, date.day);
+
+  static DateTime startOfWeek(DateTime date) {
+    final dateOnlyDate = dateOnly(date);
+    return dateOnlyDate.subtract(Duration(days: date.weekday - 1));
+  }
+
+  static int daysBetween(DateTime start, DateTime end) => dateOnly(end).difference(dateOnly(start)).inDays;
+
+  static int monthsRemaining(DateTime endDate, DateTime now) {
+    final months = (endDate.year - now.year) * 12 + (endDate.month - now.month);
+    return months < 0 ? 0 : months;
+  }
+
+  static int weeksCompleted(DateTime startDate, DateTime now) {
+    final startWeekMonday = startOfWeek(startDate);
+    final currentWeekMonday = startOfWeek(now);
+    return (daysBetween(startWeekMonday, currentWeekMonday) ~/ 7) + 1;
+  }
+
+  static int weeksRemaining(DateTime endDate, DateTime now) {
+    final today = DateTime(now.year, now.month, now.day);
+    final end = DateTime(endDate.year, endDate.month, endDate.day);
+
+    if (end.isBefore(today)) return -1;
+
+    final startOfWeek = today.subtract(Duration(days: today.weekday - 1));
+    final startOfEndWeek = end.subtract(Duration(days: end.weekday - 1));
+
+    return (startOfEndWeek.difference(startOfWeek).inDays ~/ 7) + 1;
+  }
 }
