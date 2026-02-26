@@ -7,7 +7,7 @@ import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
-import 'package:notredame/data/models/session_context.dart';
+import 'package:notredame/data/models/dynamic_message_context.dart';
 
 void main() {
   late DynamicMessagesService engine;
@@ -44,7 +44,7 @@ void main() {
     );
   }
 
-  SessionContext createContext({
+  DynamicMessageContext createContext({
     DateTime? now,
     Session? session,
     List<CourseActivity>? courseActivities,
@@ -59,7 +59,7 @@ void main() {
   }) {
     final defaultSession = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
-    return SessionContext(
+    return DynamicMessageContext(
       now: now ?? DateTime(2024, 3, 15),
       session: session ?? defaultSession,
       courseActivities: courseActivities ?? [],
@@ -90,7 +90,7 @@ void main() {
         final now = DateTime(2024, 1, 1);
         final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
 
-        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
@@ -101,7 +101,7 @@ void main() {
         final now = DateTime(2024, 1, 10);
         final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
 
-        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<SessionStartsSoonMessage>()));
@@ -111,7 +111,7 @@ void main() {
         final now = DateTime(2024, 1, 11);
         final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
 
-        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<SessionStartsSoonMessage>()));
@@ -283,7 +283,7 @@ void main() {
 
         final activities = [createActivity(DateTime(2024, 2, 15, 9)), createActivity(DateTime(2024, 2, 16, 9))];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],
@@ -625,7 +625,7 @@ void main() {
           createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
         ];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],
@@ -648,7 +648,7 @@ void main() {
           createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
         ];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],
@@ -936,7 +936,7 @@ void main() {
 
         final activities = [createActivity(DateTime(2024, 4, 24, 9)), createActivity(DateTime(2024, 4, 30, 9))];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],
@@ -998,7 +998,7 @@ void main() {
           createActivity(weekday(reference, DateTime.monday, hour: 9)),
         ];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],
@@ -1018,7 +1018,7 @@ void main() {
         final now = DateTime(2024, 2, 15);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
 
-        final context = SessionContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
@@ -1038,7 +1038,7 @@ void main() {
           createActivity(weekday(reference, DateTime.monday, week: 1, hour: 9)),
         ];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],
@@ -1076,7 +1076,7 @@ void main() {
           createActivityWithName(DateTime(2024, 4, 29, 9), 'FINAL'),
         ];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],
@@ -1090,7 +1090,7 @@ void main() {
         final now = DateTime(2024, 4, 1);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: [],
           replacedDays: [],
@@ -1109,7 +1109,7 @@ void main() {
           createActivityWithName(DateTime(2024, 4, 29, 9), 'final'),
         ];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],
@@ -1130,7 +1130,7 @@ void main() {
           createActivityWithName(DateTime(2024, 5, 13, 9), 'Final'),
         ];
 
-        final context = SessionContext.fromSession(
+        final context = DynamicMessageContext.fromSession(
           session: session,
           activities: activities,
           replacedDays: [],

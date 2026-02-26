@@ -6,7 +6,7 @@ import 'package:notredame/utils/schedule_analyzer.dart';
 import 'package:notredame/utils/replaced_day_analyzer.dart';
 import 'package:notredame/utils/utils.dart';
 
-class SessionContext {
+class DynamicMessageContext {
   final DateTime now;
   final Session session;
   final List<CourseActivity> courseActivities;
@@ -29,7 +29,7 @@ class SessionContext {
   ReplacedDayAnalyzer get _replacedDayAnalyzer =>
       _replacedDayAnalyzerCache ??= ReplacedDayAnalyzer(replacedDays: replacedDays, now: now);
 
-  SessionContext({
+  DynamicMessageContext({
     required this.now,
     required this.session,
     required this.courseActivities,
@@ -43,7 +43,7 @@ class SessionContext {
     required this.courseDaysThisWeek,
   });
 
-  factory SessionContext.fromSession({
+  factory DynamicMessageContext.fromSession({
     required Session session,
     required List<CourseActivity> activities,
     required List<ReplacedDay> replacedDays,
@@ -53,7 +53,7 @@ class SessionContext {
     final lastRegularCourseDate = analyzer.getLastRegularCourseDate();
     final courseEndDate = lastRegularCourseDate ?? session.endDate;
 
-    final context = SessionContext(
+    final context = DynamicMessageContext(
       session: session,
       courseActivities: activities,
       replacedDays: replacedDays,

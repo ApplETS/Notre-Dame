@@ -18,7 +18,7 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
-import 'package:notredame/data/models/session_context.dart';
+import 'package:notredame/data/models/dynamic_message_context.dart';
 import '../../../data/services/in_app_review_service.dart';
 import '../../../data/services/preferences_service.dart';
 import '../../../domain/constants/preferences_flags.dart';
@@ -222,7 +222,7 @@ class DashboardViewModel extends FutureViewModel {
     final replacedDays = _courseRepository.replacedDays ?? [];
     final now = _settingsManager.dateTimeNow;
 
-    final context = SessionContext.fromSession(
+    final context = DynamicMessageContext.fromSession(
       session: session,
       activities: activities,
       replacedDays: replacedDays,
