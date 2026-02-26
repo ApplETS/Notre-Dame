@@ -119,6 +119,14 @@ class _MoreViewState extends State<MoreView> {
                   },
                 ),
               ListTile(
+                title: Text("Map"),
+                leading: const Icon(Icons.map),
+                onTap: () {
+                  _analyticsService.logEvent(tag, "Map clicked");
+                  model.navigationService.pushNamed(RouterPaths.map);
+                },
+              ),
+              ListTile(
                 title: Text(AppIntl.of(context)!.need_help),
                 leading: const Icon(Icons.question_answer_outlined),
                 onTap: () {
