@@ -53,7 +53,7 @@ class SessionContext {
     final lastRegularCourseDate = analyzer.getLastRegularCourseDate();
     final courseEndDate = lastRegularCourseDate ?? session.endDate;
 
-    return SessionContext(
+    final context = SessionContext(
       session: session,
       courseActivities: activities,
       replacedDays: replacedDays,
@@ -66,6 +66,8 @@ class SessionContext {
       courseWeeksRemaining: Utils.weeksRemaining(courseEndDate, now),
       courseDaysThisWeek: analyzer.courseDaysThisWeek,
     );
+    context._scheduleAnalyzerCache = analyzer;
+    return context;
   }
 
   bool get hasNextWeekSchedule => _scheduleAnalyzer.hasNextWeekSchedule;
