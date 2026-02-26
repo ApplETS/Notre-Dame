@@ -11,11 +11,7 @@ void main() {
     required DateTime replacementDate,
     String description = 'Action de graces',
   }) {
-    return ReplacedDay(
-      originalDate: originalDate,
-      replacementDate: replacementDate,
-      description: description,
-    );
+    return ReplacedDay(originalDate: originalDate, replacementDate: replacementDate, description: description);
   }
 
   group('ReplacedDayAnalyzer -', () {

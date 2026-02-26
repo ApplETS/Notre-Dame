@@ -12,7 +12,11 @@ void main() {
     return DateTime(target.year, target.month, target.day, hour, minute);
   }
 
-  CourseActivity createActivity(DateTime start, {Duration duration = const Duration(hours: 2), String activityName = 'Cours'}) {
+  CourseActivity createActivity(
+    DateTime start, {
+    Duration duration = const Duration(hours: 2),
+    String activityName = 'Cours',
+  }) {
     return CourseActivity(
       courseGroup: 'LOG430-01',
       courseName: 'Architecture logicielle',
@@ -170,7 +174,10 @@ void main() {
 
       test('returns true when only one course day and its today', () {
         final activities = [createActivity(weekday(reference, DateTime.monday, hour: 9))];
-        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: weekday(reference, DateTime.monday, hour: 10));
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.monday, hour: 10),
+        );
 
         expect(analyzer.isLastCourseDayOfWeek, isTrue);
       });
