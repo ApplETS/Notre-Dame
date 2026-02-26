@@ -11,6 +11,9 @@ class ScheduleAnalyzer {
 
   ScheduleAnalyzer({required this.courseActivities, required this.now});
 
+  late final _upcomingBreakInfo = _getUpcomingBreakInfo();
+  late final _currentGapInfo = _getCurrentGapInfo();
+
   /// Returns all course activities whose startDateTime falls within the given range [start, end).
   List<CourseActivity> getActivitiesInRange(DateTime start, DateTime end) {
     return courseActivities
@@ -112,40 +115,40 @@ class ScheduleAnalyzer {
   }
 
   bool get isLongWeekendIncoming {
-    final breakInfo = _getUpcomingBreakInfo();
+    final breakInfo = _upcomingBreakInfo;
     if (breakInfo == null) return false;
     return breakInfo.upcomingGapDays > breakInfo.usualGapDays;
   }
 
   int? get upcomingBreakDuration {
-    final breakInfo = _getUpcomingBreakInfo();
+    final breakInfo = _upcomingBreakInfo;
     if (breakInfo == null || breakInfo.upcomingGapDays <= breakInfo.usualGapDays) return null;
     return breakInfo.upcomingGapDays;
   }
 
   /// Returns days until the break starts (first day with no class), or null if no break.
   int? get daysUntilBreakStart {
-    final breakInfo = _getUpcomingBreakInfo();
+    final breakInfo = _upcomingBreakInfo;
     if (breakInfo == null || breakInfo.upcomingGapDays <= breakInfo.usualGapDays) return null;
     return Utils.daysBetween(now, breakInfo.lastActivityThisWeek) + 1;
   }
 
   bool get isInsideLongWeekend {
-    final gapInfo = _getCurrentGapInfo();
+    final gapInfo = _currentGapInfo;
     if (gapInfo == null) return false;
 
     return gapInfo.isLongerThanUsual;
   }
 
   int? get daysUntilNextCourse {
-    final gapInfo = _getCurrentGapInfo();
+    final gapInfo = _currentGapInfo;
     if (gapInfo == null || !gapInfo.isLongerThanUsual) return null;
 
     return Utils.daysBetween(now, gapInfo.nextActivityStart);
   }
 
   int? get totalBreakDuration {
-    final gapInfo = _getCurrentGapInfo();
+    final gapInfo = _currentGapInfo;
     if (gapInfo == null || !gapInfo.isLongerThanUsual) return null;
 
     return gapInfo.upcomingGapDays;
