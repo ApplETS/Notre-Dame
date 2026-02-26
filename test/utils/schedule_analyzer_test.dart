@@ -17,7 +17,7 @@ void main() {
       courseGroup: 'LOG430-01',
       courseName: 'Architecture logicielle',
       activityName: activityName,
-      activityDescription: 'Cours magistral',
+      activityDescription: 'Cours',
       activityLocation: ['A-1234'],
       startDateTime: start,
       endDateTime: start.add(duration),
