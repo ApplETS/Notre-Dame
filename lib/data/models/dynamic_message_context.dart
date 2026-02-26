@@ -59,7 +59,7 @@ class DynamicMessageContext {
       replacedDays: replacedDays,
       now: now,
       isSessionStarted: now.compareTo(session.startDate) >= 0,
-      daysRemaining: session.endDate.difference(now).inDays,
+      daysRemaining: courseEndDate.difference(now).inDays,
       monthsRemaining: Utils.monthsRemaining(session.endDate, now),
       weeksCompleted: Utils.weeksCompleted(session.startDate, now),
       weeksRemaining: Utils.weeksRemaining(session.endDate, now),

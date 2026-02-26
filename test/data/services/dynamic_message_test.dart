@@ -992,10 +992,16 @@ void main() {
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
         final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
           createActivity(weekday(reference, DateTime.friday, hour: 9)),
           createActivity(weekday(reference, DateTime.tuesday, week: 1, hour: 9)),
-          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
-          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 2, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, week: 2, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 2, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 3, hour: 9)),
         ];
 
         final context = DynamicMessageContext.fromSession(
@@ -1005,6 +1011,7 @@ void main() {
           now: now,
         );
 
+        expect(context.daysRemaining, greaterThan(7), reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage');
         expect(context.isLongWeekendIncoming, isTrue, reason: 'Should be long weekend incoming');
         expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Should be last course day');
 
@@ -1036,6 +1043,7 @@ void main() {
           createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
           createActivity(weekday(reference, DateTime.friday, hour: 9)),
           createActivity(weekday(reference, DateTime.monday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 3, hour: 9)),
         ];
 
         final context = DynamicMessageContext.fromSession(
@@ -1045,6 +1053,7 @@ void main() {
           now: now,
         );
 
+        expect(context.daysRemaining, greaterThan(7), reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage');
         expect(context.weeksCompleted, 1);
         expect(context.isAfterLastCourseOfWeek, isTrue);
         final message = engine.determineMessage(context);
