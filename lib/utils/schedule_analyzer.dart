@@ -1,4 +1,5 @@
 // Project imports:
+import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/utils/utils.dart';
 
@@ -215,7 +216,7 @@ class ScheduleAnalyzer {
   /// Returns null if no regular course activities exist
   DateTime? getLastRegularCourseDate() {
     final regularActivities = courseActivities
-        .where((activity) => activity.activityName.toLowerCase() != 'final')
+        .where((activity) => activity.activityName.toLowerCase() != ActivityName.finalExam.toLowerCase())
         .toList();
 
     if (regularActivities.isEmpty) return null;
