@@ -19,9 +19,9 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/models/dynamic_message_context.dart';
-import '../../../data/services/in_app_review_service.dart';
-import '../../../data/services/preferences_service.dart';
-import '../../../domain/constants/preferences_flags.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
