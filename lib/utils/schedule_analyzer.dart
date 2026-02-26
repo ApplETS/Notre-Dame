@@ -56,7 +56,7 @@ class ScheduleAnalyzer {
         continue;
       }
 
-      // Skip specified gap. For example, this prevents the gap we are currently calculating from
+      // Exclude the specified gap. For example, this prevents the gap we are currently in from
       // influencing the usual historical average.
       if (Utils.dateOnly(currentActivityDate).isAtSameMomentAs(excludeStartDate) &&
           Utils.dateOnly(nextActivityDate).isAtSameMomentAs(excludeEndDate)) {
@@ -72,7 +72,7 @@ class ScheduleAnalyzer {
     if (weekendGapDurationsInDays.isEmpty) return _defaultWeekendGapDays;
 
     weekendGapDurationsInDays.sort();
-    
+
     // Return the median gap
     return weekendGapDurationsInDays[(weekendGapDurationsInDays.length - 1) ~/ 2];
   }
