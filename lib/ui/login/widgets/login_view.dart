@@ -19,17 +19,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   bool _isLoading = false;
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +44,7 @@ class _LoginViewState extends State<LoginView> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 30),
                   child: Text(
-                    AppIntl.of(context)!.startup_title,
+                    AppIntl.of(context)!.login_startup_title,
                     style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, color: AppPalette.grey.white),
                   ),
                 ),
