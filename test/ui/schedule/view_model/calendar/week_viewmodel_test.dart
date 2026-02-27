@@ -47,7 +47,9 @@ void main() {
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [saturdayCourse]);
       // Map the list of CourseActivity to add them in the viewModel
       final Map<DateTime, List<CourseActivity>> coursesMapped = {};
-      final DateTime saturday = DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 1)).withoutTime;
+      final DateTime saturday = DateUtils.getFirstdayOfWeek(
+        DateTime.now(),
+      ).add(Duration(days: 6, hours: 1)).withoutTime;
       coursesMapped[saturday]?.add(saturdayCourse);
 
       viewModel.weekSelected = DateUtils.getFirstdayOfWeek(DateTime.now());
