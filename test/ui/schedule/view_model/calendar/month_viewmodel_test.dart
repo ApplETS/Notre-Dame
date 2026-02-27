@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/date_utils.dart';
 import '../../../../helpers.dart';
 
 void main() {
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('does not update monthSelected', () {
-      viewModel.monthSelected = Utils.getFirstDayOfMonth(DateTime.now());
+      viewModel.monthSelected = DateUtils.getFirstDayOfMonth(DateTime.now());
       final result = viewModel.returnToCurrentDate();
       expect(result, false);
     });
@@ -37,7 +37,7 @@ void main() {
     test('handleDateSelectedChanged updates monthSelected', () {
       final newDate = DateTime(2023, 10, 7);
       viewModel.handleDateSelectedChanged(newDate);
-      expect(viewModel.monthSelected, Utils.getFirstDayOfMonth(newDate));
+      expect(viewModel.monthSelected, DateUtils.getFirstDayOfMonth(newDate));
     });
   });
 }
