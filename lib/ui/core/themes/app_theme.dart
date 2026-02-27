@@ -81,6 +81,7 @@ class AppTheme with ChangeNotifier {
     loginMain: AppPalette.etsLightRed,
     loginAccent: AppPalette.grey.white,
     inputError: Colors.amberAccent,
+    mapLegend: const Color(0xfffffdfd),
   );
 
   static final dark = () {
@@ -141,6 +142,7 @@ class AppTheme with ChangeNotifier {
     loginMain: AppPalette.grey.white,
     loginAccent: AppPalette.etsLightRed,
     inputError: Colors.redAccent,
+    mapLegend: const Color(0xff121212),
   );
 }
 

@@ -27,7 +27,7 @@ class _FaqViewState extends State<FaqView> {
     builder: (context, model, child) {
       return BaseScaffold(
         safeArea: false,
-        appBar: AppBar(title: Text(AppIntl.of(context)!.need_help)),
+        appBar: AppBar(title: Text(AppIntl.of(context)!.more_need_help)),
         showBottomBar: false,
         body: (MediaQuery.of(context).orientation == Orientation.portrait)
             ? Column(

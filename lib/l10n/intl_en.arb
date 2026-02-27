@@ -55,7 +55,7 @@
   "title_more": "More",
 
   "title_ets_mobile": "ÉTSMobile",
-  
+
   "login_title": "Login",
   "login_prompt_universal_code": "Universal Code",
   "login_prompt_password": "Password",
@@ -292,7 +292,7 @@
   "report_harassment_or_abuse_description": "News targeting a person or group in an abusive manner.",
   "report_outdated_content": "Outdated Content",
   "report_outdated_content_description": "Ad that is no longer up-to-date or relevant.",
-  
+
   "search": "Search",
 
   "news_author_notify_me": "Notify me",
@@ -315,32 +315,20 @@
     }
   },
 
-  "more_about_applets_title": "About ApplETS",
-  "more_report_bug": "Report a bug or request a feature",
-  "more_report_bug_steps_title": "How does it work?\n\n",
-  "more_report_bug_button": "Provide feedback",
-  "more_prompt_report_bug_method": "How would you like to report the bug?",
-  "more_report_bug_method_screenshot": "Screenshot",
-  "more_report_bug_method_video": "Video recording",
+  "more_about_applets": "About ApplETS",
+  "more_rate_us": "Rate us!",
   "more_contributors": "Contributors",
   "more_open_source_licenses": "Open source licenses",
+  "more_privacy_policy": "Privacy policy",
+  "more_map" : "Campus map",
+  "more_need_help": "Need help?",
   "more_settings": "Settings",
   "more_log_out": "Log out",
+
   "more_prompt_log_out_confirmation": "Are you sure you want to log out?",
   "more_log_out_progress": "Logging you out",
 
   "more_applets_about_details": "ÉTSMobile was conceived by the ApplETS scientific club from the École de technologie supérieure.\n\nApplets is, most importantly, a gathering of students who share a typical enthusiasm for the field of telecommunications and mobile applications. The mission of ApplETS is to train students in mobile development and promote the production of mobile applications within the student community.\n\nFollow us on: ",
-
-  "more_report_bug_bug": "Report a bug",
-  "more_report_bug_bug_subtitle": "\nLet us know so we can forward this to our bug list.",
-  "more_report_bug_feature": "Request a feature",
-  "more_report_bug_feature_subtitle": "\nDo you have an idea that would make our app better ? We would love to know !",
-  "more_report_tips": "Tips",
-  "more_report_bug_step1": "After selecting the option, the feedback view will open.\n\nYou can choose between ",
-  "more_report_bug_step2": "Navigate ",
-  "more_report_bug_step3": "and ",
-  "more_report_bug_step4": "Draw ",
-  "more_report_bug_step5": "mode on the right side. \n\nWhen in navigation mode, you can freely navigate in the app.\n\nTo switch to the drawing mode just press the 'Draw' button. Now you can draw on the screen.\n\nTo finish your feedback just write a description below and send it by pressing the 'Submit' button.",
 
   "security_bomb_threat_title": "Bomb threat",
   "security_bomb_threat_detail": "bomb_threat_en.md",
@@ -371,6 +359,9 @@
   "security_emergency_procedures": "Emergency procedures",
   "security_station": "Security station",
 
+  "campus_map_legend_parking": "Parking",
+  "campus_map_legend_bixi": "Bixi",
+
   "settings_title": "Settings",
   "settings_display_pref_category": "Display",
   "settings_dark_theme_pref": "Theme",
@@ -382,14 +373,12 @@
   "light_theme": "Light",
   "system_theme": "System",
 
-  "thank_you_for_the_feedback": "Thank you for the feedback",
-
   "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
   "flutter_website": "https://flutter.dev",
 
   "choose_language_title": "Choose your preferred language",
   "choose_language_subtitle": "Please select your language",
-  
+
   "not_found_title": "Inaccessible Page",
   "not_found_message": "Oh oh... it seems that the page {pageName} you requested is not accessible.",
   "@not_found_message": {
@@ -437,9 +426,6 @@
   },
   "progress_bar_suffix": "days",
 
-  "in_app_review_title": "Rate us!",
-  "need_help": "Need help?",
-  "privacy_policy": "Privacy policy",
   "universal_code_example": "Ex: AB12345",
   "my_tickets": "My tickets",
   "no_ticket": "No ticket",
@@ -457,7 +443,7 @@
       }
     }
   },
-  
+
   "ignored_evaluations_section_title": "{count,plural, =1{1 ignored grade} other{{count} ignored grades}}",
   "@ignored_evaluations_section_title": {
     "placeholders": {

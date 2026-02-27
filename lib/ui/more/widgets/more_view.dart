@@ -61,7 +61,7 @@ class _MoreViewState extends State<MoreView> {
             padding: EdgeInsets.zero,
             children: [
               ListTile(
-                title: Text(AppIntl.of(context)!.more_about_applets_title),
+                title: Text(AppIntl.of(context)!.more_about_applets),
                 leading: Hero(
                   tag: 'about',
                   child: Image.asset("assets/images/favicon_applets.png", height: 24, width: 24),
@@ -72,7 +72,7 @@ class _MoreViewState extends State<MoreView> {
                 },
               ),
               ListTile(
-                title: Text(AppIntl.of(context)!.in_app_review_title),
+                title: Text(AppIntl.of(context)!.more_rate_us),
                 leading: const Icon(Icons.rate_review_outlined),
                 onTap: () {
                   _analyticsService.logEvent(tag, "Rate us clicked");
@@ -111,7 +111,7 @@ class _MoreViewState extends State<MoreView> {
               ),
               if (model.privacyPolicyToggle)
                 ListTile(
-                  title: Text(AppIntl.of(context)!.privacy_policy),
+                  title: Text(AppIntl.of(context)!.more_privacy_policy),
                   leading: const Icon(Icons.privacy_tip_outlined),
                   onTap: () {
                     _analyticsService.logEvent(tag, "Confidentiality clicked");
@@ -119,7 +119,7 @@ class _MoreViewState extends State<MoreView> {
                   },
                 ),
               ListTile(
-                title: Text("Map"),
+                title: Text(AppIntl.of(context)!.more_map),
                 leading: const Icon(Icons.map),
                 onTap: () {
                   _analyticsService.logEvent(tag, "Map clicked");
@@ -127,7 +127,7 @@ class _MoreViewState extends State<MoreView> {
                 },
               ),
               ListTile(
-                title: Text(AppIntl.of(context)!.need_help),
+                title: Text(AppIntl.of(context)!.more_need_help),
                 leading: const Icon(Icons.question_answer_outlined),
                 onTap: () {
                   _analyticsService.logEvent(tag, "FAQ clicked");
