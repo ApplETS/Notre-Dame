@@ -56,6 +56,7 @@
   "title_ets_mobile": "ÉTSMobile",
   
   "login_title": "Connexion",
+  "startup_title": "Veuillez vous authentifier pour continuer",
   "login_prompt_universal_code": "Code universel",
   "login_prompt_password": "Mot de passe",
   "login_action_sign_in": "Se connecter",
