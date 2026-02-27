@@ -247,6 +247,7 @@
   "ets_etudiants_actuels_title": "Current students",
   "ets_cafe_sans_filtre_title": "Cafe sans filtre",
   "ets_fablab_title": "FabLAB",
+  "ets_bureau_respect_personne_title" : "BRP",
   "ets_hide_quick_link": "Hide link {quickLinkName}",
   "@ets_hide_quick_link": {
     "placeholders": {
