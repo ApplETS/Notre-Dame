@@ -29,16 +29,20 @@ class _MapViewState extends State<MapView> {
     showBottomBar: false,
     body: LayoutBuilder(
       builder: (context, constraints) {
-        double height = constraints.maxHeight;
-        double width = constraints.maxWidth;
-
         const minAspectRatio = 0.5;
         const maxAspectRatio = 2.7;
+
+        double height = constraints.maxHeight;
+        double width = constraints.maxWidth;
 
         bool vertical = height > width;
 
         double aspectRatio = clampDouble(width / height, minAspectRatio, maxAspectRatio);
-        double scale = clampDouble(2.5 - (vertical ? 2.4 : 0.9) * (1 - aspectRatio).abs(), 1.0, double.infinity);
+
+        // The map covers a larger area than what we want visible on screen.
+        // This allows to extend the map on the entire screen on a wide range of devices.
+        // The closer we are to a 1:1 aspect ratio, the bigger the scale factor should be.
+        double scale = clampDouble(2.5 - (vertical ? 2.4 : 0.9) * (1.0 - aspectRatio).abs(), 1.0, double.infinity);
 
         double mapHeight = min(height, height / minAspectRatio);
         double mapWidth = min(width, maxAspectRatio * height);
@@ -52,13 +56,14 @@ class _MapViewState extends State<MapView> {
               transformationController: _transformationController,
               onInteractionUpdate: (details) {
                 bool shouldDisplayLegendUpdate = _transformationController.value.getMaxScaleOnAxis() == 1;
+                // Only setState if there is a change to avoid useless renders
                 if (_shouldDisplayLegend != shouldDisplayLegendUpdate) {
                   setState(() => _shouldDisplayLegend = shouldDisplayLegendUpdate);
                 }
               },
               child: Transform.scale(
                 scale: scale,
-                alignment: AlignmentGeometry.xy(vertical ? 0 : 1.0, vertical ? 0.3 : 0),
+                alignment: AlignmentGeometry.xy(vertical ? 0.0 : 1.0, vertical ? 0.3 : 0.0),
                 child: SvgPicture.asset(
                   "assets/images/map_${context.theme.brightness.name}.svg",
                   fit: BoxFit.cover,
@@ -83,16 +88,16 @@ class _MapViewState extends State<MapView> {
         offset: _shouldDisplayLegend
             ? Offset.zero
             : vertical
-            ? const Offset(0, 1)
-            : const Offset(1, 0),
+            ? const Offset(0.0, 1.0)
+            : const Offset(1.0, 0.0),
         child: AnimatedOpacity(
           duration: const Duration(milliseconds: 200),
-          opacity: _shouldDisplayLegend ? 1 : 0,
+          opacity: _shouldDisplayLegend ? 1.0 : 0.0,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
             decoration: BoxDecoration(
               color: context.theme.appColors.mapLegend.withAlpha(180),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(16.0),
             ),
             child: IntrinsicWidth(
               child: Flex(
@@ -114,7 +119,7 @@ class _MapViewState extends State<MapView> {
                   Row(
                     spacing: 8.0,
                     children: [
-                      SvgPicture.asset("assets/images/bixi.svg", height: 32),
+                      SvgPicture.asset("assets/images/bixi.svg", height: 32.0),
                       Text(
                         AppIntl.of(context)!.campus_map_legend_bixi,
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
