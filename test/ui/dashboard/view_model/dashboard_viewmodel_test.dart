@@ -7,6 +7,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/session_reminder_type.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -218,7 +219,7 @@ void main() {
 
         await viewModel.futureToRun();
 
-        verify(settingsManagerMock.dateTimeNow).called(1);
+        verify(settingsManagerMock.dateTimeNow).called(2);
       });
 
       test("An exception is thrown during the preferenceService call", () async {
@@ -266,6 +267,40 @@ void main() {
         await viewModel.futureToRunSessionProgressBar();
         expect(viewModel.progress, -1.0);
         expect(viewModel.sessionDays, [0, 0]);
+      });
+
+      test("sessionReminder is set for active session", () async {
+        final sessionWithFutureDates = Session(
+          shortName: "H2020",
+          name: "Hiver 2020",
+          startDate: DateTime(2019, 12, 30),
+          endDate: DateTime(2020, 4, 25),
+          endDateCourses: DateTime(2020, 4, 15),
+          startDateRegistration: DateTime(2020, 1, 5),
+          deadlineRegistration: DateTime(2020, 1, 20),
+          startDateCancellationWithRefund: DateTime(2020, 2, 1),
+          deadlineCancellationWithRefund: DateTime(2020, 3, 1),
+          deadlineCancellationWithRefundNewStudent: DateTime(2020, 3, 10),
+          startDateCancellationWithoutRefundNewStudent: DateTime(2020, 3, 11),
+          deadlineCancellationWithoutRefundNewStudent: DateTime(2020, 4, 1),
+          deadlineCancellationASEQ: DateTime(2020, 3, 15),
+        );
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [sessionWithFutureDates]);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [sessionWithFutureDates]);
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020));
+
+        await viewModel.futureToRunSessionProgressBar();
+
+        expect(viewModel.sessionReminder, isNotNull);
+        expect(viewModel.sessionReminder!.type, SessionReminderType.registrationStart);
+      });
+
+      test("sessionReminder is null when no active session", () async {
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
+
+        await viewModel.futureToRunSessionProgressBar();
+
+        expect(viewModel.sessionReminder, isNull);
       });
     });
 
