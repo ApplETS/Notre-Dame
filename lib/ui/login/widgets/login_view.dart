@@ -54,7 +54,7 @@ class _LoginViewState extends State<LoginView> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 30),
                   child: Text(
-                    'Veuillez vous authentifier pour continuer',
+                    AppIntl.of(context)!.startup_title,
                     style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18, color: AppPalette.grey.white),
                   ),
                 ),
@@ -72,7 +72,7 @@ class _LoginViewState extends State<LoginView> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
                     child: Text(
-                      'Se connecter',
+                      AppIntl.of(context)!.login_action_sign_in,
                       style: TextStyle(color: AppPalette.grey.white, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
