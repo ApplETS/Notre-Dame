@@ -36,10 +36,6 @@ mixin DateUtils {
 
     if (end.isBefore(today)) return -1;
 
-    final currentWeekMonday = startOfWeek(today);
-    final endWeekMonday = startOfWeek(end);
-    final weeksBetween = daysBetween(currentWeekMonday, endWeekMonday) ~/ 7;
-
-    return today.weekday == DateTime.sunday ? weeksBetween : weeksBetween + 1;
+    return daysBetween(startOfWeek(today), startOfWeek(end)) ~/ 7 + 1;
   }
 }

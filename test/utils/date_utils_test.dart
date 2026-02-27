@@ -188,7 +188,7 @@ void main() {
         final now = DateTime(2024, 3, 10);
         final endDate = DateTime(2024, 3, 31);
 
-        expect(DateUtils.weeksRemaining(endDate, now), 3);
+        expect(DateUtils.weeksRemaining(endDate, now), 4);
       });
 
       test('returns 1 when in the same week as end date (last week)', () {
@@ -209,7 +209,7 @@ void main() {
         final now = DateTime(2024, 3, 10);
         final endDate = DateTime(2024, 3, 28);
 
-        expect(DateUtils.weeksRemaining(endDate, now), 3);
+        expect(DateUtils.weeksRemaining(endDate, now), 4);
       });
 
       test('weekend before last week shows 2 weeks remaining', () {
