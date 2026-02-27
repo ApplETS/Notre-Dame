@@ -25,11 +25,11 @@ mixin DateUtils {
   }
 
   static int weeksCompleted(DateTime startDate, DateTime now) {
-    final startWeekMonday = startOfWeek(startDate);
-    final currentWeekMonday = startOfWeek(now);
-    return (daysBetween(startWeekMonday, currentWeekMonday) ~/ 7) + 1;
+    if (dateOnly(now).isBefore(dateOnly(startDate))) return 0;
+    return daysBetween(startOfWeek(startDate), startOfWeek(now)) ~/ 7 + 1;
   }
 
+  /// Counts remaining calendar weeks (Monday–Sunday) from [now] to [endDate], inclusive.
   static int weeksRemaining(DateTime endDate, DateTime now) {
     final today = dateOnly(now);
     final end = dateOnly(endDate);
