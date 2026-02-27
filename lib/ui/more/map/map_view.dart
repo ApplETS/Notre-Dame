@@ -4,12 +4,16 @@ import 'dart:ui';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+
+// Package imports:
 import 'package:flutter_svg/svg.dart';
 
-// Projet imports:
-import 'package:notredame/ui/core/ui/base_scaffold.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+// Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/base_scaffold.dart';
+
+// Projet imports:
 
 class MapView extends StatefulWidget {
   const MapView({super.key});
