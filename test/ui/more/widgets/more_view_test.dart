@@ -46,18 +46,7 @@ void main() {
       testWidgets('has 1 listView and 8 listTiles when privacy policy disabled', (WidgetTester tester) async {
         RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
         await tester.pumpWidget(localizedWidget(child: MoreView()));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
-
-        final listview = find.byType(ListView);
-        expect(listview, findsOneWidget);
-
-        final listTile = find.byType(ListTile);
-        expect(listTile, findsNWidgets(7));
-      });
-
-      testWidgets('has 1 listView and 9 listTiles when privacy policy enabled', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: MoreView()));
-        await tester.pumpAndSettle(const Duration(seconds: 1));
+        await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);
         expect(listview, findsOneWidget);
@@ -66,14 +55,25 @@ void main() {
         expect(listTile, findsNWidgets(8));
       });
 
+      testWidgets('has 1 listView and 9 listTiles when privacy policy enabled', (WidgetTester tester) async {
+        await tester.pumpWidget(localizedWidget(child: MoreView()));
+        await tester.pumpAndSettle();
+
+        final listview = find.byType(ListView);
+        expect(listview, findsOneWidget);
+
+        final listTile = find.byType(ListTile);
+        expect(listTile, findsNWidgets(9));
+      });
+
       group('navigation - ', () {
         testWidgets('about', (WidgetTester tester) async {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           await tester.pumpWidget(localizedWidget(child: MoreView()));
-          await tester.pumpAndSettle(const Duration(seconds: 1));
+          await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester.tap(find.widgetWithText(ListTile, intl.more_about_applets_title));
+          await tester.tap(find.widgetWithText(ListTile, intl.more_about_applets));
 
           // Rebuild the widget after the state has changed.
           await tester.pump();
@@ -89,7 +89,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester.tap(find.widgetWithText(ListTile, intl.in_app_review_title));
+          await tester.tap(find.widgetWithText(ListTile, intl.more_rate_us));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
@@ -106,7 +106,7 @@ void main() {
           await tester.pumpAndSettle();
 
           // Tap the button.
-          await tester.tap(find.widgetWithText(ListTile, intl.in_app_review_title));
+          await tester.tap(find.widgetWithText(ListTile, intl.more_rate_us));
 
           // Rebuild the widget after the state has changed.
           await tester.pumpAndSettle();
@@ -152,7 +152,7 @@ void main() {
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
-          await tester.tap(find.widgetWithText(ListTile, intl.need_help));
+          await tester.tap(find.widgetWithText(ListTile, intl.more_need_help));
 
           // Rebuild the widget after the state has changed.
           await tester.pump();

@@ -31,6 +31,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.loginMain,
     required this.loginAccent,
     required this.inputError,
+    required this.mapLegend,
   });
 
   final Color appBar;
@@ -61,6 +62,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color loginMain;
   final Color loginAccent;
   final Color inputError;
+  final Color mapLegend;
 
   @override
   ThemeExtension<AppColorsExtension> copyWith({
@@ -92,6 +94,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? loginMain,
     Color? loginAccent,
     Color? inputError,
+    Color? mapLegend,
   }) {
     return AppColorsExtension(
       appBar: appBar ?? this.appBar,
@@ -122,6 +125,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       loginMain: loginMain ?? this.loginMain,
       loginAccent: loginAccent ?? this.loginAccent,
       inputError: inputError ?? this.inputError,
+      mapLegend: mapLegend ?? this.mapLegend,
     );
   }
 
@@ -162,6 +166,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       loginMain: _lerp(loginMain, other.loginMain, t),
       loginAccent: _lerp(loginAccent, other.loginAccent, t),
       inputError: _lerp(inputError, other.inputError, t),
+      mapLegend: _lerp(mapLegend, other.mapLegend, t),
     );
   }
 }

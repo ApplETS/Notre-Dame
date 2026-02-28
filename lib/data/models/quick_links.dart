@@ -135,4 +135,10 @@ List<QuickLink> quickLinks(AppIntl intl) => [
     image: SvgPicture.asset('assets/images/fablab_logo.svg'),
     link: 'https://fablab.etsmtl.ca/',
   ),
+  QuickLink(
+    id: 21,
+    name: intl.ets_bureau_respect_personne_title,
+    image: FittedBox(child: FaIcon(FontAwesomeIcons.peopleRoof, color: AppPalette.etsLightRed)),
+    link: 'https://www.etsmtl.ca/a-propos/bureau-du-respect-de-la-personne',
+  ),
 ];
