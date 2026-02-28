@@ -15,6 +15,7 @@ class RouterPaths {
   static const String newsAuthor = "/ets/news/author";
   static const String more = "/more";
   static const String settings = "/more/settings";
+  static const String map = "/more/map";
   static const String contributors = "/more/contributors";
   static const String about = "/more/about";
   static const String chooseLanguage = "/discovery/choose-language";
