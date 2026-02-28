@@ -363,12 +363,7 @@ void main() {
           createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
         ];
 
-        final context = createContext(
-          now: now,
-          session: session,
-          courseActivities: activities,
-          daysRemaining: 60,
-        );
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
         expect(context.isLongWeekendIncoming, isTrue);
         expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
@@ -389,12 +384,7 @@ void main() {
           createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
         ];
 
-        final context = createContext(
-          now: now,
-          session: session,
-          courseActivities: activities,
-          daysRemaining: 60,
-        );
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
         expect(context.isLongWeekendIncoming, isTrue);
         expect(context.upcomingBreakDuration, lessThan(6));
@@ -413,12 +403,7 @@ void main() {
           createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
         ];
 
-        final context = createContext(
-          now: now,
-          session: session,
-          courseActivities: activities,
-          daysRemaining: 60,
-        );
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
         expect(context.isLongWeekendIncoming, isTrue);
         expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
@@ -439,12 +424,7 @@ void main() {
           createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
         ];
 
-        final context = createContext(
-          now: now,
-          session: session,
-          courseActivities: activities,
-          daysRemaining: 60,
-        );
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
         expect(context.isLongWeekendIncoming, isTrue);
         expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
@@ -464,12 +444,7 @@ void main() {
           createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
         ];
 
-        final context = createContext(
-          now: now,
-          session: session,
-          courseActivities: activities,
-          daysRemaining: 60,
-        );
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
         expect(context.isLongWeekendIncoming, isTrue);
         expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
@@ -1076,7 +1051,11 @@ void main() {
           now: now,
         );
 
-        expect(context.daysRemaining, greaterThan(7), reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage');
+        expect(
+          context.daysRemaining,
+          greaterThan(7),
+          reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage',
+        );
         expect(context.isLongWeekendIncoming, isTrue, reason: 'Should be long weekend incoming');
         expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Should be last course day');
 
@@ -1111,12 +1090,7 @@ void main() {
           description: 'Holiday',
         );
 
-        final context = createContext(
-          now: now,
-          replacedDays: [replacedDay],
-          weeksCompleted: 1,
-          daysRemaining: 60,
-        );
+        final context = createContext(now: now, replacedDays: [replacedDay], weeksCompleted: 1, daysRemaining: 60);
 
         final message = engine.determineMessage(context);
         expect(message, isA<NoCoursesOnDayMessage>());
@@ -1238,7 +1212,11 @@ void main() {
           now: now,
         );
 
-        expect(context.daysRemaining, greaterThan(7), reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage');
+        expect(
+          context.daysRemaining,
+          greaterThan(7),
+          reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage',
+        );
         expect(context.weeksCompleted, 1);
         expect(context.isAfterLastCourseOfWeek, isTrue);
         final message = engine.determineMessage(context);
@@ -1284,12 +1262,7 @@ void main() {
         final now = DateTime(2024, 4, 1);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
 
-        final context = DynamicMessageContext.fromSession(
-          session: session,
-          activities: [],
-          replacedDays: [],
-          now: now,
-        );
+        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
         expect(context.courseWeeksRemaining, context.weeksRemaining);
       });
@@ -1370,17 +1343,17 @@ void main() {
     });
 
     group('Weekday names -', () {
-      test('returns correct weekday name for Saturday and Sunday through full flow', () {
-        final weekdays = [
-          DateTime.monday,
-          DateTime.tuesday,
-          DateTime.wednesday,
-          DateTime.thursday,
-          DateTime.friday,
-          DateTime.saturday,
-          DateTime.sunday,
-        ];
+      final weekdays = [
+        DateTime.monday,
+        DateTime.tuesday,
+        DateTime.wednesday,
+        DateTime.thursday,
+        DateTime.friday,
+        DateTime.saturday,
+        DateTime.sunday,
+      ];
 
+      test('returns correct weekday name for Saturday and Sunday through full flow', () {
         for (int i = 5; i < 7; i++) {
           final date = DateTime(2024, 3, 11 + i, 10);
 
@@ -1410,16 +1383,6 @@ void main() {
       });
 
       test('returns correct weekday name for all days via direct message construction', () {
-        final weekdays = [
-          DateTime.monday,
-          DateTime.tuesday,
-          DateTime.wednesday,
-          DateTime.thursday,
-          DateTime.friday,
-          DateTime.saturday,
-          DateTime.sunday,
-        ];
-
         for (int i = 0; i < 7; i++) {
           final date = DateTime(2024, 3, 11 + i, 10);
           final expectedWeekday = weekdays[date.weekday - 1];
