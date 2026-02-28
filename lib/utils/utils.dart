@@ -1,9 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:calendar_view/calendar_view.dart';
-
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
 
@@ -22,14 +19,6 @@ mixin Utils {
 
   static String getMessageByLocale(BuildContext context, String fr, String en) {
     return Localizations.localeOf(context).toString() == "fr" ? fr : en;
-  }
-
-  static DateTime getFirstdayOfWeek(DateTime currentDate) {
-    return currentDate.subtract(Duration(days: currentDate.weekday % 7)).withoutTime;
-  }
-
-  static DateTime getFirstDayOfMonth(DateTime date) {
-    return DateTime(date.year, date.month);
   }
 
   static String validateResultWithPercentage(
