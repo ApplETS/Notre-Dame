@@ -315,32 +315,20 @@
     }
   },
 
-  "more_about_applets_title": "À propos d'ApplETS",
-  "more_report_bug": "Rapporter un bogue ou une amélioration",
-  "more_report_bug_steps_title": "Comment faire?\n\n",
-  "more_report_bug_button": "Fournir un avis",
-  "more_prompt_report_bug_method": "Comment souhaitez-vous rapporter le bogue?",
-  "more_report_bug_method_screenshot": "Capture d'écran",
-  "more_report_bug_method_video": "Capture vidéo",
+  "more_about_applets": "À propos d'ApplETS",
+  "more_rate_us": "Évaluez-nous !",
   "more_contributors": "Contributeurs",
   "more_open_source_licenses": "Licences des logiciels libres",
+  "more_privacy_policy": "Politique de confidentialité",
+  "more_map" : "Carte du campus",
+  "more_need_help": "Besoin d'aide ?",
   "more_settings": "Paramètres",
   "more_log_out": "Se déconnecter",
+
   "more_prompt_log_out_confirmation": "Êtes-vous certain de vouloir vous déconnecter?",
   "more_log_out_progress": "Déconnexion en cours",
   
   "more_applets_about_details": "ÉTSMobile a été réalisée par le club scientifique ApplETS de l'École de technologie supérieure.\n\nApplETS se veut, avant tout, un regroupement d’étudiants qui partagent un intérêt commun pour le domaine des télécommunications et des applications mobiles. La mission d'ApplETS est de former les étudiants au développement mobile et de promouvoir la production d'applications mobiles au sein de la communauté étudiante.\n\nSuivez-nous sur : ",
-  
-  "more_report_bug_bug": "Rapporter un bogue",
-  "more_report_bug_bug_subtitle": "\nFaites-le nous savoir afin que nous puissions l'ajouter à notre liste de bogues.",
-  "more_report_bug_feature": "Demander une fonctionnalité",
-  "more_report_bug_feature_subtitle": "\nAvez-vous une idée qui améliorerait notre application ? Nous aimerions savoir !",  
-  "more_report_tips": "Astuce",
-  "more_report_bug_step1": "Après avoir sélectionné l'option, la vue des commentaires s'ouvrira.\n\nVous pouvez choisir entre le mode ",
-  "more_report_bug_step2": "Naviguer ",
-  "more_report_bug_step3": "et ",
-  "more_report_bug_step4": "Dessiner ",
-  "more_report_bug_step5": "sur le côté droit. \n\nEn mode navigation, vous pouvez naviguer librement dans l'application.\n\nPour passer en mode dessin, appuyez simplement sur le bouton 'Dessiner'. Vous pouvez maintenant dessiner sur l'écran.\n\nPour terminer votre commentaire, écrivez simplement une description ci-dessous et envoyez-la en appuyant sur le bouton 'Soumettre'.",  
 
   "security_bomb_threat_title": "Alerte à la bombe",
   "security_bomb_threat_detail": "bomb_threat_fr.md",
@@ -371,6 +359,9 @@
   "security_emergency_procedures": "Procédures d'urgence",
   "security_station": "Poste de sécurité",
 
+  "campus_map_legend_parking": "Stationnement",
+  "campus_map_legend_bixi": "Bixi",
+
   "settings_title": "Paramètres",
   "settings_display_pref_category": "Affichage",
   "settings_dark_theme_pref": "Thème",
@@ -381,8 +372,6 @@
   "dark_theme": "Foncé",
   "light_theme": "Pâle",
   "system_theme": "Système",
-
-  "thank_you_for_the_feedback": "Merci pour le signalement",
 
   "flutter_license": "Flutter est la boîte à outils d'interface utilisateur de Google pour créer de superbes applications compilées en natif pour mobile, Web et bureau à partir d'une seule base de code. En savoir plus sur Flutter à ",
   "flutter_website": "https://flutter.dev",
@@ -437,9 +426,6 @@
   },
   "progress_bar_suffix": "jours",
 
-  "in_app_review_title": "Évaluez-nous!",
-  "need_help": "Besoin d'aide?",
-  "privacy_policy": "Politique de confidentialité",
   "universal_code_example": "Ex: AB12345",
   "my_tickets": "Mes billets",
   "no_ticket": "Aucun billet",
