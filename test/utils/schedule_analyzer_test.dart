@@ -12,12 +12,16 @@ void main() {
     return DateTime(target.year, target.month, target.day, hour, minute);
   }
 
-  CourseActivity createActivity(DateTime start, {Duration duration = const Duration(hours: 2), String activityName = 'Cours'}) {
+  CourseActivity createActivity(
+    DateTime start, {
+    Duration duration = const Duration(hours: 2),
+    String activityName = 'Cours',
+  }) {
     return CourseActivity(
       courseGroup: 'LOG430-01',
       courseName: 'Architecture logicielle',
       activityName: activityName,
-      activityDescription: 'Cours magistral',
+      activityDescription: 'Cours',
       activityLocation: ['A-1234'],
       startDateTime: start,
       endDateTime: start.add(duration),
@@ -170,7 +174,10 @@ void main() {
 
       test('returns true when only one course day and its today', () {
         final activities = [createActivity(weekday(reference, DateTime.monday, hour: 9))];
-        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: weekday(reference, DateTime.monday, hour: 10));
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.monday, hour: 10),
+        );
 
         expect(analyzer.isLastCourseDayOfWeek, isTrue);
       });
@@ -331,8 +338,6 @@ void main() {
       });
 
       test('returns true for Tuesday/Thursday pattern with Monday holiday', () {
-        // Weeks 0-4: Tue/Thu pattern (usual gap: 4 days, Thu→Tue)
-        // Week 5: no Tuesday → gap from Thu week 4 to Thu week 5 = 7 days
         final activities = [
           createActivity(weekday(reference, DateTime.tuesday, hour: 9)),
           createActivity(weekday(reference, DateTime.thursday, hour: 9)),

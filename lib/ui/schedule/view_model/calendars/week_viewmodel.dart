@@ -5,11 +5,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/date_utils.dart';
 
 class WeekViewModel extends CalendarViewModel {
   // Sunday of current week
-  DateTime weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
+  DateTime weekSelected = DateUtils.getFirstdayOfWeek(DateTime.now());
 
   // Display weekend days only if they contain events
   bool displaySunday = false;
@@ -24,12 +24,12 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    weekSelected = Utils.getFirstdayOfWeek(newDate);
+    weekSelected = DateUtils.getFirstdayOfWeek(newDate);
 
     if (!isBusy && _firstLoad) {
       _firstLoad = false;
       if (DateTime.now().weekday == DateTime.saturday &&
-          Utils.getFirstdayOfWeek(DateTime.now()) == weekSelected &&
+          DateUtils.getFirstdayOfWeek(DateTime.now()) == weekSelected &&
           calendarEventsFromDate(DateTime.now()).isEmpty) {
         handleDateSelectedChanged(weekSelected.add(Duration(days: 7, hours: 1)));
         displayNextWeek = true;
@@ -45,7 +45,7 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    DateTime dateToReturnTo = Utils.getFirstdayOfWeek(DateTime.now());
+    DateTime dateToReturnTo = DateUtils.getFirstdayOfWeek(DateTime.now());
     if (DateTime.now().weekday == DateTime.saturday &&
         calendarEventsFromDate(dateToReturnTo.add(Duration(days: 6, hours: 1))).isEmpty) {
       dateToReturnTo = dateToReturnTo.add(Duration(days: 7, hours: 1)).withoutTime;

@@ -2,9 +2,9 @@
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/utils/date_utils.dart';
 import 'package:notredame/utils/schedule_analyzer.dart';
 import 'package:notredame/utils/replaced_day_analyzer.dart';
-import 'package:notredame/utils/utils.dart';
 
 class DynamicMessageContext {
   final DateTime now;
@@ -60,10 +60,10 @@ class DynamicMessageContext {
       now: now,
       isSessionStarted: now.compareTo(session.startDate) >= 0,
       daysRemaining: courseEndDate.difference(now).inDays,
-      monthsRemaining: Utils.monthsRemaining(session.endDate, now),
-      weeksCompleted: Utils.weeksCompleted(session.startDate, now),
-      weeksRemaining: Utils.weeksRemaining(session.endDate, now),
-      courseWeeksRemaining: Utils.weeksRemaining(courseEndDate, now),
+      monthsRemaining: DateUtils.monthsRemaining(session.endDate, now),
+      weeksCompleted: DateUtils.weeksCompleted(session.startDate, now),
+      weeksRemaining: DateUtils.weeksRemaining(session.endDate, now),
+      courseWeeksRemaining: DateUtils.weeksRemaining(courseEndDate, now),
       courseDaysThisWeek: analyzer.courseDaysThisWeek,
     );
     context._scheduleAnalyzerCache = analyzer;

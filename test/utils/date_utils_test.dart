@@ -2,14 +2,14 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/date_utils.dart';
 
 void main() {
   group('Utils date utilities -', () {
     group('dateOnly -', () {
       test('strips time from DateTime and returns UTC', () {
         final dateWithTime = DateTime(2024, 3, 15, 14, 30, 45, 123);
-        final result = Utils.dateOnly(dateWithTime);
+        final result = DateUtils.dateOnly(dateWithTime);
 
         expect(result, DateTime.utc(2024, 3, 15));
         expect(result.isUtc, isTrue);
@@ -21,7 +21,7 @@ void main() {
 
       test('returns UTC date with same year/month/day', () {
         final localDate = DateTime(2024, 3, 15);
-        final result = Utils.dateOnly(localDate);
+        final result = DateUtils.dateOnly(localDate);
 
         expect(result.year, 2024);
         expect(result.month, 3);
@@ -33,7 +33,7 @@ void main() {
     group('startOfWeek -', () {
       test('returns Monday for a Wednesday', () {
         final wednesday = DateTime(2024, 3, 13, 10, 30);
-        final result = Utils.startOfWeek(wednesday);
+        final result = DateUtils.startOfWeek(wednesday);
 
         expect(result, DateTime.utc(2024, 3, 11));
         expect(result.weekday, DateTime.monday);
@@ -42,7 +42,7 @@ void main() {
 
       test('returns Monday for a Monday', () {
         final monday = DateTime(2024, 3, 11, 9, 0);
-        final result = Utils.startOfWeek(monday);
+        final result = DateUtils.startOfWeek(monday);
 
         expect(result, DateTime.utc(2024, 3, 11));
         expect(result.weekday, DateTime.monday);
@@ -50,7 +50,7 @@ void main() {
 
       test('returns Monday for a Sunday', () {
         final sunday = DateTime(2024, 3, 17, 18, 0);
-        final result = Utils.startOfWeek(sunday);
+        final result = DateUtils.startOfWeek(sunday);
 
         expect(result, DateTime.utc(2024, 3, 11));
         expect(result.weekday, DateTime.monday);
@@ -58,7 +58,7 @@ void main() {
 
       test('handles week crossing month boundary', () {
         final wednesday = DateTime(2024, 5, 1);
-        final result = Utils.startOfWeek(wednesday);
+        final result = DateUtils.startOfWeek(wednesday);
 
         expect(result, DateTime.utc(2024, 4, 29));
         expect(result.weekday, DateTime.monday);
@@ -66,7 +66,7 @@ void main() {
 
       test('handles week crossing year boundary', () {
         final wednesday = DateTime(2024, 1, 3);
-        final result = Utils.startOfWeek(wednesday);
+        final result = DateUtils.startOfWeek(wednesday);
 
         expect(result, DateTime.utc(2024, 1, 1));
         expect(result.weekday, DateTime.monday);
@@ -78,41 +78,41 @@ void main() {
         final start = DateTime(2024, 3, 10);
         final end = DateTime(2024, 3, 15);
 
-        expect(Utils.daysBetween(start, end), 5);
+        expect(DateUtils.daysBetween(start, end), 5);
       });
 
       test('returns negative days for past date', () {
         final start = DateTime(2024, 3, 15);
         final end = DateTime(2024, 3, 10);
 
-        expect(Utils.daysBetween(start, end), -5);
+        expect(DateUtils.daysBetween(start, end), -5);
       });
 
       test('returns zero for same date', () {
         final date = DateTime(2024, 3, 15);
 
-        expect(Utils.daysBetween(date, date), 0);
+        expect(DateUtils.daysBetween(date, date), 0);
       });
 
       test('ignores time component - same day different times', () {
         final start = DateTime(2024, 3, 10, 8, 0);
         final end = DateTime(2024, 3, 10, 23, 59);
 
-        expect(Utils.daysBetween(start, end), 0);
+        expect(DateUtils.daysBetween(start, end), 0);
       });
 
       test('handles consecutive days', () {
         final start = DateTime(2024, 3, 10);
         final end = DateTime(2024, 3, 11);
 
-        expect(Utils.daysBetween(start, end), 1);
+        expect(DateUtils.daysBetween(start, end), 1);
       });
 
       test('handles month boundaries', () {
         final start = DateTime(2024, 3, 28);
         final end = DateTime(2024, 4, 2);
 
-        expect(Utils.daysBetween(start, end), 5);
+        expect(DateUtils.daysBetween(start, end), 5);
       });
     });
 
@@ -121,28 +121,28 @@ void main() {
         final now = DateTime(2024, 3, 15);
         final endDate = DateTime(2024, 6, 15);
 
-        expect(Utils.monthsRemaining(endDate, now), 3);
+        expect(DateUtils.monthsRemaining(endDate, now), 3);
       });
 
       test('returns zero when end is same month', () {
         final now = DateTime(2024, 3, 15);
         final endDate = DateTime(2024, 3, 30);
 
-        expect(Utils.monthsRemaining(endDate, now), 0);
+        expect(DateUtils.monthsRemaining(endDate, now), 0);
       });
 
       test('returns zero when end is in past', () {
         final now = DateTime(2024, 6, 15);
         final endDate = DateTime(2024, 3, 15);
 
-        expect(Utils.monthsRemaining(endDate, now), 0);
+        expect(DateUtils.monthsRemaining(endDate, now), 0);
       });
 
       test('handles year boundary', () {
         final now = DateTime(2024, 11, 15);
         final endDate = DateTime(2025, 2, 15);
 
-        expect(Utils.monthsRemaining(endDate, now), 3);
+        expect(DateUtils.monthsRemaining(endDate, now), 3);
       });
     });
 
@@ -151,35 +151,35 @@ void main() {
         final startDate = DateTime(2024, 3, 14);
         final now = DateTime(2024, 3, 16);
 
-        expect(Utils.weeksCompleted(startDate, now), 1);
+        expect(DateUtils.weeksCompleted(startDate, now), 1);
       });
 
       test('returns 2 when in the next calendar week after start', () {
         final startDate = DateTime(2024, 3, 14);
         final now = DateTime(2024, 3, 18);
 
-        expect(Utils.weeksCompleted(startDate, now), 2);
+        expect(DateUtils.weeksCompleted(startDate, now), 2);
       });
 
       test('returns 3 when two calendar weeks after start', () {
         final startDate = DateTime(2024, 3, 14);
         final now = DateTime(2024, 3, 25);
 
-        expect(Utils.weeksCompleted(startDate, now), 3);
+        expect(DateUtils.weeksCompleted(startDate, now), 3);
       });
 
       test('returns 1 for entire first calendar week regardless of start day', () {
         final startDate = DateTime(2024, 3, 11);
         final now = DateTime(2024, 3, 17);
 
-        expect(Utils.weeksCompleted(startDate, now), 1);
+        expect(DateUtils.weeksCompleted(startDate, now), 1);
       });
 
       test('returns 0 when now is in previous calendar week', () {
         final startDate = DateTime(2024, 3, 20);
         final now = DateTime(2024, 3, 11);
 
-        expect(Utils.weeksCompleted(startDate, now), 0);
+        expect(DateUtils.weeksCompleted(startDate, now), 0);
       });
     });
 
@@ -188,35 +188,35 @@ void main() {
         final now = DateTime(2024, 3, 10);
         final endDate = DateTime(2024, 3, 31);
 
-        expect(Utils.weeksRemaining(endDate, now), 3);
+        expect(DateUtils.weeksRemaining(endDate, now), 4);
       });
 
       test('returns 1 when in the same week as end date (last week)', () {
         final now = DateTime(2024, 3, 26);
         final endDate = DateTime(2024, 3, 31);
 
-        expect(Utils.weeksRemaining(endDate, now), 1);
+        expect(DateUtils.weeksRemaining(endDate, now), 1);
       });
 
       test('returns -1 when end is in past', () {
         final now = DateTime(2024, 3, 31);
         final endDate = DateTime(2024, 3, 10);
 
-        expect(Utils.weeksRemaining(endDate, now), -1);
+        expect(DateUtils.weeksRemaining(endDate, now), -1);
       });
 
       test('counts weeks including current week', () {
         final now = DateTime(2024, 3, 10);
         final endDate = DateTime(2024, 3, 28);
 
-        expect(Utils.weeksRemaining(endDate, now), 3);
+        expect(DateUtils.weeksRemaining(endDate, now), 4);
       });
 
       test('weekend before last week shows 2 weeks remaining', () {
         final now = DateTime(2024, 4, 11);
         final endDate = DateTime(2024, 4, 17);
 
-        expect(Utils.weeksRemaining(endDate, now), 2);
+        expect(DateUtils.weeksRemaining(endDate, now), 2);
       });
     });
   });

@@ -5,10 +5,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/date_utils.dart';
 
 class MonthViewModel extends CalendarViewModel {
-  DateTime monthSelected = Utils.getFirstDayOfMonth(DateTime.now());
+  DateTime monthSelected = DateUtils.getFirstDayOfMonth(DateTime.now());
 
   MonthViewModel({required super.intl});
 
@@ -16,7 +16,7 @@ class MonthViewModel extends CalendarViewModel {
   handleDateSelectedChanged(DateTime newDate) {
     // The first row in the month view can contains day from the previous month. One extra hour for daylight savings.
     final dateInSelectedMonth = newDate.add(const Duration(days: 7, hours: 1));
-    monthSelected = Utils.getFirstDayOfMonth(dateInSelectedMonth);
+    monthSelected = DateUtils.getFirstDayOfMonth(dateInSelectedMonth);
 
     // Start with current month to avoid starting coloring with events from another session
     eventController.addAll(selectedMonthEvents());
@@ -27,8 +27,8 @@ class MonthViewModel extends CalendarViewModel {
 
     final List<DateTime> months = [
       monthSelected,
-      Utils.getFirstDayOfMonth(monthSelected.add(Duration(days: 31))),
-      Utils.getFirstDayOfMonth(monthSelected.subtract(Duration(days: 1))),
+      DateUtils.getFirstDayOfMonth(monthSelected.add(Duration(days: 31))),
+      DateUtils.getFirstDayOfMonth(monthSelected.subtract(Duration(days: 1))),
     ];
 
     for (final DateTime month in months) {
@@ -42,7 +42,7 @@ class MonthViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    final DateTime currentMonth = Utils.getFirstDayOfMonth(DateTime.now());
+    final DateTime currentMonth = DateUtils.getFirstDayOfMonth(DateTime.now());
     final bool isThisMonthSelected = currentMonth == monthSelected;
 
     isThisMonthSelected
