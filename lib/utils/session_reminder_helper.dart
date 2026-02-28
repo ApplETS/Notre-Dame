@@ -18,6 +18,14 @@ class SessionReminderHelper {
         session.deadlineCancellationWithRefundNewStudent,
         SessionReminderType.cancellationWithRefundNewStudentDeadline,
       ),
+      MapEntry(
+        session.startDateCancellationWithoutRefundNewStudent,
+        SessionReminderType.cancellationWithoutRefundNewStudentStart,
+      ),
+      MapEntry(
+        session.deadlineCancellationWithoutRefundNewStudent,
+        SessionReminderType.cancellationWithoutRefundNewStudentDeadline,
+      ),
       MapEntry(session.deadlineCancellationASEQ, SessionReminderType.cancellationASEQDeadline),
     ];
 

@@ -86,16 +86,32 @@ void main() {
       expect(result!.type, SessionReminderType.cancellationWithRefundNewStudentDeadline);
     });
 
-    test("returns cancellationASEQDeadline", () {
+    test("returns cancellationWithoutRefundNewStudentStart", () {
       final now = DateTime(2025, 3, 21);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.cancellationWithoutRefundNewStudentStart);
+    });
+
+    test("returns cancellationASEQDeadline", () {
+      final now = DateTime(2025, 3, 22);
       final result = SessionReminderHelper.getActiveReminder(session, now);
 
       expect(result, isNotNull);
       expect(result!.type, SessionReminderType.cancellationASEQDeadline);
     });
 
+    test("returns cancellationWithoutRefundNewStudentDeadline", () {
+      final now = DateTime(2025, 3, 26);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.cancellationWithoutRefundNewStudentDeadline);
+    });
+
     test("returns null when all dates have passed", () {
-      final now = DateTime(2025, 4, 1);
+      final now = DateTime(2025, 4, 11);
       final result = SessionReminderHelper.getActiveReminder(session, now);
 
       expect(result, isNull);

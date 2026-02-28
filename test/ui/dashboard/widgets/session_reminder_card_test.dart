@@ -28,7 +28,7 @@ void main() {
 
       expect(find.text("Registration deadline"), findsOneWidget);
       expect(find.text("Today!"), findsOneWidget);
-      expect(find.byIcon(Icons.assignment_late), findsOneWidget);
+      expect(find.byIcon(Icons.assignment_late_outlined), findsOneWidget);
     });
 
     testWidgets("displays event name with countdown and date for future event", (WidgetTester tester) async {
@@ -47,7 +47,7 @@ void main() {
 
       expect(find.text("Session starts"), findsOneWidget);
       expect(find.textContaining("5 days"), findsOneWidget);
-      expect(find.byIcon(Icons.school), findsOneWidget);
+      expect(find.byIcon(Icons.school_outlined), findsOneWidget);
     });
 
     testWidgets("displays empty state when reminder is null", (WidgetTester tester) async {

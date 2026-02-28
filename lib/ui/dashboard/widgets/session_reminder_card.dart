@@ -23,9 +23,11 @@ class SessionReminderCard extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 1,
       child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         color: context.theme.appColors.dashboardCard,
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(16.0),
           child: _buildContent(context),
         ),
       ),
@@ -39,13 +41,19 @@ class SessionReminderCard extends StatelessWidget {
       return Skeletonizer(
         enabled: true,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Bone.text(words: 2),
-            const SizedBox(height: 8),
-            Bone.circle(size: 32),
-            const SizedBox(height: 8),
-            Bone.text(words: 3),
+            const Bone.icon(size: 28),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Bone.text(words: 2),
+                const SizedBox(height: 6),
+                const Bone.text(words: 3),
+              ],
+            ),
           ],
         ),
       );
@@ -53,27 +61,66 @@ class SessionReminderCard extends StatelessWidget {
 
     if (reminder == null) {
       return Center(
-        child: Text(intl.session_reminder_none, textAlign: TextAlign.center),
+        child: Text(
+          intl.session_reminder_none, 
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Theme.of(context).disabledColor),
+        ),
       );
     }
 
+    final isUrgent = reminder!.daysUntil <= 3;
+
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Icon(reminder!.type.icon, size: 40, weight: 100),
-        const SizedBox(height: 4),
-        AutoSizeText(
-          _eventName(intl, reminder!.type),
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          maxLines: 2,
-          textAlign: TextAlign.center,
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: isUrgent 
+                ? Theme.of(context).colorScheme.error.withOpacity(0.1)
+                : Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            reminder!.type.icon, 
+            size: 24,
+            color: isUrgent 
+                ? Theme.of(context).colorScheme.error 
+                : Theme.of(context).colorScheme.primary,
+          ),
         ),
-        const SizedBox(height: 4),
-        AutoSizeText(
-          _timingText(intl, context),
-          style: const TextStyle(fontSize: 14),
-          maxLines: 2,
-          textAlign: TextAlign.center,
+        
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AutoSizeText(
+              _eventName(intl, reminder!.type),
+              style: const TextStyle(
+                fontSize: 16, 
+                fontWeight: FontWeight.w700,
+                height: 1.2,
+              ),
+              minFontSize: 12,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              _timingText(intl, context),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: isUrgent ? FontWeight.w600 : FontWeight.normal,
+                color: isUrgent 
+                    ? Theme.of(context).colorScheme.error 
+                    : Theme.of(context).textTheme.bodySmall?.color,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ),
       ],
     );
@@ -93,6 +140,10 @@ class SessionReminderCard extends StatelessWidget {
         return intl.session_reminder_cancellation_refund_deadline;
       case SessionReminderType.cancellationWithRefundNewStudentDeadline:
         return intl.session_reminder_cancellation_refund_new_student;
+      case SessionReminderType.cancellationWithoutRefundNewStudentStart:
+        return intl.session_reminder_cancellation_no_refund_new_student_start;
+      case SessionReminderType.cancellationWithoutRefundNewStudentDeadline:
+        return intl.session_reminder_cancellation_no_refund_new_student_deadline;
       case SessionReminderType.cancellationASEQDeadline:
         return intl.session_reminder_cancellation_aseq;
     }
