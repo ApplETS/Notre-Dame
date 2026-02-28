@@ -7,11 +7,11 @@ import 'package:notredame/domain/models/signets-api/course_activity.dart';
 import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
 
-part 'signets_client.g.dart';
+part 'signets_client_service.g.dart';
 
 @RestApi(baseUrl: 'https://etsmobileapi.etsmtl.ca/api/Etudiant/')
-abstract class SignetsClient {
-  factory SignetsClient(Dio dio, {String? baseUrl, ParseErrorLogger? errorLogger}) = _SignetsClient;
+abstract class SignetsClientService {
+  factory SignetsClientService(Dio dio, {String? baseUrl, ParseErrorLogger? errorLogger}) = _SignetsClientService;
 
   /// Get the list of sessions
   @GET('/listeSessions')

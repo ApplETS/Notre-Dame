@@ -27,7 +27,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/data/services/signets_client.dart';
+import 'package:notredame/data/services/signets_client_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'data/mocks/repositories/author_repository_mock.dart';
@@ -49,7 +49,7 @@ import 'data/mocks/services/networking_service_mock.dart';
 import 'data/mocks/services/preferences_service_mock.dart';
 import 'data/mocks/services/remote_config_service_mock.dart';
 import 'data/mocks/services/signets_api_mock.dart';
-import 'data/mocks/services/signets_client_mock.dart';
+import 'data/mocks/services/signets_client_service_mock.dart';
 
 /// Unregister the service [T] from GetIt
 void unregister<T extends Object>() {
@@ -318,11 +318,11 @@ BroadcastMessageRepositoryMock setupBroadcastMessageRepositoryMock() {
   return repository;
 }
 
-SignetsClientMock setupSignetsClientMock() {
-  unregister<SignetsClient>();
-  final service = SignetsClientMock();
+SignetsClientServiceMock setupSignetsClientServiceMock() {
+  unregister<SignetsClientService>();
+  final service = SignetsClientServiceMock();
 
-  locator.registerSingleton<SignetsClient>(service);
+  locator.registerSingleton<SignetsClientService>(service);
 
   return service;
 }

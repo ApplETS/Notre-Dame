@@ -8,7 +8,7 @@ import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/locator.dart';
 import '../../helpers.dart';
 import '../mocks/services/flutter_secure_storage_mock.dart';
-import '../mocks/services/signets_client_mock.dart';
+import '../mocks/services/signets_client_service_mock.dart';
 
 void main() {
   final now = DateTime.now();
@@ -62,11 +62,11 @@ void main() {
   );
 
   late ListSessionsRepository repository;
-  late SignetsClientMock mockSignetsClient;
+  late SignetsClientServiceMock mockSignetsClient;
   late FlutterSecureStorageMock mockSecureStorage;
 
   setUp(() {
-    mockSignetsClient = setupSignetsClientMock();
+    mockSignetsClient = setupSignetsClientServiceMock();
     mockSecureStorage = setupFlutterSecureStorageMock();
     setupNetworkingServiceMock();
     setupLogger();
@@ -80,7 +80,7 @@ void main() {
 
   group('getSessions', () {
     test('should fetch from API and emit data', () async {
-      SignetsClientMock.stubGetSessionList(mockSignetsClient, [activeSession]);
+      SignetsClientServiceMock.stubGetSessionList(mockSignetsClient, [activeSession]);
       FlutterSecureStorageMock.stubRead(
         mockSecureStorage,
         key: ListSessionsRepository.sessionsKey,
