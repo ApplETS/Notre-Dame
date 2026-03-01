@@ -31,7 +31,7 @@ class DashboardViewModel extends FutureViewModel {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
-  final DynamicMessagesService _dynamicMessagesService = DynamicMessagesService();
+  final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
 
   /// Animation controller for the circle
   AnimationController? _controller;
