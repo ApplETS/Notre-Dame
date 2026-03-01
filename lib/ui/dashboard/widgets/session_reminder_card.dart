@@ -10,6 +10,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/domain/session_reminder_type.dart';
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 
 class SessionReminderCard extends StatelessWidget {
@@ -69,8 +70,6 @@ class SessionReminderCard extends StatelessWidget {
       );
     }
 
-    final isUrgent = reminder!.daysUntil <= 3;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -78,17 +77,13 @@ class SessionReminderCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isUrgent 
-                ? Theme.of(context).colorScheme.error.withOpacity(0.1)
-                : Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            color: AppPalette.etsLightRed.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: Icon(
-            reminder!.type.icon, 
+            reminder!.type.icon,
             size: 24,
-            color: isUrgent 
-                ? Theme.of(context).colorScheme.error 
-                : Theme.of(context).colorScheme.primary,
+            color: AppPalette.etsLightRed,
           ),
         ),
         
@@ -99,7 +94,7 @@ class SessionReminderCard extends StatelessWidget {
             AutoSizeText(
               _eventName(intl, reminder!.type),
               style: const TextStyle(
-                fontSize: 16, 
+                fontSize: 16,
                 fontWeight: FontWeight.w700,
                 height: 1.2,
               ),
@@ -112,10 +107,7 @@ class SessionReminderCard extends StatelessWidget {
               _timingText(intl, context),
               style: TextStyle(
                 fontSize: 13,
-                fontWeight: isUrgent ? FontWeight.w600 : FontWeight.normal,
-                color: isUrgent 
-                    ? Theme.of(context).colorScheme.error 
-                    : Theme.of(context).textTheme.bodySmall?.color,
+                color: Theme.of(context).textTheme.bodySmall?.color,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
