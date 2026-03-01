@@ -78,6 +78,8 @@ class DynamicMessageContext {
 
   bool get isAfterLastCourseOfWeek => _scheduleAnalyzer.isAfterLastCourseOfWeek;
 
+  bool get isSessionOver => daysRemaining < 0;
+
   bool get isLastCourseDayOfWeek => _scheduleAnalyzer.isLastCourseDayOfWeek;
 
   int? get daysUntilNextCourse => _scheduleAnalyzer.daysUntilNextCourse;

@@ -25,6 +25,7 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/l10n/app_localizations.dart';
@@ -39,6 +40,7 @@ import 'data/mocks/repositories/user_repository_mock.dart';
 import 'data/mocks/services/analytics_service_mock.dart';
 import 'data/mocks/services/auth_service_mock.dart';
 import 'data/mocks/services/cache_service_mock.dart';
+import 'data/mocks/services/dynamic_messages_service_mock.dart';
 import 'data/mocks/services/flutter_secure_storage_mock.dart';
 import 'data/mocks/services/in_app_review_service_mock.dart';
 import 'data/mocks/services/launch_url_service_mock.dart';
@@ -315,6 +317,16 @@ AuthServiceMock setupAuthServiceMock() {
 bool getCalendarViewEnabled() {
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   return remoteConfigService.scheduleListViewDefault;
+}
+
+/// Load a mock of the [DynamicMessagesService]
+DynamicMessagesServiceMock setupDynamicMessagesServiceMock() {
+  unregister<DynamicMessagesService>();
+  final service = DynamicMessagesServiceMock();
+
+  locator.registerSingleton<DynamicMessagesService>(service);
+
+  return service;
 }
 
 BroadcastMessageRepositoryMock setupBroadcastMessageRepositoryMock() {

@@ -8,7 +8,11 @@ class DynamicMessagesService {
       return SessionStartsSoonMessage(context.session.startDate);
     }
 
-    if (context.daysRemaining <= 7 && context.daysRemaining >= 0) {
+    if (context.isSessionOver) {
+      return GenericEncouragementMessage();
+    }
+
+    if (context.daysRemaining <= 7) {
       return DaysBeforeSessionEndsMessage(context.daysRemaining);
     }
 
@@ -57,7 +61,7 @@ class DynamicMessagesService {
       return LastCourseDayOfWeekMessage(context.now.weekday);
     }
 
-    if (context.courseWeeksRemaining <= 4 && context.courseWeeksRemaining > 0) {
+    if (context.courseWeeksRemaining <= 4) {
       return LessOneMonthRemainingMessage(context.courseWeeksRemaining);
     }
 

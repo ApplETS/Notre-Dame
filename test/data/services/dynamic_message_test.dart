@@ -938,10 +938,10 @@ void main() {
       });
 
       test('does not return LessOneMonthRemainingMessage when courseWeeksRemaining = 0', () {
-        final context = createContext(courseWeeksRemaining: 0, daysRemaining: 30);
+        final context = createContext(courseWeeksRemaining: 0, daysRemaining: 3);
 
         final message = engine.determineMessage(context);
-        expect(message, isNot(isA<LessOneMonthRemainingMessage>()));
+        expect(message, isA<DaysBeforeSessionEndsMessage>());
       });
 
       test('returns LessOneMonthRemainingMessage with weeksRemaining = 1', () {
@@ -1334,11 +1334,11 @@ void main() {
         expect(message, isA<LessOneMonthRemainingMessage>());
       });
 
-      test('handles negative daysRemaining (past end date)', () {
+      test('returns GenericEncouragementMessage when session is over (negative daysRemaining)', () {
         final context = createContext(daysRemaining: -5);
 
         final message = engine.determineMessage(context);
-        expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
+        expect(message, isA<GenericEncouragementMessage>());
       });
     });
 

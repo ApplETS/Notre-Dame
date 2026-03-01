@@ -75,6 +75,7 @@ void main() {
       settingsManagerMock = setupSettingsRepositoryMock();
       preferencesServiceMock = setupPreferencesServiceMock();
       setupBroadcastMessageRepositoryMock();
+      setupDynamicMessagesServiceMock();
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: false);
