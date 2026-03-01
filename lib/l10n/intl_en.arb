@@ -132,6 +132,8 @@
 
   "dynamic_message_extended_break_tomorrow": "Enjoy your break! Classes resume tomorrow.",
 
+  "dynamic_message_first_day_back_after_break": "Welcome back! Hope you had a good break.",
+
   "dynamic_message_last_course_day_of_session": "It's {weekday}! Last day of classes of the week!",
   "@dynamic_message_last_course_day_of_session": {
     "placeholders": {

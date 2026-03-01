@@ -40,6 +40,10 @@ class ExtendedBreakMessage extends DynamicMessage {
   const ExtendedBreakMessage(this.daysUntilResume);
 }
 
+class FirstDayBackAfterBreakMessage extends DynamicMessage {
+  const FirstDayBackAfterBreakMessage();
+}
+
 class LastCourseDayOfWeekMessage extends DynamicMessage {
   final int weekday;
   const LastCourseDayOfWeekMessage(this.weekday);
@@ -173,6 +177,7 @@ extension DynamicMessageResolver on DynamicMessage {
         daysUntilResume == 1
             ? intl.dynamic_message_extended_break_tomorrow
             : intl.dynamic_message_extended_break(daysUntilResume),
+      FirstDayBackAfterBreakMessage() => intl.dynamic_message_first_day_back_after_break,
     };
   }
 }

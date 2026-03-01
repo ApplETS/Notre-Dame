@@ -609,6 +609,73 @@ void main() {
       });
     });
 
+    group('FirstDayBackAfterBreakMessage -', () {
+      test('returns FirstDayBackAfterBreakMessage on first day back after extended break (>=6 days)', () {
+        final now = DateTime(2024, 2, 19, 7);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.daysUntilNextCourse, 0);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstDayBackAfterBreakMessage>());
+      });
+
+      test('returns FirstDayBackAfterBreakMessage on first day back after long weekend (<6 days)', () {
+        final now = DateTime(2024, 2, 14, 7);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 14, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.totalBreakDuration, lessThan(6));
+        expect(context.daysUntilNextCourse, 0);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstDayBackAfterBreakMessage>());
+      });
+
+      test('does not trigger during break when daysUntilNextCourse > 0 (still shows ExtendedBreakMessage)', () {
+        final now = DateTime(2024, 2, 12, 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.daysUntilNextCourse, greaterThan(0));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+        expect(message, isNot(isA<FirstDayBackAfterBreakMessage>()));
+      });
+
+      test('does not trigger on a normal day (not inside a long weekend)', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isFalse);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<FirstDayBackAfterBreakMessage>()));
+      });
+    });
+
     group('LastCourseDayOfWeekMessage -', () {
       test('returns LastCourseDayOfWeekMessage when last course day and >= 3 course days', () {
         final now = weekday(referenceDate, DateTime.sunday, hour: 10);

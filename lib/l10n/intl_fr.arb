@@ -131,6 +131,8 @@
 
   "dynamic_message_extended_break_tomorrow": "Profite de ta pause ! Les cours reprennent demain.",
 
+  "dynamic_message_first_day_back_after_break": "Bon retour ! On espère que tu as bien profité de ta pause.",
+
   "dynamic_message_last_course_day_of_session": "C'est {weekday} ! Dernière journée de cours de la semaine !",
   "@dynamic_message_last_course_day_of_session": {
     "placeholders": {
