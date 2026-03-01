@@ -161,7 +161,13 @@
 
   "dynamic_message_last_week_remaining": "Keep going, it's the last week!",
 
-  "dynamic_message_generic_encouragement": "Keep up the good work!",
+  "dynamic_message_generic_encouragement_0": "Keep up the good work!",
+  "dynamic_message_generic_encouragement_1": "Have a good semester!",
+  "dynamic_message_generic_encouragement_2": "Hope your session is going well!",
+  "dynamic_message_generic_encouragement_3": "Have a great day!",
+  "dynamic_message_generic_encouragement_4": "Keep it up!",
+  "dynamic_message_generic_encouragement_5": "Good luck with your courses!",
+  "dynamic_message_generic_encouragement_6": "Hang in there!",
 
   "dynamic_message_no_courses_on_day": "There are no courses on {weekday} ({reason})",
   "@dynamic_message_no_courses_on_day": {

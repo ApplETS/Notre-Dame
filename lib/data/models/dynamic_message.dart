@@ -1,3 +1,6 @@
+// Dart imports:
+import 'dart:math';
+
 // Package imports:
 import 'package:intl/intl.dart';
 
@@ -61,7 +64,13 @@ class LessOneMonthRemainingMessage extends DynamicMessage {
 }
 
 class GenericEncouragementMessage extends DynamicMessage {
-  const GenericEncouragementMessage();
+  final int variant;
+  const GenericEncouragementMessage(this.variant);
+
+  factory GenericEncouragementMessage.random([Random? random]) {
+    final rng = random ?? Random();
+    return GenericEncouragementMessage(rng.nextInt(7));
+  }
 }
 
 class NoCoursesOnDayMessage extends DynamicMessage {
@@ -125,7 +134,15 @@ extension DynamicMessageResolver on DynamicMessage {
           weekdayName(replacementWeekday),
           reason,
         ),
-      GenericEncouragementMessage() => intl.dynamic_message_generic_encouragement,
+      GenericEncouragementMessage(:final variant) => [
+          intl.dynamic_message_generic_encouragement_0,
+          intl.dynamic_message_generic_encouragement_1,
+          intl.dynamic_message_generic_encouragement_2,
+          intl.dynamic_message_generic_encouragement_3,
+          intl.dynamic_message_generic_encouragement_4,
+          intl.dynamic_message_generic_encouragement_5,
+          intl.dynamic_message_generic_encouragement_6,
+        ][variant],
       LongWeekendCurrentlyMessage(:final weeksCompleted) => intl.dynamic_message_long_weekend_currently(weeksCompleted),
       ExtendedBreakMessage(:final daysUntilResume) => daysUntilResume == 1
           ? intl.dynamic_message_extended_break_tomorrow

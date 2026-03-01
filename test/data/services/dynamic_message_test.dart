@@ -1,3 +1,6 @@
+// Dart imports:
+import 'dart:math';
+
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 
@@ -65,7 +68,7 @@ void main() {
       courseActivities: courseActivities ?? [],
       replacedDays: replacedDays ?? [],
       isSessionStarted: isSessionStarted ?? true,
-      daysRemaining: daysRemaining ?? 107,
+      courseDaysRemaining: daysRemaining ?? 107,
       monthsRemaining: monthsRemaining ?? 3,
       weeksCompleted: weeksCompleted ?? 10,
       weeksRemaining: weeksRemaining ?? 15,
@@ -1052,7 +1055,7 @@ void main() {
         );
 
         expect(
-          context.daysRemaining,
+          context.courseDaysRemaining,
           greaterThan(7),
           reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage',
         );
@@ -1213,7 +1216,7 @@ void main() {
         );
 
         expect(
-          context.daysRemaining,
+          context.courseDaysRemaining,
           greaterThan(7),
           reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage',
         );
@@ -1390,6 +1393,23 @@ void main() {
           expect(message.weekday, weekdays[i]);
         }
       });
+    });
+  });
+
+  group('GenericEncouragementMessage', () {
+    test('variant is stored correctly', () {
+      for (int i = 0; i < 7; i++) {
+        final message = GenericEncouragementMessage(i);
+        expect(message.variant, i);
+      }
+    });
+
+    test('random factory produces a variant in 0-6 range', () {
+      final random = Random(19);
+      for (int i = 0; i < 20; i++) {
+        final message = GenericEncouragementMessage.random(random);
+        expect(message.variant, inInclusiveRange(0, 6));
+      }
     });
   });
 }

@@ -8,12 +8,12 @@ class DynamicMessagesService {
       return SessionStartsSoonMessage(context.session.startDate);
     }
 
-    if (context.isSessionOver) {
-      return GenericEncouragementMessage();
+    if (context.isCoursesOver) {
+      return GenericEncouragementMessage.random();
     }
 
-    if (context.daysRemaining <= 7) {
-      return DaysBeforeSessionEndsMessage(context.daysRemaining);
+    if (context.courseDaysRemaining <= 7) {
+      return DaysBeforeSessionEndsMessage(context.courseDaysRemaining);
     }
 
     if (context.isInsideLongWeekend) {
@@ -65,6 +65,6 @@ class DynamicMessagesService {
       return LessOneMonthRemainingMessage(context.courseWeeksRemaining);
     }
 
-    return GenericEncouragementMessage();
+    return GenericEncouragementMessage.random();
   }
 }

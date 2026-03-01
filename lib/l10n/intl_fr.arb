@@ -160,7 +160,13 @@
 
   "dynamic_message_last_week_remaining": "Tiens bon, c'est la dernière semaine !",
 
-  "dynamic_message_generic_encouragement": "Continue comme ça !",
+  "dynamic_message_generic_encouragement_0": "Continue comme ça !",
+  "dynamic_message_generic_encouragement_1": "Bonne session !",
+  "dynamic_message_generic_encouragement_2": "On espère que ta session se passe bien !",
+  "dynamic_message_generic_encouragement_3": "Bonne journée !",
+  "dynamic_message_generic_encouragement_4": "Lâche pas !",
+  "dynamic_message_generic_encouragement_5": "Bonne chance dans tes cours !",
+  "dynamic_message_generic_encouragement_6": "Tiens bon !",
 
   "dynamic_message_no_courses_on_day": "Il n'y a pas de cours le {weekday} ({reason})",
   "@dynamic_message_no_courses_on_day": {

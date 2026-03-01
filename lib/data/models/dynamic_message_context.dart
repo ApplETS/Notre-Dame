@@ -13,7 +13,7 @@ class DynamicMessageContext {
   final List<ReplacedDay> replacedDays;
 
   final bool isSessionStarted;
-  final int daysRemaining;
+  final int courseDaysRemaining;
   final int monthsRemaining;
   final int weeksCompleted;
   final int weeksRemaining;
@@ -35,7 +35,7 @@ class DynamicMessageContext {
     required this.courseActivities,
     required this.replacedDays,
     required this.isSessionStarted,
-    required this.daysRemaining,
+    required this.courseDaysRemaining,
     required this.monthsRemaining,
     required this.weeksCompleted,
     required this.weeksRemaining,
@@ -59,7 +59,7 @@ class DynamicMessageContext {
       replacedDays: replacedDays,
       now: now,
       isSessionStarted: now.compareTo(session.startDate) >= 0,
-      daysRemaining: courseEndDate.difference(now).inDays,
+      courseDaysRemaining: courseEndDate.difference(now).inDays,
       monthsRemaining: DateUtils.monthsRemaining(session.endDate, now),
       weeksCompleted: DateUtils.weeksCompleted(session.startDate, now),
       weeksRemaining: DateUtils.weeksRemaining(session.endDate, now),
@@ -78,7 +78,7 @@ class DynamicMessageContext {
 
   bool get isAfterLastCourseOfWeek => _scheduleAnalyzer.isAfterLastCourseOfWeek;
 
-  bool get isSessionOver => daysRemaining < 0;
+  bool get isCoursesOver => courseDaysRemaining < 0;
 
   bool get isLastCourseDayOfWeek => _scheduleAnalyzer.isLastCourseDayOfWeek;
 
