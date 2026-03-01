@@ -126,18 +126,20 @@ extension DynamicMessageResolver on DynamicMessage {
         daysRemaining,
       ),
       LongWeekendIncomingMessage() => intl.dynamic_message_long_weekend_incoming,
-      UpcomingExtendedBreakMessage(:final daysUntilBreak) => daysUntilBreak == 1
-          ? intl.dynamic_message_upcoming_extended_break_tomorrow
-          : intl.dynamic_message_upcoming_extended_break(daysUntilBreak),
+      UpcomingExtendedBreakMessage(:final daysUntilBreak) =>
+        daysUntilBreak == 1
+            ? intl.dynamic_message_upcoming_extended_break_tomorrow
+            : intl.dynamic_message_upcoming_extended_break(daysUntilBreak),
       LastCourseDayOfWeekMessage(:final weekday) => intl.dynamic_message_last_course_day_of_session(
         weekdayName(weekday),
       ),
       FirstWeekOfSessionMessage() => intl.dynamic_message_first_week_of_session,
       FirstWeekCompletedMessage() => intl.dynamic_message_first_week_of_session_completed,
       WeekCompletedMessage(:final weeksCompleted) => intl.dynamic_message_end_of_week(weeksCompleted),
-      LessOneMonthRemainingMessage(:final weeksRemaining) => weeksRemaining == 1
-          ? intl.dynamic_message_last_week_remaining
-          : intl.dynamic_message_less_one_month_remaining(weeksRemaining),
+      LessOneMonthRemainingMessage(:final weeksRemaining) =>
+        weeksRemaining == 1
+            ? intl.dynamic_message_last_week_remaining
+            : intl.dynamic_message_less_one_month_remaining(weeksRemaining),
       NoCoursesOnDayMessage(:final weekday, :final reason) => intl.dynamic_message_no_courses_on_day(
         weekdayName(weekday),
         reason,
@@ -148,26 +150,29 @@ extension DynamicMessageResolver on DynamicMessage {
           weekdayName(replacementWeekday),
           reason,
         ),
-      FinalsApproachingMessage(:final courseDaysRemaining) => courseDaysRemaining <= 1
-          ? intl.dynamic_message_finals_approaching_tomorrow
-          : intl.dynamic_message_finals_approaching,
-      ExamPeriodMessage(:final daysRemaining) => daysRemaining <= 1
-          ? intl.dynamic_message_exam_period_last_day
-          : intl.dynamic_message_exam_period(daysRemaining),
+      FinalsApproachingMessage(:final courseDaysRemaining) =>
+        courseDaysRemaining <= 0
+            ? intl.dynamic_message_finals_approaching_tomorrow
+            : intl.dynamic_message_finals_approaching,
+      ExamPeriodMessage(:final daysRemaining) =>
+        daysRemaining <= 0
+            ? intl.dynamic_message_exam_period_last_day
+            : intl.dynamic_message_exam_period(daysRemaining),
       SessionCompletedMessage() => intl.dynamic_message_session_completed,
       GenericEncouragementMessage(:final variant) => [
-          intl.dynamic_message_generic_encouragement_0,
-          intl.dynamic_message_generic_encouragement_1,
-          intl.dynamic_message_generic_encouragement_2,
-          intl.dynamic_message_generic_encouragement_3,
-          intl.dynamic_message_generic_encouragement_4,
-          intl.dynamic_message_generic_encouragement_5,
-          intl.dynamic_message_generic_encouragement_6,
-        ][variant],
+        intl.dynamic_message_generic_encouragement_0,
+        intl.dynamic_message_generic_encouragement_1,
+        intl.dynamic_message_generic_encouragement_2,
+        intl.dynamic_message_generic_encouragement_3,
+        intl.dynamic_message_generic_encouragement_4,
+        intl.dynamic_message_generic_encouragement_5,
+        intl.dynamic_message_generic_encouragement_6,
+      ][variant],
       LongWeekendCurrentlyMessage(:final weeksCompleted) => intl.dynamic_message_long_weekend_currently(weeksCompleted),
-      ExtendedBreakMessage(:final daysUntilResume) => daysUntilResume == 1
-          ? intl.dynamic_message_extended_break_tomorrow
-          : intl.dynamic_message_extended_break(daysUntilResume),
+      ExtendedBreakMessage(:final daysUntilResume) =>
+        daysUntilResume == 1
+            ? intl.dynamic_message_extended_break_tomorrow
+            : intl.dynamic_message_extended_break(daysUntilResume),
     };
   }
 }
