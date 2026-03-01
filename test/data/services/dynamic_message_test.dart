@@ -54,6 +54,7 @@ void main() {
     List<ReplacedDay>? replacedDays,
     bool? isSessionStarted,
     int? daysRemaining,
+    int? finalsDaysRemaining,
     int? monthsRemaining,
     int? weeksCompleted,
     int? weeksRemaining,
@@ -69,6 +70,7 @@ void main() {
       replacedDays: replacedDays ?? [],
       isSessionStarted: isSessionStarted ?? true,
       courseDaysRemaining: daysRemaining ?? 107,
+      finalsDaysRemaining: finalsDaysRemaining,
       monthsRemaining: monthsRemaining ?? 3,
       weeksCompleted: weeksCompleted ?? 10,
       weeksRemaining: weeksRemaining ?? 15,
@@ -973,6 +975,27 @@ void main() {
         expect(message, isA<SessionStartsSoonMessage>());
       });
 
+      test('SessionCompletedMessage takes priority over GenericEncouragement when finals over', () {
+        final context = createContext(isSessionStarted: true, daysRemaining: -10, finalsDaysRemaining: -3);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+
+      test('ExamPeriodMessage takes priority over GenericEncouragement when in finals', () {
+        final context = createContext(daysRemaining: -5, finalsDaysRemaining: 5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExamPeriodMessage>());
+      });
+
+      test('FinalsApproachingMessage takes priority over DaysBeforeSessionEndsMessage when has finals', () {
+        final context = createContext(daysRemaining: 5, finalsDaysRemaining: 18);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+      });
+
       test('DaysBeforeSessionEndsMessage takes priority over LongWeekend', () {
         final now = DateTime(2024, 4, 24);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
@@ -1289,6 +1312,49 @@ void main() {
         expect(context.courseWeeksRemaining, context.weeksRemaining);
       });
 
+      test('finalsDaysRemaining is computed from last final exam date', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 4, 8, 9)),
+          createActivity(DateTime(2024, 4, 15, 9)),
+          createActivityWithName(DateTime(2024, 4, 22, 9), 'Final'),
+          createActivityWithName(DateTime(2024, 4, 29, 9), 'Final'),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.hasFinals, isTrue);
+        expect(context.finalsDaysRemaining, isNotNull);
+        expect(context.isFinalsOver, isFalse);
+      });
+
+      test('finalsDaysRemaining is null when no finals exist', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 4, 8, 9)),
+          createActivity(DateTime(2024, 4, 15, 9)),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.hasFinals, isFalse);
+        expect(context.finalsDaysRemaining, isNull);
+      });
+
       test('LessOneMonthRemainingMessage uses courseWeeksRemaining', () {
         final now = DateTime(2024, 4, 8);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 5, 15));
@@ -1315,6 +1381,79 @@ void main() {
       });
     });
 
+    group('SessionCompletedMessage -', () {
+      test('returns SessionCompletedMessage when finals are over', () {
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+
+      test('returns SessionCompletedMessage when finals ended yesterday', () {
+        final context = createContext(daysRemaining: -15, finalsDaysRemaining: -1);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+
+      test('does not return SessionCompletedMessage when finals still ongoing', () {
+        final context = createContext(daysRemaining: -5, finalsDaysRemaining: 3);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<SessionCompletedMessage>()));
+      });
+    });
+
+    group('ExamPeriodMessage -', () {
+      test('returns ExamPeriodMessage when courses over and has finals', () {
+        final context = createContext(daysRemaining: -3, finalsDaysRemaining: 10);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExamPeriodMessage>());
+        expect((message as ExamPeriodMessage).daysRemaining, 10);
+      });
+
+      test('returns ExamPeriodMessage on last day of finals', () {
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: 0);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExamPeriodMessage>());
+        expect((message as ExamPeriodMessage).daysRemaining, 0);
+      });
+
+      test('does not return ExamPeriodMessage when no finals', () {
+        final context = createContext(daysRemaining: -5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<ExamPeriodMessage>()));
+      });
+    });
+
+    group('FinalsApproachingMessage -', () {
+      test('returns FinalsApproachingMessage when last week of courses and has finals', () {
+        final context = createContext(daysRemaining: 5, finalsDaysRemaining: 20);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+        expect((message as FinalsApproachingMessage).courseDaysRemaining, 5);
+      });
+
+      test('returns FinalsApproachingMessage when 1 day remaining and has finals', () {
+        final context = createContext(daysRemaining: 1, finalsDaysRemaining: 15);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+        expect((message as FinalsApproachingMessage).courseDaysRemaining, 1);
+      });
+
+      test('returns DaysBeforeSessionEndsMessage when last week but no finals', () {
+        final context = createContext(daysRemaining: 5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeSessionEndsMessage>());
+      });
+    });
+
     group('Edge cases -', () {
       test('handles empty activities list', () {
         final context = createContext(courseActivities: [], daysRemaining: 30, monthsRemaining: 2);
@@ -1337,7 +1476,7 @@ void main() {
         expect(message, isA<LessOneMonthRemainingMessage>());
       });
 
-      test('returns GenericEncouragementMessage when session is over (negative daysRemaining)', () {
+      test('returns GenericEncouragementMessage when courses over and no finals', () {
         final context = createContext(daysRemaining: -5);
 
         final message = engine.determineMessage(context);

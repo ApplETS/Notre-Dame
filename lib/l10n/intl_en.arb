@@ -161,6 +161,21 @@
 
   "dynamic_message_last_week_remaining": "Keep going, it's the last week!",
 
+  "dynamic_message_finals_approaching": "It's the last week of courses! The exam period is approaching.",
+  "dynamic_message_finals_approaching_tomorrow": "Last day of courses! The exam period begins tomorrow.",
+
+  "dynamic_message_exam_period": "Good luck on your exams! {days} days remaining in the exam period.",
+  "@dynamic_message_exam_period": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_exam_period_last_day": "Last day of exams! You've got this!",
+  "dynamic_message_session_completed": "Congratulations, the session is over! Enjoy your break.",
+
   "dynamic_message_generic_encouragement_0": "Keep up the good work!",
   "dynamic_message_generic_encouragement_1": "Have a good semester!",
   "dynamic_message_generic_encouragement_2": "Hope your session is going well!",

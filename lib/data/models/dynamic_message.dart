@@ -63,6 +63,20 @@ class LessOneMonthRemainingMessage extends DynamicMessage {
   const LessOneMonthRemainingMessage(this.weeksRemaining);
 }
 
+class FinalsApproachingMessage extends DynamicMessage {
+  final int courseDaysRemaining;
+  const FinalsApproachingMessage(this.courseDaysRemaining);
+}
+
+class ExamPeriodMessage extends DynamicMessage {
+  final int daysRemaining;
+  const ExamPeriodMessage(this.daysRemaining);
+}
+
+class SessionCompletedMessage extends DynamicMessage {
+  const SessionCompletedMessage();
+}
+
 class GenericEncouragementMessage extends DynamicMessage {
   final int variant;
   const GenericEncouragementMessage(this.variant);
@@ -134,6 +148,13 @@ extension DynamicMessageResolver on DynamicMessage {
           weekdayName(replacementWeekday),
           reason,
         ),
+      FinalsApproachingMessage(:final courseDaysRemaining) => courseDaysRemaining <= 1
+          ? intl.dynamic_message_finals_approaching_tomorrow
+          : intl.dynamic_message_finals_approaching,
+      ExamPeriodMessage(:final daysRemaining) => daysRemaining <= 1
+          ? intl.dynamic_message_exam_period_last_day
+          : intl.dynamic_message_exam_period(daysRemaining),
+      SessionCompletedMessage() => intl.dynamic_message_session_completed,
       GenericEncouragementMessage(:final variant) => [
           intl.dynamic_message_generic_encouragement_0,
           intl.dynamic_message_generic_encouragement_1,

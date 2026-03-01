@@ -14,6 +14,7 @@ class DynamicMessageContext {
 
   final bool isSessionStarted;
   final int courseDaysRemaining;
+  final int? finalsDaysRemaining;
   final int monthsRemaining;
   final int weeksCompleted;
   final int weeksRemaining;
@@ -36,6 +37,7 @@ class DynamicMessageContext {
     required this.replacedDays,
     required this.isSessionStarted,
     required this.courseDaysRemaining,
+    this.finalsDaysRemaining,
     required this.monthsRemaining,
     required this.weeksCompleted,
     required this.weeksRemaining,
@@ -52,6 +54,7 @@ class DynamicMessageContext {
     final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
     final lastRegularCourseDate = analyzer.getLastRegularCourseDate();
     final courseEndDate = lastRegularCourseDate ?? session.endDate;
+    final lastFinalDate = analyzer.getLastFinalExamDate();
 
     final context = DynamicMessageContext(
       session: session,
@@ -60,6 +63,7 @@ class DynamicMessageContext {
       now: now,
       isSessionStarted: now.compareTo(session.startDate) >= 0,
       courseDaysRemaining: courseEndDate.difference(now).inDays,
+      finalsDaysRemaining: lastFinalDate?.difference(now).inDays,
       monthsRemaining: DateUtils.monthsRemaining(session.endDate, now),
       weeksCompleted: DateUtils.weeksCompleted(session.startDate, now),
       weeksRemaining: DateUtils.weeksRemaining(session.endDate, now),
@@ -79,6 +83,10 @@ class DynamicMessageContext {
   bool get isAfterLastCourseOfWeek => _scheduleAnalyzer.isAfterLastCourseOfWeek;
 
   bool get isCoursesOver => courseDaysRemaining < 0;
+
+  bool get hasFinals => finalsDaysRemaining != null;
+
+  bool get isFinalsOver => hasFinals && finalsDaysRemaining! < 0;
 
   bool get isLastCourseDayOfWeek => _scheduleAnalyzer.isLastCourseDayOfWeek;
 

@@ -222,6 +222,26 @@ class ScheduleAnalyzer {
 
     return regularActivities.map((activity) => activity.endDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
   }
+
+  /// Returns the start date of the first final exam, or null if no finals exist
+  DateTime? getFirstFinalExamDate() {
+    final finals = _getFinalExamActivities();
+    if (finals.isEmpty) return null;
+    return finals.map((a) => a.startDateTime).reduce((a, b) => a.isBefore(b) ? a : b);
+  }
+
+  /// Returns the end date of the last final exam, or null if no finals exist
+  DateTime? getLastFinalExamDate() {
+    final finals = _getFinalExamActivities();
+    if (finals.isEmpty) return null;
+    return finals.map((a) => a.endDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
+  }
+
+  List<CourseActivity> _getFinalExamActivities() {
+    return courseActivities
+        .where((a) => a.activityName.toLowerCase() == ActivityName.finalExam.toLowerCase())
+        .toList();
+  }
 }
 
 class _GapInfo {

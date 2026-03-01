@@ -813,5 +813,78 @@ void main() {
         expect(lastDate!.day, weekday(reference, DateTime.friday, week: 2, hour: 9).day);
       });
     });
+
+    group('getFirstFinalExamDate -', () {
+      test('returns null when no finals exist', () {
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
+        ];
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        expect(analyzer.getFirstFinalExamDate(), isNull);
+      });
+
+      test('returns the start date of the earliest final exam', () {
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 2, hour: 9), activityName: 'Final'),
+          createActivity(weekday(reference, DateTime.monday, week: 3, hour: 9), activityName: 'Final'),
+        ];
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        final firstFinal = analyzer.getFirstFinalExamDate();
+        expect(firstFinal, isNotNull);
+        expect(firstFinal, weekday(reference, DateTime.friday, week: 2, hour: 9));
+      });
+
+      test('returns null when activities list is empty', () {
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
+
+        expect(analyzer.getFirstFinalExamDate(), isNull);
+      });
+    });
+
+    group('getLastFinalExamDate -', () {
+      test('returns null when no finals exist', () {
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
+        ];
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        expect(analyzer.getLastFinalExamDate(), isNull);
+      });
+
+      test('returns the end date of the latest final exam', () {
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 2, hour: 9), activityName: 'Final'),
+          createActivity(weekday(reference, DateTime.monday, week: 3, hour: 9), activityName: 'Final'),
+        ];
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        final lastFinal = analyzer.getLastFinalExamDate();
+        expect(lastFinal, isNotNull);
+        expect(lastFinal, weekday(reference, DateTime.monday, week: 3, hour: 11));
+      });
+
+      test('returns null when activities list is empty', () {
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
+
+        expect(analyzer.getLastFinalExamDate(), isNull);
+      });
+
+      test('handles case-insensitive final exam name', () {
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9), activityName: 'final'),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9), activityName: 'FINAL'),
+        ];
+        final analyzer = ScheduleAnalyzer(courseActivities: activities, now: monday);
+
+        expect(analyzer.getFirstFinalExamDate(), isNotNull);
+        expect(analyzer.getLastFinalExamDate(), isNotNull);
+      });
+    });
   });
 }
