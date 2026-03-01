@@ -99,7 +99,7 @@ class SessionReminderCard extends StatelessWidget {
                 height: 1.2,
               ),
               minFontSize: 12,
-              maxLines: 2,
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 6),
