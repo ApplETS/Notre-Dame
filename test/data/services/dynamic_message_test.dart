@@ -1435,6 +1435,27 @@ void main() {
         expect(context.finalsDaysRemaining, isNull);
       });
 
+      test('isFinalsOver is true when no finals and courses are over', () {
+        final now = DateTime(2024, 4, 20);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 4, 8, 9)),
+          createActivity(DateTime(2024, 4, 15, 9)),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.hasFinals, isFalse);
+        expect(context.isCoursesOver, isTrue);
+        expect(context.isFinalsOver, isTrue);
+      });
+
       test('LessOneMonthRemainingMessage uses courseWeeksRemaining', () {
         final now = DateTime(2024, 4, 8);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 5, 15));
