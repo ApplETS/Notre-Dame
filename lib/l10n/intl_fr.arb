@@ -73,7 +73,7 @@
   "dynamic_message_first_week_of_session_completed": "Première semaine de la session complétée, continue !",
   "dynamic_message_long_weekend_incoming": "Une longue fin de semaine s'en vient !",
 
-  "dynamic_message_upcoming_extended_break": "Une longue pause s'en vient ! {days} jours avant qu'elle commence.",
+  "dynamic_message_upcoming_extended_break": "Un congé s'en vient dans {days} jours !",
   "@dynamic_message_upcoming_extended_break": {
     "placeholders": {
       "days": {
@@ -82,7 +82,7 @@
     }
   },
 
-  "dynamic_message_upcoming_extended_break_tomorrow": "Une longue pause commence demain !",
+  "dynamic_message_upcoming_extended_break_tomorrow": "Un congé commence demain !",
 
   "dynamic_message_session_starts_soon": "Repose-toi bien! La prochaine session débute le {date} (dans {days} jours)",
   "@dynamic_message_session_starts_soon": {
@@ -123,7 +123,7 @@
     }
   },
 
-  "dynamic_message_extended_break": "Profite de ta pause ! Les cours reprennent dans {days} jours.",
+  "dynamic_message_extended_break": "Profite de ton congé ! Les cours reprennent dans {days} jours.",
   "@dynamic_message_extended_break": {
     "placeholders": {
       "days": {
@@ -132,9 +132,9 @@
     }
   },
 
-  "dynamic_message_extended_break_tomorrow": "Profite de ta pause ! Les cours reprennent demain.",
+  "dynamic_message_extended_break_tomorrow": "Profite de ton congé ! Les cours reprennent demain.",
 
-  "dynamic_message_first_day_back_after_break": "Bon retour ! On espère que tu as bien profité de ta pause.",
+  "dynamic_message_first_day_back_after_break": "Bon retour ! On espère que tu as bien profité de ton congé.",
 
   "dynamic_message_last_course_day_of_session": "C'est {weekday} ! Dernière journée de cours de la semaine !",
   "@dynamic_message_last_course_day_of_session": {

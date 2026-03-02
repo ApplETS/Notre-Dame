@@ -229,7 +229,7 @@ class DashboardViewModel extends FutureViewModel {
         session: session,
         activities: activities,
         replacedDays: replacedDays,
-        now: now,
+        now: DateTime(2026, 03, 21, 13, 00),
         nextSessionStartDate: nextSessionStartDate,
       );
 
