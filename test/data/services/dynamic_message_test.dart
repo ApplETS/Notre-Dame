@@ -123,42 +123,42 @@ void main() {
       });
     });
 
-    group('DaysBeforeSessionEndsMessage -', () {
-      test('returns DaysBeforeSessionEndsMessage when daysRemaining <= 7', () {
+    group('DaysBeforeCoursesEndMessage -', () {
+      test('returns DaysBeforeCoursesEndMessage when daysRemaining <= 7', () {
         final context = createContext(daysRemaining: 7);
 
         final message = engine.determineMessage(context);
-        expect(message, isA<DaysBeforeSessionEndsMessage>());
-        expect((message as DaysBeforeSessionEndsMessage).daysRemaining, 7);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+        expect((message as DaysBeforeCoursesEndMessage).daysRemaining, 7);
       });
 
-      test('returns DaysBeforeSessionEndsMessage when daysRemaining is 6', () {
+      test('returns DaysBeforeCoursesEndMessage when daysRemaining is 6', () {
         final context = createContext(daysRemaining: 6);
         final message = engine.determineMessage(context);
-        expect(message, isA<DaysBeforeSessionEndsMessage>());
-        expect((message as DaysBeforeSessionEndsMessage).daysRemaining, 6);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+        expect((message as DaysBeforeCoursesEndMessage).daysRemaining, 6);
       });
 
-      test('returns DaysBeforeSessionEndsMessage when 0 days remaining', () {
+      test('returns DaysBeforeCoursesEndMessage when 0 days remaining', () {
         final context = createContext(daysRemaining: 0);
 
         final message = engine.determineMessage(context);
-        expect(message, isA<DaysBeforeSessionEndsMessage>());
-        expect((message as DaysBeforeSessionEndsMessage).daysRemaining, 0);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+        expect((message as DaysBeforeCoursesEndMessage).daysRemaining, 0);
       });
 
       test('does not trigger when negative days remaining', () {
         final context = createContext(daysRemaining: -1);
 
         final message = engine.determineMessage(context);
-        expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
+        expect(message, isNot(isA<DaysBeforeCoursesEndMessage>()));
       });
 
       test('does not trigger when more than 7 days remaining', () {
         final context = createContext(daysRemaining: 8);
 
         final message = engine.determineMessage(context);
-        expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
+        expect(message, isNot(isA<DaysBeforeCoursesEndMessage>()));
       });
     });
 
@@ -1026,7 +1026,7 @@ void main() {
         final context = createContext(courseWeeksRemaining: 0, daysRemaining: 3);
 
         final message = engine.determineMessage(context);
-        expect(message, isA<DaysBeforeSessionEndsMessage>());
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
       });
 
       test('returns LessOneMonthRemainingMessage with weeksRemaining = 1', () {
@@ -1069,14 +1069,14 @@ void main() {
         expect(message, isA<ExamPeriodMessage>());
       });
 
-      test('FinalsApproachingMessage takes priority over DaysBeforeSessionEndsMessage when has finals', () {
+      test('FinalsApproachingMessage takes priority over DaysBeforeCoursesEndMessage when has finals', () {
         final context = createContext(daysRemaining: 5, finalsDaysRemaining: 18);
 
         final message = engine.determineMessage(context);
         expect(message, isA<FinalsApproachingMessage>());
       });
 
-      test('DaysBeforeSessionEndsMessage takes priority over LongWeekend', () {
+      test('DaysBeforeCoursesEndMessage takes priority over LongWeekend', () {
         final now = DateTime(2024, 4, 24);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
 
@@ -1090,10 +1090,10 @@ void main() {
         );
 
         final message = engine.determineMessage(context);
-        expect(message, isA<DaysBeforeSessionEndsMessage>());
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
       });
 
-      test('DaysBeforeSessionEndsMessage takes priority over ReplacedDayMessage', () {
+      test('DaysBeforeCoursesEndMessage takes priority over ReplacedDayMessage', () {
         final now = DateTime(2024, 4, 25);
         final replacedDay = ReplacedDay(
           originalDate: DateTime(2024, 4, 26),
@@ -1104,7 +1104,7 @@ void main() {
         final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 5);
 
         final message = engine.determineMessage(context);
-        expect(message, isA<DaysBeforeSessionEndsMessage>());
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
       });
 
       test('LongWeekend takes priority over ReplacedDayMessage', () {
@@ -1160,7 +1160,7 @@ void main() {
         expect(
           context.courseDaysRemaining,
           greaterThan(7),
-          reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage',
+          reason: 'daysRemaining should be > 7 to not trigger DaysBeforeCoursesEndMessage',
         );
         expect(context.isLongWeekendIncoming, isTrue, reason: 'Should be long weekend incoming');
         expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Should be last course day');
@@ -1286,14 +1286,14 @@ void main() {
     });
 
     group('Integration with SessionContext -', () {
-      test('does not trigger DaysBeforeSessionEndsMessage in middle of session', () {
+      test('does not trigger DaysBeforeCoursesEndMessage in middle of session', () {
         final now = DateTime(2024, 2, 15);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
 
         final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
         final message = engine.determineMessage(context);
-        expect(message, isNot(isA<DaysBeforeSessionEndsMessage>()));
+        expect(message, isNot(isA<DaysBeforeCoursesEndMessage>()));
         expect(message, isA<GenericEncouragementMessage>());
       });
 
@@ -1321,7 +1321,7 @@ void main() {
         expect(
           context.courseDaysRemaining,
           greaterThan(7),
-          reason: 'daysRemaining should be > 7 to not trigger DaysBeforeSessionEndsMessage',
+          reason: 'daysRemaining should be > 7 to not trigger DaysBeforeCoursesEndMessage',
         );
         expect(context.weeksCompleted, 1);
         expect(context.isAfterLastCourseOfWeek, isTrue);
@@ -1526,11 +1526,11 @@ void main() {
         expect((message as FinalsApproachingMessage).courseDaysRemaining, 1);
       });
 
-      test('returns DaysBeforeSessionEndsMessage when last week but no finals', () {
+      test('returns DaysBeforeCoursesEndMessage when last week but no finals', () {
         final context = createContext(daysRemaining: 5);
 
         final message = engine.determineMessage(context);
-        expect(message, isA<DaysBeforeSessionEndsMessage>());
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
       });
     });
 

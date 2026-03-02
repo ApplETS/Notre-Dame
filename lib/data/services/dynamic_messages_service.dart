@@ -25,7 +25,7 @@ class DynamicMessagesService {
     }
 
     if (context.courseDaysRemaining <= 7) {
-      return DaysBeforeSessionEndsMessage(context.courseDaysRemaining);
+      return DaysBeforeCoursesEndMessage(context.courseDaysRemaining);
     }
 
     if (context.isFirstDayBackFromBreak) {
