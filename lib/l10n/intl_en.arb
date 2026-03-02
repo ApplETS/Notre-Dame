@@ -70,9 +70,9 @@
   "login_password_show": "Show password",
   "login_password_hide": "Hide password",
 
-  "dynamic_message_first_week_of_session": "Good start to the session !",
-  "dynamic_message_first_week_of_session_completed": "First week of the semester completed, continue !",
-  "dynamic_message_long_weekend_incoming": "Keep going, a long weekend is coming !",
+  "dynamic_message_first_week_of_session": "Good start to the session!",
+  "dynamic_message_first_week_of_session_completed": "First week of the session completed, continue!",
+  "dynamic_message_long_weekend_incoming": "Keep going, a long weekend is coming!",
 
   "dynamic_message_upcoming_extended_break": "A break is coming! {days} days until it starts.",
   "@dynamic_message_upcoming_extended_break": {
@@ -103,7 +103,7 @@
     }
   },
 
-  "dynamic_message_end_of_week": "Week {num_weeks} completed !",
+  "dynamic_message_end_of_week": "Week {num_weeks} completed!",
   "@dynamic_message_end_of_week": {
     "placeholders": {
       "num_weeks": {

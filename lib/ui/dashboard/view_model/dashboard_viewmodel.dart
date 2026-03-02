@@ -231,7 +231,7 @@ class DashboardViewModel extends FutureViewModel {
       );
 
       final message = _dynamicMessagesService.determineMessage(context);
-      dynamicMessageText = message?.resolve(_appIntl);
+      dynamicMessageText = message.resolve(_appIntl);
       notifyListeners();
     } catch (e) {
       dynamicMessageText = null;

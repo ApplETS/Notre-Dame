@@ -497,9 +497,9 @@ class CourseRepository {
 
         // Build list of replaced days loaded from the cache.
         _replacedDays = responseCache.map((e) => ReplacedDay.fromJson(e as Map<String, dynamic>)).toList();
-        _logger.d("$tag - getReplacedDays: ${_replacedDays?.length ?? 0} activities loaded from cache");
+        _logger.d("$tag - getReplacedDays: ${_replacedDays?.length ?? 0} replaced days loaded from cache");
       } on CacheException catch (_) {
-        _logger.e("$tag - getReplacedDays: exception raised while trying to load activities from cache.");
+        _logger.e("$tag - getReplacedDays: exception raised while trying to load replaced days from cache.");
       }
     }
 
@@ -523,7 +523,7 @@ class CourseRepository {
 
       for (final Session session in activeSessions) {
         fetchedReplacedDays.addAll(await _signetsApiClient.getReplacedDays(session: session.shortName));
-        _logger.d("$tag - getReplacedDays: fetched ${fetchedReplacedDays.length} activities.");
+        _logger.d("$tag - getReplacedDays: fetched ${fetchedReplacedDays.length} replaced days.");
       }
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, "Exception raised during getReplacedDays: $e", e, stacktrace);

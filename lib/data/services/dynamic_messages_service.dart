@@ -3,7 +3,7 @@ import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/models/dynamic_message_context.dart';
 
 class DynamicMessagesService {
-  DynamicMessage? determineMessage(DynamicMessageContext context) {
+  DynamicMessage determineMessage(DynamicMessageContext context) {
     if (!context.isSessionStarted) {
       return SessionStartsSoonMessage(context.session.startDate);
     }
