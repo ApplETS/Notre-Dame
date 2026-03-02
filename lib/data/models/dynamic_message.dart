@@ -143,7 +143,7 @@ extension DynamicMessageResolver on DynamicMessage {
       WeekCompletedMessage(:final weeksCompleted) => intl.dynamic_message_end_of_week(weeksCompleted),
       LessOneMonthRemainingMessage(:final weeksRemaining) =>
         weeksRemaining == 1
-            ? intl.dynamic_message_last_week_remaining
+            ? intl.dynamic_message_last_course_week_remaining
             : intl.dynamic_message_less_one_month_remaining(weeksRemaining),
       NoCoursesOnDayMessage(:final weekday, :final reason) => intl.dynamic_message_no_courses_on_day(
         weekdayName(weekday),
@@ -162,7 +162,9 @@ extension DynamicMessageResolver on DynamicMessage {
       ExamPeriodMessage(:final daysRemaining) =>
         daysRemaining <= 0
             ? intl.dynamic_message_exam_period_last_day
-            : intl.dynamic_message_exam_period(daysRemaining),
+            : daysRemaining == 1
+                ? intl.dynamic_message_exam_period_tomorrow_last_day
+                : intl.dynamic_message_exam_period(daysRemaining),
       SessionCompletedMessage() => intl.dynamic_message_session_completed,
       GenericEncouragementMessage(:final variant) => [
         intl.dynamic_message_generic_encouragement_0,

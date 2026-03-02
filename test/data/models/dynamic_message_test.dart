@@ -138,7 +138,7 @@ void main() {
     group('LessOneMonthRemainingMessage -', () {
       test('uses last week variant when weeksRemaining is 1', () {
         final result = const LessOneMonthRemainingMessage(1).resolve(intlEn);
-        expect(result, intlEn.dynamic_message_last_week_remaining);
+        expect(result, intlEn.dynamic_message_last_course_week_remaining);
       });
 
       test('uses regular variant when weeksRemaining > 1', () {
@@ -165,7 +165,12 @@ void main() {
         expect(result, intlEn.dynamic_message_exam_period_last_day);
       });
 
-      test('uses regular variant when daysRemaining > 0', () {
+      test('uses tomorrow variant when daysRemaining == 1', () {
+        final result = const ExamPeriodMessage(1).resolve(intlEn);
+        expect(result, intlEn.dynamic_message_exam_period_tomorrow_last_day);
+      });
+
+      test('uses regular variant when daysRemaining > 1', () {
         final result = const ExamPeriodMessage(4).resolve(intlEn);
         expect(result, intlEn.dynamic_message_exam_period(4));
       });
