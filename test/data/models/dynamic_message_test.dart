@@ -196,11 +196,11 @@ void main() {
         }
       });
 
-      test('random factory produces valid variant', () {
-        final message = GenericEncouragementMessage.random();
-        expect(message.variant, inInclusiveRange(0, 6));
-        final result = message.resolve(intlEn);
-        expect(result, isNotEmpty);
+      test('forToday produces same variant on same day', () {
+        final message1 = GenericEncouragementMessage.forToday();
+        final message2 = GenericEncouragementMessage.forToday();
+        expect(message1.variant, message2.variant);
+        expect(message1.variant, inInclusiveRange(0, 6));
       });
     });
 

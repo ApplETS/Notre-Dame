@@ -1647,7 +1647,7 @@ void main() {
     test('random factory produces a variant in 0-6 range', () {
       final random = Random(19);
       for (int i = 0; i < 20; i++) {
-        final message = GenericEncouragementMessage.random(random);
+        final message = GenericEncouragementMessage.forToday(random);
         expect(message.variant, inInclusiveRange(0, 6));
       }
     });

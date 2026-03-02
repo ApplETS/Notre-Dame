@@ -77,6 +77,6 @@ class DynamicMessagesService {
       return LessOneMonthRemainingMessage(context.courseWeeksRemaining);
     }
 
-    return GenericEncouragementMessage.random();
+    return GenericEncouragementMessage.forToday();
   }
 }

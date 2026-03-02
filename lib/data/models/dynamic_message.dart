@@ -85,8 +85,11 @@ class GenericEncouragementMessage extends DynamicMessage {
   final int variant;
   const GenericEncouragementMessage(this.variant);
 
-  factory GenericEncouragementMessage.random([Random? random]) {
-    final rng = random ?? Random();
+  factory GenericEncouragementMessage.forToday([Random? random]) {
+    final now = DateTime.now();
+    // Seed the RNG with the current date so the same variant is returned
+    // for all calls on a given day, but rotates automatically the next day.
+    final rng = random ?? Random(now.year * 10000 + now.month * 100 + now.day);
     return GenericEncouragementMessage(rng.nextInt(7));
   }
 }
@@ -126,9 +129,7 @@ extension DynamicMessageResolver on DynamicMessage {
 
     return switch (this) {
       SessionStartsSoonMessage(:final startDate) => intl.dynamic_message_session_starts_soon(formatDate(startDate)),
-      DaysBeforeCoursesEndMessage(:final daysRemaining) => intl.dynamic_message_days_before_session_ends(
-        daysRemaining,
-      ),
+      DaysBeforeCoursesEndMessage(:final daysRemaining) => intl.dynamic_message_days_before_session_ends(daysRemaining),
       LongWeekendIncomingMessage() => intl.dynamic_message_long_weekend_incoming,
       UpcomingExtendedBreakMessage(:final daysUntilBreak) =>
         daysUntilBreak == 1
