@@ -11,6 +11,7 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/models/dynamic_message_context.dart';
+import 'package:notredame/utils/date_utils.dart';
 
 void main() {
   late DynamicMessagesService engine;
@@ -55,9 +56,7 @@ void main() {
     bool? isSessionStarted,
     int? daysRemaining,
     int? finalsDaysRemaining,
-    int? monthsRemaining,
     int? weeksCompleted,
-    int? weeksRemaining,
     int? courseWeeksRemaining,
     int? courseDaysThisWeek,
   }) {
@@ -71,10 +70,8 @@ void main() {
       isSessionStarted: isSessionStarted ?? true,
       courseDaysRemaining: daysRemaining ?? 107,
       finalsDaysRemaining: finalsDaysRemaining,
-      monthsRemaining: monthsRemaining ?? 3,
       weeksCompleted: weeksCompleted ?? 10,
-      weeksRemaining: weeksRemaining ?? 15,
-      courseWeeksRemaining: courseWeeksRemaining ?? weeksRemaining ?? 15,
+      courseWeeksRemaining: courseWeeksRemaining ?? 15,
       courseDaysThisWeek: courseDaysThisWeek ?? 3,
     );
   }
@@ -1040,7 +1037,7 @@ void main() {
 
     group('GenericEncouragementMessage -', () {
       test('returns GenericEncouragementMessage as fallback', () {
-        final context = createContext(daysRemaining: 30, monthsRemaining: 2, weeksCompleted: 10);
+        final context = createContext(daysRemaining: 30, weeksCompleted: 10);
 
         final message = engine.determineMessage(context);
         expect(message, isA<GenericEncouragementMessage>());
@@ -1388,7 +1385,7 @@ void main() {
           now: now,
         );
 
-        expect(context.courseWeeksRemaining, lessThan(context.weeksRemaining));
+        expect(context.courseWeeksRemaining, lessThan(DateUtils.weeksRemaining(session.endDate, now)));
       });
 
       test('falls back to session end when no activities', () {
@@ -1397,7 +1394,7 @@ void main() {
 
         final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
-        expect(context.courseWeeksRemaining, context.weeksRemaining);
+        expect(context.courseWeeksRemaining, DateUtils.weeksRemaining(session.endDate, now));
       });
 
       test('falls back to session end when only finals exist', () {
@@ -1416,7 +1413,7 @@ void main() {
           now: now,
         );
 
-        expect(context.courseWeeksRemaining, context.weeksRemaining);
+        expect(context.courseWeeksRemaining, DateUtils.weeksRemaining(session.endDate, now));
       });
 
       test('finalsDaysRemaining is computed from last final exam date', () {
@@ -1502,7 +1499,7 @@ void main() {
         );
 
         expect(context.courseWeeksRemaining, lessThanOrEqualTo(4));
-        expect(context.weeksRemaining, greaterThan(4));
+        expect(DateUtils.weeksRemaining(session.endDate, now), greaterThan(4));
 
         final message = engine.determineMessage(context);
         expect(message, isA<LessOneMonthRemainingMessage>());
@@ -1615,21 +1612,21 @@ void main() {
 
     group('Edge cases -', () {
       test('handles empty activities list', () {
-        final context = createContext(courseActivities: [], daysRemaining: 30, monthsRemaining: 2);
+        final context = createContext(courseActivities: [], daysRemaining: 30);
 
         final message = engine.determineMessage(context);
         expect(message, isNotNull);
       });
 
       test('handles leap year date', () {
-        final context = createContext(now: DateTime(2024, 2, 29), daysRemaining: 30, monthsRemaining: 2);
+        final context = createContext(now: DateTime(2024, 2, 29), daysRemaining: 30);
 
         final message = engine.determineMessage(context);
         expect(message, isNotNull);
       });
 
       test('handles year boundary session', () {
-        final context = createContext(daysRemaining: 27, monthsRemaining: 0, courseWeeksRemaining: 3);
+        final context = createContext(daysRemaining: 27, courseWeeksRemaining: 3);
 
         final message = engine.determineMessage(context);
         expect(message, isA<LessOneMonthRemainingMessage>());
@@ -1673,7 +1670,6 @@ void main() {
             courseActivities: activities,
             courseDaysThisWeek: 4,
             daysRemaining: 30,
-            monthsRemaining: 2,
           );
 
           expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Day ${weekdays[i]} should be last course day');

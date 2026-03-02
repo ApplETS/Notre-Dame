@@ -15,9 +15,7 @@ class DynamicMessageContext {
   final bool isSessionStarted;
   final int courseDaysRemaining;
   final int? finalsDaysRemaining;
-  final int monthsRemaining;
   final int weeksCompleted;
-  final int weeksRemaining;
   final int courseWeeksRemaining;
   final int courseDaysThisWeek;
 
@@ -38,9 +36,7 @@ class DynamicMessageContext {
     required this.isSessionStarted,
     required this.courseDaysRemaining,
     this.finalsDaysRemaining,
-    required this.monthsRemaining,
     required this.weeksCompleted,
-    required this.weeksRemaining,
     required this.courseWeeksRemaining,
     required this.courseDaysThisWeek,
   });
@@ -64,17 +60,13 @@ class DynamicMessageContext {
       isSessionStarted: now.compareTo(session.startDate) >= 0,
       courseDaysRemaining: DateUtils.daysBetween(now, courseEndDate),
       finalsDaysRemaining: lastFinalDate != null ? DateUtils.daysBetween(now, lastFinalDate) : null,
-      monthsRemaining: DateUtils.monthsRemaining(session.endDate, now),
       weeksCompleted: DateUtils.weeksCompleted(session.startDate, now),
-      weeksRemaining: DateUtils.weeksRemaining(session.endDate, now),
       courseWeeksRemaining: DateUtils.weeksRemaining(courseEndDate, now),
       courseDaysThisWeek: analyzer.courseDaysThisWeek,
     );
     context._scheduleAnalyzerCache = analyzer;
     return context;
   }
-
-  bool get hasNextWeekSchedule => _scheduleAnalyzer.hasNextWeekSchedule;
 
   bool get isLongWeekendIncoming => _scheduleAnalyzer.isLongWeekendIncoming;
 
