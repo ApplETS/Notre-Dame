@@ -1556,11 +1556,11 @@ void main() {
         expect(message, isA<LessOneMonthRemainingMessage>());
       });
 
-      test('returns GenericEncouragementMessage when courses over and no finals', () {
+      test('returns SessionCompletedMessage when courses over and no finals', () {
         final context = createContext(daysRemaining: -5);
 
         final message = engine.determineMessage(context);
-        expect(message, isA<GenericEncouragementMessage>());
+        expect(message, isA<SessionCompletedMessage>());
       });
     });
 

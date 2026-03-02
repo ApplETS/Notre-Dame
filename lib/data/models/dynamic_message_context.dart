@@ -88,7 +88,7 @@ class DynamicMessageContext {
 
   bool get hasFinals => finalsDaysRemaining != null;
 
-  bool get isFinalsOver => hasFinals && finalsDaysRemaining! < 0;
+  bool get isFinalsOver => hasFinals ? finalsDaysRemaining! < 0 : isCoursesOver;
 
   bool get isLastCourseDayOfWeek => _scheduleAnalyzer.isLastCourseDayOfWeek;
 
