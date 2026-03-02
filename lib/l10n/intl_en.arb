@@ -70,8 +70,8 @@
   "login_password_show": "Show password",
   "login_password_hide": "Hide password",
 
-  "dynamic_message_first_week_of_session": "Good start to the session!",
-  "dynamic_message_first_week_of_session_completed": "First week of the session completed, continue!",
+  "dynamic_message_first_week_of_session": "Good start to the semester!",
+  "dynamic_message_first_week_of_session_completed": "First week of the semester completed, continue!",
   "dynamic_message_long_weekend_incoming": "Keep going, a long weekend is coming!",
 
   "dynamic_message_upcoming_extended_break": "A break is coming! {days} days until it starts.",
@@ -85,7 +85,7 @@
 
   "dynamic_message_upcoming_extended_break_tomorrow": "An extended break starts tomorrow!",
 
-  "dynamic_message_session_starts_soon": "Have a good rest! The next session starts on {date}",
+  "dynamic_message_session_starts_soon": "Have a good rest! The next semester starts on {date}",
   "@dynamic_message_session_starts_soon": {
     "placeholders": {
       "date": {
@@ -167,11 +167,11 @@
   },
 
   "dynamic_message_exam_period_last_day": "Last day of exams! You've got this!",
-  "dynamic_message_session_completed": "Congratulations, the session is over! Enjoy your break.",
+  "dynamic_message_session_completed": "Congratulations, the semester is over! Enjoy your break.",
 
   "dynamic_message_generic_encouragement_0": "Keep up the good work!",
   "dynamic_message_generic_encouragement_1": "Have a good semester!",
-  "dynamic_message_generic_encouragement_2": "Hope your session is going well!",
+  "dynamic_message_generic_encouragement_2": "Hope your semester is going well!",
   "dynamic_message_generic_encouragement_3": "Have a great day!",
   "dynamic_message_generic_encouragement_4": "Keep it up!",
   "dynamic_message_generic_encouragement_5": "Good luck with your courses!",
