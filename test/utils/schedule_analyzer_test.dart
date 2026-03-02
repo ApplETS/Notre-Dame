@@ -814,6 +814,115 @@ void main() {
       });
     });
 
+    group('isFirstDayBackFromBreak -', () {
+      test('returns false when no activities', () {
+        final analyzer = ScheduleAnalyzer(courseActivities: [], now: monday);
+
+        expect(analyzer.isFirstDayBackFromBreak, isFalse);
+      });
+
+      test('returns false when today has no activities', () {
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.tuesday, hour: 10),
+        );
+
+        expect(analyzer.isFirstDayBackFromBreak, isFalse);
+      });
+
+      test('returns false when no activities before today', () {
+        final activities = [createActivity(weekday(reference, DateTime.wednesday, hour: 9))];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.wednesday, hour: 8),
+        );
+
+        expect(analyzer.isFirstDayBackFromBreak, isFalse);
+      });
+
+      test('returns false for within-week gap (same week)', () {
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, hour: 9)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.friday, hour: 8),
+        );
+
+        expect(analyzer.isFirstDayBackFromBreak, isFalse);
+      });
+
+      test('returns false for normal weekend gap', () {
+        final activities = [
+          for (int week = 0; week < 5; week++) ...createWeekActivities(weekday(reference, DateTime.monday, week: week)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.monday, week: 3, hour: 8),
+        );
+
+        expect(analyzer.isFirstDayBackFromBreak, isFalse);
+      });
+
+      test('returns true on first day back after reading week', () {
+        final activities = [
+          for (int week = 0; week < 5; week++) ...[
+            createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.friday, week: week, hour: 9)),
+          ],
+          createActivity(weekday(reference, DateTime.monday, week: 6, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 6, hour: 9)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.monday, week: 6, hour: 8),
+        );
+
+        expect(analyzer.isFirstDayBackFromBreak, isTrue);
+      });
+
+      test('returns true on first day back after long weekend', () {
+        final activities = [
+          for (int week = 0; week < 5; week++) ...[
+            createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.wednesday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.friday, week: week, hour: 9)),
+          ],
+          createActivity(weekday(reference, DateTime.wednesday, week: 5, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 5, hour: 9)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.wednesday, week: 5, hour: 8),
+        );
+
+        expect(analyzer.isFirstDayBackFromBreak, isTrue);
+      });
+
+      test('returns false on second day back from break', () {
+        final activities = [
+          for (int week = 0; week < 5; week++) ...[
+            createActivity(weekday(reference, DateTime.monday, week: week, hour: 9)),
+            createActivity(weekday(reference, DateTime.friday, week: week, hour: 9)),
+          ],
+          createActivity(weekday(reference, DateTime.monday, week: 6, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, week: 6, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 6, hour: 9)),
+        ];
+        final analyzer = ScheduleAnalyzer(
+          courseActivities: activities,
+          now: weekday(reference, DateTime.wednesday, week: 6, hour: 8),
+        );
+
+        expect(analyzer.isFirstDayBackFromBreak, isFalse);
+      });
+    });
+
     group('getFirstFinalExamDate -', () {
       test('returns null when no finals exist', () {
         final activities = [
