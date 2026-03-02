@@ -1922,10 +1922,7 @@ void main() {
           await manager.getReplacedDays();
 
           // Verify cache timestamp was updated
-          verify(preferencesServiceMock.setDateTime(
-            PreferencesFlag.replacedDaysCacheTimestamp,
-            any,
-          )).called(1);
+          verify(preferencesServiceMock.setDateTime(PreferencesFlag.replacedDaysCacheTimestamp, any)).called(1);
         });
       });
     });

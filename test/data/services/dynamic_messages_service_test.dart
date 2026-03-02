@@ -5,12 +5,12 @@ import 'dart:math';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
+import 'package:notredame/data/models/dynamic_message.dart';
+import 'package:notredame/data/models/dynamic_message_context.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/data/models/dynamic_message.dart';
-import 'package:notredame/data/services/dynamic_messages_service.dart';
-import 'package:notredame/data/models/dynamic_message_context.dart';
 import 'package:notredame/utils/date_utils.dart';
 
 void main() {
@@ -90,11 +90,7 @@ void main() {
     group('SessionStartsSoonMessage -', () {
       test('returns SessionStartsSoonMessage when finals over and next session exists', () {
         final nextStart = DateTime(2024, 9, 1);
-        final context = createContext(
-          daysRemaining: -10,
-          finalsDaysRemaining: -3,
-          nextSessionStartDate: nextStart,
-        );
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3, nextSessionStartDate: nextStart);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
@@ -102,10 +98,7 @@ void main() {
       });
 
       test('returns SessionCompletedMessage when finals over but no next session', () {
-        final context = createContext(
-          daysRemaining: -10,
-          finalsDaysRemaining: -3,
-        );
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionCompletedMessage>());
@@ -113,10 +106,7 @@ void main() {
 
       test('returns SessionStartsSoonMessage when courses over (no finals) and next session exists', () {
         final nextStart = DateTime(2024, 9, 1);
-        final context = createContext(
-          daysRemaining: -5,
-          nextSessionStartDate: nextStart,
-        );
+        final context = createContext(daysRemaining: -5, nextSessionStartDate: nextStart);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
@@ -1232,11 +1222,7 @@ void main() {
     group('Priority order -', () {
       test('SessionStartsSoonMessage takes priority when finals over and next session exists', () {
         final nextStart = DateTime(2024, 9, 1);
-        final context = createContext(
-          daysRemaining: -10,
-          finalsDaysRemaining: -3,
-          nextSessionStartDate: nextStart,
-        );
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3, nextSessionStartDate: nextStart);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
@@ -1711,11 +1697,7 @@ void main() {
 
       test('returns SessionStartsSoonMessage instead when next session exists', () {
         final nextStart = DateTime(2024, 9, 1);
-        final context = createContext(
-          daysRemaining: -10,
-          finalsDaysRemaining: -5,
-          nextSessionStartDate: nextStart,
-        );
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -5, nextSessionStartDate: nextStart);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());

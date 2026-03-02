@@ -480,10 +480,7 @@ class CourseRepository {
 
   /// [fromCacheOnly] - If true, only returns cached data without API call.
   /// [forceRefresh] - If true, bypasses cache validity check and fetches from API.
-  Future<List<ReplacedDay>?> getReplacedDays({
-    bool fromCacheOnly = false,
-    bool forceRefresh = false,
-  }) async {
+  Future<List<ReplacedDay>?> getReplacedDays({bool fromCacheOnly = false, bool forceRefresh = false}) async {
     // Force fromCacheOnly mode when user has no connectivity
     if (!(await _networkingService.hasConnectivity())) {
       fromCacheOnly = true;
@@ -551,8 +548,7 @@ class CourseRepository {
       // Update cache
       _cacheManager.update(replacedDaysCacheKey, jsonEncode(_replacedDays));
       // Update cache timestamp
-      await _preferencesService.setDateTime(
-          PreferencesFlag.replacedDaysCacheTimestamp, DateTime.now());
+      await _preferencesService.setDateTime(PreferencesFlag.replacedDaysCacheTimestamp, DateTime.now());
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e("$tag - getReplacedDays: exception raised while trying to update the cache.");
@@ -563,8 +559,7 @@ class CourseRepository {
 
   /// Checks if the replaced days cache is still valid based on time.
   Future<bool> _isReplacedDaysCacheValid() async {
-    final DateTime? lastFetch = await _preferencesService.getDateTime(
-        PreferencesFlag.replacedDaysCacheTimestamp);
+    final DateTime? lastFetch = await _preferencesService.getDateTime(PreferencesFlag.replacedDaysCacheTimestamp);
     if (lastFetch == null) return false;
     return DateTime.now().isBefore(lastFetch.add(replacedDaysCacheDuration));
   }

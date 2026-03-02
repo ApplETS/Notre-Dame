@@ -153,28 +153,25 @@ class ScheduleAnalyzer {
     final sortedActivities = _sortedActivities;
 
     // Today must have activities for it to be the first day back
-    final hasActivitiesToday = sortedActivities
-        .any((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
+    final hasActivitiesToday = sortedActivities.any((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
     if (!hasActivitiesToday) return false;
 
-    final activitiesBeforeToday = sortedActivities
-        .where((a) => DateUtils.dateOnly(a.startDateTime).isBefore(today));
+    final activitiesBeforeToday = sortedActivities.where((a) => DateUtils.dateOnly(a.startDateTime).isBefore(today));
     if (activitiesBeforeToday.isEmpty) return false;
 
     final lastActivityBeforeToday = activitiesBeforeToday.last;
-    final firstActivityToday = sortedActivities
-        .firstWhere((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
+    final firstActivityToday = sortedActivities.firstWhere(
+      (a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today),
+    );
 
     // Within-same-week gaps are normal schedule, not breaks
-    if (DateUtils.startOfWeek(lastActivityBeforeToday.startDateTime)
-        .isAtSameMomentAs(DateUtils.startOfWeek(firstActivityToday.startDateTime))) {
+    if (DateUtils.startOfWeek(
+      lastActivityBeforeToday.startDateTime,
+    ).isAtSameMomentAs(DateUtils.startOfWeek(firstActivityToday.startDateTime))) {
       return false;
     }
 
-    final gapDays = DateUtils.daysBetween(
-      lastActivityBeforeToday.endDateTime,
-      firstActivityToday.startDateTime,
-    );
+    final gapDays = DateUtils.daysBetween(lastActivityBeforeToday.endDateTime, firstActivityToday.startDateTime);
     final usualGapDays = calculateUsualWeekendGapDays(
       excludeStart: lastActivityBeforeToday.startDateTime,
       excludeEnd: firstActivityToday.startDateTime,
@@ -279,9 +276,7 @@ class ScheduleAnalyzer {
   }
 
   List<CourseActivity> _getFinalExamActivities() {
-    return courseActivities
-        .where((a) => a.activityName.toLowerCase() == ActivityName.finalExam.toLowerCase())
-        .toList();
+    return courseActivities.where((a) => a.activityName.toLowerCase() == ActivityName.finalExam.toLowerCase()).toList();
   }
 }
 

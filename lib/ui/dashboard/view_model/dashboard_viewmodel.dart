@@ -7,21 +7,21 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
+import 'package:notredame/data/models/dynamic_message.dart';
+import 'package:notredame/data/models/dynamic_message_context.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/data/models/dynamic_message.dart';
-import 'package:notredame/data/services/dynamic_messages_service.dart';
-import 'package:notredame/data/models/dynamic_message_context.dart';
-import 'package:notredame/data/services/in_app_review_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";

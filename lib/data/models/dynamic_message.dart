@@ -129,7 +129,10 @@ extension DynamicMessageResolver on DynamicMessage {
     }
 
     return switch (this) {
-      SessionStartsSoonMessage(:final startDate, :final daysRemaining) => intl.dynamic_message_session_starts_soon(formatDate(startDate), daysRemaining),
+      SessionStartsSoonMessage(:final startDate, :final daysRemaining) => intl.dynamic_message_session_starts_soon(
+        formatDate(startDate),
+        daysRemaining,
+      ),
       DaysBeforeCoursesEndMessage(:final daysRemaining) => intl.dynamic_message_days_before_session_ends(daysRemaining),
       LongWeekendIncomingMessage() => intl.dynamic_message_long_weekend_incoming,
       UpcomingExtendedBreakMessage(:final daysUntilBreak) =>
@@ -164,8 +167,8 @@ extension DynamicMessageResolver on DynamicMessage {
         daysRemaining <= 0
             ? intl.dynamic_message_exam_period_last_day
             : daysRemaining == 1
-                ? intl.dynamic_message_exam_period_tomorrow_last_day
-                : intl.dynamic_message_exam_period(daysRemaining),
+            ? intl.dynamic_message_exam_period_tomorrow_last_day
+            : intl.dynamic_message_exam_period(daysRemaining),
       SessionCompletedMessage() => intl.dynamic_message_session_completed,
       GenericEncouragementMessage(:final variant) => [
         intl.dynamic_message_generic_encouragement_0,
