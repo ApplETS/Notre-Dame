@@ -195,8 +195,7 @@ class DashboardViewModel extends FutureViewModel {
 
   Future loadDataAndUpdateWidget({bool forceRefresh = false}) async {
     // Ensure sessions are loaded before running parallel operations.
-    if (_courseRepository.sessions == null ||
-        _courseRepository.sessions!.isEmpty) {
+    if (_courseRepository.sessions == null || _courseRepository.sessions!.isEmpty) {
       await _courseRepository.getSessions();
     }
 
@@ -223,11 +222,15 @@ class DashboardViewModel extends FutureViewModel {
       final replacedDays = _courseRepository.replacedDays ?? [];
       final now = _settingsManager.dateTimeNow;
 
+      final upcomingSessions = _courseRepository.upcomingSessions;
+      final nextSessionStartDate = upcomingSessions.isNotEmpty ? upcomingSessions.first.startDate : null;
+
       final context = DynamicMessageContext.fromSession(
         session: session,
         activities: activities,
         replacedDays: replacedDays,
         now: now,
+        nextSessionStartDate: nextSessionStartDate,
       );
 
       final message = _dynamicMessagesService.determineMessage(context);

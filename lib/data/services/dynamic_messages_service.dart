@@ -4,11 +4,10 @@ import 'package:notredame/data/models/dynamic_message_context.dart';
 
 class DynamicMessagesService {
   DynamicMessage determineMessage(DynamicMessageContext context) {
-    if (!context.isSessionStarted) {
-      return SessionStartsSoonMessage(context.session.startDate);
-    }
-
     if (context.isFinalsOver) {
+      if (context.nextSessionStartDate != null) {
+        return SessionStartsSoonMessage(context.nextSessionStartDate!, context.daysUntilNextSession!);
+      }
       return SessionCompletedMessage();
     }
 

@@ -125,6 +125,11 @@ class CourseRepositoryMock extends MockCourseRepository {
     ).thenAnswer((_) => Future.delayed(const Duration(milliseconds: 50)).then((value) => throw toThrow));
   }
 
+  /// Stub the getter [upcomingSessions] of [mock] when called will return [toReturn].
+  static void stubUpcomingSessions(CourseRepositoryMock mock, {List<Session> toReturn = const []}) {
+    when(mock.upcomingSessions).thenReturn(toReturn);
+  }
+
   /// Stub the getter [replacedDays] of [mock] when called will return [toReturn].
   static void stubReplacedDays(CourseRepositoryMock mock, {List<ReplacedDay>? toReturn = const []}) {
     when(mock.replacedDays).thenReturn(toReturn);

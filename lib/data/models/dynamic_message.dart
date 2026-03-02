@@ -13,7 +13,8 @@ sealed class DynamicMessage {
 
 class SessionStartsSoonMessage extends DynamicMessage {
   final DateTime startDate;
-  const SessionStartsSoonMessage(this.startDate);
+  final int daysRemaining;
+  const SessionStartsSoonMessage(this.startDate, this.daysRemaining);
 }
 
 class DaysBeforeCoursesEndMessage extends DynamicMessage {
@@ -128,7 +129,7 @@ extension DynamicMessageResolver on DynamicMessage {
     }
 
     return switch (this) {
-      SessionStartsSoonMessage(:final startDate) => intl.dynamic_message_session_starts_soon(formatDate(startDate)),
+      SessionStartsSoonMessage(:final startDate, :final daysRemaining) => intl.dynamic_message_session_starts_soon(formatDate(startDate), daysRemaining),
       DaysBeforeCoursesEndMessage(:final daysRemaining) => intl.dynamic_message_days_before_session_ends(daysRemaining),
       LongWeekendIncomingMessage() => intl.dynamic_message_long_weekend_incoming,
       UpcomingExtendedBreakMessage(:final daysUntilBreak) =>

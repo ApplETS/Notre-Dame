@@ -53,12 +53,12 @@ void main() {
     Session? session,
     List<CourseActivity>? courseActivities,
     List<ReplacedDay>? replacedDays,
-    bool? isSessionStarted,
     int? daysRemaining,
     int? finalsDaysRemaining,
     int? weeksCompleted,
     int? courseWeeksRemaining,
     int? courseDaysThisWeek,
+    DateTime? nextSessionStartDate,
   }) {
     final defaultSession = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
 
@@ -67,12 +67,12 @@ void main() {
       session: session ?? defaultSession,
       courseActivities: courseActivities ?? [],
       replacedDays: replacedDays ?? [],
-      isSessionStarted: isSessionStarted ?? true,
       courseDaysRemaining: daysRemaining ?? 107,
       finalsDaysRemaining: finalsDaysRemaining,
       weeksCompleted: weeksCompleted ?? 10,
       courseWeeksRemaining: courseWeeksRemaining ?? 15,
       courseDaysThisWeek: courseDaysThisWeek ?? 3,
+      nextSessionStartDate: nextSessionStartDate,
     );
   }
 
@@ -88,35 +88,39 @@ void main() {
 
   group('DynamicMessagesService -', () {
     group('SessionStartsSoonMessage -', () {
-      test('returns SessionStartsSoonMessage when session has not started', () {
-        final now = DateTime(2024, 1, 1);
-        final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
-
-        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+      test('returns SessionStartsSoonMessage when finals over and next session exists', () {
+        final nextStart = DateTime(2024, 9, 1);
+        final context = createContext(
+          daysRemaining: -10,
+          finalsDaysRemaining: -3,
+          nextSessionStartDate: nextStart,
+        );
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
-        expect((message as SessionStartsSoonMessage).startDate, DateTime(2024, 1, 10));
+        expect((message as SessionStartsSoonMessage).startDate, nextStart);
       });
 
-      test('does not return SessionStartsSoonMessage when it is the session start day', () {
-        final now = DateTime(2024, 1, 10);
-        final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
-
-        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+      test('returns SessionCompletedMessage when finals over but no next session', () {
+        final context = createContext(
+          daysRemaining: -10,
+          finalsDaysRemaining: -3,
+        );
 
         final message = engine.determineMessage(context);
-        expect(message, isNot(isA<SessionStartsSoonMessage>()));
+        expect(message, isA<SessionCompletedMessage>());
       });
 
-      test('does not return SessionStartsSoonMessage when session has started', () {
-        final now = DateTime(2024, 1, 11);
-        final session = createSession(startDate: DateTime(2024, 1, 10), endDate: DateTime(2024, 4, 30));
-
-        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+      test('returns SessionStartsSoonMessage when courses over (no finals) and next session exists', () {
+        final nextStart = DateTime(2024, 9, 1);
+        final context = createContext(
+          daysRemaining: -5,
+          nextSessionStartDate: nextStart,
+        );
 
         final message = engine.determineMessage(context);
-        expect(message, isNot(isA<SessionStartsSoonMessage>()));
+        expect(message, isA<SessionStartsSoonMessage>());
+        expect((message as SessionStartsSoonMessage).startDate, nextStart);
       });
     });
 
@@ -1226,15 +1230,20 @@ void main() {
     });
 
     group('Priority order -', () {
-      test('SessionStartsSoonMessage takes priority when session not started', () {
-        final context = createContext(isSessionStarted: false, daysRemaining: 5);
+      test('SessionStartsSoonMessage takes priority when finals over and next session exists', () {
+        final nextStart = DateTime(2024, 9, 1);
+        final context = createContext(
+          daysRemaining: -10,
+          finalsDaysRemaining: -3,
+          nextSessionStartDate: nextStart,
+        );
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
       });
 
       test('SessionCompletedMessage takes priority over GenericEncouragement when finals over', () {
-        final context = createContext(isSessionStarted: true, daysRemaining: -10, finalsDaysRemaining: -3);
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionCompletedMessage>());
@@ -1697,6 +1706,19 @@ void main() {
         final context = createContext(daysRemaining: -5, finalsDaysRemaining: 3);
 
         final message = engine.determineMessage(context);
+        expect(message, isNot(isA<SessionCompletedMessage>()));
+      });
+
+      test('returns SessionStartsSoonMessage instead when next session exists', () {
+        final nextStart = DateTime(2024, 9, 1);
+        final context = createContext(
+          daysRemaining: -10,
+          finalsDaysRemaining: -5,
+          nextSessionStartDate: nextStart,
+        );
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionStartsSoonMessage>());
         expect(message, isNot(isA<SessionCompletedMessage>()));
       });
     });

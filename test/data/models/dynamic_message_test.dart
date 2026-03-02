@@ -23,15 +23,17 @@ void main() {
   group('DynamicMessage.resolve -', () {
     group('SessionStartsSoonMessage -', () {
       test('formats date in English locale', () {
-        final message = SessionStartsSoonMessage(DateTime(2025, 1, 15));
+        final message = SessionStartsSoonMessage(DateTime(2025, 1, 15), 10);
         final result = message.resolve(intlEn);
         expect(result, contains('January 15, 2025'));
+        expect(result, contains('10'));
       });
 
       test('formats date in French locale', () {
-        final message = SessionStartsSoonMessage(DateTime(2025, 1, 15));
+        final message = SessionStartsSoonMessage(DateTime(2025, 1, 15), 10);
         final result = message.resolve(intlFr);
         expect(result, contains('15 janvier 2025'));
+        expect(result, contains('10'));
       });
     });
 

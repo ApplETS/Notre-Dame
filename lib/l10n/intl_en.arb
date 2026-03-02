@@ -85,11 +85,14 @@
 
   "dynamic_message_upcoming_extended_break_tomorrow": "An extended break starts tomorrow!",
 
-  "dynamic_message_session_starts_soon": "Have a good rest! The next semester starts on {date}",
+  "dynamic_message_session_starts_soon": "Have a good rest! The next semester starts on {date} (in {days} days)",
   "@dynamic_message_session_starts_soon": {
     "placeholders": {
       "date": {
         "type": "String"
+      },
+      "days": {
+        "type": "int"
       }
     }
   },
