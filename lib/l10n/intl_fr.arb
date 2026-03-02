@@ -142,7 +142,7 @@
     }
   },
 
-  "dynamic_message_public_holiday_incoming": "Super! Jour férier le {weekday} !",
+  "dynamic_message_public_holiday_incoming": "Super! Jour férié le {weekday} !",
   "@dynamic_message_public_holiday_incoming": {
     "placeholders": {
       "weekday": {

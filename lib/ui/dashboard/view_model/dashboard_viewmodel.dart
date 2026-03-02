@@ -210,28 +210,33 @@ class DashboardViewModel extends FutureViewModel {
 
   /// Load the dynamic message based on session context
   Future<void> loadDynamicMessage({bool forceRefresh = false}) async {
-    if (_courseRepository.activeSessions.isEmpty) {
+    try {
+      if (_courseRepository.activeSessions.isEmpty) {
+        dynamicMessageText = null;
+        return;
+      }
+
+      final session = _courseRepository.activeSessions.first;
+      await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+      final activities = _courseRepository.coursesActivities ?? [];
+      await _courseRepository.getReplacedDays(forceRefresh: forceRefresh);
+      final replacedDays = _courseRepository.replacedDays ?? [];
+      final now = _settingsManager.dateTimeNow;
+
+      final context = DynamicMessageContext.fromSession(
+        session: session,
+        activities: activities,
+        replacedDays: replacedDays,
+        now: now,
+      );
+
+      final message = _dynamicMessagesService.determineMessage(context);
+      dynamicMessageText = message?.resolve(_appIntl);
+      notifyListeners();
+    } catch (e) {
       dynamicMessageText = null;
-      return;
+      notifyListeners();
     }
-
-    final session = _courseRepository.activeSessions.first;
-    await _courseRepository.getCoursesActivities(fromCacheOnly: true);
-    final activities = _courseRepository.coursesActivities ?? [];
-    await _courseRepository.getReplacedDays(forceRefresh: forceRefresh);
-    final replacedDays = _courseRepository.replacedDays ?? [];
-    final now = _settingsManager.dateTimeNow;
-
-    final context = DynamicMessageContext.fromSession(
-      session: session,
-      activities: activities,
-      replacedDays: replacedDays,
-      now: now,
-    );
-
-    final message = _dynamicMessagesService.determineMessage(context);
-    dynamicMessageText = message?.resolve(_appIntl);
-    notifyListeners();
   }
 
   @override
