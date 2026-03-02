@@ -35,7 +35,7 @@ class DynamicMessageContext {
     required this.replacedDays,
     required this.isSessionStarted,
     required this.courseDaysRemaining,
-    this.finalsDaysRemaining,
+    required this.finalsDaysRemaining,
     required this.weeksCompleted,
     required this.courseWeeksRemaining,
     required this.courseDaysThisWeek,
