@@ -9,6 +9,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/quick_link_repository.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
@@ -51,6 +52,7 @@ void main() {
       unregister<BroadcastMessageRepository>();
       unregister<RemoteConfigService>();
       unregister<CourseRepository>();
+      unregister<DynamicMessagesService>();
       unregister<PreferencesService>();
       unregister<CacheService>();
       unregister<NetworkingService>();
