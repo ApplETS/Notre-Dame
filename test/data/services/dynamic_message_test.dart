@@ -1187,6 +1187,33 @@ void main() {
         expect(message, isNot(isA<LongWeekendIncomingMessage>()));
       });
 
+      test('FirstDayBackAfterBreak takes priority over ReplacedDay', () {
+        final now = DateTime(2024, 2, 19, 7);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 2, 21),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          replacedDays: [replacedDay],
+          daysRemaining: 60,
+        );
+
+        expect(context.isFirstDayBackFromBreak, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstDayBackAfterBreakMessage>());
+        expect(message, isNot(isA<NoCoursesOnDayMessage>()));
+      });
+
       test('ReplacedDay takes priority over FirstWeekOfSession', () {
         final reference = DateTime(2024, 3, 25);
         final now = weekday(reference, DateTime.wednesday);
@@ -1528,6 +1555,14 @@ void main() {
         final message = engine.determineMessage(context);
         expect(message, isNot(isA<ExamPeriodMessage>()));
       });
+
+      test('returns ExamPeriodMessage at boundary daysRemaining = -1 with finals', () {
+        final context = createContext(daysRemaining: -1, finalsDaysRemaining: 8);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExamPeriodMessage>());
+        expect((message as ExamPeriodMessage).daysRemaining, 8);
+      });
     });
 
     group('FinalsApproachingMessage -', () {
@@ -1552,6 +1587,29 @@ void main() {
 
         final message = engine.determineMessage(context);
         expect(message, isA<DaysBeforeCoursesEndMessage>());
+      });
+
+      test('returns FinalsApproachingMessage at boundary daysRemaining = 7 with finals', () {
+        final context = createContext(daysRemaining: 7, finalsDaysRemaining: 20);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+        expect((message as FinalsApproachingMessage).courseDaysRemaining, 7);
+      });
+
+      test('returns FinalsApproachingMessage when 0 days remaining and has finals', () {
+        final context = createContext(daysRemaining: 0, finalsDaysRemaining: 14);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+        expect((message as FinalsApproachingMessage).courseDaysRemaining, 0);
+      });
+
+      test('does not return FinalsApproachingMessage when daysRemaining > 7 with finals', () {
+        final context = createContext(daysRemaining: 8, finalsDaysRemaining: 20);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<FinalsApproachingMessage>()));
       });
     });
 
