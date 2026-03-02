@@ -226,7 +226,7 @@ class DashboardViewModel extends FutureViewModel {
       session: session,
       activities: activities,
       replacedDays: replacedDays,
-      now: now,
+      now: DateTime(2026, 04, 13, 18, 00),
     );
 
     final message = _dynamicMessagesService.determineMessage(context);

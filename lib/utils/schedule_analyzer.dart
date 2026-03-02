@@ -143,10 +143,40 @@ class ScheduleAnalyzer {
   }
 
   bool get isFirstDayBackFromBreak {
-    final gapInfo = _currentGapInfo;
-    if (gapInfo == null) return false;
+    if (courseActivities.isEmpty) return false;
 
-    return gapInfo.isLongerThanUsual && DateUtils.daysBetween(now, gapInfo.nextActivityStart) == 0;
+    final today = DateUtils.dateOnly(now);
+    final sortedActivities = _sortedActivities;
+
+    // Today must have activities for it to be the "first day back"
+    final hasActivitiesToday = sortedActivities
+        .any((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
+    if (!hasActivitiesToday) return false;
+
+    final activitiesBeforeToday = sortedActivities
+        .where((a) => DateUtils.dateOnly(a.startDateTime).isBefore(today));
+    if (activitiesBeforeToday.isEmpty) return false;
+
+    final lastActivityBeforeToday = activitiesBeforeToday.last;
+    final firstActivityToday = sortedActivities
+        .firstWhere((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
+
+    // Within-week gaps (e.g. Wed→Sun) are normal schedule, not breaks
+    if (DateUtils.startOfWeek(lastActivityBeforeToday.startDateTime)
+        .isAtSameMomentAs(DateUtils.startOfWeek(firstActivityToday.startDateTime))) {
+      return false;
+    }
+
+    final gapDays = DateUtils.daysBetween(
+      lastActivityBeforeToday.endDateTime,
+      firstActivityToday.startDateTime,
+    );
+    final usualGapDays = calculateUsualWeekendGapDays(
+      excludeStart: lastActivityBeforeToday.startDateTime,
+      excludeEnd: firstActivityToday.startDateTime,
+    );
+
+    return gapDays > usualGapDays;
   }
 
   int? get daysUntilNextCourse {

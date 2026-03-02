@@ -640,6 +640,20 @@ void main() {
         expect(message, isA<FirstDayBackAfterBreakMessage>());
       });
 
+      test('returns FirstDayBackAfterBreakMessage even after first class has started', () {
+        final now = DateTime(2024, 2, 19, 13);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isFirstDayBackFromBreak, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstDayBackAfterBreakMessage>());
+      });
+
       test('does not trigger during break when daysUntilNextCourse > 0 (still shows ExtendedBreakMessage)', () {
         final now = DateTime(2024, 2, 12, 10);
         final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
