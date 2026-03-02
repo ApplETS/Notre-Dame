@@ -139,7 +139,14 @@ class ScheduleAnalyzer {
     final gapInfo = _currentGapInfo;
     if (gapInfo == null) return false;
 
-    return gapInfo.isLongerThanUsual;
+    return gapInfo.isLongerThanUsual && DateUtils.daysBetween(now, gapInfo.nextActivityStart) > 0;
+  }
+
+  bool get isFirstDayBackFromBreak {
+    final gapInfo = _currentGapInfo;
+    if (gapInfo == null) return false;
+
+    return gapInfo.isLongerThanUsual && DateUtils.daysBetween(now, gapInfo.nextActivityStart) == 0;
   }
 
   int? get daysUntilNextCourse {

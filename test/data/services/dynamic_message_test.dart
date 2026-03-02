@@ -618,8 +618,8 @@ void main() {
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
-        expect(context.isInsideLongWeekend, isTrue);
-        expect(context.daysUntilNextCourse, 0);
+        expect(context.isInsideLongWeekend, isFalse);
+        expect(context.isFirstDayBackFromBreak, isTrue);
 
         final message = engine.determineMessage(context);
         expect(message, isA<FirstDayBackAfterBreakMessage>());
@@ -633,9 +633,8 @@ void main() {
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
 
-        expect(context.isInsideLongWeekend, isTrue);
-        expect(context.totalBreakDuration, lessThan(6));
-        expect(context.daysUntilNextCourse, 0);
+        expect(context.isInsideLongWeekend, isFalse);
+        expect(context.isFirstDayBackFromBreak, isTrue);
 
         final message = engine.determineMessage(context);
         expect(message, isA<FirstDayBackAfterBreakMessage>());

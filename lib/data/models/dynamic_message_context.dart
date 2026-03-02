@@ -80,6 +80,8 @@ class DynamicMessageContext {
 
   bool get isInsideLongWeekend => _scheduleAnalyzer.isInsideLongWeekend;
 
+  bool get isFirstDayBackFromBreak => _scheduleAnalyzer.isFirstDayBackFromBreak;
+
   bool get isAfterLastCourseOfWeek => _scheduleAnalyzer.isAfterLastCourseOfWeek;
 
   bool get isCoursesOver => courseDaysRemaining < 0;

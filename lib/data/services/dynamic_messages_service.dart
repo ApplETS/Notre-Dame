@@ -28,11 +28,12 @@ class DynamicMessagesService {
       return DaysBeforeSessionEndsMessage(context.courseDaysRemaining);
     }
 
+    if (context.isFirstDayBackFromBreak) {
+      return FirstDayBackAfterBreakMessage();
+    }
+
     if (context.isInsideLongWeekend) {
       final daysUntilResume = context.daysUntilNextCourse ?? 0;
-      if (daysUntilResume == 0) {
-        return FirstDayBackAfterBreakMessage();
-      }
       final totalBreakDuration = context.totalBreakDuration ?? 0;
       if (totalBreakDuration >= 6) {
         return ExtendedBreakMessage(daysUntilResume);
