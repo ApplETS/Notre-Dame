@@ -59,13 +59,15 @@ class DynamicMessagesService {
     }
 
     if (context.weeksCompleted == 1) {
-      if (context.isAfterLastCourseOfWeek) {
+      if (context.isAfterLastCourseOfWeek &&
+          (context.courseDaysThisWeek >= 3 || context.now.weekday >= DateTime.friday)) {
         return FirstWeekCompletedMessage();
       }
       return FirstWeekOfSessionMessage();
     }
 
-    if (context.isAfterLastCourseOfWeek) {
+    if (context.isAfterLastCourseOfWeek &&
+        (context.courseDaysThisWeek >= 3 || context.now.weekday >= DateTime.friday)) {
       return WeekCompletedMessage(context.weeksCompleted);
     }
 
