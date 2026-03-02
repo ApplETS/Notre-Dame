@@ -143,15 +143,6 @@
     }
   },
 
-  "dynamic_message_public_holiday_incoming": "Public holiday on {weekday}!",
-  "@dynamic_message_public_holiday_incoming": {
-    "placeholders": {
-      "weekday": {
-        "type": "String"
-      }
-    }
-  },
-
   "dynamic_message_less_one_month_remaining": "Keep going, only {num_weeks} weeks to go!",
   "@dynamic_message_less_one_month_remaining": {
   "placeholders": {

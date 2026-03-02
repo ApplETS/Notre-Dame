@@ -142,15 +142,6 @@
     }
   },
 
-  "dynamic_message_public_holiday_incoming": "Super! Jour férié le {weekday} !",
-  "@dynamic_message_public_holiday_incoming": {
-    "placeholders": {
-      "weekday": {
-        "type": "String"
-      }
-    }
-  },
-
   "dynamic_message_less_one_month_remaining": "Tiens bon, il ne reste que {num_weeks} semaines !",
   "@dynamic_message_less_one_month_remaining": {
   "placeholders": {
