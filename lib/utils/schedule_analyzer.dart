@@ -90,6 +90,10 @@ class ScheduleAnalyzer {
 
   bool get hasNextWeekSchedule => _nextWeekActivities.isNotEmpty;
 
+  /// Calculates the gap between the last activity of the current week
+  /// and the next future activity (which may be further than next week
+  /// if there's a break). Returns null if there are no activities this
+  /// week or no future activities.
   _GapInfo? _getUpcomingBreakGapInfo() {
     final thisWeek = _currentWeekActivities;
     final nextWeek = _nextWeekActivities;
@@ -148,7 +152,7 @@ class ScheduleAnalyzer {
     final today = DateUtils.dateOnly(now);
     final sortedActivities = _sortedActivities;
 
-    // Today must have activities for it to be the "first day back"
+    // Today must have activities for it to be the first day back
     final hasActivitiesToday = sortedActivities
         .any((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
     if (!hasActivitiesToday) return false;
@@ -161,7 +165,7 @@ class ScheduleAnalyzer {
     final firstActivityToday = sortedActivities
         .firstWhere((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
 
-    // Within-week gaps (e.g. Wed→Sun) are normal schedule, not breaks
+    // Within-same-week gaps are normal schedule, not breaks
     if (DateUtils.startOfWeek(lastActivityBeforeToday.startDateTime)
         .isAtSameMomentAs(DateUtils.startOfWeek(firstActivityToday.startDateTime))) {
       return false;
