@@ -16,10 +16,6 @@ class DynamicMessagesService {
       return ExamPeriodMessage(context.finalsDaysRemaining!);
     }
 
-    if (context.isCoursesOver) {
-      return GenericEncouragementMessage.random();
-    }
-
     if (context.courseDaysRemaining <= 7 && context.hasFinals) {
       return FinalsApproachingMessage(context.courseDaysRemaining);
     }
