@@ -933,8 +933,8 @@ void main() {
         expect(message, isA<FirstWeekOfSessionMessage>());
       });
 
-      test('returns on light week when Friday or later', () {
-        final now = weekday(referenceDate, DateTime.friday, hour: 20);
+      test('returns on light week when Saturday or later', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
         final session = createSession(
           startDate: weekday(referenceDate, DateTime.monday, week: -2),
           endDate: DateTime(2024, 6, 30),
@@ -1113,8 +1113,8 @@ void main() {
         expect(message, isNot(isA<WeekCompletedMessage>()));
       });
 
-      test('returns on light week when Friday or later', () {
-        final now = weekday(referenceDate, DateTime.friday, hour: 20);
+      test('returns on light week when Saturday or later', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
         final session = createSession(
           startDate: weekday(referenceDate, DateTime.monday, week: -3),
           endDate: DateTime(2024, 6, 30),
