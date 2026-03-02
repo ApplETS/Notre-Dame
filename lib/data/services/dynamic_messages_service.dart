@@ -57,16 +57,18 @@ class DynamicMessagesService {
       return DayFollowsScheduleMessage(originalWeekday, replacementWeekday, replacedDay.description);
     }
 
+    final isWeekDone =
+        context.isAfterLastCourseOfWeek &&
+        (context.courseDaysThisWeek >= 3 || context.now.weekday >= DateTime.saturday);
+
     if (context.weeksCompleted == 1) {
-      if (context.isAfterLastCourseOfWeek &&
-          (context.courseDaysThisWeek >= 3 || context.now.weekday >= DateTime.saturday)) {
+      if (isWeekDone) {
         return FirstWeekCompletedMessage();
       }
       return FirstWeekOfSessionMessage();
     }
 
-    if (context.isAfterLastCourseOfWeek &&
-        (context.courseDaysThisWeek >= 3 || context.now.weekday >= DateTime.saturday)) {
+    if (isWeekDone) {
       return WeekCompletedMessage(context.weeksCompleted);
     }
 
