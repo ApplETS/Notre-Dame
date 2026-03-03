@@ -215,7 +215,7 @@ class DashboardViewModel extends FutureViewModel {
       if (_courseRepository.activeSessions.isNotEmpty) {
         // TODO: revert to real session and _settingsManager.dateTimeNow
         final now = DateTime(2026, 1, 10);
-        final testDate = DateTime(2026, 1, 10);
+        final testDate = DateTime(2026, 1, 21);
         final s = Session(
           shortName: 'H2026',
           name: 'Hiver 2026',
@@ -223,12 +223,12 @@ class DashboardViewModel extends FutureViewModel {
           endDate: DateTime(2026, 4, 30),
           endDateCourses: DateTime(2026, 4, 15),
           startDateRegistration: testDate,
-          deadlineRegistration: testDate,
-          startDateCancellationWithRefund: testDate,
-          deadlineCancellationWithRefund: testDate,
-          deadlineCancellationWithRefundNewStudent: testDate,
-          startDateCancellationWithoutRefundNewStudent: testDate,
-          deadlineCancellationWithoutRefundNewStudent: testDate,
+          deadlineRegistration: now.subtract(const Duration(days: 3)),
+          startDateCancellationWithRefund: now.subtract(const Duration(days: 3)),
+          deadlineCancellationWithRefund: now.subtract(const Duration(days: 3)),
+          deadlineCancellationWithRefundNewStudent: now.subtract(const Duration(days: 3)),
+          startDateCancellationWithoutRefundNewStudent: testDate.add(const Duration(days: 2)),
+          deadlineCancellationWithoutRefundNewStudent: testDate.add(const Duration(days: 2)),
           deadlineCancellationASEQ: testDate,
         );
         allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(s, now);
