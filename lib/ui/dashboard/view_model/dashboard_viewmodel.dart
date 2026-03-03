@@ -54,6 +54,9 @@ class DashboardViewModel extends FutureViewModel {
   /// Next upcoming session reminder event
   SessionReminder? sessionReminder;
 
+  /// All upcoming session reminders
+  List<SessionReminder> allSessionReminders = [];
+
   /// Get progress of the session
   double get progress => _progress;
 
@@ -208,10 +211,12 @@ class DashboardViewModel extends FutureViewModel {
       _progress = getSessionProgress();
       if (_courseRepository.activeSessions.isNotEmpty) {
         final s = _courseRepository.activeSessions.first;
-        final now = _settingsManager.dateTimeNow;
+        final now = DateTime(2026, 1, 30); // TODO: revert to _settingsManager.dateTimeNow
         sessionReminder = SessionReminderHelper.getActiveReminder(s, now);
+        allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(s, now);
       } else {
         sessionReminder = null;
+        allSessionReminders = [];
       }
       return sessions;
     } catch (e) {

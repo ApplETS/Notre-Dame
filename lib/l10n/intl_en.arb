@@ -443,14 +443,14 @@
   "session_reminder_session_start": "Session Starts",
   "session_reminder_registration_start": "Registration Opens",
   "session_reminder_registration_deadline": "Registration Closes",
-  "session_reminder_cancellation_refund_start": "Cancelation with refund begins",
-  "session_reminder_cancellation_refund_deadline": "Cancelation with refund deadline",
-  "session_reminder_cancellation_refund_new_student": "Cancelation with refund deadline (New student)",
-  "session_reminder_cancellation_no_refund_new_student_start": "Cancelation without refund begins (New student)",
-  "session_reminder_cancellation_no_refund_new_student_deadline": "Cancelation without refund deadline (New student)",
+  "session_reminder_cancellation_refund_start": "Cancellation with refund begins",
+  "session_reminder_cancellation_refund_deadline": "Cancellation with refund deadline",
+  "session_reminder_cancellation_refund_new_student": "Cancellation with refund deadline (New student)",
+  "session_reminder_cancellation_no_refund_new_student_start": "Cancellation without refund begins (New student)",
+  "session_reminder_cancellation_no_refund_new_student_deadline": "Cancellation without refund deadline (New student)",
   "session_reminder_cancellation_aseq": "ASEQ Opt-Out Ends",
   "session_reminder_today": "Today!",
-  "session_reminder_in_days": "In {days} days ({date})",
+  "session_reminder_in_days": "{days,plural, =1{Tomorrow ({date})} other{In {days} days ({date})}}",
   "@session_reminder_in_days": {
     "placeholders": {
       "days": {
@@ -461,5 +461,6 @@
       }
     }
   },
+  "session_reminder_bottom_sheet_title": "Upcoming Dates",
   "session_reminder_none": "No reminders"
 }

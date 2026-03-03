@@ -143,4 +143,50 @@ void main() {
       expect(result.daysUntil, 0);
     });
   });
+
+  group("SessionReminderHelper.getAllUpcomingReminders -", () {
+    test("returns all reminders when all dates are in the future", () {
+      final now = DateTime(2025, 1, 1);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result.length, 9);
+      expect(result.first.type, SessionReminderType.sessionStart);
+      expect(result.last.type, SessionReminderType.cancellationWithoutRefundNewStudentDeadline);
+    });
+
+    test("returns only future reminders when mid-session", () {
+      final now = DateTime(2025, 2, 6);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      // Should exclude sessionStart, registrationStart, registrationDeadline
+      expect(result.length, 6);
+      expect(result.first.type, SessionReminderType.cancellationWithRefundStart);
+    });
+
+    test("returns empty list when all dates have passed", () {
+      final now = DateTime(2025, 4, 11);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result, isEmpty);
+    });
+
+    test("includes today's reminder", () {
+      final now = DateTime(2025, 2, 5);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result.any((r) => r.type == SessionReminderType.registrationDeadline && r.daysUntil == 0), isTrue);
+    });
+
+    test("results are sorted by date", () {
+      final now = DateTime(2025, 1, 1);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      for (int i = 1; i < result.length; i++) {
+        expect(
+          result[i].date.isAfter(result[i - 1].date) || result[i].date.isAtSameMomentAs(result[i - 1].date),
+          isTrue,
+        );
+      }
+    });
+  });
 }

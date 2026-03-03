@@ -302,6 +302,40 @@ void main() {
 
         expect(viewModel.sessionReminder, isNull);
       });
+
+      test("allSessionReminders is populated for active session", () async {
+        final sessionWithFutureDates = Session(
+          shortName: "H2020",
+          name: "Hiver 2020",
+          startDate: DateTime(2019, 12, 30),
+          endDate: DateTime(2020, 4, 25),
+          endDateCourses: DateTime(2020, 4, 15),
+          startDateRegistration: DateTime(2020, 1, 5),
+          deadlineRegistration: DateTime(2020, 1, 20),
+          startDateCancellationWithRefund: DateTime(2020, 2, 1),
+          deadlineCancellationWithRefund: DateTime(2020, 3, 1),
+          deadlineCancellationWithRefundNewStudent: DateTime(2020, 3, 10),
+          startDateCancellationWithoutRefundNewStudent: DateTime(2020, 3, 11),
+          deadlineCancellationWithoutRefundNewStudent: DateTime(2020, 4, 1),
+          deadlineCancellationASEQ: DateTime(2020, 3, 15),
+        );
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [sessionWithFutureDates]);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [sessionWithFutureDates]);
+        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020));
+
+        await viewModel.futureToRunSessionProgressBar();
+
+        expect(viewModel.allSessionReminders, isNotEmpty);
+        expect(viewModel.allSessionReminders.length, greaterThan(1));
+      });
+
+      test("allSessionReminders is empty when no active session", () async {
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
+
+        await viewModel.futureToRunSessionProgressBar();
+
+        expect(viewModel.allSessionReminders, isEmpty);
+      });
     });
 
     group("In app review - ", () {

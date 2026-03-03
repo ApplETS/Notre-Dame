@@ -118,6 +118,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                 child: SessionReminderCard(
                   reminder: widget.model.sessionReminder,
                   loading: widget.model.busy(widget.model.progress),
+                  allReminders: widget.model.allSessionReminders,
                 ),
               ),
               Expanded(

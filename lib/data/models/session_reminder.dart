@@ -6,9 +6,5 @@ class SessionReminder {
   final DateTime date;
   final int daysUntil;
 
-  const SessionReminder({
-    required this.type,
-    required this.date,
-    required this.daysUntil,
-  });
+  const SessionReminder({required this.type, required this.date, required this.daysUntil});
 }
