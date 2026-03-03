@@ -96,7 +96,7 @@
     }
   },
 
-  "dynamic_message_days_before_session_ends": "Encore {num_days} jours et c'est fini !",
+  "dynamic_message_days_before_session_ends": "{num_days, plural, =0{Dernier jour, c'est presque fini !} =1{Encore 1 jour et c'est fini !} other{Encore {num_days} jours et c'est fini !}}",
   "@dynamic_message_days_before_session_ends": {
     "placeholders": {
       "num_days": {

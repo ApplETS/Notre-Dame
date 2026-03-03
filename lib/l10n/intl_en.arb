@@ -97,7 +97,7 @@
     }
   },
 
-  "dynamic_message_days_before_session_ends": "{num_days} more days and it's over!",
+  "dynamic_message_days_before_session_ends": "{num_days, plural, =0{Last day, it's almost over!} =1{1 more day and it's over!} other{{num_days} more days and it's over!}}",
   "@dynamic_message_days_before_session_ends": {
     "placeholders": {
       "num_days": {
