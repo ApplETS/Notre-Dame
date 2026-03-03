@@ -90,13 +90,21 @@ void main() {
 
   group('DynamicMessagesService -', () {
     group('SessionStartsSoonMessage -', () {
-      test('returns SessionStartsSoonMessage when finals over and next session exists', () {
-        final nextStart = DateTime(2024, 9, 1);
+      test('returns SessionStartsSoonMessage when finals over and next session within 30 days', () {
+        final nextStart = DateTime(2024, 4, 1);
         final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3, nextSessionStartDate: nextStart);
 
         final message = engine.determineMessage(context);
         expect(message, isA<SessionStartsSoonMessage>());
         expect((message as SessionStartsSoonMessage).startDate, nextStart);
+      });
+
+      test('returns SessionCompletedMessage when finals over and next session more than 30 days away', () {
+        final nextStart = DateTime(2024, 9, 1);
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3, nextSessionStartDate: nextStart);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
       });
 
       test('returns SessionCompletedMessage when finals over but no next session', () {
@@ -106,8 +114,8 @@ void main() {
         expect(message, isA<SessionCompletedMessage>());
       });
 
-      test('returns SessionStartsSoonMessage when courses over (no finals) and next session exists', () {
-        final nextStart = DateTime(2024, 9, 1);
+      test('returns SessionStartsSoonMessage when courses over (no finals) and next session within 30 days', () {
+        final nextStart = DateTime(2024, 4, 1);
         final context = createContext(daysRemaining: -5, nextSessionStartDate: nextStart);
 
         final message = engine.determineMessage(context);
@@ -1193,8 +1201,8 @@ void main() {
     });
 
     group('Priority order -', () {
-      test('SessionStartsSoonMessage takes priority when finals over and next session exists', () {
-        final nextStart = DateTime(2024, 9, 1);
+      test('SessionStartsSoonMessage takes priority when finals over and next session within 30 days', () {
+        final nextStart = DateTime(2024, 4, 1);
         final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3, nextSessionStartDate: nextStart);
 
         final message = engine.determineMessage(context);
@@ -1665,8 +1673,8 @@ void main() {
         expect(message, isNot(isA<SessionCompletedMessage>()));
       });
 
-      test('returns SessionStartsSoonMessage instead when next session exists', () {
-        final nextStart = DateTime(2024, 9, 1);
+      test('returns SessionStartsSoonMessage instead when next session within 30 days', () {
+        final nextStart = DateTime(2024, 4, 1);
         final context = createContext(daysRemaining: -10, finalsDaysRemaining: -5, nextSessionStartDate: nextStart);
 
         final message = engine.determineMessage(context);
@@ -1850,6 +1858,65 @@ void main() {
         final message = GenericEncouragementMessage.forToday(random);
         expect(message.variant, inInclusiveRange(0, 6));
       }
+    });
+  });
+
+  group('determineMessageWithoutSession -', () {
+    late DynamicMessagesService service;
+
+    setUp(() {
+      service = DynamicMessagesService();
+    });
+
+    test('returns SessionStartsSoonMessage when next session is within 30 days', () {
+      final now = DateTime(2024, 4, 10);
+      final nextSessionStart = DateTime(2024, 5, 6);
+
+      final message = service.determineMessageWithoutActiveSession(
+        now: now,
+        nextSessionStartDate: nextSessionStart,
+      );
+
+      expect(message, isA<SessionStartsSoonMessage>());
+      final typed = message as SessionStartsSoonMessage;
+      expect(typed.startDate, nextSessionStart);
+      expect(typed.daysRemaining, 26);
+    });
+
+    test('returns SessionStartsSoonMessage at boundary of 30 days', () {
+      final now = DateTime(2024, 4, 10);
+      final nextSessionStart = DateTime(2024, 5, 10);
+
+      final message = service.determineMessageWithoutActiveSession(
+        now: now,
+        nextSessionStartDate: nextSessionStart,
+      );
+
+      expect(message, isA<SessionStartsSoonMessage>());
+      expect((message as SessionStartsSoonMessage).daysRemaining, 30);
+    });
+
+    test('returns null when next session is more than 30 days away', () {
+      final now = DateTime(2024, 4, 10);
+      final nextSessionStart = DateTime(2024, 5, 11);
+
+      final message = service.determineMessageWithoutActiveSession(
+        now: now,
+        nextSessionStartDate: nextSessionStart,
+      );
+
+      expect(message, isNull);
+    });
+
+    test('returns null when no next session exists', () {
+      final now = DateTime(2024, 4, 10);
+
+      final message = service.determineMessageWithoutActiveSession(
+        now: now,
+        nextSessionStartDate: null,
+      );
+
+      expect(message, isNull);
     });
   });
 }

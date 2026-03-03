@@ -211,7 +211,16 @@ class DashboardViewModel extends FutureViewModel {
   Future<void> loadDynamicMessage({bool forceRefresh = false}) async {
     try {
       if (_courseRepository.activeSessions.isEmpty) {
-        dynamicMessageText = null;
+        final now = _settingsManager.dateTimeNow;
+        final upcomingSessions = _courseRepository.upcomingSessions;
+        final nextSessionStartDate = upcomingSessions.isNotEmpty ? upcomingSessions.first.startDate : null;
+
+        final message = _dynamicMessagesService.determineMessageWithoutActiveSession(
+          now: now,
+          nextSessionStartDate: nextSessionStartDate,
+        );
+        dynamicMessageText = message?.resolve(_appIntl);
+        notifyListeners();
         return;
       }
 

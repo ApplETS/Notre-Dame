@@ -1,11 +1,14 @@
 // Project imports:
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/models/dynamic_message_context.dart';
+import 'package:notredame/utils/date_utils.dart';
 
 class DynamicMessagesService {
+  static const int _maxDaysBeforeSessionMessage = 30;
+
   DynamicMessage determineMessage(DynamicMessageContext context) {
     if (context.isFinalsOver) {
-      if (context.nextSessionStartDate != null) {
+      if (context.nextSessionStartDate != null && context.daysUntilNextSession! <= _maxDaysBeforeSessionMessage) {
         return SessionStartsSoonMessage(context.nextSessionStartDate!, context.daysUntilNextSession!);
       }
       return SessionCompletedMessage();
@@ -81,5 +84,15 @@ class DynamicMessagesService {
     }
 
     return GenericEncouragementMessage.forToday();
+  }
+
+  DynamicMessage? determineMessageWithoutActiveSession({required DateTime now, DateTime? nextSessionStartDate}) {
+    if (nextSessionStartDate != null) {
+      final daysRemaining = DateUtils.daysBetween(now, nextSessionStartDate);
+      if (daysRemaining <= _maxDaysBeforeSessionMessage) {
+        return SessionStartsSoonMessage(nextSessionStartDate, daysRemaining);
+      }
+    }
+    return null;
   }
 }
