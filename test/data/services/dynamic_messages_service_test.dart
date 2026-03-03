@@ -253,7 +253,6 @@ void main() {
       test('returns LongWeekendIncomingMessage when isLongWeekend is true', () {
         final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
@@ -278,7 +277,6 @@ void main() {
       test('does not return when not a long weekend', () {
         final now = DateTime(2024, 2, 15, 10);
 
-
         final activities = [createActivity(DateTime(2024, 2, 15, 9)), createActivity(DateTime(2024, 2, 16, 9))];
 
         final context = DynamicMessageContext.fromSession(
@@ -294,7 +292,6 @@ void main() {
 
       test('does not trigger when upcoming gap matches usual weekend gap', () {
         final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
-
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.friday, week: -2, hour: 9)),
@@ -321,7 +318,6 @@ void main() {
 
       test('triggers when upcoming gap is longer than usual weekend gap', () {
         final now = weekday(referenceDate, DateTime.thursday, hour: 10);
-
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.friday, week: -2, hour: 9)),
@@ -351,7 +347,6 @@ void main() {
       test('returns UpcomingExtendedBreakMessage when upcoming break is 6+ days', () {
         final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
@@ -371,7 +366,6 @@ void main() {
       test('returns LongWeekendIncomingMessage when upcoming break is less than 6 days', () {
         final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
@@ -389,7 +383,6 @@ void main() {
 
       test('UpcomingExtendedBreakMessage contains correct daysUntilBreak', () {
         final now = weekday(referenceDate, DateTime.monday, hour: 10);
-
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
@@ -410,7 +403,6 @@ void main() {
       test('UpcomingExtendedBreakMessage with 1 day until break', () {
         final now = weekday(referenceDate, DateTime.thursday, hour: 10);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
@@ -429,7 +421,6 @@ void main() {
 
       test('UpcomingExtendedBreakMessage minimum daysUntilBreak is 1 on last course day', () {
         final now = weekday(referenceDate, DateTime.thursday, hour: 10);
-
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
@@ -452,7 +443,6 @@ void main() {
       test('returns LongWeekendCurrentlyMessage when inside a long weekend gap', () {
         final now = weekday(referenceDate, DateTime.sunday);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
@@ -469,7 +459,6 @@ void main() {
       test('detects long weekend immediately after last course ends', () {
         final now = weekday(referenceDate, DateTime.friday, hour: 13);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
@@ -485,7 +474,6 @@ void main() {
       test('does not detect long weekend before last course of the day ends', () {
         final now = weekday(referenceDate, DateTime.friday, hour: 11, minute: 59);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
@@ -500,7 +488,6 @@ void main() {
 
       test('does not return during normal weekend', () {
         final now = weekday(referenceDate, DateTime.sunday);
-
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
@@ -520,7 +507,6 @@ void main() {
       test('returns ExtendedBreakMessage when total break is 6+ days', () {
         final now = DateTime(2024, 2, 12, 10);
 
-
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
@@ -534,7 +520,6 @@ void main() {
 
       test('returns LongWeekendCurrentlyMessage when total break is less than 6 days', () {
         final now = DateTime(2024, 2, 10, 10);
-
 
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 13, 9))];
 
@@ -550,7 +535,6 @@ void main() {
       test('ExtendedBreakMessage contains correct days until resume', () {
         final now = DateTime(2024, 2, 12, 10);
 
-
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
@@ -564,7 +548,6 @@ void main() {
 
       test('ExtendedBreakMessage persists even when less than 6 days remain', () {
         final now = DateTime(2024, 2, 16, 10);
-
 
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
@@ -581,7 +564,6 @@ void main() {
 
       test('ExtendedBreakMessage with daysUntilResume = 1 (day before resume)', () {
         final now = DateTime(2024, 2, 18, 10);
-
 
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
@@ -600,7 +582,6 @@ void main() {
       test('returns FirstDayBackAfterBreakMessage on first day back after extended break (>=6 days)', () {
         final now = DateTime(2024, 2, 19, 7);
 
-
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
@@ -614,7 +595,6 @@ void main() {
 
       test('returns FirstDayBackAfterBreakMessage on first day back after long weekend (<6 days)', () {
         final now = DateTime(2024, 2, 14, 7);
-
 
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 14, 9))];
 
@@ -630,7 +610,6 @@ void main() {
       test('returns FirstDayBackAfterBreakMessage even after first class has started', () {
         final now = DateTime(2024, 2, 19, 13);
 
-
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
@@ -643,7 +622,6 @@ void main() {
 
       test('does not trigger during break when daysUntilNextCourse > 0 (still shows ExtendedBreakMessage)', () {
         final now = DateTime(2024, 2, 12, 10);
-
 
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
@@ -659,7 +637,6 @@ void main() {
 
       test('does not trigger on a normal day (not inside a long weekend)', () {
         final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
-
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
@@ -679,7 +656,6 @@ void main() {
     group('LastCourseDayOfWeekMessage -', () {
       test('returns LastCourseDayOfWeekMessage when last course day and >= 3 course days', () {
         final now = weekday(referenceDate, DateTime.sunday, hour: 10);
-
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
@@ -707,7 +683,6 @@ void main() {
       test('does not return when less than 3 course days', () {
         final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
@@ -727,7 +702,6 @@ void main() {
 
       test('does not return when not last course day of week', () {
         final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
-
 
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
@@ -1020,7 +994,6 @@ void main() {
       test('returns WeekCompletedMessage even after first month', () {
         final now = weekday(referenceDate, DateTime.sunday, hour: 10);
 
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
@@ -1043,8 +1016,6 @@ void main() {
       });
 
       test('persists through entire weekend after last course ends', () {
-
-
         final activities = [
           createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
           createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
@@ -1311,7 +1282,6 @@ void main() {
         final reference = DateTime(2024, 5, 13);
         final now = weekday(reference, DateTime.friday, hour: 10);
 
-
         final activities = [
           createActivity(weekday(reference, DateTime.monday, hour: 9)),
           createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
@@ -1347,7 +1317,6 @@ void main() {
       test('isInsideLongWeekend takes priority over isLongWeekendIncoming', () {
         final now = DateTime(2024, 2, 11, 10); // Sunday
 
-
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 13, 9))];
 
         final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
@@ -1361,7 +1330,6 @@ void main() {
 
       test('FirstDayBackAfterBreak takes priority over ReplacedDay', () {
         final now = DateTime(2024, 2, 19, 7);
-
 
         final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
 
