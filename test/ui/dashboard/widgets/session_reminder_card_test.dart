@@ -78,7 +78,6 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: const SessionReminderCard(reminder: null, loading: true)));
       await tester.pump();
 
-      // Should not show the empty state text when loading
       expect(find.text("No reminders"), findsNothing);
     });
 
@@ -105,7 +104,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text("Upcoming Dates"), findsOneWidget);
-      // "Registration Closes" appears in both the card and bottom sheet
       expect(find.text("Registration Closes"), findsNWidgets(2));
       expect(find.text("Cancellation with refund begins"), findsOneWidget);
     });
@@ -153,7 +151,6 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Should have 2 AnimatedContainer dot indicators
       expect(find.byType(AnimatedContainer), findsNWidgets(2));
     });
 
@@ -170,14 +167,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // First page shows registration start
       expect(find.text("Registration Opens"), findsOneWidget);
 
-      // Swipe left to go to second page
       await tester.drag(find.byType(PageView), const Offset(-400, 0));
       await tester.pumpAndSettle();
 
-      // Second page shows registration deadline
       expect(find.text("Registration Closes"), findsOneWidget);
     });
 
@@ -194,15 +188,11 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // First page shows registration start
       expect(find.text("Registration Opens"), findsOneWidget);
 
-      // Advance timer by 5 seconds to trigger auto-scroll
       await tester.pump(const Duration(seconds: 5));
-      // Let the animation complete
       await tester.pumpAndSettle();
 
-      // Second page should now be visible
       expect(find.text("Registration Closes"), findsOneWidget);
     });
 
