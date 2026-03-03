@@ -213,8 +213,24 @@ class DashboardViewModel extends FutureViewModel {
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
       if (_courseRepository.activeSessions.isNotEmpty) {
-        final s = _courseRepository.activeSessions.first;
-        final now = DateTime(2026, 2, 2); // TODO: revert to _settingsManager.dateTimeNow
+        // TODO: revert to real session and _settingsManager.dateTimeNow
+        final now = DateTime(2026, 1, 10);
+        final testDate = DateTime(2026, 1, 10);
+        final s = Session(
+          shortName: 'H2026',
+          name: 'Hiver 2026',
+          startDate: testDate,
+          endDate: DateTime(2026, 4, 30),
+          endDateCourses: DateTime(2026, 4, 15),
+          startDateRegistration: testDate,
+          deadlineRegistration: testDate,
+          startDateCancellationWithRefund: testDate,
+          deadlineCancellationWithRefund: testDate,
+          deadlineCancellationWithRefundNewStudent: testDate,
+          startDateCancellationWithoutRefundNewStudent: testDate,
+          deadlineCancellationWithoutRefundNewStudent: testDate,
+          deadlineCancellationASEQ: testDate,
+        );
         allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(s, now);
         sessionReminder = allSessionReminders.isEmpty ? null : allSessionReminders.first;
         sameDayReminders = SessionReminderHelper.getSameDayReminders(s, now);

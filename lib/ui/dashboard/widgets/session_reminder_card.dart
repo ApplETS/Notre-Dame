@@ -222,12 +222,14 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
           child: Icon(reminder.type.icon, size: iconSize, color: AppPalette.etsLightRed),
         ),
         const SizedBox(height: 12),
-        AutoSizeText(
-          sessionReminderEventName(intl, reminder.type),
-          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, height: 1.2),
-          minFontSize: 10,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
+        Flexible(
+          child: AutoSizeText(
+            sessionReminderEventName(intl, reminder.type),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, height: 1.2),
+            minFontSize: 10,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         const SizedBox(height: 4),
         Text(
