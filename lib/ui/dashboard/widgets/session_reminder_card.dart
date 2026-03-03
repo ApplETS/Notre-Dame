@@ -225,7 +225,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
         Flexible(
           child: AutoSizeText(
             sessionReminderEventName(intl, reminder.type),
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, height: 1.2),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, height: 1.2),
             minFontSize: 10,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
