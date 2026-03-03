@@ -112,8 +112,6 @@ class DashboardViewModel extends FutureViewModel {
     hasAnimationPlayed = true;
   }
 
-  /// Loading state of the widget
-  bool isLoading = false;
 
   /// Slide offset for title and subtitle animations (slide from top)
   /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
@@ -209,6 +207,7 @@ class DashboardViewModel extends FutureViewModel {
 
   /// Load the dynamic message based on session context
   Future<void> loadDynamicMessage({bool forceRefresh = false}) async {
+    setBusyForObject(dynamicMessageText, true);
     try {
       if (_courseRepository.activeSessions.isEmpty) {
         final now = _settingsManager.dateTimeNow;
@@ -220,6 +219,7 @@ class DashboardViewModel extends FutureViewModel {
           nextSessionStartDate: nextSessionStartDate,
         );
         dynamicMessageText = message?.resolve(_appIntl);
+        setBusyForObject(dynamicMessageText, false);
         notifyListeners();
         return;
       }
@@ -248,6 +248,8 @@ class DashboardViewModel extends FutureViewModel {
     } catch (e) {
       dynamicMessageText = null;
       notifyListeners();
+    } finally {
+      setBusyForObject(dynamicMessageText, false);
     }
   }
 
