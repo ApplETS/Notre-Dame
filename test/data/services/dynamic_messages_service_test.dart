@@ -1872,10 +1872,7 @@ void main() {
       final now = DateTime(2024, 4, 10);
       final nextSessionStart = DateTime(2024, 5, 6);
 
-      final message = service.determineMessageWithoutActiveSession(
-        now: now,
-        nextSessionStartDate: nextSessionStart,
-      );
+      final message = service.determineMessageWithoutActiveSession(now: now, nextSessionStartDate: nextSessionStart);
 
       expect(message, isA<SessionStartsSoonMessage>());
       final typed = message as SessionStartsSoonMessage;
@@ -1887,10 +1884,7 @@ void main() {
       final now = DateTime(2024, 4, 10);
       final nextSessionStart = DateTime(2024, 5, 10);
 
-      final message = service.determineMessageWithoutActiveSession(
-        now: now,
-        nextSessionStartDate: nextSessionStart,
-      );
+      final message = service.determineMessageWithoutActiveSession(now: now, nextSessionStartDate: nextSessionStart);
 
       expect(message, isA<SessionStartsSoonMessage>());
       expect((message as SessionStartsSoonMessage).daysRemaining, 30);
@@ -1900,10 +1894,7 @@ void main() {
       final now = DateTime(2024, 4, 10);
       final nextSessionStart = DateTime(2024, 5, 11);
 
-      final message = service.determineMessageWithoutActiveSession(
-        now: now,
-        nextSessionStartDate: nextSessionStart,
-      );
+      final message = service.determineMessageWithoutActiveSession(now: now, nextSessionStartDate: nextSessionStart);
 
       expect(message, isNull);
     });
@@ -1911,10 +1902,7 @@ void main() {
     test('returns null when no next session exists', () {
       final now = DateTime(2024, 4, 10);
 
-      final message = service.determineMessageWithoutActiveSession(
-        now: now,
-        nextSessionStartDate: null,
-      );
+      final message = service.determineMessageWithoutActiveSession(now: now, nextSessionStartDate: null);
 
       expect(message, isNull);
     });
