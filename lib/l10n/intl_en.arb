@@ -85,7 +85,7 @@
 
   "dynamic_message_upcoming_extended_break_tomorrow": "An extended break starts tomorrow!",
 
-  "dynamic_message_session_starts_soon": "Have a good rest! The next semester starts on {date} (in {days} days)",
+  "dynamic_message_session_starts_soon": "Have a good rest! The next semester starts on {date} (in {days} days).",
   "@dynamic_message_session_starts_soon": {
     "placeholders": {
       "date": {
@@ -181,7 +181,7 @@
   "dynamic_message_generic_encouragement_5": "Good luck with your courses!",
   "dynamic_message_generic_encouragement_6": "Hang in there!",
 
-  "dynamic_message_no_courses_on_day": "There are no courses on {weekday} ({reason})",
+  "dynamic_message_no_courses_on_day": "There are no courses on {weekday} ({reason}).",
   "@dynamic_message_no_courses_on_day": {
     "placeholders": {
       "weekday": {
@@ -193,7 +193,7 @@
     }
   },
 
-  "dynamic_message_day_follows_schedule": "The courses of {replacementDay} follow the schedule of {originalDay} ({reason})",
+  "dynamic_message_day_follows_schedule": "The courses of {replacementDay} follow the schedule of {originalDay} ({reason}).",
   "@dynamic_message_day_follows_schedule": {
     "placeholders": {
       "originalDay": {

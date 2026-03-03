@@ -84,7 +84,7 @@
 
   "dynamic_message_upcoming_extended_break_tomorrow": "Un congé commence demain !",
 
-  "dynamic_message_session_starts_soon": "Repose-toi bien! La prochaine session débute le {date} (dans {days} jours)",
+  "dynamic_message_session_starts_soon": "Repose-toi bien! La prochaine session débute le {date} (dans {days} jours).",
   "@dynamic_message_session_starts_soon": {
     "placeholders": {
       "date": {
@@ -180,7 +180,7 @@
   "dynamic_message_generic_encouragement_5": "Bonne chance dans tes cours !",
   "dynamic_message_generic_encouragement_6": "Tiens bon !",
 
-  "dynamic_message_no_courses_on_day": "Il n'y a pas de cours le {weekday} ({reason})",
+  "dynamic_message_no_courses_on_day": "Il n'y a pas de cours le {weekday} ({reason}).",
   "@dynamic_message_no_courses_on_day": {
     "placeholders": {
       "weekday": {
@@ -192,7 +192,7 @@
     }
   },
 
-  "dynamic_message_day_follows_schedule": "Les cours du {replacementDay} suivent l'horaire du {originalDay} ({reason})",
+  "dynamic_message_day_follows_schedule": "Les cours du {replacementDay} suivent l'horaire du {originalDay} ({reason}).",
   "@dynamic_message_day_follows_schedule": {
     "placeholders": {
       "originalDay": {
