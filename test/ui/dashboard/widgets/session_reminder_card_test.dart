@@ -110,4 +110,138 @@ void main() {
       expect(find.text("Cancellation with refund begins"), findsOneWidget);
     });
   });
+
+  group("SessionReminderCard carousel -", () {
+    final reminder1 = SessionReminder(
+      type: SessionReminderType.registrationStart,
+      date: DateTime(2025, 1, 27),
+      daysUntil: 5,
+    );
+    final reminder2 = SessionReminder(
+      type: SessionReminderType.registrationDeadline,
+      date: DateTime(2025, 1, 27),
+      daysUntil: 5,
+    );
+    final sameDayReminders = [reminder1, reminder2];
+
+    testWidgets("renders PageView with multiple same-day reminders", (WidgetTester tester) async {
+      await tester.pumpWidget(
+        localizedWidget(
+          child: SessionReminderCard(
+            reminder: reminder1,
+            loading: false,
+            allReminders: sameDayReminders,
+            sameDayReminders: sameDayReminders,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PageView), findsOneWidget);
+    });
+
+    testWidgets("dot indicators appear for carousel", (WidgetTester tester) async {
+      await tester.pumpWidget(
+        localizedWidget(
+          child: SessionReminderCard(
+            reminder: reminder1,
+            loading: false,
+            allReminders: sameDayReminders,
+            sameDayReminders: sameDayReminders,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should have 2 AnimatedContainer dot indicators
+      expect(find.byType(AnimatedContainer), findsNWidgets(2));
+    });
+
+    testWidgets("swiping changes displayed content", (WidgetTester tester) async {
+      await tester.pumpWidget(
+        localizedWidget(
+          child: SessionReminderCard(
+            reminder: reminder1,
+            loading: false,
+            allReminders: sameDayReminders,
+            sameDayReminders: sameDayReminders,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // First page shows registration start
+      expect(find.text("Registration Opens"), findsOneWidget);
+
+      // Swipe left to go to second page
+      await tester.drag(find.byType(PageView), const Offset(-400, 0));
+      await tester.pumpAndSettle();
+
+      // Second page shows registration deadline
+      expect(find.text("Registration Closes"), findsOneWidget);
+    });
+
+    testWidgets("auto-scroll advances after 5 seconds", (WidgetTester tester) async {
+      await tester.pumpWidget(
+        localizedWidget(
+          child: SessionReminderCard(
+            reminder: reminder1,
+            loading: false,
+            allReminders: sameDayReminders,
+            sameDayReminders: sameDayReminders,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // First page shows registration start
+      expect(find.text("Registration Opens"), findsOneWidget);
+
+      // Advance timer by 5 seconds to trigger auto-scroll
+      await tester.pump(const Duration(seconds: 5));
+      // Let the animation complete
+      await tester.pumpAndSettle();
+
+      // Second page should now be visible
+      expect(find.text("Registration Closes"), findsOneWidget);
+    });
+
+    testWidgets("tap on carousel opens bottom sheet", (WidgetTester tester) async {
+      await tester.pumpWidget(
+        localizedWidget(
+          child: SessionReminderCard(
+            reminder: reminder1,
+            loading: false,
+            allReminders: sameDayReminders,
+            sameDayReminders: sameDayReminders,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(SessionReminderCard));
+      await tester.pumpAndSettle();
+
+      expect(find.text("Upcoming Dates"), findsOneWidget);
+    });
+
+    testWidgets("single reminder does not render PageView", (WidgetTester tester) async {
+      final singleReminder = [reminder1];
+
+      await tester.pumpWidget(
+        localizedWidget(
+          child: SessionReminderCard(
+            reminder: reminder1,
+            loading: false,
+            allReminders: singleReminder,
+            sameDayReminders: singleReminder,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PageView), findsNothing);
+      expect(find.text("Registration Opens"), findsOneWidget);
+    });
+  });
 }

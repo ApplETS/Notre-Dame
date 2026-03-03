@@ -80,4 +80,19 @@ class SessionReminderHelper {
 
     return reminders;
   }
+
+  /// Returns all upcoming reminders that share the same date as the active reminder.
+  /// Returns empty list if there is no active reminder.
+  static List<SessionReminder> getSameDayReminders(Session session, DateTime now) {
+    final active = getActiveReminder(session, now);
+    if (active == null) return [];
+
+    final activeDate = DateTime(active.date.year, active.date.month, active.date.day);
+    final all = getAllUpcomingReminders(session, now);
+
+    return all.where((r) {
+      final rDate = DateTime(r.date.year, r.date.month, r.date.day);
+      return rDate.isAtSameMomentAs(activeDate);
+    }).toList();
+  }
 }

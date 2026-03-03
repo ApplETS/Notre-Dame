@@ -1,3 +1,6 @@
+// Dart imports:
+import 'dart:async';
+
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -13,16 +16,101 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_bottom_sheet.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_utils.dart';
 
-class SessionReminderCard extends StatelessWidget {
+class SessionReminderCard extends StatefulWidget {
   final SessionReminder? reminder;
   final bool loading;
   final List<SessionReminder> allReminders;
+  final List<SessionReminder> sameDayReminders;
 
-  const SessionReminderCard({super.key, required this.reminder, required this.loading, this.allReminders = const []});
+  const SessionReminderCard({
+    super.key,
+    required this.reminder,
+    required this.loading,
+    this.allReminders = const [],
+    this.sameDayReminders = const [],
+  });
+
+  @override
+  State<SessionReminderCard> createState() => _SessionReminderCardState();
+}
+
+class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsBindingObserver {
+  PageController? _pageController;
+  Timer? _autoScrollTimer;
+  int _currentPage = 0;
+
+  bool get _isCarousel => widget.sameDayReminders.length > 1;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    if (_isCarousel) {
+      _initCarousel();
+    }
+  }
+
+  @override
+  void didUpdateWidget(SessionReminderCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.sameDayReminders.length != widget.sameDayReminders.length) {
+      _disposeCarousel();
+      if (_isCarousel) {
+        _currentPage = 0;
+        _initCarousel();
+      }
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _pauseAutoScroll();
+    } else if (state == AppLifecycleState.resumed && _isCarousel) {
+      _startAutoScroll();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _disposeCarousel();
+    super.dispose();
+  }
+
+  void _initCarousel() {
+    _pageController = PageController();
+    _startAutoScroll();
+  }
+
+  void _disposeCarousel() {
+    _pauseAutoScroll();
+    _pageController?.dispose();
+    _pageController = null;
+  }
+
+  void _startAutoScroll() {
+    _autoScrollTimer?.cancel();
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 10), (_) {
+      if (_pageController != null && _pageController!.hasClients) {
+        final nextPage = (_currentPage + 1) % widget.sameDayReminders.length;
+        _pageController!.animateToPage(
+          nextPage, 
+          duration: const Duration(milliseconds: 600), 
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  void _pauseAutoScroll() {
+    _autoScrollTimer?.cancel();
+    _autoScrollTimer = null;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final tappable = reminder != null && allReminders.isNotEmpty;
+    final tappable = widget.reminder != null && widget.allReminders.isNotEmpty;
 
     return AspectRatio(
       aspectRatio: 1,
@@ -34,13 +122,13 @@ class SessionReminderCard extends StatelessWidget {
         child: InkWell(
           onTap: tappable
               ? () => showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  backgroundColor: context.theme.scaffoldBackgroundColor,
-                  builder: (_) => SessionReminderBottomSheet(reminders: allReminders),
-                )
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: context.theme.scaffoldBackgroundColor,
+                    builder: (_) => SessionReminderBottomSheet(reminders: widget.allReminders),
+                  )
               : null,
-          child: Padding(padding: const EdgeInsets.all(16.0), child: _buildContent(context)),
+          child: _buildContent(context),
         ),
       ),
     );
@@ -49,25 +137,32 @@ class SessionReminderCard extends StatelessWidget {
   Widget _buildContent(BuildContext context) {
     final intl = AppIntl.of(context)!;
 
-    if (loading) {
-      return Skeletonizer(
-        enabled: true,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Bone.icon(size: 28),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [const Bone.text(words: 2), const SizedBox(height: 6), const Bone.text(words: 3)],
-            ),
-          ],
+    if (widget.loading) {
+      return Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Skeletonizer(
+          enabled: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Bone.icon(size: 24),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Bone.text(words: 2), 
+                  SizedBox(height: 6), 
+                  Bone.text(words: 3),
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    if (reminder == null) {
+    if (widget.reminder == null) {
       return Center(
         child: Text(
           intl.session_reminder_none,
@@ -77,37 +172,90 @@ class SessionReminderCard extends StatelessWidget {
       );
     }
 
+    if (_isCarousel) {
+      return Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 20.0),
+            child: Listener(
+              onPointerDown: (_) => _pauseAutoScroll(),
+              onPointerUp: (_) => _startAutoScroll(),
+              onPointerCancel: (_) => _startAutoScroll(),
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: widget.sameDayReminders.length,
+                onPageChanged: (index) {
+                  setState(() => _currentPage = index);
+                },
+                itemBuilder: (context, index) {
+                  return _buildReminderContent(context, intl, widget.sameDayReminders[index]);
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 8, 
+            left: 0, 
+            right: 0, 
+            child: Center(child: _buildDotIndicators()),
+          ),
+        ],
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0), 
+      child: _buildReminderContent(context, intl, widget.reminder!),
+    );
+  }
+
+  Widget _buildReminderContent(BuildContext context, AppIntl intl, SessionReminder reminder) {
+    const iconSize = 24.0;
+    const iconPadding = 8.0;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(iconPadding),
           decoration: BoxDecoration(color: AppPalette.etsLightRed.withValues(alpha: 0.1), shape: BoxShape.circle),
-          child: Icon(reminder!.type.icon, size: 24, color: AppPalette.etsLightRed),
+          child: Icon(reminder.type.icon, size: iconSize, color: AppPalette.etsLightRed),
         ),
-
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AutoSizeText(
-              sessionReminderEventName(intl, reminder!.type),
-              style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, height: 1.2),
-              minFontSize: 12,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 6),
-            Text(
-              sessionReminderTimingText(intl, context, reminder!),
-              style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodySmall?.color),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
+        const SizedBox(height: 12),
+        AutoSizeText(
+          sessionReminderEventName(intl, reminder.type),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, height: 1.2),
+          minFontSize: 10,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          sessionReminderTimingText(intl, context, reminder),
+          style: TextStyle(fontSize: 14, color: Theme.of(context).textTheme.bodySmall?.color),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
+    );
+  }
+
+  Widget _buildDotIndicators() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(widget.sameDayReminders.length, (index) {
+        final isActive = index == _currentPage;
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.symmetric(horizontal: 2),
+          width: isActive ? 12 : 6,
+          height: 6,
+          decoration: BoxDecoration(
+            color: isActive ? AppPalette.etsLightRed : AppPalette.etsLightRed.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(3),
+          ),
+        );
+      }),
     );
   }
 }

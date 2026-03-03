@@ -189,4 +189,68 @@ void main() {
       }
     });
   });
+
+  group("SessionReminderHelper.getSameDayReminders -", () {
+    test("returns empty list when no active reminder", () {
+      final now = DateTime(2025, 4, 11); // all dates passed
+      final result = SessionReminderHelper.getSameDayReminders(session, now);
+
+      expect(result, isEmpty);
+    });
+
+    test("returns single-element list when active date is unique", () {
+      final now = DateTime(2025, 1, 7); // next is registrationStart on Jan 10
+      final result = SessionReminderHelper.getSameDayReminders(session, now);
+
+      expect(result.length, 1);
+      expect(result.first.type, SessionReminderType.registrationStart);
+    });
+
+    test("returns multiple reminders when dates coincide", () {
+      // Create a session where two events share the same date
+      final sessionWithCoincidingDates = Session(
+        shortName: "H2025",
+        name: "Hiver 2025",
+        startDate: DateTime(2025, 1, 6),
+        endDate: DateTime(2025, 4, 25),
+        endDateCourses: DateTime(2025, 4, 15),
+        startDateRegistration: DateTime(2025, 1, 27),
+        deadlineRegistration: DateTime(2025, 1, 27), // same date as registration start
+        startDateCancellationWithRefund: DateTime(2025, 2, 10),
+        deadlineCancellationWithRefund: DateTime(2025, 3, 15),
+        deadlineCancellationWithRefundNewStudent: DateTime(2025, 3, 20),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2025, 3, 21),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2025, 4, 10),
+        deadlineCancellationASEQ: DateTime(2025, 3, 25),
+      );
+
+      final now = DateTime(2025, 1, 10); // active reminder date is Jan 27
+      final result = SessionReminderHelper.getSameDayReminders(sessionWithCoincidingDates, now);
+
+      expect(result.length, 2);
+      expect(result.any((r) => r.type == SessionReminderType.registrationStart), isTrue);
+      expect(result.any((r) => r.type == SessionReminderType.registrationDeadline), isTrue);
+    });
+
+    test("excludes reminders on later dates", () {
+      final now = DateTime(2025, 1, 3); // active is sessionStart on Jan 6
+      final result = SessionReminderHelper.getSameDayReminders(session, now);
+
+      expect(result.length, 1);
+      expect(result.first.type, SessionReminderType.sessionStart);
+      // Should not contain any reminders from dates after Jan 6
+      for (final r in result) {
+        expect(r.date, DateTime(2025, 1, 6));
+      }
+    });
+
+    test("includes today's reminders when active is today", () {
+      final now = DateTime(2025, 1, 6); // sessionStart is today
+      final result = SessionReminderHelper.getSameDayReminders(session, now);
+
+      expect(result.length, 1);
+      expect(result.first.type, SessionReminderType.sessionStart);
+      expect(result.first.daysUntil, 0);
+    });
+  });
 }
