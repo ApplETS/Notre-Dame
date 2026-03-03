@@ -214,26 +214,10 @@ class DashboardViewModel extends FutureViewModel {
       _progress = getSessionProgress();
       if (_courseRepository.activeSessions.isNotEmpty) {
         final s = _courseRepository.activeSessions.first;
-        final now = DateTime(2026, 1, 27); // TODO: revert to _settingsManager.dateTimeNow
-        // TODO: remove — testing override to force all reminders on Jan 31
-        final testSession = Session(
-          shortName: s.shortName,
-          name: s.name,
-          startDate: DateTime(2026, 1, 31),
-          endDate: s.endDate,
-          endDateCourses: s.endDateCourses,
-          startDateRegistration: DateTime(2026, 1, 31),
-          deadlineRegistration: DateTime(2026, 1, 31),
-          startDateCancellationWithRefund: DateTime(2026, 1, 31),
-          deadlineCancellationWithRefund: DateTime(2026, 1, 2),
-          deadlineCancellationWithRefundNewStudent: DateTime(2026, 1, 2),
-          startDateCancellationWithoutRefundNewStudent: DateTime(2026, 1, 2),
-          deadlineCancellationWithoutRefundNewStudent: DateTime(2026, 1, 2),
-          deadlineCancellationASEQ: DateTime(2026, 1, 31),
-        );
-        sessionReminder = SessionReminderHelper.getActiveReminder(testSession, now);
-        allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(testSession, now);
-        sameDayReminders = SessionReminderHelper.getSameDayReminders(testSession, now);
+        final now = _settingsManager.dateTimeNow;
+        allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(s, now);
+        sessionReminder = allSessionReminders.isEmpty ? null : allSessionReminders.first;
+        sameDayReminders = SessionReminderHelper.getSameDayReminders(s, now);
       } else {
         sessionReminder = null;
         allSessionReminders = [];
