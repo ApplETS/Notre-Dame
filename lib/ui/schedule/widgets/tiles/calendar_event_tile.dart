@@ -12,6 +12,7 @@ import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_layout.dart';
 
 class CalendarEventTile extends StatefulWidget {
   final EventData event;
@@ -36,73 +37,35 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
       isScrollControlled: true,
       backgroundColor: context.theme.scaffoldBackgroundColor,
       builder: (context) {
-        return Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+        return ModalBottomSheetLayout(
+          title: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Container(
-                          height: 5,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: context.theme.appColors.modalHandle,
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Column(
-                        children: [
-                          Text(
-                            widget.event.group ?? widget.event.courseAcronym,
-                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            widget.event.courseName,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              Text(
+                widget.event.group ?? widget.event.courseAcronym,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SafeArea(
-                left: false,
-                right: false,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 32.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 12.0,
-                    children: [
-                      _sheetRow(
-                        "${AppIntl.of(context)!.schedule_calendar_from_time} "
-                        "$startTime "
-                        "${AppIntl.of(context)!.schedule_calendar_to_time} "
-                        "$endTime",
-                        Icons.access_time,
-                      ),
-                      if (courseLocation != null) _sheetRow(courseLocation, Icons.location_pin),
-                      if (courseType != null) _sheetRow(courseType, Icons.book),
-                      if (teacherName != null)
-                        _sheetRow("${AppIntl.of(context)!.schedule_calendar_by} $teacherName", Icons.person),
-                    ],
-                  ),
-                ),
+              Text(
+                widget.event.courseName,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
+            ],
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12.0,
+            children: [
+              _sheetRow(
+                "${AppIntl.of(context)!.schedule_calendar_from_time} "
+                "$startTime "
+                "${AppIntl.of(context)!.schedule_calendar_to_time} "
+                "$endTime",
+                Icons.access_time,
+              ),
+              if (courseLocation != null) _sheetRow(courseLocation, Icons.location_pin),
+              if (courseType != null) _sheetRow(courseType, Icons.book),
+              if (teacherName != null)
+                _sheetRow("${AppIntl.of(context)!.schedule_calendar_by} $teacherName", Icons.person),
             ],
           ),
         );

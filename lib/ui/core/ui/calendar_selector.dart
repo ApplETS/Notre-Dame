@@ -15,6 +15,7 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_layout.dart';
 
 class CalendarSelectionSheet extends StatefulWidget {
   final AppIntl intl;
@@ -51,91 +52,47 @@ class _CalendarSelectionSheetState extends State<CalendarSelectionSheet> {
 
         selectedCalendarId = selectedCalendarId.isEmpty ? items.first.value! : selectedCalendarId;
 
-        return Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        return ModalBottomSheetLayout(
+          title: Text(widget.intl.calendar_export, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 12.0,
             children: [
+              Text(widget.intl.calendar_export_question),
               Container(
-                decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Container(
-                          height: 5,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: context.theme.appColors.modalHandle,
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        widget.intl.calendar_export,
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: context.theme.appBarTheme.backgroundColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: DropdownButton(
+                  value: selectedCalendarId,
+                  underline: const SizedBox(),
+                  isExpanded: true,
+                  items: items,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCalendarId = value!;
+                    });
+                  },
                 ),
               ),
-              SafeArea(
-                left: false,
-                right: false,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 32.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 12.0,
-                    children: [
-                      Text(widget.intl.calendar_export_question),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: context.theme.appBarTheme.backgroundColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: DropdownButton(
-                          value: selectedCalendarId,
-                          underline: const SizedBox(),
-                          isExpanded: true,
-                          items: items,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedCalendarId = value!;
-                            });
-                          },
-                        ),
-                      ),
-                      if (selectedCalendarId == "new") ...[
-                        const SizedBox(height: 8),
-                        TextField(
-                          decoration: InputDecoration(labelText: widget.intl.calendar_name),
-                          onChanged: (value) {
-                            selectedCalendarId = value;
-                          },
-                        ),
-                      ],
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Text(widget.intl.calendar_cancel_button),
-                          ),
-                          const SizedBox(width: 8),
-                          FilledButton(onPressed: _export, child: Text(widget.intl.calendar_export_button)),
-                        ],
-                      ),
-                    ],
-                  ),
+              if (selectedCalendarId == "new") ...[
+                const SizedBox(height: 8),
+                TextField(
+                  decoration: InputDecoration(labelText: widget.intl.calendar_name),
+                  onChanged: (value) {
+                    selectedCalendarId = value;
+                  },
                 ),
+              ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(onPressed: () => Navigator.pop(context), child: Text(widget.intl.calendar_cancel_button)),
+                  const SizedBox(width: 8),
+                  FilledButton(onPressed: _export, child: Text(widget.intl.calendar_export_button)),
+                ],
               ),
             ],
           ),

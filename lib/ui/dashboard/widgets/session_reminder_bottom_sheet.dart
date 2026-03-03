@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_layout.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_utils.dart';
 
 class SessionReminderBottomSheet extends StatelessWidget {
@@ -17,53 +17,16 @@ class SessionReminderBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final intl = AppIntl.of(context)!;
 
-    return Container(
-      clipBehavior: Clip.hardEdge,
-      decoration: const BoxDecoration(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+    return ModalBottomSheetLayout(
+      title: Text(
+        intl.session_reminder_bottom_sheet_title,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      ),
+      bodyPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-            child: Column(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Container(
-                      height: 5,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: context.theme.appColors.modalHandle,
-                        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Text(
-                    intl.session_reminder_bottom_sheet_title,
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SafeArea(
-            left: false,
-            right: false,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 24.0, bottom: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 16.0,
-                children: [for (final reminder in reminders) _reminderRow(context, intl, reminder)],
-              ),
-            ),
-          ),
-        ],
+        spacing: 16.0,
+        children: [for (final reminder in reminders) _reminderRow(context, intl, reminder)],
       ),
     );
   }
