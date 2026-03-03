@@ -8,7 +8,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/schedule_card_viewmodel.dart';
-import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
+import 'package:notredame/ui/core/ui/titled_card.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 
@@ -26,7 +26,7 @@ class ScheduleCard extends StatelessWidget {
           title += AppIntl.of(context)!.card_schedule_tomorrow;
         }
 
-        return WidgetComponent(
+        return TitledCard(
           title: title,
           child: Expanded(
             child: DayCalendar(

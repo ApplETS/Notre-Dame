@@ -17,7 +17,7 @@ class SettingsViewModel extends FutureViewModel {
   final AppIntl _appIntl;
 
   /// Current locale
-  String? _currentLocale;
+  Locale? _currentLocale;
 
   /// Current theme
   ThemeMode? _selectedTheme;
@@ -32,19 +32,20 @@ class SettingsViewModel extends FutureViewModel {
     }
   }
 
-  String get currentLocale {
-    if (_currentLocale == AppIntl.supportedLocales.first.languageCode) {
-      return _appIntl.settings_english;
-    } else if (_currentLocale == AppIntl.supportedLocales.last.languageCode) {
-      return _appIntl.settings_french;
-    } else {
-      return "";
-    }
+  Locale? get currentLocale {
+    return _currentLocale;
+    // if (_currentLocale == AppIntl.supportedLocales.first) {
+    //   return Locale('en');//_appIntl.settings_english;
+    // } else if (_currentLocale == AppIntl.supportedLocales.last.languageCode) {
+    //   return _appIntl.settings_french;
+    // } else {
+    //   return "";
+    // }
   }
 
   /// Set Locale
-  set currentLocale(String value) {
-    _settingsManager.setLocale(value);
+  set currentLocale(Locale value) {
+    _settingsManager.setLocale(value.languageCode);
     _currentLocale = value;
   }
 
@@ -54,7 +55,7 @@ class SettingsViewModel extends FutureViewModel {
   Future futureToRun() async {
     setBusy(true);
     await _settingsManager.fetchLanguageAndThemeMode();
-    _currentLocale = _settingsManager.locale?.languageCode;
+    _currentLocale = _settingsManager.locale;
     _selectedTheme = _settingsManager.themeMode;
     setBusy(false);
     return true;

@@ -48,6 +48,13 @@ class AppTheme with ChangeNotifier {
         surface: const Color(0xfff8e9e9),
         surfaceTint: const Color(0xfff6ebeb),
       ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: SegmentedButton.styleFrom(
+          foregroundColor: AppPalette.grey.black,
+          selectedForegroundColor: AppPalette.grey.black,
+          selectedBackgroundColor: AppPalette.etsLightRed.withAlpha(80),
+        ),
+      ),
       extensions: [_lightAppColors],
     );
   }();
@@ -108,6 +115,13 @@ class AppTheme with ChangeNotifier {
         secondary: AppPalette.etsLightRed,
         surface: const Color(0xff1e1e1e),
         surfaceTint: const Color(0xff1e1e1e),
+      ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: SegmentedButton.styleFrom(
+          foregroundColor: Colors.white,
+          selectedForegroundColor: Colors.white,
+          selectedBackgroundColor: AppPalette.etsLightRed.withAlpha(150),
+        ),
       ),
       filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(foregroundColor: AppPalette.grey.black)),
       extensions: [_darkAppColors],
