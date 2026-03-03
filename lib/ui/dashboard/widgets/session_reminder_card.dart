@@ -194,9 +194,9 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
             ),
           ),
           Positioned(
-            bottom: 8, 
-            left: 0, 
-            right: 0, 
+            bottom: 8,
+            left: 0,
+            right: 0,
             child: Center(child: _buildDotIndicators()),
           ),
         ],
@@ -224,7 +224,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
         const SizedBox(height: 12),
         AutoSizeText(
           sessionReminderEventName(intl, reminder.type),
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, height: 1.2),
+          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, height: 1.2),
           minFontSize: 10,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
@@ -232,7 +232,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
         const SizedBox(height: 4),
         Text(
           sessionReminderTimingText(intl, context, reminder),
-          style: TextStyle(fontSize: 14, color: Theme.of(context).textTheme.bodySmall?.color),
+          style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodySmall?.color),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
