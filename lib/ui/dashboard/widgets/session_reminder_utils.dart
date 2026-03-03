@@ -32,11 +32,13 @@ String sessionReminderEventName(AppIntl intl, SessionReminderType type) {
   }
 }
 
-String sessionReminderTimingText(AppIntl intl, BuildContext context, SessionReminder reminder) {
+String sessionReminderTimingText(AppIntl intl, BuildContext context, SessionReminder reminder, {bool long = false}) {
   if (reminder.daysUntil == 0) {
     return intl.session_reminder_today;
   }
   final locale = Localizations.localeOf(context).languageCode;
   final formattedDate = DateFormat.MMMd(locale).format(reminder.date);
-  return intl.session_reminder_in_days(reminder.daysUntil, formattedDate);
+  return long
+      ? intl.session_reminder_in_days_long(reminder.daysUntil, formattedDate)
+      : intl.session_reminder_in_days(reminder.daysUntil, formattedDate);
 }

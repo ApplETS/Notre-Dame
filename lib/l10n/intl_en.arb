@@ -461,6 +461,17 @@
       }
     }
   },
+  "session_reminder_in_days_long": "{days,plural, =1{Tomorrow ({date})} other{In {days} days ({date})}}",
+  "@session_reminder_in_days_long": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
   "session_reminder_bottom_sheet_title": "Upcoming Dates",
   "session_reminder_none": "No reminders"
 }

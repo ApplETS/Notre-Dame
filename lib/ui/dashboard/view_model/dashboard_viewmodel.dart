@@ -211,7 +211,7 @@ class DashboardViewModel extends FutureViewModel {
       _progress = getSessionProgress();
       if (_courseRepository.activeSessions.isNotEmpty) {
         final s = _courseRepository.activeSessions.first;
-        final now = DateTime(2026, 1, 30); // TODO: revert to _settingsManager.dateTimeNow
+        final now = DateTime(2026, 1, 27); // TODO: revert to _settingsManager.dateTimeNow
         sessionReminder = SessionReminderHelper.getActiveReminder(s, now);
         allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(s, now);
       } else {
