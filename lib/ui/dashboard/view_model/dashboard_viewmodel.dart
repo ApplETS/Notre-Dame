@@ -112,7 +112,6 @@ class DashboardViewModel extends FutureViewModel {
     hasAnimationPlayed = true;
   }
 
-
   /// Slide offset for title and subtitle animations (slide from top)
   /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
   Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
