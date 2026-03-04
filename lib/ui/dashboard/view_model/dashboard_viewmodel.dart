@@ -1,8 +1,14 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Dart imports:
+import 'dart:async';
+
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -10,26 +16,28 @@ import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/logic/session_progress_use_case.dart';
 import 'package:notredame/utils/session_reminder_helper.dart';
-import '../../../data/services/in_app_review_service.dart';
-import '../../../data/services/preferences_service.dart';
-import '../../../domain/constants/preferences_flags.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
   static const String abandonedGradeCode = "XX";
 
-  final SettingsRepository _settingsManager = locator<SettingsRepository>();
+
+  final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
+  final SessionProgressUseCase _sessionProgressUseCase;
+
+  StreamSubscription? _sessionProgressSubscription;
 
   /// Animation controller for the circle
   AnimationController? _controller;
@@ -43,13 +51,8 @@ class DashboardViewModel extends FutureViewModel {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  /// Percentage of completed days for the session
-  double _progress = 0.0;
-
-  /// Numbers of days elapsed and total number of days of the current session
-  List<int> _sessionDays = [0, 0];
-
   BroadcastMessage? broadcastMessage;
+  SessionProgress? sessionProgress;
 
   /// Next upcoming session reminder event
   SessionReminder? sessionReminder;
@@ -60,10 +63,13 @@ class DashboardViewModel extends FutureViewModel {
   /// Reminders for the carousel
   List<SessionReminder> carouselReminders = [];
 
-  /// Get progress of the session
-  double get progress => _progress;
-
-  List<int> get sessionDays => _sessionDays;
+  DashboardViewModel({required AppIntl intl})
+    : _appIntl = intl,
+      _sessionProgressUseCase = SessionProgressUseCase(),
+      /// if the animation has not been played, play it
+      shouldPlayAnimation = !hasAnimationPlayed {
+    hasAnimationPlayed = true;
+  }
 
   static Future<bool> launchInAppReview() async {
     final PreferencesService preferencesService = locator<PreferencesService>();
@@ -93,28 +99,12 @@ class DashboardViewModel extends FutureViewModel {
     return false;
   }
 
-  /// Return session progress based on today's [date]
-  double getSessionProgress() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return -1.0;
-    } else {
-      return sessionDays[0] / sessionDays[1];
-    }
-  }
-
   /// Static flag to track if the animation has been played
   static bool hasAnimationPlayed = false;
 
   /// Tracks if the animation should be played
   final bool shouldPlayAnimation;
 
-  DashboardViewModel({required AppIntl intl})
-    : _appIntl = intl,
-
-      /// if the animation has not been played, play it
-      shouldPlayAnimation = !hasAnimationPlayed {
-    hasAnimationPlayed = true;
-  }
 
   /// Loading state of the widget
   bool isLoading = false;
@@ -126,8 +116,13 @@ class DashboardViewModel extends FutureViewModel {
   /// Fade-in opacity based on title animation progress
   double get titleFadeOpacity => titleAnimation.value;
 
+  Future<void> init(TickerProvider ticker) async {
+    initAnimationController(ticker);
+    await initSessionProgress();
+  }
+
   /// Initialize the animation controller for the circle
-  void init(TickerProvider ticker) {
+  void initAnimationController(TickerProvider ticker) {
     _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
 
     heightAnimation = Tween<double>(
@@ -152,41 +147,43 @@ class DashboardViewModel extends FutureViewModel {
     }
   }
 
-  @override
-  void dispose() {
-    // Dispose the controller only if it has been initialized and its not null
-    if (_controller != null) {
-      _controller!.dispose();
-    }
-    super.dispose();
+  Future<void> initSessionProgress() async {
+    _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
+      (sessionProgress) {
+        this.sessionProgress = sessionProgress;
+        _loadSessionReminders();
+        notifyListeners();
+      },
+      onError: (error) {
+        if (error is Exception) {
+          _analyticsService.logError(tag, "SessionProgressWidget error", error);
+        }
+        if (error is String) {
+          Fluttertoast.showToast(msg: _appIntl.error);
+        }
+      },
+    );
+    await _sessionProgressUseCase.init();
   }
 
+  void _loadSessionReminders() {
+    if (_courseRepository.activeSessions.isNotEmpty) {
+      final session = _courseRepository.activeSessions.first;
+      final now = DateTime.now();
+      debugPrint('Active session: $session | now: $now');
+      allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);
+      sessionReminder = allSessionReminders.isEmpty ? null : allSessionReminders.first;
+      carouselReminders = SessionReminderHelper.getCarouselReminders(session, now);
+    } else {
+      sessionReminder = null;
+      allSessionReminders = [];
+      carouselReminders = [];
+    }
+  }
+  
   static Future<void> launchBroadcastUrl(String url) async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
     launchUrlService.launchInBrowser(url);
-  }
-
-  /// Returns a list containing the number of elapsed days in the active session
-  /// and the total number of days in the session
-  List<int> getSessionDays() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return [0, 0];
-    } else {
-      int dayCompleted = _settingsManager.dateTimeNow
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-      final dayInTheSession = _courseRepository.activeSessions.first.endDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-
-      if (dayCompleted > dayInTheSession) {
-        dayCompleted = dayInTheSession;
-      } else if (dayCompleted < 0) {
-        dayCompleted = 0;
-      }
-
-      return [dayCompleted, dayInTheSession];
-    }
   }
 
   /// List of courses for the current session
@@ -194,42 +191,16 @@ class DashboardViewModel extends FutureViewModel {
 
   @override
   Future futureToRun() async {
-    await loadDataAndUpdateWidget();
-  }
-
-  Future loadDataAndUpdateWidget() async {
-    return Future.wait([futureToRunBroadcast(), futureToRunGrades(), futureToRunSessionProgressBar()]);
+    return Future.wait([
+      futureToRunBroadcast(),
+      futureToRunGrades(),
+      _sessionProgressUseCase.fetch(forceUpdate: true),
+    ]);
   }
 
   @override
   void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
-  }
-
-  Future<List<Session>> futureToRunSessionProgressBar() async {
-    try {
-      setBusyForObject(progress, true);
-      final sessions = await _courseRepository.getSessions();
-      _sessionDays = getSessionDays();
-      _progress = getSessionProgress();
-      if (_courseRepository.activeSessions.isNotEmpty) {
-        final session = _courseRepository.activeSessions.first;
-        final now = DateTime(2026, 01, 01, 13, 00);
-        allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);
-        sessionReminder = allSessionReminders.isEmpty ? null : allSessionReminders.first;
-        carouselReminders = SessionReminderHelper.getCarouselReminders(session, now);
-      } else {
-        sessionReminder = null;
-        allSessionReminders = [];
-        carouselReminders = [];
-      }
-      return sessions;
-    } catch (e) {
-      onError(e, null);
-    } finally {
-      setBusyForObject(progress, false);
-    }
-    return [];
   }
 
   /// Get the list of courses for the Grades card.
@@ -287,7 +258,11 @@ class DashboardViewModel extends FutureViewModel {
     }
   }
 
-  String getProgressBarText(BuildContext context) {
-    return (sessionDays[1] - sessionDays[0]).toString();
+  @override
+  void dispose() {
+    _controller?.dispose();
+    _sessionProgressSubscription?.cancel();
+    _sessionProgressUseCase.dispose();
+    super.dispose();
   }
 }

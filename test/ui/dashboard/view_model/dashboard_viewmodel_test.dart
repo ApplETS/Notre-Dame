@@ -1,17 +1,21 @@
+// Dart imports:
+import 'dart:async';
+
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/domain/session_reminder_type.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
+import '../../../data/mocks/services/launch_url_service_mock.dart';
 import '../../../data/mocks/services/preferences_service_mock.dart';
 import '../../../data/mocks/services/remote_config_service_mock.dart';
 import '../../../helpers.dart';
@@ -22,6 +26,8 @@ void main() {
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late PreferencesServiceMock preferencesServiceMock;
   late InAppReviewServiceMock inAppReviewServiceMock;
+  late ListSessionsRepositoryMock listSessionsRepositoryMock;
+  late LaunchUrlServiceMock launchUrlServiceMock;
 
   late DashboardViewModel viewModel;
 
@@ -75,7 +81,14 @@ void main() {
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       settingsManagerMock = setupSettingsRepositoryMock();
       preferencesServiceMock = setupPreferencesServiceMock();
+      setupAnalyticsServiceMock();
       setupBroadcastMessageRepositoryMock();
+      listSessionsRepositoryMock = setupListSessionsRepositoryMock();
+      launchUrlServiceMock = setupLaunchUrlServiceMock();
+
+      // Setup stubs for ListSessionsRepository
+      ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: Stream.empty());
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
@@ -92,7 +105,8 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsRepository>();
+      locator.reset();
+      viewModel.dispose();
     });
 
     group('futureToRunGrades -', () {
@@ -219,7 +233,7 @@ void main() {
 
         await viewModel.futureToRun();
 
-        verify(settingsManagerMock.dateTimeNow).called(2);
+        verify(listSessionsRepositoryMock.getSessions(forceUpdate: true)).called(1);
       });
 
       test("An exception is thrown during the preferenceService call", () async {
@@ -236,107 +250,6 @@ void main() {
       });
     });
 
-    group("futureToRunSessionProgressBar - ", () {
-      test("There is an active session", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0.5);
-        expect(viewModel.sessionDays, [1, 2]);
-      });
-
-      test("Invalid date (Superior limit)", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020, 1, 20));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 1);
-        expect(viewModel.sessionDays, [2, 2]);
-      });
-
-      test("Invalid date (Lower limit)", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2019, 12, 31));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0);
-        expect(viewModel.sessionDays, [0, 2]);
-      });
-
-      test("Active session is null", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, -1.0);
-        expect(viewModel.sessionDays, [0, 0]);
-      });
-
-      test("sessionReminder is set for active session", () async {
-        final sessionWithFutureDates = Session(
-          shortName: "H2020",
-          name: "Hiver 2020",
-          startDate: DateTime(2019, 12, 30),
-          endDate: DateTime(2020, 4, 25),
-          endDateCourses: DateTime(2020, 4, 15),
-          startDateRegistration: DateTime(2020, 1, 5),
-          deadlineRegistration: DateTime(2020, 1, 20),
-          startDateCancellationWithRefund: DateTime(2020, 2, 1),
-          deadlineCancellationWithRefund: DateTime(2020, 3, 1),
-          deadlineCancellationWithRefundNewStudent: DateTime(2020, 3, 10),
-          startDateCancellationWithoutRefundNewStudent: DateTime(2020, 3, 11),
-          deadlineCancellationWithoutRefundNewStudent: DateTime(2020, 4, 1),
-          deadlineCancellationASEQ: DateTime(2020, 3, 15),
-        );
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [sessionWithFutureDates]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [sessionWithFutureDates]);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020));
-
-        await viewModel.futureToRunSessionProgressBar();
-
-        expect(viewModel.sessionReminder, isNotNull);
-        expect(viewModel.sessionReminder!.type, SessionReminderType.registrationStart);
-      });
-
-      test("sessionReminder is null when no active session", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-
-        await viewModel.futureToRunSessionProgressBar();
-
-        expect(viewModel.sessionReminder, isNull);
-      });
-
-      test("allSessionReminders is populated for active session", () async {
-        final sessionWithFutureDates = Session(
-          shortName: "H2020",
-          name: "Hiver 2020",
-          startDate: DateTime(2019, 12, 30),
-          endDate: DateTime(2020, 4, 25),
-          endDateCourses: DateTime(2020, 4, 15),
-          startDateRegistration: DateTime(2020, 1, 5),
-          deadlineRegistration: DateTime(2020, 1, 20),
-          startDateCancellationWithRefund: DateTime(2020, 2, 1),
-          deadlineCancellationWithRefund: DateTime(2020, 3, 1),
-          deadlineCancellationWithRefundNewStudent: DateTime(2020, 3, 10),
-          startDateCancellationWithoutRefundNewStudent: DateTime(2020, 3, 11),
-          deadlineCancellationWithoutRefundNewStudent: DateTime(2020, 4, 1),
-          deadlineCancellationASEQ: DateTime(2020, 3, 15),
-        );
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [sessionWithFutureDates]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [sessionWithFutureDates]);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020));
-
-        await viewModel.futureToRunSessionProgressBar();
-
-        expect(viewModel.allSessionReminders, isNotEmpty);
-        expect(viewModel.allSessionReminders.length, greaterThan(1));
-      });
-
-      test("allSessionReminders is empty when no active session", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-
-        await viewModel.futureToRunSessionProgressBar();
-
-        expect(viewModel.allSessionReminders, isEmpty);
-      });
-    });
 
     group("In app review - ", () {
       test("returns true when todays date is after the day set in cache", () async {
@@ -407,6 +320,14 @@ void main() {
         PreferencesServiceMock.stubGetDateTime(preferencesServiceMock, PreferencesFlag.ratingTimer);
 
         expect(await DashboardViewModel.launchInAppReview(), false);
+      });
+    });
+
+    group("launchBroadcastUrl - ", () {
+      test("calls launchInBrowser with the provided url", () async {
+        const url = "https://example.com";
+        await DashboardViewModel.launchBroadcastUrl(url);
+        verify(launchUrlServiceMock.launchInBrowser(url)).called(1);
       });
     });
   });

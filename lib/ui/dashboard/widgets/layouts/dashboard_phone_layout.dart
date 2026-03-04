@@ -117,16 +117,16 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
               Expanded(
                 child: SessionReminderCard(
                   reminder: widget.model.sessionReminder,
-                  loading: widget.model.busy(widget.model.progress),
+                  loading: widget.model.sessionProgress == null,
                   allReminders: widget.model.allSessionReminders,
                   carouselReminders: widget.model.carouselReminders,
                 ),
               ),
               Expanded(
                 child: ProgressBarCard(
-                  progressBarText: widget.model.getProgressBarText(context),
-                  progress: widget.model.progress,
-                  loading: widget.model.busy(widget.model.progress),
+                  progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
+                  progress: widget.model.sessionProgress?.percentage ?? 0.0,
+                  loading: widget.model.sessionProgress == null,
                 ),
               ),
             ],

@@ -12,7 +12,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/date_utils.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../data/mocks/services/schedule_service_mock.dart';
@@ -25,7 +25,7 @@ void main() {
   late ScheduleServiceMock scheduleServiceMock;
 
   Map<DateTime, List<EventData>> events = {
-    Utils.getFirstdayOfWeek(DateTime.now()): [
+    DateUtils.getFirstdayOfWeek(DateTime.now()): [
       EventData(
         courseAcronym: "LOG100",
         group: "LOG100-01",
@@ -33,12 +33,12 @@ void main() {
         activityName: "Cours",
         courseName: "Programmation et réseautique en génie logiciel",
         teacherName: "John Doe",
-        date: Utils.getFirstdayOfWeek(DateTime.now()),
-        startTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
-        endTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
+        date: DateUtils.getFirstdayOfWeek(DateTime.now()),
+        startTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
+        endTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
       ),
     ],
-    Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)): [
+    DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)): [
       EventData(
         courseAcronym: "ING150",
         group: "ING150-01",
@@ -46,9 +46,9 @@ void main() {
         activityName: "Cours",
         courseName: "Statique et dynamique",
         teacherName: "Jane Doe",
-        date: Utils.getFirstdayOfWeek(DateTime.now()),
-        startTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
-        endTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
+        date: DateUtils.getFirstdayOfWeek(DateTime.now()),
+        startTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
+        endTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
       ),
     ],
   };
