@@ -218,7 +218,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
       children: [
         Container(
           padding: const EdgeInsets.all(iconPadding),
-          decoration: BoxDecoration(color: AppPalette.etsLightRed.withValues(alpha: 0.1), shape: BoxShape.circle),
+          decoration: BoxDecoration(color: AppPalette.etsLightRed.withValues(alpha: 0.15), shape: BoxShape.circle),
           child: Icon(reminder.type.icon, size: iconSize, color: AppPalette.etsLightRed),
         ),
         const SizedBox(height: 12),

@@ -40,7 +40,7 @@ class SessionReminderBottomSheet extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: AppPalette.etsLightRed.withValues(alpha: 0.1), shape: BoxShape.circle),
+          decoration: BoxDecoration(color: AppPalette.etsLightRed.withValues(alpha: 0.15), shape: BoxShape.circle),
           child: Icon(reminder.type.icon, size: 24, color: AppPalette.etsLightRed),
         ),
         Expanded(
