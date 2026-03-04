@@ -114,14 +114,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
           child: Row(
             spacing: 18.0,
             children: [
-              Expanded(
-                child: SessionReminderCard(
-                  reminder: widget.model.sessionReminder,
-                  loading: widget.model.sessionProgress == null,
-                  allReminders: widget.model.allSessionReminders,
-                  carouselReminders: widget.model.carouselReminders,
-                ),
-              ),
+              const Expanded(child: SessionReminderCard()),
               Expanded(
                 child: ProgressBarCard(
                   progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",

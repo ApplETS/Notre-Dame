@@ -7,22 +7,43 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/session_reminder_card_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_bottom_sheet.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_utils.dart';
 
-class SessionReminderCard extends StatefulWidget {
+class SessionReminderCard extends StatelessWidget {
+  const SessionReminderCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<SessionReminderCardViewmodel>.reactive(
+      viewModelBuilder: () => SessionReminderCardViewmodel(intl: AppIntl.of(context)!),
+      builder: (context, model, child) {
+        return SessionReminderCardContent(
+          reminder: model.sessionReminder,
+          loading: model.isBusy,
+          allReminders: model.allSessionReminders,
+          carouselReminders: model.carouselReminders,
+        );
+      },
+    );
+  }
+}
+
+class SessionReminderCardContent extends StatefulWidget {
   final SessionReminder? reminder;
   final bool loading;
   final List<SessionReminder> allReminders;
   final List<SessionReminder> carouselReminders;
 
-  const SessionReminderCard({
+  const SessionReminderCardContent({
     super.key,
     required this.reminder,
     required this.loading,
@@ -31,10 +52,10 @@ class SessionReminderCard extends StatefulWidget {
   });
 
   @override
-  State<SessionReminderCard> createState() => _SessionReminderCardState();
+  State<SessionReminderCardContent> createState() => _SessionReminderCardContentState();
 }
 
-class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsBindingObserver {
+class _SessionReminderCardContentState extends State<SessionReminderCardContent> with WidgetsBindingObserver {
   PageController? _pageController;
   Timer? _autoScrollTimer;
   int _currentPage = 0;
@@ -51,7 +72,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
   }
 
   @override
-  void didUpdateWidget(SessionReminderCard oldWidget) {
+  void didUpdateWidget(SessionReminderCardContent oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.carouselReminders.length != widget.carouselReminders.length) {
       _disposeCarousel();
@@ -94,11 +115,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
     _autoScrollTimer = Timer.periodic(const Duration(seconds: 10), (_) {
       if (_pageController != null && _pageController!.hasClients) {
         final nextPage = (_currentPage + 1) % widget.carouselReminders.length;
-        _pageController!.animateToPage(
-          nextPage, 
-          duration: const Duration(milliseconds: 600), 
-          curve: Curves.easeInOut,
-        );
+        _pageController!.animateToPage(nextPage, duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
       }
     });
   }
@@ -122,11 +139,11 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
         child: InkWell(
           onTap: tappable
               ? () => showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: context.theme.scaffoldBackgroundColor,
-                    builder: (_) => SessionReminderBottomSheet(reminders: widget.allReminders),
-                  )
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: context.theme.scaffoldBackgroundColor,
+                  builder: (_) => SessionReminderBottomSheet(reminders: widget.allReminders),
+                )
               : null,
           child: _buildContent(context),
         ),
@@ -150,11 +167,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Bone.text(words: 2), 
-                  SizedBox(height: 6), 
-                  Bone.text(words: 3),
-                ],
+                children: const [Bone.text(words: 2), SizedBox(height: 6), Bone.text(words: 3)],
               ),
             ],
           ),
@@ -193,20 +206,12 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
               ),
             ),
           ),
-          Positioned(
-            bottom: 8,
-            left: 0,
-            right: 0,
-            child: Center(child: _buildDotIndicators()),
-          ),
+          Positioned(bottom: 8, left: 0, right: 0, child: Center(child: _buildDotIndicators())),
         ],
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(16.0), 
-      child: _buildReminderContent(context, intl, widget.reminder!),
-    );
+    return Padding(padding: const EdgeInsets.all(16.0), child: _buildReminderContent(context, intl, widget.reminder!));
   }
 
   Widget _buildReminderContent(BuildContext context, AppIntl intl, SessionReminder reminder) {

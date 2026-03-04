@@ -13,7 +13,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
-import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -24,12 +23,10 @@ import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/logic/session_progress_use_case.dart';
-import 'package:notredame/utils/session_reminder_helper.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
   static const String abandonedGradeCode = "XX";
-
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -54,18 +51,10 @@ class DashboardViewModel extends FutureViewModel {
   BroadcastMessage? broadcastMessage;
   SessionProgress? sessionProgress;
 
-  /// Next upcoming session reminder event
-  SessionReminder? sessionReminder;
-
-  /// All upcoming session reminders
-  List<SessionReminder> allSessionReminders = [];
-
-  /// Reminders for the carousel
-  List<SessionReminder> carouselReminders = [];
-
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
       _sessionProgressUseCase = SessionProgressUseCase(),
+
       /// if the animation has not been played, play it
       shouldPlayAnimation = !hasAnimationPlayed {
     hasAnimationPlayed = true;
@@ -104,7 +93,6 @@ class DashboardViewModel extends FutureViewModel {
 
   /// Tracks if the animation should be played
   final bool shouldPlayAnimation;
-
 
   /// Loading state of the widget
   bool isLoading = false;
@@ -151,7 +139,6 @@ class DashboardViewModel extends FutureViewModel {
     _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
       (sessionProgress) {
         this.sessionProgress = sessionProgress;
-        _loadSessionReminders();
         notifyListeners();
       },
       onError: (error) {
@@ -166,21 +153,6 @@ class DashboardViewModel extends FutureViewModel {
     await _sessionProgressUseCase.init();
   }
 
-  void _loadSessionReminders() {
-    if (_courseRepository.activeSessions.isNotEmpty) {
-      final session = _courseRepository.activeSessions.first;
-      final now = DateTime.now();
-      debugPrint('Active session: $session | now: $now');
-      allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);
-      sessionReminder = allSessionReminders.isEmpty ? null : allSessionReminders.first;
-      carouselReminders = SessionReminderHelper.getCarouselReminders(session, now);
-    } else {
-      sessionReminder = null;
-      allSessionReminders = [];
-      carouselReminders = [];
-    }
-  }
-  
   static Future<void> launchBroadcastUrl(String url) async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
     launchUrlService.launchInBrowser(url);
@@ -191,11 +163,7 @@ class DashboardViewModel extends FutureViewModel {
 
   @override
   Future futureToRun() async {
-    return Future.wait([
-      futureToRunBroadcast(),
-      futureToRunGrades(),
-      _sessionProgressUseCase.fetch(forceUpdate: true),
-    ]);
+    return Future.wait([futureToRunBroadcast(), futureToRunGrades(), _sessionProgressUseCase.fetch(forceUpdate: true)]);
   }
 
   @override

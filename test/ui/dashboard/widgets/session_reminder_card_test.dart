@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/domain/session_reminder_type.dart';
-import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart';
+import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart' show SessionReminderCardContent;
 import '../../../helpers.dart';
 
 void main() {
@@ -21,7 +21,7 @@ void main() {
 
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(reminder: reminder, loading: false, allReminders: [reminder]),
+          child: SessionReminderCardContent(reminder: reminder, loading: false, allReminders: [reminder]),
         ),
       );
       await tester.pumpAndSettle();
@@ -40,7 +40,7 @@ void main() {
 
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(reminder: reminder, loading: false, allReminders: [reminder]),
+          child: SessionReminderCardContent(reminder: reminder, loading: false, allReminders: [reminder]),
         ),
       );
       await tester.pumpAndSettle();
@@ -59,7 +59,7 @@ void main() {
 
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(reminder: reminder, loading: false, allReminders: [reminder]),
+          child: SessionReminderCardContent(reminder: reminder, loading: false, allReminders: [reminder]),
         ),
       );
       await tester.pumpAndSettle();
@@ -68,14 +68,14 @@ void main() {
     });
 
     testWidgets("displays empty state when reminder is null", (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: const SessionReminderCard(reminder: null, loading: false)));
+      await tester.pumpWidget(localizedWidget(child: const SessionReminderCardContent(reminder: null, loading: false)));
       await tester.pumpAndSettle();
 
       expect(find.text("No reminders"), findsOneWidget);
     });
 
     testWidgets("displays skeleton when loading", (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: const SessionReminderCard(reminder: null, loading: true)));
+      await tester.pumpWidget(localizedWidget(child: const SessionReminderCardContent(reminder: null, loading: true)));
       await tester.pump();
 
       expect(find.text("No reminders"), findsNothing);
@@ -95,12 +95,12 @@ void main() {
 
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(reminder: reminder, loading: false, allReminders: [reminder, reminder2]),
+          child: SessionReminderCardContent(reminder: reminder, loading: false, allReminders: [reminder, reminder2]),
         ),
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(SessionReminderCard));
+      await tester.tap(find.byType(SessionReminderCardContent));
       await tester.pumpAndSettle();
 
       expect(find.text("Upcoming Dates"), findsOneWidget);
@@ -125,7 +125,7 @@ void main() {
     testWidgets("renders PageView with multiple same-day reminders", (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(
+          child: SessionReminderCardContent(
             reminder: reminder1,
             loading: false,
             allReminders: carouselReminders,
@@ -141,7 +141,7 @@ void main() {
     testWidgets("dot indicators appear for carousel", (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(
+          child: SessionReminderCardContent(
             reminder: reminder1,
             loading: false,
             allReminders: carouselReminders,
@@ -157,7 +157,7 @@ void main() {
     testWidgets("swiping changes displayed content", (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(
+          child: SessionReminderCardContent(
             reminder: reminder1,
             loading: false,
             allReminders: carouselReminders,
@@ -178,7 +178,7 @@ void main() {
     testWidgets("auto-scroll advances after 5 seconds", (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(
+          child: SessionReminderCardContent(
             reminder: reminder1,
             loading: false,
             allReminders: carouselReminders,
@@ -199,7 +199,7 @@ void main() {
     testWidgets("tap on carousel opens bottom sheet", (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(
+          child: SessionReminderCardContent(
             reminder: reminder1,
             loading: false,
             allReminders: carouselReminders,
@@ -209,7 +209,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(SessionReminderCard));
+      await tester.tap(find.byType(SessionReminderCardContent));
       await tester.pumpAndSettle();
 
       expect(find.text("Upcoming Dates"), findsOneWidget);
@@ -220,7 +220,7 @@ void main() {
 
       await tester.pumpWidget(
         localizedWidget(
-          child: SessionReminderCard(
+          child: SessionReminderCardContent(
             reminder: reminder1,
             loading: false,
             allReminders: singleReminder,
