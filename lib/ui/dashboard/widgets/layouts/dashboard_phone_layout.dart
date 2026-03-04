@@ -119,7 +119,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                   reminder: widget.model.sessionReminder,
                   loading: widget.model.busy(widget.model.progress),
                   allReminders: widget.model.allSessionReminders,
-                  sameDayReminders: widget.model.sameDayReminders,
+                  carouselReminders: widget.model.carouselReminders,
                 ),
               ),
               Expanded(

@@ -28,7 +28,7 @@ void main() {
 
       expect(find.text("Registration Closes"), findsOneWidget);
       expect(find.text("Today!"), findsOneWidget);
-      expect(find.byIcon(Icons.assignment_late_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.edit_calendar_outlined), findsOneWidget);
     });
 
     testWidgets("displays event name with countdown and date for future event", (WidgetTester tester) async {
@@ -120,7 +120,7 @@ void main() {
       date: DateTime(2025, 1, 27),
       daysUntil: 5,
     );
-    final sameDayReminders = [reminder1, reminder2];
+    final carouselReminders = [reminder1, reminder2];
 
     testWidgets("renders PageView with multiple same-day reminders", (WidgetTester tester) async {
       await tester.pumpWidget(
@@ -128,8 +128,8 @@ void main() {
           child: SessionReminderCard(
             reminder: reminder1,
             loading: false,
-            allReminders: sameDayReminders,
-            sameDayReminders: sameDayReminders,
+            allReminders: carouselReminders,
+            carouselReminders: carouselReminders,
           ),
         ),
       );
@@ -144,8 +144,8 @@ void main() {
           child: SessionReminderCard(
             reminder: reminder1,
             loading: false,
-            allReminders: sameDayReminders,
-            sameDayReminders: sameDayReminders,
+            allReminders: carouselReminders,
+            carouselReminders: carouselReminders,
           ),
         ),
       );
@@ -160,8 +160,8 @@ void main() {
           child: SessionReminderCard(
             reminder: reminder1,
             loading: false,
-            allReminders: sameDayReminders,
-            sameDayReminders: sameDayReminders,
+            allReminders: carouselReminders,
+            carouselReminders: carouselReminders,
           ),
         ),
       );
@@ -181,8 +181,8 @@ void main() {
           child: SessionReminderCard(
             reminder: reminder1,
             loading: false,
-            allReminders: sameDayReminders,
-            sameDayReminders: sameDayReminders,
+            allReminders: carouselReminders,
+            carouselReminders: carouselReminders,
           ),
         ),
       );
@@ -190,7 +190,7 @@ void main() {
 
       expect(find.text("Registration Opens"), findsOneWidget);
 
-      await tester.pump(const Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 10));
       await tester.pumpAndSettle();
 
       expect(find.text("Registration Closes"), findsOneWidget);
@@ -202,8 +202,8 @@ void main() {
           child: SessionReminderCard(
             reminder: reminder1,
             loading: false,
-            allReminders: sameDayReminders,
-            sameDayReminders: sameDayReminders,
+            allReminders: carouselReminders,
+            carouselReminders: carouselReminders,
           ),
         ),
       );
@@ -224,7 +224,7 @@ void main() {
             reminder: reminder1,
             loading: false,
             allReminders: singleReminder,
-            sameDayReminders: singleReminder,
+            carouselReminders: singleReminder,
           ),
         ),
       );

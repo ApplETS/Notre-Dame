@@ -57,8 +57,8 @@ class DashboardViewModel extends FutureViewModel {
   /// All upcoming session reminders
   List<SessionReminder> allSessionReminders = [];
 
-  /// Reminders sharing the same date as the active reminder (for carousel)
-  List<SessionReminder> sameDayReminders = [];
+  /// Reminders for the carousel
+  List<SessionReminder> carouselReminders = [];
 
   /// Get progress of the session
   double get progress => _progress;
@@ -213,31 +213,15 @@ class DashboardViewModel extends FutureViewModel {
       _sessionDays = getSessionDays();
       _progress = getSessionProgress();
       if (_courseRepository.activeSessions.isNotEmpty) {
-        // TODO: revert to real session and _settingsManager.dateTimeNow
-        final now = DateTime(2026, 1, 10);
-        final testDate = DateTime(2026, 1, 21);
-        final s = Session(
-          shortName: 'H2026',
-          name: 'Hiver 2026',
-          startDate: testDate,
-          endDate: DateTime(2026, 4, 30),
-          endDateCourses: DateTime(2026, 4, 15),
-          startDateRegistration: testDate,
-          deadlineRegistration: now.subtract(const Duration(days: 3)),
-          startDateCancellationWithRefund: now.subtract(const Duration(days: 3)),
-          deadlineCancellationWithRefund: now.subtract(const Duration(days: 3)),
-          deadlineCancellationWithRefundNewStudent: now.subtract(const Duration(days: 3)),
-          startDateCancellationWithoutRefundNewStudent: testDate.add(const Duration(days: 2)),
-          deadlineCancellationWithoutRefundNewStudent: testDate.add(const Duration(days: 2)),
-          deadlineCancellationASEQ: testDate,
-        );
-        allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(s, now);
+        final session = _courseRepository.activeSessions.first;
+        final now = _settingsManager.dateTimeNow;
+        allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);
         sessionReminder = allSessionReminders.isEmpty ? null : allSessionReminders.first;
-        sameDayReminders = SessionReminderHelper.getSameDayReminders(s, now);
+        carouselReminders = SessionReminderHelper.getCarouselReminders(session, now);
       } else {
         sessionReminder = null;
         allSessionReminders = [];
-        sameDayReminders = [];
+        carouselReminders = [];
       }
       return sessions;
     } catch (e) {

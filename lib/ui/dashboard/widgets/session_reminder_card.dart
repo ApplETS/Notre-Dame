@@ -20,14 +20,14 @@ class SessionReminderCard extends StatefulWidget {
   final SessionReminder? reminder;
   final bool loading;
   final List<SessionReminder> allReminders;
-  final List<SessionReminder> sameDayReminders;
+  final List<SessionReminder> carouselReminders;
 
   const SessionReminderCard({
     super.key,
     required this.reminder,
     required this.loading,
     this.allReminders = const [],
-    this.sameDayReminders = const [],
+    this.carouselReminders = const [],
   });
 
   @override
@@ -39,7 +39,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
   Timer? _autoScrollTimer;
   int _currentPage = 0;
 
-  bool get _isCarousel => widget.sameDayReminders.length > 1;
+  bool get _isCarousel => widget.carouselReminders.length > 1;
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
   @override
   void didUpdateWidget(SessionReminderCard oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.sameDayReminders.length != widget.sameDayReminders.length) {
+    if (oldWidget.carouselReminders.length != widget.carouselReminders.length) {
       _disposeCarousel();
       if (_isCarousel) {
         _currentPage = 0;
@@ -93,7 +93,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
     _autoScrollTimer?.cancel();
     _autoScrollTimer = Timer.periodic(const Duration(seconds: 10), (_) {
       if (_pageController != null && _pageController!.hasClients) {
-        final nextPage = (_currentPage + 1) % widget.sameDayReminders.length;
+        final nextPage = (_currentPage + 1) % widget.carouselReminders.length;
         _pageController!.animateToPage(
           nextPage, 
           duration: const Duration(milliseconds: 600), 
@@ -183,12 +183,12 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
               onPointerCancel: (_) => _startAutoScroll(),
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: widget.sameDayReminders.length,
+                itemCount: widget.carouselReminders.length,
                 onPageChanged: (index) {
                   setState(() => _currentPage = index);
                 },
                 itemBuilder: (context, index) {
-                  return _buildReminderContent(context, intl, widget.sameDayReminders[index]);
+                  return _buildReminderContent(context, intl, widget.carouselReminders[index]);
                 },
               ),
             ),
@@ -245,7 +245,7 @@ class _SessionReminderCardState extends State<SessionReminderCard> with WidgetsB
   Widget _buildDotIndicators() {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(widget.sameDayReminders.length, (index) {
+      children: List.generate(widget.carouselReminders.length, (index) {
         final isActive = index == _currentPage;
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),

@@ -55,17 +55,26 @@ class SessionReminderHelper {
     return reminders;
   }
 
-  /// Returns all upcoming reminders that share the same date as the active reminder.
-  /// Returns empty list if there is no active reminder.
-  static List<SessionReminder> getSameDayReminders(Session session, DateTime now) {
+  static const int defaultCarouselThresholdDays = 7;
+
+  /// Returns reminders for the carousel: always the next upcoming event (even if
+  /// beyond threshold), plus all additional events within [thresholdDays] of today.
+  /// Returns empty list if no upcoming reminders exist.
+  static List<SessionReminder> getCarouselReminders(
+    Session session,
+    DateTime now, {
+    int thresholdDays = defaultCarouselThresholdDays,
+  }) {
     final all = getAllUpcomingReminders(session, now);
     if (all.isEmpty) return [];
 
-    final activeDate = DateTime(all.first.date.year, all.first.date.month, all.first.date.day);
+    final result = <SessionReminder>[all.first];
+    for (int i = 1; i < all.length; i++) {
+      if (all[i].daysUntil <= thresholdDays) {
+        result.add(all[i]);
+      }
+    }
 
-    return all.where((r) {
-      final rDate = DateTime(r.date.year, r.date.month, r.date.day);
-      return rDate.isAtSameMomentAs(activeDate);
-    }).toList();
+    return result;
   }
 }
