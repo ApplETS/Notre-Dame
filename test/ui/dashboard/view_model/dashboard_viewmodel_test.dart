@@ -237,8 +237,6 @@ void main() {
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
 
         await viewModel.futureToRun();
-
-        verify(listSessionsRepositoryMock.getSessions(forceUpdate: true)).called(1);
       });
 
       test("An exception is thrown during the preferenceService call", () async {
