@@ -7,8 +7,18 @@ class SessionReminderHelper {
   static List<MapEntry<DateTime, SessionReminderType>> _buildSortedEntries(Session session) {
     final entries = <MapEntry<DateTime, SessionReminderType>>[
       MapEntry(session.startDate, SessionReminderType.sessionStart),
-      MapEntry(session.startDateRegistration, SessionReminderType.registrationStart),
-      MapEntry(session.deadlineRegistration, SessionReminderType.registrationDeadline),
+      MapEntry(
+        session.startDateRegistration.isBefore(session.deadlineRegistration)
+            ? session.startDateRegistration
+            : session.deadlineRegistration,
+        SessionReminderType.registrationStart,
+      ),
+      MapEntry(
+        session.deadlineRegistration.isAfter(session.startDateRegistration)
+            ? session.deadlineRegistration
+            : session.startDateRegistration,
+        SessionReminderType.registrationDeadline,
+      ),
       MapEntry(session.startDateCancellationWithRefund, SessionReminderType.cancellationWithRefundStart),
       MapEntry(session.deadlineCancellationWithRefund, SessionReminderType.cancellationWithRefundDeadline),
       MapEntry(
