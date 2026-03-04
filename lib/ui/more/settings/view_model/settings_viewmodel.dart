@@ -6,57 +6,45 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 
 class SettingsViewModel extends FutureViewModel {
-  /// Manage the settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
-  /// Localization class of the application.
-  final AppIntl _appIntl;
+  late Locale _locale;
+  late bool _dashboardScheduleList;
+  late ThemeMode _theme;
 
-  /// Current locale
-  Locale? _currentLocale;
+  ThemeMode? get theme => _theme;
 
-  /// Current theme
-  ThemeMode? _selectedTheme;
-
-  ThemeMode? get selectedTheme => _selectedTheme;
-
-  /// Set theme
-  set selectedTheme(ThemeMode? value) {
-    if (value != null) {
-      _settingsManager.setThemeMode(value);
-      _selectedTheme = value;
-    }
+  set theme(ThemeMode value) {
+    _settingsManager.setThemeMode(value);
+    _theme = value;
   }
 
-  Locale? get currentLocale {
-    return _currentLocale;
-    // if (_currentLocale == AppIntl.supportedLocales.first) {
-    //   return Locale('en');//_appIntl.settings_english;
-    // } else if (_currentLocale == AppIntl.supportedLocales.last.languageCode) {
-    //   return _appIntl.settings_french;
-    // } else {
-    //   return "";
-    // }
-  }
+  Locale get locale => _locale;
 
-  /// Set Locale
-  set currentLocale(Locale value) {
+  set locale(Locale value) {
     _settingsManager.setLocale(value.languageCode);
-    _currentLocale = value;
+    _locale = value;
   }
 
-  SettingsViewModel({required AppIntl intl}) : _appIntl = intl;
+  bool get dashboardScheduleList => _dashboardScheduleList;
+
+  set dashboardScheduleList(bool value) {
+    _settingsManager.setBool(PreferencesFlag.dashboardScheduleList, value);
+    _dashboardScheduleList = value;
+  }
 
   @override
   Future futureToRun() async {
     setBusy(true);
-    await _settingsManager.fetchLanguageAndThemeMode();
-    _currentLocale = _settingsManager.locale;
-    _selectedTheme = _settingsManager.themeMode;
+    _settingsManager.fetchLanguageAndThemeMode();
+    _locale = _settingsManager.locale;
+    _theme = _settingsManager.themeMode;
+    _dashboardScheduleList = false;
+        // (await _settingsManager.getDashboardSettings())[PreferencesFlag.dashboardScheduleList] as bool? ?? false;
     setBusy(false);
     return true;
   }

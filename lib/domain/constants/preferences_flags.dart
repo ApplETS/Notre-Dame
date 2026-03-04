@@ -1,4 +1,7 @@
 enum PreferencesFlag {
+  // Dashboard flag
+  dashboardScheduleList,
+
   // Schedule flags
   scheduleCalendarFormat,
   scheduleShowTodayBtn,

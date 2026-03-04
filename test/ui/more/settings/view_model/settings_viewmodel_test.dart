@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
-import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/more/settings/view_model/settings_viewmodel.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../helpers.dart';
@@ -22,9 +21,8 @@ void main() {
     setUp(() async {
       // Setting up mocks
       settingsManagerMock = setupSettingsRepositoryMock();
-      final AppIntl intl = await setupAppIntl();
 
-      viewModel = SettingsViewModel(intl: intl);
+      viewModel = SettingsViewModel();
     });
 
     tearDown(() {
@@ -38,8 +36,8 @@ void main() {
         SettingsRepositoryMock.stubThemeMode(settingsManagerMock);
 
         await viewModel.futureToRun();
-        expect(viewModel.currentLocale, 'English');
-        expect(viewModel.selectedTheme, ThemeMode.system);
+        expect(viewModel.locale, 'English');
+        expect(viewModel.theme, ThemeMode.system);
 
         verifyInOrder([
           settingsManagerMock.fetchLanguageAndThemeMode(),
@@ -55,11 +53,11 @@ void main() {
         SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = ThemeMode.system;
+        viewModel.theme = ThemeMode.system;
 
         await untilCalled(settingsManagerMock.setThemeMode(ThemeMode.system));
 
-        expect(viewModel.selectedTheme, ThemeMode.system);
+        expect(viewModel.theme, ThemeMode.system);
         expect(viewModel.isBusy, false);
 
         verify(settingsManagerMock.setThemeMode(ThemeMode.system)).called(1);
@@ -70,11 +68,11 @@ void main() {
         SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = ThemeMode.dark;
+        viewModel.theme = ThemeMode.dark;
 
         await untilCalled(settingsManagerMock.setThemeMode(ThemeMode.dark));
 
-        expect(viewModel.selectedTheme, ThemeMode.dark);
+        expect(viewModel.theme, ThemeMode.dark);
         expect(viewModel.isBusy, false);
 
         verify(settingsManagerMock.setThemeMode(ThemeMode.dark)).called(1);
@@ -85,11 +83,11 @@ void main() {
         SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
 
         // Call the setter.
-        viewModel.selectedTheme = ThemeMode.light;
+        viewModel.theme = ThemeMode.light;
 
         await untilCalled(settingsManagerMock.setThemeMode(ThemeMode.light));
 
-        expect(viewModel.selectedTheme, ThemeMode.light);
+        expect(viewModel.theme, ThemeMode.light);
         expect(viewModel.isBusy, false);
 
         verify(settingsManagerMock.setThemeMode(ThemeMode.light)).called(1);

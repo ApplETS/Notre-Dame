@@ -81,7 +81,7 @@ class MoreViewModel extends FutureViewModel {
       onError(e, null);
     }
 
-    await _preferencesService.clearWithoutPersistentKey();
+    _preferencesService.clearWithoutPersistentKey();
 
     await _authService.signOut();
     _settingsManager.resetLanguageAndThemeMode();

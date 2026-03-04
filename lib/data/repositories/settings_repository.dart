@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -36,16 +37,12 @@ class SettingsRepository with ChangeNotifier {
   DateTime get dateTimeNow => DateTime.now();
 
   /// Get ThemeMode
-  ThemeMode? get themeMode {
-    _preferencesService
-        .getString(PreferencesFlag.theme)
-        .then(
-          (value) => {
-            if (value != null) {_themeMode = ThemeMode.values.firstWhere((e) => e.toString() == value)},
-          },
-        );
+  ThemeMode get themeMode {
+    _themeMode = ThemeMode.values.firstWhere(
+      (e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme),
+    );
 
-    return _themeMode;
+    return _themeMode!;
   }
 
   /// reset Locale and Theme when logout
@@ -56,24 +53,23 @@ class SettingsRepository with ChangeNotifier {
   }
 
   /// Get Locale and Theme to init app with
-  Future<void> fetchLanguageAndThemeMode() async {
-    final theme = await _preferencesService.getString(PreferencesFlag.theme);
+  void fetchLanguageAndThemeMode() {
+    final theme = _preferencesService.getString(PreferencesFlag.theme);
     if (theme != null) {
       _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == theme);
     }
-    final lang = await _preferencesService.getString(PreferencesFlag.locale);
+    final lang = _preferencesService.getString(PreferencesFlag.locale);
     if (lang != null) {
       _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
     }
   }
 
   /// Get Locale
-  Locale? get locale {
-    _preferencesService.getString(PreferencesFlag.locale).then((value) {
-      if (value != null) {
-        _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
-      }
-    });
+  Locale get locale {
+    _locale = AppIntl.supportedLocales.firstWhereOrNull(
+      (e) => e.toString() == _preferencesService.getString(PreferencesFlag.locale),
+    );
+
     // When the locale isn't defined, set a default locale
     if (_locale == null) {
       final locale = Locale(Intl.systemLocale.split('_')[0]);
@@ -83,32 +79,30 @@ class SettingsRepository with ChangeNotifier {
         _locale = const Locale('fr');
       }
     }
-    return _locale;
+    return _locale!;
   }
 
   /// Get Dashboard
   Future<Map<PreferencesFlag, int>> getDashboard() async {
     final Map<PreferencesFlag, int> dashboard = {};
     final aboutUsIndex =
-        await _preferencesService.getInt(PreferencesFlag.aboutUsCard) ??
-        getDefaultCardIndex(PreferencesFlag.aboutUsCard);
+        _preferencesService.getInt(PreferencesFlag.aboutUsCard) ?? getDefaultCardIndex(PreferencesFlag.aboutUsCard);
 
     dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
 
     final scheduleCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.scheduleCard) ??
-        getDefaultCardIndex(PreferencesFlag.scheduleCard);
+        _preferencesService.getInt(PreferencesFlag.scheduleCard) ?? getDefaultCardIndex(PreferencesFlag.scheduleCard);
 
     dashboard.putIfAbsent(PreferencesFlag.scheduleCard, () => scheduleCardIndex);
 
     final progressBarCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
+        _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
         getDefaultCardIndex(PreferencesFlag.progressBarCard);
 
     dashboard.putIfAbsent(PreferencesFlag.progressBarCard, () => progressBarCardIndex);
 
     final gradesCardIndex =
-        await _preferencesService.getInt(PreferencesFlag.gradesCard) ?? getDefaultCardIndex(PreferencesFlag.gradesCard);
+        _preferencesService.getInt(PreferencesFlag.gradesCard) ?? getDefaultCardIndex(PreferencesFlag.gradesCard);
 
     dashboard.putIfAbsent(PreferencesFlag.gradesCard, () => gradesCardIndex);
 
@@ -138,22 +132,28 @@ class SettingsRepository with ChangeNotifier {
     }
   }
 
+  Future<Map<PreferencesFlag, dynamic>> getDashboardSettings() async {
+    // TODO add an option to display session progress in percent or days remaining
+    final Map<PreferencesFlag, dynamic> settings = {};
+
+    final dashboardScheduleList = _preferencesService.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
+    settings.putIfAbsent(PreferencesFlag.dashboardScheduleList, () => dashboardScheduleList);
+
+    return settings;
+  }
+
   /// Get the settings of the schedule, these are loaded from the user preferences.
   Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {
     final Map<PreferencesFlag, dynamic> settings = {};
 
-    final calendarFormat = await _preferencesService
-        .getString(PreferencesFlag.scheduleCalendarFormat)
-        .then((value) => value == null ? CalendarTimeFormat.week : CalendarTimeFormat.values.byName(value))
-        .catchError((error) {
-          return CalendarTimeFormat.week;
-        });
+    final calendarFormat =
+        _preferencesService.getString(PreferencesFlag.scheduleCalendarFormat) ?? CalendarTimeFormat.week.name;
     settings.putIfAbsent(PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
 
-    final showTodayBtn = await _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
+    final showTodayBtn = _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
     settings.putIfAbsent(PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
 
-    final scheduleListView = await _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? calendarViewSetting;
+    final scheduleListView = _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? calendarViewSetting;
     settings.putIfAbsent(PreferencesFlag.scheduleListView, () => scheduleListView);
 
     _logger.i("$tag - getScheduleSettings - Settings loaded: $settings");
@@ -189,13 +189,6 @@ class SettingsRepository with ChangeNotifier {
     // Log the event
     _analyticsService.logEvent("${tag}_${flag.name}", value.toString());
     return _preferencesService.setInt(flag, value);
-  }
-
-  /// Get the value of [flag]
-  Future<String?> getString(PreferencesFlag flag) async {
-    // Log the event
-    _analyticsService.logEvent("${tag}_${flag.name}", 'getString');
-    return _preferencesService.getString(flag);
   }
 
   /// Get the value of [flag]

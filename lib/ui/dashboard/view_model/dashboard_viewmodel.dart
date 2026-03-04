@@ -58,9 +58,9 @@ class DashboardViewModel extends FutureViewModel {
     final PreferencesService preferencesService = locator<PreferencesService>();
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
-    DateTime? ratingTimerFlagDate = await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
+    DateTime? ratingTimerFlagDate = preferencesService.getDateTime(PreferencesFlag.ratingTimer);
 
-    final hasRatingBeenRequested = await preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
+    final hasRatingBeenRequested = preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
     if (ratingTimerFlagDate == null) {

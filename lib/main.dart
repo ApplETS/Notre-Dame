@@ -9,6 +9,7 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -42,7 +43,10 @@ Future<void> main() async {
 
       // Manage the settings
       final SettingsRepository settingsManager = locator<SettingsRepository>();
-      await settingsManager.fetchLanguageAndThemeMode();
+      final PreferencesService preferencesService = locator<PreferencesService>();
+      await preferencesService.initialize();
+
+      settingsManager.fetchLanguageAndThemeMode();
 
       // Initialize hello
       final HelloService helloApiClient = locator<HelloService>();

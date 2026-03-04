@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/more/settings/view_model/settings_viewmodel.dart';
 
@@ -21,7 +20,7 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) => ViewModelBuilder<SettingsViewModel>.reactive(
-    viewModelBuilder: () => SettingsViewModel(intl: AppIntl.of(context)!),
+    viewModelBuilder: () => SettingsViewModel(),
     builder: (context, model, child) => BaseScaffold(
       appBar: AppBar(title: Text(AppIntl.of(context)!.settings_title)),
       body: SafeArea(
@@ -57,10 +56,10 @@ class _SettingsViewState extends State<SettingsView> {
                           ],
                           showSelectedIcon: false,
                           emptySelectionAllowed: true,
-                          selected: <ThemeMode>{?model.selectedTheme},
+                          selected: model.theme != null ? <ThemeMode>{model.theme!} : {},
                           onSelectionChanged: (Set<ThemeMode> value) {
                             if (value.isNotEmpty) {
-                              model.selectedTheme = value.first;
+                              model.theme = value.first;
                             }
                           },
                         ),
@@ -71,13 +70,13 @@ class _SettingsViewState extends State<SettingsView> {
                             ButtonSegment<bool>(value: true, label: Text("Liste"), icon: Icon(Icons.list)),
                             ButtonSegment<bool>(value: false, label: Text("Calendrier"), icon: Icon(Icons.calendar_month)),
                           ],
-                          selected: <bool>{true},
+                          selected: <bool>{model.dashboardScheduleList},
                           showSelectedIcon: false,
                           emptySelectionAllowed: true,
                           onSelectionChanged: (Set<bool> value) {
-                            // if (value.isNotEmpty) {
-                            //   model.selectedTheme = value.first;
-                            // }
+                            if (value.isNotEmpty) {
+                              model.dashboardScheduleList = value.first;
+                            }
                           },
                         ),
                       ],
@@ -102,10 +101,10 @@ class _SettingsViewState extends State<SettingsView> {
                             ),
                           ],
                           emptySelectionAllowed: true,
-                          selected: <Locale>{?model.currentLocale},
+                          selected: <Locale>{model.locale},
                           onSelectionChanged: (Set<Locale> value) {
                             if (value.isNotEmpty) {
-                              model.currentLocale = value.first;
+                              model.locale = value.first;
                             }
                           },
                         ),

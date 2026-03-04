@@ -211,7 +211,7 @@ void main() {
       );
       PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.theme, toReturn: 'ThemeMode.system');
 
-      await repository.fetchLanguageAndThemeMode();
+      repository.fetchLanguageAndThemeMode();
 
       verify(preferencesServiceMock.getString(PreferencesFlag.theme)).called(1);
       verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
@@ -229,7 +229,7 @@ void main() {
       );
       PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.theme, toReturn: 'ThemeMode.system');
 
-      await repository.fetchLanguageAndThemeMode();
+      repository.fetchLanguageAndThemeMode();
 
       expect(repository.themeMode, ThemeMode.system, reason: "Loaded theme mode should be system");
       expect(repository.locale, const Locale('fr'), reason: "Loaded locale should be french");
