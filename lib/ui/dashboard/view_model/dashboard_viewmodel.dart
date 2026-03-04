@@ -172,6 +172,7 @@ class DashboardViewModel extends FutureViewModel {
     return Future.wait([
       futureToRunBroadcast(),
       futureToRunGrades(),
+      _sessionProgressUseCase.fetch(forceUpdate: true),
       loadDynamicMessage(),
     ]);
   }
