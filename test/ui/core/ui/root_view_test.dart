@@ -6,17 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/data/repositories/broadcast_message_repository.dart';
-import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/repositories/quick_link_repository.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/cache_service.dart';
-import 'package:notredame/data/services/in_app_review_service.dart';
-import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/data/services/schedule_service.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/root_view.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
@@ -37,6 +27,7 @@ void main() {
       setupPreferencesServiceMock();
       setupCacheManagerMock();
       setupNetworkingServiceMock();
+      setupListSessionsRepositoryMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
       setupInAppReviewServiceMock();
       setupQuickLinkRepositoryMock();
@@ -48,17 +39,7 @@ void main() {
     });
 
     tearDown(() {
-      unregister<BroadcastMessageRepository>();
-      unregister<RemoteConfigService>();
-      unregister<CourseRepository>();
-      unregister<PreferencesService>();
-      unregister<CacheService>();
-      unregister<NetworkingService>();
-      unregister<AnalyticsService>();
-      unregister<InAppReviewService>();
-      unregister<QuickLinkRepository>();
-      unregister<SettingsRepository>();
-      unregister<ScheduleService>();
+      locator.reset();
     });
 
     testWidgets('Initial view is DashboardView', (WidgetTester tester) async {

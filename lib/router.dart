@@ -14,6 +14,7 @@ import 'package:notredame/ui/ets/quick_links/security_info/widgets/security_view
 import 'package:notredame/ui/more/about/widgets/about_view.dart';
 import 'package:notredame/ui/more/contributors/widgets/contributors_view.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
+import 'package:notredame/ui/more/map/map_view.dart';
 import 'package:notredame/ui/more/settings/widgets/settings_view.dart';
 import 'package:notredame/ui/not_found/widgets/not_found_view.dart';
 import 'package:notredame/ui/outage/widgets/outage_view.dart';
@@ -78,6 +79,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
         builder: (_) => SettingsView(),
+      );
+    case RouterPaths.map:
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => MapView(),
       );
     case RouterPaths.contributors:
       return MaterialPageRoute(

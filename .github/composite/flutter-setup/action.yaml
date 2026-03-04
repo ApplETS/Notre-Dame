@@ -72,6 +72,10 @@ runs:
     - name: Run flutter doctor
       shell: bash
       run: flutter doctor
+    
+    - name: Run flutter build runner
+      shell: bash
+      run: dart run build_runner build
 
     - name: Decrypt SignETS certificate and Google Services files
       shell: bash
