@@ -169,11 +169,7 @@ class DashboardViewModel extends FutureViewModel {
 
   @override
   Future futureToRun() async {
-    return Future.wait([
-      futureToRunBroadcast(),
-      futureToRunGrades(),
-      loadDynamicMessage(),
-    ]);
+    return Future.wait([futureToRunBroadcast(), futureToRunGrades(), loadDynamicMessage()]);
   }
 
   /// Load the dynamic message based on session context
