@@ -250,7 +250,6 @@ void main() {
       });
     });
 
-
     group("In app review - ", () {
       test("returns true when todays date is after the day set in cache", () async {
         InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);

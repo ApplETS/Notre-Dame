@@ -1,21 +1,21 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Dart imports:
 import 'dart:async';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/in_app_review_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
@@ -27,7 +27,6 @@ import 'package:notredame/logic/session_progress_use_case.dart';
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
   static const String abandonedGradeCode = "XX";
-
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -54,6 +53,7 @@ class DashboardViewModel extends FutureViewModel {
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
       _sessionProgressUseCase = SessionProgressUseCase(),
+
       /// if the animation has not been played, play it
       shouldPlayAnimation = !hasAnimationPlayed {
     hasAnimationPlayed = true;
@@ -92,7 +92,6 @@ class DashboardViewModel extends FutureViewModel {
 
   /// Tracks if the animation should be played
   final bool shouldPlayAnimation;
-
 
   /// Loading state of the widget
   bool isLoading = false;
@@ -152,7 +151,7 @@ class DashboardViewModel extends FutureViewModel {
     );
     await _sessionProgressUseCase.init();
   }
-  
+
   static Future<void> launchBroadcastUrl(String url) async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
     launchUrlService.launchInBrowser(url);
@@ -163,11 +162,7 @@ class DashboardViewModel extends FutureViewModel {
 
   @override
   Future futureToRun() async {
-    return Future.wait([
-      futureToRunBroadcast(),
-      futureToRunGrades(),
-      _sessionProgressUseCase.fetch(forceUpdate: true),
-    ]);
+    return Future.wait([futureToRunBroadcast(), futureToRunGrades(), _sessionProgressUseCase.fetch(forceUpdate: true)]);
   }
 
   @override
