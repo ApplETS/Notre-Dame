@@ -52,12 +52,12 @@ void main() {
 
   test('calendarViewSetting returns false when settings are busy', () {
     viewModel.setBusyForObject(viewModel.settings, true);
-    expect(viewModel.calendarViewSetting, false);
+    expect(viewModel.listView, false);
   });
 
   test('calendarViewSetting returns correct value when settings are not busy', () {
     viewModel.settings[PreferencesFlag.scheduleListView] = true;
     viewModel.setBusyForObject(viewModel.settings, false);
-    expect(viewModel.calendarViewSetting, true);
+    expect(viewModel.listView, true);
   });
 }

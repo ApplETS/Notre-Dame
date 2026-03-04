@@ -1,4 +1,6 @@
 // Package imports:
+import 'dart:ui';
+
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -32,10 +34,10 @@ class ChooseLanguageViewModel extends BaseViewModel {
   void changeLanguage(int index) {
     switch (index) {
       case english:
-        _settingsManager.setLocale('en');
+        _settingsManager.locale = Locale('en');
         languageSelectedIndex = english;
       case french:
-        _settingsManager.setLocale('fr');
+        _settingsManager.locale = Locale('fr');
         languageSelectedIndex = french;
       default:
         throw Exception('No valid language for the index $index passed in parameters');

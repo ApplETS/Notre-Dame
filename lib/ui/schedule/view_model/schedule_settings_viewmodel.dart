@@ -15,7 +15,7 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 
-class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
+class ScheduleSettingsViewModel extends FutureViewModel {
   ScheduleSettingsViewModel({required ScheduleController controller}) : _controller = controller;
 
   /// Allows to update other views
@@ -27,17 +27,11 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
   // Access the course repository
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  /// Current calendar format
-  CalendarTimeFormat? _calendarFormat;
+  CalendarTimeFormat? get calendarFormat => _settingsManager.calendarFormat;
 
-  CalendarTimeFormat? get calendarFormat => _calendarFormat;
-
-  set calendarFormat(CalendarTimeFormat? format) {
-    setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat, format?.name);
-    _calendarFormat = format;
+  set calendarFormat(CalendarTimeFormat format) {
+    _settingsManager.calendarFormat = format;
     _controller.settingsUpdated();
-    setBusy(false);
   }
 
   /// Display the button to return to today
@@ -94,13 +88,10 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
   }
 
   @override
-  Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
+  Future<void> futureToRun() async {
     setBusy(true);
-    final settings = _settingsManager.getScheduleSettings();
-
-    _calendarFormat = settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
-    _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;
-    _toggleCalendarView = settings[PreferencesFlag.scheduleListView] as bool;
+    _showTodayBtn = _settingsManager.showTodayButton;
+    _toggleCalendarView = _settingsManager.sheduleListView;
 
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
@@ -136,6 +127,5 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
     }
 
     setBusy(false);
-    return settings;
   }
 }

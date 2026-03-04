@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
@@ -17,8 +16,6 @@ import 'package:notredame/locator.dart';
 
 class SettingsRepository with ChangeNotifier {
   static const String tag = "SettingsManager";
-
-  final Logger _logger = locator<Logger>();
 
   /// Use to get the value associated to each settings key
   final PreferencesService _preferencesService = locator<PreferencesService>();
@@ -36,17 +33,6 @@ class SettingsRepository with ChangeNotifier {
   /// Get current time
   DateTime get dateTimeNow => DateTime.now();
 
-  /// Get ThemeMode
-  ThemeMode get themeMode {
-    _themeMode = ThemeMode.values.firstWhereOrNull(
-      (e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme),
-    );
-
-    _themeMode ??= ThemeMode.system;
-
-    return _themeMode!;
-  }
-
   /// reset Locale and Theme when logout
   void resetLanguageAndThemeMode() {
     _locale = null;
@@ -54,7 +40,6 @@ class SettingsRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  /// Get Locale
   Locale get locale {
     _locale = AppIntl.supportedLocales.firstWhereOrNull(
       (e) => e.toString() == _preferencesService.getString(PreferencesFlag.locale),
@@ -72,17 +57,8 @@ class SettingsRepository with ChangeNotifier {
     return _locale!;
   }
 
-  /// Set ThemeMode
-  void setThemeMode(ThemeMode value) {
-    _preferencesService.setString(PreferencesFlag.theme, value.toString());
-
-    _analyticsService.logEvent("${tag}_${PreferencesFlag.theme.name}", value.name);
-    _themeMode = value;
-    notifyListeners();
-  }
-
-  void setLocale(String value) {
-    _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == value);
+  set locale(Locale value) {
+    _locale = AppIntl.supportedLocales.firstWhereOrNull((e) => e == value);
 
     _analyticsService.logEvent("${tag}_${PreferencesFlag.locale.name}", _locale?.languageCode ?? 'Not found');
 
@@ -93,27 +69,36 @@ class SettingsRepository with ChangeNotifier {
     }
   }
 
-  /// Get the settings of the schedule, these are loaded from the user preferences.
-  Map<PreferencesFlag, dynamic> getScheduleSettings() {
-    final Map<PreferencesFlag, dynamic> settings = {};
-
-    final calendarFormat =
-        _preferencesService.getString(PreferencesFlag.scheduleCalendarFormat) ?? CalendarTimeFormat.week.name;
-    settings.putIfAbsent(
-      PreferencesFlag.scheduleCalendarFormat,
-      () => CalendarTimeFormat.values.firstWhere((e) => e.name == calendarFormat),
+  ThemeMode get themeMode {
+    _themeMode = ThemeMode.values.firstWhereOrNull(
+          (e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme),
     );
 
-    final showTodayBtn = _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
-    settings.putIfAbsent(PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
+    _themeMode ??= ThemeMode.system;
 
-    final scheduleListView = _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? calendarViewSetting;
-    settings.putIfAbsent(PreferencesFlag.scheduleListView, () => scheduleListView);
-
-    _logger.i("$tag - getScheduleSettings - Settings loaded: $settings");
-
-    return settings;
+    return _themeMode!;
   }
+
+  set themeMode(ThemeMode value) {
+    _preferencesService.setString(PreferencesFlag.theme, value.toString());
+
+    _analyticsService.logEvent("${tag}_${PreferencesFlag.theme.name}", value.name);
+    _themeMode = value;
+    notifyListeners();
+  }
+
+  // TODO fix
+  CalendarTimeFormat get calendarFormat {
+    final calendarFormat = _preferencesService.getString(PreferencesFlag.scheduleCalendarFormat) ?? CalendarTimeFormat.week.name;
+    return CalendarTimeFormat.values.firstWhere((e) => e.name == calendarFormat);
+  }
+
+  // TODO fix
+  set calendarFormat(CalendarTimeFormat format) => _preferencesService.setString(PreferencesFlag.scheduleCalendarFormat, calendarFormat.name);
+
+  bool get sheduleListView => _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? calendarViewSetting;
+
+  bool get showTodayButton => _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
 
   /// Add/update the value of [flag]
   Future<bool> setString(PreferencesFlag flag, String? value) async {
@@ -159,9 +144,6 @@ class SettingsRepository with ChangeNotifier {
     _analyticsService.logEvent("${tag}_${flag.name}", 'getBool');
     return _preferencesService.getBool(flag);
   }
-
-  /// Get the default index of each card
-  int getDefaultCardIndex(PreferencesFlag flag) => flag.index - PreferencesFlag.aboutUsCard.index;
 
   bool get calendarViewSetting => _remoteConfigService.scheduleListViewDefault;
 }

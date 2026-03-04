@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
@@ -37,11 +36,6 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) => ViewModelBuilder<ScheduleViewModel>.reactive(
     viewModelBuilder: () => ScheduleViewModel(),
-    onViewModelReady: (model) {
-      if (model.settings.isEmpty) {
-        model.loadSettings();
-      }
-    },
     builder: (context, model, child) => BaseScaffold(
       appBar: AppBar(
         title: Text(AppIntl.of(context)!.title_schedule),
@@ -49,7 +43,7 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
         automaticallyImplyLeading: false,
         actions: _buildActionButtons(model),
       ),
-      body: model.busy(model.settings) ? const SizedBox() : displaySchedule(model),
+      body: displaySchedule(model),
     ),
   );
 
@@ -60,11 +54,11 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
     if (model.calendarFormat == CalendarTimeFormat.week) {
       return WeekCalendar(controller: widget.controller);
     }
-    return DayCalendar(listView: model.calendarViewSetting, controller: widget.controller);
+    return DayCalendar(listView: model.listView, controller: widget.controller);
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) {
-    widget.controller.settingsUpdated = () => model.loadSettings();
+    widget.controller.settingsUpdated = () => setState(() {});
 
     return [
       IconButton(
@@ -81,7 +75,7 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
           );
         },
       ),
-      if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool))
+      if (model.showTodayButton)
         IconButton(
           icon: const Icon(Icons.today_outlined),
           tooltip: AppIntl.of(context)!.schedule_already_today_tooltip,
