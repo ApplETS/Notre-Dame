@@ -38,9 +38,11 @@ class SettingsRepository with ChangeNotifier {
 
   /// Get ThemeMode
   ThemeMode get themeMode {
-    _themeMode = ThemeMode.values.firstWhere(
+    _themeMode = ThemeMode.values.firstWhereOrNull(
       (e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme),
     );
+
+    _themeMode ??= ThemeMode.system;
 
     return _themeMode!;
   }
@@ -51,7 +53,7 @@ class SettingsRepository with ChangeNotifier {
     _themeMode = null;
     notifyListeners();
   }
-  
+
   /// Get Locale
   Locale get locale {
     _locale = AppIntl.supportedLocales.firstWhereOrNull(
@@ -63,40 +65,11 @@ class SettingsRepository with ChangeNotifier {
       final locale = Locale(Intl.systemLocale.split('_')[0]);
       if (AppIntl.supportedLocales.contains(locale)) {
         _locale = locale;
-      } else {
-        _locale = const Locale('fr');
       }
     }
+
+    _locale ??= const Locale('fr');
     return _locale!;
-  }
-
-  /// Get Dashboard
-  Future<Map<PreferencesFlag, int>> getDashboard() async {
-    final Map<PreferencesFlag, int> dashboard = {};
-    final aboutUsIndex =
-        _preferencesService.getInt(PreferencesFlag.aboutUsCard) ?? getDefaultCardIndex(PreferencesFlag.aboutUsCard);
-
-    dashboard.putIfAbsent(PreferencesFlag.aboutUsCard, () => aboutUsIndex);
-
-    final scheduleCardIndex =
-        _preferencesService.getInt(PreferencesFlag.scheduleCard) ?? getDefaultCardIndex(PreferencesFlag.scheduleCard);
-
-    dashboard.putIfAbsent(PreferencesFlag.scheduleCard, () => scheduleCardIndex);
-
-    final progressBarCardIndex =
-        _preferencesService.getInt(PreferencesFlag.progressBarCard) ??
-        getDefaultCardIndex(PreferencesFlag.progressBarCard);
-
-    dashboard.putIfAbsent(PreferencesFlag.progressBarCard, () => progressBarCardIndex);
-
-    final gradesCardIndex =
-        _preferencesService.getInt(PreferencesFlag.gradesCard) ?? getDefaultCardIndex(PreferencesFlag.gradesCard);
-
-    dashboard.putIfAbsent(PreferencesFlag.gradesCard, () => gradesCardIndex);
-
-    _logger.i("$tag - getDashboard - Dashboard loaded: $dashboard");
-
-    return dashboard;
   }
 
   /// Set ThemeMode
@@ -121,12 +94,12 @@ class SettingsRepository with ChangeNotifier {
   }
 
   /// Get the settings of the schedule, these are loaded from the user preferences.
-  Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {
+  Map<PreferencesFlag, dynamic> getScheduleSettings() {
     final Map<PreferencesFlag, dynamic> settings = {};
 
     final calendarFormat =
         _preferencesService.getString(PreferencesFlag.scheduleCalendarFormat) ?? CalendarTimeFormat.week.name;
-    settings.putIfAbsent(PreferencesFlag.scheduleCalendarFormat, () => calendarFormat);
+    settings.putIfAbsent(PreferencesFlag.scheduleCalendarFormat, () => CalendarTimeFormat.values.firstWhere((e) => e.name == calendarFormat));
 
     final showTodayBtn = _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
     settings.putIfAbsent(PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);

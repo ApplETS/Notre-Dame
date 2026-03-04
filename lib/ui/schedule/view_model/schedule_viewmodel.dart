@@ -33,7 +33,7 @@ class ScheduleViewModel extends FutureViewModel {
   Future loadSettings() async {
     setBusyForObject(settings, true);
     settings.clear();
-    settings.addAll(await _settingsManager.getScheduleSettings());
+    settings.addAll(_settingsManager.getScheduleSettings());
     calendarFormat = settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
     setBusyForObject(settings, false);
   }

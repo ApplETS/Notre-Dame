@@ -47,7 +47,7 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
         title: Text(AppIntl.of(context)!.title_schedule),
         centerTitle: false,
         automaticallyImplyLeading: false,
-        actions: model.busy(model.settings) ? [] : _buildActionButtons(model),
+        actions: _buildActionButtons(model),
       ),
       body: model.busy(model.settings) ? const SizedBox() : displaySchedule(model),
     ),

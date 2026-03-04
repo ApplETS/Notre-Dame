@@ -96,7 +96,7 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
   @override
   Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
     setBusy(true);
-    final settings = await _settingsManager.getScheduleSettings();
+    final settings = _settingsManager.getScheduleSettings();
 
     _calendarFormat = settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
     _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;
