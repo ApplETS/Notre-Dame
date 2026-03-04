@@ -30,7 +30,7 @@ class ScheduleCard extends StatelessWidget {
           title: title,
           child: Expanded(
             child: DayCalendar(
-              listView: false,
+              listView: model.listView,
               controller: ScheduleController(),
               selectedDate: model.date,
               backgroundColor: context.theme.appColors.dashboardCard,

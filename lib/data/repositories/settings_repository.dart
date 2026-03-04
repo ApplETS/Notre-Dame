@@ -99,7 +99,10 @@ class SettingsRepository with ChangeNotifier {
 
     final calendarFormat =
         _preferencesService.getString(PreferencesFlag.scheduleCalendarFormat) ?? CalendarTimeFormat.week.name;
-    settings.putIfAbsent(PreferencesFlag.scheduleCalendarFormat, () => CalendarTimeFormat.values.firstWhere((e) => e.name == calendarFormat));
+    settings.putIfAbsent(
+      PreferencesFlag.scheduleCalendarFormat,
+      () => CalendarTimeFormat.values.firstWhere((e) => e.name == calendarFormat),
+    );
 
     final showTodayBtn = _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
     settings.putIfAbsent(PreferencesFlag.scheduleShowTodayBtn, () => showTodayBtn);
@@ -133,13 +136,6 @@ class SettingsRepository with ChangeNotifier {
     _analyticsService.logEvent("${tag}_$flag", value);
 
     return _preferencesService.setDynamicString(flag, key, value);
-  }
-
-  /// Add/update the value of [flag]
-  Future<bool> setInt(PreferencesFlag flag, int value) async {
-    // Log the event
-    _analyticsService.logEvent("${tag}_${flag.name}", value.toString());
-    return _preferencesService.setInt(flag, value);
   }
 
   /// Get the value of [flag]

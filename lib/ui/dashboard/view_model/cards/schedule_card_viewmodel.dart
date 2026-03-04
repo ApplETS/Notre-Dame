@@ -1,6 +1,7 @@
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -9,16 +10,19 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
+import '../../../../domain/constants/preferences_flags.dart';
+
 class ScheduleCardViewmodel extends FutureViewModel {
+  final CourseRepository _courseRepository = locator<CourseRepository>();
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
+
   List<CourseActivity> _scheduleEvents = [];
 
   bool _tomorrow = false;
   DateTime _date = DateTime.now().withoutTime;
+  late final bool _listView = _settingsManager.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
 
-  /// Localization class of the application.
   final AppIntl _appIntl;
-
-  final CourseRepository _courseRepository = locator<CourseRepository>();
 
   DateTime get date {
     return _date;
@@ -27,6 +31,8 @@ class ScheduleCardViewmodel extends FutureViewModel {
   bool get tomorrow {
     return _tomorrow;
   }
+
+  bool get listView => _listView;
 
   ScheduleCardViewmodel({required AppIntl intl}) : _appIntl = intl;
 
