@@ -185,17 +185,16 @@ class DashboardViewModel extends FutureViewModel {
         await _courseRepository.getSessions();
       }
 
-      if (_courseRepository.activeSessions.isEmpty) {
-        final now = _settingsManager.dateTimeNow;
-        final upcomingSessions = _courseRepository.upcomingSessions;
-        final nextSessionStartDate = upcomingSessions.isNotEmpty ? upcomingSessions.first.startDate : null;
+      final now = _settingsManager.dateTimeNow;
+      final upcomingSessions = _courseRepository.upcomingSessions;
+      final nextSessionStartDate = upcomingSessions.isNotEmpty ? upcomingSessions.first.startDate : null;
 
+      if (_courseRepository.activeSessions.isEmpty) {
         final message = _dynamicMessagesService.determineMessageWithoutActiveSession(
           now: now,
           nextSessionStartDate: nextSessionStartDate,
         );
         dynamicMessageText = message?.resolve(_appIntl);
-        setBusyForObject(dynamicMessageText, false);
         notifyListeners();
         return;
       }
@@ -205,10 +204,6 @@ class DashboardViewModel extends FutureViewModel {
       final activities = _courseRepository.coursesActivities ?? [];
       await _courseRepository.getReplacedDays(forceRefresh: forceRefresh);
       final replacedDays = _courseRepository.replacedDays ?? [];
-      final now = _settingsManager.dateTimeNow;
-
-      final upcomingSessions = _courseRepository.upcomingSessions;
-      final nextSessionStartDate = upcomingSessions.isNotEmpty ? upcomingSessions.first.startDate : null;
 
       final context = DynamicMessageContext.fromSession(
         session: session,
