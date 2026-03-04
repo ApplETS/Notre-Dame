@@ -13,8 +13,8 @@ class SettingsViewModel extends FutureViewModel {
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
   late Locale _locale;
-  late bool _dashboardScheduleList;
   late ThemeMode _theme;
+  late bool _dashboardScheduleList;
 
   ThemeMode? get theme => _theme;
 
@@ -39,13 +39,9 @@ class SettingsViewModel extends FutureViewModel {
 
   @override
   Future futureToRun() async {
-    setBusy(true);
-    _settingsManager.fetchLanguageAndThemeMode();
     _locale = _settingsManager.locale;
     _theme = _settingsManager.themeMode;
-    _dashboardScheduleList = false;
-        // (await _settingsManager.getDashboardSettings())[PreferencesFlag.dashboardScheduleList] as bool? ?? false;
-    setBusy(false);
+    _dashboardScheduleList = _settingsManager.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
     return true;
   }
 }

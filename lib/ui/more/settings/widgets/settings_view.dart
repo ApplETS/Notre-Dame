@@ -75,7 +75,9 @@ class _SettingsViewState extends State<SettingsView> {
                           emptySelectionAllowed: true,
                           onSelectionChanged: (Set<bool> value) {
                             if (value.isNotEmpty) {
-                              model.dashboardScheduleList = value.first;
+                              setState(() {
+                                model.dashboardScheduleList = value.first;
+                              });
                             }
                           },
                         ),

@@ -46,7 +46,7 @@ Future<void> main() async {
       final PreferencesService preferencesService = locator<PreferencesService>();
       await preferencesService.initialize();
 
-      settingsManager.fetchLanguageAndThemeMode();
+      // settingsManager.fetchLanguageAndThemeMode();
 
       // Initialize hello
       final HelloService helloApiClient = locator<HelloService>();

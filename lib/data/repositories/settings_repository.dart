@@ -51,19 +51,7 @@ class SettingsRepository with ChangeNotifier {
     _themeMode = null;
     notifyListeners();
   }
-
-  /// Get Locale and Theme to init app with
-  void fetchLanguageAndThemeMode() {
-    final theme = _preferencesService.getString(PreferencesFlag.theme);
-    if (theme != null) {
-      _themeMode = ThemeMode.values.firstWhere((e) => e.toString() == theme);
-    }
-    final lang = _preferencesService.getString(PreferencesFlag.locale);
-    if (lang != null) {
-      _locale = AppIntl.supportedLocales.firstWhere((e) => e.toString() == lang);
-    }
-  }
-
+  
   /// Get Locale
   Locale get locale {
     _locale = AppIntl.supportedLocales.firstWhereOrNull(
@@ -132,16 +120,6 @@ class SettingsRepository with ChangeNotifier {
     }
   }
 
-  Future<Map<PreferencesFlag, dynamic>> getDashboardSettings() async {
-    // TODO add an option to display session progress in percent or days remaining
-    final Map<PreferencesFlag, dynamic> settings = {};
-
-    final dashboardScheduleList = _preferencesService.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
-    settings.putIfAbsent(PreferencesFlag.dashboardScheduleList, () => dashboardScheduleList);
-
-    return settings;
-  }
-
   /// Get the settings of the schedule, these are loaded from the user preferences.
   Future<Map<PreferencesFlag, dynamic>> getScheduleSettings() async {
     final Map<PreferencesFlag, dynamic> settings = {};
@@ -192,7 +170,7 @@ class SettingsRepository with ChangeNotifier {
   }
 
   /// Get the value of [flag]
-  Future<String?> getDynamicString(PreferencesFlag flag, String key) async {
+  String? getDynamicString(PreferencesFlag flag, String key) {
     // Log the event
     _analyticsService.logEvent("${tag}_$flag", 'getString');
     return _preferencesService.getDynamicString(flag, key);
@@ -207,7 +185,7 @@ class SettingsRepository with ChangeNotifier {
   }
 
   /// Get the value of [flag]
-  Future<bool?> getBool(PreferencesFlag flag) async {
+  bool? getBool(PreferencesFlag flag) {
     // Log the event
     _analyticsService.logEvent("${tag}_${flag.name}", 'getBool');
     return _preferencesService.getBool(flag);

@@ -40,7 +40,6 @@ void main() {
         expect(viewModel.theme, ThemeMode.system);
 
         verifyInOrder([
-          settingsManagerMock.fetchLanguageAndThemeMode(),
           settingsManagerMock.locale,
           settingsManagerMock.themeMode,
         ]);

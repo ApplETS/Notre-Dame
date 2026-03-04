@@ -60,7 +60,7 @@ class ScheduleService {
       final isLabAorB = course.activityName == ActivityName.labA || course.activityName == ActivityName.labB;
 
       // If user wants to display lab A or B only for the current course
-      final activitySelected = await _settingsManager.getDynamicString(
+      final activitySelected = _settingsManager.getDynamicString(
         PreferencesFlag.scheduleLaboratoryGroup,
         courseAcronym,
       );

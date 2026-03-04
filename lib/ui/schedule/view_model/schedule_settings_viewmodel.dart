@@ -123,7 +123,7 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
 
     // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
-      final scheduleActivityCode = await _settingsManager.getDynamicString(
+      final scheduleActivityCode = _settingsManager.getDynamicString(
         PreferencesFlag.scheduleLaboratoryGroup,
         courseKey,
       );

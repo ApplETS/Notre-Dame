@@ -82,7 +82,7 @@ class PreferencesService {
     return _prefs.getString(flag.toString());
   }
 
-  Future<String?> getDynamicString(PreferencesFlag flag, String key) async {
+  String? getDynamicString(PreferencesFlag flag, String key) {
     return _prefs.getString('${flag}_$key');
   }
 

@@ -29,7 +29,7 @@ class StartUpViewModel extends BaseViewModel {
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
 
-    if (await _settingsManager.getBool(PreferencesFlag.languageChoice) == null) {
+    if (_settingsManager.getBool(PreferencesFlag.languageChoice) == null) {
       _navigationService.pushNamed(RouterPaths.chooseLanguage);
       return;
     }
@@ -76,7 +76,7 @@ class StartUpViewModel extends BaseViewModel {
   /// with the cached data
   Future<bool> handleConnectivityIssues() async {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
-    final wasLoggedIn = (await _settingsManager.getBool(PreferencesFlag.isLoggedIn)) ?? false;
+    final wasLoggedIn = _settingsManager.getBool(PreferencesFlag.isLoggedIn) ?? false;
     if (hasConnectivityIssues && wasLoggedIn) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
       return true;
