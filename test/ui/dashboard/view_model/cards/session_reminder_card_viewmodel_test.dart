@@ -74,6 +74,7 @@ void main() {
 
     test("Should subscribe to ListSessionsRepository stream", () async {
       await viewModel.futureToRun();
+      await Future.delayed(Duration.zero);
 
       verify(listSessionsRepositoryMock.getSessions()).called(1);
     });
@@ -106,8 +107,9 @@ void main() {
       expect(viewModel.sessionReminder, isNotNull);
     });
 
-    test("Should handle repository exception gracefully", () async {
+    test("Should handle repository exception gracefully when no cached data", () async {
       setupFlutterToastMock();
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
       when(listSessionsRepositoryMock.getSessions()).thenThrow(Exception("test"));
 
       try {
@@ -116,6 +118,17 @@ void main() {
 
       expect(viewModel.sessionReminder, isNull);
       expect(viewModel.allSessionReminders, isEmpty);
+    });
+
+    test("Should still show cached reminders when repository throws", () async {
+      setupFlutterToastMock();
+      when(listSessionsRepositoryMock.getSessions()).thenThrow(Exception("test"));
+
+      await viewModel.futureToRun();
+      await Future.delayed(Duration.zero);
+
+      expect(viewModel.sessionReminder, isNotNull);
+      expect(viewModel.allSessionReminders, isNotEmpty);
     });
   });
 }

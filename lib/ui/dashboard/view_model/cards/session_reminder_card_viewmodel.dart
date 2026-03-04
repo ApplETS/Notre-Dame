@@ -33,7 +33,15 @@ class SessionReminderCardViewmodel extends FutureViewModel {
   @override
   Future<void> futureToRun() async {
     _subscription = _listSessionsRepository.stream.listen((_) => _loadSessionReminders(), onError: (_) {});
-    await _listSessionsRepository.getSessions();
+
+    if (_listSessionsRepository.getActiveSession() != null) {
+      _loadSessionReminders();
+      try {
+        unawaited(_listSessionsRepository.getSessions().catchError((_) {}));
+      } catch (_) {}
+    } else {
+      await _listSessionsRepository.getSessions();
+    }
   }
 
   void _loadSessionReminders() {
