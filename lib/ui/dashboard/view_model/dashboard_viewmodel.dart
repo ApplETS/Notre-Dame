@@ -1,21 +1,21 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Dart imports:
 import 'dart:async';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/in_app_review_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';

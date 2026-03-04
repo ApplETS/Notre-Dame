@@ -1,15 +1,22 @@
+// Dart imports:
+import 'dart:async';
+
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/models/signets-api/session.dart' as domain;
 import 'package:notredame/ui/dashboard/view_model/cards/session_reminder_card_viewmodel.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../../helpers.dart';
 
 void main() {
   late CourseRepositoryMock courseRepositoryMock;
+  late ListSessionsRepositoryMock listSessionsRepositoryMock;
+  late StreamController<List<domain.Session>> streamController;
   late SessionReminderCardViewmodel viewModel;
 
   final Session session = Session(
@@ -33,11 +40,24 @@ void main() {
   group("SessionReminderCardViewmodel - ", () {
     setUp(() async {
       courseRepositoryMock = setupCourseRepositoryMock();
-      viewModel = SessionReminderCardViewmodel(intl: await setupAppIntl());
+      listSessionsRepositoryMock = setupListSessionsRepositoryMock();
+      streamController = StreamController<List<domain.Session>>.broadcast();
 
-      CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
+      ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: streamController.stream);
+      ListSessionsRepositoryMock.stubGetSessions(
+        listSessionsRepositoryMock,
+        controller: streamController,
+        sessions: [],
+      );
+
       CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
       CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+
+      viewModel = SessionReminderCardViewmodel(intl: await setupAppIntl());
+    });
+
+    tearDown(() {
+      streamController.close();
     });
 
     test("Should compute reminders when active session exists", () async {
@@ -57,23 +77,43 @@ void main() {
       expect(viewModel.carouselReminders, isEmpty);
     });
 
-    test("Should call getSessions when sessions are not loaded", () async {
-      CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: []);
+    test("Should subscribe to ListSessionsRepository stream", () async {
       await viewModel.futureToRun();
 
-      verify(courseRepositoryMock.getSessions()).called(1);
+      verify(listSessionsRepositoryMock.getSessions()).called(1);
     });
 
-    test("Should not call getSessions when sessions are already loaded", () async {
+    test("Should recalculate reminders when stream emits new data", () async {
+      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: []);
       await viewModel.futureToRun();
 
-      verifyNever(courseRepositoryMock.getSessions());
+      expect(viewModel.sessionReminder, isNull);
+
+      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+      streamController.add([]);
+
+      await Future.delayed(Duration.zero);
+
+      expect(viewModel.sessionReminder, isNotNull);
+      expect(viewModel.allSessionReminders, isNotEmpty);
+      expect(viewModel.carouselReminders, isNotEmpty);
+    });
+
+    test("Should cancel subscription on dispose", () async {
+      await viewModel.futureToRun();
+
+      viewModel.dispose();
+
+      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: []);
+      streamController.add([]);
+      await Future.delayed(Duration.zero);
+
+      expect(viewModel.sessionReminder, isNotNull);
     });
 
     test("Should handle repository exception gracefully", () async {
       setupFlutterToastMock();
-      CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: []);
-      CourseRepositoryMock.stubGetSessionsException(courseRepositoryMock);
+      when(listSessionsRepositoryMock.getSessions()).thenThrow(Exception("test"));
 
       try {
         await viewModel.futureToRun();
