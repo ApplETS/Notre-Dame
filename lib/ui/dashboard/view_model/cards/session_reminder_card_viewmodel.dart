@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/session_reminder.dart';
-import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/list_sessions_repository.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -16,7 +15,6 @@ import 'package:notredame/utils/session_reminder_helper.dart';
 class SessionReminderCardViewmodel extends FutureViewModel {
   final AppIntl _appIntl;
 
-  final CourseRepository _courseRepository = locator<CourseRepository>();
   final ListSessionsRepository _listSessionsRepository = locator<ListSessionsRepository>();
 
   StreamSubscription? _subscription;
@@ -39,8 +37,8 @@ class SessionReminderCardViewmodel extends FutureViewModel {
   }
 
   void _loadSessionReminders() {
-    if (_courseRepository.activeSessions.isNotEmpty) {
-      final session = _courseRepository.activeSessions.first;
+    final session = _listSessionsRepository.getActiveSession();
+    if (session != null) {
       final now = DateTime.now();
       allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);
       sessionReminder = allSessionReminders.isEmpty ? null : allSessionReminders.first;

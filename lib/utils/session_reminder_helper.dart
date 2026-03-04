@@ -1,6 +1,6 @@
 // Project imports:
 import 'package:notredame/data/models/session_reminder.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/domain/session_reminder_type.dart';
 
 class SessionReminderHelper {

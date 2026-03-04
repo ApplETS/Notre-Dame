@@ -6,22 +6,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/domain/models/signets-api/session.dart' as domain;
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/session_reminder_card_viewmodel.dart';
-import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../../helpers.dart';
 
 void main() {
-  late CourseRepositoryMock courseRepositoryMock;
   late ListSessionsRepositoryMock listSessionsRepositoryMock;
-  late StreamController<List<domain.Session>> streamController;
+  late StreamController<List<Session>> streamController;
   late SessionReminderCardViewmodel viewModel;
 
   final Session session = Session(
     shortName: "H2099",
-    name: "Hiver 2099",
+    longName: "Hiver 2099",
     startDate: DateTime(2099, 1, 6),
     endDate: DateTime(2099, 4, 25),
     endDateCourses: DateTime(2099, 4, 14),
@@ -39,9 +36,8 @@ void main() {
 
   group("SessionReminderCardViewmodel - ", () {
     setUp(() async {
-      courseRepositoryMock = setupCourseRepositoryMock();
       listSessionsRepositoryMock = setupListSessionsRepositoryMock();
-      streamController = StreamController<List<domain.Session>>.broadcast();
+      streamController = StreamController<List<Session>>.broadcast();
 
       ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: streamController.stream);
       ListSessionsRepositoryMock.stubGetSessions(
@@ -50,8 +46,7 @@ void main() {
         sessions: [],
       );
 
-      CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
-      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: session);
 
       viewModel = SessionReminderCardViewmodel(intl: await setupAppIntl());
     });
@@ -69,7 +64,7 @@ void main() {
     });
 
     test("Should have empty reminders when no active sessions", () async {
-      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: []);
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
       await viewModel.futureToRun();
 
       expect(viewModel.sessionReminder, isNull);
@@ -84,12 +79,12 @@ void main() {
     });
 
     test("Should recalculate reminders when stream emits new data", () async {
-      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: []);
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
       await viewModel.futureToRun();
 
       expect(viewModel.sessionReminder, isNull);
 
-      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: session);
       streamController.add([]);
 
       await Future.delayed(Duration.zero);
@@ -104,7 +99,7 @@ void main() {
 
       viewModel.dispose();
 
-      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: []);
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
       streamController.add([]);
       await Future.delayed(Duration.zero);
 

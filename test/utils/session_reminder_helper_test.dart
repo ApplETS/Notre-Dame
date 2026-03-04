@@ -2,7 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/domain/session_reminder_type.dart';
 import 'package:notredame/utils/session_reminder_helper.dart';
 
@@ -12,7 +12,7 @@ void main() {
   setUp(() {
     session = Session(
       shortName: "H2025",
-      name: "Hiver 2025",
+      longName: "Hiver 2025",
       startDate: DateTime(2025, 1, 6),
       endDate: DateTime(2025, 4, 25),
       endDateCourses: DateTime(2025, 4, 15),
@@ -236,7 +236,7 @@ void main() {
     test("multiple same-day events within threshold", () {
       final sessionWithCoincidingDates = Session(
         shortName: "H2025",
-        name: "Hiver 2025",
+        longName: "Hiver 2025",
         startDate: DateTime(2025, 1, 6),
         endDate: DateTime(2025, 4, 25),
         endDateCourses: DateTime(2025, 4, 15),
