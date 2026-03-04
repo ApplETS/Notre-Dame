@@ -4,7 +4,6 @@ import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/session_reminder_type.dart';
 
 class SessionReminderHelper {
-  /// Builds the 9-entry date-to-type mapping for a session, sorted by date.
   static List<MapEntry<DateTime, SessionReminderType>> _buildSortedEntries(Session session) {
     final entries = <MapEntry<DateTime, SessionReminderType>>[
       MapEntry(session.startDate, SessionReminderType.sessionStart),
@@ -25,6 +24,7 @@ class SessionReminderHelper {
         SessionReminderType.cancellationWithoutRefundNewStudentDeadline,
       ),
       MapEntry(session.deadlineCancellationASEQ, SessionReminderType.cancellationASEQDeadline),
+      MapEntry(session.endDate, SessionReminderType.sessionEnd),
     ];
 
     entries.sort((a, b) => a.key.compareTo(b.key));

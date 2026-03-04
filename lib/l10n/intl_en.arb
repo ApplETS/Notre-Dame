@@ -449,6 +449,7 @@
   "session_reminder_cancellation_no_refund_new_student_start": "Cancellation without refund begins (New student)",
   "session_reminder_cancellation_no_refund_new_student_deadline": "Cancellation without refund deadline (New student)",
   "session_reminder_cancellation_aseq": "ASEQ Opt-Out Ends",
+  "session_reminder_session_end": "Session Ends",
   "session_reminder_today": "Today!",
   "session_reminder_in_days": "{days,plural, =1{Tomorrow ({date})} other{In {days} days ({date})}}",
   "@session_reminder_in_days": {

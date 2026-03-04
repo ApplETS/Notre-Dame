@@ -29,6 +29,8 @@ String sessionReminderEventName(AppIntl intl, SessionReminderType type) {
       return intl.session_reminder_cancellation_no_refund_new_student_deadline;
     case SessionReminderType.cancellationASEQDeadline:
       return intl.session_reminder_cancellation_aseq;
+    case SessionReminderType.sessionEnd:
+      return intl.session_reminder_session_end;
   }
 }
 

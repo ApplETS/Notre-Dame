@@ -214,7 +214,7 @@ class DashboardViewModel extends FutureViewModel {
       _progress = getSessionProgress();
       if (_courseRepository.activeSessions.isNotEmpty) {
         final session = _courseRepository.activeSessions.first;
-        final now = _settingsManager.dateTimeNow;
+        final now = DateTime(2026, 01, 01, 13, 00);
         allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);
         sessionReminder = allSessionReminders.isEmpty ? null : allSessionReminders.first;
         carouselReminders = SessionReminderHelper.getCarouselReminders(session, now);

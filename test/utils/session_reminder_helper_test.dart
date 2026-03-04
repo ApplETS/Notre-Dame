@@ -111,7 +111,7 @@ void main() {
     });
 
     test("returns null when all dates have passed", () {
-      final now = DateTime(2025, 4, 11);
+      final now = DateTime(2025, 4, 26);
       final result = SessionReminderHelper.getActiveReminder(session, now);
 
       expect(result, isNull);
@@ -149,21 +149,21 @@ void main() {
       final now = DateTime(2025, 1, 1);
       final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
 
-      expect(result.length, 9);
+      expect(result.length, 10);
       expect(result.first.type, SessionReminderType.sessionStart);
-      expect(result.last.type, SessionReminderType.cancellationWithoutRefundNewStudentDeadline);
+      expect(result.last.type, SessionReminderType.sessionEnd);
     });
 
     test("returns only future reminders when mid-session", () {
       final now = DateTime(2025, 2, 6);
       final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
 
-      expect(result.length, 6);
+      expect(result.length, 7);
       expect(result.first.type, SessionReminderType.cancellationWithRefundStart);
     });
 
     test("returns empty list when all dates have passed", () {
-      final now = DateTime(2025, 4, 11);
+      final now = DateTime(2025, 4, 26);
       final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
 
       expect(result, isEmpty);
@@ -191,7 +191,7 @@ void main() {
 
   group("SessionReminderHelper.getCarouselReminders -", () {
     test("returns empty list when all dates have passed", () {
-      final now = DateTime(2025, 4, 11);
+      final now = DateTime(2025, 4, 26);
       final result = SessionReminderHelper.getCarouselReminders(session, now);
 
       expect(result, isEmpty);

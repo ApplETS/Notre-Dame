@@ -10,7 +10,8 @@ enum SessionReminderType {
   cancellationWithRefundNewStudentDeadline(Icons.monetization_on_outlined),
   cancellationWithoutRefundNewStudentStart(Icons.cancel_outlined),
   cancellationWithoutRefundNewStudentDeadline(Icons.cancel_outlined),
-  cancellationASEQDeadline(Icons.health_and_safety_outlined);
+  cancellationASEQDeadline(Icons.health_and_safety_outlined),
+  sessionEnd(Icons.event_outlined);
 
   final IconData icon;
   const SessionReminderType(this.icon);
