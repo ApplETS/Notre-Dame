@@ -44,6 +44,11 @@ class PreferencesServiceMock extends MockPreferencesService {
     when(mock.getDateTime(flag)).thenAnswer((_) async => toReturn);
   }
 
+  /// Stub the answer of [setDateTime] when the [flag] is used.
+  static void stubSetDateTime(PreferencesServiceMock mock, PreferencesFlag flag, {bool toReturn = true}) {
+    when(mock.setDateTime(flag, any)).thenAnswer((_) async => toReturn);
+  }
+
   /// Stub the answer of [getPreferencesFlag] when the [flag] is used.
   static void stubGetPreferencesFlag(PreferencesServiceMock mock, PreferencesFlag flag, {Object? toReturn}) {
     when(mock.getPreferencesFlag(flag)).thenAnswer((_) async => toReturn);

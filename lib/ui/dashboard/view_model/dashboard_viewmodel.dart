@@ -10,9 +10,13 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
+import 'package:notredame/data/models/dynamic_message.dart';
+import 'package:notredame/data/models/dynamic_message_context.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
@@ -32,6 +36,8 @@ class DashboardViewModel extends FutureViewModel {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
+  final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final SessionProgressUseCase _sessionProgressUseCase;
 
   StreamSubscription? _sessionProgressSubscription;
@@ -50,6 +56,10 @@ class DashboardViewModel extends FutureViewModel {
 
   BroadcastMessage? broadcastMessage;
   SessionProgress? sessionProgress;
+
+  /// Dynamic message text resolved from SessionContext
+  String? dynamicMessageText;
+
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
       _sessionProgressUseCase = SessionProgressUseCase(),
@@ -92,9 +102,6 @@ class DashboardViewModel extends FutureViewModel {
 
   /// Tracks if the animation should be played
   final bool shouldPlayAnimation;
-
-  /// Loading state of the widget
-  bool isLoading = false;
 
   /// Slide offset for title and subtitle animations (slide from top)
   /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
@@ -162,7 +169,59 @@ class DashboardViewModel extends FutureViewModel {
 
   @override
   Future futureToRun() async {
-    return Future.wait([futureToRunBroadcast(), futureToRunGrades(), _sessionProgressUseCase.fetch(forceUpdate: true)]);
+    return Future.wait([
+      futureToRunBroadcast(),
+      futureToRunGrades(),
+      _sessionProgressUseCase.fetch(forceUpdate: true),
+      loadDynamicMessage(),
+    ]);
+  }
+
+  /// Load the dynamic message based on session context
+  Future<void> loadDynamicMessage({bool forceRefresh = false}) async {
+    setBusyForObject(dynamicMessageText, true);
+    try {
+      if (_courseRepository.sessions == null || _courseRepository.sessions!.isEmpty) {
+        await _courseRepository.getSessions();
+      }
+
+      final now = _settingsManager.dateTimeNow;
+      final upcomingSessions = _courseRepository.upcomingSessions;
+      final nextSessionStartDate = upcomingSessions.isNotEmpty ? upcomingSessions.first.startDate : null;
+
+      if (_courseRepository.activeSessions.isEmpty) {
+        final message = _dynamicMessagesService.determineMessageWithoutActiveSession(
+          now: now,
+          nextSessionStartDate: nextSessionStartDate,
+        );
+        dynamicMessageText = message?.resolve(_appIntl);
+        notifyListeners();
+        return;
+      }
+
+      final session = _courseRepository.activeSessions.first;
+      await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+      final activities = _courseRepository.coursesActivities ?? [];
+      await _courseRepository.getReplacedDays(forceRefresh: forceRefresh);
+      final replacedDays = _courseRepository.replacedDays ?? [];
+
+      final context = DynamicMessageContext.fromSession(
+        session: session,
+        activities: activities,
+        replacedDays: replacedDays,
+        now: now,
+        nextSessionStartDate: nextSessionStartDate,
+      );
+
+      final message = _dynamicMessagesService.determineMessage(context);
+      dynamicMessageText = message.resolve(_appIntl);
+      notifyListeners();
+    } catch (e) {
+      dynamicMessageText = null;
+      notifyListeners();
+    } finally {
+      setBusyForObject(dynamicMessageText, false);
+    }
   }
 
   @override

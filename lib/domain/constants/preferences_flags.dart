@@ -27,6 +27,9 @@ enum PreferencesFlag {
 
   // Authentication flags
   isLoggedIn,
+
+  // Cache timestamps
+  replacedDaysCacheTimestamp,
 }
 
 /// This class can be used instead of the conventional enum to save data to shared Prefs,
