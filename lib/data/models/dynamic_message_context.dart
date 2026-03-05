@@ -1,0 +1,102 @@
+// Project imports:
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/utils/date_utils.dart';
+import 'package:notredame/utils/replaced_day_analyzer.dart';
+import 'package:notredame/utils/schedule_analyzer.dart';
+
+class DynamicMessageContext {
+  final DateTime now;
+  final Session session;
+  final List<CourseActivity> courseActivities;
+  final List<ReplacedDay> replacedDays;
+
+  final DateTime? nextSessionStartDate;
+  final int courseDaysRemaining;
+  final int? finalsDaysRemaining;
+  final int weeksCompleted;
+  final int courseWeeksRemaining;
+  final int courseDaysThisWeek;
+
+  ScheduleAnalyzer? _scheduleAnalyzerCache;
+  ReplacedDayAnalyzer? _replacedDayAnalyzerCache;
+
+  ScheduleAnalyzer get _scheduleAnalyzer =>
+      _scheduleAnalyzerCache ??= ScheduleAnalyzer(courseActivities: courseActivities, now: now);
+
+  ReplacedDayAnalyzer get _replacedDayAnalyzer =>
+      _replacedDayAnalyzerCache ??= ReplacedDayAnalyzer(replacedDays: replacedDays, now: now);
+
+  DynamicMessageContext({
+    required this.now,
+    required this.session,
+    required this.courseActivities,
+    required this.replacedDays,
+    this.nextSessionStartDate,
+    required this.courseDaysRemaining,
+    required this.finalsDaysRemaining,
+    required this.weeksCompleted,
+    required this.courseWeeksRemaining,
+    required this.courseDaysThisWeek,
+  });
+
+  factory DynamicMessageContext.fromSession({
+    required Session session,
+    required List<CourseActivity> activities,
+    required List<ReplacedDay> replacedDays,
+    required DateTime now,
+    DateTime? nextSessionStartDate,
+  }) {
+    final analyzer = ScheduleAnalyzer(courseActivities: activities, now: now);
+    final lastRegularCourseDate = analyzer.getLastRegularCourseDate();
+    final courseEndDate = lastRegularCourseDate ?? session.endDate;
+    final lastFinalDate = analyzer.getLastFinalExamDate();
+
+    final context = DynamicMessageContext(
+      session: session,
+      courseActivities: activities,
+      replacedDays: replacedDays,
+      now: now,
+      nextSessionStartDate: nextSessionStartDate,
+      courseDaysRemaining: DateUtils.daysBetween(now, courseEndDate),
+      finalsDaysRemaining: lastFinalDate != null ? DateUtils.daysBetween(now, lastFinalDate) : null,
+      weeksCompleted: DateUtils.weeksCompleted(session.startDate, now),
+      courseWeeksRemaining: DateUtils.weeksRemaining(courseEndDate, now),
+      courseDaysThisWeek: analyzer.courseDaysThisWeek,
+    );
+    context._scheduleAnalyzerCache = analyzer;
+    return context;
+  }
+
+  bool get isLongWeekendIncoming => _scheduleAnalyzer.isLongWeekendIncoming;
+
+  bool get isInsideLongWeekend => _scheduleAnalyzer.isInsideLongWeekend;
+
+  bool get isFirstDayBackFromBreak => _scheduleAnalyzer.isFirstDayBackFromBreak;
+
+  bool get isAfterLastCourseOfWeek => _scheduleAnalyzer.isAfterLastCourseOfWeek;
+
+  bool get isCoursesOver => courseDaysRemaining < 0;
+
+  bool get hasFinals => finalsDaysRemaining != null;
+
+  bool get isFinalsOver => hasFinals ? finalsDaysRemaining! < 0 : isCoursesOver;
+
+  int? get daysUntilNextSession =>
+      nextSessionStartDate != null ? DateUtils.daysBetween(now, nextSessionStartDate!) : null;
+
+  bool get isLastCourseDayOfWeek => _scheduleAnalyzer.isLastCourseDayOfWeek;
+
+  int? get daysUntilNextCourse => _scheduleAnalyzer.daysUntilNextCourse;
+
+  int? get totalBreakDuration => _scheduleAnalyzer.totalBreakDuration;
+
+  int? get upcomingBreakDuration => _scheduleAnalyzer.upcomingBreakDuration;
+
+  int? get daysUntilBreakStart => _scheduleAnalyzer.daysUntilBreakStart;
+
+  ReplacedDay? getUpcomingReplacedDay() => _replacedDayAnalyzer.getUpcoming();
+
+  bool isReplacedDayCancellation(ReplacedDay replacedDay) => _replacedDayAnalyzer.isCancellation(replacedDay);
+}

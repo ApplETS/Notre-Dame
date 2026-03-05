@@ -90,6 +90,10 @@ class ScheduleAnalyzer {
 
   bool get hasNextWeekSchedule => _nextWeekActivities.isNotEmpty;
 
+  /// Calculates the gap between the last activity of the current week
+  /// and the next future activity (which may be further than next week
+  /// if there's a break). Returns null if there are no activities this
+  /// week or no future activities.
   _GapInfo? _getUpcomingBreakGapInfo() {
     final thisWeek = _currentWeekActivities;
     final nextWeek = _nextWeekActivities;
@@ -139,7 +143,41 @@ class ScheduleAnalyzer {
     final gapInfo = _currentGapInfo;
     if (gapInfo == null) return false;
 
-    return gapInfo.isLongerThanUsual;
+    return gapInfo.isLongerThanUsual && DateUtils.daysBetween(now, gapInfo.nextActivityStart) > 0;
+  }
+
+  bool get isFirstDayBackFromBreak {
+    if (courseActivities.isEmpty) return false;
+
+    final today = DateUtils.dateOnly(now);
+    final sortedActivities = _sortedActivities;
+
+    // Today must have activities for it to be the first day back
+    final hasActivitiesToday = sortedActivities.any((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
+    if (!hasActivitiesToday) return false;
+
+    final activitiesBeforeToday = sortedActivities.where((a) => DateUtils.dateOnly(a.startDateTime).isBefore(today));
+    if (activitiesBeforeToday.isEmpty) return false;
+
+    final lastActivityBeforeToday = activitiesBeforeToday.last;
+    final firstActivityToday = sortedActivities.firstWhere(
+      (a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today),
+    );
+
+    // Within-same-week gaps are normal schedule, not breaks
+    if (DateUtils.startOfWeek(
+      lastActivityBeforeToday.startDateTime,
+    ).isAtSameMomentAs(DateUtils.startOfWeek(firstActivityToday.startDateTime))) {
+      return false;
+    }
+
+    final gapDays = DateUtils.daysBetween(lastActivityBeforeToday.endDateTime, firstActivityToday.startDateTime);
+    final usualGapDays = calculateUsualWeekendGapDays(
+      excludeStart: lastActivityBeforeToday.startDateTime,
+      excludeEnd: firstActivityToday.startDateTime,
+    );
+
+    return gapDays > usualGapDays;
   }
 
   int? get daysUntilNextCourse {
@@ -221,6 +259,24 @@ class ScheduleAnalyzer {
     if (regularActivities.isEmpty) return null;
 
     return regularActivities.map((activity) => activity.endDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
+  }
+
+  /// Returns the start date of the first final exam, or null if no finals exist
+  DateTime? getFirstFinalExamDate() {
+    final finals = _getFinalExamActivities();
+    if (finals.isEmpty) return null;
+    return finals.map((a) => a.startDateTime).reduce((a, b) => a.isBefore(b) ? a : b);
+  }
+
+  /// Returns the end date of the last final exam, or null if no finals exist
+  DateTime? getLastFinalExamDate() {
+    final finals = _getFinalExamActivities();
+    if (finals.isEmpty) return null;
+    return finals.map((a) => a.endDateTime).reduce((a, b) => a.isAfter(b) ? a : b);
+  }
+
+  List<CourseActivity> _getFinalExamActivities() {
+    return courseActivities.where((a) => a.activityName.toLowerCase() == ActivityName.finalExam.toLowerCase()).toList();
   }
 }
 

@@ -23,6 +23,7 @@ void main() {
       setupBroadcastMessageRepositoryMock();
       setupRemoteConfigServiceMock();
       setupCourseRepositoryMock();
+      setupDynamicMessagesServiceMock();
       setupPreferencesServiceMock();
       setupCacheManagerMock();
       setupNetworkingServiceMock();

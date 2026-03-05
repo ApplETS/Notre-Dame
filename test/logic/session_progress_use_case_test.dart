@@ -40,7 +40,6 @@ void main() {
       verify(listSessionsRepository.getSessions()).called(1);
     });
 
-
     test('fetch() calls getSessions with forceUpdate', () async {
       ListSessionsRepositoryMock.stubGetStream(listSessionsRepository, stream: controller.stream);
       ListSessionsRepositoryMock.stubGetSessions(listSessionsRepository, controller: controller, sessions: []);

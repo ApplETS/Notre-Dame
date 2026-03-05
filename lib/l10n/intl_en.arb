@@ -70,6 +70,144 @@
   "login_password_show": "Show password",
   "login_password_hide": "Hide password",
 
+  "dynamic_message_first_week_of_session": "Good start to the semester!",
+  "dynamic_message_first_week_of_session_completed": "First week of the semester completed, keep going!",
+  "dynamic_message_long_weekend_incoming": "Keep going, a long weekend is coming!",
+
+  "dynamic_message_upcoming_extended_break": "A break is coming! {days} days until it starts.",
+  "@dynamic_message_upcoming_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_upcoming_extended_break_tomorrow": "An extended break starts tomorrow!",
+
+  "dynamic_message_session_starts_soon": "Have a good rest! The next semester starts on {date} (in {days} days).",
+  "@dynamic_message_session_starts_soon": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_days_before_session_ends": "{num_days, plural, =0{Last day, it's almost over!} =1{1 more day and it's over!} other{{num_days} more days and it's over!}}",
+  "@dynamic_message_days_before_session_ends": {
+    "placeholders": {
+      "num_days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_end_of_week": "Week {num_weeks} completed!",
+  "@dynamic_message_end_of_week": {
+    "placeholders": {
+      "num_weeks": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_long_weekend_currently": "Have a nice long weekend! Week {num_weeks} completed!",
+  "@dynamic_message_long_weekend_currently": {
+    "placeholders": {
+      "num_weeks": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_extended_break": "Enjoy your break! Classes resume in {days} days.",
+  "@dynamic_message_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_extended_break_tomorrow": "Enjoy your break! Classes resume tomorrow.",
+
+  "dynamic_message_first_day_back_after_break": "Welcome back! Hope you had a good break.",
+
+  "dynamic_message_last_course_day_of_session": "It's {weekday}! Last day of classes of the week!",
+  "@dynamic_message_last_course_day_of_session": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+
+  "dynamic_message_less_one_month_remaining": "Keep going, only {num_weeks} weeks to go!",
+  "@dynamic_message_less_one_month_remaining": {
+  "placeholders": {
+    "num_weeks": {
+      "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_last_course_week_remaining": "Keep going, it's the last course week!",
+
+  "dynamic_message_finals_approaching": "It's the last week of courses! The exam period is approaching.",
+  "dynamic_message_finals_approaching_tomorrow": "Last day of courses! The exam period begins tomorrow.",
+
+  "dynamic_message_exam_period": "Good luck on your exams! {days} days remaining in the exam period.",
+  "@dynamic_message_exam_period": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_exam_period_tomorrow_last_day": "Last day of exams tomorrow. You've got this!",
+  "dynamic_message_exam_period_last_day": "Last day of exams! You've got this!",
+  "dynamic_message_session_completed": "Congratulations, the semester is over. Enjoy your break!",
+
+  "dynamic_message_generic_encouragement_0": "Keep up the good work!",
+  "dynamic_message_generic_encouragement_1": "Have a good semester!",
+  "dynamic_message_generic_encouragement_2": "Hope your semester is going well!",
+  "dynamic_message_generic_encouragement_3": "Have a great day!",
+  "dynamic_message_generic_encouragement_4": "Keep it up!",
+  "dynamic_message_generic_encouragement_5": "Good luck with your courses!",
+  "dynamic_message_generic_encouragement_6": "Hang in there!",
+
+  "dynamic_message_no_courses_on_day": "There are no courses on {weekday} ({reason}).",
+  "@dynamic_message_no_courses_on_day": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+
+  "dynamic_message_day_follows_schedule": "The courses of {replacementDay} follow the schedule of {originalDay} ({reason}).",
+  "@dynamic_message_day_follows_schedule": {
+    "placeholders": {
+      "originalDay": {
+        "type": "String"
+      },
+      "replacementDay": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
 

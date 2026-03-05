@@ -16,6 +16,7 @@ import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -41,6 +42,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => LaunchUrlService());
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => ScheduleService());
+  locator.registerLazySingleton(() => DynamicMessagesService());
 
   Dio dio = Dio();
   locator.registerLazySingleton(() => dio);

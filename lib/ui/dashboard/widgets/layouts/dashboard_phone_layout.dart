@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:stacked/stacked.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -94,15 +94,14 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                 offset: widget.model.titleSlideOffset,
                 child: Opacity(
                   opacity: widget.model.titleFadeOpacity,
-                  child: SkeletonLoader(
-                    loading: widget.model.isLoading,
-                    child: Text(
-                      'TODO: créer un message dynamique, pour plus de détails, consulter la issue #863',
-                      style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
+                  child: widget.model.busy(widget.model.dynamicMessageText)
+                      ? Skeletonizer(child: Bone.text(fontSize: 16, words: 2))
+                      : Text(
+                          widget.model.dynamicMessageText ?? '',
+                          style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                 ),
               ),
             );

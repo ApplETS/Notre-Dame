@@ -83,6 +83,7 @@ void main() {
       preferencesServiceMock = setupPreferencesServiceMock();
       setupAnalyticsServiceMock();
       setupBroadcastMessageRepositoryMock();
+      setupDynamicMessagesServiceMock();
       listSessionsRepositoryMock = setupListSessionsRepositoryMock();
       launchUrlServiceMock = setupLaunchUrlServiceMock();
 
@@ -91,8 +92,12 @@ void main() {
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
+      CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: false);
+      CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: true);
+      CourseRepositoryMock.stubReplacedDays(courseRepositoryMock);
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
       CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+      CourseRepositoryMock.stubUpcomingSessions(courseRepositoryMock);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, fromCacheOnly: true);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
@@ -249,7 +254,6 @@ void main() {
         await viewModel.futureToRun();
       });
     });
-
 
     group("In app review - ", () {
       test("returns true when todays date is after the day set in cache", () async {
