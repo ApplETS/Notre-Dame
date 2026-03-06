@@ -74,7 +74,7 @@ class DashboardViewModel extends FutureViewModel {
         DateTime.now().isAfter(ratingTimerFlagDate)) {
       await Future.delayed(const Duration(seconds: 2), () async {
         await inAppReviewService.requestReview();
-        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
+        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, true);
       });
 
       return true;

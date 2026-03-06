@@ -101,7 +101,7 @@ class MoreViewModel extends FutureViewModel {
 
     if (await inAppReviewService.isAvailable()) {
       await inAppReviewService.openStoreListing();
-      preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
+      preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, true);
 
       return true;
     }

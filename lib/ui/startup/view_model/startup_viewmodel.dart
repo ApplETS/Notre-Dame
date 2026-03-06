@@ -29,7 +29,7 @@ class StartUpViewModel extends BaseViewModel {
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
 
-    if (_settingsManager.getBool(PreferencesFlag.languageChoice) == null) {
+    if (_settingsManager.getString(PreferencesFlag.locale) == null) {
       _navigationService.pushNamed(RouterPaths.chooseLanguage);
       return;
     }

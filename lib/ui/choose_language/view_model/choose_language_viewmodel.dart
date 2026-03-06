@@ -45,7 +45,6 @@ class ChooseLanguageViewModel extends BaseViewModel {
 
     _navigationService.pop();
 
-    _settingsManager.setBool(PreferencesFlag.languageChoice, true);
     _navigationService.pushNamedAndRemoveUntil(RouterPaths.startup);
   }
 }

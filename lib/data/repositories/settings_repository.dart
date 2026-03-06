@@ -2,9 +2,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-// Package imports:
-import 'package:intl/intl.dart';
-
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/calendar_service.dart';
@@ -19,71 +16,41 @@ class SettingsRepository with ChangeNotifier {
   final PreferencesService _preferencesService = locator<PreferencesService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
-  /// current ThemeMode
-  ThemeMode? _themeMode;
-
-  /// current Locale
-  Locale? _locale;
-
   /// Get current time
   DateTime get dateTimeNow => DateTime.now();
 
   /// reset Locale and Theme when logout
   void resetLanguageAndThemeMode() {
-    _locale = null;
-    _themeMode = null;
+    locale = null;
+    themeMode = null;
     notifyListeners();
   }
 
   Locale get locale {
-    _locale = AppIntl.supportedLocales.firstWhereOrNull(
-      (e) => e.toString() == _preferencesService.getString(PreferencesFlag.locale),
-    );
-
-    // When the locale isn't defined, set a default locale
-    if (_locale == null) {
-      final locale = Locale(Intl.systemLocale.split('_')[0]);
-      if (AppIntl.supportedLocales.contains(locale)) {
-        _locale = locale;
-      }
-    }
-
-    _locale ??= const Locale('fr');
-    return _locale!;
+    return AppIntl.supportedLocales.firstWhereOrNull((e) => e.languageCode == getString(PreferencesFlag.locale)) ??
+        const Locale('fr');
   }
 
-  set locale(Locale value) {
-    _locale = AppIntl.supportedLocales.firstWhereOrNull((e) => e == value);
+  set locale(Locale? value) {
+    Locale? locale = AppIntl.supportedLocales.firstWhereOrNull((e) => e == value);
 
-    _analyticsService.logEvent("${tag}_${PreferencesFlag.locale.name}", _locale?.languageCode ?? 'Not found');
-
-    if (_locale != null) {
-      _preferencesService.setString(PreferencesFlag.locale, _locale!.languageCode);
-      _locale = Locale(_locale!.languageCode);
-      notifyListeners();
-    }
+    setString(PreferencesFlag.locale, locale?.languageCode);
+    notifyListeners();
   }
 
   ThemeMode get themeMode {
-    _themeMode = ThemeMode.values.firstWhereOrNull(
-          (e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme),
-    );
-
-    _themeMode ??= ThemeMode.system;
-
-    return _themeMode!;
+    return ThemeMode.values.firstWhereOrNull((e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme)) ??
+        ThemeMode.system;
   }
 
-  set themeMode(ThemeMode value) {
-    _preferencesService.setString(PreferencesFlag.theme, value.toString());
-
-    _analyticsService.logEvent("${tag}_${PreferencesFlag.theme.name}", value.name);
-    _themeMode = value;
+  set themeMode(ThemeMode? value) {
+    setString(PreferencesFlag.theme, value.toString());
     notifyListeners();
   }
 
   CalendarTimeFormat get calendarFormat {
-    final calendarFormat = _preferencesService.getString(PreferencesFlag.scheduleCalendarFormat) ?? CalendarTimeFormat.week.name;
+    final calendarFormat =
+        _preferencesService.getString(PreferencesFlag.scheduleCalendarFormat) ?? CalendarTimeFormat.week.name;
     return CalendarTimeFormat.values.firstWhere((e) => e.name == calendarFormat);
   }
 
@@ -91,11 +58,12 @@ class SettingsRepository with ChangeNotifier {
 
   bool get sheduleListView => _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? false;
 
+  set sheduleListView(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleListView, value);
+
   bool get showTodayButton => _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
 
   /// Add/update the value of [flag]
   Future<bool> setString(PreferencesFlag flag, String? value) async {
-    // Log the event
     _analyticsService.logEvent("${tag}_${flag.name}", value.toString());
 
     if (value == null) {
@@ -110,31 +78,31 @@ class SettingsRepository with ChangeNotifier {
       return _preferencesService.removeDynamicPreferencesFlag(flag, key);
     }
 
-    // Log the event
     _analyticsService.logEvent("${tag}_$flag", value);
-
     return _preferencesService.setDynamicString(flag, key, value);
   }
 
   /// Get the value of [flag]
   String? getDynamicString(PreferencesFlag flag, String key) {
-    // Log the event
     _analyticsService.logEvent("${tag}_$flag", 'getString');
     return _preferencesService.getDynamicString(flag, key);
   }
 
   /// Add/update the value of [flag]
-  // ignore: avoid_positional_boolean_parameters
   Future<bool> setBool(PreferencesFlag flag, bool value) async {
-    // Log the event
     _analyticsService.logEvent("${tag}_${flag.name}", value.toString());
-    return _preferencesService.setBool(flag, value: value);
+    return _preferencesService.setBool(flag, value);
   }
 
   /// Get the value of [flag]
   bool? getBool(PreferencesFlag flag) {
-    // Log the event
     _analyticsService.logEvent("${tag}_${flag.name}", 'getBool');
     return _preferencesService.getBool(flag);
+  }
+
+  /// Get the value of [flag]
+  String? getString(PreferencesFlag flag) {
+    _analyticsService.logEvent("${tag}_${flag.name}", 'getString');
+    return _preferencesService.getString(flag);
   }
 }

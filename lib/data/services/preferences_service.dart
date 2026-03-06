@@ -6,13 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Project imports:
 import 'package:notredame/domain/constants/preferences_flags.dart';
 
-// CONSTANT
-
 class PreferencesService {
   final persistentsKey = [PreferencesFlag.ratingTimer, PreferencesFlag.hasRatingBeenRequested];
   late SharedPreferences _prefs;
 
-  Future<bool> setBool(PreferencesFlag flag, {required bool value}) {
+  Future<bool> setBool(PreferencesFlag flag, bool value) {
     return _prefs.setBool(flag.toString(), value);
   }
 
@@ -43,7 +41,7 @@ class PreferencesService {
     // Put the persistent flags back in the preferences
     allPersistentPrefs.forEach((key, value) {
       if (value is bool) {
-        setBool(key, value: value);
+        setBool(key, value);
       } else if (value is String) {
         setString(key, value);
       }
