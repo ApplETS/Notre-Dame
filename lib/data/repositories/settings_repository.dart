@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -17,12 +16,8 @@ import 'package:notredame/locator.dart';
 class SettingsRepository with ChangeNotifier {
   static const String tag = "SettingsManager";
 
-  /// Use to get the value associated to each settings key
   final PreferencesService _preferencesService = locator<PreferencesService>();
-
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
-  final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
 
   /// current ThemeMode
   ThemeMode? _themeMode;
@@ -87,16 +82,14 @@ class SettingsRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  // TODO fix
   CalendarTimeFormat get calendarFormat {
     final calendarFormat = _preferencesService.getString(PreferencesFlag.scheduleCalendarFormat) ?? CalendarTimeFormat.week.name;
     return CalendarTimeFormat.values.firstWhere((e) => e.name == calendarFormat);
   }
 
-  // TODO fix
-  set calendarFormat(CalendarTimeFormat format) => _preferencesService.setString(PreferencesFlag.scheduleCalendarFormat, calendarFormat.name);
+  set calendarFormat(CalendarTimeFormat format) => setString(PreferencesFlag.scheduleCalendarFormat, format.name);
 
-  bool get sheduleListView => _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? calendarViewSetting;
+  bool get sheduleListView => _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? false;
 
   bool get showTodayButton => _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
 
@@ -144,6 +137,4 @@ class SettingsRepository with ChangeNotifier {
     _analyticsService.logEvent("${tag}_${flag.name}", 'getBool');
     return _preferencesService.getBool(flag);
   }
-
-  bool get calendarViewSetting => _remoteConfigService.scheduleListViewDefault;
 }
