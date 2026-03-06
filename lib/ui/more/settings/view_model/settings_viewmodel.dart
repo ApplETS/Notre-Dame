@@ -7,12 +7,11 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 
 class SettingsViewModel extends BaseViewModel {
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
-  ThemeMode? get theme => _settingsManager.themeMode;
+  ThemeMode get theme => _settingsManager.themeMode;
 
   set theme(ThemeMode value) => _settingsManager.themeMode = value;
 
@@ -20,7 +19,7 @@ class SettingsViewModel extends BaseViewModel {
 
   set locale(Locale value) => _settingsManager.locale = value;
 
-  bool get dashboardScheduleList => _settingsManager.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
+  bool get dashboardScheduleList => _settingsManager.dashboardScheduleList;
 
-  set dashboardScheduleList(bool value) => _settingsManager.setBool(PreferencesFlag.dashboardScheduleList, value);
+  set dashboardScheduleList(bool value) => _settingsManager.dashboardScheduleList = value;
 }

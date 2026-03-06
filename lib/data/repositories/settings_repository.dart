@@ -18,14 +18,7 @@ class SettingsRepository with ChangeNotifier {
 
   /// Get current time
   DateTime get dateTimeNow => DateTime.now();
-
-  /// reset Locale and Theme when logout
-  void resetLanguageAndThemeMode() {
-    locale = null;
-    themeMode = null;
-    notifyListeners();
-  }
-
+  
   Locale get locale {
     return AppIntl.supportedLocales.firstWhereOrNull((e) => e.languageCode == getString(PreferencesFlag.locale)) ??
         const Locale('fr');
@@ -39,7 +32,9 @@ class SettingsRepository with ChangeNotifier {
   }
 
   ThemeMode get themeMode {
-    return ThemeMode.values.firstWhereOrNull((e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme)) ??
+    return ThemeMode.values.firstWhereOrNull(
+          (e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme),
+        ) ??
         ThemeMode.system;
   }
 
@@ -47,6 +42,10 @@ class SettingsRepository with ChangeNotifier {
     setString(PreferencesFlag.theme, value.toString());
     notifyListeners();
   }
+
+  bool get dashboardScheduleList => getBool(PreferencesFlag.dashboardScheduleList) ?? false;
+
+  set dashboardScheduleList(bool value) => setBool(PreferencesFlag.dashboardScheduleList, value);
 
   CalendarTimeFormat get calendarFormat {
     final calendarFormat =
@@ -61,6 +60,8 @@ class SettingsRepository with ChangeNotifier {
   set scheduleListView(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleListView, value);
 
   bool get showTodayButton => _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
+
+  set showTodayButton(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleShowTodayBtn, value);
 
   /// Add/update the value of [flag]
   Future<bool> setString(PreferencesFlag flag, String? value) async {

@@ -34,27 +34,20 @@ class ScheduleSettingsViewModel extends FutureViewModel {
     _controller.settingsUpdated();
   }
 
-  /// Display the button to return to today
-  bool _showTodayBtn = true;
-
-  bool get showTodayBtn => _showTodayBtn;
+  bool get showTodayBtn => _settingsManager.showTodayButton;
 
   set showTodayBtn(bool newValue) {
     setBusy(true);
-    _settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, newValue);
-    _showTodayBtn = newValue;
+    _settingsManager.showTodayButton = newValue;
     _controller.settingsUpdated();
     setBusy(false);
   }
 
-  bool _toggleCalendarView = false;
+  bool get listViewFormat => _settingsManager.scheduleListView;
 
-  bool get toggleCalendarView => _toggleCalendarView;
-
-  set toggleCalendarView(bool newValue) {
+  set listViewFormat(bool newValue) {
     setBusy(true);
-    _settingsManager.setBool(PreferencesFlag.scheduleListView, newValue);
-    _toggleCalendarView = newValue;
+    _settingsManager.scheduleListView = newValue;
     _controller.settingsUpdated();
     setBusy(false);
   }
@@ -90,9 +83,6 @@ class ScheduleSettingsViewModel extends FutureViewModel {
   @override
   Future<void> futureToRun() async {
     setBusy(true);
-    _showTodayBtn = _settingsManager.showTodayButton;
-    _toggleCalendarView = _settingsManager.scheduleListView;
-
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
     for (final activity in schedulesActivities) {

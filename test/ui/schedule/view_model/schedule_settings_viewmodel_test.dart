@@ -217,11 +217,11 @@ void main() {
         const expected = true;
 
         // Call the setter.
-        viewModel.toggleCalendarView = expected;
+        viewModel.listViewFormat = expected;
 
         await untilCalled(settingsManagerMock.setBool(PreferencesFlag.scheduleListView, any));
 
-        expect(viewModel.toggleCalendarView, true);
+        expect(viewModel.listViewFormat, true);
         expect(viewModel.isBusy, false);
 
         verify(settingsManagerMock.setBool(PreferencesFlag.scheduleListView, any)).called(1);

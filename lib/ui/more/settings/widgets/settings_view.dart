@@ -56,7 +56,7 @@ class _SettingsViewState extends State<SettingsView> {
                           ],
                           showSelectedIcon: false,
                           emptySelectionAllowed: true,
-                          selected: model.theme != null ? <ThemeMode>{model.theme!} : {},
+                          selected: <ThemeMode>{model.theme},
                           onSelectionChanged: (Set<ThemeMode> value) {
                             if (value.isNotEmpty) {
                               model.theme = value.first;

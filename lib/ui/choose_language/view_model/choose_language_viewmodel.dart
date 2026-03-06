@@ -9,7 +9,6 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import '../../../domain/constants/preferences_flags.dart';
 
 class ChooseLanguageViewModel extends BaseViewModel {
   static const int english = 0;

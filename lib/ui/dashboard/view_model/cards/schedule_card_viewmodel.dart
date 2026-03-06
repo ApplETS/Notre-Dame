@@ -20,7 +20,6 @@ class ScheduleCardViewmodel extends FutureViewModel {
 
   bool _tomorrow = false;
   DateTime _date = DateTime.now().withoutTime;
-  late final bool _listView = _settingsManager.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
 
   final AppIntl _appIntl;
 
@@ -32,7 +31,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
     return _tomorrow;
   }
 
-  bool get listView => _listView;
+  bool get listView => _settingsManager.dashboardScheduleList;
 
   ScheduleCardViewmodel({required AppIntl intl}) : _appIntl = intl;
 

@@ -84,7 +84,6 @@ class MoreViewModel extends FutureViewModel {
     _preferencesService.clearWithoutPersistentKey();
 
     await _authService.signOut();
-    _settingsManager.resetLanguageAndThemeMode();
     _settingsManager.setBool(PreferencesFlag.isLoggedIn, false);
 
     // clear all previous cached value in courseRepository
