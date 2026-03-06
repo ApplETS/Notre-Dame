@@ -10,6 +10,6 @@ class ScheduleViewModel extends BaseViewModel {
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
   CalendarTimeFormat get calendarFormat => _settingsManager.calendarFormat;
-  bool get listView => _settingsManager.sheduleListView;
+  bool get listView => _settingsManager.scheduleListView;
   bool get showTodayButton => _settingsManager.showTodayButton;
 }

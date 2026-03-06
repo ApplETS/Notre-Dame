@@ -56,9 +56,9 @@ class SettingsRepository with ChangeNotifier {
 
   set calendarFormat(CalendarTimeFormat format) => setString(PreferencesFlag.scheduleCalendarFormat, format.name);
 
-  bool get sheduleListView => _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? false;
+  bool get scheduleListView => _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? false;
 
-  set sheduleListView(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleListView, value);
+  set scheduleListView(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleListView, value);
 
   bool get showTodayButton => _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
 

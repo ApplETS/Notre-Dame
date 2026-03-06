@@ -91,7 +91,7 @@ class ScheduleSettingsViewModel extends FutureViewModel {
   Future<void> futureToRun() async {
     setBusy(true);
     _showTodayBtn = _settingsManager.showTodayButton;
-    _toggleCalendarView = _settingsManager.sheduleListView;
+    _toggleCalendarView = _settingsManager.scheduleListView;
 
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
