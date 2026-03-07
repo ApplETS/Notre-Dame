@@ -265,7 +265,7 @@ void main() {
         PreferencesServiceMock.stubGetDateTime(preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
 
         expect(await DashboardViewModel.launchInAppReview(), true);
-        verify(preferencesServiceMock.setBool(PreferencesFlag.hasRatingBeenRequested, value: true)).called(1);
+        verify(preferencesServiceMock.setBool(PreferencesFlag.hasRatingBeenRequested, true)).called(1);
       });
 
       test(

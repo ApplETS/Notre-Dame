@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:msal_auth/msal_auth.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -10,7 +9,6 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -18,7 +16,6 @@ import 'package:notredame/locator.dart';
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
-  final PreferencesService _preferencesService = locator<PreferencesService>();
   final AuthService _authService = locator<AuthService>();
   final NetworkingService _networkingService = locator<NetworkingService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -31,7 +28,7 @@ class StartUpViewModel extends BaseViewModel {
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
 
-    if (_preferencesService.getString(PreferencesFlag.locale) == null) {
+    if (!_settingsManager.isLocaleDefined) {
       _navigationService.pushNamed(RouterPaths.chooseLanguage);
       return;
     }
