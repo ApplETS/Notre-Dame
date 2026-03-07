@@ -12,6 +12,7 @@ import 'package:logger/logger.dart';
 import 'package:notredame/data/repositories/author_repository.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/list_sessions_repository.dart';
 import 'package:notredame/data/repositories/news_repository.dart';
 import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
@@ -26,11 +27,13 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/services/signets_client.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'data/mocks/repositories/author_repository_mock.dart';
 import 'data/mocks/repositories/broadcast_message_repository_mock.dart';
 import 'data/mocks/repositories/course_repository_mock.dart';
+import 'data/mocks/repositories/list_sessions_repository_mock.dart';
 import 'data/mocks/repositories/news_repository_mock.dart';
 import 'data/mocks/repositories/quick_links_repository_mock.dart';
 import 'data/mocks/repositories/settings_repository_mock.dart';
@@ -46,6 +49,7 @@ import 'data/mocks/services/networking_service_mock.dart';
 import 'data/mocks/services/preferences_service_mock.dart';
 import 'data/mocks/services/remote_config_service_mock.dart';
 import 'data/mocks/services/signets_api_mock.dart';
+import 'data/mocks/services/signets_client_mock.dart';
 
 /// Unregister the service [T] from GetIt
 void unregister<T extends Object>() {
@@ -310,6 +314,24 @@ BroadcastMessageRepositoryMock setupBroadcastMessageRepositoryMock() {
   final BroadcastMessageRepositoryMock repository = BroadcastMessageRepositoryMock();
 
   locator.registerSingleton<BroadcastMessageRepository>(repository);
+
+  return repository;
+}
+
+SignetsClientMock setupSignetsClientMock() {
+  unregister<SignetsClient>();
+  final service = SignetsClientMock();
+
+  locator.registerSingleton<SignetsClient>(service);
+
+  return service;
+}
+
+ListSessionsRepositoryMock setupListSessionsRepositoryMock() {
+  unregister<ListSessionsRepository>();
+  final repository = ListSessionsRepositoryMock();
+
+  locator.registerSingleton<ListSessionsRepository>(repository);
 
   return repository;
 }
