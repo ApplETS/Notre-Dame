@@ -5,7 +5,6 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/choose_language/view_model/choose_language_viewmodel.dart';
@@ -36,28 +35,22 @@ void main() {
 
     group("changeLanguage - ", () {
       test('can set language english', () async {
-        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
-
         viewModel.changeLanguage(0);
 
-        verify(settingsManagerMock.setLocale(AppIntl.supportedLocales.first.languageCode));
+        verify(settingsManagerMock.locale = AppIntl.supportedLocales.first);
         verify(navigationServiceMock.pop());
         verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
       });
 
       test('can set language français', () async {
-        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
-
         viewModel.changeLanguage(1);
 
-        verify(settingsManagerMock.setLocale(AppIntl.supportedLocales.last.languageCode));
+        verify(settingsManagerMock.locale = AppIntl.supportedLocales.last);
         verify(navigationServiceMock.pop());
         verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
       });
 
       test('throws an error when index does not exist', () async {
-        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.theme);
-
         expect(
           () => viewModel.changeLanguage(-1),
           throwsException,

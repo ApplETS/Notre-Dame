@@ -7,13 +7,12 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'settings_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([
   MockSpec<SettingsRepository>(),
-  MockSpec<DashboardSettings>(),
   MockSpec<ScheduleSettings>(),
+  MockSpec<DashboardSettings>(),
   MockSpec<RatingSettings>(),
 ])
 class SettingsRepositoryMock extends MockSettingsRepository {
@@ -40,5 +39,20 @@ class SettingsRepositoryMock extends MockSettingsRepository {
   /// Stub the [isLoggedIn] getter
   static void stubIsLoggedIn(SettingsRepositoryMock mock, {bool toReturn = false}) {
     when(mock.isLoggedIn).thenReturn(toReturn);
+  }
+
+  /// Stub the [displayScheduleAsList] getter
+  static void stubDashboardScheduleAsList(SettingsRepositoryMock mock, {bool toReturn = false}) {
+    when(mock.dashboard.displayScheduleAsList).thenReturn(toReturn);
+  }
+
+  /// Stub the [hasBeenRequested] getter
+  static void stubRatingHasBeenRequested(SettingsRepositoryMock mock, {bool toReturn = false}) {
+    when(mock.rating.hasBeenRequested).thenReturn(toReturn);
+  }
+
+  /// Stub the [timer] getter
+  static void stubRatingTimer(SettingsRepositoryMock mock, {DateTime? toReturn}) {
+    when(mock.rating.timer).thenReturn(toReturn);
   }
 }
