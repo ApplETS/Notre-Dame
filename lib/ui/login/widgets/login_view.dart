@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -58,37 +58,47 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: ElevatedButton(
+                  child: Stack(
+                    alignment: Alignment.centerRight,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          setState(() {
+                          _isLoading = true;
+                          });
+                        model.authenticate();
+                        },
+                        icon: const FaIcon(FontAwesomeIcons.lockOpen, color: Colors.white),
+                        label: Text(
+                          AppIntl.of(context)!.login_action_sign_in,
+                          style: TextStyle(color: AppPalette.grey.white, fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppPalette.grey.darkGrey,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                          minimumSize: const Size(300, 50)
+                        ),
+                      ),
+                      if (_isLoading) ...[
+                        CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppPalette.grey.white)),
+                      ],
+                  ]
+                ),
+              ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: ElevatedButton.icon(
                     onPressed: () {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      model.authenticate();
+                      model.navigationService.pushNamed(RouterPaths.faq);
                     },
+                    icon: const FaIcon(FontAwesomeIcons.question, color: Colors.white),
+                    label: Text("FAQ"),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppPalette.grey.black,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
-                    child: Text(
-                      AppIntl.of(context)!.login_action_sign_in,
-                      style: TextStyle(color: AppPalette.grey.white, fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: IconButton(
-                    tooltip: "FAQ",
-                    onPressed: () {
-                      model.navigationService.pushNamed(RouterPaths.faq);
-                    },
-                    icon: const FaIcon(FontAwesomeIcons.instagram, color: Colors.white),
-                  ),
-                ),
-                if (_isLoading) ...[
-                  const SizedBox(height: 15),
-                  CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppPalette.grey.white)),
-                ],
               ],
             ),
           ),
