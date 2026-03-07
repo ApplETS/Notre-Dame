@@ -7,10 +7,17 @@ import 'package:flutter_test/flutter_test.dart';
 // Project imports:
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/domain/session_reminder_type.dart';
+import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_bottom_sheet.dart';
 import '../../../helpers.dart';
 
 void main() {
+  late AppIntl intl;
+
+  setUp(() async {
+    intl = await setupAppIntl();
+  });
+
   group("SessionReminderBottomSheet -", () {
     testWidgets("displays title and all reminders", (WidgetTester tester) async {
       final reminders = [
@@ -26,10 +33,10 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: SessionReminderBottomSheet(reminders: reminders)));
       await tester.pumpAndSettle();
 
-      expect(find.text("Upcoming Dates"), findsOneWidget);
-      expect(find.text("Registration Closes"), findsOneWidget);
-      expect(find.text("Cancellation with refund begins"), findsOneWidget);
-      expect(find.text("ASEQ Opt-Out Ends"), findsOneWidget);
+      expect(find.text(intl.session_reminder_bottom_sheet_title), findsOneWidget);
+      expect(find.text(intl.session_reminder_registration_deadline), findsOneWidget);
+      expect(find.text(intl.session_reminder_cancellation_refund_start), findsOneWidget);
+      expect(find.text(intl.session_reminder_cancellation_aseq), findsOneWidget);
     });
 
     testWidgets("highlights today's reminder with Today! text", (WidgetTester tester) async {
@@ -45,7 +52,7 @@ void main() {
       await tester.pumpWidget(localizedWidget(child: SessionReminderBottomSheet(reminders: reminders)));
       await tester.pumpAndSettle();
 
-      expect(find.text("Today!"), findsOneWidget);
+      expect(find.text(intl.session_reminder_today), findsOneWidget);
     });
 
     testWidgets("displays icons for each reminder type", (WidgetTester tester) async {
