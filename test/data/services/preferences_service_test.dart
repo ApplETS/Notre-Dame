@@ -11,28 +11,40 @@ void main() {
   late SharedPreferences sharedPreferences;
   late PreferencesService service;
 
-  SharedPreferences.setMockInitialValues({});
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group("PreferencesService - ", () {
     setUp(() async {
-      sharedPreferences = await SharedPreferences.getInstance();
+      SharedPreferences.setMockInitialValues({});
+
       setupAnalyticsServiceMock();
+
       service = PreferencesService();
-      service.initialize();
+      await service.initialize();
+
+      sharedPreferences = await SharedPreferences.getInstance();
     });
 
     group("getters - ", () {
-      test("getBool", () {
+      test("getBool", () async {
         SharedPreferences.setMockInitialValues({PreferencesFlag.scheduleListView.toString(): true});
+        await service.initialize();
 
         expect(service.getBool(PreferencesFlag.scheduleListView), isTrue);
       });
 
-      test("getString", () {
+      test("getString", () async {
         SharedPreferences.setMockInitialValues({PreferencesFlag.scheduleCalendarFormat.toString(): "Test"});
+        await service.initialize();
 
         expect(service.getString(PreferencesFlag.scheduleCalendarFormat), "Test");
+      });
+
+      test("getDynamicString", () async {
+        SharedPreferences.setMockInitialValues({"${PreferencesFlag.scheduleLaboratoryGroup}_GEN101": "Test"});
+        await service.initialize();
+
+        expect(service.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, "GEN101"), "Test");
       });
     });
 
@@ -46,27 +58,44 @@ void main() {
         expect(await service.setString(PreferencesFlag.scheduleCalendarFormat, "Test"), isTrue);
         expect(sharedPreferences.getString(PreferencesFlag.scheduleCalendarFormat.toString()), "Test");
       });
+
+      test("setDynamicString", () async {
+        expect(await service.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, "GEN101", "Test"), isTrue);
+        expect(sharedPreferences.getString("${PreferencesFlag.scheduleLaboratoryGroup}_GEN101"), "Test");
+      });
+
+      group("setters with null values - ", () {
+        test("setBool", () async {
+          expect(await service.setBool(PreferencesFlag.scheduleCalendarFormat, null), isTrue);
+          expect(sharedPreferences.getBool(PreferencesFlag.scheduleCalendarFormat.toString()), isNull);
+        });
+
+        test("setString", () async {
+          expect(await service.setString(PreferencesFlag.scheduleCalendarFormat, null), isTrue);
+          expect(sharedPreferences.getString(PreferencesFlag.scheduleCalendarFormat.toString()), isNull);
+        });
+
+        test("setDynamicString", () async {
+          expect(await service.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, "GEN101", null), isTrue);
+          expect(sharedPreferences.getString("${PreferencesFlag.scheduleLaboratoryGroup}_GEN101"), isNull);
+        });
+      });
     });
 
-    test("clear", () async {
-      SharedPreferences.setMockInitialValues({PreferencesFlag.scheduleCalendarFormat.toString(): true});
+    test("clearWithoutPersistentKey", () async {
+      SharedPreferences.setMockInitialValues({
+        PreferencesFlag.scheduleListView.toString(): true,
+        PreferencesFlag.hasRatingBeenRequested.toString(): true,
+      });
 
-      expect(service.getBool(PreferencesFlag.scheduleCalendarFormat), isTrue);
+      await service.initialize();
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.clear();
-
-      expect(service.getBool(PreferencesFlag.scheduleCalendarFormat), null);
-    });
-
-    test("clearWithoutPersistentKey", () {
-      SharedPreferences.setMockInitialValues({PreferencesFlag.scheduleCalendarFormat.toString(): true});
-
-      expect(service.getBool(PreferencesFlag.scheduleCalendarFormat), isTrue);
+      expect(service.getBool(PreferencesFlag.scheduleListView), isTrue);
 
       service.clearWithoutPersistentKey();
 
-      expect(service.getBool(PreferencesFlag.scheduleCalendarFormat), null);
+      expect(service.getBool(PreferencesFlag.scheduleListView), isNull);
+      expect(service.getBool(PreferencesFlag.hasRatingBeenRequested), isTrue);
     });
   });
 }

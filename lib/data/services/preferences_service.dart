@@ -19,8 +19,12 @@ class PreferencesService {
     return _prefs.getBool(flag.toString());
   }
 
-  Future<bool> setBool(PreferencesFlag flag, bool value) {
+  Future<bool> setBool(PreferencesFlag flag, bool? value) {
     _analyticsService.logEvent("${_tag}_${flag.name}", 'setBool');
+
+    if (value == null) {
+      return _removePreferencesFlag(flag);
+    }
 
     return _prefs.setBool(flag.toString(), value);
   }
@@ -35,7 +39,7 @@ class PreferencesService {
     _analyticsService.logEvent("${_tag}_${flag.name}", 'setString');
 
     if (value == null) {
-      return removePreferencesFlag(flag);
+      return _removePreferencesFlag(flag);
     }
 
     return _prefs.setString(flag.toString(), value);
@@ -83,7 +87,7 @@ class PreferencesService {
     });
   }
 
-  Future<bool> removePreferencesFlag(PreferencesFlag flag) {
+  Future<bool> _removePreferencesFlag(PreferencesFlag flag) {
     return _prefs.remove(flag.toString());
   }
 
