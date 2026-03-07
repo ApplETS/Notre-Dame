@@ -312,11 +312,6 @@ AuthServiceMock setupAuthServiceMock() {
   return repository;
 }
 
-bool getCalendarViewEnabled() {
-  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
-  return remoteConfigService.scheduleListViewDefault;
-}
-
 BroadcastMessageRepositoryMock setupBroadcastMessageRepositoryMock() {
   unregister<BroadcastMessageRepository>();
   final BroadcastMessageRepositoryMock repository = BroadcastMessageRepositoryMock();

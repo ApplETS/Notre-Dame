@@ -14,11 +14,11 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import '../../helpers.dart';
 import '../mocks/repositories/course_repository_mock.dart';
-import '../mocks/repositories/settings_repository_mock.dart';
+import '../mocks/services/preferences_service_mock.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});
-  late SettingsRepositoryMock settingsManagerMock;
+  late PreferencesServiceMock preferencesServiceMock;
   late CourseRepositoryMock courseRepositoryMock;
   late ScheduleService service;
 
@@ -90,14 +90,15 @@ void main() {
 
   group("Creates map - ", () {
     setUp(() {
-      settingsManagerMock = setupSettingsRepositoryMock();
+      preferencesServiceMock = setupPreferencesServiceMock();
       courseRepositoryMock = setupCourseRepositoryMock();
+      setupSettingsRepositoryMock();
 
-      SettingsRepositoryMock.stubGetDynamicString(
-        settingsManagerMock,
+      PreferencesServiceMock.stubGetDynamicString(
+        preferencesServiceMock,
         PreferencesFlag.scheduleLaboratoryGroup,
         "GEN101",
-        toReturn: ActivityCode.labGroupB,
+        toReturn: ActivityCode.labGroupA,
       );
 
       CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
