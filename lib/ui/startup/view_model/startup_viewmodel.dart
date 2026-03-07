@@ -1,6 +1,7 @@
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:msal_auth/msal_auth.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -17,6 +18,7 @@ import 'package:notredame/locator.dart';
 class StartUpViewModel extends BaseViewModel {
   /// Manage the settings
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
+  final PreferencesService _preferencesService = locator<PreferencesService>();
   final AuthService _authService = locator<AuthService>();
   final NetworkingService _networkingService = locator<NetworkingService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -29,7 +31,7 @@ class StartUpViewModel extends BaseViewModel {
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
 
-    if (_settingsManager.getString(PreferencesFlag.locale) == null) {
+    if (_preferencesService.getString(PreferencesFlag.locale) == null) {
       _navigationService.pushNamed(RouterPaths.chooseLanguage);
       return;
     }
@@ -48,7 +50,7 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = (await _authService.acquireTokenSilent()).$2 == null;
 
     if (isLogin) {
-      _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
+      _settingsManager.isLoggedIn = true;
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
     } else {
       AuthenticationResult? token;
@@ -65,7 +67,7 @@ class StartUpViewModel extends BaseViewModel {
         }
       }
 
-      _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
+      _settingsManager.isLoggedIn = true;
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
     }
   }
@@ -76,8 +78,7 @@ class StartUpViewModel extends BaseViewModel {
   /// with the cached data
   Future<bool> handleConnectivityIssues() async {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
-    final wasLoggedIn = _settingsManager.getBool(PreferencesFlag.isLoggedIn) ?? false;
-    if (hasConnectivityIssues && wasLoggedIn) {
+    if (hasConnectivityIssues && _settingsManager.isLoggedIn) {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
       return true;
     }

@@ -84,7 +84,7 @@ class MoreViewModel extends FutureViewModel {
     _preferencesService.clearWithoutPersistentKey();
 
     await _authService.signOut();
-    _settingsManager.setBool(PreferencesFlag.isLoggedIn, false);
+    _settingsManager.isLoggedIn = false;
 
     // clear all previous cached value in courseRepository
     _courseRepository.sessions?.clear();
@@ -94,17 +94,14 @@ class MoreViewModel extends FutureViewModel {
     setBusy(false);
   }
 
-  static Future<bool> launchInAppReview() async {
-    final PreferencesService preferencesService = locator<PreferencesService>();
+  static Future<void> launchInAppReview() async {
+    final SettingsRepository settingsManager = locator<SettingsRepository>();
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
     if (await inAppReviewService.isAvailable()) {
       await inAppReviewService.openStoreListing();
-      preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, true);
-
-      return true;
+      settingsManager.rating.hasRatingBeenRequested = true;
     }
-    return false;
   }
 
   static Future<void> launchPrivacyPolicy() async {

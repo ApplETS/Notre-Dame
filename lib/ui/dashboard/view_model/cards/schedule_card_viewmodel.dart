@@ -10,8 +10,6 @@ import 'package:notredame/data/services/signets-api/models/course_activity.dart'
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
-import '../../../../domain/constants/preferences_flags.dart';
-
 class ScheduleCardViewmodel extends FutureViewModel {
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
@@ -31,7 +29,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
     return _tomorrow;
   }
 
-  bool get listView => _settingsManager.dashboardScheduleList;
+  bool get listView => _settingsManager.dashboard.dashboardScheduleList;
 
   ScheduleCardViewmodel({required AppIntl intl}) : _appIntl = intl;
 

@@ -16,9 +16,7 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import '../../../data/services/in_app_review_service.dart';
-import '../../../data/services/preferences_service.dart';
-import '../../../domain/constants/preferences_flags.dart';
+import 'package:notredame/data/services/in_app_review_service.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
@@ -55,17 +53,16 @@ class DashboardViewModel extends FutureViewModel {
   List<int> get sessionDays => _sessionDays;
 
   static Future<bool> launchInAppReview() async {
-    final PreferencesService preferencesService = locator<PreferencesService>();
+    final SettingsRepository settingsManager = locator<SettingsRepository>();
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
-    DateTime? ratingTimerFlagDate = preferencesService.getDateTime(PreferencesFlag.ratingTimer);
-
-    final hasRatingBeenRequested = preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
+    DateTime? ratingTimerFlagDate = settingsManager.rating.ratingTimer;
+    final hasRatingBeenRequested = settingsManager.rating.hasRatingBeenRequested;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
     if (ratingTimerFlagDate == null) {
       final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
-      preferencesService.setDateTime(PreferencesFlag.ratingTimer, sevenDaysLater);
+      settingsManager.rating.ratingTimer = sevenDaysLater;
       ratingTimerFlagDate = sevenDaysLater;
     }
 
@@ -74,7 +71,7 @@ class DashboardViewModel extends FutureViewModel {
         DateTime.now().isAfter(ratingTimerFlagDate)) {
       await Future.delayed(const Duration(seconds: 2), () async {
         await inAppReviewService.requestReview();
-        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, true);
+        settingsManager.rating.hasRatingBeenRequested = true;
       });
 
       return true;

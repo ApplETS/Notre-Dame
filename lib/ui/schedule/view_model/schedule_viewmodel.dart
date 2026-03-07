@@ -9,7 +9,7 @@ import 'package:notredame/locator.dart';
 class ScheduleViewModel extends BaseViewModel {
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
-  CalendarTimeFormat get calendarFormat => _settingsManager.calendarFormat;
-  bool get listView => _settingsManager.scheduleListView;
-  bool get showTodayButton => _settingsManager.showTodayButton;
+  CalendarTimeFormat get calendarFormat => _settingsManager.schedule.calendarFormat;
+  bool get listView => _settingsManager.schedule.scheduleListView;
+  bool get showTodayButton => _settingsManager.schedule.showTodayButton;
 }

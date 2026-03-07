@@ -27,27 +27,27 @@ class ScheduleSettingsViewModel extends FutureViewModel {
   // Access the course repository
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  CalendarTimeFormat? get calendarFormat => _settingsManager.calendarFormat;
+  CalendarTimeFormat? get calendarFormat => _settingsManager.schedule.calendarFormat;
 
   set calendarFormat(CalendarTimeFormat format) {
-    _settingsManager.calendarFormat = format;
+    _settingsManager.schedule.calendarFormat = format;
     _controller.settingsUpdated();
   }
 
-  bool get showTodayBtn => _settingsManager.showTodayButton;
+  bool get showTodayBtn => _settingsManager.schedule.showTodayButton;
 
   set showTodayBtn(bool newValue) {
     setBusy(true);
-    _settingsManager.showTodayButton = newValue;
+    _settingsManager.schedule.showTodayButton = newValue;
     _controller.settingsUpdated();
     setBusy(false);
   }
 
-  bool get listViewFormat => _settingsManager.scheduleListView;
+  bool get listViewFormat => _settingsManager.schedule.scheduleListView;
 
   set listViewFormat(bool newValue) {
     setBusy(true);
-    _settingsManager.scheduleListView = newValue;
+    _settingsManager.schedule.scheduleListView = newValue;
     _controller.settingsUpdated();
     setBusy(false);
   }

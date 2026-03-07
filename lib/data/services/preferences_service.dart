@@ -14,7 +14,11 @@ class PreferencesService {
     return _prefs.setBool(flag.toString(), value);
   }
 
-  Future<bool> setString(PreferencesFlag flag, String value) {
+  Future<bool> setString(PreferencesFlag flag, String? value) {
+    if (value == null) {
+      return removePreferencesFlag(flag);
+    }
+
     return _prefs.setString(flag.toString(), value);
   }
 
@@ -48,10 +52,6 @@ class PreferencesService {
     });
   }
 
-  Object? getPreferencesFlag(PreferencesFlag flag) {
-    return _prefs.get(flag.toString());
-  }
-
   Future<bool> removePreferencesFlag(PreferencesFlag flag) {
     return _prefs.remove(flag.toString());
   }
@@ -60,20 +60,8 @@ class PreferencesService {
     return _prefs.remove('${flag}_$key');
   }
 
-  Future<bool> setInt(PreferencesFlag flag, int value) async {
-    return _prefs.setInt(flag.toString(), value);
-  }
-
-  Future<bool> setDateTime(PreferencesFlag flag, DateTime value) async {
-    return _prefs.setString(flag.toString(), value.toIso8601String());
-  }
-
   bool? getBool(PreferencesFlag flag) {
     return _prefs.getBool(flag.toString());
-  }
-
-  int? getInt(PreferencesFlag flag) {
-    return _prefs.getInt(flag.toString());
   }
 
   String? getString(PreferencesFlag flag) {
@@ -82,16 +70,6 @@ class PreferencesService {
 
   String? getDynamicString(PreferencesFlag flag, String key) {
     return _prefs.getString('${flag}_$key');
-  }
-
-  DateTime? getDateTime(PreferencesFlag flag) {
-    final flagPreference = _prefs.getString(flag.toString());
-
-    if (flagPreference != null) {
-      return DateTime.parse(flagPreference);
-    }
-
-    return null;
   }
 
   Future<void> initialize() async {
