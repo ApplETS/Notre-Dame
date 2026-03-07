@@ -3,7 +3,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
@@ -13,10 +12,6 @@ import 'package:notredame/locator.dart';
 final PreferencesService _preferencesService = locator<PreferencesService>();
 
 class SettingsRepository with ChangeNotifier {
-  static const String tag = "SettingsManager";
-
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
-
   final DashboardSettings _dashboardSettings = DashboardSettings();
 
   DashboardSettings get dashboard => _dashboardSettings;
@@ -61,22 +56,6 @@ class SettingsRepository with ChangeNotifier {
   bool get isLoggedIn => _preferencesService.getBool(PreferencesFlag.isLoggedIn) ?? false;
 
   set isLoggedIn(bool value) => _preferencesService.setBool(PreferencesFlag.isLoggedIn, value);
-
-  /// Add/update the value of [flag]
-  Future<bool> setDynamicString(PreferencesFlag flag, String key, String? value) async {
-    if (value == null) {
-      return _preferencesService.removeDynamicPreferencesFlag(flag, key);
-    }
-
-    _analyticsService.logEvent("${tag}_$flag", value);
-    return _preferencesService.setDynamicString(flag, key, value);
-  }
-
-  /// Get the value of [flag]
-  String? getDynamicString(PreferencesFlag flag, String key) {
-    _analyticsService.logEvent("${tag}_$flag", 'getString');
-    return _preferencesService.getDynamicString(flag, key);
-  }
 }
 
 class DashboardSettings {
@@ -102,6 +81,12 @@ class ScheduleSettings {
   bool get todayButton => _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
 
   set todayButton(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleShowTodayBtn, value);
+
+  String? getLaboratoryGroup(String courseAcronym) =>
+      _preferencesService.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseAcronym);
+
+  Future<void> setLaboratoryGroup(String courseAcronym, String? activityCode) async =>
+      await _preferencesService.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, activityCode);
 }
 
 class RatingSettings {

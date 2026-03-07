@@ -11,7 +11,6 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 
@@ -66,14 +65,10 @@ class ScheduleSettingsViewModel extends FutureViewModel {
   Future selectScheduleActivity(String courseAcronym, ScheduleActivity? scheduleActivityToSave) async {
     setBusy(true);
     if (scheduleActivityToSave == null) {
-      await _settingsManager.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, null);
+      await _settingsManager.schedule.setLaboratoryGroup(courseAcronym, null);
       _selectedScheduleActivity.remove(courseAcronym);
     } else {
-      await _settingsManager.setDynamicString(
-        PreferencesFlag.scheduleLaboratoryGroup,
-        courseAcronym,
-        scheduleActivityToSave.activityCode,
-      );
+      await _settingsManager.schedule.setLaboratoryGroup(courseAcronym, scheduleActivityToSave.activityCode);
       _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
     setBusy(false);
@@ -104,10 +99,8 @@ class ScheduleSettingsViewModel extends FutureViewModel {
 
     // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
-      final scheduleActivityCode = _settingsManager.getDynamicString(
-        PreferencesFlag.scheduleLaboratoryGroup,
-        courseKey,
-      );
+      final scheduleActivityCode = _settingsManager.schedule.getLaboratoryGroup(courseKey);
+
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]?.firstWhereOrNull(
         (element) => element.activityCode == scheduleActivityCode,
       );

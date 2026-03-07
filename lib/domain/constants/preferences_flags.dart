@@ -14,10 +14,10 @@ enum PreferencesFlag {
   // Theme flag
   theme,
 
-  // Rating flag
+  // Rating flags
   ratingTimer,
   hasRatingBeenRequested,
 
-  // Authentication flags
+  // Authentication flag
   isLoggedIn,
 }
