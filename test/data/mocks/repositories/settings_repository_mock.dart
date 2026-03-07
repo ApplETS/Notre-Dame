@@ -9,6 +9,10 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'settings_repository_mock.mocks.dart';
 
+final _dashboard = DashboardSettingsMock();
+final _schedule = ScheduleSettingsMock();
+final _rating = RatingSettingsMock();
+
 @GenerateNiceMocks([
   MockSpec<SettingsRepository>(),
   MockSpec<ScheduleSettings>(),
@@ -16,6 +20,16 @@ import 'settings_repository_mock.mocks.dart';
   MockSpec<RatingSettings>(),
 ])
 class SettingsRepositoryMock extends MockSettingsRepository {
+
+  @override
+  DashboardSettings get dashboard => _dashboard;
+
+  @override
+  ScheduleSettings get schedule => _schedule;
+
+  @override
+  RatingSettings get rating => _rating;
+
   /// Stub the [locale] getter
   static void stubLocale(SettingsRepositoryMock mock, {Locale toReturn = const Locale('fr')}) {
     when(mock.locale).thenReturn(toReturn);
@@ -43,7 +57,7 @@ class SettingsRepositoryMock extends MockSettingsRepository {
 
   /// Stub the [displayScheduleAsList] getter
   static void stubDashboardScheduleAsList(SettingsRepositoryMock mock, {bool toReturn = false}) {
-    when(mock.dashboard.displayScheduleAsList).thenReturn(toReturn);
+    when(_dashboard.displayScheduleAsList).thenReturn(toReturn);
   }
 
   /// Stub the [hasBeenRequested] getter
@@ -56,3 +70,9 @@ class SettingsRepositoryMock extends MockSettingsRepository {
     when(mock.rating.timer).thenReturn(toReturn);
   }
 }
+
+class DashboardSettingsMock extends MockDashboardSettings {}
+
+class ScheduleSettingsMock extends MockScheduleSettings {}
+
+class RatingSettingsMock extends MockRatingSettings {}

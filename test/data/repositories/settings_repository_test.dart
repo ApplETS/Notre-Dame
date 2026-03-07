@@ -69,6 +69,8 @@ void main() {
         repository.locale;
 
         verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
+
+        verifyNoMoreInteractions(preferencesServiceMock);
       });
 
       test("set french/english", () {
