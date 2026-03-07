@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -36,9 +38,15 @@ class _LoginViewState extends State<LoginView> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    'AppETS',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26, color: AppPalette.grey.white),
+                  child: Hero(
+                    tag: 'ets_logo',
+                    child: SvgPicture.asset(
+                      "assets/images/ets_white_logo.svg",
+                      excludeFromSemantics: true,
+                      width: 90,
+                      height: 90,
+                      colorFilter: ColorFilter.mode(context.theme.appColors.loginAccent, BlendMode.srcIn),
+                    ),
                   ),
                 ),
                 Padding(
@@ -69,18 +77,12 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
-                  child: ElevatedButton(
+                  child: IconButton(
+                    tooltip: "FAQ",
                     onPressed: () {
                       model.navigationService.pushNamed(RouterPaths.faq);
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppPalette.grey.black,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                    child: Text(
-                      'FAQ',
-                      style: TextStyle(color: AppPalette.grey.white, fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
+                    icon: const FaIcon(FontAwesomeIcons.instagram, color: Colors.white),
                   ),
                 ),
                 if (_isLoading) ...[
