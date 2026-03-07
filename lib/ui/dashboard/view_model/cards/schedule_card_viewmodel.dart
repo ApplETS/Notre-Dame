@@ -29,7 +29,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
     return _tomorrow;
   }
 
-  bool get listView => _settingsManager.dashboard.dashboardScheduleList;
+  bool get listView => _settingsManager.dashboard.displayScheduleAsList;
 
   ScheduleCardViewmodel({required AppIntl intl}) : _appIntl = intl;
 

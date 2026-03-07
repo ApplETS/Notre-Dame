@@ -80,9 +80,9 @@ class SettingsRepository with ChangeNotifier {
 }
 
 class DashboardSettings {
-  bool get dashboardScheduleList => _preferencesService.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
+  bool get displayScheduleAsList => _preferencesService.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
 
-  set dashboardScheduleList(bool value) => _preferencesService.setBool(PreferencesFlag.dashboardScheduleList, value);
+  set displayScheduleAsList(bool value) => _preferencesService.setBool(PreferencesFlag.dashboardScheduleList, value);
 }
 
 class ScheduleSettings {
@@ -95,17 +95,17 @@ class ScheduleSettings {
   set calendarFormat(CalendarTimeFormat format) =>
       _preferencesService.setString(PreferencesFlag.scheduleCalendarFormat, format.name);
 
-  bool get scheduleListView => _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? false;
+  bool get listView => _preferencesService.getBool(PreferencesFlag.scheduleListView) ?? false;
 
-  set scheduleListView(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleListView, value);
+  set listView(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleListView, value);
 
-  bool get showTodayButton => _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
+  bool get todayButton => _preferencesService.getBool(PreferencesFlag.scheduleShowTodayBtn) ?? true;
 
-  set showTodayButton(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleShowTodayBtn, value);
+  set todayButton(bool value) => _preferencesService.setBool(PreferencesFlag.scheduleShowTodayBtn, value);
 }
 
 class RatingSettings {
-  DateTime? get ratingTimer {
+  DateTime? get timer {
     String? dateAsString = _preferencesService.getString(PreferencesFlag.ratingTimer);
 
     if (dateAsString != null) {
@@ -115,10 +115,9 @@ class RatingSettings {
     return null;
   }
 
-  set ratingTimer(DateTime value) =>
-      _preferencesService.setString(PreferencesFlag.ratingTimer, value.toIso8601String());
+  set timer(DateTime value) => _preferencesService.setString(PreferencesFlag.ratingTimer, value.toIso8601String());
 
-  bool get hasRatingBeenRequested => _preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
+  bool get hasBeenRequested => _preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
 
-  set hasRatingBeenRequested(bool value) => _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value);
+  set hasBeenRequested(bool value) => _preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value);
 }

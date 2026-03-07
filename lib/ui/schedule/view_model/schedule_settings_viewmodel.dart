@@ -34,20 +34,20 @@ class ScheduleSettingsViewModel extends FutureViewModel {
     _controller.settingsUpdated();
   }
 
-  bool get showTodayBtn => _settingsManager.schedule.showTodayButton;
+  bool get showTodayBtn => _settingsManager.schedule.todayButton;
 
   set showTodayBtn(bool newValue) {
     setBusy(true);
-    _settingsManager.schedule.showTodayButton = newValue;
+    _settingsManager.schedule.todayButton = newValue;
     _controller.settingsUpdated();
     setBusy(false);
   }
 
-  bool get listViewFormat => _settingsManager.schedule.scheduleListView;
+  bool get listViewFormat => _settingsManager.schedule.listView;
 
   set listViewFormat(bool newValue) {
     setBusy(true);
-    _settingsManager.schedule.scheduleListView = newValue;
+    _settingsManager.schedule.listView = newValue;
     _controller.settingsUpdated();
     setBusy(false);
   }

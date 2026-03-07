@@ -56,13 +56,13 @@ class DashboardViewModel extends FutureViewModel {
     final SettingsRepository settingsManager = locator<SettingsRepository>();
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
-    DateTime? ratingTimerFlagDate = settingsManager.rating.ratingTimer;
-    final hasRatingBeenRequested = settingsManager.rating.hasRatingBeenRequested;
+    DateTime? ratingTimerFlagDate = settingsManager.rating.timer;
+    final hasRatingBeenRequested = settingsManager.rating.hasBeenRequested;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
     if (ratingTimerFlagDate == null) {
       final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
-      settingsManager.rating.ratingTimer = sevenDaysLater;
+      settingsManager.rating.timer = sevenDaysLater;
       ratingTimerFlagDate = sevenDaysLater;
     }
 
@@ -71,7 +71,7 @@ class DashboardViewModel extends FutureViewModel {
         DateTime.now().isAfter(ratingTimerFlagDate)) {
       await Future.delayed(const Duration(seconds: 2), () async {
         await inAppReviewService.requestReview();
-        settingsManager.rating.hasRatingBeenRequested = true;
+        settingsManager.rating.hasBeenRequested = true;
       });
 
       return true;
