@@ -1,5 +1,4 @@
 // Package imports:
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:msal_auth/msal_auth.dart';
 import 'package:stacked/stacked.dart';
 
@@ -51,22 +50,7 @@ class StartUpViewModel extends BaseViewModel {
       _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
     } else {
-      AuthenticationResult? token;
-      int attempts = 0;
-      const maxAttempts = 3;
-
-      while (token == null && attempts < maxAttempts) {
-        attempts++;
-        token = (await _authService.acquireToken()).$1;
-        if (token == null && attempts >= maxAttempts) {
-          Fluttertoast.showToast(msg: intl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
-          await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
-          return;
-        }
-      }
-
-      _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
     }
   }
 
