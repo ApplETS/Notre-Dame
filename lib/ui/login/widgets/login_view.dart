@@ -64,9 +64,9 @@ class _LoginViewState extends State<LoginView> {
                       ElevatedButton.icon(
                         onPressed: () {
                           setState(() {
-                          _isLoading = true;
+                            _isLoading = true;
                           });
-                        model.authenticate();
+                          model.authenticate();
                         },
                         icon: const FaIcon(FontAwesomeIcons.lockOpen, color: Colors.white),
                         label: Text(
@@ -76,15 +76,15 @@ class _LoginViewState extends State<LoginView> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppPalette.grey.darkGrey,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                          minimumSize: const Size(300, 50)
+                          minimumSize: const Size(300, 50),
                         ),
                       ),
                       if (_isLoading) ...[
                         CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppPalette.grey.white)),
                       ],
-                  ]
+                    ],
+                  ),
                 ),
-              ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: ElevatedButton.icon(
