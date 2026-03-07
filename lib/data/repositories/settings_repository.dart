@@ -28,10 +28,8 @@ class SettingsRepository with ChangeNotifier {
   DateTime get dateTimeNow => DateTime.now();
 
   Locale get locale {
-    return AppIntl.supportedLocales.firstWhereOrNull(
-          (e) => e.languageCode == _preferencesService.getString(PreferencesFlag.locale),
-        ) ??
-        const Locale('fr');
+    String? languageCode = _preferencesService.getString(PreferencesFlag.locale);
+    return AppIntl.supportedLocales.firstWhereOrNull((e) => e.languageCode == languageCode) ?? const Locale('fr');
   }
 
   set locale(Locale? value) {
@@ -42,10 +40,8 @@ class SettingsRepository with ChangeNotifier {
   }
 
   ThemeMode get themeMode {
-    return ThemeMode.values.firstWhereOrNull(
-          (e) => e.toString() == _preferencesService.getString(PreferencesFlag.theme),
-        ) ??
-        ThemeMode.system;
+    String? themeString = _preferencesService.getString(PreferencesFlag.theme);
+    return ThemeMode.values.firstWhereOrNull((e) => e.toString() == themeString) ?? ThemeMode.system;
   }
 
   set themeMode(ThemeMode? value) {

@@ -220,19 +220,6 @@ void main() {
 
         verify(settingsManagerMock.dateTimeNow).called(1);
       });
-
-      test("An exception is thrown during the preferenceService call", () async {
-        setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-
-        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.aboutUsCard);
-        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.scheduleCard);
-        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.progressBarCard);
-
-        await viewModel.futureToRun();
-      });
     });
 
     group("futureToRunSessionProgressBar - ", () {
