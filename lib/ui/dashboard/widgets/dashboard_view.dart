@@ -30,14 +30,14 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
   Widget build(BuildContext context) {
     return ViewModelBuilder<DashboardViewModel>.reactive(
       viewModelBuilder: () {
-        final model = DashboardViewModel(intl: AppIntl.of(context)!);
-        model.init(this);
-        return model;
+        final viewModel = DashboardViewModel(intl: AppIntl.of(context)!);
+        viewModel.init(this);
+        return viewModel;
       },
       builder: (context, model, child) {
         return BaseScaffold(
           body: RefreshIndicator(
-            onRefresh: model.loadDataAndUpdateWidget,
+            onRefresh: model.futureToRun,
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(

@@ -1,0 +1,1910 @@
+// Dart imports:
+import 'dart:math';
+
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:notredame/data/models/dynamic_message.dart';
+import 'package:notredame/data/models/dynamic_message_context.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/utils/date_utils.dart';
+
+void main() {
+  late DynamicMessagesService engine;
+
+  final referenceDate = DateTime(2024, 2, 12);
+
+  Session createSession({required DateTime startDate, required DateTime endDate}) {
+    return Session(
+      shortName: 'TEST',
+      name: 'Test Session',
+      startDate: startDate,
+      endDate: endDate,
+      endDateCourses: endDate,
+      startDateRegistration: startDate.subtract(const Duration(days: 30)),
+      deadlineRegistration: startDate.subtract(const Duration(days: 15)),
+      startDateCancellationWithRefund: startDate,
+      deadlineCancellationWithRefund: startDate.add(const Duration(days: 7)),
+      deadlineCancellationWithRefundNewStudent: startDate.add(const Duration(days: 14)),
+      startDateCancellationWithoutRefundNewStudent: startDate.add(const Duration(days: 15)),
+      deadlineCancellationWithoutRefundNewStudent: startDate.add(const Duration(days: 30)),
+      deadlineCancellationASEQ: startDate.add(const Duration(days: 7)),
+    );
+  }
+
+  final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+  CourseActivity createActivity(DateTime date) {
+    return CourseActivity(
+      courseGroup: 'TEST101',
+      courseName: 'Test Course',
+      activityName: 'Lecture',
+      activityDescription: 'Test lecture',
+      activityLocation: ['A-1234'],
+      startDateTime: date,
+      endDateTime: date.add(const Duration(hours: 3)),
+    );
+  }
+
+  DynamicMessageContext createContext({
+    DateTime? now,
+    Session? session,
+    List<CourseActivity>? courseActivities,
+    List<ReplacedDay>? replacedDays,
+    int? daysRemaining,
+    int? finalsDaysRemaining,
+    int? weeksCompleted,
+    int? courseWeeksRemaining,
+    int? courseDaysThisWeek,
+    DateTime? nextSessionStartDate,
+  }) {
+    final defaultSession = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 6, 30));
+
+    return DynamicMessageContext(
+      now: now ?? DateTime(2024, 3, 15),
+      session: session ?? defaultSession,
+      courseActivities: courseActivities ?? [],
+      replacedDays: replacedDays ?? [],
+      courseDaysRemaining: daysRemaining ?? 107,
+      finalsDaysRemaining: finalsDaysRemaining,
+      weeksCompleted: weeksCompleted ?? 10,
+      courseWeeksRemaining: courseWeeksRemaining ?? 15,
+      courseDaysThisWeek: courseDaysThisWeek ?? 3,
+      nextSessionStartDate: nextSessionStartDate,
+    );
+  }
+
+  DateTime weekday(DateTime reference, int targetWeekday, {int week = 0, int hour = 0, int minute = 0}) {
+    final startOfWeek = reference.subtract(Duration(days: reference.weekday - 1));
+    final target = startOfWeek.add(Duration(days: (week * 7) + (targetWeekday - 1)));
+    return DateTime(target.year, target.month, target.day, hour, minute);
+  }
+
+  setUp(() {
+    engine = DynamicMessagesService();
+  });
+
+  group('DynamicMessagesService -', () {
+    group('SessionStartsSoonMessage -', () {
+      test('returns SessionStartsSoonMessage when finals over and next session within 30 days', () {
+        final nextStart = DateTime(2024, 4, 1);
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3, nextSessionStartDate: nextStart);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionStartsSoonMessage>());
+        expect((message as SessionStartsSoonMessage).startDate, nextStart);
+      });
+
+      test('returns SessionCompletedMessage when finals over and next session more than 30 days away', () {
+        final nextStart = DateTime(2024, 9, 1);
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3, nextSessionStartDate: nextStart);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+
+      test('returns SessionCompletedMessage when finals over but no next session', () {
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+
+      test('returns SessionStartsSoonMessage when courses over (no finals) and next session within 30 days', () {
+        final nextStart = DateTime(2024, 4, 1);
+        final context = createContext(daysRemaining: -5, nextSessionStartDate: nextStart);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionStartsSoonMessage>());
+        expect((message as SessionStartsSoonMessage).startDate, nextStart);
+      });
+    });
+
+    group('DaysBeforeCoursesEndMessage -', () {
+      test('returns DaysBeforeCoursesEndMessage when daysRemaining <= 7', () {
+        final context = createContext(daysRemaining: 7);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+        expect((message as DaysBeforeCoursesEndMessage).daysRemaining, 7);
+      });
+
+      test('returns DaysBeforeCoursesEndMessage when daysRemaining is 6', () {
+        final context = createContext(daysRemaining: 6);
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+        expect((message as DaysBeforeCoursesEndMessage).daysRemaining, 6);
+      });
+
+      test('returns DaysBeforeCoursesEndMessage when 0 days remaining', () {
+        final context = createContext(daysRemaining: 0);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+        expect((message as DaysBeforeCoursesEndMessage).daysRemaining, 0);
+      });
+
+      test('does not trigger when negative days remaining', () {
+        final context = createContext(daysRemaining: -1);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<DaysBeforeCoursesEndMessage>()));
+      });
+
+      test('does not trigger when more than 7 days remaining', () {
+        final context = createContext(daysRemaining: 8);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<DaysBeforeCoursesEndMessage>()));
+      });
+    });
+
+    group('ReplacedDayMessage -', () {
+      test('returns NoCoursesOnDayMessage when cancellation', () {
+        final reference = DateTime(2024, 3, 25);
+        final now = weekday(reference, DateTime.wednesday);
+        final replacedDay = ReplacedDay(
+          originalDate: weekday(reference, DateTime.friday),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
+        expect((message as NoCoursesOnDayMessage).weekday, DateTime.friday);
+        expect(message.reason, 'Holiday');
+      });
+
+      test('returns DayFollowsScheduleMessage when schedule follows another day', () {
+        final reference = DateTime(2024, 4, 1);
+        final now = weekday(reference, DateTime.monday);
+        final replacedDay = ReplacedDay(
+          originalDate: weekday(reference, DateTime.wednesday),
+          replacementDate: weekday(reference, DateTime.friday),
+          description: 'Special Day',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DayFollowsScheduleMessage>());
+        final msg = message as DayFollowsScheduleMessage;
+        expect(msg.originalWeekday, DateTime.wednesday);
+        expect(msg.replacementWeekday, DateTime.friday);
+        expect(msg.reason, 'Special Day');
+      });
+
+      test('does not return message when replaced day is outside upcoming range', () {
+        final now = DateTime(2024, 3, 27);
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 4, 10),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay]);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<NoCoursesOnDayMessage>()));
+      });
+
+      test('returns earliest upcoming replaced day when list is unsorted', () {
+        final reference = DateTime(2024, 3, 25);
+        final now = weekday(reference, DateTime.monday);
+
+        final early = ReplacedDay(
+          originalDate: weekday(reference, DateTime.wednesday),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Early holiday',
+        );
+
+        final late = ReplacedDay(
+          originalDate: weekday(reference, DateTime.friday),
+          replacementDate: weekday(reference, DateTime.monday, week: 1),
+          description: 'Later schedule',
+        );
+
+        final context = createContext(now: now, replacedDays: [late, early], daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
+        final msg = message as NoCoursesOnDayMessage;
+        expect(msg.weekday, DateTime.wednesday);
+        expect(msg.reason, 'Early holiday');
+      });
+
+      test('returns NoCoursesOnDayMessage when replaced day is today', () {
+        final reference = DateTime(2024, 3, 25);
+        final now = weekday(reference, DateTime.wednesday);
+
+        final replacedDay = ReplacedDay(
+          originalDate: now,
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
+        expect((message as NoCoursesOnDayMessage).weekday, DateTime.wednesday);
+      });
+    });
+
+    group('LongWeekendIncomingMessage -', () {
+      test('returns LongWeekendIncomingMessage when isLongWeekend is true', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 10,
+          courseDaysThisWeek: 2,
+        );
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.isInsideLongWeekend, isFalse);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendIncomingMessage>());
+      });
+
+      test('does not return when not a long weekend', () {
+        final now = DateTime(2024, 2, 15, 10);
+
+        final activities = [createActivity(DateTime(2024, 2, 15, 9)), createActivity(DateTime(2024, 2, 16, 9))];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LongWeekendIncomingMessage>()));
+      });
+
+      test('does not trigger when upcoming gap matches usual weekend gap', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, week: -2, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 0, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 10,
+          courseDaysThisWeek: 3,
+        );
+
+        expect(context.isLongWeekendIncoming, isFalse);
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LongWeekendIncomingMessage>()));
+      });
+
+      test('triggers when upcoming gap is longer than usual weekend gap', () {
+        final now = weekday(referenceDate, DateTime.thursday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, week: -2, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 0, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          daysRemaining: 10,
+          courseDaysThisWeek: 2,
+        );
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendIncomingMessage>());
+      });
+    });
+
+    group('UpcomingExtendedBreakMessage -', () {
+      test('returns UpcomingExtendedBreakMessage when upcoming break is 6+ days', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<UpcomingExtendedBreakMessage>());
+      });
+
+      test('returns LongWeekendIncomingMessage when upcoming break is less than 6 days', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, lessThan(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendIncomingMessage>());
+      });
+
+      test('UpcomingExtendedBreakMessage contains correct daysUntilBreak', () {
+        final now = weekday(referenceDate, DateTime.monday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<UpcomingExtendedBreakMessage>());
+        expect((message as UpcomingExtendedBreakMessage).daysUntilBreak, 4);
+      });
+
+      test('UpcomingExtendedBreakMessage with 1 day until break', () {
+        final now = weekday(referenceDate, DateTime.thursday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<UpcomingExtendedBreakMessage>());
+        expect((message as UpcomingExtendedBreakMessage).daysUntilBreak, 1);
+      });
+
+      test('UpcomingExtendedBreakMessage minimum daysUntilBreak is 1 on last course day', () {
+        final now = weekday(referenceDate, DateTime.thursday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isLongWeekendIncoming, isTrue);
+        expect(context.upcomingBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<UpcomingExtendedBreakMessage>());
+        expect((message as UpcomingExtendedBreakMessage).daysUntilBreak, 1);
+      });
+    });
+
+    group('LongWeekendCurrentlyMessage -', () {
+      test('returns LongWeekendCurrentlyMessage when inside a long weekend gap', () {
+        final now = weekday(referenceDate, DateTime.sunday);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
+
+        expect(context.isInsideLongWeekend, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendCurrentlyMessage>());
+      });
+
+      test('detects long weekend immediately after last course ends', () {
+        final now = weekday(referenceDate, DateTime.friday, hour: 13);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendCurrentlyMessage>());
+      });
+
+      test('does not detect long weekend before last course of the day ends', () {
+        final now = weekday(referenceDate, DateTime.friday, hour: 11, minute: 59);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
+
+        expect(context.isInsideLongWeekend, isFalse);
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LongWeekendCurrentlyMessage>()));
+      });
+
+      test('does not return during normal weekend', () {
+        final now = weekday(referenceDate, DateTime.sunday);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 10);
+
+        expect(context.isInsideLongWeekend, isFalse);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LongWeekendCurrentlyMessage>()));
+      });
+    });
+
+    group('ExtendedBreakMessage -', () {
+      test('returns ExtendedBreakMessage when total break is 6+ days', () {
+        final now = DateTime(2024, 2, 12, 10);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.totalBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+      });
+
+      test('returns LongWeekendCurrentlyMessage when total break is less than 6 days', () {
+        final now = DateTime(2024, 2, 10, 10);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 13, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.totalBreakDuration, lessThan(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendCurrentlyMessage>());
+      });
+
+      test('ExtendedBreakMessage contains correct days until resume', () {
+        final now = DateTime(2024, 2, 12, 10);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+        expect((message as ExtendedBreakMessage).daysUntilResume, 7);
+      });
+
+      test('ExtendedBreakMessage persists even when less than 6 days remain', () {
+        final now = DateTime(2024, 2, 16, 10);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.totalBreakDuration, greaterThanOrEqualTo(6));
+        expect(context.daysUntilNextCourse, lessThan(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+        expect((message as ExtendedBreakMessage).daysUntilResume, 3);
+      });
+
+      test('ExtendedBreakMessage with daysUntilResume = 1 (day before resume)', () {
+        final now = DateTime(2024, 2, 18, 10);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.totalBreakDuration, greaterThanOrEqualTo(6));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+        expect((message as ExtendedBreakMessage).daysUntilResume, 1);
+      });
+    });
+
+    group('FirstDayBackAfterBreakMessage -', () {
+      test('returns FirstDayBackAfterBreakMessage on first day back after extended break (>=6 days)', () {
+        final now = DateTime(2024, 2, 19, 7);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isFalse);
+        expect(context.isFirstDayBackFromBreak, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstDayBackAfterBreakMessage>());
+      });
+
+      test('returns FirstDayBackAfterBreakMessage on first day back after long weekend (<6 days)', () {
+        final now = DateTime(2024, 2, 14, 7);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 14, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isFalse);
+        expect(context.isFirstDayBackFromBreak, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstDayBackAfterBreakMessage>());
+      });
+
+      test('returns FirstDayBackAfterBreakMessage even after first class has started', () {
+        final now = DateTime(2024, 2, 19, 13);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isFirstDayBackFromBreak, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstDayBackAfterBreakMessage>());
+      });
+
+      test('does not trigger during break when daysUntilNextCourse > 0 (still shows ExtendedBreakMessage)', () {
+        final now = DateTime(2024, 2, 12, 10);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+        expect(context.daysUntilNextCourse, greaterThan(0));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExtendedBreakMessage>());
+        expect(message, isNot(isA<FirstDayBackAfterBreakMessage>()));
+      });
+
+      test('does not trigger on a normal day (not inside a long weekend)', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+        ];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isFalse);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<FirstDayBackAfterBreakMessage>()));
+      });
+    });
+
+    group('LastCourseDayOfWeekMessage -', () {
+      test('returns LastCourseDayOfWeekMessage when last course day and >= 3 course days', () {
+        final now = weekday(referenceDate, DateTime.sunday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.sunday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          courseDaysThisWeek: 3,
+          daysRemaining: 8,
+        );
+
+        expect(context.isLongWeekendIncoming, isFalse);
+        expect(context.isLastCourseDayOfWeek, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LastCourseDayOfWeekMessage>());
+        expect((message as LastCourseDayOfWeekMessage).weekday, DateTime.sunday);
+      });
+
+      test('does not return when less than 3 course days', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LastCourseDayOfWeekMessage>()));
+      });
+
+      test('does not return when not last course day of week', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.isLastCourseDayOfWeek, isFalse);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LastCourseDayOfWeekMessage>()));
+      });
+    });
+
+    group('FirstWeekOfSessionMessage -', () {
+      test('returns FirstWeekOfSessionMessage in the first week before weekend', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 10);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isFalse);
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstWeekOfSessionMessage>());
+      });
+
+      test('does not return after first week', () {
+        final context = createContext(weeksCompleted: 2, daysRemaining: 8);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<FirstWeekOfSessionMessage>()));
+      });
+
+      test('does not return during first weekend (shows FirstWeekCompletedMessage instead)', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<FirstWeekOfSessionMessage>()));
+        expect(message, isA<FirstWeekCompletedMessage>());
+      });
+    });
+
+    group('FirstWeekCompletedMessage -', () {
+      test('returns FirstWeekCompletedMessage during first weekend (weeksCompleted = 1)', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstWeekCompletedMessage>());
+      });
+
+      test('returns FirstWeekCompletedMessage when semester starts mid-week', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.thursday),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstWeekCompletedMessage>());
+      });
+
+      test('does not return when last course of week has not ended yet', () {
+        final now = weekday(referenceDate, DateTime.friday, hour: 8);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isFalse);
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<FirstWeekCompletedMessage>()));
+      });
+
+      test('does not return on light week before Friday', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 20);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday, week: -2),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, week: -2, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 1,
+          courseDaysThisWeek: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<FirstWeekCompletedMessage>()));
+        expect(message, isA<FirstWeekOfSessionMessage>());
+      });
+
+      test('returns on light week when Saturday or later', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday, week: -2),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, week: -2, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 1,
+          courseDaysThisWeek: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstWeekCompletedMessage>());
+      });
+
+      test('returns on 3+ course day week before Friday', () {
+        final now = weekday(referenceDate, DateTime.thursday, hour: 20);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday, week: -1),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, week: 1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 1,
+          courseDaysThisWeek: 3,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstWeekCompletedMessage>());
+      });
+    });
+
+    group('WeekCompletedMessage -', () {
+      test('returns WeekCompletedMessage with week number matching weeksCompleted', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday, week: -1),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 2,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<WeekCompletedMessage>());
+        expect((message as WeekCompletedMessage).weeksCompleted, 2);
+      });
+
+      test('returns WeekCompletedMessage even after first month', () {
+        final now = weekday(referenceDate, DateTime.sunday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 10,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<WeekCompletedMessage>());
+        expect((message as WeekCompletedMessage).weeksCompleted, 10);
+      });
+
+      test('persists through entire weekend after last course ends', () {
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final saturdayContext = createContext(
+          now: weekday(referenceDate, DateTime.saturday, hour: 10),
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 3,
+          daysRemaining: 100,
+        );
+        expect(saturdayContext.isAfterLastCourseOfWeek, isTrue);
+        final satMsg = engine.determineMessage(saturdayContext);
+        expect(satMsg, isA<WeekCompletedMessage>());
+        expect((satMsg as WeekCompletedMessage).weeksCompleted, 3);
+
+        final sundayContext = createContext(
+          now: weekday(referenceDate, DateTime.sunday, hour: 23),
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 3,
+          daysRemaining: 100,
+        );
+        expect(sundayContext.isAfterLastCourseOfWeek, isTrue);
+        final sunMsg = engine.determineMessage(sundayContext);
+        expect(sunMsg, isA<WeekCompletedMessage>());
+        expect((sunMsg as WeekCompletedMessage).weeksCompleted, 3);
+      });
+
+      test('does not return on light week before Friday', () {
+        final now = weekday(referenceDate, DateTime.wednesday, hour: 20);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday, week: -3),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, week: -2, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 2,
+          courseDaysThisWeek: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<WeekCompletedMessage>()));
+      });
+
+      test('returns on light week when Saturday or later', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday, week: -3),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        // Monday-only schedule across multiple weeks to establish 7-day gap as normal
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, week: -2, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 2, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 2,
+          courseDaysThisWeek: 1,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<WeekCompletedMessage>());
+        expect((message as WeekCompletedMessage).weeksCompleted, 2);
+      });
+
+      test('returns on 3+ course day week before Friday', () {
+        final now = weekday(referenceDate, DateTime.thursday, hour: 20);
+        final session = createSession(
+          startDate: weekday(referenceDate, DateTime.monday, week: -2),
+          endDate: DateTime(2024, 6, 30),
+        );
+
+        // MWTh schedule across multiple weeks to establish Thu→Mon gap as normal
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, week: -1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, week: 1, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.thursday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 2,
+          courseDaysThisWeek: 3,
+          daysRemaining: 100,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<WeekCompletedMessage>());
+        expect((message as WeekCompletedMessage).weeksCompleted, 2);
+      });
+    });
+
+    group('LessOneMonthRemainingMessage -', () {
+      test('returns LessOneMonthRemainingMessage when courseWeeksRemaining <= 4', () {
+        final context = createContext(courseWeeksRemaining: 3, daysRemaining: 25);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LessOneMonthRemainingMessage>());
+        expect((message as LessOneMonthRemainingMessage).weeksRemaining, 3);
+      });
+
+      test('does not return LessOneMonthRemainingMessage when courseWeeksRemaining > 4', () {
+        final context = createContext(courseWeeksRemaining: 5, daysRemaining: 40);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<LessOneMonthRemainingMessage>()));
+      });
+
+      test('returns LessOneMonthRemainingMessage at boundary courseWeeksRemaining = 4', () {
+        final context = createContext(courseWeeksRemaining: 4, daysRemaining: 30);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LessOneMonthRemainingMessage>());
+        expect((message as LessOneMonthRemainingMessage).weeksRemaining, 4);
+      });
+
+      test('does not return LessOneMonthRemainingMessage when courseWeeksRemaining = 0', () {
+        final context = createContext(courseWeeksRemaining: 0, daysRemaining: 3);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+      });
+
+      test('returns LessOneMonthRemainingMessage with weeksRemaining = 1', () {
+        final context = createContext(courseWeeksRemaining: 1, daysRemaining: 10);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LessOneMonthRemainingMessage>());
+        expect((message as LessOneMonthRemainingMessage).weeksRemaining, 1);
+      });
+    });
+
+    group('GenericEncouragementMessage -', () {
+      test('returns GenericEncouragementMessage as fallback', () {
+        final context = createContext(daysRemaining: 30, weeksCompleted: 10);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<GenericEncouragementMessage>());
+      });
+    });
+
+    group('Priority order -', () {
+      test('SessionStartsSoonMessage takes priority when finals over and next session within 30 days', () {
+        final nextStart = DateTime(2024, 4, 1);
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3, nextSessionStartDate: nextStart);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionStartsSoonMessage>());
+      });
+
+      test('SessionCompletedMessage takes priority over GenericEncouragement when finals over', () {
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -3);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+
+      test('ExamPeriodMessage takes priority over GenericEncouragement when in finals', () {
+        final context = createContext(daysRemaining: -5, finalsDaysRemaining: 5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExamPeriodMessage>());
+      });
+
+      test('FinalsApproachingMessage takes priority over DaysBeforeCoursesEndMessage when has finals', () {
+        final context = createContext(daysRemaining: 5, finalsDaysRemaining: 18);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+      });
+
+      test('DaysBeforeCoursesEndMessage takes priority over LongWeekend', () {
+        final now = DateTime(2024, 4, 24);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [createActivity(DateTime(2024, 4, 24, 9)), createActivity(DateTime(2024, 4, 30, 9))];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+      });
+
+      test('DaysBeforeCoursesEndMessage takes priority over ReplacedDayMessage', () {
+        final now = DateTime(2024, 4, 25);
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 4, 26),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Test',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], daysRemaining: 5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+      });
+
+      test('LongWeekend takes priority over ReplacedDayMessage', () {
+        final reference = DateTime(2024, 5, 13);
+        final now = weekday(reference, DateTime.friday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(reference, DateTime.friday, hour: 9)),
+          createActivity(weekday(reference, DateTime.tuesday, week: 1, hour: 9)),
+        ];
+        final replacedDay = ReplacedDay(
+          originalDate: weekday(reference, DateTime.monday, week: 1),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          replacedDays: [replacedDay],
+          daysRemaining: 20,
+        );
+        expect(context.isLongWeekendIncoming, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendIncomingMessage>());
+      });
+
+      test('LongWeekendIncomingMessage takes priority over LastCourseDayOfWeekMessage', () {
+        final reference = DateTime(2024, 5, 13);
+        final now = weekday(reference, DateTime.friday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, hour: 9)),
+          createActivity(weekday(reference, DateTime.tuesday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 2, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, week: 2, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, week: 2, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 3, hour: 9)),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(
+          context.courseDaysRemaining,
+          greaterThan(7),
+          reason: 'daysRemaining should be > 7 to not trigger DaysBeforeCoursesEndMessage',
+        );
+        expect(context.isLongWeekendIncoming, isTrue, reason: 'Should be long weekend incoming');
+        expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Should be last course day');
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendIncomingMessage>());
+      });
+
+      test('isInsideLongWeekend takes priority over isLongWeekendIncoming', () {
+        final now = DateTime(2024, 2, 11, 10); // Sunday
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 13, 9))];
+
+        final context = createContext(now: now, session: session, courseActivities: activities, daysRemaining: 60);
+
+        expect(context.isInsideLongWeekend, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LongWeekendCurrentlyMessage>());
+        expect(message, isNot(isA<LongWeekendIncomingMessage>()));
+      });
+
+      test('FirstDayBackAfterBreak takes priority over ReplacedDay', () {
+        final now = DateTime(2024, 2, 19, 7);
+
+        final activities = [createActivity(DateTime(2024, 2, 9, 9)), createActivity(DateTime(2024, 2, 19, 9))];
+
+        final replacedDay = ReplacedDay(
+          originalDate: DateTime(2024, 2, 21),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          replacedDays: [replacedDay],
+          daysRemaining: 60,
+        );
+
+        expect(context.isFirstDayBackFromBreak, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstDayBackAfterBreakMessage>());
+        expect(message, isNot(isA<NoCoursesOnDayMessage>()));
+      });
+
+      test('ReplacedDay takes priority over FirstWeekOfSession', () {
+        final reference = DateTime(2024, 3, 25);
+        final now = weekday(reference, DateTime.wednesday);
+        final replacedDay = ReplacedDay(
+          originalDate: weekday(reference, DateTime.friday),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(now: now, replacedDays: [replacedDay], weeksCompleted: 1, daysRemaining: 60);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
+        expect(message, isNot(isA<FirstWeekOfSessionMessage>()));
+      });
+
+      test('ReplacedDay takes priority over WeekCompleted', () {
+        final reference = DateTime(2024, 3, 25);
+        final now = weekday(reference, DateTime.saturday);
+
+        final activities = [
+          createActivity(weekday(reference, DateTime.friday, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final replacedDay = ReplacedDay(
+          originalDate: weekday(reference, DateTime.monday, week: 1),
+          replacementDate: DateTime(2024, 1, 1),
+          description: 'Holiday',
+        );
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          replacedDays: [replacedDay],
+          weeksCompleted: 5,
+          daysRemaining: 60,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<NoCoursesOnDayMessage>());
+        expect(message, isNot(isA<WeekCompletedMessage>()));
+      });
+
+      test('WeekCompleted takes priority over LessOneMonthRemaining', () {
+        final now = weekday(referenceDate, DateTime.saturday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          weeksCompleted: 5,
+          courseWeeksRemaining: 3,
+          daysRemaining: 25,
+        );
+
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<WeekCompletedMessage>());
+        expect(message, isNot(isA<LessOneMonthRemainingMessage>()));
+      });
+
+      test('LastCourseDayOfWeek takes priority over LessOneMonthRemaining', () {
+        final now = weekday(referenceDate, DateTime.friday, hour: 10);
+
+        final activities = [
+          createActivity(weekday(referenceDate, DateTime.monday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.friday, hour: 9)),
+          createActivity(weekday(referenceDate, DateTime.monday, week: 1, hour: 9)),
+        ];
+
+        final context = createContext(
+          now: now,
+          session: session,
+          courseActivities: activities,
+          courseDaysThisWeek: 3,
+          courseWeeksRemaining: 3,
+          daysRemaining: 25,
+        );
+
+        expect(context.isLastCourseDayOfWeek, isTrue);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LastCourseDayOfWeekMessage>());
+        expect(message, isNot(isA<LessOneMonthRemainingMessage>()));
+      });
+    });
+
+    group('Integration with SessionContext -', () {
+      test('does not trigger DaysBeforeCoursesEndMessage in middle of session', () {
+        final now = DateTime(2024, 2, 15);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<DaysBeforeCoursesEndMessage>()));
+        expect(message, isA<GenericEncouragementMessage>());
+      });
+
+      test('triggers FirstWeekCompletedMessage after first week last course ends', () {
+        final reference = DateTime(2024, 1, 8);
+        final startDate = weekday(reference, DateTime.monday);
+        final now = weekday(reference, DateTime.saturday, hour: 10);
+        final session = createSession(startDate: startDate, endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivity(weekday(reference, DateTime.monday, hour: 9)),
+          createActivity(weekday(reference, DateTime.wednesday, hour: 9)),
+          createActivity(weekday(reference, DateTime.friday, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 1, hour: 9)),
+          createActivity(weekday(reference, DateTime.monday, week: 3, hour: 9)),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(
+          context.courseDaysRemaining,
+          greaterThan(7),
+          reason: 'daysRemaining should be > 7 to not trigger DaysBeforeCoursesEndMessage',
+        );
+        expect(context.weeksCompleted, 1);
+        expect(context.isAfterLastCourseOfWeek, isTrue);
+        final message = engine.determineMessage(context);
+        expect(message, isA<FirstWeekCompletedMessage>());
+      });
+    });
+
+    group('courseWeeksRemaining -', () {
+      CourseActivity createActivityWithName(DateTime date, String activityName) {
+        return CourseActivity(
+          courseGroup: 'TEST101',
+          courseName: 'Test Course',
+          activityName: activityName,
+          activityDescription: 'Test',
+          activityLocation: ['A-1234'],
+          startDateTime: date,
+          endDateTime: date.add(const Duration(hours: 3)),
+        );
+      }
+
+      test('uses last regular course date when finals exist', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 4, 8, 9)),
+          createActivity(DateTime(2024, 4, 15, 9)),
+          createActivityWithName(DateTime(2024, 4, 22, 9), 'Final'),
+          createActivityWithName(DateTime(2024, 4, 29, 9), 'FINAL'),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.courseWeeksRemaining, lessThan(DateUtils.weeksRemaining(session.endDate, now)));
+      });
+
+      test('falls back to session end when no activities', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
+
+        expect(context.courseWeeksRemaining, DateUtils.weeksRemaining(session.endDate, now));
+      });
+
+      test('falls back to session end when only finals exist', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivityWithName(DateTime(2024, 4, 22, 9), 'Final'),
+          createActivityWithName(DateTime(2024, 4, 29, 9), 'final'),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.courseWeeksRemaining, DateUtils.weeksRemaining(session.endDate, now));
+      });
+
+      test('finalsDaysRemaining is computed from last final exam date', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [
+          createActivity(DateTime(2024, 4, 8, 9)),
+          createActivity(DateTime(2024, 4, 15, 9)),
+          createActivityWithName(DateTime(2024, 4, 22, 9), 'Final'),
+          createActivityWithName(DateTime(2024, 4, 29, 9), 'Final'),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.hasFinals, isTrue);
+        expect(context.finalsDaysRemaining, isNotNull);
+        expect(context.isFinalsOver, isFalse);
+      });
+
+      test('finalsDaysRemaining is null when no finals exist', () {
+        final now = DateTime(2024, 4, 1);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [createActivity(DateTime(2024, 4, 8, 9)), createActivity(DateTime(2024, 4, 15, 9))];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.hasFinals, isFalse);
+        expect(context.finalsDaysRemaining, isNull);
+      });
+
+      test('isFinalsOver is true when no finals and courses are over', () {
+        final now = DateTime(2024, 4, 20);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 4, 30));
+
+        final activities = [createActivity(DateTime(2024, 4, 8, 9)), createActivity(DateTime(2024, 4, 15, 9))];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.hasFinals, isFalse);
+        expect(context.isCoursesOver, isTrue);
+        expect(context.isFinalsOver, isTrue);
+      });
+
+      test('LessOneMonthRemainingMessage uses courseWeeksRemaining', () {
+        final now = DateTime(2024, 4, 8);
+        final session = createSession(startDate: DateTime(2024, 1, 1), endDate: DateTime(2024, 5, 15));
+
+        final activities = [
+          createActivity(DateTime(2024, 4, 15, 9)),
+          createActivity(DateTime(2024, 4, 22, 9)),
+          createActivityWithName(DateTime(2024, 5, 6, 9), 'Final'),
+          createActivityWithName(DateTime(2024, 5, 13, 9), 'Final'),
+        ];
+
+        final context = DynamicMessageContext.fromSession(
+          session: session,
+          activities: activities,
+          replacedDays: [],
+          now: now,
+        );
+
+        expect(context.courseWeeksRemaining, lessThanOrEqualTo(4));
+        expect(DateUtils.weeksRemaining(session.endDate, now), greaterThan(4));
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LessOneMonthRemainingMessage>());
+      });
+    });
+
+    group('SessionCompletedMessage -', () {
+      test('returns SessionCompletedMessage when finals are over', () {
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+
+      test('returns SessionCompletedMessage when finals ended yesterday', () {
+        final context = createContext(daysRemaining: -15, finalsDaysRemaining: -1);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+
+      test('does not return SessionCompletedMessage when finals still ongoing', () {
+        final context = createContext(daysRemaining: -5, finalsDaysRemaining: 3);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<SessionCompletedMessage>()));
+      });
+
+      test('returns SessionStartsSoonMessage instead when next session within 30 days', () {
+        final nextStart = DateTime(2024, 4, 1);
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: -5, nextSessionStartDate: nextStart);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionStartsSoonMessage>());
+        expect(message, isNot(isA<SessionCompletedMessage>()));
+      });
+    });
+
+    group('ExamPeriodMessage -', () {
+      test('returns ExamPeriodMessage when courses over and has finals', () {
+        final context = createContext(daysRemaining: -3, finalsDaysRemaining: 10);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExamPeriodMessage>());
+        expect((message as ExamPeriodMessage).daysRemaining, 10);
+      });
+
+      test('returns ExamPeriodMessage on last day of finals', () {
+        final context = createContext(daysRemaining: -10, finalsDaysRemaining: 0);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExamPeriodMessage>());
+        expect((message as ExamPeriodMessage).daysRemaining, 0);
+      });
+
+      test('does not return ExamPeriodMessage when no finals', () {
+        final context = createContext(daysRemaining: -5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<ExamPeriodMessage>()));
+      });
+
+      test('returns ExamPeriodMessage at boundary daysRemaining = -1 with finals', () {
+        final context = createContext(daysRemaining: -1, finalsDaysRemaining: 8);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<ExamPeriodMessage>());
+        expect((message as ExamPeriodMessage).daysRemaining, 8);
+      });
+    });
+
+    group('FinalsApproachingMessage -', () {
+      test('returns FinalsApproachingMessage when last week of courses and has finals', () {
+        final context = createContext(daysRemaining: 5, finalsDaysRemaining: 20);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+        expect((message as FinalsApproachingMessage).courseDaysRemaining, 5);
+      });
+
+      test('returns FinalsApproachingMessage when 1 day remaining and has finals', () {
+        final context = createContext(daysRemaining: 1, finalsDaysRemaining: 15);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+        expect((message as FinalsApproachingMessage).courseDaysRemaining, 1);
+      });
+
+      test('returns DaysBeforeCoursesEndMessage when last week but no finals', () {
+        final context = createContext(daysRemaining: 5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<DaysBeforeCoursesEndMessage>());
+      });
+
+      test('returns FinalsApproachingMessage at boundary daysRemaining = 7 with finals', () {
+        final context = createContext(daysRemaining: 7, finalsDaysRemaining: 20);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+        expect((message as FinalsApproachingMessage).courseDaysRemaining, 7);
+      });
+
+      test('returns FinalsApproachingMessage when 0 days remaining and has finals', () {
+        final context = createContext(daysRemaining: 0, finalsDaysRemaining: 14);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<FinalsApproachingMessage>());
+        expect((message as FinalsApproachingMessage).courseDaysRemaining, 0);
+      });
+
+      test('does not return FinalsApproachingMessage when daysRemaining > 7 with finals', () {
+        final context = createContext(daysRemaining: 8, finalsDaysRemaining: 20);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNot(isA<FinalsApproachingMessage>()));
+      });
+    });
+
+    group('Edge cases -', () {
+      test('handles empty activities list', () {
+        final context = createContext(courseActivities: [], daysRemaining: 30);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNotNull);
+      });
+
+      test('handles leap year date', () {
+        final context = createContext(now: DateTime(2024, 2, 29), daysRemaining: 30);
+
+        final message = engine.determineMessage(context);
+        expect(message, isNotNull);
+      });
+
+      test('handles year boundary session', () {
+        final context = createContext(daysRemaining: 27, courseWeeksRemaining: 3);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<LessOneMonthRemainingMessage>());
+      });
+
+      test('returns SessionCompletedMessage when courses over and no finals', () {
+        final context = createContext(daysRemaining: -5);
+
+        final message = engine.determineMessage(context);
+        expect(message, isA<SessionCompletedMessage>());
+      });
+    });
+
+    group('Weekday names -', () {
+      final weekdays = [
+        DateTime.monday,
+        DateTime.tuesday,
+        DateTime.wednesday,
+        DateTime.thursday,
+        DateTime.friday,
+        DateTime.saturday,
+        DateTime.sunday,
+      ];
+
+      test('returns correct weekday name for Saturday and Sunday through full flow', () {
+        for (int i = 5; i < 7; i++) {
+          final date = DateTime(2024, 3, 11 + i, 10);
+
+          final activityDates = <DateTime>[];
+
+          for (int d = 0; d <= i; d++) {
+            activityDates.add(DateTime(2024, 3, 11 + d, 9));
+          }
+
+          activityDates.add(DateTime(2024, 3, 18, 9));
+
+          final activities = activityDates.map((d) => createActivity(d)).toList();
+
+          final context = createContext(
+            now: date,
+            courseActivities: activities,
+            courseDaysThisWeek: 4,
+            daysRemaining: 30,
+          );
+
+          expect(context.isLastCourseDayOfWeek, isTrue, reason: 'Day ${weekdays[i]} should be last course day');
+          expect(context.isLongWeekendIncoming, isFalse, reason: 'Day ${weekdays[i]} should not be long weekend');
+          final message = engine.determineMessage(context) as LastCourseDayOfWeekMessage;
+          expect(message.weekday, weekdays[i]);
+        }
+      });
+
+      test('returns correct weekday name for all days via direct message construction', () {
+        for (int i = 0; i < 7; i++) {
+          final date = DateTime(2024, 3, 11 + i, 10);
+          final expectedWeekday = weekdays[date.weekday - 1];
+          final message = LastCourseDayOfWeekMessage(expectedWeekday);
+          expect(message.weekday, weekdays[i]);
+        }
+      });
+    });
+  });
+
+  group('GenericEncouragementMessage', () {
+    test('variant is stored correctly', () {
+      for (int i = 0; i < 7; i++) {
+        final message = GenericEncouragementMessage(i);
+        expect(message.variant, i);
+      }
+    });
+
+    test('random factory produces a variant in 0-6 range', () {
+      final random = Random(19);
+      for (int i = 0; i < 20; i++) {
+        final message = GenericEncouragementMessage.forToday(random);
+        expect(message.variant, inInclusiveRange(0, 6));
+      }
+    });
+  });
+
+  group('determineMessageWithoutSession -', () {
+    late DynamicMessagesService service;
+
+    setUp(() {
+      service = DynamicMessagesService();
+    });
+
+    test('returns SessionStartsSoonMessage when next session is within 30 days', () {
+      final now = DateTime(2024, 4, 10);
+      final nextSessionStart = DateTime(2024, 5, 6);
+
+      final message = service.determineMessageWithoutActiveSession(now: now, nextSessionStartDate: nextSessionStart);
+
+      expect(message, isA<SessionStartsSoonMessage>());
+      final typed = message as SessionStartsSoonMessage;
+      expect(typed.startDate, nextSessionStart);
+      expect(typed.daysRemaining, 26);
+    });
+
+    test('returns SessionStartsSoonMessage at boundary of 30 days', () {
+      final now = DateTime(2024, 4, 10);
+      final nextSessionStart = DateTime(2024, 5, 10);
+
+      final message = service.determineMessageWithoutActiveSession(now: now, nextSessionStartDate: nextSessionStart);
+
+      expect(message, isA<SessionStartsSoonMessage>());
+      expect((message as SessionStartsSoonMessage).daysRemaining, 30);
+    });
+
+    test('returns null when next session is more than 30 days away', () {
+      final now = DateTime(2024, 4, 10);
+      final nextSessionStart = DateTime(2024, 5, 11);
+
+      final message = service.determineMessageWithoutActiveSession(now: now, nextSessionStartDate: nextSessionStart);
+
+      expect(message, isNull);
+    });
+
+    test('returns null when no next session exists', () {
+      final now = DateTime(2024, 4, 10);
+
+      final message = service.determineMessageWithoutActiveSession(now: now, nextSessionStartDate: null);
+
+      expect(message, isNull);
+    });
+  });
+}

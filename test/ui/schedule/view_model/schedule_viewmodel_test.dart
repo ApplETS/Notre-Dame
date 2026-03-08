@@ -1,11 +1,9 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_viewmodel.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';

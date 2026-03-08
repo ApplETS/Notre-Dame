@@ -26,7 +26,7 @@ class _FaqViewState extends State<FaqView> {
     viewModelBuilder: () => FaqViewModel(),
     builder: (context, model, child) {
       return BaseScaffold(
-        appBar: AppBar(title: Text(AppIntl.of(context)!.need_help)),
+        appBar: AppBar(title: Text(AppIntl.of(context)!.more_need_help)),
         body: (MediaQuery.of(context).orientation == Orientation.portrait)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

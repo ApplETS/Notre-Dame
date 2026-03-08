@@ -20,4 +20,7 @@ enum PreferencesFlag {
 
   // Authentication flag
   isLoggedIn,
+
+  // Cache timestamps
+  replacedDaysCacheTimestamp,
 }

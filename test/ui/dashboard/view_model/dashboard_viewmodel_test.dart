@@ -1,15 +1,20 @@
+// Dart imports:
+import 'dart:async';
+
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
-import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
+import '../../../data/mocks/services/launch_url_service_mock.dart';
 import '../../../data/mocks/services/remote_config_service_mock.dart';
 import '../../../helpers.dart';
 
@@ -18,6 +23,8 @@ void main() {
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late InAppReviewServiceMock inAppReviewServiceMock;
+  late ListSessionsRepositoryMock listSessionsRepositoryMock;
+  late LaunchUrlServiceMock launchUrlServiceMock;
 
   late DashboardViewModel viewModel;
 
@@ -70,11 +77,23 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       settingsManagerMock = setupSettingsRepositoryMock();
+      setupAnalyticsServiceMock();
       setupBroadcastMessageRepositoryMock();
+      setupDynamicMessagesServiceMock();
+      listSessionsRepositoryMock = setupListSessionsRepositoryMock();
+      launchUrlServiceMock = setupLaunchUrlServiceMock();
+
+      // Setup stubs for ListSessionsRepository
+      ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: Stream.empty());
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
+      CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: false);
+      CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: true);
+      CourseRepositoryMock.stubReplacedDays(courseRepositoryMock);
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
       CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+      CourseRepositoryMock.stubUpcomingSessions(courseRepositoryMock);
       CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, fromCacheOnly: true);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
@@ -87,7 +106,8 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsRepository>();
+      locator.reset();
+      viewModel.dispose();
     });
 
     group('futureToRunGrades -', () {
@@ -214,41 +234,7 @@ void main() {
 
         await viewModel.futureToRun();
 
-        verify(settingsManagerMock.dateTimeNow).called(1);
-      });
-    });
-
-    group("futureToRunSessionProgressBar - ", () {
-      test("There is an active session", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0.5);
-        expect(viewModel.sessionDays, [1, 2]);
-      });
-
-      test("Invalid date (Superior limit)", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020, 1, 20));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 1);
-        expect(viewModel.sessionDays, [2, 2]);
-      });
-
-      test("Invalid date (Lower limit)", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2019, 12, 31));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0);
-        expect(viewModel.sessionDays, [0, 2]);
-      });
-
-      test("Active session is null", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, -1.0);
-        expect(viewModel.sessionDays, [0, 0]);
+        verify(listSessionsRepositoryMock.getSessions(forceUpdate: true)).called(1);
       });
     });
 
@@ -296,6 +282,14 @@ void main() {
         SettingsRepositoryMock.stubRatingTimer(settingsManagerMock, toReturn: null);
 
         expect(await DashboardViewModel.launchInAppReview(), false);
+      });
+    });
+
+    group("launchBroadcastUrl - ", () {
+      test("calls launchInBrowser with the provided url", () async {
+        const url = "https://example.com";
+        await DashboardViewModel.launchBroadcastUrl(url);
+        verify(launchUrlServiceMock.launchInBrowser(url)).called(1);
       });
     });
   });

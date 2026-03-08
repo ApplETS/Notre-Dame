@@ -55,7 +55,7 @@
   "title_more": "More",
 
   "title_ets_mobile": "ÉTSMobile",
-  
+
   "login_title": "Login",
   "login_prompt_universal_code": "Universal Code",
   "login_prompt_password": "Password",
@@ -70,6 +70,144 @@
   "login_password_show": "Show password",
   "login_password_hide": "Hide password",
 
+  "dynamic_message_first_week_of_session": "Good start to the semester!",
+  "dynamic_message_first_week_of_session_completed": "First week of the semester completed, keep going!",
+  "dynamic_message_long_weekend_incoming": "Keep going, a long weekend is coming!",
+
+  "dynamic_message_upcoming_extended_break": "A break is coming! {days} days until it starts.",
+  "@dynamic_message_upcoming_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_upcoming_extended_break_tomorrow": "An extended break starts tomorrow!",
+
+  "dynamic_message_session_starts_soon": "Have a good rest! The next semester starts on {date} (in {days} days).",
+  "@dynamic_message_session_starts_soon": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_days_before_session_ends": "{num_days, plural, =0{Last day, it's almost over!} =1{1 more day and it's over!} other{{num_days} more days and it's over!}}",
+  "@dynamic_message_days_before_session_ends": {
+    "placeholders": {
+      "num_days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_end_of_week": "Week {num_weeks} completed!",
+  "@dynamic_message_end_of_week": {
+    "placeholders": {
+      "num_weeks": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_long_weekend_currently": "Have a nice long weekend! Week {num_weeks} completed!",
+  "@dynamic_message_long_weekend_currently": {
+    "placeholders": {
+      "num_weeks": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_extended_break": "Enjoy your break! Classes resume in {days} days.",
+  "@dynamic_message_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_extended_break_tomorrow": "Enjoy your break! Classes resume tomorrow.",
+
+  "dynamic_message_first_day_back_after_break": "Welcome back! Hope you had a good break.",
+
+  "dynamic_message_last_course_day_of_session": "It's {weekday}! Last day of classes of the week!",
+  "@dynamic_message_last_course_day_of_session": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+
+  "dynamic_message_less_one_month_remaining": "Keep going, only {num_weeks} weeks to go!",
+  "@dynamic_message_less_one_month_remaining": {
+  "placeholders": {
+    "num_weeks": {
+      "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_last_course_week_remaining": "Keep going, it's the last course week!",
+
+  "dynamic_message_finals_approaching": "It's the last week of courses! The exam period is approaching.",
+  "dynamic_message_finals_approaching_tomorrow": "Last day of courses! The exam period begins tomorrow.",
+
+  "dynamic_message_exam_period": "Good luck on your exams! {days} days remaining in the exam period.",
+  "@dynamic_message_exam_period": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_exam_period_tomorrow_last_day": "Last day of exams tomorrow. You've got this!",
+  "dynamic_message_exam_period_last_day": "Last day of exams! You've got this!",
+  "dynamic_message_session_completed": "Congratulations, the semester is over. Enjoy your break!",
+
+  "dynamic_message_generic_encouragement_0": "Keep up the good work!",
+  "dynamic_message_generic_encouragement_1": "Have a good semester!",
+  "dynamic_message_generic_encouragement_2": "Hope your semester is going well!",
+  "dynamic_message_generic_encouragement_3": "Have a great day!",
+  "dynamic_message_generic_encouragement_4": "Keep it up!",
+  "dynamic_message_generic_encouragement_5": "Good luck with your courses!",
+  "dynamic_message_generic_encouragement_6": "Hang in there!",
+
+  "dynamic_message_no_courses_on_day": "There are no courses on {weekday} ({reason}).",
+  "@dynamic_message_no_courses_on_day": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+
+  "dynamic_message_day_follows_schedule": "The courses of {replacementDay} follow the schedule of {originalDay} ({reason}).",
+  "@dynamic_message_day_follows_schedule": {
+    "placeholders": {
+      "originalDay": {
+        "type": "String"
+      },
+      "replacementDay": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  
   "dashboard_msg_card_removed": "Card removed",
   "dashboard_restore_all_cards_title": "Restore all cards",
 
@@ -247,6 +385,7 @@
   "ets_etudiants_actuels_title": "Current students",
   "ets_cafe_sans_filtre_title": "Cafe sans filtre",
   "ets_fablab_title": "FabLAB",
+  "ets_bureau_respect_personne_title" : "BRP",
   "ets_hide_quick_link": "Hide link {quickLinkName}",
   "@ets_hide_quick_link": {
     "placeholders": {
@@ -292,7 +431,7 @@
   "report_harassment_or_abuse_description": "News targeting a person or group in an abusive manner.",
   "report_outdated_content": "Outdated Content",
   "report_outdated_content_description": "Ad that is no longer up-to-date or relevant.",
-  
+
   "search": "Search",
 
   "news_author_notify_me": "Notify me",
@@ -315,32 +454,20 @@
     }
   },
 
-  "more_about_applets_title": "About ApplETS",
-  "more_report_bug": "Report a bug or request a feature",
-  "more_report_bug_steps_title": "How does it work?\n\n",
-  "more_report_bug_button": "Provide feedback",
-  "more_prompt_report_bug_method": "How would you like to report the bug?",
-  "more_report_bug_method_screenshot": "Screenshot",
-  "more_report_bug_method_video": "Video recording",
+  "more_about_applets": "About ApplETS",
+  "more_rate_us": "Rate us!",
   "more_contributors": "Contributors",
   "more_open_source_licenses": "Open source licenses",
+  "more_privacy_policy": "Privacy policy",
+  "more_map" : "Campus map",
+  "more_need_help": "Need help?",
   "more_settings": "Settings",
   "more_log_out": "Log out",
+
   "more_prompt_log_out_confirmation": "Are you sure you want to log out?",
   "more_log_out_progress": "Logging you out",
 
   "more_applets_about_details": "ÉTSMobile was conceived by the ApplETS scientific club from the École de technologie supérieure.\n\nApplets is, most importantly, a gathering of students who share a typical enthusiasm for the field of telecommunications and mobile applications. The mission of ApplETS is to train students in mobile development and promote the production of mobile applications within the student community.\n\nFollow us on: ",
-
-  "more_report_bug_bug": "Report a bug",
-  "more_report_bug_bug_subtitle": "\nLet us know so we can forward this to our bug list.",
-  "more_report_bug_feature": "Request a feature",
-  "more_report_bug_feature_subtitle": "\nDo you have an idea that would make our app better ? We would love to know !",
-  "more_report_tips": "Tips",
-  "more_report_bug_step1": "After selecting the option, the feedback view will open.\n\nYou can choose between ",
-  "more_report_bug_step2": "Navigate ",
-  "more_report_bug_step3": "and ",
-  "more_report_bug_step4": "Draw ",
-  "more_report_bug_step5": "mode on the right side. \n\nWhen in navigation mode, you can freely navigate in the app.\n\nTo switch to the drawing mode just press the 'Draw' button. Now you can draw on the screen.\n\nTo finish your feedback just write a description below and send it by pressing the 'Submit' button.",
 
   "security_bomb_threat_title": "Bomb threat",
   "security_bomb_threat_detail": "bomb_threat_en.md",
@@ -371,6 +498,9 @@
   "security_emergency_procedures": "Emergency procedures",
   "security_station": "Security station",
 
+  "campus_map_legend_parking": "Parking",
+  "campus_map_legend_bixi": "Bixi",
+
   "settings_title": "Settings",
   "settings_display_pref_category": "Display",
   "settings_dark_theme_pref": "Theme",
@@ -385,14 +515,12 @@
   "settings_dashboard_schedule_format_list": "List",
   "settings_dashboard_schedule_format_calendar": "Calendar",
 
-  "thank_you_for_the_feedback": "Thank you for the feedback",
-
   "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
   "flutter_website": "https://flutter.dev",
 
   "choose_language_title": "Choose your preferred language",
   "choose_language_subtitle": "Please select your language",
-  
+
   "not_found_title": "Inaccessible Page",
   "not_found_message": "Oh oh... it seems that the page {pageName} you requested is not accessible.",
   "@not_found_message": {
@@ -412,9 +540,6 @@
 
   "progress_bar": "days remaining",
 
-  "in_app_review_title": "Rate us!",
-  "need_help": "Need help?",
-  "privacy_policy": "Privacy policy",
   "universal_code_example": "Ex: AB12345",
   "my_tickets": "My tickets",
   "no_ticket": "No ticket",
@@ -432,7 +557,7 @@
       }
     }
   },
-  
+
   "ignored_evaluations_section_title": "{count,plural, =1{1 ignored grade} other{{count} ignored grades}}",
   "@ignored_evaluations_section_title": {
     "placeholders": {
