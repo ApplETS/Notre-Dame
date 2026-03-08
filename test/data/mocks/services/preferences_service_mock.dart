@@ -30,7 +30,12 @@ class PreferencesServiceMock extends MockPreferencesService {
   }
 
   /// Stub the answer of [getDynamicString] when the [flag] is used.
-  static void stubGetDynamicString(PreferencesServiceMock mock, PreferencesFlag flag, String key, {String? toReturn = "test"}) {
+  static void stubGetDynamicString(
+    PreferencesServiceMock mock,
+    PreferencesFlag flag,
+    String key, {
+    String? toReturn = "test",
+  }) {
     when(mock.getDynamicString(flag, key)).thenAnswer((_) => toReturn);
   }
 }

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -18,6 +17,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
+import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_view.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
