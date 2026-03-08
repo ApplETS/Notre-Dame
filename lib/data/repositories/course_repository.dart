@@ -2,10 +2,10 @@
 import 'dart:convert';
 
 // Flutter imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
