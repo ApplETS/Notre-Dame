@@ -45,14 +45,17 @@ void main() {
       });
 
       test("get", () {
-        const flag = PreferencesFlag.theme;
-        PreferencesServiceMock.stubGetString(preferencesServiceMock, flag, toReturn: ThemeMode.light.toString());
+        PreferencesServiceMock.stubGetString(
+          preferencesServiceMock,
+          PreferencesFlag.theme,
+          toReturn: ThemeMode.light.toString(),
+        );
 
         ThemeMode result = repository.themeMode;
 
         expect(result, ThemeMode.light);
 
-        verify(preferencesServiceMock.getString(flag)).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.theme)).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
       });

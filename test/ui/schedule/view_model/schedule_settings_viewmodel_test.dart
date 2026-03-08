@@ -172,7 +172,6 @@ void main() {
             toReturn: ActivityCode.labGroupA,
           );
 
-          expect(await viewModel.futureToRun(), settings);
           expect(viewModel.scheduleActivitiesByCourse.keys.length, 2);
           expect(viewModel.scheduleActivitiesByCourse[firstCourseAcronymWithLab]!.length, 2);
           expect(viewModel.scheduleActivitiesByCourse[secondCourseAcronymWithLab]!.length, 2);

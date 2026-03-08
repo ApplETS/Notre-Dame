@@ -10,29 +10,19 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
-import '../../../data/mocks/services/remote_config_service_mock.dart';
 import '../../../helpers.dart';
 
 void main() {
   late SettingsRepositoryMock settingsManagerMock;
-  late RemoteConfigServiceMock remoteConfigServiceMock;
   late CourseRepositoryMock courseRepositoryMock;
   late AppIntl intl;
   ScheduleController controller = ScheduleController();
   controller.settingsUpdated = () {};
-
-  // Some settings
-  final Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
-    PreferencesFlag.scheduleShowTodayBtn: true,
-    PreferencesFlag.scheduleListView: true,
-  };
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
     ScheduleActivity(
@@ -65,86 +55,87 @@ void main() {
     setUp(() async {
       settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
-      remoteConfigServiceMock = setupRemoteConfigServiceMock();
       intl = await setupAppIntl();
 
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
-      RemoteConfigServiceMock.stubGetCalendarViewEnabled(remoteConfigServiceMock);
     });
 
-    group("ui - ", () {
-      testWidgets("With handle", (WidgetTester tester) async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
+    testWidgets("Displays menus", (WidgetTester tester) async {
+      SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
+      SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
+      SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
-        Widget scheduleSettings = ScheduleSettings(controller: controller);
-        await tester.pumpWidget(localizedWidget(child: scheduleSettings));
-        await tester.pumpAndSettle();
+      Widget scheduleSettings = ScheduleSettings(controller: controller);
+      await tester.pumpWidget(localizedWidget(child: scheduleSettings));
+      await tester.pumpAndSettle();
 
-        // Check the handle
-        expect(
-          find.byWidgetPredicate(
-            (widget) =>
-                widget is Container &&
-                widget.decoration is BoxDecoration &&
-                (widget.decoration! as BoxDecoration).color == Color(0xff868383),
-          ),
-          findsOneWidget,
-          reason: "The handle should be grey",
-        );
+      // Check the handle
+      expect(
+        find.byWidgetPredicate(
+          (widget) =>
+              widget is Container &&
+              widget.decoration is BoxDecoration &&
+              (widget.decoration! as BoxDecoration).color == Color(0xff868383),
+        ),
+        findsOneWidget,
+        reason: "The handle should be grey",
+      );
 
-        // Check the title
-        expect(find.text(intl.schedule_settings_title), findsOneWidget);
+      // Check the title
+      expect(find.text(intl.schedule_settings_title), findsOneWidget);
 
-        // Check calendar format section
-        expect(find.text(intl.schedule_settings_calendar_format_pref), findsOneWidget);
-        expect(find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_day), findsOneWidget);
-        expect(find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_month), findsOneWidget);
+      // Check calendar format section
+      expect(find.text(intl.schedule_settings_calendar_format_pref), findsOneWidget);
+      expect(find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_day), findsOneWidget);
+      expect(find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_month), findsOneWidget);
 
-        final weekFormatTile = find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_week);
-        expect(weekFormatTile, findsOneWidget);
-        expect(
-          tester.widget(weekFormatTile),
-          isA<InputChip>().having((source) => source.selected, 'selected', isTrue),
-          reason: 'The settings says week format is the current format, the UI should reflet that.',
-        );
+      final weekFormatTile = find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_week);
+      expect(weekFormatTile, findsOneWidget);
+      expect(
+        tester.widget(weekFormatTile),
+        isA<InputChip>().having((source) => source.selected, 'selected', isTrue),
+        reason: 'The settings says week format is the current format, the UI should reflet that.',
+      );
 
-        // Check showTodayButton section
-        final showTodayBtnFinder = find.widgetWithText(
-          ListTile,
-          intl.schedule_settings_show_today_btn_pref,
-          skipOffstage: false,
-        );
-        expect(showTodayBtnFinder, findsOneWidget);
-        expect(
-          tester.widget(showTodayBtnFinder),
-          isA<ListTile>().having((source) => source.trailing, 'trailing', isA<Switch>()),
-        );
+      // Check showTodayButton section
+      final showTodayBtnFinder = find.widgetWithText(
+        ListTile,
+        intl.schedule_settings_show_today_btn_pref,
+        skipOffstage: false,
+      );
+      expect(showTodayBtnFinder, findsOneWidget);
+      expect(
+        tester.widget(showTodayBtnFinder),
+        isA<ListTile>().having((source) => source.trailing, 'trailing', isA<Switch>()),
+      );
 
-        expect(
-          tester.widget(find.descendant(of: showTodayBtnFinder, matching: find.byType(Switch, skipOffstage: false))),
-          isA<Switch>().having((source) => source.value, 'value', isTrue),
-          reason: "the settings says that the showTodayBtn is enabled, the UI should reflet that.",
-        );
+      expect(
+        tester.widget(find.descendant(of: showTodayBtnFinder, matching: find.byType(Switch, skipOffstage: false))),
+        isA<Switch>().having((source) => source.value, 'value', isTrue),
+        reason: "the settings says that the showTodayBtn is enabled, the UI should reflet that.",
+      );
 
-        const screenHeight = 600;
+      const screenHeight = 600;
 
-        final draggableScrollableSheetFinder = find.byType(DraggableScrollableSheet);
-        expect(draggableScrollableSheetFinder, findsOneWidget);
+      final draggableScrollableSheetFinder = find.byType(DraggableScrollableSheet);
+      expect(draggableScrollableSheetFinder, findsOneWidget);
 
-        final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
-        expect(initialSize.height, 0.55 * screenHeight);
+      final Size initialSize = tester.getSize(draggableScrollableSheetFinder);
+      expect(initialSize.height, 0.55 * screenHeight);
 
-        await tester.fling(find.byType(ListView).first, const Offset(0.0, -4000.0), 400.0);
-        final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
-        expect(maxSize.height, 0.85 * screenHeight);
-      });
+      await tester.fling(find.byType(ListView).first, const Offset(0.0, -4000.0), 400.0);
+      final Size maxSize = tester.getSize(draggableScrollableSheetFinder);
+      expect(maxSize.height, 0.85 * screenHeight);
     });
 
     group("ScheduleActivities", () {
       testWidgets("Should display activity selection section when a course has activities", (
         WidgetTester tester,
       ) async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
+        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
+        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
+
         CourseRepositoryMock.stubGetScheduleActivities(
           courseRepositoryMock,
           toReturn: classOneWithLaboratoryABscheduleActivities,
@@ -184,18 +175,16 @@ void main() {
       testWidgets("When a settings laboratory is already selected, verify that it is in fact preselected", (
         WidgetTester tester,
       ) async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
+        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
+        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
+
         CourseRepositoryMock.stubGetScheduleActivities(
           courseRepositoryMock,
           toReturn: classOneWithLaboratoryABscheduleActivities,
         );
         // preselect the laboB
-        SettingsRepositoryMock.stubGetDynamicString(
-          settingsManagerMock,
-          PreferencesFlag.scheduleLaboratoryGroup,
-          "GEN101",
-          toReturn: ActivityCode.labGroupB,
-        );
+        SettingsRepositoryMock.stubGetLaboratoryGroup(settingsManagerMock, "GEN101", toReturn: ActivityCode.labGroupB);
 
         Widget scheduleSettings = ScheduleSettings(controller: controller);
 
@@ -221,7 +210,10 @@ void main() {
       testWidgets("if there is only a laboA (no labo b) the options should not appear on screen", (
         WidgetTester tester,
       ) async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
+        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
+        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
+
         final courseWithOnlyLabA = List<ScheduleActivity>.from(classOneWithLaboratoryABscheduleActivities);
         courseWithOnlyLabA.removeWhere((element) => element.activityCode == ActivityCode.labGroupB);
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock, toReturn: courseWithOnlyLabA);
@@ -246,35 +238,35 @@ void main() {
 
     group("interactions - ", () {
       testWidgets("onChange calendarFormat", (WidgetTester tester) async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
-        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.scheduleCalendarFormat);
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
+        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
+        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         Widget scheduleSettings = ScheduleSettings(controller: controller);
         await tester.pumpWidget(localizedWidget(child: scheduleSettings));
         await tester.pumpAndSettle();
 
         await tester.tap(find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_day));
-        await tester.pump();
 
-        await untilCalled(settingsManagerMock.setString(PreferencesFlag.scheduleCalendarFormat, any));
+        verify(settingsManagerMock.schedule.calendarFormat = CalendarTimeFormat.day).called(1);
+
+        // We simulate that the tap changed the setting in the repository
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.day);
+        await tester.pump();
 
         final formatTile = find.widgetWithText(InputChip, intl.schedule_settings_calendar_format_day);
         expect(
           tester.widget(formatTile),
           isA<InputChip>().having((source) => source.selected, 'selected', isTrue),
-          reason: 'The settings says 2 week format now, the UI should reflet that.',
+          reason: 'The chip selected should be day view',
         );
       });
 
       testWidgets("onChange scheduleListView", (WidgetTester tester) async {
-        final Map<PreferencesFlag, dynamic> settings = {
-          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.day,
-          PreferencesFlag.scheduleShowTodayBtn: true,
-          PreferencesFlag.scheduleListView: true,
-        };
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.day);
+        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
+        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
-        SettingsRepositoryMock.stubSetBool(settingsManagerMock, PreferencesFlag.scheduleListView);
         await tester
             .runAsync(() async {
               Widget scheduleSettings = ScheduleSettings(controller: controller);
@@ -290,16 +282,18 @@ void main() {
 
               (find.byType(Switch, skipOffstage: false).evaluate().elementAt(1).widget as Switch).onChanged!(false);
 
-              await tester.pumpAndSettle();
+              // We simulate that the tap changed the setting in the repository
+              SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: false);
+              await tester.pump();
 
-              await untilCalled(settingsManagerMock.setBool(PreferencesFlag.scheduleListView, any));
+              verify(settingsManagerMock.schedule.listView = false).called(1);
 
               expect(
                 tester.widget(
                   find.descendant(of: scheduleListViewFinder, matching: find.byType(Switch, skipOffstage: false)),
                 ),
                 isA<Switch>().having((source) => source.value, 'value', isFalse),
-                reason: "the settings says calendar view format now, the UI should reflet that.",
+                reason: "The toggle should be in the off position",
               );
 
               Widget scheduleSettings = ScheduleSettings(controller: controller);
@@ -313,8 +307,10 @@ void main() {
       });
 
       testWidgets("onChange showTodayBtn", (WidgetTester tester) async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
-        SettingsRepositoryMock.stubSetBool(settingsManagerMock, PreferencesFlag.scheduleShowTodayBtn);
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
+        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: false);
+        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
+
         await tester
             .runAsync(() async {
               Widget scheduleSettings = ScheduleSettings(controller: controller);
@@ -330,9 +326,11 @@ void main() {
 
               (find.byType(Switch, skipOffstage: false).evaluate().first.widget as Switch).onChanged!(false);
 
-              await tester.pumpAndSettle();
+              // We simulate that the tap changed the setting in the repository
+              SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: false);
+              await tester.pump();
 
-              await untilCalled(settingsManagerMock.setBool(PreferencesFlag.scheduleShowTodayBtn, any));
+              verify(settingsManagerMock.schedule.todayButton = false).called(1);
 
               expect(
                 tester.widget(

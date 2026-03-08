@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 import 'settings_repository_mock.mocks.dart';
 
 final _dashboard = DashboardSettingsMock();
@@ -20,7 +21,6 @@ final _rating = RatingSettingsMock();
   MockSpec<RatingSettings>(),
 ])
 class SettingsRepositoryMock extends MockSettingsRepository {
-
   @override
   DashboardSettings get dashboard => _dashboard;
 
@@ -29,6 +29,11 @@ class SettingsRepositoryMock extends MockSettingsRepository {
 
   @override
   RatingSettings get rating => _rating;
+
+  /// Stub the [dateTimeNow] getter
+  static void stubDateTimeNow(SettingsRepositoryMock mock, {required DateTime toReturn}) {
+    when(mock.dateTimeNow).thenReturn(toReturn);
+  }
 
   /// Stub the [locale] getter
   static void stubLocale(SettingsRepositoryMock mock, {Locale toReturn = const Locale('fr')}) {
@@ -45,11 +50,6 @@ class SettingsRepositoryMock extends MockSettingsRepository {
     when(mock.themeMode).thenReturn(toReturn);
   }
 
-  /// Stub the [dateTimeNow] getter
-  static void stubDateTimeNow(SettingsRepositoryMock mock, {required DateTime toReturn}) {
-    when(mock.dateTimeNow).thenReturn(toReturn);
-  }
-
   /// Stub the [isLoggedIn] getter
   static void stubIsLoggedIn(SettingsRepositoryMock mock, {bool toReturn = false}) {
     when(mock.isLoggedIn).thenReturn(toReturn);
@@ -58,6 +58,29 @@ class SettingsRepositoryMock extends MockSettingsRepository {
   /// Stub the [displayScheduleAsList] getter
   static void stubDashboardScheduleAsList(SettingsRepositoryMock mock, {bool toReturn = false}) {
     when(_dashboard.displayScheduleAsList).thenReturn(toReturn);
+  }
+
+  /// Stub the [calendarFormat] getter
+  static void stubScheduleCalendarFormat(
+    SettingsRepositoryMock mock, {
+    CalendarTimeFormat toReturn = CalendarTimeFormat.week,
+  }) {
+    when(_schedule.calendarFormat).thenReturn(toReturn);
+  }
+
+  /// Stub the [listView] getter
+  static void stubScheduleListView(SettingsRepositoryMock mock, {bool toReturn = false}) {
+    when(_schedule.listView).thenReturn(toReturn);
+  }
+
+  /// Stub the [todayButton] getter
+  static void stubTodayButton(SettingsRepositoryMock mock, {bool toReturn = true}) {
+    when(_schedule.todayButton).thenReturn(toReturn);
+  }
+
+  /// Stub the [getLaboratoryGroup] function
+  static void stubGetLaboratoryGroup(SettingsRepositoryMock mock, String courseAcronym, {String? toReturn}) {
+    when(_schedule.getLaboratoryGroup(courseAcronym)).thenReturn(toReturn);
   }
 
   /// Stub the [hasBeenRequested] getter

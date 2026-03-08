@@ -32,14 +32,14 @@ class SettingsRepository with ChangeNotifier {
     return AppIntl.supportedLocales.firstWhereOrNull((e) => e.languageCode == languageCode) ?? const Locale('fr');
   }
 
-  bool get isLocaleDefined => _preferencesService.getString(PreferencesFlag.locale) != null;
-
   set locale(Locale? value) {
     Locale? locale = AppIntl.supportedLocales.firstWhereOrNull((e) => e == value);
 
     _preferencesService.setString(PreferencesFlag.locale, locale?.languageCode);
     notifyListeners();
   }
+
+  bool get isLocaleDefined => _preferencesService.getString(PreferencesFlag.locale) != null;
 
   ThemeMode get themeMode {
     String? themeString = _preferencesService.getString(PreferencesFlag.theme);
