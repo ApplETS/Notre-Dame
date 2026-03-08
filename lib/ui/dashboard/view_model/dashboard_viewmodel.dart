@@ -11,7 +11,6 @@ import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
@@ -24,7 +23,6 @@ class DashboardViewModel extends FutureViewModel {
 
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
-  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
 
   /// Animation controller for the circle
