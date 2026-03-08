@@ -22,5 +22,5 @@ enum PreferencesFlag {
   isLoggedIn,
 
   // Cache timestamps
-  replacedDaysCacheTimestamp,
+  replacedDaysCacheExpiration,
 }

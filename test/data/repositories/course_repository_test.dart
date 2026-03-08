@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
@@ -1814,10 +1815,10 @@ void main() {
           // Stub the cache to return replaced days
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
-          // Stub the timestamp to be recent (within cache duration)
-          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(
+          // Cache is still valid
+          SettingsRepositoryMock.stubReplacedDaysCacheExpiration(
             settingsManagerMock,
-            toReturn: DateTime.now().subtract(const Duration(days: 1)),
+            toReturn: DateTime.now().add(const Duration(days: 1)),
           );
 
           expect(manager.replacedDays, isNull);
@@ -1835,10 +1836,10 @@ void main() {
           // Stub the cache to return replaced days
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
-          // Stub the timestamp to be expired (older than cache duration)
-          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(
+          // Cache is expired
+          SettingsRepositoryMock.stubReplacedDaysCacheExpiration(
             settingsManagerMock,
-            toReturn: DateTime.now().subtract(const Duration(days: 8)),
+            toReturn: DateTime.now().subtract(const Duration(days: 1)),
           );
 
           // Stub the SignetsAPI to return the same replaced days
@@ -1858,10 +1859,10 @@ void main() {
           // Stub the cache to return replaced days
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
-          // Stub the timestamp to be recent (within cache duration)
-          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(
+          // Cache is still valid
+          SettingsRepositoryMock.stubReplacedDaysCacheExpiration(
             settingsManagerMock,
-            toReturn: DateTime.now().subtract(const Duration(days: 1)),
+            toReturn: DateTime.now().add(const Duration(days: 1)),
           );
 
           // Stub the SignetsAPI to return the same replaced days
@@ -1882,7 +1883,7 @@ void main() {
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
           // Stub the timestamp to be null (no previous fetch)
-          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(settingsManagerMock, toReturn: null);
+          SettingsRepositoryMock.stubReplacedDaysCacheExpiration(settingsManagerMock, toReturn: null);
 
           // Stub the SignetsAPI to return the same replaced days
           SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
@@ -1902,15 +1903,16 @@ void main() {
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
           // Stub the timestamp to be null (no previous fetch)
-          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(settingsManagerMock, toReturn: null);
+          SettingsRepositoryMock.stubReplacedDaysCacheExpiration(settingsManagerMock, toReturn: null);
 
           // Stub the SignetsAPI to return the same replaced days
           SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
           await manager.getReplacedDays();
 
-          // Verify cache timestamp was updated
-          verify(settingsManagerMock.replacedDaysCacheTimestamp = DateTime.now()).called(1);
+          // Verify cache expiration was updated
+          DateTime expectedExpiration = DateTime.now().add(CourseRepository.replacedDaysCacheDuration).withoutTime;
+          verify(settingsManagerMock.replacedDaysCacheExpiration = expectedExpiration).called(1);
         });
       });
     });

@@ -57,8 +57,8 @@ class SettingsRepository with ChangeNotifier {
 
   set isLoggedIn(bool value) => _preferencesService.setBool(PreferencesFlag.isLoggedIn, value);
 
-  DateTime? get replacedDaysCacheTimestamp {
-    String? dateAsString = _preferencesService.getString(PreferencesFlag.replacedDaysCacheTimestamp);
+  DateTime? get replacedDaysCacheExpiration {
+    String? dateAsString = _preferencesService.getString(PreferencesFlag.replacedDaysCacheExpiration);
 
     if (dateAsString != null) {
       return DateTime.parse(dateAsString);
@@ -67,8 +67,8 @@ class SettingsRepository with ChangeNotifier {
     return null;
   }
 
-  set replacedDaysCacheTimestamp(DateTime value) =>
-      _preferencesService.setString(PreferencesFlag.replacedDaysCacheTimestamp, value.toIso8601String());
+  set replacedDaysCacheExpiration(DateTime value) =>
+      _preferencesService.setString(PreferencesFlag.replacedDaysCacheExpiration, value.toIso8601String());
 }
 
 class DashboardSettings {

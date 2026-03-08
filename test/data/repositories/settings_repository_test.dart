@@ -125,10 +125,10 @@ void main() {
       test("set timestamp", () {
         final date = DateTime(2025, 1, 1, 12, 30, 45);
 
-        repository.replacedDaysCacheTimestamp = date;
+        repository.replacedDaysCacheExpiration = date;
 
         verify(
-          preferencesServiceMock.setString(PreferencesFlag.replacedDaysCacheTimestamp, date.toIso8601String()),
+          preferencesServiceMock.setString(PreferencesFlag.replacedDaysCacheExpiration, date.toIso8601String()),
         ).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -139,27 +139,27 @@ void main() {
 
         PreferencesServiceMock.stubGetString(
           preferencesServiceMock,
-          PreferencesFlag.replacedDaysCacheTimestamp,
+          PreferencesFlag.replacedDaysCacheExpiration,
           toReturn: date.toIso8601String(),
         );
 
-        final result = repository.replacedDaysCacheTimestamp;
+        final result = repository.replacedDaysCacheExpiration;
 
         expect(result, date);
 
-        verify(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheTimestamp)).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheExpiration)).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
       });
 
       test("get timestamp returns null when not set", () {
-        when(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheTimestamp)).thenReturn(null);
+        when(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheExpiration)).thenReturn(null);
 
-        final result = repository.replacedDaysCacheTimestamp;
+        final result = repository.replacedDaysCacheExpiration;
 
         expect(result, null);
 
-        verify(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheTimestamp)).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheExpiration)).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
       });

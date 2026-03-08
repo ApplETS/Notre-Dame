@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 // Flutter imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 
 // Package imports:
@@ -29,9 +30,6 @@ import 'package:notredame/utils/cache_exception.dart';
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {
   static const String tag = "CourseRepository";
-
-  /// Cache duration for replaced days
-  static const Duration replacedDaysCacheDuration = Duration(days: 7);
 
   @visibleForTesting
   static const String coursesActivitiesCacheKey = "coursesActivitiesCache";
@@ -87,6 +85,9 @@ class CourseRepository {
   late List<ScheduleActivity> _scheduleDefaultActivities;
 
   List<ScheduleActivity>? get scheduleDefaultActivities => _scheduleDefaultActivities;
+
+  /// Cache duration for replaced days
+  static const Duration replacedDaysCacheDuration = Duration(days: 7);
 
   /// List of the replaced days for the student in the active session
   List<ReplacedDay>? _replacedDays;
@@ -547,7 +548,7 @@ class CourseRepository {
       // Update cache
       _cacheManager.update(replacedDaysCacheKey, jsonEncode(_replacedDays));
       // Update cache timestamp
-      _settingsManager.replacedDaysCacheTimestamp = DateTime.now();
+      _settingsManager.replacedDaysCacheExpiration = DateTime.now().add(replacedDaysCacheDuration).withoutTime;
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e("$tag - getReplacedDays: exception raised while trying to update the cache.");
@@ -558,9 +559,9 @@ class CourseRepository {
 
   /// Checks if the replaced days cache is still valid based on time.
   Future<bool> _isReplacedDaysCacheValid() async {
-    final DateTime? lastFetch = _settingsManager.replacedDaysCacheTimestamp;
-    if (lastFetch == null) return false;
-    return DateTime.now().isBefore(lastFetch.add(replacedDaysCacheDuration));
+    final DateTime? expiration = _settingsManager.replacedDaysCacheExpiration;
+    if (expiration == null) return false;
+    return DateTime.now().withoutTime.isBefore(expiration);
   }
 
   /// Retrieve the evaluation filtered by sessions.
