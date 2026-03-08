@@ -55,9 +55,6 @@ void main() {
     group("interactions - ", () {
       testWidgets("tap on settings button to open the schedule settings", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         await tester.runAsync(() async {
           await tester.pumpWidget(localizedWidget(child: ScheduleView(controller: ScheduleController())));
@@ -73,9 +70,7 @@ void main() {
       });
 
       testWidgets("tap on today button when enabled triggers action and logs analytics", (WidgetTester tester) async {
-        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
         SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
 
         await tester.runAsync(() async {
@@ -99,8 +94,6 @@ void main() {
       testWidgets("displays week view", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
         SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         await tester
             .runAsync(() async {
@@ -115,8 +108,6 @@ void main() {
       testWidgets("displays month view", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
         SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.month);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         await tester
             .runAsync(() async {
@@ -131,7 +122,6 @@ void main() {
       testWidgets("displays day view calendar", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
         SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.day);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
         SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: false);
 
         await tester
@@ -148,7 +138,6 @@ void main() {
       testWidgets("displays day view list", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
         SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
         SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         await tester
@@ -164,9 +153,7 @@ void main() {
 
       testWidgets("displays today button", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
         SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         await tester
             .runAsync(() async {
@@ -180,9 +167,7 @@ void main() {
 
       testWidgets("does not display today button", (WidgetTester tester) async {
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
         SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: false);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         await tester
             .runAsync(() async {

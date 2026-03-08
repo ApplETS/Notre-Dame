@@ -132,10 +132,6 @@ void main() {
       testWidgets("Should display activity selection section when a course has activities", (
         WidgetTester tester,
       ) async {
-        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
-
         CourseRepositoryMock.stubGetScheduleActivities(
           courseRepositoryMock,
           toReturn: classOneWithLaboratoryABscheduleActivities,
@@ -175,10 +171,6 @@ void main() {
       testWidgets("When a settings laboratory is already selected, verify that it is in fact preselected", (
         WidgetTester tester,
       ) async {
-        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
-
         CourseRepositoryMock.stubGetScheduleActivities(
           courseRepositoryMock,
           toReturn: classOneWithLaboratoryABscheduleActivities,
@@ -210,9 +202,6 @@ void main() {
       testWidgets("if there is only a laboA (no labo b) the options should not appear on screen", (
         WidgetTester tester,
       ) async {
-        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         final courseWithOnlyLabA = List<ScheduleActivity>.from(classOneWithLaboratoryABscheduleActivities);
         courseWithOnlyLabA.removeWhere((element) => element.activityCode == ActivityCode.labGroupB);
@@ -239,8 +228,6 @@ void main() {
     group("interactions - ", () {
       testWidgets("onChange calendarFormat", (WidgetTester tester) async {
         SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         Widget scheduleSettings = ScheduleSettings(controller: controller);
         await tester.pumpWidget(localizedWidget(child: scheduleSettings));
@@ -264,7 +251,6 @@ void main() {
 
       testWidgets("onChange scheduleListView", (WidgetTester tester) async {
         SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.day);
-        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
         SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         await tester
@@ -307,9 +293,7 @@ void main() {
       });
 
       testWidgets("onChange showTodayBtn", (WidgetTester tester) async {
-        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.week);
         SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: false);
-        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
         await tester
             .runAsync(() async {
