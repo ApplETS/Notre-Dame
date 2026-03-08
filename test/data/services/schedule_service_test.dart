@@ -104,7 +104,7 @@ void main() {
     });
 
     test("filters lab A when lab group B is selected", () async {
-      SettingsRepositoryMock.stubGetLaboratoryGroup(settingsManagerMock, "GEN101", toReturn: ActivityCode.labGroupA);
+      SettingsRepositoryMock.stubGetLaboratoryGroup(settingsManagerMock, "GEN101", toReturn: ActivityCode.labGroupB);
 
       final result = await service.coursesActivities;
 
