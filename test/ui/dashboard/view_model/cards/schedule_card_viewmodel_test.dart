@@ -85,6 +85,8 @@ void main() {
       tomorrow = today.add(const Duration(days: 1));
 
       courseRepositoryMock = setupCourseRepositoryMock();
+      setupSettingsRepositoryMock();
+
       viewModel = ScheduleCardViewmodel(intl: await setupAppIntl());
 
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);

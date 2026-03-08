@@ -92,8 +92,6 @@ void main() {
       settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsRepositoryMock();
-
-      SettingsRepositoryMock.stubGetLaboratoryGroup(settingsManagerMock, "GEN101", toReturn: ActivityCode.labGroupA);
       CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, toReturn: activities);
 
@@ -106,6 +104,8 @@ void main() {
     });
 
     test("filters lab A when lab group B is selected", () async {
+      SettingsRepositoryMock.stubGetLaboratoryGroup(settingsManagerMock, "GEN101", toReturn: ActivityCode.labGroupA);
+
       final result = await service.coursesActivities;
 
       final date = activityGen101LabA.startDateTime.withoutTime;
