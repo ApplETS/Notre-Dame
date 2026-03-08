@@ -119,15 +119,13 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                 child: FittedBox(
                   alignment: Alignment.centerRight,
                   fit: BoxFit.scaleDown,
-                  child: widget.loading
-                      ? Skeletonizer(
-                          enabled: true,
-                          child: Bone(height: 32, width: 40, borderRadius: BorderRadius.circular(10)),
-                        )
-                      : Text(
-                          widget.progressBarText,
-                          style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
-                        ),
+                  child: Skeletonizer(
+                    enabled: widget.loading,
+                    child: Text(
+                      widget.progressBarText,
+                      style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
+                    ),
+                  ),
                 ),
               ),
             ),

@@ -80,6 +80,13 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
   Widget build(BuildContext context) {
     _schedulePostFrameUpdate();
 
+    const double fontSize = 16;
+    const double lineHeight = 1.2;
+
+    final textStyle = TextStyle(fontSize: fontSize, height: lineHeight, color: AppPalette.grey.white);
+
+    final double twoLinesHeight = fontSize * lineHeight * 2;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -93,14 +100,22 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                 offset: widget.model.titleSlideOffset,
                 child: Opacity(
                   opacity: widget.model.titleFadeOpacity,
-                  child: widget.model.busy(widget.model.dynamicMessageText)
-                      ? Skeletonizer(child: Bone.text(fontSize: 16, words: 2))
-                      : Text(
-                          widget.model.dynamicMessageText ?? '',
-                          style: TextStyle(fontSize: 16, color: AppPalette.grey.white),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                  child: SizedBox(
+                    height: twoLinesHeight,
+                    child: Center(
+                      child: widget.model.busy(widget.model.dynamicMessageText)
+                          ? Skeletonizer(
+                              child: Bone.multiText(fontSize: fontSize, style: textStyle, lines: 2),
+                            )
+                          : Text(
+                              widget.model.dynamicMessageText ?? '',
+                              style: textStyle,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.start,
+                            ),
+                    ),
+                  ),
                 ),
               ),
             );
