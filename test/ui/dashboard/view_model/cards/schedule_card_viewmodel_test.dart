@@ -82,7 +82,7 @@ void main() {
     setUp(() async {
       now = DateTime.now();
       today = now.withoutTime;
-      tomorrow = today.add(const Duration(days: 1));
+      tomorrow = today.add(const Duration(days: 1)).withoutTime;
 
       courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsRepositoryMock();
