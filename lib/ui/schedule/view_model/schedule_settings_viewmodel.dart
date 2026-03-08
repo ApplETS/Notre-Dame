@@ -11,11 +11,10 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 
-class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dynamic>> {
+class ScheduleSettingsViewModel extends FutureViewModel {
   ScheduleSettingsViewModel({required ScheduleController controller}) : _controller = controller;
 
   /// Allows to update other views
@@ -27,40 +26,27 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
   // Access the course repository
   final CourseRepository _courseRepository = locator<CourseRepository>();
 
-  /// Current calendar format
-  CalendarTimeFormat? _calendarFormat;
+  CalendarTimeFormat? get calendarFormat => _settingsManager.schedule.calendarFormat;
 
-  CalendarTimeFormat? get calendarFormat => _calendarFormat;
-
-  set calendarFormat(CalendarTimeFormat? format) {
-    setBusy(true);
-    _settingsManager.setString(PreferencesFlag.scheduleCalendarFormat, format?.name);
-    _calendarFormat = format;
+  set calendarFormat(CalendarTimeFormat format) {
+    _settingsManager.schedule.calendarFormat = format;
     _controller.settingsUpdated();
-    setBusy(false);
   }
 
-  /// Display the button to return to today
-  bool _showTodayBtn = true;
-
-  bool get showTodayBtn => _showTodayBtn;
+  bool get showTodayBtn => _settingsManager.schedule.todayButton;
 
   set showTodayBtn(bool newValue) {
     setBusy(true);
-    _settingsManager.setBool(PreferencesFlag.scheduleShowTodayBtn, newValue);
-    _showTodayBtn = newValue;
+    _settingsManager.schedule.todayButton = newValue;
     _controller.settingsUpdated();
     setBusy(false);
   }
 
-  bool _toggleCalendarView = false;
+  bool get listViewFormat => _settingsManager.schedule.listView;
 
-  bool get toggleCalendarView => _toggleCalendarView;
-
-  set toggleCalendarView(bool newValue) {
+  set listViewFormat(bool newValue) {
     setBusy(true);
-    _settingsManager.setBool(PreferencesFlag.scheduleListView, newValue);
-    _toggleCalendarView = newValue;
+    _settingsManager.schedule.listView = newValue;
     _controller.settingsUpdated();
     setBusy(false);
   }
@@ -79,14 +65,10 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
   Future selectScheduleActivity(String courseAcronym, ScheduleActivity? scheduleActivityToSave) async {
     setBusy(true);
     if (scheduleActivityToSave == null) {
-      await _settingsManager.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, courseAcronym, null);
+      await _settingsManager.schedule.setLaboratoryGroup(courseAcronym, null);
       _selectedScheduleActivity.remove(courseAcronym);
     } else {
-      await _settingsManager.setDynamicString(
-        PreferencesFlag.scheduleLaboratoryGroup,
-        courseAcronym,
-        scheduleActivityToSave.activityCode,
-      );
+      await _settingsManager.schedule.setLaboratoryGroup(courseAcronym, scheduleActivityToSave.activityCode);
       _selectedScheduleActivity[courseAcronym] = scheduleActivityToSave;
     }
     setBusy(false);
@@ -94,14 +76,8 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
   }
 
   @override
-  Future<Map<PreferencesFlag, dynamic>> futureToRun() async {
+  Future<void> futureToRun() async {
     setBusy(true);
-    final settings = await _settingsManager.getScheduleSettings();
-
-    _calendarFormat = settings[PreferencesFlag.scheduleCalendarFormat] as CalendarTimeFormat;
-    _showTodayBtn = settings[PreferencesFlag.scheduleShowTodayBtn] as bool;
-    _toggleCalendarView = settings[PreferencesFlag.scheduleListView] as bool;
-
     _scheduleActivitiesByCourse.clear();
     final schedulesActivities = await _courseRepository.getScheduleActivities();
     for (final activity in schedulesActivities) {
@@ -123,10 +99,8 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
 
     // Preselect the right schedule activity
     for (final courseKey in _scheduleActivitiesByCourse.keys) {
-      final scheduleActivityCode = await _settingsManager.getDynamicString(
-        PreferencesFlag.scheduleLaboratoryGroup,
-        courseKey,
-      );
+      final scheduleActivityCode = _settingsManager.schedule.getLaboratoryGroup(courseKey);
+
       final scheduleActivity = _scheduleActivitiesByCourse[courseKey]?.firstWhereOrNull(
         (element) => element.activityCode == scheduleActivityCode,
       );
@@ -136,6 +110,5 @@ class ScheduleSettingsViewModel extends FutureViewModel<Map<PreferencesFlag, dyn
     }
 
     setBusy(false);
-    return settings;
   }
 }

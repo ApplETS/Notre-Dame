@@ -13,7 +13,6 @@ import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -81,11 +80,10 @@ class MoreViewModel extends FutureViewModel {
       onError(e, null);
     }
 
-    await _preferencesService.clearWithoutPersistentKey();
+    _preferencesService.clearWithoutPersistentKey();
 
     await _authService.signOut();
-    _settingsManager.resetLanguageAndThemeMode();
-    _settingsManager.setBool(PreferencesFlag.isLoggedIn, false);
+    _settingsManager.isLoggedIn = false;
 
     // clear all previous cached value in courseRepository
     _courseRepository.sessions?.clear();
@@ -95,17 +93,14 @@ class MoreViewModel extends FutureViewModel {
     setBusy(false);
   }
 
-  static Future<bool> launchInAppReview() async {
-    final PreferencesService preferencesService = locator<PreferencesService>();
+  static Future<void> launchInAppReview() async {
+    final SettingsRepository settingsManager = locator<SettingsRepository>();
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
     if (await inAppReviewService.isAvailable()) {
       await inAppReviewService.openStoreListing();
-      preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
-
-      return true;
+      settingsManager.rating.hasBeenRequested = true;
     }
-    return false;
   }
 
   static Future<void> launchPrivacyPolicy() async {

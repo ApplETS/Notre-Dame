@@ -5,20 +5,21 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class ScheduleCardViewmodel extends FutureViewModel {
+  final CourseRepository _courseRepository = locator<CourseRepository>();
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
+
   List<CourseActivity> _scheduleEvents = [];
 
   bool _tomorrow = false;
   DateTime _date = DateTime.now().withoutTime;
 
-  /// Localization class of the application.
   final AppIntl _appIntl;
-
-  final CourseRepository _courseRepository = locator<CourseRepository>();
 
   DateTime get date {
     return _date;
@@ -28,13 +29,14 @@ class ScheduleCardViewmodel extends FutureViewModel {
     return _tomorrow;
   }
 
+  bool get listView => _settingsManager.dashboard.displayScheduleAsList;
+
   ScheduleCardViewmodel({required AppIntl intl}) : _appIntl = intl;
 
   @override
   Future<void> futureToRun() async {
     try {
-      setBusyForObject(tomorrow, true);
-      setBusyForObject(date, true);
+      setBusy(true);
 
       _scheduleEvents.clear();
       await _courseRepository.getCoursesActivities();
@@ -68,8 +70,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
     } catch (e) {
       onError(e, null);
     } finally {
-      setBusyForObject(tomorrow, false);
-      setBusyForObject(date, false);
+      setBusy(false);
     }
     _scheduleEvents = [];
   }

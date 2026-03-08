@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,7 @@ void main() {
         endTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
       ),
     ],
-    DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6)): [
+    DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 1)).withoutTime: [
       EventData(
         courseAcronym: "ING150",
         group: "ING150-01",

@@ -9,7 +9,6 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/startup/view_model/startup_viewmodel.dart';
@@ -52,7 +51,7 @@ void main() {
     group('handleStartUp - ', () {
       test('silent sign in successful', () async {
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-        SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: true);
+        SettingsRepositoryMock.stubIsLocaleDefined(settingsRepositoryMock, toReturn: true);
         AuthServiceMock.stubCreatePublicClientApplication(authServiceMock);
         AuthServiceMock.stubAcquireTokenSilent(authServiceMock);
 
@@ -60,12 +59,12 @@ void main() {
 
         verify(authServiceMock.acquireTokenSilent()).called(1);
         verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.root));
-        verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true)).called(1);
+        verify(settingsRepositoryMock.isLoggedIn = true).called(1);
       });
 
       test('silent sign in failed redirect to login', () async {
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-        SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: true);
+        SettingsRepositoryMock.stubIsLocaleDefined(settingsRepositoryMock, toReturn: true);
         AuthServiceMock.stubCreatePublicClientApplication(authServiceMock);
         AuthServiceMock.stubAcquireTokenSilent(authServiceMock, success: false);
         AuthServiceMock.stubAcquireToken(authServiceMock, success: true);
@@ -75,12 +74,12 @@ void main() {
         verify(authServiceMock.acquireTokenSilent()).called(1);
         verify(authServiceMock.acquireToken()).called(1);
         verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.root));
-        verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true)).called(1);
+        verify(settingsRepositoryMock.isLoggedIn = true).called(1);
       });
 
       test('navigates to chooseLanguage if language not chosen', () async {
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-        SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: null);
+        SettingsRepositoryMock.stubIsLocaleDefined(settingsRepositoryMock, toReturn: false);
 
         await viewModel.handleStartUp();
 
@@ -89,7 +88,7 @@ void main() {
 
       test('throws exception if createPublicClientApplication fails', () async {
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-        SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: true);
+        SettingsRepositoryMock.stubIsLocaleDefined(settingsRepositoryMock, toReturn: true);
         AuthServiceMock.stubCreatePublicClientApplication(authServiceMock, success: false);
 
         expect(() async => await viewModel.handleStartUp(), throwsException);

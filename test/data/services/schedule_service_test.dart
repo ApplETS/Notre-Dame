@@ -11,7 +11,6 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import '../../helpers.dart';
 import '../mocks/repositories/course_repository_mock.dart';
 import '../mocks/repositories/settings_repository_mock.dart';
@@ -92,14 +91,7 @@ void main() {
     setUp(() {
       settingsManagerMock = setupSettingsRepositoryMock();
       courseRepositoryMock = setupCourseRepositoryMock();
-
-      SettingsRepositoryMock.stubGetDynamicString(
-        settingsManagerMock,
-        PreferencesFlag.scheduleLaboratoryGroup,
-        "GEN101",
-        toReturn: ActivityCode.labGroupB,
-      );
-
+      setupSettingsRepositoryMock();
       CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, toReturn: activities);
 
@@ -112,6 +104,8 @@ void main() {
     });
 
     test("filters lab A when lab group B is selected", () async {
+      SettingsRepositoryMock.stubGetLaboratoryGroup(settingsManagerMock, "GEN101", toReturn: ActivityCode.labGroupB);
+
       final result = await service.coursesActivities;
 
       final date = activityGen101LabA.startDateTime.withoutTime;
