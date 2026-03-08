@@ -12,7 +12,6 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/course_review.dart';
@@ -22,7 +21,6 @@ import 'package:notredame/data/services/signets-api/models/schedule_activity.dar
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/semester_codes.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/utils/api_exception.dart';
