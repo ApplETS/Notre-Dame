@@ -381,6 +381,9 @@
   "dark_theme": "Dark",
   "light_theme": "Light",
   "system_theme": "System",
+  "settings_dashboard_schedule_format": "Calendar format on the dashboard:",
+  "settings_dashboard_schedule_format_list": "List",
+  "settings_dashboard_schedule_format_calendar": "Calendar",
 
   "thank_you_for_the_feedback": "Thank you for the feedback",
 

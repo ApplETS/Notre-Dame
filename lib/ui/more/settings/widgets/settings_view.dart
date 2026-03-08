@@ -58,17 +58,19 @@ class _SettingsViewState extends State<SettingsView> {
                           emptySelectionAllowed: true,
                           selected: <ThemeMode>{model.theme},
                           onSelectionChanged: (Set<ThemeMode> value) {
-                            if (value.isNotEmpty) {
-                              model.theme = value.first;
-                            }
+                            setState(() {
+                              if (value.isNotEmpty) {
+                                model.theme = value.first;
+                              }
+                            });
                           },
                         ),
                         SizedBox(height: 16.0),
-                        Text("Format du calendrier sur le dashboard :"),
+                        Text(AppIntl.of(context)!.settings_dashboard_schedule_format),
                         SegmentedButton<bool>(
                           segments: <ButtonSegment<bool>>[
-                            ButtonSegment<bool>(value: true, label: Text("Liste"), icon: Icon(Icons.list)),
-                            ButtonSegment<bool>(value: false, label: Text("Calendrier"), icon: Icon(Icons.calendar_month)),
+                            ButtonSegment<bool>(value: false, label: Text(AppIntl.of(context)!.settings_dashboard_schedule_format_calendar), icon: Icon(Icons.calendar_month)),
+                            ButtonSegment<bool>(value: true, label: Text(AppIntl.of(context)!.settings_dashboard_schedule_format_list), icon: Icon(Icons.list)),
                           ],
                           selected: <bool>{model.dashboardScheduleList},
                           showSelectedIcon: false,
@@ -105,9 +107,11 @@ class _SettingsViewState extends State<SettingsView> {
                           emptySelectionAllowed: true,
                           selected: <Locale>{model.locale},
                           onSelectionChanged: (Set<Locale> value) {
-                            if (value.isNotEmpty) {
-                              model.locale = value.first;
-                            }
+                            setState(() {
+                              if (value.isNotEmpty) {
+                                model.locale = value.first;
+                              }
+                            });
                           },
                         ),
                       ],

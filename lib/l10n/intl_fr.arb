@@ -333,13 +333,13 @@
   "more_report_bug_bug": "Rapporter un bogue",
   "more_report_bug_bug_subtitle": "\nFaites-le nous savoir afin que nous puissions l'ajouter à notre liste de bogues.",
   "more_report_bug_feature": "Demander une fonctionnalité",
-  "more_report_bug_feature_subtitle": "\nAvez-vous une idée qui améliorerait notre application ? Nous aimerions savoir !",  
+  "more_report_bug_feature_subtitle": "\nAvez-vous une idée qui améliorerait notre application ? Nous aimerions savoir !",
   "more_report_tips": "Astuce",
   "more_report_bug_step1": "Après avoir sélectionné l'option, la vue des commentaires s'ouvrira.\n\nVous pouvez choisir entre le mode ",
   "more_report_bug_step2": "Naviguer ",
   "more_report_bug_step3": "et ",
   "more_report_bug_step4": "Dessiner ",
-  "more_report_bug_step5": "sur le côté droit. \n\nEn mode navigation, vous pouvez naviguer librement dans l'application.\n\nPour passer en mode dessin, appuyez simplement sur le bouton 'Dessiner'. Vous pouvez maintenant dessiner sur l'écran.\n\nPour terminer votre commentaire, écrivez simplement une description ci-dessous et envoyez-la en appuyant sur le bouton 'Soumettre'.",  
+  "more_report_bug_step5": "sur le côté droit. \n\nEn mode navigation, vous pouvez naviguer librement dans l'application.\n\nPour passer en mode dessin, appuyez simplement sur le bouton 'Dessiner'. Vous pouvez maintenant dessiner sur l'écran.\n\nPour terminer votre commentaire, écrivez simplement une description ci-dessous et envoyez-la en appuyant sur le bouton 'Soumettre'.",
 
   "security_bomb_threat_title": "Alerte à la bombe",
   "security_bomb_threat_detail": "bomb_threat_fr.md",
@@ -380,6 +380,9 @@
   "dark_theme": "Foncé",
   "light_theme": "Pâle",
   "system_theme": "Système",
+  "settings_dashboard_schedule_format": "Format du calendrier sur le dashboard\u00a0:",
+  "settings_dashboard_schedule_format_list": "Liste",
+  "settings_dashboard_schedule_format_calendar": "Calendrier",
 
   "thank_you_for_the_feedback": "Merci pour le signalement",
 
