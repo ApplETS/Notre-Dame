@@ -7,24 +7,18 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import '../../helpers.dart';
 import '../mocks/services/preferences_service_mock.dart';
 
 void main() {
   late PreferencesServiceMock preferencesServiceMock;
-
   late SettingsRepository repository;
 
   group("SettingsRepository - ", () {
     setUp(() {
       preferencesServiceMock = setupPreferencesServiceMock();
       repository = SettingsRepository();
-    });
-
-    tearDown(() {
-      unregister<PreferencesService>();
     });
 
     group("ThemeMode - ", () {

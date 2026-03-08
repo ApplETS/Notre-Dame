@@ -9,7 +9,7 @@ import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
-final PreferencesService _preferencesService = locator<PreferencesService>();
+PreferencesService get _preferencesService => locator<PreferencesService>();
 
 class SettingsRepository with ChangeNotifier {
   final DashboardSettings _dashboardSettings = DashboardSettings();
