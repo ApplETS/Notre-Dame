@@ -95,13 +95,15 @@ void main() {
       });
     });
 
-    group("Repository helpers - ", () {
+    group("DateTimeNow - ", () {
       test("dateTimeNow returns current time", () {
         final now = repository.dateTimeNow;
 
         expect(now, isA<DateTime>());
       });
+    });
 
+    group("isLocaleDefined - ", () {
       test("isLocaleDefined true", () {
         PreferencesServiceMock.stubGetString(
           preferencesServiceMock,
@@ -120,6 +122,65 @@ void main() {
         expect(repository.isLocaleDefined, false);
 
         verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
+      });
+    });
+
+    group("replacedDaysCacheTimestamp - ", () {
+      test("set timestamp", () {
+        final date = DateTime(2025, 1, 1, 12, 30, 45);
+
+        repository.replacedDaysCacheTimestamp = date;
+
+        verify(
+          preferencesServiceMock.setString(
+            PreferencesFlag.replacedDaysCacheTimestamp,
+            date.toIso8601String(),
+          ),
+        ).called(1);
+
+        verifyNoMoreInteractions(preferencesServiceMock);
+      });
+
+      test("get timestamp parses DateTime", () {
+        final date = DateTime(2025, 1, 1, 12, 30, 45);
+
+        PreferencesServiceMock.stubGetString(
+          preferencesServiceMock,
+          PreferencesFlag.replacedDaysCacheTimestamp,
+          toReturn: date.toIso8601String(),
+        );
+
+        final result = repository.replacedDaysCacheTimestamp;
+
+        expect(result, date);
+
+        verify(
+          preferencesServiceMock.getString(
+            PreferencesFlag.replacedDaysCacheTimestamp,
+          ),
+        ).called(1);
+
+        verifyNoMoreInteractions(preferencesServiceMock);
+      });
+
+      test("get timestamp returns null when not set", () {
+        when(
+          preferencesServiceMock.getString(
+            PreferencesFlag.replacedDaysCacheTimestamp,
+          ),
+        ).thenReturn(null);
+
+        final result = repository.replacedDaysCacheTimestamp;
+
+        expect(result, null);
+
+        verify(
+          preferencesServiceMock.getString(
+            PreferencesFlag.replacedDaysCacheTimestamp,
+          ),
+        ).called(1);
+
+        verifyNoMoreInteractions(preferencesServiceMock);
       });
     });
 
