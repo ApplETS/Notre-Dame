@@ -80,16 +80,16 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       setState(() {});
     };
 
-    return widget.listView ? _buildListView(model) : _buildCalendar(model);
-  }
-
-  Widget _buildCalendar(DayViewModel model) {
     // Sets the initial day: widget.selectedDate is an external date from parent (nullable),
     // model.daySelected is the internal date managed by ViewModel (never null, defaults to today)
     if (widget.selectedDate != null) {
       model.handleDateSelectedChanged(widget.selectedDate!);
     }
-    return Expanded(
+
+    return widget.listView ? _buildListView(model) : _buildCalendar(model);
+  }
+
+  Widget _buildCalendar(DayViewModel model) => Expanded(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final double heightPerMinute = showEntireDay
@@ -137,7 +137,6 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         },
       ),
     );
-  }
 
   Widget _buildListView(DayViewModel model) {
     final int pageBufferSize = 10;
@@ -161,7 +160,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     });
     return Expanded(
       child: PageView(
-        physics: const BouncingScrollPhysics(),
+        physics: widget.selectedDate == null ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: [
           // When swiping fast, this prevents from having to wait for animation completion to go to the next page
@@ -174,7 +173,6 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   Widget _buildDayList(DateTime date, DayViewModel model) {
     return ListView(
-      padding: EdgeInsets.zero,
       children: [
         const SizedBox(height: 8.0),
         if (model.calendarEventsFromDate(date).isEmpty && !model.isBusy)
