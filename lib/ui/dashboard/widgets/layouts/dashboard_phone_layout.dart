@@ -108,7 +108,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                               child: Bone.multiText(fontSize: fontSize, style: textStyle, lines: 2),
                             )
                           : Text(
-                              widget.model.dynamicMessageText!,
+                              widget.model.dynamicMessageText ?? '',
                               style: textStyle,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
