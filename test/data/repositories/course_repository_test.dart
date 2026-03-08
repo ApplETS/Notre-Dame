@@ -22,14 +22,13 @@ import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/utils/api_exception.dart';
 import '../../helpers.dart';
+import '../mocks/repositories/settings_repository_mock.dart';
 import '../mocks/repositories/user_repository_mock.dart';
 import '../mocks/services/analytics_service_mock.dart';
 import '../mocks/services/cache_service_mock.dart';
 import '../mocks/services/networking_service_mock.dart';
-import '../mocks/services/preferences_service_mock.dart';
 import '../mocks/services/signets_api_mock.dart';
 
 void main() {
@@ -38,7 +37,7 @@ void main() {
   late UserRepositoryMock userRepositoryMock;
   late CacheServiceMock cacheManagerMock;
   late SignetsAPIClientMock signetsApiMock;
-  late PreferencesServiceMock preferencesServiceMock;
+  late SettingsRepositoryMock settingsManagerMock;
 
   late CourseRepository manager;
 
@@ -66,7 +65,7 @@ void main() {
       userRepositoryMock = setupUserRepositoryMock();
       cacheManagerMock = setupCacheManagerMock();
       networkingServiceMock = setupNetworkingServiceMock();
-      preferencesServiceMock = setupPreferencesServiceMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
       setupLogger();
 
       manager = CourseRepository();
@@ -83,7 +82,7 @@ void main() {
       unregister<CacheService>();
       clearInteractions(networkingServiceMock);
       unregister<NetworkingServiceMock>();
-      clearInteractions(preferencesServiceMock);
+      clearInteractions(settingsManagerMock);
       unregister<PreferencesService>();
     });
 
@@ -1816,9 +1815,8 @@ void main() {
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
           // Stub the timestamp to be recent (within cache duration)
-          PreferencesServiceMock.stubGetDateTime(
-            preferencesServiceMock,
-            PreferencesFlag.replacedDaysCacheTimestamp,
+          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(
+            settingsManagerMock,
             toReturn: DateTime.now().subtract(const Duration(days: 1)),
           );
 
@@ -1838,9 +1836,8 @@ void main() {
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
           // Stub the timestamp to be expired (older than cache duration)
-          PreferencesServiceMock.stubGetDateTime(
-            preferencesServiceMock,
-            PreferencesFlag.replacedDaysCacheTimestamp,
+          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(
+            settingsManagerMock,
             toReturn: DateTime.now().subtract(const Duration(days: 8)),
           );
 
@@ -1862,9 +1859,8 @@ void main() {
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
           // Stub the timestamp to be recent (within cache duration)
-          PreferencesServiceMock.stubGetDateTime(
-            preferencesServiceMock,
-            PreferencesFlag.replacedDaysCacheTimestamp,
+          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(
+            settingsManagerMock,
             toReturn: DateTime.now().subtract(const Duration(days: 1)),
           );
 
@@ -1886,11 +1882,7 @@ void main() {
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
           // Stub the timestamp to be null (no previous fetch)
-          PreferencesServiceMock.stubGetDateTime(
-            preferencesServiceMock,
-            PreferencesFlag.replacedDaysCacheTimestamp,
-            toReturn: null,
-          );
+          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(settingsManagerMock, toReturn: null);
 
           // Stub the SignetsAPI to return the same replaced days
           SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
@@ -1910,11 +1902,7 @@ void main() {
           CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
           // Stub the timestamp to be null (no previous fetch)
-          PreferencesServiceMock.stubGetDateTime(
-            preferencesServiceMock,
-            PreferencesFlag.replacedDaysCacheTimestamp,
-            toReturn: null,
-          );
+          SettingsRepositoryMock.stubReplacedDaysCacheTimestamp(settingsManagerMock, toReturn: null);
 
           // Stub the SignetsAPI to return the same replaced days
           SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
@@ -1922,7 +1910,7 @@ void main() {
           await manager.getReplacedDays();
 
           // Verify cache timestamp was updated
-          verify(preferencesServiceMock.setDateTime(PreferencesFlag.replacedDaysCacheTimestamp, any)).called(1);
+          verify(settingsManagerMock.replacedDaysCacheTimestamp = DateTime.now()).called(1);
         });
       });
     });

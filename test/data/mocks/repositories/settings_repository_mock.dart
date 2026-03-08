@@ -55,6 +55,11 @@ class SettingsRepositoryMock extends MockSettingsRepository {
     when(mock.isLoggedIn).thenReturn(toReturn);
   }
 
+  /// Stub the [replacedDaysCacheTimestamp] getter
+  static void stubReplacedDaysCacheTimestamp(SettingsRepositoryMock mock, {DateTime? toReturn}) {
+    when(mock.replacedDaysCacheTimestamp).thenReturn(toReturn);
+  }
+
   /// Stub the [displayScheduleAsList] getter
   static void stubDashboardScheduleAsList(SettingsRepositoryMock mock, {bool toReturn = false}) {
     when(_dashboard.displayScheduleAsList).thenReturn(toReturn);

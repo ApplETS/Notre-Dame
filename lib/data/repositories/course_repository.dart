@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:logger/logger.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
@@ -67,7 +68,7 @@ class CourseRepository {
   final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
   /// Used to access preferences for cache timestamps
-  final PreferencesService _preferencesService = locator<PreferencesService>();
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
   /// Student list of courses
   List<Course>? _courses;
@@ -548,7 +549,7 @@ class CourseRepository {
       // Update cache
       _cacheManager.update(replacedDaysCacheKey, jsonEncode(_replacedDays));
       // Update cache timestamp
-      await _preferencesService.setDateTime(PreferencesFlag.replacedDaysCacheTimestamp, DateTime.now());
+      _settingsManager.replacedDaysCacheTimestamp = DateTime.now();
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e("$tag - getReplacedDays: exception raised while trying to update the cache.");
@@ -559,7 +560,7 @@ class CourseRepository {
 
   /// Checks if the replaced days cache is still valid based on time.
   Future<bool> _isReplacedDaysCacheValid() async {
-    final DateTime? lastFetch = await _preferencesService.getDateTime(PreferencesFlag.replacedDaysCacheTimestamp);
+    final DateTime? lastFetch = _settingsManager.replacedDaysCacheTimestamp;
     if (lastFetch == null) return false;
     return DateTime.now().isBefore(lastFetch.add(replacedDaysCacheDuration));
   }
