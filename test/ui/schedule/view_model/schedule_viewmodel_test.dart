@@ -23,41 +23,21 @@ void main() {
 
   tearDown(() => locator.reset());
 
-  test('Initialization calls loadSettings', () async {
-    when(mockSettingsRepository.getScheduleSettings()).thenAnswer(
-      (_) async => {
-        PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
-        PreferencesFlag.scheduleListView: false,
-        PreferencesFlag.scheduleShowTodayBtn: true,
-      },
-    );
+  test('fetches calendar format setting', () async {
+    SettingsRepositoryMock.stubScheduleCalendarFormat(mockSettingsRepository, toReturn: CalendarTimeFormat.month);
 
-    await viewModel.futureToRun();
-    verify(mockSettingsRepository.getScheduleSettings()).called(1);
-  });
-
-  test('loadSettings updates settings and calendarFormat', () async {
-    final testSettings = {
-      PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month,
-      PreferencesFlag.scheduleListView: true,
-      PreferencesFlag.scheduleShowTodayBtn: false,
-    };
-    when(mockSettingsRepository.getScheduleSettings()).thenAnswer((_) async => testSettings);
-
-    await viewModel.loadSettings();
-
-    expect(viewModel.settings, testSettings);
     expect(viewModel.calendarFormat, CalendarTimeFormat.month);
   });
 
-  test('calendarViewSetting returns false when settings are busy', () {
-    viewModel.setBusyForObject(viewModel.settings, true);
-    expect(viewModel.listView, false);
+  test('fetches list view setting', () {
+    SettingsRepositoryMock.stubScheduleListView(mockSettingsRepository, toReturn: true);
+
+    expect(viewModel.listView, true);
   });
 
-  test('calendarViewSetting returns correct value when settings are not busy', () {
-    viewModel.settings[PreferencesFlag.scheduleListView] = true;
-    viewModel.setBusyForObject(viewModel.settings, false);
-    expect(viewModel.listView, true);
+  test('fetches today button setting', () {
+    SettingsRepositoryMock.stubTodayButton(mockSettingsRepository, toReturn: false);
+
+    expect(viewModel.showTodayButton, false);
   });
 }
