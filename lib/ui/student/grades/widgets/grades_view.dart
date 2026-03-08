@@ -36,18 +36,19 @@ class _GradesViewState extends State<GradesView> {
           child: Stack(
             children: [
               if (model.coursesBySession.isEmpty)
-                SingleChildScrollView(
+                CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Center(
-                      child: Text(
-                        AppIntl.of(context)!.grades_msg_no_grades,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleLarge,
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          AppIntl.of(context)!.grades_msg_no_grades,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 )
               else
                 ListView.builder(
