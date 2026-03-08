@@ -36,8 +36,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
   @override
   Future<void> futureToRun() async {
     try {
-      setBusyForObject(tomorrow, true);
-      setBusyForObject(date, true);
+      setBusy(true);
 
       _scheduleEvents.clear();
       await _courseRepository.getCoursesActivities();
@@ -71,8 +70,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
     } catch (e) {
       onError(e, null);
     } finally {
-      setBusyForObject(tomorrow, false);
-      setBusyForObject(date, false);
+      setBusy(false);
     }
     _scheduleEvents = [];
   }

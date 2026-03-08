@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -29,12 +30,25 @@ class ScheduleCard extends StatelessWidget {
         return TitledCard(
           title: title,
           child: Expanded(
-            child: DayCalendar(
-              listView: model.listView,
-              controller: ScheduleController(),
-              selectedDate: model.date,
-              backgroundColor: context.theme.appColors.dashboardCard,
-            ),
+            child: model.isBusy
+                ? Skeletonizer(
+                    effect: ShimmerEffect(
+                      baseColor: context.theme.appColors.dashboardCard,
+                      highlightColor: context.theme.appColors.backgroundAlt,
+                    ),
+                    enabled: true,
+                    child: Container(
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      color: context.theme.appColors.dashboardCard,
+                    ),
+                  )
+                : DayCalendar(
+                    listView: model.listView,
+                    controller: ScheduleController(),
+                    selectedDate: model.date,
+                    backgroundColor: context.theme.appColors.dashboardCard,
+                  ),
           ),
         );
       },

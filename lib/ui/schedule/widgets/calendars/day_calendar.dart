@@ -169,18 +169,10 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   }
 
   Widget _buildDayList(DateTime date, DayViewModel model) {
-    return ListView(
-      children: [
-        const SizedBox(height: 8.0),
-        if (model.calendarEventsFromDate(date).isEmpty && !model.isBusy)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 64.0),
-            child: Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
-          )
-        else
-          _buildEventList(model.calendarEventsFromDate(date)),
-        const SizedBox(height: 16.0),
-      ],
+    return Center(
+      child: (model.calendarEventsFromDate(date).isEmpty && !model.isBusy)
+          ? Center(child: Center(child: Text(AppIntl.of(context)!.schedule_no_event)))
+          : Center(child: _buildEventList(model.calendarEventsFromDate(date))),
     );
   }
 
@@ -195,8 +187,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
-      physics: const ScrollPhysics(),
-      shrinkWrap: true,
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      // On the dashboard, we center the events
+      shrinkWrap: (widget.selectedDate != null) ? true : false,
+      // On the dashboard, the list should be scrollable only in case of overflow
+      physics: (widget.selectedDate != null) ? const ScrollPhysics() : null,
       itemBuilder: (_, index) => ListViewEventTile(events[index] as EventData),
       separatorBuilder: (_, index) =>
           (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),

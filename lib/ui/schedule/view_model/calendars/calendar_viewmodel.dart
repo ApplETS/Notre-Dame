@@ -26,7 +26,9 @@ abstract class CalendarViewModel extends FutureViewModel {
 
   @override
   Future<void> futureToRun() async {
+    setBusy(true);
     _events = await _scheduleService.events;
+    setBusy(false);
   }
 
   List<EventData> calendarEventsFromDate(DateTime date) {
@@ -38,9 +40,11 @@ abstract class CalendarViewModel extends FutureViewModel {
   void handleDateSelectedChanged(DateTime newDate);
 
   Future<void> refreshEvents() async {
+    setBusy(true);
     _scheduleService.invalidateCache();
     _events = await _scheduleService.events;
     eventController.removeWhere((event) => true);
+    setBusy(false);
   }
 
   @override
