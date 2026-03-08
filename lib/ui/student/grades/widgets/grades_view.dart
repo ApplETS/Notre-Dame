@@ -35,19 +35,23 @@ class _GradesViewState extends State<GradesView> {
           onRefresh: () => model.refresh(),
           child: Stack(
             children: [
-              // This widget is here to make this widget a Scrollable. Needed
-              // by the RefreshIndicator
-              ListView(),
               if (model.coursesBySession.isEmpty)
-                Center(
-                  child: Text(
-                    AppIntl.of(context)!.grades_msg_no_grades,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge,
+                SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Center(
+                      child: Text(
+                        AppIntl.of(context)!.grades_msg_no_grades,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ),
                   ),
                 )
               else
                 ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.only(top: 8.0),
                   itemCount: model.coursesBySession.length,
                   itemBuilder: (BuildContext context, int index) => _buildSessionCourses(
