@@ -8,7 +8,6 @@ import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
@@ -23,14 +22,6 @@ ScheduleController controller = ScheduleController();
 
 void main() {
   controller.settingsUpdated = () {};
-  // Needed to support FlutterToast.
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  final Map<PreferencesFlag, dynamic> settings = {
-    PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
-    PreferencesFlag.scheduleShowTodayBtn: true,
-    PreferencesFlag.scheduleListView: false,
-  };
 
   final List<ScheduleActivity> classOneWithLaboratoryABscheduleActivities = [
     ScheduleActivity(
@@ -101,27 +92,17 @@ void main() {
     });
 
     group("futureToRun - ", () {
-      test("The settings are correctly loaded and sets (if no schedule activities present to use)", () async {
-        SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
-
-        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock, toReturn: []);
-
-        expect(await viewModel.futureToRun(), settings);
-        expect(viewModel.calendarFormat, settings[PreferencesFlag.scheduleCalendarFormat]);
-        expect(viewModel.showTodayBtn, settings[PreferencesFlag.scheduleShowTodayBtn]);
-
-        verify(settingsManagerMock.getScheduleSettings()).called(1);
-        verifyNoMoreInteractions(settingsManagerMock);
-
+      test("Fetches the activities", () async {
+        await viewModel.futureToRun();
         verify(courseRepositoryMock.getScheduleActivities()).called(1);
         verifyNoMoreInteractions(courseRepositoryMock);
       });
+    });
 
+    group("laboratories - ", () {
       test(
         "If there is one valid class which has grouped laboratory, we parse it and store it (None selected)",
         () async {
-          SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
-
           CourseRepositoryMock.stubGetScheduleActivities(
             courseRepositoryMock,
             toReturn: classOneWithLaboratoryABscheduleActivities,
@@ -129,13 +110,10 @@ void main() {
 
           final courseAcronymWithLaboratory = classOneWithLaboratoryABscheduleActivities.first.courseAcronym;
 
-          SettingsRepositoryMock.stubGetDynamicString(
-            settingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            courseAcronymWithLaboratory,
-          );
+          SettingsRepositoryMock.stubGetLaboratoryGroup(settingsManagerMock, courseAcronymWithLaboratory);
 
-          expect(await viewModel.futureToRun(), settings);
+          await viewModel.futureToRun();
+
           expect(viewModel.scheduleActivitiesByCourse.containsKey(courseAcronymWithLaboratory), true);
           expect(viewModel.scheduleActivitiesByCourse[courseAcronymWithLaboratory]!.length, 2);
           expect(viewModel.selectedScheduleActivity.containsKey(courseAcronymWithLaboratory), false);
@@ -143,14 +121,13 @@ void main() {
           verify(courseRepositoryMock.getScheduleActivities()).called(1);
           verifyNoMoreInteractions(courseRepositoryMock);
 
-          verify(settingsManagerMock.getDynamicString(any, any)).called(1);
+          verify(settingsManagerMock.schedule.getLaboratoryGroup(courseAcronymWithLaboratory)).called(1);
         },
       );
+
       test(
         "If there is two valid class which has grouped laboratory, we store both (First => none selected, Second => group A selected)",
         () async {
-          SettingsRepositoryMock.stubGetScheduleSettings(settingsManagerMock, toReturn: settings);
-
           CourseRepositoryMock.stubGetScheduleActivities(
             courseRepositoryMock,
             toReturn: twoClassesWithLaboratoryABscheduleActivities,
@@ -160,19 +137,15 @@ void main() {
 
           final secondCourseAcronymWithLab = classTwoWithLaboratoryABscheduleActivities.first.courseAcronym;
 
-          SettingsRepositoryMock.stubGetDynamicString(
+          SettingsRepositoryMock.stubGetLaboratoryGroup(settingsManagerMock, firstCourseAcronymWithLab);
+          SettingsRepositoryMock.stubGetLaboratoryGroup(
             settingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
-            firstCourseAcronymWithLab,
-          );
-          SettingsRepositoryMock.stubGetDynamicString(
-            settingsManagerMock,
-            PreferencesFlag.scheduleLaboratoryGroup,
             secondCourseAcronymWithLab,
             toReturn: ActivityCode.labGroupA,
           );
 
-          expect(await viewModel.futureToRun(), settings);
+          await viewModel.futureToRun();
+
           expect(viewModel.scheduleActivitiesByCourse.keys.length, 2);
           expect(viewModel.scheduleActivitiesByCourse[firstCourseAcronymWithLab]!.length, 2);
           expect(viewModel.scheduleActivitiesByCourse[secondCourseAcronymWithLab]!.length, 2);
@@ -188,60 +161,58 @@ void main() {
           verify(courseRepositoryMock.getScheduleActivities()).called(1);
           verifyNoMoreInteractions(courseRepositoryMock);
 
-          verify(settingsManagerMock.getDynamicString(any, any)).called(2);
+          verify(settingsManagerMock.schedule.getLaboratoryGroup(firstCourseAcronymWithLab)).called(1);
+          verify(settingsManagerMock.schedule.getLaboratoryGroup(secondCourseAcronymWithLab)).called(1);
         },
       );
     });
 
-    group("setter calendarFormat - ", () {
-      test("calendarFormat is updated on the settings", () async {
-        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.scheduleCalendarFormat);
+    group("settings - ", () {
+      test("gets correct settings", () {
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.month);
+        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: true);
+        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: false);
 
-        // Call the setter.
+        CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock, toReturn: []);
+
+        expect(viewModel.calendarFormat, CalendarTimeFormat.month);
+        expect(viewModel.showTodayBtn, true);
+        expect(viewModel.listViewFormat, false);
+
+        verify(settingsManagerMock.schedule.calendarFormat).called(1);
+        verify(settingsManagerMock.schedule.todayButton).called(1);
+        verify(settingsManagerMock.schedule.listView).called(1);
+
+        verifyNoMoreInteractions(settingsManagerMock);
+      });
+
+      test("calendarFormat is updated", () {
+        SettingsRepositoryMock.stubScheduleCalendarFormat(settingsManagerMock, toReturn: CalendarTimeFormat.month);
+
         viewModel.calendarFormat = CalendarTimeFormat.day;
 
-        await untilCalled(settingsManagerMock.setString(PreferencesFlag.scheduleCalendarFormat, any));
+        verify(settingsManagerMock.schedule.calendarFormat = CalendarTimeFormat.day).called(1);
 
-        expect(viewModel.calendarFormat, CalendarTimeFormat.day);
-        expect(viewModel.isBusy, false);
-
-        verify(settingsManagerMock.setString(PreferencesFlag.scheduleCalendarFormat, any)).called(1);
         verifyNoMoreInteractions(settingsManagerMock);
       });
-    });
 
-    group("setter calendarView - ", () {
-      test("calendarView is updated on the settings", () async {
-        SettingsRepositoryMock.stubSetString(settingsManagerMock, PreferencesFlag.scheduleListView);
+      test("calendarView is updated", () {
+        SettingsRepositoryMock.stubScheduleListView(settingsManagerMock, toReturn: true);
 
-        const expected = true;
+        viewModel.listViewFormat = false;
 
-        // Call the setter.
-        viewModel.toggleCalendarView = expected;
+        verify(settingsManagerMock.schedule.listView = false).called(1);
 
-        await untilCalled(settingsManagerMock.setBool(PreferencesFlag.scheduleListView, any));
-
-        expect(viewModel.toggleCalendarView, true);
-        expect(viewModel.isBusy, false);
-
-        verify(settingsManagerMock.setBool(PreferencesFlag.scheduleListView, any)).called(1);
         verifyNoMoreInteractions(settingsManagerMock);
       });
-    });
 
-    group("setter showTodayBtn - ", () {
-      test("showTodayBtn is updated on the settings", () async {
-        const expected = false;
+      test("showTodayBtn is updated", () {
+        SettingsRepositoryMock.stubTodayButton(settingsManagerMock, toReturn: false);
 
-        // Call the setter.
-        viewModel.showTodayBtn = expected;
+        viewModel.showTodayBtn = true;
 
-        await untilCalled(settingsManagerMock.setBool(PreferencesFlag.scheduleShowTodayBtn, any));
+        verify(settingsManagerMock.schedule.todayButton = true).called(1);
 
-        expect(viewModel.showTodayBtn, expected);
-        expect(viewModel.isBusy, false);
-
-        verify(settingsManagerMock.setBool(PreferencesFlag.scheduleShowTodayBtn, any)).called(1);
         verifyNoMoreInteractions(settingsManagerMock);
       });
     });

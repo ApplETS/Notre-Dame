@@ -5,13 +5,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/course_review.dart';
@@ -21,7 +22,6 @@ import 'package:notredame/data/services/signets-api/models/schedule_activity.dar
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/semester_codes.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/utils/api_exception.dart';
@@ -30,9 +30,6 @@ import 'package:notredame/utils/cache_exception.dart';
 /// Repository to access all the data related to courses taken by the student
 class CourseRepository {
   static const String tag = "CourseRepository";
-
-  /// Cache duration for replaced days
-  static const Duration replacedDaysCacheDuration = Duration(days: 7);
 
   @visibleForTesting
   static const String coursesActivitiesCacheKey = "coursesActivitiesCache";
@@ -67,7 +64,7 @@ class CourseRepository {
   final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
   /// Used to access preferences for cache timestamps
-  final PreferencesService _preferencesService = locator<PreferencesService>();
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
   /// Student list of courses
   List<Course>? _courses;
@@ -88,6 +85,9 @@ class CourseRepository {
   late List<ScheduleActivity> _scheduleDefaultActivities;
 
   List<ScheduleActivity>? get scheduleDefaultActivities => _scheduleDefaultActivities;
+
+  /// Cache duration for replaced days
+  static const Duration replacedDaysCacheDuration = Duration(days: 7);
 
   /// List of the replaced days for the student in the active session
   List<ReplacedDay>? _replacedDays;
@@ -548,7 +548,7 @@ class CourseRepository {
       // Update cache
       _cacheManager.update(replacedDaysCacheKey, jsonEncode(_replacedDays));
       // Update cache timestamp
-      await _preferencesService.setDateTime(PreferencesFlag.replacedDaysCacheTimestamp, DateTime.now());
+      _settingsManager.replacedDaysCacheExpiration = DateTime.now().add(replacedDaysCacheDuration).withoutTime;
     } on CacheException catch (_) {
       // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
       _logger.e("$tag - getReplacedDays: exception raised while trying to update the cache.");
@@ -559,9 +559,9 @@ class CourseRepository {
 
   /// Checks if the replaced days cache is still valid based on time.
   Future<bool> _isReplacedDaysCacheValid() async {
-    final DateTime? lastFetch = await _preferencesService.getDateTime(PreferencesFlag.replacedDaysCacheTimestamp);
-    if (lastFetch == null) return false;
-    return DateTime.now().isBefore(lastFetch.add(replacedDaysCacheDuration));
+    final DateTime? expiration = _settingsManager.replacedDaysCacheExpiration;
+    if (expiration == null) return false;
+    return DateTime.now().withoutTime.isBefore(expiration);
   }
 
   /// Retrieve the evaluation filtered by sessions.

@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
@@ -16,7 +15,6 @@ import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
 import '../../../data/mocks/services/launch_url_service_mock.dart';
-import '../../../data/mocks/services/preferences_service_mock.dart';
 import '../../../data/mocks/services/remote_config_service_mock.dart';
 import '../../../helpers.dart';
 
@@ -24,7 +22,6 @@ void main() {
   late SettingsRepositoryMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
   late RemoteConfigServiceMock remoteConfigServiceMock;
-  late PreferencesServiceMock preferencesServiceMock;
   late InAppReviewServiceMock inAppReviewServiceMock;
   late ListSessionsRepositoryMock listSessionsRepositoryMock;
   late LaunchUrlServiceMock launchUrlServiceMock;
@@ -80,7 +77,6 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       settingsManagerMock = setupSettingsRepositoryMock();
-      preferencesServiceMock = setupPreferencesServiceMock();
       setupAnalyticsServiceMock();
       setupBroadcastMessageRepositoryMock();
       setupDynamicMessagesServiceMock();
@@ -240,19 +236,6 @@ void main() {
 
         verify(listSessionsRepositoryMock.getSessions(forceUpdate: true)).called(1);
       });
-
-      test("An exception is thrown during the preferenceService call", () async {
-        setupFlutterToastMock();
-        CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock);
-
-        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.aboutUsCard);
-        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.scheduleCard);
-        PreferencesServiceMock.stubException(preferencesServiceMock, PreferencesFlag.progressBarCard);
-
-        await viewModel.futureToRun();
-      });
     });
 
     group("In app review - ", () {
@@ -261,32 +244,11 @@ void main() {
         InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
 
         final day = DateTime.now().add(const Duration(days: -1));
-        PreferencesServiceMock.stubGetDateTime(preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
+        SettingsRepositoryMock.stubRatingTimer(settingsManagerMock, toReturn: day);
 
         expect(await DashboardViewModel.launchInAppReview(), true);
-        verify(preferencesServiceMock.setBool(PreferencesFlag.hasRatingBeenRequested, value: true)).called(1);
+        verify(settingsManagerMock.rating.hasBeenRequested = true).called(1);
       });
-
-      test(
-        "returns false when todays date is after the day set in cache and when the function is called twice",
-        () async {
-          InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
-          InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
-          final day = DateTime.now().add(const Duration(days: -1));
-          PreferencesServiceMock.stubGetDateTime(preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
-          PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock,
-            PreferencesFlag.hasRatingBeenRequested,
-            toReturn: false,
-          );
-
-          expect(await DashboardViewModel.launchInAppReview(), true);
-
-          PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested);
-
-          expect(await DashboardViewModel.launchInAppReview(), false);
-        },
-      );
 
       test(
         "returns false when today's date is after the day set in cache and when the function is called twice",
@@ -294,16 +256,12 @@ void main() {
           InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
           InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
           final day = DateTime.now().add(const Duration(days: -1));
-          PreferencesServiceMock.stubGetDateTime(preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
-          PreferencesServiceMock.stubGetBool(
-            preferencesServiceMock,
-            PreferencesFlag.hasRatingBeenRequested,
-            toReturn: false,
-          );
+          SettingsRepositoryMock.stubRatingTimer(settingsManagerMock, toReturn: day);
+          SettingsRepositoryMock.stubRatingHasBeenRequested(settingsManagerMock, toReturn: false);
 
           expect(await DashboardViewModel.launchInAppReview(), true);
 
-          PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.hasRatingBeenRequested);
+          SettingsRepositoryMock.stubRatingHasBeenRequested(settingsManagerMock, toReturn: true);
 
           expect(await DashboardViewModel.launchInAppReview(), false);
         },
@@ -313,7 +271,7 @@ void main() {
         InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
         InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
         final day = DateTime.now().add(const Duration(days: 2));
-        PreferencesServiceMock.stubGetDateTime(preferencesServiceMock, PreferencesFlag.ratingTimer, toReturn: day);
+        SettingsRepositoryMock.stubRatingTimer(settingsManagerMock, toReturn: day);
 
         expect(await DashboardViewModel.launchInAppReview(), false);
       });
@@ -321,7 +279,7 @@ void main() {
       test("returns false when the cache date hasn't been set (null)", () async {
         InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
         InAppReviewServiceMock.stubRequestReview(inAppReviewServiceMock);
-        PreferencesServiceMock.stubGetDateTime(preferencesServiceMock, PreferencesFlag.ratingTimer);
+        SettingsRepositoryMock.stubRatingTimer(settingsManagerMock, toReturn: null);
 
         expect(await DashboardViewModel.launchInAppReview(), false);
       });

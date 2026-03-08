@@ -8,7 +8,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/dashboard/widgets/widget_component.dart';
+import 'package:notredame/ui/core/ui/titled_card.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
@@ -35,7 +35,7 @@ class GradesCard extends StatelessWidget {
       displayedCourses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
     }
 
-    return WidgetComponent(
+    return TitledCard(
       title: AppIntl.of(context)!.grades_title,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

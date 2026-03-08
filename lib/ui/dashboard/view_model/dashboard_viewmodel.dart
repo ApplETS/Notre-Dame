@@ -19,10 +19,7 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -34,7 +31,6 @@ class DashboardViewModel extends FutureViewModel {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
-  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
   final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
@@ -70,17 +66,16 @@ class DashboardViewModel extends FutureViewModel {
   }
 
   static Future<bool> launchInAppReview() async {
-    final PreferencesService preferencesService = locator<PreferencesService>();
+    final SettingsRepository settingsManager = locator<SettingsRepository>();
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
-    DateTime? ratingTimerFlagDate = await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
-
-    final hasRatingBeenRequested = await preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
+    DateTime? ratingTimerFlagDate = settingsManager.rating.timer;
+    final hasRatingBeenRequested = settingsManager.rating.hasBeenRequested;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
     if (ratingTimerFlagDate == null) {
       final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
-      preferencesService.setDateTime(PreferencesFlag.ratingTimer, sevenDaysLater);
+      settingsManager.rating.timer = sevenDaysLater;
       ratingTimerFlagDate = sevenDaysLater;
     }
 
@@ -89,7 +84,7 @@ class DashboardViewModel extends FutureViewModel {
         DateTime.now().isAfter(ratingTimerFlagDate)) {
       await Future.delayed(const Duration(seconds: 2), () async {
         await inAppReviewService.requestReview();
-        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
+        settingsManager.rating.hasBeenRequested = true;
       });
 
       return true;
