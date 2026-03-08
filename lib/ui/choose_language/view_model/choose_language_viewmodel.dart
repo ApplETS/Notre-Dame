@@ -1,6 +1,7 @@
-// Package imports:
+// Dart imports:
 import 'dart:ui';
 
+// Package imports:
 import 'package:stacked/stacked.dart';
 
 // Project imports:

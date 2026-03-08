@@ -202,7 +202,6 @@ void main() {
       testWidgets("if there is only a laboA (no labo b) the options should not appear on screen", (
         WidgetTester tester,
       ) async {
-
         final courseWithOnlyLabA = List<ScheduleActivity>.from(classOneWithLaboratoryABscheduleActivities);
         courseWithOnlyLabA.removeWhere((element) => element.activityCode == ActivityCode.labGroupB);
         CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock, toReturn: courseWithOnlyLabA);

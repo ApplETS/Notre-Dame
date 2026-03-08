@@ -40,7 +40,7 @@ void main() {
         verifyInOrder([
           settingsManagerMock.locale,
           settingsManagerMock.themeMode,
-          settingsManagerMock.dashboard.displayScheduleAsList
+          settingsManagerMock.dashboard.displayScheduleAsList,
         ]);
         verifyNoMoreInteractions(settingsManagerMock);
       });

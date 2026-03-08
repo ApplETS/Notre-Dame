@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:logger/logger.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
 
 // Project imports:
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';

@@ -1,6 +1,8 @@
 // Flutter imports:
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:collection/collection.dart';
 
 // Project imports:
 import 'package:notredame/data/services/calendar_service.dart';

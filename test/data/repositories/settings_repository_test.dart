@@ -105,11 +105,7 @@ void main() {
 
     group("isLocaleDefined - ", () {
       test("isLocaleDefined true", () {
-        PreferencesServiceMock.stubGetString(
-          preferencesServiceMock,
-          PreferencesFlag.locale,
-          toReturn: 'fr',
-        );
+        PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.locale, toReturn: 'fr');
 
         expect(repository.isLocaleDefined, true);
 
@@ -132,10 +128,7 @@ void main() {
         repository.replacedDaysCacheTimestamp = date;
 
         verify(
-          preferencesServiceMock.setString(
-            PreferencesFlag.replacedDaysCacheTimestamp,
-            date.toIso8601String(),
-          ),
+          preferencesServiceMock.setString(PreferencesFlag.replacedDaysCacheTimestamp, date.toIso8601String()),
         ).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
@@ -154,31 +147,19 @@ void main() {
 
         expect(result, date);
 
-        verify(
-          preferencesServiceMock.getString(
-            PreferencesFlag.replacedDaysCacheTimestamp,
-          ),
-        ).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheTimestamp)).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
       });
 
       test("get timestamp returns null when not set", () {
-        when(
-          preferencesServiceMock.getString(
-            PreferencesFlag.replacedDaysCacheTimestamp,
-          ),
-        ).thenReturn(null);
+        when(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheTimestamp)).thenReturn(null);
 
         final result = repository.replacedDaysCacheTimestamp;
 
         expect(result, null);
 
-        verify(
-          preferencesServiceMock.getString(
-            PreferencesFlag.replacedDaysCacheTimestamp,
-          ),
-        ).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheTimestamp)).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
       });
@@ -186,11 +167,7 @@ void main() {
 
     group("Login - ", () {
       test("get isLoggedIn true", () {
-        PreferencesServiceMock.stubGetBool(
-          preferencesServiceMock,
-          PreferencesFlag.isLoggedIn,
-          toReturn: true,
-        );
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.isLoggedIn, toReturn: true);
 
         expect(repository.isLoggedIn, true);
 
@@ -228,12 +205,7 @@ void main() {
       test("displayScheduleAsList setter", () {
         repository.dashboard.displayScheduleAsList = true;
 
-        verify(
-          preferencesServiceMock.setBool(
-            PreferencesFlag.dashboardScheduleList,
-            true,
-          ),
-        ).called(1);
+        verify(preferencesServiceMock.setBool(PreferencesFlag.dashboardScheduleList, true)).called(1);
       });
     });
 
@@ -266,19 +238,12 @@ void main() {
         repository.schedule.calendarFormat = CalendarTimeFormat.month;
 
         verify(
-          preferencesServiceMock.setString(
-            PreferencesFlag.scheduleCalendarFormat,
-            CalendarTimeFormat.month.name,
-          ),
+          preferencesServiceMock.setString(PreferencesFlag.scheduleCalendarFormat, CalendarTimeFormat.month.name),
         ).called(1);
       });
 
       test("listView getter", () {
-        PreferencesServiceMock.stubGetBool(
-          preferencesServiceMock,
-          PreferencesFlag.scheduleListView,
-          toReturn: true,
-        );
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleListView, toReturn: true);
 
         expect(repository.schedule.listView, true);
 
@@ -329,23 +294,14 @@ void main() {
 
         expect(result, 'A01');
 
-        verify(
-          preferencesServiceMock.getDynamicString(
-            PreferencesFlag.scheduleLaboratoryGroup,
-            'LOG121',
-          ),
-        ).called(1);
+        verify(preferencesServiceMock.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, 'LOG121')).called(1);
       });
 
       test("setLaboratoryGroup", () async {
         await repository.schedule.setLaboratoryGroup('LOG121', 'A02');
 
         verify(
-          preferencesServiceMock.setDynamicString(
-            PreferencesFlag.scheduleLaboratoryGroup,
-            'LOG121',
-            'A02',
-          ),
+          preferencesServiceMock.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, 'LOG121', 'A02'),
         ).called(1);
       });
     });
@@ -379,19 +335,12 @@ void main() {
         repository.schedule.calendarFormat = CalendarTimeFormat.month;
 
         verify(
-          preferencesServiceMock.setString(
-            PreferencesFlag.scheduleCalendarFormat,
-            CalendarTimeFormat.month.name,
-          ),
+          preferencesServiceMock.setString(PreferencesFlag.scheduleCalendarFormat, CalendarTimeFormat.month.name),
         ).called(1);
       });
 
       test("listView getter", () {
-        PreferencesServiceMock.stubGetBool(
-          preferencesServiceMock,
-          PreferencesFlag.scheduleListView,
-          toReturn: true,
-        );
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleListView, toReturn: true);
 
         expect(repository.schedule.listView, true);
 
@@ -442,23 +391,14 @@ void main() {
 
         expect(result, 'A01');
 
-        verify(
-          preferencesServiceMock.getDynamicString(
-            PreferencesFlag.scheduleLaboratoryGroup,
-            'LOG121',
-          ),
-        ).called(1);
+        verify(preferencesServiceMock.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, 'LOG121')).called(1);
       });
 
       test("setLaboratoryGroup", () async {
         await repository.schedule.setLaboratoryGroup('LOG121', 'A02');
 
         verify(
-          preferencesServiceMock.setDynamicString(
-            PreferencesFlag.scheduleLaboratoryGroup,
-            'LOG121',
-            'A02',
-          ),
+          preferencesServiceMock.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, 'LOG121', 'A02'),
         ).called(1);
       });
     });
@@ -493,12 +433,7 @@ void main() {
 
         repository.rating.timer = now;
 
-        verify(
-          preferencesServiceMock.setString(
-            PreferencesFlag.ratingTimer,
-            now.toIso8601String(),
-          ),
-        ).called(1);
+        verify(preferencesServiceMock.setString(PreferencesFlag.ratingTimer, now.toIso8601String())).called(1);
       });
 
       test("hasBeenRequested getter", () {
@@ -516,12 +451,7 @@ void main() {
       test("hasBeenRequested setter", () {
         repository.rating.hasBeenRequested = true;
 
-        verify(
-          preferencesServiceMock.setBool(
-            PreferencesFlag.hasRatingBeenRequested,
-            true,
-          ),
-        ).called(1);
+        verify(preferencesServiceMock.setBool(PreferencesFlag.hasRatingBeenRequested, true)).called(1);
       });
     });
   });

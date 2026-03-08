@@ -9,16 +9,16 @@ class TitledCard extends StatelessWidget {
   final Widget _child;
   final String _title;
 
-  const TitledCard({super.key, required String title, required Widget child})
-    : _title = title,
-      _child = child;
+  const TitledCard({super.key, required String title, required Widget child}) : _title = title, _child = child;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.hardEdge,
       color: context.theme.appColors.dashboardCard,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(12.0), bottom: Radius.circular(20.0))),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(12.0), bottom: Radius.circular(20.0)),
+      ),
       child: Column(
         children: [
           Container(

@@ -2,8 +2,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/locator.dart';
 
 class PreferencesService {
