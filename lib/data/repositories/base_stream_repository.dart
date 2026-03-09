@@ -48,22 +48,30 @@ class BaseStreamRepository<T> {
   bool _isFirstFetch = true;
   final NetworkingService _networkingService = locator<NetworkingService>();
 
+  /// Checks if the cache is still valid based on the timestamp and the defined duration.
   bool _isCacheValid() {
     if (_cacheTimestamp == null) return false;
     return DateTime.now().difference(_cacheTimestamp!) < _cacheDuration;
   }
 
-  Future<void> _setValueFromJson<RType>(dynamic decoded, RType Function(Map<String, dynamic>) fromJson) async {
+  /// Helper that decodes the data from JSON and sets the [value] property, applying an optional filter before emitting through the controller.
+  Future<void> _setValueFromJson<RType>(
+      dynamic decoded,
+      RType Function(Map<String, dynamic>) fromJson, {
+      T Function(T)? filter,
+  }) async {
     await _itemsLock.synchronized(() async {
       if (decoded is List) {
         value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as T;
       } else if (decoded is Map<String, dynamic>) {
         value ??= fromJson(decoded) as T;
       }
-      _controller.add(value);
+      final T? toEmit = filter != null && value != null ? filter(value as T) : value;
+      _controller.add(toEmit);
     });
   }
 
+  /// Helper that performs the API call with retry logic and error handling.
   Future<SignetsApiResponse<T>> _performApiCall(Future<SignetsApiResponse<T>> Function() apiCall) async {
     return await retry(
       () => apiCall().timeout(Duration(seconds: 3)),
@@ -79,26 +87,46 @@ class BaseStreamRepository<T> {
     );
   }
 
+  /// Fetch data either from cache or from the API.
+  ///
+  /// The optional [filterApiCached] callback is applied to any data that is emitted
+  /// through the controller and before writing into secure storage. This is
+  /// used by callers who want to restrict the result set (for example
+  /// filtering a list of activities by date range) without touching the
+  /// underlying storage logic.
+  ///
+  /// The optional [filterEmittedCache] callback is applied to any data that is emitted
+  /// from cache. This is used by callers who want to further filter cached data
+  /// (for example, filtering a list of activities by date range) without touching the
+  /// underlying storage logic.
   Future<void> fetch<RType>(
     Future<SignetsApiResponse<T>> Function() apiCall,
     RType Function(Map<String, dynamic>) fromJson, {
     bool forceUpdate = false,
+    T Function(T)? filterApiCached,
+    T Function(T)? filterEmittedCache
   }) async {
     if (_isFirstFetch) {
       _isFirstFetch = false;
 
-      await Future.wait([getFromCache(fromJson), getFromApi(apiCall, forceUpdate: true)]);
+      await Future.wait([
+        getFromCache(fromJson, filterCache: filterEmittedCache),
+        getFromApi(apiCall, forceUpdate: true, filter: filterApiCached)
+      ]);
     } else {
       if (!forceUpdate && _isCacheValid() && value != null) {
         return;
       } else {
-        await getFromApi(apiCall, forceUpdate: true);
+        await getFromApi(apiCall, forceUpdate: true, filter: filterApiCached);
       }
     }
   }
 
   @protected
-  Future<void> getFromCache<RType>(RType Function(Map<String, dynamic>) fromJson) async {
+  Future<void> getFromCache<RType>(
+      RType Function(Map<String, dynamic>) fromJson, {
+      T Function(T)? filterCache,
+  }) async {
     if (value != null) {
       return;
     }
@@ -110,7 +138,7 @@ class BaseStreamRepository<T> {
 
     try {
       final decoded = json.decode(cache);
-      await _setValueFromJson(decoded, fromJson);
+      await _setValueFromJson(decoded, fromJson, filter: filterCache);
     } catch (e) {
       _logger.e('Error while reading from cache: $_cacheKey', error: e);
       _controller.addError(e);
@@ -118,7 +146,11 @@ class BaseStreamRepository<T> {
   }
 
   @protected
-  Future<void> getFromApi(Future<SignetsApiResponse<T>> Function() apiCall, {bool forceUpdate = false}) async {
+  Future<void> getFromApi(
+      Future<SignetsApiResponse<T>> Function() apiCall,
+      {bool forceUpdate = false,
+      T Function(T)? filter
+  }) async {
     if (_requestInProgress) {
       return;
     }
@@ -143,12 +175,14 @@ class BaseStreamRepository<T> {
         return;
       }
 
+      // Apply filter to the raw data before writing to storage.
+      final T? dataToCache = filter != null && apiResponse.data != null ? filter(apiResponse.data as T) : apiResponse.data;
+
       await _itemsLock.synchronized(() async {
         _cacheTimestamp = DateTime.now();
-        value = apiResponse.data;
-        _controller.add(value);
+        _controller.add(apiResponse.data);
       });
-      await secureStorage.write(key: _cacheKey, value: json.encode(apiResponse.data));
+      await secureStorage.write(key: _cacheKey, value: json.encode(dataToCache));
     } catch (e) {
       _logger.e('Error while fetching data from API: $_cacheKey', error: e);
       _controller.addError(e);
