@@ -1,20 +1,24 @@
+// Dart imports:
+import 'dart:async';
+
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/models/progress_bar_text_options.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
-import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
-import '../../../data/mocks/services/analytics_service_mock.dart';
 import '../../../data/mocks/services/in_app_review_service_mock.dart';
+import '../../../data/mocks/services/launch_url_service_mock.dart';
 import '../../../data/mocks/services/preferences_service_mock.dart';
 import '../../../data/mocks/services/remote_config_service_mock.dart';
 import '../../../helpers.dart';
@@ -26,7 +30,8 @@ void main() {
   late RemoteConfigServiceMock remoteConfigServiceMock;
   late PreferencesServiceMock preferencesServiceMock;
   late InAppReviewServiceMock inAppReviewServiceMock;
-  late AnalyticsServiceMock analyticsServiceMock;
+  late ListSessionsRepositoryMock listSessionsRepositoryMock;
+  late LaunchUrlServiceMock launchUrlServiceMock;
 
   late DashboardViewModel viewModel;
 
@@ -179,9 +184,22 @@ void main() {
       remoteConfigServiceMock = setupRemoteConfigServiceMock();
       settingsManagerMock = setupSettingsRepositoryMock();
       preferenceServiceMock = setupPreferencesServiceMock();
-      analyticsServiceMock = setupAnalyticsServiceMock();
+      setupAnalyticsServiceMock();
       preferencesServiceMock = setupPreferencesServiceMock();
       setupBroadcastMessageRepositoryMock();
+      listSessionsRepositoryMock = setupListSessionsRepositoryMock();
+      launchUrlServiceMock = setupLaunchUrlServiceMock();
+
+      // Setup stubs for ListSessionsRepository
+      ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: Stream.empty());
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
+
+      // Setup stub for settings repository for SessionProgressUseCase
+      SettingsRepositoryMock.stubGetString(
+        settingsManagerMock,
+        PreferencesFlag.progressBarText,
+        toReturn: ProgressBarText.daysElapsedWithTotalDays.toString(),
+      );
 
       viewModel = DashboardViewModel(intl: await setupAppIntl());
       CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
@@ -198,7 +216,8 @@ void main() {
     });
 
     tearDown(() {
-      unregister<SettingsRepository>();
+      locator.reset();
+      viewModel.dispose();
     });
 
     group('futureToRunGrades -', () {
@@ -334,8 +353,7 @@ void main() {
         ]);
 
         verify(settingsManagerMock.getDashboard()).called(1);
-        verify(settingsManagerMock.getString(PreferencesFlag.progressBarText)).called(1);
-        verify(settingsManagerMock.dateTimeNow).called(2);
+        verify(settingsManagerMock.dateTimeNow).called(1);
         verifyNoMoreInteractions(settingsManagerMock);
       });
 
@@ -573,42 +591,7 @@ void main() {
       });
     });
 
-    group("futureToRunSessionProgressBar - ", () {
-      test("There is an active session", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock, toReturn: dashboard);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0.5);
-        expect(viewModel.sessionDays, [1, 2]);
-      });
-
-      test("Invalid date (Superior limit)", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock, toReturn: dashboard);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020, 1, 20));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 1);
-        expect(viewModel.sessionDays, [2, 2]);
-      });
-
-      test("Invalid date (Lower limit)", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        SettingsRepositoryMock.stubGetDashboard(settingsManagerMock, toReturn: dashboard);
-        SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2019, 12, 31));
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, 0);
-        expect(viewModel.sessionDays, [0, 2]);
-      });
-
-      test("Active session is null", () async {
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock);
-
-        await viewModel.futureToRunSessionProgressBar();
-        expect(viewModel.progress, -1.0);
-        expect(viewModel.sessionDays, [0, 0]);
-      });
-
+    group("changeProgressBarText - ", () {
       test(
         "currentProgressBarText should be set to ProgressBarText.percentage when it is the first time changeProgressBarText is called",
         () async {
@@ -669,7 +652,6 @@ void main() {
         expect(viewModel.cards, hiddenCardDashboard);
         expect(viewModel.cardsToDisplay, [PreferencesFlag.aboutUsCard, PreferencesFlag.progressBarCard]);
 
-        verify(analyticsServiceMock.logEvent("DashboardViewModel", "Deleting scheduleCard"));
         verify(settingsManagerMock.setInt(PreferencesFlag.scheduleCard, -1)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 0)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 1)).called(1);
@@ -686,13 +668,11 @@ void main() {
           PreferencesFlag.progressBarCard,
         ]);
 
-        verify(analyticsServiceMock.logEvent("DashboardViewModel", "Restoring cards"));
         verify(settingsManagerMock.getDashboard()).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 0)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.scheduleCard, 1)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 2)).called(1);
-        verify(settingsManagerMock.getString(PreferencesFlag.progressBarText)).called(2);
-        verify(settingsManagerMock.dateTimeNow).called(3);
+        verify(settingsManagerMock.dateTimeNow).called(2);
         verifyNoMoreInteractions(settingsManagerMock);
       });
 
@@ -716,7 +696,7 @@ void main() {
         ]);
 
         // Call the setter.
-        viewModel.setOrder(PreferencesFlag.progressBarCard, 0);
+        viewModel.onCardReorder(2, 0);
 
         await untilCalled(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 0));
 
@@ -727,13 +707,11 @@ void main() {
           PreferencesFlag.scheduleCard,
         ]);
 
-        verify(analyticsServiceMock.logEvent("DashboardViewModel", "Reordoring progressBarCard"));
         verify(settingsManagerMock.getDashboard()).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.progressBarCard, 0)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.aboutUsCard, 1)).called(1);
         verify(settingsManagerMock.setInt(PreferencesFlag.scheduleCard, 2)).called(1);
-        verify(settingsManagerMock.getString(PreferencesFlag.progressBarText)).called(1);
-        verify(settingsManagerMock.dateTimeNow).called(2);
+        verify(settingsManagerMock.dateTimeNow).called(1);
         verifyNoMoreInteractions(settingsManagerMock);
       });
     });
@@ -807,6 +785,21 @@ void main() {
         PreferencesServiceMock.stubGetDateTime(preferencesServiceMock, PreferencesFlag.ratingTimer);
 
         expect(await DashboardViewModel.launchInAppReview(), false);
+      });
+    });
+
+    group("launchBroadcastUrl - ", () {
+      test("calls launchInBrowser with the provided url", () async {
+        const url = "https://example.com";
+        await DashboardViewModel.launchBroadcastUrl(url);
+        verify(launchUrlServiceMock.launchInBrowser(url)).called(1);
+      });
+    });
+
+    group("init - ", () {
+      test("initializes without error", () async {
+        await viewModel.init();
+        // Test passes if no exception is thrown
       });
     });
   });

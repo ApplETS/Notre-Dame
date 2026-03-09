@@ -1,8 +1,6 @@
 // Dart imports:
+import 'dart:async';
 import 'dart:collection';
-
-// Flutter imports:
-import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
@@ -23,11 +21,11 @@ import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/dashboard/view_model/progress_bar_text_options.dart';
+import 'package:notredame/logic/session_progress_use_case.dart';
 
 class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   static const String tag = "DashboardViewModel";
@@ -38,6 +36,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
+  final SessionProgressUseCase _sessionProgressUseCase;
+
+  StreamSubscription? _sessionProgressSubscription;
 
   /// All dashboard displayable cards
   Map<PreferencesFlag, int>? _cards;
@@ -48,18 +49,8 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
   /// Cards to display on dashboard
   List<PreferencesFlag>? _cardsToDisplay;
 
-  /// Percentage of completed days for the session
-  double _progress = 0.0;
-
-  /// Numbers of days elapsed and total number of days of the current session
-  List<int> _sessionDays = [0, 0];
-
   BroadcastMessage? broadcastMessage;
-
-  /// Get progress of the session
-  double get progress => _progress;
-
-  List<int> get sessionDays => _sessionDays;
+  SessionProgress? sessionProgress;
 
   /// Activities for today
   final List<CourseActivity> _scheduleEvents = [];
@@ -74,17 +65,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
 
   /// Get cards to display
   List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
-
-  ProgressBarText _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-
-  /// Return session progress based on today's [date]
-  double getSessionProgress() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return -1.0;
-    } else {
-      return sessionDays[0] / sessionDays[1];
-    }
-  }
 
   static Future<bool> launchInAppReview() async {
     final PreferencesService preferencesService = locator<PreferencesService>();
@@ -119,44 +99,28 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     launchUrlService.launchInBrowser(url);
   }
 
-  void changeProgressBarText() {
-    if (_currentProgressBarText.index <= 1) {
-      _currentProgressBarText = ProgressBarText.values[_currentProgressBarText.index + 1];
-    } else {
-      _currentProgressBarText = ProgressBarText.values[0];
-    }
-
-    notifyListeners();
-    _settingsManager.setString(PreferencesFlag.progressBarText, _currentProgressBarText.toString());
-  }
-
-  /// Returns a list containing the number of elapsed days in the active session
-  /// and the total number of days in the session
-  List<int> getSessionDays() {
-    if (_courseRepository.activeSessions.isEmpty) {
-      return [0, 0];
-    } else {
-      int dayCompleted = _settingsManager.dateTimeNow
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-      final dayInTheSession = _courseRepository.activeSessions.first.endDate
-          .difference(_courseRepository.activeSessions.first.startDate)
-          .inDays;
-
-      if (dayCompleted > dayInTheSession) {
-        dayCompleted = dayInTheSession;
-      } else if (dayCompleted < 0) {
-        dayCompleted = 0;
-      }
-
-      return [dayCompleted, dayInTheSession];
-    }
-  }
-
   /// List of courses for the current session
   List<Course> courses = [];
 
-  DashboardViewModel({required AppIntl intl}) : _appIntl = intl;
+  DashboardViewModel({required AppIntl intl}) : _appIntl = intl, _sessionProgressUseCase = SessionProgressUseCase(intl);
+
+  Future<void> init() async {
+    _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
+      (sessionProgress) {
+        this.sessionProgress = sessionProgress;
+        notifyListeners();
+      },
+      onError: (error) {
+        if (error is Exception) {
+          _analyticsService.logError(tag, "SessionProgressWidget error", error);
+        }
+        if (error is String) {
+          Fluttertoast.showToast(msg: _appIntl.error);
+        }
+      },
+    );
+    await _sessionProgressUseCase.init();
+  }
 
   @override
   Future<Map<PreferencesFlag, int>> futureToRun() async {
@@ -173,7 +137,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     return Future.wait([
       futureToRunBroadcast(),
       futureToRunGrades(),
-      futureToRunSessionProgressBar(),
+      _sessionProgressUseCase.fetch(forceUpdate: true),
       futureToRunSchedule(),
     ]);
   }
@@ -244,27 +208,6 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
 
     _analyticsService.logEvent(tag, "Restoring cards");
-  }
-
-  Future<List<Session>> futureToRunSessionProgressBar() async {
-    try {
-      final progressBarText =
-          await _settingsManager.getString(PreferencesFlag.progressBarText) ??
-          ProgressBarText.daysElapsedWithTotalDays.toString();
-
-      _currentProgressBarText = ProgressBarText.values.firstWhere((e) => e.toString() == progressBarText);
-
-      setBusyForObject(progress, true);
-      final sessions = await _courseRepository.getSessions();
-      _sessionDays = getSessionDays();
-      _progress = getSessionProgress();
-      return sessions;
-    } catch (e) {
-      onError(e, null);
-    } finally {
-      setBusyForObject(progress, false);
-    }
-    return [];
   }
 
   Future<List<CourseActivity>> futureToRunSchedule() async {
@@ -409,18 +352,12 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     setOrder(elementMoved, newIndex);
   }
 
-  String getProgressBarText(BuildContext context) {
-    switch (_currentProgressBarText) {
-      case ProgressBarText.daysElapsedWithTotalDays:
-        _currentProgressBarText = ProgressBarText.daysElapsedWithTotalDays;
-        return AppIntl.of(context)!.progress_bar_message(sessionDays[0], sessionDays[1]);
-      case ProgressBarText.percentage:
-        _currentProgressBarText = ProgressBarText.percentage;
-        final percentage = sessionDays[1] == 0 ? 0 : ((sessionDays[0] / sessionDays[1]) * 100).round();
-        return AppIntl.of(context)!.progress_bar_message_percentage(percentage);
-      default:
-        _currentProgressBarText = ProgressBarText.remainingDays;
-        return AppIntl.of(context)!.progress_bar_message_remaining_days(sessionDays[1] - sessionDays[0]);
-    }
+  void changeProgressBarText() => _sessionProgressUseCase.changeProgressBarText();
+
+  @override
+  void dispose() {
+    _sessionProgressSubscription?.cancel();
+    _sessionProgressUseCase.dispose();
+    super.dispose();
   }
 }

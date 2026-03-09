@@ -1,4 +1,5 @@
 // Package imports:
+import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:msal_auth/msal_auth.dart';
 
@@ -25,6 +26,7 @@ class AuthService {
       final result = await acquireTokenSilent();
       if (result.$1 != null) {
         _token = result.$1!.accessToken;
+        _setupToken();
         return _token!;
       }
 
@@ -70,7 +72,8 @@ class AuthService {
         prompt: Prompt.selectAccount,
       );
       _token = result?.accessToken;
-      _logger.d('Acquire token => ${result?.toJson()}');
+      _setupToken();
+      _logger.d('Acquire token silent => success');
       return (result, null);
     } on MsalException catch (e) {
       _logger.e('Acquire token failed => $e');
@@ -82,7 +85,8 @@ class AuthService {
     try {
       final result = await singleAccountPca?.acquireTokenSilent(scopes: _scopes, identifier: identifier);
       _token = result?.accessToken;
-      _logger.d('Acquire token silent => ${result?.toJson()}');
+      _setupToken();
+      _logger.d('Acquire token silent => success');
       return (result, null);
     } on MsalException catch (e) {
       _logger.e('Acquire token silent failed => $e');
@@ -109,6 +113,10 @@ class AuthService {
       _logger.e('Token acquisition with cache reset failed => $e');
       return (null, e);
     }
+  }
+
+  void _setupToken() {
+    locator<Dio>().options.headers['Authorization'] = 'Bearer $_token';
   }
 
   Future<(bool, MsalException?)> signOut() async {
