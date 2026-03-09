@@ -72,7 +72,7 @@ class _AuthorViewState extends State<AuthorView> {
                         builderDelegate: PagedChildBuilderDelegate<News>(
                           itemBuilder: (context, item, index) => NewsCard(item),
                           firstPageProgressIndicatorBuilder: (context) => _buildSkeletonLoader(),
-                          newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
+                          newPageProgressIndicatorBuilder: (context) => const NewsCardSkeleton(),
                           noMoreItemsIndicatorBuilder: (context) => _buildNoMoreNewsCard(),
                           firstPageErrorIndicatorBuilder: (context) => _buildError(model.pagingController),
                         ),
@@ -120,7 +120,7 @@ class _AuthorViewState extends State<AuthorView> {
     return Padding(
       padding: const EdgeInsets.only(top: 76),
       child: model.isBusy
-          ? AuthorInfoSkeleton()
+          ? const AuthorInfoSkeleton()
           : SizedBox(
               width: double.infinity,
               child: Card(
@@ -180,7 +180,7 @@ class _AuthorViewState extends State<AuthorView> {
 
   Widget _buildAvatar(AuthorViewModel model, String authorId) {
     return model.isBusy
-        ? AvatarSkeleton()
+        ? const AvatarSkeleton()
         : Align(
             alignment: Alignment.topCenter,
             child: Padding(
@@ -228,7 +228,7 @@ class _AuthorViewState extends State<AuthorView> {
   }
 
   Widget _buildSkeletonLoader() {
-    final Widget skeleton = NewsCardSkeleton();
+    const Widget skeleton = NewsCardSkeleton();
     return Column(children: [for (var i = 0; i < _nbSkeletons; i++) skeleton]);
   }
 

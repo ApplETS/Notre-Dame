@@ -72,8 +72,8 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
         .where((item) => !internshipRegExp.hasMatch(item.name))
         .toList();
 
-    final activeStatus = "actif";
-    final graduatedStatus = "diplômé";
+    const activeStatus = "actif";
+    const graduatedStatus = "diplômé";
 
     // First try to find an active program
     final activePrograms = nonInternshipPrograms.where((item) => item.status.toLowerCase() == activeStatus).toList();

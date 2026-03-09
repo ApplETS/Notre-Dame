@@ -31,7 +31,7 @@ class AuthServiceMock extends MockAuthService {
         account: Account(id: '', username: '', name: ''),
       );
     } else {
-      exception = MsalException(message: 'Error');
+      exception = const MsalException(message: 'Error');
     }
     when(mock.acquireTokenSilent()).thenAnswer((_) async => (result, exception));
   }
@@ -52,7 +52,7 @@ class AuthServiceMock extends MockAuthService {
         account: Account(id: '', username: '', name: ''),
       );
     } else {
-      exception = MsalException(message: 'Error');
+      exception = const MsalException(message: 'Error');
     }
     when(mock.acquireToken()).thenAnswer((_) async => (result, exception));
   }
@@ -74,7 +74,7 @@ class AuthServiceMock extends MockAuthService {
         account: Account(id: '', username: '', name: ''),
       );
     } else {
-      exception = MsalException(message: 'Error');
+      exception = const MsalException(message: 'Error');
     }
 
     when(mock.acquireTokenWithCacheReset()).thenAnswer((_) async => (result, exception));

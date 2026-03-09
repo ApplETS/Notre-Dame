@@ -66,7 +66,7 @@ class BaseStreamRepository<T> {
 
   Future<SignetsApiResponse<T>> _performApiCall(Future<SignetsApiResponse<T>> Function() apiCall) async {
     return await retry(
-      () => apiCall().timeout(Duration(seconds: 3)),
+      () => apiCall().timeout(const Duration(seconds: 3)),
       maxAttempts: 5,
       retryIf: (e) async {
         _logger.e('Error while fetching data from API: $_cacheKey', error: e);

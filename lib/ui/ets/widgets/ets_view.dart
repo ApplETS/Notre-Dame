@@ -19,12 +19,12 @@ class ETSView extends StatefulWidget {
 
 class _ETSViewState extends State<ETSView> {
   final RemoteConfigService _remoteConfigService = locator<RemoteConfigService>();
-  List<Widget> tabsView = [NewsView(), QuickLinksView()];
+  List<Widget> tabsView = [const NewsView(), const QuickLinksView()];
 
   @override
   Widget build(BuildContext context) {
     if (!_remoteConfigService.helloFeatureToggle) {
-      return BaseScaffold(appBar: _buildAppBar(context), body: QuickLinksView());
+      return BaseScaffold(appBar: _buildAppBar(context), body: const QuickLinksView());
     }
 
     final List<String> tabs = [AppIntl.of(context)!.news_title, AppIntl.of(context)!.useful_link_title];

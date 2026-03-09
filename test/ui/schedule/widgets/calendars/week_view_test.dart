@@ -25,8 +25,8 @@ void main() {
   List<CourseActivity> activites = [
     CourseActivity(
       courseName: 'Lab',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
+      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(hours: 9)),
+      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(hours: 12)),
       courseGroup: 'LOG100',
       activityLocation: ['Room 102'],
       activityName: 'Lab Session',
@@ -34,8 +34,8 @@ void main() {
     ),
     CourseActivity(
       courseName: 'Lecture',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
+      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(days: 6, hours: 9)),
+      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(days: 6, hours: 12)),
       courseGroup: 'ING150-01',
       activityLocation: ['Room 101'],
       activityName: 'Lecture 1',

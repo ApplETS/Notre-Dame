@@ -57,7 +57,7 @@ class _SocialLinksState extends State<SocialLinks> {
             width: 50,
             decoration: BoxDecoration(
               color: context.theme.appColors.modalHandle,
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             ),
           ),
         ),

@@ -50,7 +50,7 @@ void main() {
     testWidgets('Has card grades displayed - with no courses', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: GradesCard(courses: [], onDismissed: () {}, loading: false),
+          child: GradesCard(courses: const [], onDismissed: () {}, loading: false),
         ),
       );
       await tester.pumpAndSettle();

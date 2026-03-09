@@ -33,17 +33,17 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.startup:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
-        pageBuilder: (_, _, _) => StartUpView(),
+        pageBuilder: (_, _, _) => const StartUpView(),
       );
     case RouterPaths.serviceOutage:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => OutageView(),
+        builder: (_) => const OutageView(),
       );
     case RouterPaths.faq:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => FaqView(),
+        builder: (_) => const FaqView(),
       );
     case RouterPaths.dashboard:
       return PageRouteBuilder(
@@ -66,7 +66,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
         transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
-        pageBuilder: (_, _, _) => StudentView(),
+        pageBuilder: (_, _, _) => const StudentView(),
       );
     case RouterPaths.gradeDetails:
       return MaterialPageRoute(
@@ -77,17 +77,17 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
         transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
-        pageBuilder: (_, _, _) => ETSView(),
+        pageBuilder: (_, _, _) => const ETSView(),
       );
     case RouterPaths.usefulLinks:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
-        pageBuilder: (_, _, _) => QuickLinksView(),
+        pageBuilder: (_, _, _) => const QuickLinksView(),
       );
     case RouterPaths.news:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
-        pageBuilder: (_, _, _) => NewsView(),
+        pageBuilder: (_, _, _) => const NewsView(),
       );
     case RouterPaths.newsDetails:
       return PageRouteBuilder(
@@ -102,23 +102,23 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.security:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => SecurityView(),
+        builder: (_) => const SecurityView(),
       );
     case RouterPaths.more:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
         transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
-        pageBuilder: (_, _, _) => MoreView(),
+        pageBuilder: (_, _, _) => const MoreView(),
       );
     case RouterPaths.settings:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => SettingsView(),
+        builder: (_) => const SettingsView(),
       );
     case RouterPaths.map:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => MapView(),
+        builder: (_) => const MapView(),
       );
     case RouterPaths.contributors:
       return MaterialPageRoute(
@@ -128,12 +128,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.about:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => AboutView(),
+        builder: (_) => const AboutView(),
       );
     case RouterPaths.chooseLanguage:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => ChooseLanguageView(),
+        builder: (_) => const ChooseLanguageView(),
       );
     default:
       return PageRouteBuilder(

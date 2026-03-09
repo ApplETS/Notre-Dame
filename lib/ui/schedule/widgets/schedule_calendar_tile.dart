@@ -85,7 +85,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 AppIntl.of(context)!.close_button_text,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -111,7 +111,7 @@ class _ScheduleCalendarTileState extends State<ScheduleCalendarTile> {
                 children: [
                   AutoSizeText(
                     widget.title!,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                     maxLines: 2,
                     minFontSize: 10,
                   ),

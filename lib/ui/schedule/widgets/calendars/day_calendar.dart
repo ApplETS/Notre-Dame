@@ -122,7 +122,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   }
 
   Widget _buildListView(DayViewModel model) {
-    final int pageBufferSize = 10;
+    const int pageBufferSize = 10;
     PageController pageController = PageController(initialPage: pageBufferSize);
 
     pageController.addListener(() {
@@ -207,7 +207,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     final Color defaultColor = context.theme.appColors.scheduleLine;
 
     return Container(
-      padding: EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(bottom: 4),
       color: context.theme.appColors.appBar,
       child: TableCalendar(
         key: const Key("TableCalendar"),

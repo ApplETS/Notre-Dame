@@ -23,12 +23,12 @@ class AppTheme with ChangeNotifier {
       tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xffeeebeb),
       cardTheme: defaultTheme.cardTheme.copyWith(
-        color: Color(0xfff8f8f8),
-        surfaceTintColor: Color(0xffffe6e6),
+        color: const Color(0xfff8f8f8),
+        surfaceTintColor: const Color(0xffffe6e6),
         elevation: 2,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        fillColor: Color(0xfffffdfd),
+        fillColor: const Color(0xfffffdfd),
         labelStyle: TextStyle(color: AppPalette.grey.black),
       ),
       bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
@@ -39,8 +39,8 @@ class AppTheme with ChangeNotifier {
         backgroundColor: _lightAppColors.navBar,
         groupAlignment: 0,
         indicatorColor: Colors.transparent,
-        selectedLabelTextStyle: TextStyle(color: AppPalette.etsLightRed),
-        selectedIconTheme: IconThemeData(color: AppPalette.etsLightRed),
+        selectedLabelTextStyle: const TextStyle(color: AppPalette.etsLightRed),
+        selectedIconTheme: const IconThemeData(color: AppPalette.etsLightRed),
       ),
       colorScheme: defaultTheme.colorScheme.copyWith(
         primary: AppPalette.etsLightRed,
@@ -91,7 +91,7 @@ class AppTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(backgroundColor: _darkAppColors.appBar),
       tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
-      cardTheme: defaultTheme.cardTheme.copyWith(color: Color(0xff242326)),
+      cardTheme: defaultTheme.cardTheme.copyWith(color: const Color(0xff242326)),
       bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
         selectedItemColor: AppPalette.etsLightRed,
         backgroundColor: _darkAppColors.navBar,
@@ -100,8 +100,8 @@ class AppTheme with ChangeNotifier {
         backgroundColor: _darkAppColors.navBar,
         groupAlignment: 0,
         indicatorColor: Colors.transparent,
-        selectedLabelTextStyle: TextStyle(color: AppPalette.etsLightRed),
-        selectedIconTheme: IconThemeData(color: AppPalette.etsLightRed),
+        selectedLabelTextStyle: const TextStyle(color: AppPalette.etsLightRed),
+        selectedIconTheme: const IconThemeData(color: AppPalette.etsLightRed),
       ),
       colorScheme: defaultTheme.colorScheme.copyWith(
         primary: AppPalette.etsLightRed,

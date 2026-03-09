@@ -146,7 +146,7 @@ class _AboutViewState extends State<AboutView> with TickerProviderStateMixin {
   }
 
   Widget easterEggLogo() {
-    final Duration delay = Duration(seconds: 2);
+    const Duration delay = Duration(seconds: 2);
     final List<AxisDirection> combinaison = [
       AxisDirection.up,
       AxisDirection.right,

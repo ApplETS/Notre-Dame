@@ -92,7 +92,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
       appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
       body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
       bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait && widget._showBottomBar)
-          ? BottomBar()
+          ? const BottomBar()
           : null,
       floatingActionButton: widget.fab,
       floatingActionButtonLocation: widget.fabPosition,
@@ -128,7 +128,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
             if (widget._showBottomBar)
               ColoredBox(
                 color: context.theme.appColors.navBar,
-                child: SafeArea(top: false, bottom: false, right: false, child: NavRail()),
+                child: const SafeArea(top: false, bottom: false, right: false, child: NavRail()),
               ),
             Expanded(
               child: Column(
