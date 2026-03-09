@@ -39,7 +39,10 @@ mixin RequestBuilderService {
       RequestBuilderService.retries++;
       if (retries > maxRetry) {
         retries = 0;
-        throw const ApiException(prefix: tagError, message: "Token invalide. Veuillez vous déconnecter et vous reconnecter.");
+        throw const ApiException(
+          prefix: tagError,
+          message: "Token invalide. Veuillez vous déconnecter et vous reconnecter.",
+        );
       }
 
       final authService = locator<AuthService>();
