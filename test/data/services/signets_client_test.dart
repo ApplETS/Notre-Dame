@@ -4,11 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets_client.dart';
+import 'package:notredame/data/services/signets_client_service.dart';
 
 void main() {
   late DioAdapter dioAdapter;
-  late SignetsClient signetsClient;
+  late SignetsClientService signetsClient;
   late Dio dio;
 
   group('SignetsClient - ', () {
@@ -16,7 +16,7 @@ void main() {
       dio = Dio();
       dioAdapter = DioAdapter(dio: dio);
       dio.httpClientAdapter = dioAdapter;
-      signetsClient = SignetsClient(dio);
+      signetsClient = SignetsClientService(dio);
     });
 
     tearDown(() {
