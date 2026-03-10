@@ -510,6 +510,9 @@
   "dark_theme": "Foncé",
   "light_theme": "Pâle",
   "system_theme": "Système",
+  "settings_dashboard_schedule_format": "Format du calendrier sur le dashboard\u00a0:",
+  "settings_dashboard_schedule_format_list": "Liste",
+  "settings_dashboard_schedule_format_calendar": "Calendrier",
 
   "flutter_license": "Flutter est la boîte à outils d'interface utilisateur de Google pour créer de superbes applications compilées en natif pour mobile, Web et bureau à partir d'une seule base de code. En savoir plus sur Flutter à ",
   "flutter_website": "https://flutter.dev",

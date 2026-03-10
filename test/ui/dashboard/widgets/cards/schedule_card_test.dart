@@ -12,6 +12,7 @@ void main() {
 
   setUp(() async {
     setupCourseRepositoryMock();
+    setupSettingsRepositoryMock();
     setupScheduleServiceMock();
   });
 

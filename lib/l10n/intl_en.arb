@@ -511,6 +511,9 @@
   "dark_theme": "Dark",
   "light_theme": "Light",
   "system_theme": "System",
+  "settings_dashboard_schedule_format": "Calendar format on the dashboard:",
+  "settings_dashboard_schedule_format_list": "List",
+  "settings_dashboard_schedule_format_calendar": "Calendar",
 
   "flutter_license": "Flutter is Google's UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. Learn more about Flutter at ",
   "flutter_website": "https://flutter.dev",

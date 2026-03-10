@@ -15,7 +15,6 @@ import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
@@ -98,8 +97,7 @@ void main() {
       // Check if user repository logOut is called
       authServiceMock.signOut(),
       // Check if the settings manager has reset lang and theme and notified his listener
-      settingsManagerMock.resetLanguageAndThemeMode(),
-      settingsManagerMock.setBool(PreferencesFlag.isLoggedIn, false),
+      settingsManagerMock.isLoggedIn = false,
     ]);
     verifyNoMoreInteractions(cacheManagerMock);
     verifyNoMoreInteractions(preferenceServiceMock);

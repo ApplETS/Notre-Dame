@@ -17,6 +17,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/hello/hello_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -42,7 +43,8 @@ Future<void> main() async {
 
       // Manage the settings
       final SettingsRepository settingsManager = locator<SettingsRepository>();
-      await settingsManager.fetchLanguageAndThemeMode();
+      final PreferencesService preferencesService = locator<PreferencesService>();
+      await preferencesService.initialize();
 
       // Initialize hello
       final HelloService helloApiClient = locator<HelloService>();

@@ -9,11 +9,6 @@ import 'remote_config_service_mock.mocks.dart';
 /// Mock for the [RemoteConfigService]
 @GenerateNiceMocks([MockSpec<RemoteConfigService>()])
 class RemoteConfigServiceMock extends MockRemoteConfigService {
-  /// Stub the getter [coursesActivities] of [mock] when called will return [toReturn].
-  static void stubGetCalendarViewEnabled(RemoteConfigServiceMock mock, {bool toReturn = true}) {
-    when(mock.scheduleListViewDefault).thenReturn(toReturn);
-  }
-
   static void stubGetBroadcastEnabled(RemoteConfigServiceMock mock, {bool toReturn = true}) {
     when(mock.dashboardMessageActive).thenReturn(toReturn);
   }

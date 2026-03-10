@@ -318,11 +318,6 @@ AuthServiceMock setupAuthServiceMock() {
   return repository;
 }
 
-bool getCalendarViewEnabled() {
-  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
-  return remoteConfigService.scheduleListViewDefault;
-}
-
 /// Load a mock of the [DynamicMessagesService]
 DynamicMessagesServiceMock setupDynamicMessagesServiceMock() {
   unregister<DynamicMessagesService>();
