@@ -10,7 +10,6 @@ import 'package:notredame/locator.dart';
 
 class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
   static const String sessionsKey = 'sessions';
-  static const String tag = "ListSessionsRepository";
 
   final _signetsClientService = locator<SignetsClientService>();
   final _logger = locator<Logger>();
@@ -18,9 +17,10 @@ class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
   ListSessionsRepository() : super(sessionsKey);
 
   Future<void> getSessions({bool forceUpdate = false}) async {
+    _logger.d("$runtimeType - getSessions: fetch called with forceUpdate=$forceUpdate");
     await fetch(() => _signetsClientService.getSessionList(), Session.fromJson, forceUpdate: forceUpdate);
     if (value != null) {
-      _logger.d("$tag - getSessions: ${value!.length} sessions loaded.");
+      _logger.d("$runtimeType - getSessions: ${value!.length} sessions loaded.");
     }
   }
 

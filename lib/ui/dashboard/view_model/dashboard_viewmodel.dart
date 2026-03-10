@@ -15,7 +15,6 @@ import 'package:notredame/data/models/dynamic_message_context.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -23,18 +22,15 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/logic/session_progress_use_case.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
   static const String abandonedGradeCode = "XX";
 
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
   final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
-  final SessionProgressUseCase _sessionProgressUseCase;
 
   StreamSubscription? _sessionProgressSubscription;
 
@@ -58,7 +54,6 @@ class DashboardViewModel extends FutureViewModel {
 
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
-      _sessionProgressUseCase = SessionProgressUseCase(),
 
       /// if the animation has not been played, play it
       shouldPlayAnimation = !hasAnimationPlayed {
@@ -107,7 +102,6 @@ class DashboardViewModel extends FutureViewModel {
 
   Future<void> init(TickerProvider ticker) async {
     initAnimationController(ticker);
-    await initSessionProgress();
   }
 
   /// Initialize the animation controller for the circle
@@ -136,24 +130,6 @@ class DashboardViewModel extends FutureViewModel {
     }
   }
 
-  Future<void> initSessionProgress() async {
-    _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
-      (sessionProgress) {
-        this.sessionProgress = sessionProgress;
-        notifyListeners();
-      },
-      onError: (error) {
-        if (error is Exception) {
-          _analyticsService.logError(tag, "SessionProgressWidget error", error);
-        }
-        if (error is String) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      },
-    );
-    await _sessionProgressUseCase.init();
-  }
-
   static Future<void> launchBroadcastUrl(String url) async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
     launchUrlService.launchInBrowser(url);
@@ -167,7 +143,6 @@ class DashboardViewModel extends FutureViewModel {
     return Future.wait([
       futureToRunBroadcast(),
       futureToRunGrades(),
-      _sessionProgressUseCase.fetch(forceUpdate: true),
       loadDynamicMessage(),
     ]);
   }
@@ -283,7 +258,6 @@ class DashboardViewModel extends FutureViewModel {
   void dispose() {
     _controller?.dispose();
     _sessionProgressSubscription?.cancel();
-    _sessionProgressUseCase.dispose();
     super.dispose();
   }
 }

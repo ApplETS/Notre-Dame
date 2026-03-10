@@ -131,8 +131,10 @@ class BaseStreamRepository<T> {
       return;
     }
 
+    _logger.d('$runtimeType - getFromCache: Fetching data from cache');
     final cache = await secureStorage.read(key: _cacheKey);
     if (cache == null || cache.isEmpty) {
+      _logger.d('$runtimeType - getFromCache: cache null or empty for key $_cacheKey');
       return;
     }
 
@@ -140,7 +142,7 @@ class BaseStreamRepository<T> {
       final decoded = json.decode(cache);
       await _setValueFromJson(decoded, fromJson, filter: filterCache);
     } catch (e) {
-      _logger.e('Error while reading from cache: $_cacheKey', error: e);
+      _logger.e('$runtimeType - getFromCache: Error while reading from cache: $_cacheKey', error: e);
       _controller.addError(e);
     }
   }
@@ -166,12 +168,13 @@ class BaseStreamRepository<T> {
 
     try {
       _requestInProgress = true;
+      _logger.d('$runtimeType - getFromApi: Fetching data from API');
       final apiResponse = await _performApiCall(apiCall);
       _requestInProgress = false;
 
       if (apiResponse.error != null && apiResponse.error!.isNotEmpty) {
         _controller.addError(apiResponse.error as Object);
-        _logger.e('Error while fetching data from API', error: apiResponse.error);
+        _logger.e('$runtimeType - getFromApi: Error while fetching data from API', error: apiResponse.error);
         return;
       }
 
@@ -180,11 +183,12 @@ class BaseStreamRepository<T> {
 
       await _itemsLock.synchronized(() async {
         _cacheTimestamp = DateTime.now();
+        value = apiResponse.data;
         _controller.add(apiResponse.data);
       });
       await secureStorage.write(key: _cacheKey, value: json.encode(dataToCache));
     } catch (e) {
-      _logger.e('Error while fetching data from API: $_cacheKey', error: e);
+      _logger.e('$runtimeType - getFromApi: Error while fetching data from API: $_cacheKey', error: e);
       _controller.addError(e);
     } finally {
       _requestInProgress = false;
