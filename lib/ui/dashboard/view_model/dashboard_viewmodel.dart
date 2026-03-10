@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/data/repositories/list_sessions_repository.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -31,6 +32,7 @@ class DashboardViewModel extends FutureViewModel {
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
   final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
+  final ListSessionsRepository _listSessionsRepository = locator<ListSessionsRepository>();
 
   StreamSubscription? _sessionProgressSubscription;
 
@@ -141,6 +143,7 @@ class DashboardViewModel extends FutureViewModel {
   @override
   Future futureToRun() async {
     return Future.wait([
+      _listSessionsRepository.getSessions(forceUpdate: true),
       futureToRunBroadcast(),
       futureToRunGrades(),
       loadDynamicMessage(),

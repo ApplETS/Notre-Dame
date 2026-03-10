@@ -58,7 +58,7 @@ void main() {
         var streanEvents = 0;
         repository.stream.listen((data) => streanEvents++);
 
-        await repository.getFromCache((json) => json);
+        await repository._getFromCache((json) => json);
 
         expect(streanEvents, 0);
         verify(mockSecureStorage.read(key: 'test_cache_key')).called(1);
@@ -72,7 +72,7 @@ void main() {
         var streamEvents = 0;
         repository.stream.listen((data) => streamEvents++);
 
-        await repository.getFromCache((json) => json);
+        await repository._getFromCache((json) => json);
 
         expect(streamEvents, 1);
         expect(repository.value, [
@@ -89,7 +89,7 @@ void main() {
         var streamEvents = 0;
         repository.stream.listen((data) => streamEvents++);
 
-        await repository.getFromCache((json) => json);
+        await repository._getFromCache((json) => json);
 
         expect(streamEvents, 1);
         expect(repository.value, {'key': 'value'});
@@ -103,7 +103,7 @@ void main() {
 
         repository.stream.listen((data) => streamEvents++, onError: (error) => streamErrors++);
 
-        await repository.getFromCache((json) => json);
+        await repository._getFromCache((json) => json);
 
         // Adding a small delay to ensure the stream has time to emit
         await Future.delayed(Duration(milliseconds: 10));
@@ -123,7 +123,7 @@ void main() {
         var streamEvents = 0;
         repository.stream.listen((data) => streamEvents++);
 
-        await repository.getFromApi(() async => apiResponse);
+        await repository._getFromApi(() async => apiResponse);
 
         expect(repository.value, [
           {'key': 'value'},
@@ -139,8 +139,8 @@ void main() {
 
         apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
 
-        await repository.getFromApi(apiCall);
-        await repository.getFromApi(apiCall);
+        await repository._getFromApi(apiCall);
+        await repository._getFromApi(apiCall);
 
         expect(streamEvents, 1);
         verify(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).called(1);
@@ -152,8 +152,8 @@ void main() {
 
         apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
 
-        await repository.getFromApi(apiCall);
-        await repository.getFromApi(apiCall, forceUpdate: true);
+        await repository._getFromApi(apiCall);
+        await repository._getFromApi(apiCall, forceUpdate: true);
 
         expect(streamEvents, 2);
         verify(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).called(2);
@@ -172,7 +172,7 @@ void main() {
           response: Response(statusCode: 401, requestOptions: RequestOptions(path: 'test')),
         );
 
-        await repository.getFromApi(apiCall);
+        await repository._getFromApi(apiCall);
 
         // Adding a small delay to ensure the stream has time to emit
         await Future.delayed(Duration(milliseconds: 10));
@@ -188,7 +188,7 @@ void main() {
 
         apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: [], error: 'error');
 
-        await repository.getFromApi(apiCall);
+        await repository._getFromApi(apiCall);
 
         // Adding a small delay to ensure the stream has time to emit
         await Future.delayed(Duration(milliseconds: 10));
@@ -204,7 +204,7 @@ void main() {
 
         apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
 
-        await repository.getFromApi(apiCall);
+        await repository._getFromApi(apiCall);
 
         await Future.delayed(Duration(milliseconds: 10));
         expect(streamEvents, 0);

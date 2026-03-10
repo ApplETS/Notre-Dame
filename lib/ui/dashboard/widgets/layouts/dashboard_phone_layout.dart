@@ -12,7 +12,7 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
-import 'package:notredame/ui/dashboard/widgets/session_progress_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/session_progress_card.dart';
 
 class DashboardPhoneLayout extends StatefulWidget {
   final DashboardViewModel model;

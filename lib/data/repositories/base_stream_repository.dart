@@ -111,18 +111,20 @@ class BaseStreamRepository<T> {
 
       await Future.wait([
         getFromCache(fromJson, filterCache: filterEmittedCache),
-        getFromApi(apiCall, forceUpdate: true, filter: filterApiCached)
+        getFromApi(apiCall, filter: filterApiCached)
       ]);
     } else {
       if (!forceUpdate && _isCacheValid() && value != null) {
         return;
       } else {
-        await getFromApi(apiCall, forceUpdate: true, filter: filterApiCached);
+        value = null;
+        _controller.add(null);
+        await getFromApi(apiCall, filter: filterApiCached);
       }
     }
   }
 
-  @protected
+  @visibleForTesting
   Future<void> getFromCache<RType>(
       RType Function(Map<String, dynamic>) fromJson, {
       T Function(T)? filterCache,
@@ -147,26 +149,21 @@ class BaseStreamRepository<T> {
     }
   }
 
-  @protected
+  @visibleForTesting
   Future<void> getFromApi(
       Future<SignetsApiResponse<T>> Function() apiCall,
-      {bool forceUpdate = false,
-      T Function(T)? filter
+      {T Function(T)? filter
   }) async {
-    if (_requestInProgress) {
-      return;
-    }
-
-    if (!forceUpdate && _isCacheValid()) {
-      return;
-    }
-
     if (!await _networkingService.hasConnectivity()) {
       _controller.addError('No internet connection');
       return;
     }
 
     try {
+      if (_requestInProgress) {
+        return;
+      }
+
       _requestInProgress = true;
       _logger.d('$runtimeType - getFromApi: Fetching data from API');
       final apiResponse = await _performApiCall(apiCall);

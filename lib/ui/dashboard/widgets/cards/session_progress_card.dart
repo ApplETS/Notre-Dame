@@ -12,96 +12,62 @@ import 'package:skeletonizer/skeletonizer.dart';
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:stacked/stacked.dart';
-import '../../core/themes/app_theme.dart';
+import '../../../core/themes/app_theme.dart';
 
-class SessionProgressCard extends StatefulWidget {
+class SessionProgressCard extends StatelessWidget {
   const SessionProgressCard({super.key});
-
-  @override
-  State<SessionProgressCard> createState() => _SessionProgressCardState();
-}
-
-class _SessionProgressCardState extends State<SessionProgressCard> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<SessionProgressViewmodel>.reactive(
     viewModelBuilder: () => SessionProgressViewmodel(intl: AppIntl.of(context)!),
-    onViewModelReady: (model) {
-      _controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
-
-      _animation = Tween<double>(
-        begin: 0,
-        end: model.sessionProgress ?? 0.0,
-      ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-
-      _controller.forward();
-    },
     builder: (context, model, child) {
-      if (!model.isBusy && model.sessionProgress != null) {
-        _updateAnimation(model.sessionProgress!);
-      }
+      final progress = model.sessionProgress ?? 0.0;
+
       return AspectRatio(
         aspectRatio: 1,
         child: Card(
           color: context.theme.appColors.dashboardCard,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-          child: model.isBusy || !model.hasSession || model.sessionProgress == 0.0
-              ? Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center))
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  spacing: 12.0,
-                  children: [
-                    Expanded(
-                      child: LayoutBuilder(
-                        builder: (BuildContext context, BoxConstraints constraints) {
-                          double size = constraints.maxHeight;
-                          return Transform.scale(
-                            scale: size / 100,
-                            alignment: Alignment.centerRight,
-                            child: AnimatedBuilder(
-                              animation: _animation,
-                              builder: (context, child) => _progress(_animation.value, model.daysRemaining, loading: model.isBusy),
-                            ),
-                          );
-                        },
+            child: model.isBusy || !model.hasSession || progress == 0.0
+                ? Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center))
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    spacing: 12,
+                    children: [
+                      Expanded(
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            double size = constraints.maxHeight;
+
+                            return Transform.scale(
+                              scale: size / 100,
+                              alignment: Alignment.centerRight,
+                              child: TweenAnimationBuilder<double>(
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeOut,
+                                tween: Tween<double>(begin: 0.0, end: progress),
+                                builder: (context, animatedProgress, child) {
+                                  return _progress(animatedProgress, model.daysRemaining, loading: model.isBusy);
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    AutoSizeText(
-                      AppIntl.of(context)!.progress_bar,
-                      style: TextStyle(fontSize: 18, height: 1),
-                      maxLines: 1,
-                    ),
-                  ],
-                ),
+                      AutoSizeText(
+                        AppIntl.of(context)!.progress_bar,
+                        style: const TextStyle(fontSize: 18, height: 1),
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
+          ),
         ),
-      ),
-    );
-  });
-
-  void _updateAnimation(double progress) {
-    if (_animation.value == progress) return;
-
-    _animation = Tween<double>(
-      begin: _animation.value,
-      end: progress,
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-
-    _controller
-      ..reset()
-      ..forward();
-  }
+      );
+    },
+  );
 
   Widget _progress(double animatedProgress, int? daysRemaining, {bool loading = false}) => Transform.rotate(
     angle: -pi / 5,
