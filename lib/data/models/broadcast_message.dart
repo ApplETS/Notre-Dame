@@ -6,9 +6,5 @@ class BroadcastMessage {
   final Color color;
   final String url;
 
-  BroadcastMessage({
-    required this.message,
-    required this.color,
-    required this.url,
-  });
+  BroadcastMessage({required this.message, required this.color, required this.url});
 }
