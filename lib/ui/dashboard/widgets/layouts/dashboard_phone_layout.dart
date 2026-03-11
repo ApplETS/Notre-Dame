@@ -3,6 +3,7 @@ import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/dashboard/widgets/broadcast_message_component.dart';
 
 // Package imports:
 import 'package:skeletonizer/skeletonizer.dart';
@@ -106,7 +107,9 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                   child: SizedBox(
                     height: twoLinesHeight,
                     child: Center(
-                      child: widget.model.busy(widget.model.dynamicMessageText)
+                      child: widget.model.remoteConfigService.dashboardMessageActive
+                          ? BroadcastMessageComponent(broadcastMessage: widget.model.broadcastMessage, style: textStyle)
+                          : widget.model.busy(widget.model.dynamicMessageText)
                           ? Skeletonizer(
                               child: Bone.multiText(fontSize: fontSize, style: textStyle, lines: 2),
                             )
