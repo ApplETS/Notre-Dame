@@ -17,12 +17,11 @@ class ScheduleCard extends StatelessWidget {
   const ScheduleCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    String title = AppIntl.of(context)!.title_schedule;
-
-    return ViewModelBuilder<ScheduleCardViewmodel>.reactive(
+  Widget build(BuildContext context) =>
+    ViewModelBuilder<ScheduleCardViewmodel>.reactive(
       viewModelBuilder: () => ScheduleCardViewmodel(intl: AppIntl.of(context)!),
       builder: (context, model, child) {
+        String title = AppIntl.of(context)!.title_schedule;
         if (model.tomorrow) {
           title += AppIntl.of(context)!.card_schedule_tomorrow;
         }
@@ -53,5 +52,4 @@ class ScheduleCard extends StatelessWidget {
         );
       },
     );
-  }
 }

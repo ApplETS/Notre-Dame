@@ -41,7 +41,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
       setBusy(true);
 
       _courseActivitySubscription = _courseRepository.stream.listen(
-        (courseActivities) => _isEvenTomorrow(courseActivities),
+        (courseActivities) => _isEventTomorrow(courseActivities),
         onError: (error) {
           onError(error, null);
         },
@@ -74,7 +74,7 @@ class ScheduleCardViewmodel extends FutureViewModel {
     );
   }
 
-  void _isEvenTomorrow(List<CourseActivity>? courseActivities) {
+  void _isEventTomorrow(List<CourseActivity>? courseActivities) {
     final nowDate = DateTime.now();
     final tomorrowDate = nowDate.withoutTime.add(const Duration(days: 1, hours: 1)).withoutTime;
 
