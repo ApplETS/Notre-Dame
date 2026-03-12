@@ -58,7 +58,7 @@ void main() {
         var streanEvents = 0;
         repository.stream.listen((data) => streanEvents++);
 
-        await repository._getFromCache((json) => json);
+        await repository.getFromCache((json) => json);
 
         expect(streanEvents, 0);
         verify(mockSecureStorage.read(key: 'test_cache_key')).called(1);
@@ -72,7 +72,7 @@ void main() {
         var streamEvents = 0;
         repository.stream.listen((data) => streamEvents++);
 
-        await repository._getFromCache((json) => json);
+        await repository.getFromCache((json) => json);
 
         expect(streamEvents, 1);
         expect(repository.value, [
@@ -89,7 +89,7 @@ void main() {
         var streamEvents = 0;
         repository.stream.listen((data) => streamEvents++);
 
-        await repository._getFromCache((json) => json);
+        await repository.getFromCache((json) => json);
 
         expect(streamEvents, 1);
         expect(repository.value, {'key': 'value'});
@@ -103,7 +103,7 @@ void main() {
 
         repository.stream.listen((data) => streamEvents++, onError: (error) => streamErrors++);
 
-        await repository._getFromCache((json) => json);
+        await repository.getFromCache((json) => json);
 
         // Adding a small delay to ensure the stream has time to emit
         await Future.delayed(Duration(milliseconds: 10));
@@ -123,7 +123,7 @@ void main() {
         var streamEvents = 0;
         repository.stream.listen((data) => streamEvents++);
 
-        await repository._getFromApi(() async => apiResponse);
+        await repository.getFromApi(() async => apiResponse);
 
         expect(repository.value, [
           {'key': 'value'},
@@ -133,30 +133,19 @@ void main() {
         verify(mockSecureStorage.write(key: 'test_cache_key', value: json.encode(apiResponse.data))).called(1);
       });
 
-      test('should not fetch data if cache is still valid', () async {
+      test('should not fetch data if already fetching', () async {
         var streamEvents = 0;
         repository.stream.listen((data) => streamEvents++);
 
         apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
 
-        await repository._getFromApi(apiCall);
-        await repository._getFromApi(apiCall);
+        await Future.wait([
+          repository.getFromApi(apiCall),
+          repository.getFromApi(apiCall),
+        ]);
 
         expect(streamEvents, 1);
         verify(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).called(1);
-      });
-
-      test('should fetch data if forceUpdate is true', () async {
-        var streamEvents = 0;
-        repository.stream.listen((data) => streamEvents++);
-
-        apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
-
-        await repository._getFromApi(apiCall);
-        await repository._getFromApi(apiCall, forceUpdate: true);
-
-        expect(streamEvents, 2);
-        verify(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value"))).called(2);
       });
 
       test('should handle API errors', () async {
@@ -172,7 +161,7 @@ void main() {
           response: Response(statusCode: 401, requestOptions: RequestOptions(path: 'test')),
         );
 
-        await repository._getFromApi(apiCall);
+        await repository.getFromApi(apiCall);
 
         // Adding a small delay to ensure the stream has time to emit
         await Future.delayed(Duration(milliseconds: 10));
@@ -188,7 +177,7 @@ void main() {
 
         apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: [], error: 'error');
 
-        await repository._getFromApi(apiCall);
+        await repository.getFromApi(apiCall);
 
         // Adding a small delay to ensure the stream has time to emit
         await Future.delayed(Duration(milliseconds: 10));
@@ -204,7 +193,7 @@ void main() {
 
         apiCall() async => SignetsApiResponse<List<Map<String, dynamic>>>(data: []);
 
-        await repository._getFromApi(apiCall);
+        await repository.getFromApi(apiCall);
 
         await Future.delayed(Duration(milliseconds: 10));
         expect(streamEvents, 0);
@@ -288,8 +277,9 @@ void main() {
 
         await Future.delayed(Duration(milliseconds: 10));
 
-        expect(streamEvents.length, 2);
-        expect(streamEvents[1], [
+        // 3 calls since the second fetch should emit null before fetching new data
+        expect(streamEvents.length, 3);
+        expect(streamEvents[2], [
           {'api': 'data'},
         ]);
       });

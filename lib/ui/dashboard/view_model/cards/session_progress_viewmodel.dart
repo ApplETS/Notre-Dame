@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:logger/logger.dart';
 import 'package:notredame/data/repositories/list_sessions_repository.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/locator.dart';
@@ -11,7 +10,6 @@ import 'package:notredame/l10n/app_localizations.dart';
 class SessionProgressViewmodel extends FutureViewModel {
   final _listSessionsRepository = locator<ListSessionsRepository>();
   final AppIntl _appIntl;
-  final _logger = locator<Logger>();
 
 
   bool get hasSession => _sessionProgress != null;
@@ -62,13 +60,6 @@ class SessionProgressViewmodel extends FutureViewModel {
     final totalDays = sessionDays?.totalDays ?? 0;
 
     return totalDays - elapsedDays;
-  }
-
-  Future<void> refresh() async {
-    _logger.d("$runtimeType - refresh: Refreshing session progress data");
-    setBusy(true);
-    await _listSessionsRepository.getSessions(forceUpdate: true);
-    setBusy(false);
   }
 
   @override

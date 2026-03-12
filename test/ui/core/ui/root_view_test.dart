@@ -28,6 +28,7 @@ void main() {
       setupCacheManagerMock();
       setupNetworkingServiceMock();
       setupListSessionsRepositoryMock();
+      setupLogger();
       analyticsServiceMock = setupAnalyticsServiceMock();
       setupInAppReviewServiceMock();
       setupQuickLinkRepositoryMock();

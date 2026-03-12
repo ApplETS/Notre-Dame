@@ -118,6 +118,7 @@ class BaseStreamRepository<T> {
         return;
       } else {
         value = null;
+        // Emit null immediately to indicate loading state, then fetch new data.
         _controller.add(null);
         await getFromApi(apiCall, filter: filterApiCached);
       }
