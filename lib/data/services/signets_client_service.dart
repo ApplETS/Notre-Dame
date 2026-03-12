@@ -26,6 +26,6 @@ abstract class SignetsClientService {
   Future<SignetsApiResponse<List<CourseActivity>>> getSchedule(
     @Query('session') String session,
     @Query('coursGroupe') String? courseGroup,
-    @Query('dateDebut') DateTime? startDate, 
-    @Query('dateFin') DateTime? endDate);
+    @Query('dateDebut') String? startDate, 
+    @Query('dateFin') String? endDate);
 }

@@ -77,7 +77,7 @@ class BaseStreamRepository<T> {
       () => apiCall().timeout(Duration(seconds: 3)),
       maxAttempts: 5,
       retryIf: (e) async {
-        _logger.e('Error while fetching data from API: $_cacheKey', error: e);
+        _logger.e('$runtimeType - _performApiCall: Error while fetching data from API ${e.toString()}', error: e);
         if (e is DioException && e.response?.statusCode == StatusCodes.UNAUTHORIZED) {
           final authService = locator<AuthService>();
           await authService.getToken();
@@ -172,7 +172,7 @@ class BaseStreamRepository<T> {
 
       if (apiResponse.error != null && apiResponse.error!.isNotEmpty) {
         _controller.addError(apiResponse.error as Object);
-        _logger.e('$runtimeType - getFromApi: Error while fetching data from API', error: apiResponse.error);
+        _logger.e('$runtimeType - getFromApi: Error while fetching data from API, ${apiResponse.error}', error: apiResponse.error);
         return;
       }
 
@@ -186,7 +186,7 @@ class BaseStreamRepository<T> {
       });
       await secureStorage.write(key: _cacheKey, value: json.encode(dataToCache));
     } catch (e) {
-      _logger.e('$runtimeType - getFromApi: Error while fetching data from API: $_cacheKey', error: e);
+      _logger.e('$runtimeType - getFromApi: Error while fetching data from API ${e.toString()}', error: e);
       _controller.addError(e);
     } finally {
       _requestInProgress = false;

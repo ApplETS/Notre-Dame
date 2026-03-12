@@ -30,7 +30,6 @@ class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
     } else {
       DateTime now = DateTime.now();
       now = DateTime(now.year, now.month, now.day);
-
       return value!.firstWhereOrNull(
         (session) =>
             now.isAfter(session.startDate) && now.isBefore(session.endDate) ||

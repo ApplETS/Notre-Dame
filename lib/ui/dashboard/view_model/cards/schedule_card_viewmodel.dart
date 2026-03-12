@@ -1,32 +1,34 @@
 // Package imports:
+import 'dart:async';
+
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:notredame/data/repositories/course_activity_repository.dart';
+import 'package:notredame/data/repositories/list_sessions_repository.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class ScheduleCardViewmodel extends FutureViewModel {
-  final CourseRepository _courseRepository = locator<CourseRepository>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
-
-  List<CourseActivity> _scheduleEvents = [];
-
-  bool _tomorrow = false;
-  DateTime _date = DateTime.now().withoutTime;
-
+  final CourseActivityRepository _courseRepository = locator<CourseActivityRepository>();
+  final _listSessionsRepository = locator<ListSessionsRepository>();
   final AppIntl _appIntl;
 
+  StreamSubscription? _courseActivitySubscription;
+  StreamSubscription? _listSessionsSubscription;
+
+  DateTime _date = DateTime.now().withoutTime;
   DateTime get date {
     return _date;
   }
 
   bool get tomorrow {
-    return _tomorrow;
+    return _date != DateTime.now().withoutTime;
   }
 
   bool get listView => _settingsManager.dashboard.displayScheduleAsList;
@@ -38,45 +40,73 @@ class ScheduleCardViewmodel extends FutureViewModel {
     try {
       setBusy(true);
 
-      _scheduleEvents.clear();
-      await _courseRepository.getCoursesActivities();
-
-      final nowDate = DateTime.now();
-      // The extra hours prevents daylight savings problems
-      final tomorrowDate = nowDate.withoutTime.add(const Duration(days: 1, hours: 1)).withoutTime;
-      final twoDaysFromNow = nowDate.withoutTime.add(const Duration(days: 2, hours: 1)).withoutTime;
-
-      bool hasActivitiesTodayAfterNow =
-          _courseRepository.coursesActivities?.any(
-            (activity) => activity.endDateTime.isAfter(nowDate) && activity.endDateTime.isBefore(tomorrowDate),
-          ) ??
-          false;
-
-      if (hasActivitiesTodayAfterNow) {
-        return;
-      }
-
-      bool hasActivitiesTomorrow =
-          _courseRepository.coursesActivities?.any(
-            (activity) => activity.endDateTime.isAfter(tomorrowDate) && activity.endDateTime.isBefore(twoDaysFromNow),
-          ) ??
-          false;
-
-      if (hasActivitiesTomorrow) {
-        _tomorrow = true;
-        _date = tomorrowDate;
-        return;
-      }
+      _courseActivitySubscription = _courseRepository.stream.listen(
+        (courseActivities) => _isEvenTomorrow(courseActivities),
+        onError: (error) {
+          onError(error, null);
+        },
+      );
+      _listSessionsSubscription = _listSessionsRepository.stream.listen(
+        (sessions) async {
+          await fetchSchedule();
+        },
+      );
     } catch (e) {
       onError(e, null);
     } finally {
       setBusy(false);
     }
-    _scheduleEvents = [];
+  }
+
+  Future<void> fetchSchedule() async {
+    final session = _listSessionsRepository.getActiveSession();
+    if(session == null) {
+      await _listSessionsRepository.getSessions();
+      return;
+    }
+
+    final yesterday = _date.subtract(const Duration(days: 1));
+    final twoDaysFromNow = _date.add(const Duration(days: 2));
+    await _courseRepository.getCourseActivities(
+      session.shortName,
+      startDate: yesterday,
+      endDate: twoDaysFromNow,
+    );
+  }
+
+  void _isEvenTomorrow(List<CourseActivity>? courseActivities) {
+    final nowDate = DateTime.now();
+    final tomorrowDate = nowDate.withoutTime.add(const Duration(days: 1, hours: 1)).withoutTime;
+
+    bool eventsToday = courseActivities
+      ?.any((activity) => activity.endDate.isAfter(nowDate) && activity.endDate.isBefore(tomorrowDate))
+        ?? false;
+    if(eventsToday) {
+      _date = nowDate.withoutTime;
+      notifyListeners();
+      return;
+    }
+    
+    final twoDaysFromNow = nowDate.withoutTime.add(const Duration(days: 2, hours: 1)).withoutTime;
+    
+    final eventsTomorrow = courseActivities
+      ?.any((activity) => activity.endDate.isAfter(tomorrowDate) && activity.endDate.isBefore(twoDaysFromNow)) ?? false;
+    
+    if(eventsTomorrow) {
+      _date = tomorrowDate;
+      notifyListeners();
+    }
   }
 
   @override
   void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _listSessionsSubscription?.cancel();
+    _courseActivitySubscription?.cancel();
   }
 }
