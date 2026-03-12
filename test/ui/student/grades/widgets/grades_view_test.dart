@@ -91,7 +91,7 @@ void main() {
 
         tester.view.physicalSize = const Size(800, 1410);
 
-        await tester.pumpWidget(localizedWidget(child: GradesView()));
+        await tester.pumpWidget(localizedWidget(child: const GradesView()));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.text(intl.grades_msg_no_grades), findsOneWidget);
@@ -106,7 +106,7 @@ void main() {
         tester.view.physicalSize = const Size(800, 1410);
         await tester
             .runAsync(() async {
-              await tester.pumpWidget(localizedWidget(child: GradesView()));
+              await tester.pumpWidget(localizedWidget(child: const GradesView()));
               await tester.pumpAndSettle(const Duration(seconds: 10));
             })
             .then((value) {

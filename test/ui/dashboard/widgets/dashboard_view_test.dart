@@ -244,7 +244,7 @@ void main() {
       BroadcastMessage(
         message: "Test",
         title: "Test title",
-        color: Color(0xFFFF9000),
+        color: const Color(0xFFFF9000),
         url: "https://example.com",
         type: BroadcastIconType.alert,
       ),

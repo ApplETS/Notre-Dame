@@ -25,7 +25,7 @@ void main() {
 
     group('UI - ', () {
       testWidgets('has map view and emergency procedures', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: SecurityView()));
+        await tester.pumpWidget(localizedWidget(child: const SecurityView()));
         await tester.pumpAndSettle();
 
         final map = find.byType(SvgPicture);
