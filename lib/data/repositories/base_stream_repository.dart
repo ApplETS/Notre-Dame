@@ -10,6 +10,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:github/github.dart';
 import 'package:logger/logger.dart';
+import 'package:notredame/data/models/filters/filter.dart';
 import 'package:retry/retry.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -19,7 +20,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/domain/models/signets-api/signets_api_response.dart';
 import 'package:notredame/locator.dart';
 
-class BaseStreamRepository<T> {
+class BaseStreamRepository<TStreamType> {
   static const Duration _cacheDuration = Duration(minutes: 2);
 
   @protected
@@ -27,12 +28,12 @@ class BaseStreamRepository<T> {
   final _logger = locator<Logger>();
 
   @protected
-  T? value;
+  TStreamType? value;
 
   final Lock _itemsLock = Lock();
   final String _cacheKey;
-  final _controller = StreamController<T?>.broadcast();
-  Stream<T?> get stream => _controller.stream;
+  final _controller = StreamController<TStreamType?>.broadcast();
+  Stream<TStreamType?> get stream => _controller.stream;
 
   DateTime? _cacheTimestamp;
   bool _requestInProgress = false;
@@ -58,21 +59,22 @@ class BaseStreamRepository<T> {
   Future<void> _setValueFromJson<RType>(
       dynamic decoded,
       RType Function(Map<String, dynamic>) fromJson, {
-      T Function(T)? filter,
+      Filter<TStreamType>? filter,
   }) async {
     await _itemsLock.synchronized(() async {
       if (decoded is List) {
-        value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as T;
+        value ??= decoded.map<RType>((e) => fromJson(e as Map<String, dynamic>)).toList() as TStreamType;
       } else if (decoded is Map<String, dynamic>) {
-        value ??= fromJson(decoded) as T;
+        value ??= fromJson(decoded) as TStreamType;
       }
-      final T? toEmit = filter != null && value != null ? filter(value as T) : value;
+      final TStreamType? toEmit = filter != null && value != null ? filter.filterEmittedCache(value as TStreamType) : value;
+      _logger.d('$runtimeType - _setValueFromJson: Emitting data ${toEmit.toString()}');
       _controller.add(toEmit);
     });
   }
 
   /// Helper that performs the API call with retry logic and error handling.
-  Future<SignetsApiResponse<T>> _performApiCall(Future<SignetsApiResponse<T>> Function() apiCall) async {
+  Future<SignetsApiResponse<TStreamType>> _performApiCall(Future<SignetsApiResponse<TStreamType>> Function() apiCall) async {
     return await retry(
       () => apiCall().timeout(Duration(seconds: 3)),
       maxAttempts: 5,
@@ -100,18 +102,17 @@ class BaseStreamRepository<T> {
   /// (for example, filtering a list of activities by date range) without touching the
   /// underlying storage logic.
   Future<void> fetch<RType>(
-    Future<SignetsApiResponse<T>> Function() apiCall,
+    Future<SignetsApiResponse<TStreamType>> Function() apiCall,
     RType Function(Map<String, dynamic>) fromJson, {
     bool forceUpdate = false,
-    T Function(T)? filterApiCached,
-    T Function(T)? filterEmittedCache
+    Filter<TStreamType>? filter,
   }) async {
     if (_isFirstFetch) {
       _isFirstFetch = false;
 
       await Future.wait([
-        getFromCache(fromJson, filterCache: filterEmittedCache),
-        getFromApi(apiCall, filter: filterApiCached)
+        getFromCache(fromJson, filter: filter),
+        getFromApi(apiCall, filter: filter)
       ]);
     } else {
       if (!forceUpdate && _isCacheValid() && value != null) {
@@ -120,7 +121,7 @@ class BaseStreamRepository<T> {
         value = null;
         // Emit null immediately to indicate loading state, then fetch new data.
         _controller.add(null);
-        await getFromApi(apiCall, filter: filterApiCached);
+        await getFromApi(apiCall, filter: filter);
       }
     }
   }
@@ -128,7 +129,7 @@ class BaseStreamRepository<T> {
   @visibleForTesting
   Future<void> getFromCache<RType>(
       RType Function(Map<String, dynamic>) fromJson, {
-      T Function(T)? filterCache,
+      Filter<TStreamType>? filter,
   }) async {
     if (value != null) {
       return;
@@ -143,7 +144,7 @@ class BaseStreamRepository<T> {
 
     try {
       final decoded = json.decode(cache);
-      await _setValueFromJson(decoded, fromJson, filter: filterCache);
+      await _setValueFromJson(decoded, fromJson, filter: filter);
     } catch (e) {
       _logger.e('$runtimeType - getFromCache: Error while reading from cache: $_cacheKey', error: e);
       _controller.addError(e);
@@ -152,8 +153,8 @@ class BaseStreamRepository<T> {
 
   @visibleForTesting
   Future<void> getFromApi(
-      Future<SignetsApiResponse<T>> Function() apiCall,
-      {T Function(T)? filter
+      Future<SignetsApiResponse<TStreamType>> Function() apiCall,
+      {Filter<TStreamType>? filter
   }) async {
     if (!await _networkingService.hasConnectivity()) {
       _controller.addError('No internet connection');
@@ -177,7 +178,7 @@ class BaseStreamRepository<T> {
       }
 
       // Apply filter to the raw data before writing to storage.
-      final T? dataToCache = filter != null && apiResponse.data != null ? filter(apiResponse.data as T) : apiResponse.data;
+      final TStreamType? dataToCache = filter != null && apiResponse.data != null ? filter.filterApiCached(apiResponse.data as TStreamType) : apiResponse.data;
 
       await _itemsLock.synchronized(() async {
         _cacheTimestamp = DateTime.now();
