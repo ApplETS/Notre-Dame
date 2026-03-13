@@ -182,7 +182,7 @@ void main() {
       expect(find.text(intl.session_reminder_registration_deadline), findsOneWidget);
     });
 
-    testWidgets("auto-scroll advances after 5 seconds", (WidgetTester tester) async {
+    testWidgets("auto-scroll advances after 10 seconds", (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionReminderCardContent(
