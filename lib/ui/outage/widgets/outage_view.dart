@@ -26,7 +26,7 @@ class OutageView extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 SizedBox(height: model.getImagePlacement()),
-                OutageImageSection(),
+                const OutageImageSection(),
                 OutageTextSection(
                   textPlacement: model.getTextPlacement(),
                   buttonPlacement: model.getButtonPlacement(),

@@ -368,7 +368,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
           },
           child: const Icon(Icons.keyboard_arrow_down_sharp, color: AppPalette.etsLightRed),
         ),
-        tilePadding: EdgeInsets.only(left: 8.0, right: 28),
+        tilePadding: const EdgeInsets.only(left: 8.0, right: 28),
         title: Row(
           children: [
             Text(
@@ -393,9 +393,9 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
   void _scrollToSelectedContent({required GlobalKey expansionTileKey}) {
     final keyContext = expansionTileKey.currentContext;
     if (keyContext != null) {
-      Future.delayed(Duration(milliseconds: 200)).then((value) {
+      Future.delayed(const Duration(milliseconds: 200)).then((value) {
         if (keyContext.mounted) {
-          Scrollable.ensureVisible(keyContext, duration: Duration(milliseconds: 200));
+          Scrollable.ensureVisible(keyContext, duration: const Duration(milliseconds: 200));
         }
       });
     }

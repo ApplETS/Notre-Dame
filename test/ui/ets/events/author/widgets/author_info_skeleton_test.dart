@@ -13,7 +13,7 @@ void main() {
     });
 
     testWidgets('Displays an author info skeleton', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: AuthorInfoSkeleton()));
+      await tester.pumpWidget(localizedWidget(child: const AuthorInfoSkeleton()));
 
       // Verify that the widget contains shimmer effects for text and icon button
       expect(find.byWidgetPredicate((widget) => widget is Skeletonizer), findsWidgets);

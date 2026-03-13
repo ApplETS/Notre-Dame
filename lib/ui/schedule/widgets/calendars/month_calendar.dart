@@ -91,7 +91,7 @@ class MonthCalendar extends StatelessWidget {
           builder: (context, scrollController) => Container(
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             ),
             child: Column(
               children: [
@@ -105,7 +105,7 @@ class MonthCalendar extends StatelessWidget {
                         width: 50,
                         decoration: BoxDecoration(
                           color: context.theme.appColors.modalHandle,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                         ),
                       ),
                     ),

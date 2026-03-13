@@ -191,7 +191,7 @@ void main() {
       launchUrlServiceMock = setupLaunchUrlServiceMock();
 
       // Setup stubs for ListSessionsRepository
-      ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: Stream.empty());
+      ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: const Stream.empty());
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
 
       // Setup stub for settings repository for SessionProgressUseCase

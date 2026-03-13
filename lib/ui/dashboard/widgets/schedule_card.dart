@@ -25,7 +25,7 @@ class ScheduleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var title = AppIntl.of(context)!.title_schedule;
-    var tomorrowDate = _settingsRepository.dateTimeNow.add(Duration(days: 1)).withoutTime;
+    var tomorrowDate = _settingsRepository.dateTimeNow.add(const Duration(days: 1)).withoutTime;
     if (events.isNotEmpty && events.first.startDateTime.withoutTime == tomorrowDate) {
       title += AppIntl.of(context)!.card_schedule_tomorrow;
     }
