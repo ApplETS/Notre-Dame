@@ -7,6 +7,8 @@ class SessionReminderHelper {
   static List<MapEntry<DateTime, SessionReminderType>> _buildSortedEntries(Session session) {
     final entries = <MapEntry<DateTime, SessionReminderType>>[
       MapEntry(session.startDate, SessionReminderType.sessionStart),
+      // The Signets API currently returns registration start/deadline dates swapped.
+      // Use min/max to always assign the earlier date to "start" and the later to "deadline".
       MapEntry(
         session.startDateRegistration.isBefore(session.deadlineRegistration)
             ? session.startDateRegistration
