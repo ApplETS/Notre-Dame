@@ -34,7 +34,8 @@ class SessionReminderCardViewmodel extends FutureViewModel {
   Future<void> futureToRun() async {
     _subscription = _listSessionsRepository.stream.listen((_) => _loadSessionReminders(), onError: (_) {});
 
-    if (_listSessionsRepository.getActiveSession() != null) {
+    if (_listSessionsRepository.getActiveSession() != null ||
+        _listSessionsRepository.getNextUpcomingSession() != null) {
       _loadSessionReminders();
       try {
         unawaited(_listSessionsRepository.getSessions().catchError((_) {}));
@@ -45,7 +46,7 @@ class SessionReminderCardViewmodel extends FutureViewModel {
   }
 
   void _loadSessionReminders() {
-    final session = _listSessionsRepository.getActiveSession();
+    final session = _listSessionsRepository.getActiveSession() ?? _listSessionsRepository.getNextUpcomingSession();
     if (session != null) {
       final now = DateTime.now();
       allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);

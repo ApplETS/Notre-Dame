@@ -39,4 +39,15 @@ class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
       );
     }
   }
+
+  Session? getNextUpcomingSession() {
+    if (value == null) return null;
+    DateTime now = DateTime.now();
+    now = DateTime(now.year, now.month, now.day);
+
+    final upcoming = value!.where((session) => session.startDate.isAfter(now)).toList()
+      ..sort((a, b) => a.startDate.compareTo(b.startDate));
+
+    return upcoming.isEmpty ? null : upcoming.first;
+  }
 }

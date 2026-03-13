@@ -47,6 +47,7 @@ void main() {
       );
 
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: session);
+      ListSessionsRepositoryMock.stubGetNextUpcomingSession(listSessionsRepositoryMock, session: null);
 
       viewModel = SessionReminderCardViewmodel(intl: await setupAppIntl());
     });
@@ -65,11 +66,22 @@ void main() {
 
     test("Should have empty reminders when no active sessions", () async {
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
+      ListSessionsRepositoryMock.stubGetNextUpcomingSession(listSessionsRepositoryMock, session: null);
       await viewModel.futureToRun();
 
       expect(viewModel.sessionReminder, isNull);
       expect(viewModel.allSessionReminders, isEmpty);
       expect(viewModel.carouselReminders, isEmpty);
+    });
+
+    test("Should show upcoming session reminders when no active session but upcoming session exists", () async {
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
+      ListSessionsRepositoryMock.stubGetNextUpcomingSession(listSessionsRepositoryMock, session: session);
+      await viewModel.futureToRun();
+
+      expect(viewModel.sessionReminder, isNotNull);
+      expect(viewModel.allSessionReminders, isNotEmpty);
+      expect(viewModel.carouselReminders, isNotEmpty);
     });
 
     test("Should subscribe to ListSessionsRepository stream", () async {
@@ -81,6 +93,7 @@ void main() {
 
     test("Should recalculate reminders when stream emits new data", () async {
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
+      ListSessionsRepositoryMock.stubGetNextUpcomingSession(listSessionsRepositoryMock, session: null);
       await viewModel.futureToRun();
 
       expect(viewModel.sessionReminder, isNull);
@@ -110,6 +123,7 @@ void main() {
     test("Should handle repository exception gracefully when no cached data", () async {
       setupFlutterToastMock();
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
+      ListSessionsRepositoryMock.stubGetNextUpcomingSession(listSessionsRepositoryMock, session: null);
       when(listSessionsRepositoryMock.getSessions()).thenThrow(Exception("test"));
 
       try {

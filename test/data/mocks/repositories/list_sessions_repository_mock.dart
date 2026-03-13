@@ -26,6 +26,10 @@ class ListSessionsRepositoryMock extends MockListSessionsRepository {
     when(mock.getActiveSession()).thenAnswer((_) => session);
   }
 
+  static void stubGetNextUpcomingSession(ListSessionsRepositoryMock mock, {Session? session}) {
+    when(mock.getNextUpcomingSession()).thenAnswer((_) => session);
+  }
+
   static void stubGetStream(ListSessionsRepositoryMock mock, {required Stream<List<Session>?> stream}) {
     when(mock.stream).thenAnswer((_) => stream);
   }
