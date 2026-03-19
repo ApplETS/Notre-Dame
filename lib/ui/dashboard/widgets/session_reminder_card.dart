@@ -188,22 +188,22 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
     if (_isCarousel) {
       return Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 20.0),
-            child: Listener(
-              onPointerDown: (_) => _pauseAutoScroll(),
-              onPointerUp: (_) => _startAutoScroll(),
-              onPointerCancel: (_) => _startAutoScroll(),
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: widget.carouselReminders.length,
-                onPageChanged: (index) {
-                  setState(() => _currentPage = index);
-                },
-                itemBuilder: (context, index) {
-                  return _buildReminderContent(context, intl, widget.carouselReminders[index]);
-                },
-              ),
+          Listener(
+            onPointerDown: (_) => _pauseAutoScroll(),
+            onPointerUp: (_) => _startAutoScroll(),
+            onPointerCancel: (_) => _startAutoScroll(),
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: widget.carouselReminders.length,
+              onPageChanged: (index) {
+                setState(() => _currentPage = index);
+              },
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0, bottom: 20.0),
+                  child: _buildReminderContent(context, intl, widget.carouselReminders[index]),
+                );
+              },
             ),
           ),
           Positioned(bottom: 8, left: 0, right: 0, child: Center(child: _buildDotIndicators())),
@@ -226,20 +226,28 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
           decoration: BoxDecoration(color: AppPalette.etsLightRed.withValues(alpha: 0.15), shape: BoxShape.circle),
           child: Icon(reminder.type.icon, size: iconSize, color: AppPalette.etsLightRed),
         ),
-        const Spacer(),
-        AutoSizeText(
-          sessionReminderEventName(intl, reminder.type),
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, height: 1.2),
-          minFontSize: 10,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          sessionReminderTimingText(intl, context, reminder),
-          style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodySmall?.color),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Spacer(flex: 3),
+              AutoSizeText(
+                sessionReminderEventName(intl, reminder.type),
+                style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700, height: 1.2),
+                minFontSize: 10,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                sessionReminderTimingText(intl, context, reminder),
+                style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodySmall?.color),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const Spacer(flex: 2),
+            ],
+          ),
         ),
       ],
     );
