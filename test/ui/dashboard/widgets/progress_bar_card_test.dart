@@ -21,7 +21,9 @@ void main() {
 
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
       await tester.pumpWidget(
-        localizedWidget(child: ProgressBarCard(progressBarText: "45", progressBarAltText: "60", progress: 0.5, loading: false)),
+        localizedWidget(
+          child: ProgressBarCard(progressBarText: "45", progressBarAltText: "60", progress: 0.5, loading: false),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -38,13 +40,14 @@ void main() {
       SharedPreferences.setMockInitialValues({'progress_display_mode': true});
 
       await tester.pumpWidget(
-        localizedWidget(child: ProgressBarCard(progressBarText: "45", progressBarAltText: "60%", progress: 0.5, loading: false)),
+        localizedWidget(
+          child: ProgressBarCard(progressBarText: "45", progressBarAltText: "60", progress: 0.5, loading: false),
+        ),
       );
       await tester.pumpAndSettle();
 
-      expect(find.text("60%"), findsOneWidget);
+      expect(find.text("60"), findsOneWidget);
       expect(find.text("45"), findsNothing);
     });
-
   });
 }
