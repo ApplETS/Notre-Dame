@@ -39,7 +39,8 @@ String sessionReminderTimingText(AppIntl intl, BuildContext context, SessionRemi
     return intl.session_reminder_today;
   }
   final locale = Localizations.localeOf(context).languageCode;
-  final formattedDate = DateFormat.MMMd(locale).format(reminder.date);
+  final dateFormat = long ? DateFormat.MMMMd(locale) : DateFormat.MMMd(locale);
+  final formattedDate = dateFormat.format(reminder.date);
   return long
       ? intl.session_reminder_in_days_long(reminder.daysUntil, formattedDate)
       : intl.session_reminder_in_days(reminder.daysUntil, formattedDate);
