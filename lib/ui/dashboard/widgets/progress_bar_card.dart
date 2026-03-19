@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
@@ -14,16 +15,20 @@ import '../../core/themes/app_theme.dart';
 
 class ProgressBarCard extends StatefulWidget {
   final String progressBarText;
+  final String progressBarAltText;
   final double progress;
   final bool loading;
 
-  const ProgressBarCard({super.key, required this.progressBarText, required this.progress, required this.loading});
+  const ProgressBarCard({super.key, required this.progressBarText, required this.progressBarAltText, required this.progress, required this.loading});
 
   @override
   State<ProgressBarCard> createState() => _ProgressBarCardState();
 }
 
 class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProviderStateMixin {
+  static const String _prefKey = 'progress_display_mode';
+  bool _showingAlt = false;
+
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -38,6 +43,18 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
+    _loadPref();
+  }
+
+  Future<void> _loadPref() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() => _showingAlt = prefs.getBool(_prefKey) ?? false);
+  }
+
+  Future<void> _toggle() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() => _showingAlt = !_showingAlt);
+    await prefs.setBool(_prefKey, _showingAlt);
   }
 
   @override
@@ -63,39 +80,44 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
   @override
   Widget build(BuildContext context) => AspectRatio(
     aspectRatio: 1,
-    child: Card(
-      color: context.theme.appColors.dashboardCard,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: (widget.loading || widget.progress >= 0.0)
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                spacing: 12.0,
-                children: [
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        double size = constraints.maxHeight;
-                        return Transform.scale(
-                          scale: size / 100,
-                          alignment: Alignment.centerRight,
-                          child: AnimatedBuilder(
-                            animation: _animation,
-                            builder: (context, child) => _progress(_animation.value),
-                          ),
-                        );
-                      },
+    child: GestureDetector(
+      onTap: _toggle,
+      child: Card(
+        color: context.theme.appColors.dashboardCard,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: (widget.loading || widget.progress >= 0.0)
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  spacing: 12.0,
+                  children: [
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints constraints) {
+                          double size = constraints.maxHeight;
+                          return Transform.scale(
+                            scale: size / 100,
+                            alignment: Alignment.centerRight,
+                            child: AnimatedBuilder(
+                              animation: _animation,
+                              builder: (context, child) => _progress(_animation.value),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  AutoSizeText(
-                    AppIntl.of(context)!.progress_bar,
-                    style: TextStyle(fontSize: 18, height: 1),
-                    maxLines: 1,
-                  ),
-                ],
-              )
-            : Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center)),
+                    AutoSizeText(
+                      _showingAlt
+                          ? AppIntl.of(context)!.progress_bar_percentage
+                          : AppIntl.of(context)!.progress_bar,
+                      style: const TextStyle(fontSize: 18, height: 1),
+                      maxLines: 1,
+                    ),
+                  ],
+                )
+              : Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center)),
+        ),
       ),
     ),
   );
@@ -122,7 +144,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                   child: Skeletonizer(
                     enabled: widget.loading,
                     child: Text(
-                      widget.progressBarText,
+                      _showingAlt ? widget.progressBarAltText : widget.progressBarText,
                       style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
                     ),
                   ),

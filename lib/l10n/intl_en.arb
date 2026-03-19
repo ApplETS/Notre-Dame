@@ -539,6 +539,7 @@
   "service_outage_refresh": "Refresh",
 
   "progress_bar": "days remaining",
+  "progress_bar_percentage": "percent",
 
   "universal_code_example": "Ex: AB12345",
   "my_tickets": "My tickets",

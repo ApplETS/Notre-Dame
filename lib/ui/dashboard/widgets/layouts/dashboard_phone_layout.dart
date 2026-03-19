@@ -131,6 +131,9 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
               Expanded(
                 child: ProgressBarCard(
                   progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
+                  progressBarAltText: widget.model.sessionProgress != null
+                      ? (widget.model.sessionProgress!.percentage * 100).toStringAsFixed(0)
+                      : "XX%",
                   progress: widget.model.sessionProgress?.percentage ?? 0.0,
                   loading: widget.model.sessionProgress == null,
                 ),
