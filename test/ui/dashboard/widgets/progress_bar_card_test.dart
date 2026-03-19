@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
@@ -15,11 +16,12 @@ void main() {
   group("ProgressBarCard - ", () {
     setUp(() async {
       intl = await setupAppIntl();
+      SharedPreferences.setMockInitialValues({});
     });
 
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
       await tester.pumpWidget(
-        localizedWidget(child: ProgressBarCard(progressBarText: "45", progress: 0.5, loading: false)),
+        localizedWidget(child: ProgressBarCard(progressBarText: "45", progressBarAltText: "60", progress: 0.5, loading: false)),
       );
       await tester.pumpAndSettle();
 
@@ -31,5 +33,18 @@ void main() {
       final linearProgressBarFinder = find.byType(CustomPaint);
       expect(linearProgressBarFinder, findsNWidgets(3));
     });
+
+    testWidgets('Restores saved preference on load', (WidgetTester tester) async {
+      SharedPreferences.setMockInitialValues({'progress_display_mode': true});
+
+      await tester.pumpWidget(
+        localizedWidget(child: ProgressBarCard(progressBarText: "45", progressBarAltText: "60%", progress: 0.5, loading: false)),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text("60%"), findsOneWidget);
+      expect(find.text("45"), findsNothing);
+    });
+
   });
 }

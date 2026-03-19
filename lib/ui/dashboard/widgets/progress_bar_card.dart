@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
@@ -19,7 +19,13 @@ class ProgressBarCard extends StatefulWidget {
   final double progress;
   final bool loading;
 
-  const ProgressBarCard({super.key, required this.progressBarText, required this.progressBarAltText, required this.progress, required this.loading});
+  const ProgressBarCard({
+    super.key,
+    required this.progressBarText,
+    required this.progressBarAltText,
+    required this.progress,
+    required this.loading,
+  });
 
   @override
   State<ProgressBarCard> createState() => _ProgressBarCardState();
@@ -108,9 +114,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                       ),
                     ),
                     AutoSizeText(
-                      _showingAlt
-                          ? AppIntl.of(context)!.progress_bar_percentage
-                          : AppIntl.of(context)!.progress_bar,
+                      _showingAlt ? AppIntl.of(context)!.progress_bar_percentage : AppIntl.of(context)!.progress_bar,
                       style: const TextStyle(fontSize: 18, height: 1),
                       maxLines: 1,
                     ),
