@@ -226,15 +226,13 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
           decoration: BoxDecoration(color: AppPalette.etsLightRed.withValues(alpha: 0.15), shape: BoxShape.circle),
           child: Icon(reminder.type.icon, size: iconSize, color: AppPalette.etsLightRed),
         ),
-        const SizedBox(height: 12),
-        Flexible(
-          child: AutoSizeText(
-            sessionReminderEventName(intl, reminder.type),
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, height: 1.2),
-            minFontSize: 10,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
+        const Spacer(),
+        AutoSizeText(
+          sessionReminderEventName(intl, reminder.type),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, height: 1.2),
+          minFontSize: 10,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: 4),
         Text(
