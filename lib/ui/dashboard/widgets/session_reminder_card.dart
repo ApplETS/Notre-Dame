@@ -232,12 +232,26 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(flex: 3),
-              AutoSizeText(
-                sessionReminderEventName(intl, reminder.type),
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, height: 1.2),
-                minFontSize: 10,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final text = sessionReminderEventName(intl, reminder.type);
+                  final textPainter = TextPainter(
+                    text: TextSpan(
+                      text: text,
+                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, height: 1.2),
+                    ),
+                    maxLines: 1,
+                    textDirection: TextDirection.ltr,
+                  )..layout(maxWidth: constraints.maxWidth);
+                  final fontSize = textPainter.didExceedMaxLines ? 14.0 : 17.0;
+                  return AutoSizeText(
+                    text,
+                    style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700, height: 1.2),
+                    minFontSize: 10,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  );
+                },
               ),
               const Spacer(flex: 1),
               Text(
