@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
@@ -16,13 +15,19 @@ void main() {
   group("ProgressBarCard - ", () {
     setUp(() async {
       intl = await setupAppIntl();
-      SharedPreferences.setMockInitialValues({});
     });
 
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(progressBarText: "45", progressBarAltText: "60", progress: 0.5, loading: false),
+          child: ProgressBarCard(
+              progressBarText: "45",
+              progressBarAltText: "60",
+              progress: 0.5,
+              loading: false,
+              showingAlt: false,
+              onToggle: () {},
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -36,12 +41,17 @@ void main() {
       expect(linearProgressBarFinder, findsNWidgets(3));
     });
 
-    testWidgets('Restores saved preference on load', (WidgetTester tester) async {
-      SharedPreferences.setMockInitialValues({'progress_display_mode': true});
-
+    testWidgets('Shows percentage text when showingAlt is true', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(progressBarText: "45", progressBarAltText: "60", progress: 0.5, loading: false),
+          child: ProgressBarCard(
+            progressBarText: "45",
+            progressBarAltText: "60",
+            progress: 0.5,
+            loading: false,
+            showingAlt: true,
+            onToggle: () {},
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -49,5 +59,23 @@ void main() {
       expect(find.text("60"), findsOneWidget);
       expect(find.text("45"), findsNothing);
     });
+  });
+  testWidgets('Shows days text when showingAlt is false', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      localizedWidget(
+        child: ProgressBarCard(
+          progressBarText: "45",
+          progressBarAltText: "60",
+          progress: 0.5,
+          loading: false,
+          showingAlt: false,
+          onToggle: () {},
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text("45"), findsOneWidget);
+    expect(find.text("60"), findsNothing);
   });
 }

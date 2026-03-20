@@ -136,6 +136,8 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                       : "XX%",
                   progress: widget.model.sessionProgress?.percentage ?? 0.0,
                   loading: widget.model.sessionProgress == null,
+                  showingAlt: widget.model.showingAlt,
+                  onToggle: widget.model.toggleProgressBarMode,
                 ),
               ),
             ],

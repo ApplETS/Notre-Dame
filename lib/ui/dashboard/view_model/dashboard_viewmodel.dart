@@ -56,6 +56,10 @@ class DashboardViewModel extends FutureViewModel {
   /// Dynamic message text resolved from SessionContext
   String? dynamicMessageText;
 
+  /// if the progress bar is displaying the days remaining or another alternative
+  bool _showingAlt = false;
+  bool get showingAlt => _showingAlt;
+
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
       _sessionProgressUseCase = SessionProgressUseCase(),
@@ -63,6 +67,9 @@ class DashboardViewModel extends FutureViewModel {
       /// if the animation has not been played, play it
       shouldPlayAnimation = !hasAnimationPlayed {
     hasAnimationPlayed = true;
+
+    /// Restore the progress bar display mode from preferences.
+    _showingAlt = _settingsManager.dashboard.displayProgressBarAltMode;
   }
 
   static Future<bool> launchInAppReview() async {
@@ -277,6 +284,12 @@ class DashboardViewModel extends FutureViewModel {
     } finally {
       setBusyForObject(broadcastMessage, false);
     }
+  }
+
+  void toggleProgressBarMode() {
+    _showingAlt = !_showingAlt;
+    _settingsManager.dashboard.displayProgressBarAltMode = _showingAlt;
+    notifyListeners();
   }
 
   @override

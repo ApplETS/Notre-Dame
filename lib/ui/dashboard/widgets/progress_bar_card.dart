@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
@@ -18,6 +17,8 @@ class ProgressBarCard extends StatefulWidget {
   final String progressBarAltText;
   final double progress;
   final bool loading;
+  final bool showingAlt;
+  final VoidCallback onToggle;
 
   const ProgressBarCard({
     super.key,
@@ -25,6 +26,8 @@ class ProgressBarCard extends StatefulWidget {
     required this.progressBarAltText,
     required this.progress,
     required this.loading,
+    required this.showingAlt,
+    required this.onToggle,
   });
 
   @override
@@ -32,9 +35,6 @@ class ProgressBarCard extends StatefulWidget {
 }
 
 class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProviderStateMixin {
-  static const String _prefKey = 'progress_display_mode';
-  bool _showingAlt = false;
-
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -49,18 +49,6 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
-    _loadPref();
-  }
-
-  Future<void> _loadPref() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() => _showingAlt = prefs.getBool(_prefKey) ?? false);
-  }
-
-  Future<void> _toggle() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() => _showingAlt = !_showingAlt);
-    await prefs.setBool(_prefKey, _showingAlt);
   }
 
   @override
@@ -87,7 +75,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
   Widget build(BuildContext context) => AspectRatio(
     aspectRatio: 1,
     child: GestureDetector(
-      onTap: _toggle,
+      onTap: widget.onToggle,
       child: Card(
         color: context.theme.appColors.dashboardCard,
         child: Padding(
@@ -114,7 +102,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                       ),
                     ),
                     AutoSizeText(
-                      _showingAlt ? AppIntl.of(context)!.progress_bar_percentage : AppIntl.of(context)!.progress_bar,
+                      widget.showingAlt ? AppIntl.of(context)!.progress_bar_percentage : AppIntl.of(context)!.progress_bar,
                       style: const TextStyle(fontSize: 18, height: 1),
                       maxLines: 1,
                     ),
@@ -148,7 +136,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                   child: Skeletonizer(
                     enabled: widget.loading,
                     child: Text(
-                      _showingAlt ? widget.progressBarAltText : widget.progressBarText,
+                      widget.showingAlt ? widget.progressBarAltText : widget.progressBarText,
                       style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
                     ),
                   ),
