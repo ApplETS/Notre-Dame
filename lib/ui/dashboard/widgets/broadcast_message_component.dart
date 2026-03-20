@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
+import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
-import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/locator.dart';
 
 class BroadcastMessageComponent extends StatelessWidget {
   final BroadcastMessage? broadcastMessage;
