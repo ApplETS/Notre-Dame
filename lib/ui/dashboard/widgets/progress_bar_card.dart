@@ -102,7 +102,9 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                       ),
                     ),
                     AutoSizeText(
-                      widget.showingAlt ? AppIntl.of(context)!.progress_bar_percentage : AppIntl.of(context)!.progress_bar,
+                      widget.showingAlt
+                          ? AppIntl.of(context)!.progress_bar_percentage
+                          : AppIntl.of(context)!.progress_bar,
                       style: const TextStyle(fontSize: 18, height: 1),
                       maxLines: 1,
                     ),

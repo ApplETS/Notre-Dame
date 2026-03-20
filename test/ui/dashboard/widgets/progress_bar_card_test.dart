@@ -21,12 +21,12 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: ProgressBarCard(
-              progressBarText: "45",
-              progressBarAltText: "60",
-              progress: 0.5,
-              loading: false,
-              showingAlt: false,
-              onToggle: () {},
+            progressBarText: "45",
+            progressBarAltText: "60",
+            progress: 0.5,
+            loading: false,
+            showingAlt: false,
+            onToggle: () {},
           ),
         ),
       );
