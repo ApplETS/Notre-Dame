@@ -57,7 +57,7 @@ class SessionReminderCardViewmodel extends FutureViewModel {
 
     final now = DateTime.now();
     allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);
-    sessionReminder = allSessionReminders.isNotEmpty ? allSessionReminders.first : null;
+    sessionReminder = SessionReminderHelper.getActiveReminder(session, now);
     carouselReminders = SessionReminderHelper.getCarouselReminders(session, now);
     notifyListeners();
   }
