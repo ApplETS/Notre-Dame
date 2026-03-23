@@ -89,8 +89,9 @@ void main() {
       expect(find.text("Été 2025"), findsOneWidget);
     });
 
-    testWidgets("does not display session headers when all reminders come from one session",
-        (WidgetTester tester) async {
+    testWidgets("does not display session headers when all reminders come from one session", (
+      WidgetTester tester,
+    ) async {
       final reminders = [
         SessionReminder(
           type: SessionReminderType.sessionStart,

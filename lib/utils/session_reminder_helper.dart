@@ -80,6 +80,11 @@ class SessionReminderHelper {
     return reminders;
   }
 
+  static bool hasMultipleSessions(List<SessionReminder> reminders) {
+    final names = reminders.map((r) => r.sessionName).whereType<String>().toSet();
+    return names.length > 1;
+  }
+
   static const int defaultCarouselThresholdDays = 7;
 
   /// Returns reminders for the carousel: always the next upcoming event (even if

@@ -7,20 +7,17 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/modal_bottom_sheet_layout.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_utils.dart';
+import 'package:notredame/utils/session_reminder_helper.dart';
 
 class SessionReminderBottomSheet extends StatelessWidget {
   final List<SessionReminder> reminders;
 
   const SessionReminderBottomSheet({super.key, required this.reminders});
 
-  bool get _hasMultipleSessions {
-    final names = reminders.map((r) => r.sessionName).whereType<String>().toSet();
-    return names.length > 1;
-  }
-
   @override
   Widget build(BuildContext context) {
     final intl = AppIntl.of(context)!;
+    final grouped = SessionReminderHelper.hasMultipleSessions(reminders);
 
     return ModalBottomSheetLayout(
       title: Text(
@@ -34,7 +31,7 @@ class SessionReminderBottomSheet extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: _hasMultipleSessions ? _buildGroupedList(context, intl) : _buildFlatList(context, intl),
+            children: grouped ? _buildGroupedList(context, intl) : _buildFlatList(context, intl),
           ),
         ),
       ),
@@ -75,11 +72,7 @@ class SessionReminderBottomSheet extends StatelessWidget {
   Widget _sessionHeader(BuildContext context, String sessionName) {
     return Text(
       sessionName,
-      style: TextStyle(
-        fontSize: 15,
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).textTheme.bodySmall?.color,
-      ),
+      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Theme.of(context).textTheme.bodySmall?.color),
     );
   }
 

@@ -50,10 +50,7 @@ class SessionReminderCardViewmodel extends FutureViewModel {
     final activeSession = _listSessionsRepository.getActiveSession();
     final nextSession = _listSessionsRepository.getNextUpcomingSession();
 
-    final sessions = <Session>[
-      ?activeSession,
-      ?nextSession,
-    ];
+    final sessions = <Session>[?activeSession, ?nextSession];
 
     if (sessions.isEmpty) {
       sessionReminder = null;
