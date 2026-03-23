@@ -1,7 +1,7 @@
 enum PreferencesFlag {
   // Dashboard flag
   dashboardScheduleList,
-  dashboardProgressBarAltMode,
+  dashboardProgressBarPercentage,
 
   // Schedule flags
   scheduleCalendarFormat,

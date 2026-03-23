@@ -17,7 +17,7 @@ class ProgressBarCard extends StatefulWidget {
   final String progressBarAltText;
   final double progress;
   final bool loading;
-  final bool showingAlt;
+  final bool showingPercentage;
   final VoidCallback onToggle;
 
   const ProgressBarCard({
@@ -26,7 +26,7 @@ class ProgressBarCard extends StatefulWidget {
     required this.progressBarAltText,
     required this.progress,
     required this.loading,
-    required this.showingAlt,
+    required this.showingPercentage,
     required this.onToggle,
   });
 
@@ -102,7 +102,9 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                       ),
                     ),
                     AutoSizeText(
-                      widget.showingAlt ? AppIntl.of(context)!.progress_bar_percentage : AppIntl.of(context)!.progress_bar,
+                      widget.showingPercentage
+                          ? AppIntl.of(context)!.progress_bar_percentage
+                          : AppIntl.of(context)!.progress_bar,
                       style: const TextStyle(fontSize: 18, height: 1),
                       maxLines: 1,
                     ),
@@ -136,7 +138,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                   child: Skeletonizer(
                     enabled: widget.loading,
                     child: Text(
-                      widget.showingAlt ? widget.progressBarAltText : widget.progressBarText,
+                      widget.showingPercentage ? widget.progressBarAltText : widget.progressBarText,
                       style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
                     ),
                   ),

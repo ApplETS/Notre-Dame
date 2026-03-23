@@ -57,8 +57,9 @@ class DashboardViewModel extends FutureViewModel {
   String? dynamicMessageText;
 
   /// if the progress bar is displaying the days remaining or another alternative
-  bool _showingAlt = false;
-  bool get showingAlt => _showingAlt;
+  bool _showingPercentage = false;
+
+  bool get showingPercentage => _showingPercentage;
 
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
@@ -69,7 +70,7 @@ class DashboardViewModel extends FutureViewModel {
     hasAnimationPlayed = true;
 
     /// Restore the progress bar display mode from preferences.
-    _showingAlt = _settingsManager.dashboard.displayProgressBarAltMode;
+    _showingPercentage = _settingsManager.dashboard.displayProgressBarPercentage;
   }
 
   static Future<bool> launchInAppReview() async {
@@ -287,8 +288,8 @@ class DashboardViewModel extends FutureViewModel {
   }
 
   void toggleProgressBarMode() {
-    _showingAlt = !_showingAlt;
-    _settingsManager.dashboard.displayProgressBarAltMode = _showingAlt;
+    _showingPercentage = !_showingPercentage;
+    _settingsManager.dashboard.displayProgressBarPercentage = _showingPercentage;
     notifyListeners();
   }
 
