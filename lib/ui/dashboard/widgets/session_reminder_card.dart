@@ -215,17 +215,12 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
   }
 
   Widget _buildReminderContent(BuildContext context, AppIntl intl, SessionReminder reminder) {
-    const iconSize = 24.0;
-    const iconPadding = 8.0;
+    const iconSize = 32.0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          padding: const EdgeInsets.all(iconPadding),
-          decoration: BoxDecoration(color: AppPalette.etsLightRed.withValues(alpha: 0.15), shape: BoxShape.circle),
-          child: Icon(reminder.type.icon, size: iconSize, color: AppPalette.etsLightRed),
-        ),
+        Icon(reminder.type.icon, size: iconSize, color: AppPalette.etsLightRed),
         const SizedBox(height: 4),
         Expanded(
           child: Column(
