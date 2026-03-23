@@ -78,7 +78,6 @@ class SessionReminderBottomSheet extends StatelessWidget {
   }
 
   Widget _reminderRow(BuildContext context, AppIntl intl, SessionReminder reminder) {
-    final isToday = reminder.daysUntil == 0;
     final timingText = sessionReminderDateWithRemaining(intl, context, reminder);
 
     return Row(
@@ -95,14 +94,13 @@ class SessionReminderBottomSheet extends StatelessWidget {
             children: [
               Text(
                 sessionReminderEventName(intl, reminder.type),
-                style: TextStyle(fontSize: 16, fontWeight: isToday ? FontWeight.w700 : FontWeight.w500),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               Text(
                 timingText,
                 style: TextStyle(
                   fontSize: 13,
-                  fontWeight: isToday ? FontWeight.w700 : FontWeight.normal,
-                  color: isToday ? AppPalette.etsLightRed : Theme.of(context).textTheme.bodySmall?.color,
+                  color: Theme.of(context).textTheme.bodySmall?.color,
                 ),
               ),
             ],
