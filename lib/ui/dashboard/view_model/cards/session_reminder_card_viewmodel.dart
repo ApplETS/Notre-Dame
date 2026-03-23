@@ -38,9 +38,7 @@ class SessionReminderCardViewmodel extends FutureViewModel {
     if (_listSessionsRepository.getActiveSession() != null ||
         _listSessionsRepository.getNextUpcomingSession() != null) {
       _loadSessionReminders();
-      try {
-        unawaited(_listSessionsRepository.getSessions().catchError((_) {}));
-      } catch (_) {}
+      unawaited(_listSessionsRepository.getSessions().catchError((_) {}));
     } else {
       await _listSessionsRepository.getSessions();
     }
