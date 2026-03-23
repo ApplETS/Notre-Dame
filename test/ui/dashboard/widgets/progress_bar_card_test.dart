@@ -41,7 +41,7 @@ void main() {
       expect(linearProgressBarFinder, findsNWidgets(3));
     });
 
-    testWidgets('Shows percentage text when showingAlt is true', (WidgetTester tester) async {
+    testWidgets('Shows percentage text when showingPercentage is true', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
           child: ProgressBarCard(
@@ -60,7 +60,7 @@ void main() {
       expect(find.text("45"), findsNothing);
     });
   });
-  testWidgets('Shows days text when showingAlt is false', (WidgetTester tester) async {
+  testWidgets('Shows days text when showingPercentage is false', (WidgetTester tester) async {
     await tester.pumpWidget(
       localizedWidget(
         child: ProgressBarCard(
