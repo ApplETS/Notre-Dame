@@ -612,5 +612,5 @@
     }
   },
   "session_reminder_bottom_sheet_title": "Dates à venir",
-  "session_reminder_none": "Aucun rappel"
+  "session_reminder_none": "Aucun événement\nà venir"
 }

@@ -613,5 +613,5 @@
     }
   },
   "session_reminder_bottom_sheet_title": "Upcoming Dates",
-  "session_reminder_none": "No reminders"
+  "session_reminder_none": "No upcoming\nevents"
 }

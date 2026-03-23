@@ -180,7 +180,7 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
         child: Text(
           intl.session_reminder_none,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Theme.of(context).disabledColor),
+          style: TextStyle(fontSize: 16, color: Theme.of(context).disabledColor),
         ),
       );
     }

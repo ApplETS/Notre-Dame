@@ -96,13 +96,7 @@ class SessionReminderBottomSheet extends StatelessWidget {
                 sessionReminderEventName(intl, reminder.type),
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
-              Text(
-                timingText,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Theme.of(context).textTheme.bodySmall?.color,
-                ),
-              ),
+              Text(timingText, style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodySmall?.color)),
             ],
           ),
         ),
