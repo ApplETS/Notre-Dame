@@ -65,5 +65,81 @@ void main() {
 
       expect(find.byIcon(Icons.school_outlined), findsOneWidget);
     });
+
+    testWidgets("displays session headers when reminders come from multiple sessions", (WidgetTester tester) async {
+      final reminders = [
+        SessionReminder(
+          type: SessionReminderType.sessionEnd,
+          date: DateTime(2025, 4, 25),
+          daysUntil: 5,
+          sessionName: "Hiver 2025",
+        ),
+        SessionReminder(
+          type: SessionReminderType.sessionStart,
+          date: DateTime(2025, 5, 5),
+          daysUntil: 15,
+          sessionName: "Été 2025",
+        ),
+      ];
+
+      await tester.pumpWidget(localizedWidget(child: SessionReminderBottomSheet(reminders: reminders)));
+      await tester.pumpAndSettle();
+
+      expect(find.text("Hiver 2025"), findsOneWidget);
+      expect(find.text("Été 2025"), findsOneWidget);
+    });
+
+    testWidgets("does not display session headers when all reminders come from one session",
+        (WidgetTester tester) async {
+      final reminders = [
+        SessionReminder(
+          type: SessionReminderType.sessionStart,
+          date: DateTime(2025, 1, 6),
+          daysUntil: 3,
+          sessionName: "Hiver 2025",
+        ),
+        SessionReminder(
+          type: SessionReminderType.registrationDeadline,
+          date: DateTime(2025, 2, 5),
+          daysUntil: 33,
+          sessionName: "Hiver 2025",
+        ),
+      ];
+
+      await tester.pumpWidget(localizedWidget(child: SessionReminderBottomSheet(reminders: reminders)));
+      await tester.pumpAndSettle();
+
+      expect(find.text("Hiver 2025"), findsNothing);
+    });
+
+    testWidgets("displays all reminders from both sessions", (WidgetTester tester) async {
+      final reminders = [
+        SessionReminder(
+          type: SessionReminderType.sessionEnd,
+          date: DateTime(2025, 4, 25),
+          daysUntil: 5,
+          sessionName: "Hiver 2025",
+        ),
+        SessionReminder(
+          type: SessionReminderType.sessionStart,
+          date: DateTime(2025, 5, 5),
+          daysUntil: 15,
+          sessionName: "Été 2025",
+        ),
+        SessionReminder(
+          type: SessionReminderType.registrationDeadline,
+          date: DateTime(2025, 5, 20),
+          daysUntil: 30,
+          sessionName: "Été 2025",
+        ),
+      ];
+
+      await tester.pumpWidget(localizedWidget(child: SessionReminderBottomSheet(reminders: reminders)));
+      await tester.pumpAndSettle();
+
+      expect(find.text(intl.session_reminder_session_end), findsOneWidget);
+      expect(find.text(intl.session_reminder_session_start), findsOneWidget);
+      expect(find.text(intl.session_reminder_registration_deadline), findsOneWidget);
+    });
   });
 }

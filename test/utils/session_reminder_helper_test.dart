@@ -189,6 +189,91 @@ void main() {
     });
   });
 
+  group("SessionReminderHelper.getAllUpcomingRemindersMultiSession -", () {
+    late Session nextSession;
+
+    setUp(() {
+      nextSession = Session(
+        shortName: "E2025",
+        longName: "Été 2025",
+        startDate: DateTime(2025, 5, 5),
+        endDate: DateTime(2025, 8, 20),
+        endDateCourses: DateTime(2025, 8, 10),
+        startDateRegistration: DateTime(2025, 3, 10),
+        deadlineRegistration: DateTime(2025, 4, 5),
+        startDateCancellationWithRefund: DateTime(2025, 5, 15),
+        deadlineCancellationWithRefund: DateTime(2025, 6, 15),
+        deadlineCancellationWithRefundNewStudent: DateTime(2025, 6, 20),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2025, 6, 21),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2025, 7, 10),
+        deadlineCancellationASEQ: DateTime(2025, 6, 25),
+      );
+    });
+
+    test("returns reminders from both sessions with sessionName set", () {
+      final now = DateTime(2025, 3, 16);
+      final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
+
+      final winterReminders = result.where((r) => r.sessionName == "Hiver 2025").toList();
+      final summerReminders = result.where((r) => r.sessionName == "Été 2025").toList();
+
+      expect(winterReminders, isNotEmpty);
+      expect(summerReminders, isNotEmpty);
+    });
+
+    test("preserves session order (first session reminders come first)", () {
+      final now = DateTime(2025, 3, 16);
+      final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
+
+      final firstSummerIndex = result.indexWhere((r) => r.sessionName == "Été 2025");
+      final lastWinterIndex = result.lastIndexWhere((r) => r.sessionName == "Hiver 2025");
+
+      expect(lastWinterIndex, lessThan(firstSummerIndex));
+    });
+
+    test("returns empty list when all sessions have no upcoming reminders", () {
+      final now = DateTime(2025, 9, 1);
+      final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
+
+      expect(result, isEmpty);
+    });
+
+    test("returns only one session's reminders when other has all passed", () {
+      final now = DateTime(2025, 4, 26);
+      final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
+
+      expect(result.every((r) => r.sessionName == "Été 2025"), isTrue);
+    });
+
+    test("single session produces same results as getAllUpcomingReminders with sessionName", () {
+      final now = DateTime(2025, 1, 1);
+      final multi = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session], now);
+      final single = SessionReminderHelper.getAllUpcomingReminders(session, now, sessionName: "Hiver 2025");
+
+      expect(multi.length, single.length);
+      for (int i = 0; i < multi.length; i++) {
+        expect(multi[i].type, single[i].type);
+        expect(multi[i].sessionName, single[i].sessionName);
+      }
+    });
+  });
+
+  group("SessionReminderHelper.getAllUpcomingReminders sessionName -", () {
+    test("sets sessionName on reminders when provided", () {
+      final now = DateTime(2025, 1, 1);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now, sessionName: "Hiver 2025");
+
+      expect(result.every((r) => r.sessionName == "Hiver 2025"), isTrue);
+    });
+
+    test("sessionName is null when not provided", () {
+      final now = DateTime(2025, 1, 1);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result.every((r) => r.sessionName == null), isTrue);
+    });
+  });
+
   group("SessionReminderHelper.getCarouselReminders -", () {
     test("returns empty list when all dates have passed", () {
       final now = DateTime(2025, 4, 26);

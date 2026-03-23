@@ -50,7 +50,7 @@ class SessionReminderHelper {
   }
 
   /// Returns all upcoming (including today's) session reminders, sorted by date.
-  static List<SessionReminder> getAllUpcomingReminders(Session session, DateTime now) {
+  static List<SessionReminder> getAllUpcomingReminders(Session session, DateTime now, {String? sessionName}) {
     final today = DateTime(now.year, now.month, now.day);
     final entries = _buildSortedEntries(session);
 
@@ -59,11 +59,24 @@ class SessionReminderHelper {
       final entryDate = DateTime(entry.key.year, entry.key.month, entry.key.day);
       if (!entryDate.isBefore(today)) {
         reminders.add(
-          SessionReminder(type: entry.value, date: entry.key, daysUntil: entryDate.difference(today).inDays),
+          SessionReminder(
+            type: entry.value,
+            date: entry.key,
+            daysUntil: entryDate.difference(today).inDays,
+            sessionName: sessionName,
+          ),
         );
       }
     }
 
+    return reminders;
+  }
+
+  static List<SessionReminder> getAllUpcomingRemindersMultiSession(List<Session> sessions, DateTime now) {
+    final reminders = <SessionReminder>[];
+    for (final session in sessions) {
+      reminders.addAll(getAllUpcomingReminders(session, now, sessionName: session.longName));
+    }
     return reminders;
   }
 

@@ -8,6 +8,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/data/repositories/list_sessions_repository.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/utils/session_reminder_helper.dart';
@@ -46,8 +47,15 @@ class SessionReminderCardViewmodel extends FutureViewModel {
   }
 
   void _loadSessionReminders() {
-    final session = _listSessionsRepository.getActiveSession() ?? _listSessionsRepository.getNextUpcomingSession();
-    if (session == null) {
+    final activeSession = _listSessionsRepository.getActiveSession();
+    final nextSession = _listSessionsRepository.getNextUpcomingSession();
+
+    final sessions = <Session>[
+      ?activeSession,
+      ?nextSession,
+    ];
+
+    if (sessions.isEmpty) {
       sessionReminder = null;
       allSessionReminders = [];
       carouselReminders = [];
@@ -56,9 +64,11 @@ class SessionReminderCardViewmodel extends FutureViewModel {
     }
 
     final now = DateTime.now();
-    allSessionReminders = SessionReminderHelper.getAllUpcomingReminders(session, now);
-    sessionReminder = SessionReminderHelper.getActiveReminder(session, now);
-    carouselReminders = SessionReminderHelper.getCarouselReminders(session, now);
+    final primarySession = sessions.first;
+
+    allSessionReminders = SessionReminderHelper.getAllUpcomingRemindersMultiSession(sessions, now);
+    sessionReminder = SessionReminderHelper.getActiveReminder(primarySession, now);
+    carouselReminders = SessionReminderHelper.getCarouselReminders(primarySession, now);
     notifyListeners();
   }
 

@@ -13,6 +13,11 @@ class SessionReminderBottomSheet extends StatelessWidget {
 
   const SessionReminderBottomSheet({super.key, required this.reminders});
 
+  bool get _hasMultipleSessions {
+    final names = reminders.map((r) => r.sessionName).whereType<String>().toSet();
+    return names.length > 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     final intl = AppIntl.of(context)!;
@@ -22,11 +27,58 @@ class SessionReminderBottomSheet extends StatelessWidget {
         intl.session_reminder_bottom_sheet_title,
         style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       ),
-      bodyPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 16.0,
-        children: [for (final reminder in reminders) _reminderRow(context, intl, reminder)],
+      bodyPadding: EdgeInsets.zero,
+      body: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.45),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _hasMultipleSessions ? _buildGroupedList(context, intl) : _buildFlatList(context, intl),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildFlatList(BuildContext context, AppIntl intl) {
+    final widgets = <Widget>[];
+    for (int i = 0; i < reminders.length; i++) {
+      if (i > 0) widgets.add(const SizedBox(height: 16.0));
+      widgets.add(_reminderRow(context, intl, reminders[i]));
+    }
+    return widgets;
+  }
+
+  List<Widget> _buildGroupedList(BuildContext context, AppIntl intl) {
+    final widgets = <Widget>[];
+    String? lastSessionName;
+
+    for (int i = 0; i < reminders.length; i++) {
+      final reminder = reminders[i];
+
+      if (reminder.sessionName != lastSessionName) {
+        if (i > 0) widgets.add(const SizedBox(height: 20.0));
+        widgets.add(_sessionHeader(context, reminder.sessionName!));
+        widgets.add(const SizedBox(height: 12.0));
+        lastSessionName = reminder.sessionName;
+      } else {
+        widgets.add(const SizedBox(height: 16.0));
+      }
+
+      widgets.add(_reminderRow(context, intl, reminder));
+    }
+
+    return widgets;
+  }
+
+  Widget _sessionHeader(BuildContext context, String sessionName) {
+    return Text(
+      sessionName,
+      style: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+        color: Theme.of(context).textTheme.bodySmall?.color,
       ),
     );
   }

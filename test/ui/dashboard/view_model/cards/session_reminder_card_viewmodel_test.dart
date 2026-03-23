@@ -120,6 +120,61 @@ void main() {
       expect(viewModel.sessionReminder, isNotNull);
     });
 
+    test("Should include reminders from both active and next sessions in allSessionReminders", () async {
+      final nextSession = Session(
+        shortName: "E2099",
+        longName: "Été 2099",
+        startDate: DateTime(2099, 5, 5),
+        endDate: DateTime(2099, 8, 20),
+        endDateCourses: DateTime(2099, 8, 10),
+        startDateRegistration: DateTime(2099, 3, 10),
+        deadlineRegistration: DateTime(2099, 4, 5),
+        startDateCancellationWithRefund: DateTime(2099, 5, 15),
+        deadlineCancellationWithRefund: DateTime(2099, 6, 15),
+        deadlineCancellationWithRefundNewStudent: DateTime(2099, 6, 20),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2099, 6, 21),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2099, 7, 10),
+        deadlineCancellationASEQ: DateTime(2099, 6, 25),
+      );
+
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: session);
+      ListSessionsRepositoryMock.stubGetNextUpcomingSession(listSessionsRepositoryMock, session: nextSession);
+      await viewModel.futureToRun();
+
+      final sessionNames = viewModel.allSessionReminders.map((r) => r.sessionName).toSet();
+      expect(sessionNames, contains("Hiver 2099"));
+      expect(sessionNames, contains("Été 2099"));
+    });
+
+    test("Should use only primary session for carousel even when next session exists", () async {
+      final nextSession = Session(
+        shortName: "E2099",
+        longName: "Été 2099",
+        startDate: DateTime(2099, 5, 5),
+        endDate: DateTime(2099, 8, 20),
+        endDateCourses: DateTime(2099, 8, 10),
+        startDateRegistration: DateTime(2099, 3, 10),
+        deadlineRegistration: DateTime(2099, 4, 5),
+        startDateCancellationWithRefund: DateTime(2099, 5, 15),
+        deadlineCancellationWithRefund: DateTime(2099, 6, 15),
+        deadlineCancellationWithRefundNewStudent: DateTime(2099, 6, 20),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2099, 6, 21),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2099, 7, 10),
+        deadlineCancellationASEQ: DateTime(2099, 6, 25),
+      );
+
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: session);
+      ListSessionsRepositoryMock.stubGetNextUpcomingSession(listSessionsRepositoryMock, session: nextSession);
+      await viewModel.futureToRun();
+
+      expect(viewModel.carouselReminders, isNotEmpty);
+      // Carousel reminders don't carry sessionName (computed from single session without name)
+      // but they should only contain events from the active session's date range
+      for (final reminder in viewModel.carouselReminders) {
+        expect(reminder.date.isBefore(DateTime(2099, 5, 1)), isTrue);
+      }
+    });
+
     test("Should handle repository exception gracefully when no cached data", () async {
       setupFlutterToastMock();
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
