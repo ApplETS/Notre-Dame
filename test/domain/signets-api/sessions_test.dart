@@ -23,11 +23,11 @@ void main() {
 
   group("Session - ", () {
     test("Days completed should return correct value", () {
-      expect(session.daysCompleted, 99);
+      expect(session.daysCompleted, 100);
     });
 
     test("Total days should return correct value", () {
-      expect(session.totalDays, 104);
+      expect(session.totalDays, 105);
     });
   });
 }
