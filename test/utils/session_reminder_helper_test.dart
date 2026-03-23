@@ -214,8 +214,8 @@ void main() {
       final now = DateTime(2025, 3, 16);
       final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
 
-      final winterReminders = result.where((r) => r.sessionName == "Hiver 2025").toList();
-      final summerReminders = result.where((r) => r.sessionName == "Été 2025").toList();
+      final winterReminders = result.where((r) => r.sessionName == "H2025").toList();
+      final summerReminders = result.where((r) => r.sessionName == "E2025").toList();
 
       expect(winterReminders, isNotEmpty);
       expect(summerReminders, isNotEmpty);
@@ -225,8 +225,8 @@ void main() {
       final now = DateTime(2025, 3, 16);
       final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
 
-      final firstSummerIndex = result.indexWhere((r) => r.sessionName == "Été 2025");
-      final lastWinterIndex = result.lastIndexWhere((r) => r.sessionName == "Hiver 2025");
+      final firstSummerIndex = result.indexWhere((r) => r.sessionName == "E2025");
+      final lastWinterIndex = result.lastIndexWhere((r) => r.sessionName == "H2025");
 
       expect(lastWinterIndex, lessThan(firstSummerIndex));
     });
@@ -242,13 +242,13 @@ void main() {
       final now = DateTime(2025, 4, 26);
       final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
 
-      expect(result.every((r) => r.sessionName == "Été 2025"), isTrue);
+      expect(result.every((r) => r.sessionName == "E2025"), isTrue);
     });
 
     test("single session produces same results as getAllUpcomingReminders with sessionName", () {
       final now = DateTime(2025, 1, 1);
       final multi = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session], now);
-      final single = SessionReminderHelper.getAllUpcomingReminders(session, now, sessionName: "Hiver 2025");
+      final single = SessionReminderHelper.getAllUpcomingReminders(session, now, sessionName: "H2025");
 
       expect(multi.length, single.length);
       for (int i = 0; i < multi.length; i++) {
@@ -261,9 +261,9 @@ void main() {
   group("SessionReminderHelper.getAllUpcomingReminders sessionName -", () {
     test("sets sessionName on reminders when provided", () {
       final now = DateTime(2025, 1, 1);
-      final result = SessionReminderHelper.getAllUpcomingReminders(session, now, sessionName: "Hiver 2025");
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now, sessionName: "H2025");
 
-      expect(result.every((r) => r.sessionName == "Hiver 2025"), isTrue);
+      expect(result.every((r) => r.sessionName == "H2025"), isTrue);
     });
 
     test("sessionName is null when not provided", () {

@@ -75,7 +75,7 @@ class SessionReminderHelper {
   static List<SessionReminder> getAllUpcomingRemindersMultiSession(List<Session> sessions, DateTime now) {
     final reminders = <SessionReminder>[];
     for (final session in sessions) {
-      reminders.addAll(getAllUpcomingReminders(session, now, sessionName: session.longName));
+      reminders.addAll(getAllUpcomingReminders(session, now, sessionName: session.shortName));
     }
     return reminders;
   }

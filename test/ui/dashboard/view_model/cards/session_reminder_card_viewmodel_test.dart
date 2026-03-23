@@ -18,7 +18,7 @@ void main() {
 
   final Session session = Session(
     shortName: "H2099",
-    longName: "Hiver 2099",
+    longName: "H2099",
     startDate: DateTime(2099, 1, 6),
     endDate: DateTime(2099, 4, 25),
     endDateCourses: DateTime(2099, 4, 14),
@@ -123,7 +123,7 @@ void main() {
     test("Should include reminders from both active and next sessions in allSessionReminders", () async {
       final nextSession = Session(
         shortName: "E2099",
-        longName: "Été 2099",
+        longName: "E2099",
         startDate: DateTime(2099, 5, 5),
         endDate: DateTime(2099, 8, 20),
         endDateCourses: DateTime(2099, 8, 10),
@@ -142,14 +142,14 @@ void main() {
       await viewModel.futureToRun();
 
       final sessionNames = viewModel.allSessionReminders.map((r) => r.sessionName).toSet();
-      expect(sessionNames, contains("Hiver 2099"));
-      expect(sessionNames, contains("Été 2099"));
+      expect(sessionNames, contains("H2099"));
+      expect(sessionNames, contains("E2099"));
     });
 
     test("Should use only primary session for carousel even when next session exists", () async {
       final nextSession = Session(
         shortName: "E2099",
-        longName: "Été 2099",
+        longName: "E2099",
         startDate: DateTime(2099, 5, 5),
         endDate: DateTime(2099, 8, 20),
         endDateCourses: DateTime(2099, 8, 10),

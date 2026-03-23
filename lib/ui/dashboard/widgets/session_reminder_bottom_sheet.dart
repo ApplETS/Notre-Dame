@@ -8,6 +8,7 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/modal_bottom_sheet_layout.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_utils.dart';
 import 'package:notredame/utils/session_reminder_helper.dart';
+import 'package:notredame/utils/session_utils.dart';
 
 class SessionReminderBottomSheet extends StatelessWidget {
   final List<SessionReminder> reminders;
@@ -56,7 +57,7 @@ class SessionReminderBottomSheet extends StatelessWidget {
 
       if (reminder.sessionName != lastSessionName) {
         if (i > 0) widgets.add(const SizedBox(height: 20.0));
-        widgets.add(_sessionHeader(context, reminder.sessionName!));
+        widgets.add(_sessionHeader(context, intl, reminder.sessionName!));
         widgets.add(const SizedBox(height: 12.0));
         lastSessionName = reminder.sessionName;
       } else {
@@ -69,9 +70,9 @@ class SessionReminderBottomSheet extends StatelessWidget {
     return widgets;
   }
 
-  Widget _sessionHeader(BuildContext context, String sessionName) {
+  Widget _sessionHeader(BuildContext context, AppIntl intl, String shortName) {
     return Text(
-      sessionName,
+      localizedSessionName(intl, shortName),
       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Theme.of(context).textTheme.bodySmall?.color),
     );
   }
