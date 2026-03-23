@@ -274,7 +274,7 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
           width: isActive ? 12 : 6,
           height: 6,
           decoration: BoxDecoration(
-            color: isActive ? AppPalette.etsLightRed : AppPalette.etsLightRed.withValues(alpha: 0.4),
+            color: isActive ? AppPalette.etsLightRed : AppPalette.etsLightRed.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(3),
           ),
         );
