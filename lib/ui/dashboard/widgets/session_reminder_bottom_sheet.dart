@@ -78,7 +78,7 @@ class SessionReminderBottomSheet extends StatelessWidget {
 
   Widget _reminderRow(BuildContext context, AppIntl intl, SessionReminder reminder) {
     final isToday = reminder.daysUntil == 0;
-    final timingText = sessionReminderTimingText(intl, context, reminder, long: true);
+    final timingText = sessionReminderDateWithRemaining(intl, context, reminder);
 
     return Row(
       spacing: 12.0,
