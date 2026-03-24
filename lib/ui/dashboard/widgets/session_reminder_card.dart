@@ -18,6 +18,23 @@ import 'package:notredame/ui/dashboard/view_model/cards/session_reminder_card_vi
 import 'package:notredame/ui/dashboard/widgets/session_reminder_bottom_sheet.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_utils.dart';
 
+// Carousel timing
+const _autoScrollInterval = Duration(seconds: 10);
+const _pageAnimationDuration = Duration(milliseconds: 600);
+const _dotAnimationDuration = Duration(milliseconds: 300);
+
+// Font sizes
+const _eventNameMaxFontSize = 17.0;
+const _eventNameReducedFontSize = 14.0;
+const _eventNameMinFontSize = 10.0;
+const _subtitleFontSize = 13.0;
+
+// Dot indicators
+const _dotActiveWidth = 12.0;
+const _dotInactiveWidth = 6.0;
+const _dotHeight = 6.0;
+const _dotInactiveAlpha = 0.5;
+
 class SessionReminderCard extends StatelessWidget {
   const SessionReminderCard({super.key});
 
@@ -112,10 +129,10 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
 
   void _startAutoScroll() {
     _autoScrollTimer?.cancel();
-    _autoScrollTimer = Timer.periodic(const Duration(seconds: 10), (_) {
+    _autoScrollTimer = Timer.periodic(_autoScrollInterval, (_) {
       if (_pageController != null && _pageController!.hasClients) {
         final nextPage = (_currentPage + 1) % widget.carouselReminders.length;
-        _pageController!.animateToPage(nextPage, duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
+        _pageController!.animateToPage(nextPage, duration: _pageAnimationDuration, curve: Curves.easeInOut);
       }
     });
   }
@@ -233,16 +250,17 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
                   final textPainter = TextPainter(
                     text: TextSpan(
                       text: text,
-                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, height: 1.2),
+                      style: const TextStyle(fontSize: _eventNameMaxFontSize, fontWeight: FontWeight.w700, height: 1.2),
                     ),
                     maxLines: 1,
                     textDirection: TextDirection.ltr,
                   )..layout(maxWidth: constraints.maxWidth);
-                  final fontSize = textPainter.didExceedMaxLines ? 14.0 : 17.0;
+                  final fontSize =
+                      textPainter.didExceedMaxLines ? _eventNameReducedFontSize : _eventNameMaxFontSize;
                   return AutoSizeText(
                     text,
                     style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700, height: 1.2),
-                    minFontSize: 10,
+                    minFontSize: _eventNameMinFontSize,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   );
@@ -251,7 +269,7 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
               const Spacer(flex: 1),
               Text(
                 sessionReminderTimingText(intl, context, reminder),
-                style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodySmall?.color),
+                style: TextStyle(fontSize: _subtitleFontSize, color: Theme.of(context).textTheme.bodySmall?.color),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -269,13 +287,13 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
       children: List.generate(widget.carouselReminders.length, (index) {
         final isActive = index == _currentPage;
         return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: _dotAnimationDuration,
           margin: const EdgeInsets.symmetric(horizontal: 2),
-          width: isActive ? 12 : 6,
-          height: 6,
+          width: isActive ? _dotActiveWidth : _dotInactiveWidth,
+          height: _dotHeight,
           decoration: BoxDecoration(
-            color: isActive ? AppPalette.etsLightRed : AppPalette.etsLightRed.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(3),
+            color: isActive ? AppPalette.etsLightRed : AppPalette.etsLightRed.withValues(alpha: _dotInactiveAlpha),
+            borderRadius: BorderRadius.circular(_dotHeight / 2),
           ),
         );
       }),
