@@ -247,6 +247,8 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
               LayoutBuilder(
                 builder: (context, constraints) {
                   final text = sessionReminderEventName(intl, reminder.type);
+                  // Use a larger font for single-line names so they fill the card;
+                  // multi-line names start smaller to keep breathing room.
                   final textPainter = TextPainter(
                     text: TextSpan(
                       text: text,
