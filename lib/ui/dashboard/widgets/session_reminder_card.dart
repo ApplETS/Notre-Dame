@@ -255,8 +255,7 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
                     maxLines: 1,
                     textDirection: TextDirection.ltr,
                   )..layout(maxWidth: constraints.maxWidth);
-                  final fontSize =
-                      textPainter.didExceedMaxLines ? _eventNameReducedFontSize : _eventNameMaxFontSize;
+                  final fontSize = textPainter.didExceedMaxLines ? _eventNameReducedFontSize : _eventNameMaxFontSize;
                   return AutoSizeText(
                     text,
                     style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700, height: 1.2),
