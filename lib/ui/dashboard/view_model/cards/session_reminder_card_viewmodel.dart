@@ -40,7 +40,7 @@ class SessionReminderCardViewmodel extends FutureViewModel {
       _loadSessionReminders();
       unawaited(_listSessionsRepository.getSessions().catchError((_) {}));
     } else {
-      await _listSessionsRepository.getSessions();
+      await _listSessionsRepository.getSessions().catchError((_) {});
     }
   }
 

@@ -179,11 +179,9 @@ void main() {
       setupFlutterToastMock();
       ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
       ListSessionsRepositoryMock.stubGetNextUpcomingSession(listSessionsRepositoryMock, session: null);
-      when(listSessionsRepositoryMock.getSessions()).thenThrow(Exception("test"));
+      when(listSessionsRepositoryMock.getSessions()).thenAnswer((_) => Future.error(Exception("test")));
 
-      try {
-        await viewModel.futureToRun();
-      } catch (_) {}
+      await viewModel.futureToRun();
 
       expect(viewModel.sessionReminder, isNull);
       expect(viewModel.allSessionReminders, isEmpty);
@@ -191,7 +189,7 @@ void main() {
 
     test("Should still show cached reminders when repository throws", () async {
       setupFlutterToastMock();
-      when(listSessionsRepositoryMock.getSessions()).thenThrow(Exception("test"));
+      when(listSessionsRepositoryMock.getSessions()).thenAnswer((_) => Future.error(Exception("test")));
 
       await viewModel.futureToRun();
       await Future.delayed(Duration.zero);
