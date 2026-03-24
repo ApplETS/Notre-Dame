@@ -20,10 +20,10 @@ class CourseActivityFilter implements Filter<List<CourseActivity>> {
           courseGroup == null || activity.courseGroup == courseGroup;
 
       final matchesStartDate =
-          startDate == null || activity.startDate.withoutTime.isAfter(startDate!);
+          startDate == null || activity.endDate.withoutTime.isAfter(startDate!);
 
       final matchesEndDate =
-          endDate == null || activity.endDate.withoutTime.isBefore(endDate!);
+          endDate == null || activity.startDate.withoutTime.isBefore(endDate!);
 
       return matchesCourseGroup &&
           matchesStartDate &&

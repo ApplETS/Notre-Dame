@@ -16,7 +16,7 @@ import 'package:notredame/locator.dart';
 class ScheduleCardViewmodel extends FutureViewModel {
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final CourseActivityRepository _courseRepository = locator<CourseActivityRepository>();
-  final _listSessionsRepository = locator<ListSessionsRepository>();
+  final ListSessionsRepository _listSessionsRepository = locator<ListSessionsRepository>();
   final AppIntl _appIntl;
 
   StreamSubscription? _courseActivitySubscription;
@@ -48,6 +48,10 @@ class ScheduleCardViewmodel extends FutureViewModel {
       );
       _listSessionsSubscription = _listSessionsRepository.stream.listen(
         (sessions) async {
+          if(sessions == null || sessions.isEmpty) {
+            setBusy(false);
+            return;
+          }
           await fetchSchedule();
         },
       );
