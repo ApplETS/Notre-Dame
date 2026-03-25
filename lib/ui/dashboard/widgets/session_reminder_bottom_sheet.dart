@@ -26,10 +26,11 @@ class SessionReminderBottomSheet extends StatelessWidget {
         style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
       ),
       bodyPadding: EdgeInsets.zero,
+      applyBottomSafeArea: false,
       body: ConstrainedBox(
         constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.45),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          padding: EdgeInsets.fromLTRB(20, 24, 20, 24 + MediaQuery.of(context).viewPadding.bottom),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: grouped ? _buildGroupedList(context, intl) : _buildFlatList(context, intl),

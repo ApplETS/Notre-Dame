@@ -8,12 +8,14 @@ class ModalBottomSheetLayout extends StatelessWidget {
   final Widget title;
   final Widget body;
   final EdgeInsetsGeometry bodyPadding;
+  final bool applyBottomSafeArea;
 
   const ModalBottomSheetLayout({
     super.key,
     required this.title,
     required this.body,
     this.bodyPadding = const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+    this.applyBottomSafeArea = true,
   });
 
   @override
@@ -49,6 +51,7 @@ class ModalBottomSheetLayout extends StatelessWidget {
           SafeArea(
             left: false,
             right: false,
+            bottom: applyBottomSafeArea,
             child: Padding(padding: bodyPadding, child: body),
           ),
         ],
