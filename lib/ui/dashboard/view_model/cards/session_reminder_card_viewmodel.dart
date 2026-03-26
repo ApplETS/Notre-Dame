@@ -58,8 +58,7 @@ class SessionReminderCardViewmodel extends FutureViewModel {
       return;
     }
 
-    //final now = DateTime.now();
-    final now = DateTime(2026, 01, 02);
+    final now = DateTime.now();
     final primarySession = sessions.first;
 
     allSessionReminders = SessionReminderHelper.getAllUpcomingRemindersMultiSession(sessions, now);
