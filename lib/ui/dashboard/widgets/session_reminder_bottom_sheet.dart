@@ -31,26 +31,37 @@ class SessionReminderBottomSheet extends StatelessWidget {
         snapSizes: const [],
         expand: false,
         builder: (context, ScrollController scrollController) {
-          return CustomScrollView(
-            controller: scrollController,
-            slivers: [
-              PinnedHeaderSliver(
-                child: ModalBottomSheetHeader(
-                  title: Text(
-                    intl.session_reminder_bottom_sheet_title,
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final showHeader = constraints.maxHeight > 100;
+
+              return Column(
+                children: [
+                  if (showHeader)
+                    ModalBottomSheetHeader(
+                      title: Text(
+                        intl.session_reminder_bottom_sheet_title,
+                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  Expanded(
+                    child: CustomScrollView(
+                      controller: scrollController,
+                      slivers: [
+                        SliverPadding(
+                          padding: EdgeInsets.fromLTRB(20, 24, 20, 24 + MediaQuery.of(context).viewPadding.bottom),
+                          sliver: SliverList(
+                            delegate: SliverChildListDelegate(
+                              grouped ? _buildGroupedList(context, intl) : _buildFlatList(context, intl),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              SliverPadding(
-                padding: EdgeInsets.fromLTRB(20, 24, 20, 24 + MediaQuery.of(context).viewPadding.bottom),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    grouped ? _buildGroupedList(context, intl) : _buildFlatList(context, intl),
-                  ),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           );
         },
       ),
