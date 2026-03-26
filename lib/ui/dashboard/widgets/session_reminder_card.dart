@@ -24,7 +24,7 @@ const _pageAnimationDuration = Duration(milliseconds: 600);
 const _dotAnimationDuration = Duration(milliseconds: 300);
 
 // Font sizes
-const _eventNameMaxFontSize = 15.0;
+const _eventNameMaxFontSize = 16.5;
 const _eventNameMinFontSize = 10.0;
 const _subtitleFontSize = 13.0;
 
@@ -247,12 +247,17 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
                 builder: (context, constraints) {
                   final text = sessionReminderEventName(intl, reminder.type);
                   final style = TextStyle(fontSize: _eventNameMaxFontSize, fontWeight: FontWeight.w700, height: 1.2);
-                  final textPainter = TextPainter(
-                    text: TextSpan(text: text, style: style),
-                    maxLines: 2,
-                    textDirection: TextDirection.ltr,
-                  )..layout(maxWidth: constraints.maxWidth);
-                  final fontSize = textPainter.didExceedMaxLines ? _eventNameMaxFontSize - 2 : _eventNameMaxFontSize;
+                  double fontSize = _eventNameMaxFontSize;
+                  for (final maxLines in [1, 2]) {
+                    final tp = TextPainter(
+                      text: TextSpan(text: text, style: style),
+                      maxLines: maxLines,
+                      textDirection: TextDirection.ltr,
+                    )..layout(maxWidth: constraints.maxWidth);
+                    if (tp.didExceedMaxLines) {
+                      fontSize = _eventNameMaxFontSize - (maxLines + 1);
+                    }
+                  }
                   return AutoSizeText(
                     text,
                     style: style.copyWith(fontSize: fontSize),
