@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/domain/constants/urls.dart';
 
 // Project imports:
+import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
