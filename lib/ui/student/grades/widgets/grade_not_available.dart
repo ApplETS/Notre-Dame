@@ -18,22 +18,29 @@ class GradeNotAvailable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(8.0),
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.school, size: 100, color: AppPalette.etsLightRed),
-          const SizedBox(height: 25),
-          Text(
-            isEvaluationPeriod
-                ? AppIntl.of(context)!.grades_error_course_evaluations_not_completed
-                : AppIntl.of(context)!.grades_msg_no_grade,
-            textAlign: TextAlign.center,
-            softWrap: true,
-            style: isEvaluationPeriod ? Theme.of(context).textTheme.bodyLarge : Theme.of(context).textTheme.titleLarge,
+          Flex(
+            direction: (MediaQuery.of(context).orientation == Orientation.portrait) ? Axis.vertical : Axis.horizontal,
+            spacing: 32.0,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.school, size: 100, color: AppPalette.etsLightRed),
+              Flexible(
+                child: Text(
+                  isEvaluationPeriod
+                      ? AppIntl.of(context)!.grades_error_course_evaluations_not_completed
+                      : AppIntl.of(context)!.grades_msg_no_grade,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  style: isEvaluationPeriod ? Theme.of(context).textTheme.bodyLarge : Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 25),
           Row(
