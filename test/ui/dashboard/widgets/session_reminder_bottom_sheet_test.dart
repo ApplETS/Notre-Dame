@@ -78,7 +78,7 @@ void main() {
           type: SessionReminderType.sessionStart,
           date: DateTime(2025, 5, 5),
           daysUntil: 15,
-          sessionName: "É2025",
+          sessionName: "E2025",
         ),
       ];
 
@@ -86,6 +86,13 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text("Winter 2025"), findsOneWidget);
+
+      final scrollableFinder = find.byType(Scrollable);
+      if (scrollableFinder.evaluate().isNotEmpty) {
+        await tester.drag(scrollableFinder, const Offset(0, -300));
+        await tester.pumpAndSettle();
+      }
+
       expect(find.text("Summer 2025"), findsOneWidget);
     });
 
@@ -125,13 +132,13 @@ void main() {
           type: SessionReminderType.sessionStart,
           date: DateTime(2025, 5, 5),
           daysUntil: 15,
-          sessionName: "É2025",
+          sessionName: "E2025",
         ),
         SessionReminder(
           type: SessionReminderType.registrationDeadline,
           date: DateTime(2025, 5, 20),
           daysUntil: 30,
-          sessionName: "É2025",
+          sessionName: "E2025",
         ),
       ];
 
@@ -139,7 +146,21 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text(intl.session_reminder_session_end), findsOneWidget);
+
+      final scrollableFinder = find.byType(Scrollable);
+
+      if (scrollableFinder.evaluate().isNotEmpty) {
+        await tester.drag(scrollableFinder, const Offset(0, -150));
+        await tester.pumpAndSettle();
+      }
+
       expect(find.text(intl.session_reminder_session_start), findsOneWidget);
+
+      if (scrollableFinder.evaluate().isNotEmpty) {
+        await tester.drag(scrollableFinder, const Offset(0, -250));
+        await tester.pumpAndSettle();
+      }
+
       expect(find.text(intl.session_reminder_registration_deadline), findsOneWidget);
     });
   });
