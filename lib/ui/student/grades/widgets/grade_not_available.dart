@@ -1,12 +1,12 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/domain/constants/urls.dart';
 
 // Project imports:
+import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/domain/constants/urls.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/data/services/launch_url_service.dart';
 
 class GradeNotAvailable extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -37,7 +37,9 @@ class GradeNotAvailable extends StatelessWidget {
                       : AppIntl.of(context)!.grades_msg_no_grade,
                   textAlign: TextAlign.center,
                   softWrap: true,
-                  style: isEvaluationPeriod ? Theme.of(context).textTheme.bodyLarge : Theme.of(context).textTheme.titleLarge,
+                  style: isEvaluationPeriod
+                      ? Theme.of(context).textTheme.bodyLarge
+                      : Theme.of(context).textTheme.titleLarge,
                 ),
               ),
             ],
@@ -57,15 +59,15 @@ class GradeNotAvailable extends StatelessWidget {
                 style: isEvaluationPeriod
                     ? null
                     : ElevatedButton.styleFrom(
-                  backgroundColor: AppPalette.etsLightRed,
-                  foregroundColor: AppPalette.grey.white,
-                ),
+                        backgroundColor: AppPalette.etsLightRed,
+                        foregroundColor: AppPalette.grey.white,
+                      ),
                 onPressed: onPressed,
                 icon: Icon(Icons.refresh),
                 label: Text(AppIntl.of(context)!.retry),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
