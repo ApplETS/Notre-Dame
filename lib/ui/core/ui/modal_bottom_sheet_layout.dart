@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Project imports:
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_header.dart';
 
 class ModalBottomSheetLayout extends StatelessWidget {
   final Widget title;
@@ -27,27 +27,7 @@ class ModalBottomSheetLayout extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-            child: Column(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Container(
-                      height: 5,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: context.theme.appColors.modalHandle,
-                        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(padding: const EdgeInsets.symmetric(vertical: 20), child: title),
-              ],
-            ),
-          ),
+          ModalBottomSheetHeader(title: title),
           SafeArea(
             left: false,
             right: false,

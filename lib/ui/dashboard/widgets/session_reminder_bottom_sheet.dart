@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_header.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_utils.dart';
 import 'package:notredame/utils/session_reminder_helper.dart';
 import 'package:notredame/utils/session_utils.dart';
@@ -35,31 +35,10 @@ class SessionReminderBottomSheet extends StatelessWidget {
             controller: scrollController,
             slivers: [
               PinnedHeaderSliver(
-                child: Container(
-                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
-                            height: 5,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              color: context.theme.appColors.modalHandle,
-                              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        child: Text(
-                          intl.session_reminder_bottom_sheet_title,
-                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+                child: ModalBottomSheetHeader(
+                  title: Text(
+                    intl.session_reminder_bottom_sheet_title,
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
