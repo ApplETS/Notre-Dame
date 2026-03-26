@@ -24,8 +24,7 @@ const _pageAnimationDuration = Duration(milliseconds: 600);
 const _dotAnimationDuration = Duration(milliseconds: 300);
 
 // Font sizes
-const _eventNameMaxFontSize = 17.0;
-const _eventNameReducedFontSize = 14.0;
+const _eventNameMaxFontSize = 15.0;
 const _eventNameMinFontSize = 10.0;
 const _subtitleFontSize = 13.0;
 
@@ -247,20 +246,16 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
               LayoutBuilder(
                 builder: (context, constraints) {
                   final text = sessionReminderEventName(intl, reminder.type);
-                  // Use a larger font for single-line names so they fill the card;
-                  // multi-line names start smaller to keep breathing room.
+                  final style = TextStyle(fontSize: _eventNameMaxFontSize, fontWeight: FontWeight.w700, height: 1.2);
                   final textPainter = TextPainter(
-                    text: TextSpan(
-                      text: text,
-                      style: const TextStyle(fontSize: _eventNameMaxFontSize, fontWeight: FontWeight.w700, height: 1.2),
-                    ),
-                    maxLines: 1,
+                    text: TextSpan(text: text, style: style),
+                    maxLines: 2,
                     textDirection: TextDirection.ltr,
                   )..layout(maxWidth: constraints.maxWidth);
-                  final fontSize = textPainter.didExceedMaxLines ? _eventNameReducedFontSize : _eventNameMaxFontSize;
+                  final fontSize = textPainter.didExceedMaxLines ? _eventNameMaxFontSize - 2 : _eventNameMaxFontSize;
                   return AutoSizeText(
                     text,
-                    style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w700, height: 1.2),
+                    style: style.copyWith(fontSize: fontSize),
                     minFontSize: _eventNameMinFontSize,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
