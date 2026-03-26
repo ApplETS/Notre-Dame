@@ -433,6 +433,7 @@ class CourseRepository {
   /// version of the course. Return the course with the summary set.
   Future<Course> getCourseSummary(Course course) async {
     CourseSummary? summary;
+    List<CourseReview>? reviews;
 
     // Don't try to update the summary when user has no connection
     if (!(await _networkingService.hasConnectivity())) {
@@ -445,6 +446,11 @@ class CourseRepository {
         acronym: course.acronym,
         group: course.group,
       );
+
+      if (course.inReviewPeriod && !(course.allReviewsCompleted ?? true)) {
+        reviews = _getReviewsForCourse(course, await _getCoursesReviews());
+      }
+
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
@@ -464,6 +470,7 @@ class CourseRepository {
     // Update courses list
     _courses!.removeWhere((element) => course.acronym == element.acronym && course.session == element.session);
     course.summary = summary;
+    course.reviews = reviews;
     _courses!.add(course);
 
     try {
