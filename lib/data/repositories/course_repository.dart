@@ -390,11 +390,7 @@ class CourseRepository {
       rethrow;
     }
 
-    try {
-      fetchedCourseReviews.addAll(await _getCoursesReviews());
-    } on Exception catch (e) {
-      _logger.d("$tag - getCourses: $e during getCoursesEvaluations. Ignored");
-    }
+    fetchedCourseReviews.addAll(await _getCoursesReviews());
 
     _courses!.clear();
 
@@ -446,11 +442,6 @@ class CourseRepository {
         acronym: course.acronym,
         group: course.group,
       );
-
-      if (course.inReviewPeriod && !(course.allReviewsCompleted ?? true)) {
-        reviews = _getReviewsForCourse(course, await _getCoursesReviews());
-      }
-
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
@@ -464,13 +455,17 @@ class CourseRepository {
       rethrow;
     }
 
+    if (course.inReviewPeriod && !(course.allReviewsCompleted ?? true)) {
+      reviews = _getReviewsForCourse(course, await _getCoursesReviews());
+      course.reviews = reviews;
+    }
+
     // Initialize the array if needed
     _courses ??= [];
 
     // Update courses list
     _courses!.removeWhere((element) => course.acronym == element.acronym && course.session == element.session);
     course.summary = summary;
-    course.reviews = reviews;
     _courses!.add(course);
 
     try {
@@ -593,7 +588,6 @@ class CourseRepository {
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, e.toString(), e, stacktrace);
       _logger.e("$tag - getCourseSummary: Exception raised $e");
-      rethrow;
     }
 
     return reviews;
