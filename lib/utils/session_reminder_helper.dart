@@ -2,6 +2,7 @@
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/domain/session_reminder_type.dart';
+import 'package:notredame/utils/date_utils.dart';
 
 class SessionReminderHelper {
   static List<MapEntry<DateTime, SessionReminderType>> _buildSortedEntries(Session session) {
@@ -51,18 +52,18 @@ class SessionReminderHelper {
 
   /// Returns all upcoming (including today's) session reminders, sorted by date.
   static List<SessionReminder> getAllUpcomingReminders(Session session, DateTime now, {String? sessionName}) {
-    final today = DateTime(now.year, now.month, now.day);
+    final today = DateUtils.dateOnly(now);
     final entries = _buildSortedEntries(session);
 
     final reminders = <SessionReminder>[];
     for (final entry in entries) {
-      final entryDate = DateTime(entry.key.year, entry.key.month, entry.key.day);
+      final entryDate = DateUtils.dateOnly(entry.key);
       if (!entryDate.isBefore(today)) {
         reminders.add(
           SessionReminder(
             type: entry.value,
             date: entry.key,
-            daysUntil: entryDate.difference(today).inDays,
+            daysUntil: DateUtils.daysBetween(today, entryDate),
             sessionName: sessionName,
           ),
         );

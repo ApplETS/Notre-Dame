@@ -10,8 +10,8 @@ void main() {
   final session = Session(
     shortName: "H2025",
     longName: "Hiver 2025",
-    startDate: today.subtract(const Duration(days: 100)),
-    endDate: today.add(const Duration(days: 5)),
+    startDate: DateTime(today.year, today.month, today.day - 100),
+    endDate: DateTime(today.year, today.month, today.day + 5),
     endDateCourses: DateTime(2025, 04, 12),
     startDateRegistration: DateTime(2024, 10, 28),
     deadlineRegistration: DateTime(2024, 11, 12),

@@ -3,6 +3,9 @@
 // Package imports:
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+// Project imports:
+import 'package:notredame/utils/date_utils.dart';
+
 part 'session.freezed.dart';
 part 'session.g.dart';
 
@@ -57,16 +60,7 @@ abstract class Session with _$Session {
 
   factory Session.fromJson(Map<String, dynamic> json) => _$SessionFromJson(json);
 
-  int get daysCompleted {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final start = DateTime(startDate.year, startDate.month, startDate.day);
-    return today.difference(start).inDays;
-  }
+  int get daysCompleted => DateUtils.daysBetween(startDate, DateTime.now());
 
-  int get totalDays {
-    final start = DateTime(startDate.year, startDate.month, startDate.day);
-    final end = DateTime(endDate.year, endDate.month, endDate.day);
-    return end.difference(start).inDays;
-  }
+  int get totalDays => DateUtils.daysBetween(startDate, endDate);
 }

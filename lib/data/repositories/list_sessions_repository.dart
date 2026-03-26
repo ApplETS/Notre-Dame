@@ -7,6 +7,7 @@ import 'package:notredame/data/repositories/base_stream_repository.dart';
 import 'package:notredame/data/services/signets_client.dart';
 import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/utils/date_utils.dart';
 
 class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
   static const String sessionsKey = 'sessions';
@@ -42,8 +43,7 @@ class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
 
   Session? getNextUpcomingSession() {
     if (value == null) return null;
-    DateTime now = DateTime.now();
-    now = DateTime(now.year, now.month, now.day);
+    final now = DateUtils.dateOnly(DateTime.now());
 
     final upcoming = value!.where((session) => session.startDate.isAfter(now)).toList()
       ..sort((a, b) => a.startDate.compareTo(b.startDate));
