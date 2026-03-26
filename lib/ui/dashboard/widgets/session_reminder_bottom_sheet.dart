@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/ui/core/ui/modal_bottom_sheet_layout.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_utils.dart';
 import 'package:notredame/utils/session_reminder_helper.dart';
 import 'package:notredame/utils/session_utils.dart';
@@ -20,22 +20,60 @@ class SessionReminderBottomSheet extends StatelessWidget {
     final intl = AppIntl.of(context)!;
     final grouped = SessionReminderHelper.hasMultipleSessions(reminders);
 
-    return ModalBottomSheetLayout(
-      title: Text(
-        intl.session_reminder_bottom_sheet_title,
-        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      ),
-      bodyPadding: EdgeInsets.zero,
-      applyBottomSafeArea: false,
-      body: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.45),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(20, 24, 20, 24 + MediaQuery.of(context).viewPadding.bottom),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: grouped ? _buildGroupedList(context, intl) : _buildFlatList(context, intl),
-          ),
-        ),
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      child: DraggableScrollableSheet(
+        maxChildSize: 0.55,
+        minChildSize: 0,
+        initialChildSize: 0.55,
+        shouldCloseOnMinExtent: true,
+        snap: true,
+        snapSizes: const [],
+        expand: false,
+        builder: (context, ScrollController scrollController) {
+          return CustomScrollView(
+            controller: scrollController,
+            slivers: [
+              PinnedHeaderSliver(
+                child: Container(
+                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container(
+                            height: 5,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              color: context.theme.appColors.modalHandle,
+                              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Text(
+                          intl.session_reminder_bottom_sheet_title,
+                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: EdgeInsets.fromLTRB(20, 24, 20, 24 + MediaQuery.of(context).viewPadding.bottom),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    grouped ? _buildGroupedList(context, intl) : _buildFlatList(context, intl),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
