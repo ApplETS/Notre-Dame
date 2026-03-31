@@ -92,7 +92,7 @@ class _LoginViewState extends State<LoginView> {
                       model.navigationService.pushNamed(RouterPaths.faq);
                     },
                     icon: const FaIcon(FontAwesomeIcons.question, color: Colors.white),
-                    label: Text("FAQ"),
+                    label: const Text("FAQ"),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppPalette.grey.black,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

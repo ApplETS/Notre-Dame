@@ -139,7 +139,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.login:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => LoginView(),
+        builder: (_) => const LoginView(),
       );
     default:
       return PageRouteBuilder(
