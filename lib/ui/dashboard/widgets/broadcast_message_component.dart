@@ -1,4 +1,5 @@
 // Flutter imports:
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 // Project imports:
@@ -21,9 +22,10 @@ class BroadcastMessageComponent extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(
+          child: AutoSizeText(
             broadcastMessage!.message,
             style: style,
+            minFontSize: 12,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             softWrap: true,
