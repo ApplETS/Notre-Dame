@@ -338,7 +338,8 @@
       }
     }
   },
-  "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation de cours tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_complete_evaluations": "Évaluer",
   "grades_not_available": "ND",
   
   "profile_title": "Profil",

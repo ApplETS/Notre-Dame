@@ -339,7 +339,8 @@
       }
     }
   },
-  "grades_error_course_evaluations_not_completed": "During the evaluation period, you will not be able access your grades if you haven't completed your evaluations.",
+  "grades_error_course_evaluations_not_completed": "During the course evaluation period, you will not be able access your grades if you haven't completed your evaluations.",
+  "grades_complete_evaluations": "Evaluate",
   "grades_not_available": "N/A",
 
   "profile_title": "Profile",
