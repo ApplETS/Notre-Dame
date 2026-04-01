@@ -89,8 +89,8 @@ class SessionReminderHelper {
   static const int defaultCarouselThresholdDays = 7;
 
   /// Returns reminders for the carousel: always the next upcoming event (even if
-  /// beyond threshold), plus all additional events within [thresholdDays] of today.
-  /// Returns empty list if no upcoming reminders exist.
+  /// beyond threshold), plus all additional events within [thresholdDays] of
+  /// the first event. Returns empty list if no upcoming reminders exist.
   static List<SessionReminder> getCarouselReminders(
     Session session,
     DateTime now, {
@@ -100,8 +100,9 @@ class SessionReminderHelper {
     if (all.isEmpty) return [];
 
     final result = <SessionReminder>[all.first];
+    final daysUntilFirstEvent = all.first.daysUntil;
     for (int i = 1; i < all.length; i++) {
-      if (all[i].daysUntil <= thresholdDays) {
+      if (all[i].daysUntil - daysUntilFirstEvent <= thresholdDays) {
         result.add(all[i]);
       }
     }

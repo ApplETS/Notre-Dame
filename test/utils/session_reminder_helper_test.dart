@@ -291,6 +291,18 @@ void main() {
       expect(result.first.daysUntil, greaterThan(7));
     });
 
+    test("threshold is relative to first event, not today", () {
+      final now = DateTime(2024, 12, 20);
+      final result = SessionReminderHelper.getCarouselReminders(session, now);
+
+      expect(result.length, greaterThanOrEqualTo(2));
+      expect(result[0].type, SessionReminderType.sessionStart);
+      expect(result[1].type, SessionReminderType.registrationStart);
+      expect(result[0].daysUntil, greaterThan(7));
+      expect(result[1].daysUntil, greaterThan(7));
+      expect(result[1].daysUntil - result[0].daysUntil, lessThanOrEqualTo(7));
+    });
+
     test("includes additional events within threshold", () {
       final now = DateTime(2025, 1, 5);
       final result = SessionReminderHelper.getCarouselReminders(session, now);
