@@ -45,9 +45,8 @@ class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
     if (value == null) return null;
     final now = DateUtils.dateOnly(DateTime.now());
 
-    final upcoming =
-        value!.where((session) => DateUtils.dateOnly(session.startDate).isAfter(now)).toList()
-          ..sort((a, b) => a.startDate.compareTo(b.startDate));
+    final upcoming = value!.where((session) => DateUtils.dateOnly(session.startDate).isAfter(now)).toList()
+      ..sort((a, b) => a.startDate.compareTo(b.startDate));
 
     return upcoming.isEmpty ? null : upcoming.first;
   }
