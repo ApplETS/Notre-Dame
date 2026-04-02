@@ -10,6 +10,8 @@ mixin DateUtils {
     return DateTime(date.year, date.month);
   }
 
+  /// Returns a UTC midnight DateTime for the given [date]'s calendar day.
+  /// Both sides of a comparison must be normalized to avoid timezone mismatches.
   static DateTime dateOnly(DateTime date) => DateTime.utc(date.year, date.month, date.day);
 
   static DateTime startOfWeek(DateTime date) {

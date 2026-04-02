@@ -13,6 +13,7 @@ import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
+import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart';
 
 class DashboardPhoneLayout extends StatefulWidget {
   final DashboardViewModel model;
@@ -127,7 +128,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
           child: Row(
             spacing: 18.0,
             children: [
-              Expanded(child: AspectRatio(aspectRatio: 1, child: Card(child: null))),
+              const Expanded(child: SessionReminderCard()),
               Expanded(
                 child: ProgressBarCard(
                   progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",

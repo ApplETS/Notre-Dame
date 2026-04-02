@@ -15,6 +15,7 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_header.dart';
 
 class CalendarSelectionSheet extends StatefulWidget {
   final AppIntl intl;
@@ -58,38 +59,17 @@ class _CalendarSelectionSheetState extends State<CalendarSelectionSheet> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Container(
-                          height: 5,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: context.theme.appColors.modalHandle,
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        widget.intl.calendar_export,
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+              ModalBottomSheetHeader(
+                title: Text(
+                  widget.intl.calendar_export,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
               SafeArea(
                 left: false,
                 right: false,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 32.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12.0,
