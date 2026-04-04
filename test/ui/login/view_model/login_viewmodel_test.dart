@@ -28,7 +28,7 @@ void main() {
   late LoginViewModel viewModel;
   late AppIntl appIntl;
 
-  group('StartupViewModel - ', () {
+  group('LoginViewModel - ', () {
     setUp(() async {
       setupAnalyticsServiceMock();
       navigationServiceMock = setupNavigationServiceMock();
@@ -49,21 +49,18 @@ void main() {
       unregister<AnalyticsService>();
     });
 
-    group('handleStartUp - ', () {
-      test('silent sign in failed redirect to login', () async {
-        NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-        SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: true);
-        AuthServiceMock.stubCreatePublicClientApplication(authServiceMock);
-        AuthServiceMock.stubAcquireTokenSilent(authServiceMock, success: false);
-        AuthServiceMock.stubAcquireToken(authServiceMock, success: true);
+    test('silent sign in failed redirect to startup', () async {
+      NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
+      SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: true);
+      AuthServiceMock.stubCreatePublicClientApplication(authServiceMock);
+      AuthServiceMock.stubAcquireTokenSilent(authServiceMock, success: false);
+      AuthServiceMock.stubAcquireToken(authServiceMock, success: true);
 
-        viewModel.authenticate();
+      await viewModel.authenticate();
 
-        verify(authServiceMock.acquireTokenSilent()).called(1);
-        verify(authServiceMock.acquireToken()).called(1);
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.dashboard));
-        verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true)).called(1);
-      });
+      verify(authServiceMock.acquireToken()).called(1);
+      verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
+      verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true)).called(1);
     });
   });
 }

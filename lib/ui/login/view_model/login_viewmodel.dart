@@ -19,14 +19,14 @@ class LoginViewModel extends BaseViewModel {
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  final NavigationService navigationService = locator<NavigationService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final AuthService _authService = locator<AuthService>();
+  final NavigationService navigationService = locator<NavigationService>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
 
   LoginViewModel({required AppIntl intl}) : _appIntl = intl;
 
-  void authenticate() async {
+  Future authenticate() async {
     AuthenticationResult? token;
     int attempts = 0;
     const maxAttempts = 3;
