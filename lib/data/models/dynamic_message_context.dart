@@ -2,9 +2,9 @@
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/utils/date_extensions.dart';
 import 'package:notredame/utils/replaced_day_analyzer.dart';
 import 'package:notredame/utils/schedule_analyzer.dart';
-import 'package:notredame/utils/date_extensions.dart';
 
 class DynamicMessageContext {
   final DateTime now;

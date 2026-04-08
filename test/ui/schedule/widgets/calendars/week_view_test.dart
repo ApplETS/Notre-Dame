@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/utils/date_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
@@ -14,6 +13,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
+import 'package:notredame/utils/date_extensions.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../data/mocks/services/schedule_service_mock.dart';

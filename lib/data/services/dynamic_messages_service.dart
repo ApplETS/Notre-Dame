@@ -1,5 +1,7 @@
-// Project imports:
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
+
+// Project imports:
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/models/dynamic_message_context.dart';
 

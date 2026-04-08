@@ -1,5 +1,7 @@
-// Project imports:
+// Package imports:
 import 'package:calendar_view/calendar_view.dart';
+
+// Project imports:
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/utils/date_extensions.dart';
@@ -166,8 +168,9 @@ class ScheduleAnalyzer {
     );
 
     // Within-same-week gaps are normal schedule, not breaks
-    if (
-      lastActivityBeforeToday.startDateTime.startOfWeek().isAtSameMomentAs(firstActivityToday.startDateTime.startOfWeek())) {
+    if (lastActivityBeforeToday.startDateTime.startOfWeek().isAtSameMomentAs(
+      firstActivityToday.startDateTime.startOfWeek(),
+    )) {
       return false;
     }
 
