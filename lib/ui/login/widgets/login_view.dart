@@ -36,13 +36,10 @@ class _LoginViewState extends State<LoginView> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                context.theme.appColors.backgroundVibrant,
-                AppPalette.etsDarkRed,
-              ],
+              colors: [context.theme.appColors.backgroundVibrant, AppPalette.etsDarkRed],
             ),
           ),
-          child:Center(
+          child: Center(
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -119,7 +116,7 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
           ),
-        )
+        ),
       ),
     );
   }
