@@ -25,8 +25,11 @@ void main() {
   late CourseRepositoryMock courseRepositoryMock;
   late ScheduleServiceMock scheduleServiceMock;
 
+  DateTime sunday = DateTime.now().withoutTimeUtc.startOfWeek(start: WeekDays.sunday).withoutTime;
+  DateTime saturday = DateTime.now().withoutTimeUtc.startOfWeek(start: WeekDays.sunday).add(Duration(days: 6)).withoutTime;
+
   Map<DateTime, List<EventData>> events = {
-    DateTime.now().startOfWeek(): [
+    sunday: [
       EventData(
         courseAcronym: "LOG100",
         group: "LOG100-01",
@@ -34,12 +37,12 @@ void main() {
         activityName: "Cours",
         courseName: "Programmation et réseautique en génie logiciel",
         teacherName: "John Doe",
-        date: DateTime.now().startOfWeek(start: WeekDays.sunday),
-        startTime: DateTime.now().startOfWeek(start: WeekDays.sunday).add(Duration(hours: 9)),
-        endTime: DateTime.now().startOfWeek(start: WeekDays.sunday).add(Duration(hours: 12)),
+        date: sunday,
+        startTime: sunday.add(Duration(hours: 9)),
+        endTime: sunday.add(Duration(hours: 12)),
       ),
     ],
-    DateTime.now().startOfWeek().add(Duration(days: 6, hours: 1)).withoutTime: [
+    saturday: [
       EventData(
         courseAcronym: "ING150",
         group: "ING150-01",
@@ -47,9 +50,9 @@ void main() {
         activityName: "Cours",
         courseName: "Statique et dynamique",
         teacherName: "Jane Doe",
-        date: DateTime.now().startOfWeek(start: WeekDays.sunday),
-        startTime: DateTime.now().startOfWeek(start: WeekDays.sunday).add(Duration(days: 6, hours: 9)),
-        endTime: DateTime.now().startOfWeek(start: WeekDays.sunday).add(Duration(days: 6, hours: 12)),
+        date: saturday,
+        startTime: saturday.add(Duration(hours: 9)),
+        endTime: saturday.add(Duration(hours: 12)),
       ),
     ],
   };

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/utils/date_extensions.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -49,42 +50,37 @@ class _MonthCalendarState extends State<MonthCalendar> {
 
     return MonthView(
       key: monthViewKey,
-      cellAspectRatio: 0.8,
-      borderColor: context.theme.appColors.scheduleLine,
+      monthViewStyle: MonthViewStyle(
+        cellAspectRatio: 0.8,
+        safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
+        useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
+        startDay: WeekDays.sunday,
+        initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
+      ),
       controller: model.eventController..addAll(model.selectedMonthEvents()),
-      safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
-      useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
-      onPageChange: (date, page) => model.handleDateSelectedChanged(date),
-      weekDayBuilder: (int value) => WeekDayTile(
-        dayIndex: value,
-        displayBorder: false,
-        textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
-        backgroundColor: context.theme.appColors.appBar,
-        weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
+      monthViewBuilders: MonthViewBuilders(
+        onPageChange: (date, page) => model.handleDateSelectedChanged(date),
+        weekDayBuilder: (int value) => WeekDayTile(
+          dayIndex: value,
+          displayBorder: false,
+          textStyle: context.theme.textTheme.bodyMedium!,
+          weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
+        ),
+        headerStringBuilder: (date, {secondaryDate}) {
+          final locale = AppIntl.of(context)!.localeName;
+          return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
+        },
+        cellBuilder: (date, events, _, _, _) => FilledCell(
+          hideDaysNotInMonth: false,
+          titleColor: context.theme.textTheme.bodyMedium!.color!,
+          highlightColor: AppPalette.etsLightRed,
+          shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
+          date: date,
+          events: events,
+          backgroundColor: (date.firstDayOfMonth == model.monthSelected.firstDayOfMonth) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
+        ),
+        onCellTap: (events, date) => _onDayTapped(context, date),
       ),
-      headerStringBuilder: (date, {secondaryDate}) {
-        final locale = AppIntl.of(context)!.localeName;
-        return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
-      },
-      headerStyle: HeaderStyle(
-        decoration: BoxDecoration(color: context.theme.appColors.appBar),
-        leftIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
-        rightIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
-      ),
-      startDay: WeekDays.sunday,
-      initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
-      cellBuilder: (date, events, _, _, _) => FilledCell(
-        onTileTap: (event, date) => _onDayTapped(context, date),
-        hideDaysNotInMonth: false,
-        titleColor: context.theme.textTheme.bodyMedium!.color!,
-        highlightColor: AppPalette.etsLightRed,
-        shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
-        date: date,
-        isInMonth: date.month == DateTime.now().month,
-        events: events,
-        backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
-      ),
-      onCellTap: (events, date) => _onDayTapped(context, date),
     );
   }
 

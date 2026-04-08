@@ -24,7 +24,7 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    weekSelected = newDate.startOfWeek(start: WeekDays.sunday);
+    weekSelected = newDate.withoutTimeUtc.startOfWeek(start: WeekDays.sunday).withoutTime;
     if (!isBusy && _firstLoad) {
       _firstLoad = false;
       if (DateTime.now().weekday == DateTime.saturday &&

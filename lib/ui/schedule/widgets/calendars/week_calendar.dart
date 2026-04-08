@@ -65,14 +65,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
       onPageChange: (date, page) => setState(() {
         model.weekSelected = date;
       }),
-      backgroundColor: context.theme.scaffoldBackgroundColor,
       weekTitleHeight: (MediaQuery.of(context).orientation == Orientation.portrait) ? 60 : 35,
       safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
-      headerStyle: HeaderStyle(
-        decoration: BoxDecoration(color: context.theme.appColors.appBar),
-        leftIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
-        rightIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
-      ),
       startDay: WeekDays.sunday,
       weekDays: [
         if (model.displaySunday) WeekDays.sunday,
@@ -86,12 +80,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
       initialDay: model.weekSelected,
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,
-      hourIndicatorSettings: HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
-      liveTimeIndicatorSettings: LiveTimeIndicatorSettings(color: context.theme.textTheme.bodyMedium!.color!),
       keepScrollOffset: true,
-      timeLineStringBuilder: (date, {secondaryDate}) {
-        return DateFormat('H:mm').format(date);
-      },
+      timeLineStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
       headerStringBuilder: (date, {secondaryDate}) {
         final from = AppIntl.of(context)!.schedule_calendar_from;
         final to = AppIntl.of(context)!.schedule_calendar_to;
