@@ -63,7 +63,7 @@ void main() {
     test('handleDateSelectedChanged updates weekSelected', () {
       final newDate = DateTime(2023, 10, 10);
       viewModel.handleDateSelectedChanged(newDate);
-      expect(viewModel.weekSelected, newDate.startOfWeek(start: WeekDays.sunday));
+      expect(viewModel.weekSelected, newDate.startOfWeek(start: WeekDays.sunday).withoutTime);
     });
   });
 }
