@@ -33,7 +33,7 @@ void main() {
     test('does not update weekSelected', () async {
       final DateTime saturday = DateTime.now()
           .startOfWeek(start: WeekDays.sunday)
-          .add(Duration(days: 6, hours: 1))
+          .add(Duration(days: 6))
           .withoutTime;
 
       final Map<DateTime, List<EventData>> events = {
