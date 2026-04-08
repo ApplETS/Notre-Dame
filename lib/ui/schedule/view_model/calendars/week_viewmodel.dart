@@ -24,7 +24,6 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    print("parameter " + newDate.toIso8601String());
     weekSelected = newDate.startOfWeek(start: WeekDays.sunday);
     if (!isBusy && _firstLoad) {
       _firstLoad = false;
