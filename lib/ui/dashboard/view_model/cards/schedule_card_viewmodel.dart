@@ -1,7 +1,6 @@
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/utils/date_extensions.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -10,6 +9,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
 class ScheduleCardViewmodel extends FutureViewModel {
   final CourseRepository _courseRepository = locator<CourseRepository>();
