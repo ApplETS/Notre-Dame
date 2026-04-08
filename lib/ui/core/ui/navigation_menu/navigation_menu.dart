@@ -14,10 +14,18 @@ import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu_button.dart
 late GlobalKey<NavigationMenuButtonState> currentKey;
 
 class NavigationMenu extends StatefulWidget {
+  static const double height = 80.0;
+
   final int selectedIndex;
   final ValueChanged<NavigationMenuCallback> indexChangedCallback;
 
   const NavigationMenu({super.key, required this.selectedIndex, required this.indexChangedCallback});
+
+  static double systemNavBarInset(BuildContext context) {
+    final double bottom = MediaQuery.viewPaddingOf(context).bottom;
+    if (Platform.isAndroid && bottom < 32) return 0;
+    return bottom;
+  }
 
   @override
   State<NavigationMenu> createState() => _NavigationMenuState();
@@ -61,6 +69,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
   }
 
   Widget _bottomBar(Widget buttons) {
+    final double bottomInset = NavigationMenu.systemNavBarInset(context);
+
     return Stack(
       children: [
         Positioned.fill(
@@ -77,14 +87,14 @@ class _NavigationMenuState extends State<NavigationMenu> {
           ),
         ),
         Container(
-          height: 80.0,
+          height: NavigationMenu.height + bottomInset,
           decoration: BoxDecoration(
             color: context.theme.appColors.navBar,
             boxShadow: [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
           ),
         ),
         Positioned.fill(
-          child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20.0), child: buttons),
+          child: Padding(padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, bottomInset), child: buttons),
         ),
       ],
     );
