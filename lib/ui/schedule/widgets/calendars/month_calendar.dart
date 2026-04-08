@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/utils/date_extensions.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -15,6 +14,7 @@ import 'package:notredame/ui/core/ui/modal_bottom_sheet_header.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
 class MonthCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
@@ -77,7 +77,9 @@ class _MonthCalendarState extends State<MonthCalendar> {
           shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
           date: date,
           events: events,
-          backgroundColor: (date.firstDayOfMonth == model.monthSelected.firstDayOfMonth) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
+          backgroundColor: (date.firstDayOfMonth == model.monthSelected.firstDayOfMonth)
+              ? Colors.transparent
+              : Colors.grey.withValues(alpha: .06),
         ),
         onCellTap: (events, date) => _onDayTapped(context, date),
       ),

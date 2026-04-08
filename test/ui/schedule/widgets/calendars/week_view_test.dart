@@ -26,7 +26,10 @@ void main() {
   late ScheduleServiceMock scheduleServiceMock;
 
   DateTime sunday = DateTime.now().withoutTimeUtc.startOfWeek(start: WeekDays.sunday).withoutTime;
-  DateTime saturday = DateTime.now().withoutTimeUtc.startOfWeek(start: WeekDays.sunday).add(Duration(days: 6)).withoutTime;
+  DateTime saturday = DateTime.now().withoutTimeUtc
+      .startOfWeek(start: WeekDays.sunday)
+      .add(Duration(days: 6))
+      .withoutTime;
 
   Map<DateTime, List<EventData>> events = {
     sunday: [

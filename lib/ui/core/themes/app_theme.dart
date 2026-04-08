@@ -1,6 +1,8 @@
 // Flutter imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_colors_extension.dart';
