@@ -5,18 +5,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
-import 'package:notredame/utils/date_utils.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
 class MonthViewModel extends CalendarViewModel {
-  DateTime monthSelected = DateUtils.getFirstDayOfMonth(DateTime.now());
+  DateTime monthSelected = DateTime.now().firstDayOfMonth;
 
   MonthViewModel({required super.intl});
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    // The first row in the month view can contains day from the previous month. One extra hour for daylight savings.
-    final dateInSelectedMonth = newDate.add(const Duration(days: 7, hours: 1));
-    monthSelected = DateUtils.getFirstDayOfMonth(dateInSelectedMonth);
+    // The first row in the month view can contains days from the previous month.
+    monthSelected = newDate.withoutTimeUtc.add(const Duration(days: 7)).firstDayOfMonth;
 
     // Start with current month to avoid starting coloring with events from another session
     eventController.addAll(selectedMonthEvents());
@@ -27,8 +26,8 @@ class MonthViewModel extends CalendarViewModel {
 
     final List<DateTime> months = [
       monthSelected,
-      DateUtils.getFirstDayOfMonth(monthSelected.add(Duration(days: 31))),
-      DateUtils.getFirstDayOfMonth(monthSelected.subtract(Duration(days: 1))),
+      monthSelected.withoutTimeUtc.add(Duration(days: 31)).firstDayOfMonth,
+      monthSelected.withoutTimeUtc.subtract(Duration(days: 1)).firstDayOfMonth,
     ];
 
     for (final DateTime month in months) {
@@ -42,7 +41,7 @@ class MonthViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    final DateTime currentMonth = DateUtils.getFirstDayOfMonth(DateTime.now());
+    final DateTime currentMonth = DateTime.now().firstDayOfMonth;
     final bool isThisMonthSelected = currentMonth == monthSelected;
 
     isThisMonthSelected

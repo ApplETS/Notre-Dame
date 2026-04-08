@@ -12,7 +12,7 @@ import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_evaluation_tile.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/grades_utils.dart';
 import '../../../../helpers.dart';
 
 void main() {

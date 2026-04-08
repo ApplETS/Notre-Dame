@@ -25,7 +25,7 @@ import 'package:notredame/ui/core/ui/calendar_selector.dart';
 import 'package:notredame/ui/ets/events/news_details/view_model/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/ets/events/news_details/view_model/news_details_viewmodel.dart';
 import 'package:notredame/ui/ets/events/report_news/widgets/report_news_widget.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/grades_utils.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News news;
