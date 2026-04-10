@@ -60,6 +60,7 @@ void main() {
       expect(find.text("45"), findsNothing);
     });
   });
+
   testWidgets('Shows days text when showingPercentage is false', (WidgetTester tester) async {
     await tester.pumpWidget(
       localizedWidget(
@@ -77,5 +78,28 @@ void main() {
 
     expect(find.text("45"), findsOneWidget);
     expect(find.text("60"), findsNothing);
+  });
+
+  testWidgets('calls onToggle when tapped', (WidgetTester tester) async {
+    bool tapped = false;
+    await tester.pumpWidget(
+      localizedWidget(
+        child: ProgressBarCard(
+          progressBarText: "45",
+          progressBarAltText: "60",
+          progress: 0.5,
+          loading: false,
+          showingPercentage: false,
+          onToggle: () {
+            tapped = true;
+          },
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(ProgressBarCard));
+
+    expect(tapped, true);
   });
 }
