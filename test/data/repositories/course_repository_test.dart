@@ -1342,7 +1342,7 @@ void main() {
         ]);
       });
 
-      test("_getCourseReviewss fails", () async {
+      test("_getCourseReviews fails", () async {
         final Course courseFetched = Course(
           acronym: 'GEN101',
           group: '02',

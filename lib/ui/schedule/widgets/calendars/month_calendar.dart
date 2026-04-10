@@ -10,6 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_header.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
@@ -105,33 +106,10 @@ class _MonthCalendarState extends State<MonthCalendar> {
             ),
             child: Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Container(
-                        height: 5,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: context.theme.appColors.modalHandle,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        DateFormat.yMMMMd(AppIntl.of(context)!.localeName).format(date),
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ),
+                ModalBottomSheetHeader(
+                  title: Text(
+                    DateFormat.yMMMMd(AppIntl.of(context)!.localeName).format(date),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
                 Expanded(
