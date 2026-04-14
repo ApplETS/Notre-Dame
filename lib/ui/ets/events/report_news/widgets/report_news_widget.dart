@@ -42,7 +42,7 @@ class _ReportNewsState extends State<ReportNews> {
                 : ColoredBox(
                     color: context.theme.appColors.backgroundAlt,
                     child: ListView.builder(
-                      padding: EdgeInsets.only(top: 16, bottom: 32),
+                      padding: const EdgeInsets.only(top: 16, bottom: 32),
                       itemCount: getLocalizedReportNewsItems(context).length,
                       itemBuilder: (context, index) {
                         return _buildListTile(index);
@@ -69,7 +69,7 @@ class _ReportNewsState extends State<ReportNews> {
             width: 50,
             decoration: BoxDecoration(
               color: context.theme.appColors.modalHandle,
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
             ),
           ),
         ),
