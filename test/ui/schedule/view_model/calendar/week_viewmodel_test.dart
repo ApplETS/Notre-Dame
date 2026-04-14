@@ -25,7 +25,7 @@ void main() {
 
   group('return to current date', () {
     test('updates weekSelected', () {
-      viewModel.weekSelected = DateTime(2023, 10, 1).startOfWeek(start: WeekDays.sunday);
+      viewModel.weekSelected = DateTime(2023, 10, 1).startOfWeek(start: WeekDays.sunday).withoutTime;
       final result = viewModel.returnToCurrentDate();
       expect(result, true);
     });
@@ -49,7 +49,7 @@ void main() {
       ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
       await viewModel.futureToRun();
 
-      viewModel.weekSelected = DateTime.now().startOfWeek(start: WeekDays.sunday);
+      viewModel.weekSelected = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
 
       final result = viewModel.returnToCurrentDate();
       expect(result, false);

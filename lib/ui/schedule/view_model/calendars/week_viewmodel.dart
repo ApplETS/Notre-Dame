@@ -9,7 +9,7 @@ import 'package:notredame/utils/date_extensions.dart';
 
 class WeekViewModel extends CalendarViewModel {
   // Sunday of current week
-  DateTime weekSelected = DateTime.now().startOfWeek(start: WeekDays.sunday);
+  DateTime weekSelected = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
 
   // Display weekend days only if they contain events
   bool displaySunday = false;
@@ -28,7 +28,7 @@ class WeekViewModel extends CalendarViewModel {
     if (!isBusy && _firstLoad) {
       _firstLoad = false;
       if (DateTime.now().weekday == DateTime.saturday &&
-          DateTime.now().startOfWeek(start: WeekDays.sunday) == weekSelected &&
+          DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime == weekSelected &&
           calendarEventsFromDate(DateTime.now()).isEmpty) {
         handleDateSelectedChanged(weekSelected.withoutTimeUtc.add(Duration(days: 7)).withoutTime);
         displayNextWeek = true;
@@ -46,7 +46,7 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    DateTime dateToReturnTo = DateTime.now().startOfWeek(start: WeekDays.sunday);
+    DateTime dateToReturnTo = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
     if (DateTime.now().weekday == DateTime.saturday &&
         calendarEventsFromDate(dateToReturnTo.withoutTimeUtc.add(Duration(days: 6)).withoutTime).isEmpty) {
       dateToReturnTo = dateToReturnTo.withoutTimeUtc.add(Duration(days: 7)).withoutTime;

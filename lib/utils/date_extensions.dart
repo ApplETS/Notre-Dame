@@ -9,13 +9,11 @@ extension DateTimeExtensionsTest on DateTime {
   /// Both sides of a comparison must be normalized to avoid timezone mismatches.
   DateTime get withoutTimeUtc => DateTime.utc(year, month, day);
 
-  int weeksUntil(DateTime date) =>
-      (date.withoutTimeUtc
-                      .subtract(Duration(days: date.weekday - 1))
-                      .getDayDifference(withoutTimeUtc.subtract(Duration(days: date.weekday - 1))) ~/
-                  7 +
-              1)
-          .ceil();
+  int weeksUntil(DateTime date) {
+    final thisMonday = withoutTimeUtc.subtract(Duration(days: weekday - 1));
+    final dateMonday = date.withoutTimeUtc.subtract(Duration(days: date.weekday - 1));
+    return dateMonday.difference(thisMonday).inDays ~/ 7 + 1;
+  }
 
   DateTime get firstDayOfMonth => DateTime(year, month);
 
