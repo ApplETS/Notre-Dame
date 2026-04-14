@@ -96,9 +96,9 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
             : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(0.1, double.infinity);
         return calendar_view.DayView(
+          key: dayViewKey,
           showVerticalLine: false,
           dayTitleBuilder: calendar_view.DayHeader.hidden,
-          key: dayViewKey,
           controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
           onPageChange: (date, _) => ({
             setState(() {
@@ -107,16 +107,12 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           }),
           scrollPhysics: showEntireDay ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
           safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
-          backgroundColor: widget.backgroundColor ?? context.theme.scaffoldBackgroundColor,
+          backgroundColor: widget.backgroundColor,
           initialDay: model.daySelected,
           minDay: widget.selectedDate,
           maxDay: widget.selectedDate,
           startHour: showEntireDay ? 0 : model.getStartHour(),
           endHour: showEntireDay ? 24 : model.getEndHour(),
-          hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
-          liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-            color: context.theme.textTheme.bodyMedium!.color!,
-          ),
           heightPerMinute: heightPerMinute,
           scrollOffset: showEntireDay ? heightPerMinute * 60 * model.getStartHour() : 0,
           keepScrollOffset: true,
@@ -124,12 +120,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             final locale = AppIntl.of(context)!.localeName;
             return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
           },
-          timeStringBuilder: (date, {secondaryDate}) {
-            return DateFormat('H:mm').format(date);
-          },
-          eventTileBuilder: (date, events, boundary, startDuration, endDuration) {
-            return _buildEventTile(events);
-          },
+          timeStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
+          eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
         );
       },
     ),

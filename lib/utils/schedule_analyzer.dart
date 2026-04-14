@@ -1,7 +1,10 @@
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/utils/date_utils.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
 /// Analyzes course activity schedules to determine patterns and gaps.
 class ScheduleAnalyzer {
@@ -27,17 +30,17 @@ class ScheduleAnalyzer {
   }
 
   List<DateTime> getUniqueDays(List<CourseActivity> activities) {
-    return activities.map((activity) => DateUtils.dateOnly(activity.startDateTime)).toSet().toList()..sort();
+    return activities.map((activity) => activity.startDateTime.withoutTimeUtc).toSet().toList()..sort();
   }
 
   List<CourseActivity> getActivitiesForCurrentWeek() {
-    final start = DateUtils.startOfWeek(now);
+    final start = now.startOfWeek();
     final end = start.add(const Duration(days: 7));
     return getActivitiesInRange(start, end);
   }
 
   List<CourseActivity> getActivitiesForNextWeek() {
-    final startOfNextWeek = DateUtils.startOfWeek(now).add(const Duration(days: 7));
+    final startOfNextWeek = now.startOfWeek().add(const Duration(days: 7));
     final endOfNextWeek = startOfNextWeek.add(const Duration(days: 7));
     return getActivitiesInRange(startOfNextWeek, endOfNextWeek);
   }
@@ -47,26 +50,26 @@ class ScheduleAnalyzer {
 
     final sortedActivities = _sortedActivities;
     final weekendGapDurationsInDays = <int>[];
-    final excludeStartDate = DateUtils.dateOnly(excludeStart);
-    final excludeEndDate = DateUtils.dateOnly(excludeEnd);
+    final excludeStartDate = excludeStart.withoutTimeUtc;
+    final excludeEndDate = excludeEnd.withoutTimeUtc;
 
     for (int i = 0; i < sortedActivities.length - 1; i++) {
       final currentActivityDate = sortedActivities[i].startDateTime;
       final nextActivityDate = sortedActivities[i + 1].startDateTime;
 
       // Skip if both activities are in the same week (only interested in gaps between weeks)
-      if (DateUtils.startOfWeek(currentActivityDate).isAtSameMomentAs(DateUtils.startOfWeek(nextActivityDate))) {
+      if (currentActivityDate.startOfWeek().isAtSameMomentAs(nextActivityDate.startOfWeek())) {
         continue;
       }
 
       // Exclude the specified gap. For example, this prevents the gap we are currently in from
       // influencing the usual historical average.
-      if (DateUtils.dateOnly(currentActivityDate).isAtSameMomentAs(excludeStartDate) &&
-          DateUtils.dateOnly(nextActivityDate).isAtSameMomentAs(excludeEndDate)) {
+      if (currentActivityDate.withoutTimeUtc.isAtSameMomentAs(excludeStartDate) &&
+          nextActivityDate.withoutTimeUtc.isAtSameMomentAs(excludeEndDate)) {
         continue;
       }
 
-      final gapDays = DateUtils.daysBetween(currentActivityDate, nextActivityDate);
+      final gapDays = nextActivityDate.getDayDifference(currentActivityDate);
       if (gapDays > 0) {
         weekendGapDurationsInDays.add(gapDays);
       }
@@ -81,7 +84,7 @@ class ScheduleAnalyzer {
   }
 
   DateTime? findNextActivityAfterCurrentWeek() {
-    final endOfWeek = DateUtils.startOfWeek(now).add(const Duration(days: 7));
+    final endOfWeek = now.startOfWeek().add(const Duration(days: 7));
 
     final futureActivities = _sortedActivities.where((activity) => !activity.startDateTime.isBefore(endOfWeek));
 
@@ -109,7 +112,7 @@ class ScheduleAnalyzer {
 
     if (nextActivity == null) return null;
 
-    final upcomingGapDays = DateUtils.daysBetween(lastActivityThisWeek, nextActivity);
+    final upcomingGapDays = nextActivity.getDayDifference(lastActivityThisWeek);
     final usualGapDays = calculateUsualWeekendGapDays(excludeStart: lastActivityThisWeek, excludeEnd: nextActivity);
 
     return _GapInfo(
@@ -136,42 +139,42 @@ class ScheduleAnalyzer {
   int? get daysUntilBreakStart {
     final breakInfo = _upcomingBreakGapInfo;
     if (breakInfo == null || !breakInfo.isLongerThanUsual) return null;
-    return DateUtils.daysBetween(now, breakInfo.lastActivityEnd) + 1;
+    return breakInfo.lastActivityEnd.getDayDifference(now) + 1;
   }
 
   bool get isInsideLongWeekend {
     final gapInfo = _currentGapInfo;
     if (gapInfo == null) return false;
 
-    return gapInfo.isLongerThanUsual && DateUtils.daysBetween(now, gapInfo.nextActivityStart) > 0;
+    return gapInfo.isLongerThanUsual && gapInfo.nextActivityStart.getDayDifference(now) > 0;
   }
 
   bool get isFirstDayBackFromBreak {
     if (courseActivities.isEmpty) return false;
 
-    final today = DateUtils.dateOnly(now);
+    final today = now.withoutTimeUtc;
     final sortedActivities = _sortedActivities;
 
     // Today must have activities for it to be the first day back
-    final hasActivitiesToday = sortedActivities.any((a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today));
+    final hasActivitiesToday = sortedActivities.any((a) => a.startDateTime.withoutTimeUtc.isAtSameMomentAs(today));
     if (!hasActivitiesToday) return false;
 
-    final activitiesBeforeToday = sortedActivities.where((a) => DateUtils.dateOnly(a.startDateTime).isBefore(today));
+    final activitiesBeforeToday = sortedActivities.where((a) => a.startDateTime.withoutTimeUtc.isBefore(today));
     if (activitiesBeforeToday.isEmpty) return false;
 
     final lastActivityBeforeToday = activitiesBeforeToday.last;
     final firstActivityToday = sortedActivities.firstWhere(
-      (a) => DateUtils.dateOnly(a.startDateTime).isAtSameMomentAs(today),
+      (a) => a.startDateTime.withoutTimeUtc.isAtSameMomentAs(today),
     );
 
     // Within-same-week gaps are normal schedule, not breaks
-    if (DateUtils.startOfWeek(
-      lastActivityBeforeToday.startDateTime,
-    ).isAtSameMomentAs(DateUtils.startOfWeek(firstActivityToday.startDateTime))) {
+    if (lastActivityBeforeToday.startDateTime.startOfWeek().isAtSameMomentAs(
+      firstActivityToday.startDateTime.startOfWeek(),
+    )) {
       return false;
     }
 
-    final gapDays = DateUtils.daysBetween(lastActivityBeforeToday.endDateTime, firstActivityToday.startDateTime);
+    final gapDays = firstActivityToday.startDateTime.getDayDifference(lastActivityBeforeToday.endDateTime);
     final usualGapDays = calculateUsualWeekendGapDays(
       excludeStart: lastActivityBeforeToday.startDateTime,
       excludeEnd: firstActivityToday.startDateTime,
@@ -184,7 +187,7 @@ class ScheduleAnalyzer {
     final gapInfo = _currentGapInfo;
     if (gapInfo == null || !gapInfo.isLongerThanUsual) return null;
 
-    return DateUtils.daysBetween(now, gapInfo.nextActivityStart);
+    return gapInfo.nextActivityStart.getDayDifference(now);
   }
 
   int? get totalBreakDuration {
@@ -210,7 +213,7 @@ class ScheduleAnalyzer {
 
     final nextActivity = futureActivities.first;
 
-    final upcomingGapDays = DateUtils.daysBetween(lastActivity.endDateTime, nextActivity.startDateTime);
+    final upcomingGapDays = nextActivity.startDateTime.getDayDifference(lastActivity.endDateTime);
     final usualGapDays = calculateUsualWeekendGapDays(
       excludeStart: lastActivity.startDateTime,
       excludeEnd: nextActivity.startDateTime,
@@ -239,7 +242,7 @@ class ScheduleAnalyzer {
     final thisWeek = _currentWeekActivities;
     if (thisWeek.isEmpty) return false;
 
-    final today = DateUtils.dateOnly(now);
+    final today = now.withoutTimeUtc;
     final daysWithActivities = getUniqueDays(thisWeek);
 
     return daysWithActivities.isNotEmpty && daysWithActivities.last.isAtSameMomentAs(today);
