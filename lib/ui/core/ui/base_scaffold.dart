@@ -100,7 +100,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
     return Positioned(
       bottom: 32,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(color: AppPalette.etsLightRed, borderRadius: BorderRadius.circular(12.0)),
         child: Text(AppIntl.of(context)!.no_connectivity, textAlign: TextAlign.center),
       ),

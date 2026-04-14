@@ -16,8 +16,8 @@ void main() {
   final activeSession = Session(
     shortName: 'H2019',
     longName: 'Hiver 2019',
-    startDate: now.subtract(Duration(days: 10)),
-    endDate: now.add(Duration(days: 10)),
+    startDate: now.subtract(const Duration(days: 10)),
+    endDate: now.add(const Duration(days: 10)),
     endDateCourses: DateTime(2018, 4, 11),
     startDateRegistration: DateTime(2017, 10, 30),
     deadlineRegistration: DateTime(2017, 11, 14),
@@ -32,8 +32,8 @@ void main() {
   final passedSession = Session(
     shortName: 'H2018',
     longName: 'Hiver 2018',
-    startDate: now.subtract(Duration(days: 10)),
-    endDate: now.subtract(Duration(days: 8)),
+    startDate: now.subtract(const Duration(days: 10)),
+    endDate: now.subtract(const Duration(days: 8)),
     endDateCourses: DateTime(2018, 4, 11),
     startDateRegistration: DateTime(2017, 10, 30),
     deadlineRegistration: DateTime(2017, 11, 14),
@@ -48,8 +48,8 @@ void main() {
   final futureSession = Session(
     shortName: 'H2020',
     longName: 'Hiver 2020',
-    startDate: now.add(Duration(days: 8)),
-    endDate: now.add(Duration(days: 10)),
+    startDate: now.add(const Duration(days: 8)),
+    endDate: now.add(const Duration(days: 10)),
     endDateCourses: DateTime(2018, 4, 11),
     startDateRegistration: DateTime(2017, 10, 30),
     deadlineRegistration: DateTime(2017, 11, 14),

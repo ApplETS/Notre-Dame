@@ -86,7 +86,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
 
     final textStyle = TextStyle(fontSize: fontSize, height: lineHeight, color: AppPalette.grey.white);
 
-    final double twoLinesHeight = fontSize * lineHeight * 2;
+    const double twoLinesHeight = fontSize * lineHeight * 2;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

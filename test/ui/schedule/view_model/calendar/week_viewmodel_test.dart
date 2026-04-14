@@ -31,7 +31,10 @@ void main() {
     });
 
     test('does not update weekSelected', () async {
-      final DateTime saturday = DateTime.now().startOfWeek(start: WeekDays.sunday).add(Duration(days: 6)).withoutTime;
+      final DateTime saturday = DateTime.now()
+          .startOfWeek(start: WeekDays.sunday)
+          .add(const Duration(days: 6))
+          .withoutTime;
 
       final Map<DateTime, List<EventData>> events = {
         saturday: [
@@ -40,8 +43,8 @@ void main() {
             courseName: 'PRE011',
             activityName: 'PRE011',
             date: saturday,
-            startTime: saturday.add(Duration(hours: 12)),
-            endTime: saturday.add(Duration(hours: 16)),
+            startTime: saturday.add(const Duration(hours: 12)),
+            endTime: saturday.add(const Duration(hours: 16)),
           ),
         ],
       };

@@ -124,7 +124,7 @@ class _MapViewState extends State<MapView> {
                       SvgPicture.asset("assets/images/bixi.svg", height: 32.0),
                       Text(
                         AppIntl.of(context)!.campus_map_legend_bixi,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
                       ),
                     ],
                   ),

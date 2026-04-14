@@ -43,12 +43,12 @@ void main() {
     });
 
     testWidgets('Initial view is DashboardView', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: RootView()));
+      await tester.pumpWidget(localizedWidget(child: const RootView()));
       expect(find.byType(DashboardView), findsOneWidget);
     });
 
     testWidgets('Tapping navigation items switches views', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: RootView()));
+      await tester.pumpWidget(localizedWidget(child: const RootView()));
 
       await tester.tap(find.byIcon(Icons.account_balance_outlined).first);
       verify(analyticsServiceMock.logEvent("RootView", "ets clicked"));
@@ -57,7 +57,7 @@ void main() {
     });
 
     testWidgets('BottomNavigationBar is visible', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: RootView()));
+      await tester.pumpWidget(localizedWidget(child: const RootView()));
       final flexWidget = tester.widget<Flex>(find.byType(Flex).first);
       expect(flexWidget.direction, Axis.vertical);
       tester.view.resetPhysicalSize();
@@ -66,7 +66,7 @@ void main() {
     testWidgets('NavigationRail is visible in landscape', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: MediaQuery(
+          child: const MediaQuery(
             data: MediaQueryData(size: Size(400, 800)),
             child: Scaffold(body: RootView()),
           ),

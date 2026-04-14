@@ -13,7 +13,7 @@ class DynamicMessagesService {
       if (context.nextSessionStartDate != null && context.daysUntilNextSession! <= _maxDaysBeforeSessionMessage) {
         return SessionStartsSoonMessage(context.nextSessionStartDate!, context.daysUntilNextSession!);
       }
-      return SessionCompletedMessage();
+      return const SessionCompletedMessage();
     }
 
     if (context.isCoursesOver && context.hasFinals) {
@@ -29,7 +29,7 @@ class DynamicMessagesService {
     }
 
     if (context.isFirstDayBackFromBreak) {
-      return FirstDayBackAfterBreakMessage();
+      return const FirstDayBackAfterBreakMessage();
     }
 
     if (context.isInsideLongWeekend) {
@@ -47,7 +47,7 @@ class DynamicMessagesService {
         final daysUntilBreak = context.daysUntilBreakStart ?? 0;
         return UpcomingExtendedBreakMessage(daysUntilBreak);
       }
-      return LongWeekendIncomingMessage();
+      return const LongWeekendIncomingMessage();
     }
 
     final replacedDay = context.getUpcomingReplacedDay();
@@ -68,9 +68,9 @@ class DynamicMessagesService {
 
     if (context.weeksCompleted == 1) {
       if (isWeekDone) {
-        return FirstWeekCompletedMessage();
+        return const FirstWeekCompletedMessage();
       }
-      return FirstWeekOfSessionMessage();
+      return const FirstWeekOfSessionMessage();
     }
 
     if (isWeekDone) {

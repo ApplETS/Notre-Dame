@@ -29,7 +29,7 @@ class LaunchUrlService {
   Future<void> launchInBrowser(String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      launchUrl(uri, browserConfiguration: BrowserConfiguration(showTitle: false));
+      launchUrl(uri, browserConfiguration: const BrowserConfiguration(showTitle: false));
     } else {
       throw 'Could not launch $url';
     }

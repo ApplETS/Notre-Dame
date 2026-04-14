@@ -26,8 +26,8 @@ class MonthViewModel extends CalendarViewModel {
 
     final List<DateTime> months = [
       monthSelected,
-      monthSelected.withoutTimeUtc.add(Duration(days: 31)).firstDayOfMonth,
-      monthSelected.withoutTimeUtc.subtract(Duration(days: 1)).firstDayOfMonth,
+      monthSelected.withoutTimeUtc.add(const Duration(days: 31)).firstDayOfMonth,
+      monthSelected.withoutTimeUtc.subtract(const Duration(days: 1)).firstDayOfMonth,
     ];
 
     for (final DateTime month in months) {

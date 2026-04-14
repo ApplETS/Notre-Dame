@@ -80,7 +80,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           height: 80.0,
           decoration: BoxDecoration(
             color: context.theme.appColors.navBar,
-            boxShadow: [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
+            boxShadow: const [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
           ),
         ),
         Positioned.fill(
