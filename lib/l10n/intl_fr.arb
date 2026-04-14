@@ -69,6 +69,144 @@
   "login_password_show": "Afficher le mot de passe",
   "login_password_hide": "Cacher le mot de passe",
 
+  "dynamic_message_first_week_of_session": "Bon début de session\u00a0!",
+  "dynamic_message_first_week_of_session_completed": "Première semaine de la session complétée, continue\u00a0!",
+  "dynamic_message_long_weekend_incoming": "Une longue fin de semaine s'en vient\u00a0!",
+
+  "dynamic_message_upcoming_extended_break": "Un congé s'en vient dans {days} jours\u00a0!",
+  "@dynamic_message_upcoming_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_upcoming_extended_break_tomorrow": "Un congé commence demain\u00a0!",
+
+  "dynamic_message_session_starts_soon": "Repose-toi bien\u00a0! La prochaine session débute le {date} (dans {days} jours).",
+  "@dynamic_message_session_starts_soon": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_days_before_session_ends": "{num_days, plural, =0{Dernier jour, c'est presque fini\u00a0!} =1{Encore 1 jour et c'est fini\u00a0!} other{Encore {num_days} jours et c'est fini\u00a0!}}",
+  "@dynamic_message_days_before_session_ends": {
+    "placeholders": {
+      "num_days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_end_of_week": "Semaine {num_weeks} complétée\u00a0!",
+  "@dynamic_message_end_of_week": {
+    "placeholders": {
+      "num_weeks": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_long_weekend_currently": "Bonne longue fin de semaine\u00a0! Semaine {num_weeks} complétée\u00a0!",
+  "@dynamic_message_long_weekend_currently": {
+    "placeholders": {
+      "num_weeks": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_extended_break": "Profite de ton congé\u00a0! Les cours reprennent dans {days} jours.",
+  "@dynamic_message_extended_break": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_extended_break_tomorrow": "Profite de ton congé\u00a0! Les cours reprennent demain.",
+
+  "dynamic_message_first_day_back_after_break": "Bon retour\u00a0! On espère que tu as bien profité de ton congé.",
+
+  "dynamic_message_last_course_day_of_session": "C'est {weekday}\u00a0! Dernière journée de cours de la semaine\u00a0!",
+  "@dynamic_message_last_course_day_of_session": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+
+  "dynamic_message_less_one_month_remaining": "Tiens bon, il ne reste que {num_weeks} semaines\u00a0!",
+  "@dynamic_message_less_one_month_remaining": {
+  "placeholders": {
+    "num_weeks": {
+      "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_last_course_week_remaining": "Tiens bon, c'est la dernière semaine de cours\u00a0!",
+
+  "dynamic_message_finals_approaching": "C'est la dernière semaine de cours\u00a0! La période d'examens approche.",
+  "dynamic_message_finals_approaching_tomorrow": "Dernier jour de cours\u00a0! La période d'examens commence demain.",
+
+  "dynamic_message_exam_period": "Bonne chance pour tes examens\u00a0! Il reste {days} jours à la période d'examens.",
+  "@dynamic_message_exam_period": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "dynamic_message_exam_period_tomorrow_last_day": "Dernier jour d'examens demain. Lâche pas, tu y es presque\u00a0!",
+  "dynamic_message_exam_period_last_day": "Dernier jour d'examens. Lâche pas, tu y es presque\u00a0!",
+  "dynamic_message_session_completed": "Félicitations, la session est terminée. Profite bien de ta pause\u00a0!",
+
+  "dynamic_message_generic_encouragement_0": "Continue comme ça\u00a0!",
+  "dynamic_message_generic_encouragement_1": "Bonne session\u00a0!",
+  "dynamic_message_generic_encouragement_2": "On espère que ta session se passe bien\u00a0!",
+  "dynamic_message_generic_encouragement_3": "Bonne journée\u00a0!",
+  "dynamic_message_generic_encouragement_4": "Lâche pas\u00a0!",
+  "dynamic_message_generic_encouragement_5": "Bonne chance dans tes cours\u00a0!",
+  "dynamic_message_generic_encouragement_6": "Tiens bon\u00a0!",
+
+  "dynamic_message_no_courses_on_day": "Il n'y a pas de cours le {weekday} ({reason}).",
+  "@dynamic_message_no_courses_on_day": {
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+
+  "dynamic_message_day_follows_schedule": "Les cours du {replacementDay} suivent l'horaire du {originalDay} ({reason}).",
+  "@dynamic_message_day_follows_schedule": {
+    "placeholders": {
+      "originalDay": {
+        "type": "String"
+      },
+      "replacementDay": {
+        "type": "String"
+      },
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+
   "dashboard_msg_card_removed": "Carte supprimée",
   "dashboard_restore_all_cards_title": "Restaurer toutes les cartes",
 
@@ -200,7 +338,8 @@
       }
     }
   },
-  "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_error_course_evaluations_not_completed": "Vous n'aurez pas accès à vos notes au cours de la période d'évaluation de cours tant que vous n'aurez pas effectué vos évaluations.",
+  "grades_complete_evaluations": "Évaluer",
   "grades_not_available": "ND",
   
   "profile_title": "Profil",
@@ -372,6 +511,9 @@
   "dark_theme": "Foncé",
   "light_theme": "Pâle",
   "system_theme": "Système",
+  "settings_dashboard_schedule_format": "Format du calendrier sur le dashboard\u00a0:",
+  "settings_dashboard_schedule_format_list": "Liste",
+  "settings_dashboard_schedule_format_calendar": "Calendrier",
 
   "flutter_license": "Flutter est la boîte à outils d'interface utilisateur de Google pour créer de superbes applications compilées en natif pour mobile, Web et bureau à partir d'une seule base de code. En savoir plus sur Flutter à ",
   "flutter_website": "https://flutter.dev",
@@ -396,35 +538,7 @@
   "service_outage_contact": "Nous sommes au courant de la situation. Nous faisons notre possible pour la régler dans les plus courts délais.",
   "service_outage_refresh": "Rafraichir",
 
-  "progress_bar_title": "Progression de la session",
-  "progress_bar_message": "{elapsedDays} jours écoulés / {totalDays} jours",
-  "@progress_bar_message": {
-    "placeholders": {
-      "elapsedDays": {
-        "type": "int"
-      },
-      "totalDays": {
-        "type": "int"
-      }
-    }
-  },
-  "progress_bar_message_percentage": "{percentage} %",
-  "@progress_bar_message_percentage": {
-    "placeholders": {
-      "percentage": {
-        "type": "int"
-      }
-    }
-  },
-  "progress_bar_message_remaining_days": "{remainingDays} jours restants",
-  "@progress_bar_message_remaining_days": {
-    "placeholders": {
-      "remainingDays": {
-        "type": "int"
-      }
-    }
-  },
-  "progress_bar_suffix": "jours",
+  "progress_bar": "jours restants",
 
   "universal_code_example": "Ex: AB12345",
   "my_tickets": "Mes billets",
@@ -452,5 +566,52 @@
       }
     }
   },
-  "ignored_evaluations_section_description_text": "Les éléments suivants sont ignorés dans le calcul de la note finale."
+  "ignored_evaluations_section_description_text": "Les éléments suivants sont ignorés dans le calcul de la note finale.",
+
+  "session_reminder_session_start": "Début de la session",
+  "session_reminder_registration_start": "Ouverture des inscriptions",
+  "session_reminder_registration_deadline": "Fermeture des inscriptions",
+  "session_reminder_cancellation_refund_start": "Début modif. de cours avec remboursement",
+  "session_reminder_cancellation_refund_deadline": "Fin modif. de cours avec remboursement",
+  "session_reminder_cancellation_refund_new_student": "Fin modif. de cours avec remboursement (nouv. étud.)",
+  "session_reminder_cancellation_no_refund_new_student_start": "Début annulation de cours sans remboursement",
+  "session_reminder_cancellation_no_refund_new_student_deadline": "Fin annulation de cours sans remboursement",
+  "session_reminder_cancellation_aseq": "Fin modif. couverture ASÉQ",
+  "session_reminder_session_end": "Fin de la session",
+  "session_reminder_today": "Aujourd'hui",
+  "session_reminder_in_days": "{days,plural, =1{Demain ({date})} other{Dans {days} j. ({date})}}",
+  "@session_reminder_in_days": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "session_reminder_in_days_long": "{days,plural, =1{Demain ({date})} other{Dans {days} jours ({date})}}",
+  "@session_reminder_in_days_long": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "session_reminder_date_with_remaining": "{days,plural, =1{{date} (demain)} other{{date} ({days} jours)}}",
+  "@session_reminder_date_with_remaining": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "session_reminder_bottom_sheet_title": "Dates à venir",
+  "session_reminder_none": "Aucun événement\nà venir"
 }

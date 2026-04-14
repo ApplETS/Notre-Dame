@@ -1,6 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+
 // Project imports:
 import 'package:notredame/ui/core/themes/app_colors_extension.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -48,16 +51,48 @@ class AppTheme with ChangeNotifier {
         surface: const Color(0xfff8e9e9),
         surfaceTint: const Color(0xfff6ebeb),
       ),
-      extensions: [_lightAppColors],
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: SegmentedButton.styleFrom(
+          foregroundColor: AppPalette.grey.black,
+          selectedForegroundColor: AppPalette.grey.black,
+          selectedBackgroundColor: AppPalette.etsLightRed.withAlpha(80),
+        ),
+      ),
+      extensions: [
+        _lightAppColors,
+        MonthViewThemeData.light().copyWith(
+          cellBorderColor: _lightAppColors.scheduleLine,
+          headerBackgroundColor: _lightAppColors.appBar,
+          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
+          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
+          weekDayTileColor: _lightAppColors.appBar,
+        ),
+        WeekViewThemeData.light().copyWith(
+          hourLineColor: _lightAppColors.scheduleLine,
+          verticalLinesColor: _lightAppColors.scheduleLine,
+          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
+          pageBackgroundColor: Colors.transparent,
+          headerBackgroundColor: _lightAppColors.appBar,
+          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
+          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
+          borderColor: _lightAppColors.scheduleLine,
+        ),
+        DayViewThemeData.light().copyWith(
+          hourLineColor: _lightAppColors.scheduleLine,
+          pageBackgroundColor: Colors.transparent,
+          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
+        ),
+      ],
     );
   }();
 
   static final _lightAppColors = AppColorsExtension(
     appBar: const Color(0xfff8f8f8),
     navBar: const Color(0xfffffdfd),
+    dashboardCard: const Color(0xfff3f3f3),
     backgroundAlt: const Color(0xffefefef),
     backgroundVibrant: AppPalette.etsLightRed,
-    scheduleLine: const Color(0xffd9d8d8),
+    scheduleLine: const Color(0xfff1f1f1),
     tabBarLabel: Colors.black,
     tabBarIndicator: Colors.black26,
     shimmerHighlight: const Color.fromARGB(255, 228, 225, 225),
@@ -109,13 +144,46 @@ class AppTheme with ChangeNotifier {
         surface: const Color(0xff1e1e1e),
         surfaceTint: const Color(0xff1e1e1e),
       ),
-      extensions: [_darkAppColors],
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: SegmentedButton.styleFrom(
+          foregroundColor: Colors.white,
+          selectedForegroundColor: Colors.white,
+          selectedBackgroundColor: AppPalette.etsLightRed.withAlpha(150),
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(foregroundColor: AppPalette.grey.black)),
+      extensions: [
+        _darkAppColors,
+        MonthViewThemeData.dark().copyWith(
+          cellBorderColor: _darkAppColors.scheduleLine,
+          headerBackgroundColor: _darkAppColors.appBar,
+          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
+          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
+          weekDayTileColor: _darkAppColors.appBar,
+        ),
+        WeekViewThemeData.dark().copyWith(
+          hourLineColor: _darkAppColors.scheduleLine,
+          verticalLinesColor: _darkAppColors.scheduleLine,
+          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
+          pageBackgroundColor: Colors.transparent,
+          headerBackgroundColor: _darkAppColors.appBar,
+          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
+          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
+          borderColor: _darkAppColors.scheduleLine,
+        ),
+        DayViewThemeData.dark().copyWith(
+          hourLineColor: _darkAppColors.scheduleLine,
+          pageBackgroundColor: Colors.transparent,
+          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
+        ),
+      ],
     );
   }();
 
   static final _darkAppColors = AppColorsExtension(
     appBar: const Color(0xff16171a),
     navBar: const Color(0xff1c1d21),
+    dashboardCard: const Color(0xff232325),
     backgroundAlt: const Color(0xff2c2c2c),
     backgroundVibrant: const Color(0xff121212),
     scheduleLine: const Color(0xff2c2929),

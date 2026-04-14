@@ -18,7 +18,7 @@ import 'package:notredame/ui/student/grades/grade_details/view_model/grades_deta
 import 'package:notredame/ui/student/grades/widgets/grade_circular_progress.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_evaluation_tile.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_not_available.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/grades_utils.dart';
 
 class GradesDetailsView extends StatefulWidget {
   final Course course;
@@ -74,8 +74,6 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
   Widget build(BuildContext context) => ViewModelBuilder<GradesDetailsViewModel>.reactive(
     viewModelBuilder: () => GradesDetailsViewModel(course: widget.course, intl: AppIntl.of(context)!),
     builder: (context, model, child) => BaseScaffold(
-      safeArea: false,
-      showBottomBar: false,
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxScrolled) => [
           SliverAppBar(

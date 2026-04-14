@@ -16,13 +16,13 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
 class CalendarSelectionViewModel {
-  final AppIntl translations;
+  final AppIntl intl;
   late UnmodifiableListView<Calendar>? _calendars;
   final CourseRepository courseRepository = locator<CourseRepository>();
   String? selectedCalendarId;
   News? news;
 
-  CalendarSelectionViewModel({required this.translations, this.news});
+  CalendarSelectionViewModel({required this.intl, this.news});
 
   Future<void> fetchCalendars() async {
     _calendars = await CalendarService.nativeCalendars;
@@ -39,7 +39,7 @@ class CalendarSelectionViewModel {
 
   Future<void> exportCalendar(BuildContext context) async {
     if (selectedCalendarId == null || selectedCalendarId?.isEmpty == true) {
-      _showToast(translations.calendar_select);
+      _showToast(intl.calendar_select);
       return;
     }
     Navigator.of(context).pop();
@@ -54,9 +54,9 @@ class CalendarSelectionViewModel {
   void _exportNews(News news, String selectedCalendarId) {
     CalendarService.exportNews(news, selectedCalendarId).then((value) {
       if (value) {
-        _showToast(translations.news_export_success);
+        _showToast(intl.news_export_success);
       } else {
-        _showToast(translations.news_export_error);
+        _showToast(intl.news_export_error);
       }
     });
   }
@@ -64,9 +64,9 @@ class CalendarSelectionViewModel {
   void _exportCourses(String selectedCalendarId) {
     CalendarService.export(courseRepository.coursesActivities!, selectedCalendarId).then((value) {
       if (value) {
-        _showToast(translations.calendar_export_success);
+        _showToast(intl.calendar_export_success);
       } else {
-        _showToast(translations.calendar_export_error);
+        _showToast(intl.calendar_export_error);
       }
     });
   }

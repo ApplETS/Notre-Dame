@@ -1,6 +1,6 @@
 class SessionProgress {
   final double percentage;
-  final String text;
+  final int daysRemaining;
 
-  SessionProgress(this.percentage, this.text);
+  SessionProgress(this.percentage, this.daysRemaining);
 }

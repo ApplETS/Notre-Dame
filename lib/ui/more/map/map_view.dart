@@ -28,9 +28,7 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) => BaseScaffold(
-    safeArea: false,
     appBar: AppBar(title: Text(AppIntl.of(context)!.more_map)),
-    showBottomBar: false,
     body: LayoutBuilder(
       builder: (context, constraints) {
         const minAspectRatio = 0.5;

@@ -5,9 +5,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:logger/logger.dart';
 
 // Project imports:
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
@@ -15,6 +17,7 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/course_review.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
@@ -30,6 +33,9 @@ class CourseRepository {
 
   @visibleForTesting
   static const String coursesActivitiesCacheKey = "coursesActivitiesCache";
+
+  @visibleForTesting
+  static const String replacedDaysCacheKey = "replacedDaysCache";
 
   @visibleForTesting
   static const String scheduleActivitiesCacheKey = "scheduleActivitiesCache";
@@ -57,6 +63,9 @@ class CourseRepository {
   /// Used to access the Signets API
   final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
 
+  /// Used to access preferences for cache timestamps
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
+
   /// Student list of courses
   List<Course>? _courses;
 
@@ -75,7 +84,15 @@ class CourseRepository {
   /// List of the default schedule activities for the student
   late List<ScheduleActivity> _scheduleDefaultActivities;
 
-  List<ScheduleActivity>? get scheduleDefaultActivities => _scheduleActivities;
+  List<ScheduleActivity>? get scheduleDefaultActivities => _scheduleDefaultActivities;
+
+  /// Cache duration for replaced days
+  static const Duration replacedDaysCacheDuration = Duration(days: 7);
+
+  /// List of the replaced days for the student in the active session
+  List<ReplacedDay>? _replacedDays;
+
+  List<ReplacedDay>? get replacedDays => _replacedDays;
 
   /// List of session where the student has been registered.
   /// The sessions are organized from oldest to youngest
@@ -94,18 +111,20 @@ class CourseRepository {
         [];
   }
 
+  /// Return the upcoming sessions which means the sessions that the startDate hasn't already started.
+  List<Session> get upcomingSessions {
+    DateTime now = DateTime.now();
+    now = DateTime(now.year, now.month, now.day);
+
+    return _sessions?.where((session) => session.startDate.isAfter(now)).toList() ?? [];
+  }
+
   /// Get and update the list of courses activities for the active sessions.
   /// After fetching the new activities from the [SignetsApi] the [CacheService]
   /// is updated with the latest version of the activities.
   Future<List<CourseActivity>?> getCoursesActivities({bool fromCacheOnly = false}) async {
-    // Force fromCacheOnly mode when user has no connectivity
-    if (!(await _networkingService.hasConnectivity())) {
-      // ignore: parameter_assignments
-      fromCacheOnly = true;
-    }
-
-    // Load the activities from the cache if the list doesn't exist
-    if (fromCacheOnly) {
+    // Load the activities from the cache if no connexion
+    if (fromCacheOnly || !(await _networkingService.hasConnectivity())) {
       try {
         final List responseCache = jsonDecode(await _cacheManager.get(coursesActivitiesCacheKey)) as List<dynamic>;
 
@@ -371,11 +390,7 @@ class CourseRepository {
       rethrow;
     }
 
-    try {
-      fetchedCourseReviews.addAll(await _getCoursesReviews());
-    } on Exception catch (e) {
-      _logger.d("$tag - getCourses: $e during getCoursesEvaluations. Ignored");
-    }
+    fetchedCourseReviews.addAll(await _getCoursesReviews());
 
     _courses!.clear();
 
@@ -414,6 +429,7 @@ class CourseRepository {
   /// version of the course. Return the course with the summary set.
   Future<Course> getCourseSummary(Course course) async {
     CourseSummary? summary;
+    List<CourseReview>? reviews;
 
     // Don't try to update the summary when user has no connection
     if (!(await _networkingService.hasConnectivity())) {
@@ -439,6 +455,11 @@ class CourseRepository {
       rethrow;
     }
 
+    if (course.inReviewPeriod && !(course.allReviewsCompleted ?? true)) {
+      reviews = _getReviewsForCourse(course, await _getCoursesReviews());
+      course.reviews = reviews;
+    }
+
     // Initialize the array if needed
     _courses ??= [];
 
@@ -457,6 +478,92 @@ class CourseRepository {
     }
 
     return course;
+  }
+
+  /// [fromCacheOnly] - If true, only returns cached data without API call.
+  /// [forceRefresh] - If true, bypasses cache validity check and fetches from API.
+  Future<List<ReplacedDay>?> getReplacedDays({bool fromCacheOnly = false, bool forceRefresh = false}) async {
+    // Force fromCacheOnly mode when user has no connectivity
+    if (!(await _networkingService.hasConnectivity())) {
+      fromCacheOnly = true;
+    }
+
+    // Load the replaced days from the cache if the list doesn't exist
+    if (_replacedDays == null) {
+      _replacedDays = [];
+      try {
+        final List responseCache = jsonDecode(await _cacheManager.get(replacedDaysCacheKey)) as List<dynamic>;
+
+        // Build list of replaced days loaded from the cache.
+        _replacedDays = responseCache.map((e) => ReplacedDay.fromJson(e as Map<String, dynamic>)).toList();
+        _logger.d("$tag - getReplacedDays: ${_replacedDays?.length ?? 0} replaced days loaded from cache");
+      } on CacheException catch (_) {
+        _logger.e("$tag - getReplacedDays: exception raised while trying to load replaced days from cache.");
+      }
+    }
+
+    if (fromCacheOnly) {
+      return _replacedDays;
+    }
+
+    // Check if cache is still valid (time-wise)
+    if (!forceRefresh && await _isReplacedDaysCacheValid()) {
+      _logger.d("$tag - getReplacedDays: using cached data (still valid)");
+      return _replacedDays;
+    }
+
+    final List<ReplacedDay> fetchedReplacedDays = [];
+
+    try {
+      // If there is no sessions loaded, load them.
+      if (_sessions == null || _sessions!.isEmpty) {
+        await getSessions();
+      }
+
+      for (final Session session in activeSessions) {
+        fetchedReplacedDays.addAll(await _signetsApiClient.getReplacedDays(session: session.shortName));
+        _logger.d("$tag - getReplacedDays: fetched ${fetchedReplacedDays.length} replaced days.");
+      }
+    } on Exception catch (e, stacktrace) {
+      _analyticsService.logError(tag, "Exception raised during getReplacedDays: $e", e, stacktrace);
+      _logger.d("$tag - getReplacedDays: Exception raised $e");
+      rethrow;
+    }
+
+    // Remove all the replaced days that are in the actives sessions.
+    DateTime activeSessionStartDate = DateTime.now();
+    for (final element in activeSessions) {
+      if (element.startDate.isBefore(activeSessionStartDate)) {
+        activeSessionStartDate = element.startDate;
+      }
+    }
+    _replacedDays?.removeWhere((element) => element.originalDate.isAfter(activeSessionStartDate));
+
+    // Update the list of replaced days to avoid duplicate replaced days
+    for (final ReplacedDay replacedDay in fetchedReplacedDays) {
+      if (_replacedDays != null && !_replacedDays!.contains(replacedDay)) {
+        _replacedDays!.add(replacedDay);
+      }
+    }
+
+    try {
+      // Update cache
+      _cacheManager.update(replacedDaysCacheKey, jsonEncode(_replacedDays));
+      // Update cache timestamp
+      _settingsManager.replacedDaysCacheExpiration = DateTime.now().add(replacedDaysCacheDuration).withoutTime;
+    } on CacheException catch (_) {
+      // Do nothing, the caching will retry later and the error has been logged by the [CacheManager]
+      _logger.e("$tag - getReplacedDays: exception raised while trying to update the cache.");
+    }
+
+    return _replacedDays;
+  }
+
+  /// Checks if the replaced days cache is still valid based on time.
+  Future<bool> _isReplacedDaysCacheValid() async {
+    final DateTime? expiration = _settingsManager.replacedDaysCacheExpiration;
+    if (expiration == null) return false;
+    return DateTime.now().withoutTime.isBefore(expiration);
   }
 
   /// Retrieve the evaluation filtered by sessions.
@@ -481,7 +588,6 @@ class CourseRepository {
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, e.toString(), e, stacktrace);
       _logger.e("$tag - getCourseSummary: Exception raised $e");
-      rethrow;
     }
 
     return reviews;

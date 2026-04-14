@@ -1,0 +1,82 @@
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/data/repositories/course_repository.dart';
+import 'package:notredame/data/repositories/settings_repository.dart';
+import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/utils/date_extensions.dart';
+
+class ScheduleCardViewmodel extends FutureViewModel {
+  final CourseRepository _courseRepository = locator<CourseRepository>();
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
+
+  List<CourseActivity> _scheduleEvents = [];
+
+  bool _tomorrow = false;
+  DateTime _date = DateTime.now().withoutTime;
+
+  final AppIntl _appIntl;
+
+  DateTime get date {
+    return _date;
+  }
+
+  bool get tomorrow {
+    return _tomorrow;
+  }
+
+  bool get listView => _settingsManager.dashboard.displayScheduleAsList;
+
+  ScheduleCardViewmodel({required AppIntl intl}) : _appIntl = intl;
+
+  @override
+  Future<void> futureToRun() async {
+    try {
+      setBusy(true);
+
+      _scheduleEvents.clear();
+      await _courseRepository.getCoursesActivities();
+
+      final nowDate = DateTime.now();
+      final tomorrowDate = nowDate.withoutTimeUtc.add(const Duration(days: 1)).withoutTime;
+      final twoDaysFromNow = nowDate.withoutTimeUtc.add(const Duration(days: 2)).withoutTime;
+
+      bool hasActivitiesTodayAfterNow =
+          _courseRepository.coursesActivities?.any(
+            (activity) => activity.endDateTime.isAfter(nowDate) && activity.endDateTime.isBefore(tomorrowDate),
+          ) ??
+          false;
+
+      if (hasActivitiesTodayAfterNow) {
+        return;
+      }
+
+      bool hasActivitiesTomorrow =
+          _courseRepository.coursesActivities?.any(
+            (activity) => activity.endDateTime.isAfter(tomorrowDate) && activity.endDateTime.isBefore(twoDaysFromNow),
+          ) ??
+          false;
+
+      if (hasActivitiesTomorrow) {
+        _tomorrow = true;
+        _date = tomorrowDate;
+        return;
+      }
+    } catch (e) {
+      onError(e, null);
+    } finally {
+      setBusy(false);
+    }
+    _scheduleEvents = [];
+  }
+
+  @override
+  void onError(error, StackTrace? stackTrace) {
+    Fluttertoast.showToast(msg: _appIntl.error);
+  }
+}

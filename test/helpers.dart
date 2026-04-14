@@ -20,12 +20,14 @@ import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
+import 'package:notredame/data/services/schedule_service.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets_client.dart';
 import 'package:notredame/l10n/app_localizations.dart';
@@ -41,6 +43,7 @@ import 'data/mocks/repositories/user_repository_mock.dart';
 import 'data/mocks/services/analytics_service_mock.dart';
 import 'data/mocks/services/auth_service_mock.dart';
 import 'data/mocks/services/cache_service_mock.dart';
+import 'data/mocks/services/dynamic_messages_service_mock.dart';
 import 'data/mocks/services/flutter_secure_storage_mock.dart';
 import 'data/mocks/services/in_app_review_service_mock.dart';
 import 'data/mocks/services/launch_url_service_mock.dart';
@@ -48,6 +51,7 @@ import 'data/mocks/services/navigation_service_mock.dart';
 import 'data/mocks/services/networking_service_mock.dart';
 import 'data/mocks/services/preferences_service_mock.dart';
 import 'data/mocks/services/remote_config_service_mock.dart';
+import 'data/mocks/services/schedule_service_mock.dart';
 import 'data/mocks/services/signets_api_mock.dart';
 import 'data/mocks/services/signets_client_mock.dart';
 
@@ -275,6 +279,16 @@ LaunchUrlServiceMock setupLaunchUrlServiceMock() {
   return service;
 }
 
+/// Load a mock of the [ScheduleService]
+ScheduleServiceMock setupScheduleServiceMock() {
+  unregister<ScheduleService>();
+  final service = ScheduleServiceMock();
+
+  locator.registerSingleton<ScheduleService>(service);
+
+  return service;
+}
+
 /// Load a mock of the [RemoteConfigService]
 RemoteConfigServiceMock setupRemoteConfigServiceMock() {
   unregister<RemoteConfigService>();
@@ -304,9 +318,14 @@ AuthServiceMock setupAuthServiceMock() {
   return repository;
 }
 
-bool getCalendarViewEnabled() {
-  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
-  return remoteConfigService.scheduleListViewDefault;
+/// Load a mock of the [DynamicMessagesService]
+DynamicMessagesServiceMock setupDynamicMessagesServiceMock() {
+  unregister<DynamicMessagesService>();
+  final service = DynamicMessagesServiceMock();
+
+  locator.registerSingleton<DynamicMessagesService>(service);
+
+  return service;
 }
 
 BroadcastMessageRepositoryMock setupBroadcastMessageRepositoryMock() {

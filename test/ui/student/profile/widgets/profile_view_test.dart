@@ -104,7 +104,7 @@ void main() {
     });
 
     testWidgets('copies personnal info', (WidgetTester tester) async {
-      // Simulez un clic sur le texte du code permanent
+      // Tap on the permanent code
       await tester.pumpWidget(localizedWidget(child: const ProfileView()));
       await tester.pumpAndSettle();
 

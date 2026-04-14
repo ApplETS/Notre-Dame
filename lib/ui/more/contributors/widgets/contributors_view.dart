@@ -22,9 +22,7 @@ class ContributorsView extends StatelessWidget {
     viewModelBuilder: () => ContributorsViewModel(),
     builder: (context, model, child) {
       return BaseScaffold(
-        safeArea: false,
         appBar: AppBar(title: Text(AppIntl.of(context)!.more_contributors)),
-        showBottomBar: false,
         body: FutureBuilder<List<Contributor>>(
           future: model.contributors,
           builder: (context, snapshot) {

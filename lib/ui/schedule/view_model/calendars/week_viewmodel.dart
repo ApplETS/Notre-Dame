@@ -3,13 +3,13 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
-import 'package:notredame/data/models/calendar_event_tile.dart';
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
 class WeekViewModel extends CalendarViewModel {
   // Sunday of current week
-  DateTime weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
+  DateTime weekSelected = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
 
   // Display weekend days only if they contain events
   bool displaySunday = false;
@@ -20,26 +20,25 @@ class WeekViewModel extends CalendarViewModel {
 
   bool _firstLoad = true;
 
-  final EventController eventController = EventController();
-
   WeekViewModel({required super.intl});
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    weekSelected = Utils.getFirstdayOfWeek(newDate);
-
+    weekSelected = newDate.withoutTimeUtc.startOfWeek(start: WeekDays.sunday).withoutTime;
     if (!isBusy && _firstLoad) {
       _firstLoad = false;
       if (DateTime.now().weekday == DateTime.saturday &&
-          Utils.getFirstdayOfWeek(DateTime.now()) == weekSelected &&
+          DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime == weekSelected &&
           calendarEventsFromDate(DateTime.now()).isEmpty) {
-        handleDateSelectedChanged(weekSelected.add(const Duration(days: 7, hours: 1)));
+        handleDateSelectedChanged(weekSelected.withoutTimeUtc.add(const Duration(days: 7)).withoutTime);
         displayNextWeek = true;
       }
     }
 
     displaySunday = calendarEventsFromDate(weekSelected).isNotEmpty;
-    displaySaturday = calendarEventsFromDate(weekSelected.add(const Duration(days: 6, hours: 1))).isNotEmpty;
+    displaySaturday = calendarEventsFromDate(
+      weekSelected.withoutTimeUtc.add(const Duration(days: 6)).withoutTime,
+    ).isNotEmpty;
 
     eventController.removeWhere((event) => true);
     eventController.addAll(selectedWeekCalendarEvents());
@@ -47,23 +46,23 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    DateTime dateToReturnTo = Utils.getFirstdayOfWeek(DateTime.now());
+    DateTime dateToReturnTo = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
     if (DateTime.now().weekday == DateTime.saturday &&
-        calendarEventsFromDate(dateToReturnTo.add(const Duration(days: 6, hours: 1))).isEmpty) {
-      dateToReturnTo = dateToReturnTo.add(const Duration(days: 7, hours: 1)).withoutTime;
+        calendarEventsFromDate(dateToReturnTo.withoutTimeUtc.add(const Duration(days: 6)).withoutTime).isEmpty) {
+      dateToReturnTo = dateToReturnTo.withoutTimeUtc.add(const Duration(days: 7)).withoutTime;
     }
 
     final bool isThisWeekSelected = dateToReturnTo == weekSelected;
 
     isThisWeekSelected
-        ? Fluttertoast.showToast(msg: super.appIntl.schedule_already_today_toast)
+        ? Fluttertoast.showToast(msg: super.intl.schedule_already_today_toast)
         : handleDateSelectedChanged(dateToReturnTo);
 
     return !isThisWeekSelected;
   }
 
-  List<CalendarEventTile> selectedWeekCalendarEvents() {
-    final List<CalendarEventTile> events = [];
+  List<EventData> selectedWeekCalendarEvents() {
+    final List<EventData> events = [];
 
     // We want to put events of previous week and next week in memory to make transitions smoother
     for (int i = -7; i < 14; i++) {

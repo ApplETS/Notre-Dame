@@ -9,30 +9,27 @@ import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 // Project imports:
-import 'package:notredame/data/models/calendar_event_tile.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/dashboard/widgets/course_activity_tile.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
-import 'package:notredame/ui/schedule/widgets/schedule_calendar_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;
   final ScheduleController controller;
-  final List<calendar_view.CalendarEventData<Object?>>? events;
   final DateTime? selectedDate;
-  final bool skipRepositoryLoad;
+  final Color? backgroundColor;
 
   const DayCalendar({
     super.key,
     required this.listView,
     required this.controller,
-    this.events,
     this.selectedDate,
-    this.skipRepositoryLoad = false,
+    this.backgroundColor,
   });
 
   @override
@@ -42,6 +39,7 @@ class DayCalendar extends StatefulWidget {
 class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin {
   late AnimationController _animationController;
   final GlobalKey<calendar_view.DayViewState> dayViewKey = GlobalKey<calendar_view.DayViewState>();
+  late final showEntireDay = widget.selectedDate == null;
 
   @override
   void initState() {
@@ -59,12 +57,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    DayViewModel model = DayViewModel(intl: AppIntl.of(context)!, skipRepositoryLoad: widget.skipRepositoryLoad);
-
     return ViewModelBuilder.reactive(
-      viewModelBuilder: () => model,
-      builder: (context, model, child) =>
-          Column(children: [widget.events == null ? _dayViewHeader(model) : const SizedBox(), _buildEvents(model)]),
+      viewModelBuilder: () => DayViewModel(intl: AppIntl.of(context)!),
+      builder: (context, model, child) => Column(
+        children: [widget.selectedDate == null ? _dayViewHeader(model) : const SizedBox(), _buildEvents(model)],
+      ),
     );
   }
 
@@ -78,48 +75,57 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       });
     };
 
+    widget.controller.refreshEvents = () async {
+      await model.refreshEvents();
+      setState(() {});
+    };
+
+    // Sets the initial day: widget.selectedDate is an external date from parent (nullable),
+    // model.daySelected is the internal date managed by ViewModel (never null, defaults to today)
+    if (widget.selectedDate != null) {
+      model.handleDateSelectedChanged(widget.selectedDate!);
+    }
+
     return widget.listView ? _buildListView(model) : _buildCalendar(model);
   }
 
-  Widget _buildCalendar(DayViewModel model) {
-    final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
-    // Sets the initial day: widget.selectedDate is an external date from parent (nullable),
-    // model.daySelected is the internal date managed by ViewModel (never null, defaults to today)
-    final DateTime initialDay = widget.selectedDate ?? model.daySelected;
-
-    return Expanded(
-      child: calendar_view.DayView(
-        showVerticalLine: false,
-        dayTitleBuilder: calendar_view.DayHeader.hidden,
-        key: dayViewKey,
-        controller: model.eventController..addAll(widget.events ?? model.selectedDayCalendarEvents()),
-        onPageChange: (date, _) => ({
-          setState(() {
-            model.handleDateSelectedChanged(date);
+  Widget _buildCalendar(DayViewModel model) => Expanded(
+    child: LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double heightPerMinute = showEntireDay
+            ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
+            : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(0.1, double.infinity);
+        return calendar_view.DayView(
+          key: dayViewKey,
+          showVerticalLine: false,
+          dayTitleBuilder: calendar_view.DayHeader.hidden,
+          controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+          onPageChange: (date, _) => ({
+            setState(() {
+              model.handleDateSelectedChanged(date);
+            }),
           }),
-        }),
-        backgroundColor: context.theme.scaffoldBackgroundColor,
-        initialDay: initialDay,
-        minDay: widget.selectedDate,
-        maxDay: widget.selectedDate,
-        hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
-        liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-          color: context.theme.textTheme.bodyMedium!.color!,
-        ),
-        heightPerMinute: heightPerMinute,
-        scrollOffset: heightPerMinute * 60 * 7.5,
-        keepScrollOffset: true,
-        dateStringBuilder: (date, {secondaryDate}) {
-          final locale = AppIntl.of(context)!.localeName;
-          return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
-        },
-        timeStringBuilder: (date, {secondaryDate}) {
-          return DateFormat('H:mm').format(date);
-        },
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
-      ),
-    );
-  }
+          scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+          safeAreaOption: const calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
+          backgroundColor: widget.backgroundColor,
+          initialDay: model.daySelected,
+          minDay: widget.selectedDate,
+          maxDay: widget.selectedDate,
+          startHour: showEntireDay ? 0 : model.getStartHour(),
+          endHour: showEntireDay ? 24 : model.getEndHour(),
+          heightPerMinute: heightPerMinute,
+          scrollOffset: showEntireDay ? heightPerMinute * 60 * model.getStartHour() : 0,
+          keepScrollOffset: true,
+          dateStringBuilder: (date, {secondaryDate}) {
+            final locale = AppIntl.of(context)!.localeName;
+            return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
+          },
+          timeStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
+          eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
+        );
+      },
+    ),
+  );
 
   Widget _buildListView(DayViewModel model) {
     const int pageBufferSize = 10;
@@ -143,7 +149,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     });
     return Expanded(
       child: PageView(
-        physics: const BouncingScrollPhysics(),
+        physics: widget.selectedDate == null ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
         controller: pageController,
         children: [
           // When swiping fast, this prevents from having to wait for animation completion to go to the next page
@@ -155,35 +161,16 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   }
 
   Widget _buildDayList(DateTime date, DayViewModel model) {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        const SizedBox(height: 8.0),
-        if (model.coursesActivitiesFor(date).isEmpty && !model.isBusy)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 64.0),
-            child: Center(child: Text(AppIntl.of(context)!.schedule_no_event)),
-          )
-        else
-          _buildEventList(model.coursesActivitiesFor(date)),
-        const SizedBox(height: 16.0),
-      ],
+    return Center(
+      child: (model.calendarEventsFromDate(date).isEmpty && !model.isBusy)
+          ? Center(child: Center(child: Text(AppIntl.of(context)!.schedule_no_event)))
+          : Center(child: _buildEventList(model.calendarEventsFromDate(date))),
     );
   }
 
-  Widget _buildEventTile(List<calendar_view.CalendarEventData<dynamic>> events) {
+  Widget _buildEventTile(List<calendar_view.CalendarEventData> events) {
     if (events.isNotEmpty) {
-      return ScheduleCalendarTile(
-        title: events[0].title,
-        description: events[0].description,
-        start: events[0].startTime,
-        end: events[0].endTime,
-        padding: const EdgeInsets.all(12.0),
-        backgroundColor: events[0].color,
-        buildContext: context,
-        nbLines: (events[0] as CalendarEventTile).nbLines,
-        cardDescription: (events[0] as CalendarEventTile).cardDescription,
-      );
+      return CalendarEventTile(padding: const EdgeInsets.all(6.0), event: events[0] as EventData);
     } else {
       return Container();
     }
@@ -192,9 +179,12 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
-      physics: const ScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (_, index) => CourseActivityTile(events[index] as CourseActivity),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      // On the dashboard, we center the events
+      shrinkWrap: (widget.selectedDate != null) ? true : false,
+      // On the dashboard, the list should be scrollable only in case of overflow
+      physics: (widget.selectedDate != null) ? const ScrollPhysics() : null,
+      itemBuilder: (_, index) => ListViewEventTile(events[index] as EventData),
       separatorBuilder: (_, index) =>
           (index < events.length) ? const Divider(thickness: 1, indent: 30, endIndent: 30) : const SizedBox(),
       itemCount: events.length,
@@ -220,7 +210,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           titleCentered: true,
           formatButtonVisible: false,
         ),
-        eventLoader: widget.events != null ? null : model.calendarEventsFromDate,
+        eventLoader: model.calendarEventsFromDate,
         calendarFormat: CalendarFormat.week,
         focusedDay: model.daySelected,
         calendarBuilders: CalendarBuilders(

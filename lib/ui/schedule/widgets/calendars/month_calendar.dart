@@ -10,16 +10,24 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_header.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
-class MonthCalendar extends StatelessWidget {
-  final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
+class MonthCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
 
-  MonthCalendar({super.key, required this.controller});
+  const MonthCalendar({super.key, required this.controller});
+
+  @override
+  State<MonthCalendar> createState() => _MonthCalendarState();
+}
+
+class _MonthCalendarState extends State<MonthCalendar> {
+  final GlobalKey<MonthViewState> monthViewKey = GlobalKey<MonthViewState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,57 +38,58 @@ class MonthCalendar extends StatelessWidget {
   }
 
   Widget _buildMonthView(BuildContext context, MonthViewModel model) {
-    controller.returnToToday = () {
+    widget.controller.returnToToday = () {
       model.returnToCurrentDate();
       monthViewKey.currentState?.animateToMonth(DateTime(DateTime.now().year, DateTime.now().month));
     };
 
+    widget.controller.refreshEvents = () async {
+      await model.refreshEvents();
+      setState(() {});
+    };
+
     return MonthView(
       key: monthViewKey,
-      cellAspectRatio: 0.8,
-      borderColor: context.theme.appColors.scheduleLine,
+      monthViewStyle: MonthViewStyle(
+        cellAspectRatio: 0.8,
+        safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
+        useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
+        startDay: WeekDays.sunday,
+        initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
+      ),
       controller: model.eventController..addAll(model.selectedMonthEvents()),
-      safeAreaOption: const SafeAreaOption(top: false, bottom: false),
-      useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
-      onPageChange: (date, page) => model.handleDateSelectedChanged(date),
-      weekDayBuilder: (int value) => WeekDayTile(
-        dayIndex: value,
-        displayBorder: false,
-        textStyle: TextStyle(color: context.theme.textTheme.bodyMedium!.color!),
-        backgroundColor: context.theme.appColors.appBar,
-        weekDayStringBuilder: (p0) => weekTitles[p0],
+      monthViewBuilders: MonthViewBuilders(
+        onPageChange: (date, page) => model.handleDateSelectedChanged(date),
+        weekDayBuilder: (int value) => WeekDayTile(
+          dayIndex: value,
+          displayBorder: false,
+          textStyle: context.theme.textTheme.bodyMedium!,
+          weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
+        ),
+        headerStringBuilder: (date, {secondaryDate}) {
+          final locale = AppIntl.of(context)!.localeName;
+          return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
+        },
+        cellBuilder: (date, events, _, _, _) => FilledCell(
+          hideDaysNotInMonth: false,
+          titleColor: context.theme.textTheme.bodyMedium!.color!,
+          highlightColor: AppPalette.etsLightRed,
+          shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
+          date: date,
+          events: events,
+          backgroundColor: (date.firstDayOfMonth == model.monthSelected.firstDayOfMonth)
+              ? Colors.transparent
+              : Colors.grey.withValues(alpha: .06),
+        ),
+        onCellTap: (events, date) => _onDayTapped(context, date),
       ),
-      headerStringBuilder: (date, {secondaryDate}) {
-        final locale = AppIntl.of(context)!.localeName;
-        return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
-      },
-      headerStyle: HeaderStyle(
-        decoration: BoxDecoration(color: context.theme.appColors.appBar),
-        leftIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
-        rightIconConfig: IconDataConfig(color: context.theme.textTheme.bodyMedium!.color!, size: 30),
-      ),
-      startDay: WeekDays.sunday,
-      initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
-      cellBuilder: (date, events, _, _, _) => FilledCell(
-        onTileTap: (event, date) => _onDayTapped(context, events, date),
-        hideDaysNotInMonth: false,
-        titleColor: context.theme.textTheme.bodyMedium!.color!,
-        highlightColor: AppPalette.etsLightRed,
-        shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
-        date: date,
-        isInMonth: date.month == DateTime.now().month,
-        events: events,
-        backgroundColor: (date.month == DateTime.now().month) ? Colors.transparent : Colors.grey.withValues(alpha: .06),
-      ),
-      onCellTap: (events, date) => _onDayTapped(context, events, date),
     );
   }
 
-  void _onDayTapped(BuildContext context, List<CalendarEventData<Object?>> events, DateTime date) {
+  void _onDayTapped(BuildContext context, DateTime date) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent, // Needed for rounded corners
       builder: (context) => ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         child: DraggableScrollableSheet(
@@ -95,43 +104,14 @@ class MonthCalendar extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Container(
-                        height: 5,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: context.theme.appColors.modalHandle,
-                          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        DateFormat.yMMMMd(AppIntl.of(context)!.localeName).format(date),
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ),
+                ModalBottomSheetHeader(
+                  title: Text(
+                    DateFormat.yMMMMd(AppIntl.of(context)!.localeName).format(date),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
                 Expanded(
-                  child: DayCalendar(
-                    listView: false,
-                    controller: controller,
-                    events: events,
-                    selectedDate: date,
-                    skipRepositoryLoad: true,
-                  ),
+                  child: DayCalendar(listView: false, controller: widget.controller, selectedDate: date),
                 ),
               ],
             ),

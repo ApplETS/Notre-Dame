@@ -1,83 +1,81 @@
 // Dart imports:
 import 'dart:async';
-import 'dart:collection';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
-import 'package:collection/collection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/models/broadcast_message.dart';
+import 'package:notredame/data/models/dynamic_message.dart';
+import 'package:notredame/data/models/dynamic_message_context.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/logic/session_progress_use_case.dart';
 
-class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
+class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
   static const String abandonedGradeCode = "XX";
 
-  final SettingsRepository _settingsManager = locator<SettingsRepository>();
-  final CourseRepository _courseRepository = locator<CourseRepository>();
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
-  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
+  final CourseRepository _courseRepository = locator<CourseRepository>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
+  final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
+  final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final SessionProgressUseCase _sessionProgressUseCase;
 
   StreamSubscription? _sessionProgressSubscription;
 
-  /// All dashboard displayable cards
-  Map<PreferencesFlag, int>? _cards;
+  /// Animation controller for the circle
+  AnimationController? _controller;
+  late Animation<double> heightAnimation;
+  late Animation<double> opacityAnimation;
+  late Animation<double> titleAnimation;
+
+  /// Getter for the animation controller
+  AnimationController get controller => _controller!;
 
   /// Localization class of the application.
   final AppIntl _appIntl;
 
-  /// Cards to display on dashboard
-  List<PreferencesFlag>? _cardsToDisplay;
-
   BroadcastMessage? broadcastMessage;
   SessionProgress? sessionProgress;
 
-  /// Activities for today
-  final List<CourseActivity> _scheduleEvents = [];
+  /// Dynamic message text resolved from SessionContext
+  String? dynamicMessageText;
 
-  /// Get the list of activities for today
-  List<CourseActivity> get scheduleEvents {
-    return _scheduleEvents;
+  DashboardViewModel({required AppIntl intl})
+    : _appIntl = intl,
+      _sessionProgressUseCase = SessionProgressUseCase(),
+
+      /// if the animation has not been played, play it
+      shouldPlayAnimation = !hasAnimationPlayed {
+    hasAnimationPlayed = true;
   }
 
-  /// Get the status of all displayable cards
-  Map<PreferencesFlag, int>? get cards => _cards;
-
-  /// Get cards to display
-  List<PreferencesFlag>? get cardsToDisplay => _cardsToDisplay;
-
   static Future<bool> launchInAppReview() async {
-    final PreferencesService preferencesService = locator<PreferencesService>();
+    final SettingsRepository settingsManager = locator<SettingsRepository>();
     final InAppReviewService inAppReviewService = locator<InAppReviewService>();
 
-    DateTime? ratingTimerFlagDate = await preferencesService.getDateTime(PreferencesFlag.ratingTimer);
-
-    final hasRatingBeenRequested = await preferencesService.getBool(PreferencesFlag.hasRatingBeenRequested) ?? false;
+    DateTime? ratingTimerFlagDate = settingsManager.rating.timer;
+    final hasRatingBeenRequested = settingsManager.rating.hasBeenRequested;
 
     // If the user is already logged in while doing the update containing the In_App_Review PR.
     if (ratingTimerFlagDate == null) {
       final sevenDaysLater = DateTime.now().add(const Duration(days: 7));
-      preferencesService.setDateTime(PreferencesFlag.ratingTimer, sevenDaysLater);
+      settingsManager.rating.timer = sevenDaysLater;
       ratingTimerFlagDate = sevenDaysLater;
     }
 
@@ -86,7 +84,7 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
         DateTime.now().isAfter(ratingTimerFlagDate)) {
       await Future.delayed(const Duration(seconds: 2), () async {
         await inAppReviewService.requestReview();
-        preferencesService.setBool(PreferencesFlag.hasRatingBeenRequested, value: true);
+        settingsManager.rating.hasBeenRequested = true;
       });
 
       return true;
@@ -94,17 +92,51 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     return false;
   }
 
-  static Future<void> launchBroadcastUrl(String url) async {
-    final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
-    launchUrlService.launchInBrowser(url);
+  /// Static flag to track if the animation has been played
+  static bool hasAnimationPlayed = false;
+
+  /// Tracks if the animation should be played
+  final bool shouldPlayAnimation;
+
+  /// Slide offset for title and subtitle animations (slide from top)
+  /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
+  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
+
+  /// Fade-in opacity based on title animation progress
+  double get titleFadeOpacity => titleAnimation.value;
+
+  Future<void> init(TickerProvider ticker) async {
+    initAnimationController(ticker);
+    await initSessionProgress();
   }
 
-  /// List of courses for the current session
-  List<Course> courses = [];
+  /// Initialize the animation controller for the circle
+  void initAnimationController(TickerProvider ticker) {
+    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
 
-  DashboardViewModel({required AppIntl intl}) : _appIntl = intl, _sessionProgressUseCase = SessionProgressUseCase(intl);
+    heightAnimation = Tween<double>(
+      begin: 0,
+      end: 240,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
 
-  Future<void> init() async {
+    opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    titleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    if (shouldPlayAnimation) {
+      _controller!.forward();
+    } else {
+      _controller!.value = 1.0;
+    }
+  }
+
+  Future<void> initSessionProgress() async {
     _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
       (sessionProgress) {
         this.sessionProgress = sessionProgress;
@@ -122,163 +154,75 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     await _sessionProgressUseCase.init();
   }
 
-  @override
-  Future<Map<PreferencesFlag, int>> futureToRun() async {
-    _cards = await _settingsManager.getDashboard();
-
-    getCardsToDisplay();
-
-    await loadDataAndUpdateWidget();
-
-    return _cards!;
+  static Future<void> launchBroadcastUrl(String url) async {
+    final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
+    launchUrlService.launchInBrowser(url);
   }
 
-  Future loadDataAndUpdateWidget() async {
+  /// List of courses for the current session
+  List<Course> courses = [];
+
+  @override
+  Future futureToRun() async {
     return Future.wait([
       futureToRunBroadcast(),
       futureToRunGrades(),
       _sessionProgressUseCase.fetch(forceUpdate: true),
-      futureToRunSchedule(),
+      loadDynamicMessage(),
     ]);
+  }
+
+  /// Load the dynamic message based on session context
+  Future<void> loadDynamicMessage({bool forceRefresh = false}) async {
+    setBusyForObject(dynamicMessageText, true);
+    try {
+      if (_courseRepository.sessions == null || _courseRepository.sessions!.isEmpty) {
+        await _courseRepository.getSessions();
+      }
+
+      final now = _settingsManager.dateTimeNow;
+      final upcomingSessions = _courseRepository.upcomingSessions;
+      final nextSessionStartDate = upcomingSessions.isNotEmpty ? upcomingSessions.first.startDate : null;
+
+      if (_courseRepository.activeSessions.isEmpty) {
+        final message = _dynamicMessagesService.determineMessageWithoutActiveSession(
+          now: now,
+          nextSessionStartDate: nextSessionStartDate,
+        );
+        dynamicMessageText = message?.resolve(_appIntl);
+        notifyListeners();
+        return;
+      }
+
+      final session = _courseRepository.activeSessions.first;
+      await _courseRepository.getCoursesActivities(fromCacheOnly: true);
+      final activities = _courseRepository.coursesActivities ?? [];
+      await _courseRepository.getReplacedDays(forceRefresh: forceRefresh);
+      final replacedDays = _courseRepository.replacedDays ?? [];
+
+      final context = DynamicMessageContext.fromSession(
+        session: session,
+        activities: activities,
+        replacedDays: replacedDays,
+        now: now,
+        nextSessionStartDate: nextSessionStartDate,
+      );
+
+      final message = _dynamicMessagesService.determineMessage(context);
+      dynamicMessageText = message.resolve(_appIntl);
+      notifyListeners();
+    } catch (e) {
+      dynamicMessageText = null;
+      notifyListeners();
+    } finally {
+      setBusyForObject(dynamicMessageText, false);
+    }
   }
 
   @override
   void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
-
-  /// Change the order of [flag] card from [oldIndex] to [newIndex].
-  void setOrder(PreferencesFlag flag, int newIndex) {
-    _cardsToDisplay?.remove(flag);
-    _cardsToDisplay?.insert(newIndex, flag);
-
-    updatePreferences();
-
-    notifyListeners();
-
-    _analyticsService.logEvent(tag, "Reordoring ${flag.name}");
-  }
-
-  /// Hide [flag] card from dashboard by setting int value -1
-  void hideCard(PreferencesFlag flag) {
-    _cards?.update(flag, (value) => -1);
-
-    _cardsToDisplay?.remove(flag);
-
-    updatePreferences();
-
-    notifyListeners();
-
-    _analyticsService.logEvent(tag, "Deleting ${flag.name}");
-  }
-
-  /// Reset all card indexes to their default values
-  void setAllCardsVisible() {
-    _cards?.updateAll((key, value) {
-      _settingsManager.setInt(key, key.index - PreferencesFlag.aboutUsCard.index).then((value) {
-        if (!value) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      });
-      return key.index - PreferencesFlag.aboutUsCard.index;
-    });
-
-    getCardsToDisplay();
-
-    loadDataAndUpdateWidget();
-
-    notifyListeners();
-  }
-
-  /// Populate list of cards used in view
-  void getCardsToDisplay() {
-    _cardsToDisplay = [];
-
-    if (_cards != null) {
-      final orderedCards = SplayTreeMap<PreferencesFlag, int>.from(
-        _cards!,
-        (a, b) => _cards![a]!.compareTo(_cards![b]!),
-      );
-
-      orderedCards.forEach((key, value) {
-        if (value >= 0) {
-          _cardsToDisplay?.insert(value, key);
-        }
-      });
-    }
-
-    _analyticsService.logEvent(tag, "Restoring cards");
-  }
-
-  Future<List<CourseActivity>> futureToRunSchedule() async {
-    try {
-      setBusyForObject(scheduleEvents, true);
-      scheduleEvents.clear();
-      await _courseRepository.getCoursesActivities();
-
-      final now = _settingsManager.dateTimeNow;
-      final tomorrow = now.add(const Duration(days: 1)).withoutTime;
-      final twoDaysFromNow = now.add(const Duration(days: 2)).withoutTime;
-
-      final courseActivities =
-          _courseRepository.coursesActivities
-              ?.where((activity) => activity.endDateTime.isAfter(now) && activity.endDateTime.isBefore(twoDaysFromNow))
-              .sorted((a, b) => a.startDateTime.compareTo(b.startDateTime))
-              .toList() ??
-          [];
-
-      for (final activity in courseActivities) {
-        final isToday = now.compareWithoutTime(activity.startDateTime);
-        final isTomorrow = activity.startDateTime.withoutTime == tomorrow;
-
-        if ((isToday || isTomorrow) && await _isLaboratoryGroupToAdd(activity)) {
-          if (isTomorrow && scheduleEvents.isNotEmpty && scheduleEvents.first.startDateTime.compareWithoutTime(now)) {
-            return scheduleEvents;
-          }
-          scheduleEvents.add(activity);
-        }
-      }
-      return scheduleEvents;
-    } catch (e) {
-      onError(e, null);
-    } finally {
-      setBusyForObject(scheduleEvents, false);
-    }
-    return [];
-  }
-
-  Future<bool> _isLaboratoryGroupToAdd(CourseActivity courseActivity) async {
-    final courseKey = courseActivity.courseGroup.split('-').first;
-
-    final activityCodeToUse = await _settingsManager.getDynamicString(
-      PreferencesFlag.scheduleLaboratoryGroup,
-      courseKey,
-    );
-
-    return activityCodeToUse == ActivityCode.labGroupA
-        ? courseActivity.activityName != ActivityName.labB
-        : activityCodeToUse == ActivityCode.labGroupB
-        ? courseActivity.activityName != ActivityName.labA
-        : true;
-  }
-
-  /// Update cards order and display status in preferences
-  void updatePreferences() {
-    if (_cards == null || _cardsToDisplay == null) {
-      return;
-    }
-    for (final MapEntry<PreferencesFlag, int> element in _cards!.entries) {
-      _cards![element.key] = _cardsToDisplay!.indexOf(element.key);
-      _settingsManager.setInt(element.key, _cardsToDisplay!.indexOf(element.key)).then((value) {
-        if (!value) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      });
-    }
-  }
-
-  /// Returns true if dates [a] and [b] are on the same day
-  bool isSameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
   /// Get the list of courses for the Grades card.
   Future<List<Course>> futureToRunGrades() async {
@@ -335,27 +279,9 @@ class DashboardViewModel extends FutureViewModel<Map<PreferencesFlag, int>> {
     }
   }
 
-  void onCardReorder(int oldIndex, int newIndex) {
-    if (newIndex > oldIndex) {
-      // ignore: parameter_assignments
-      newIndex -= 1;
-    }
-
-    // Should not happen becase dismiss card will not be called if the card is null.
-    if (cards == null) {
-      _analyticsService.logError("DashboardView", "Cards list is null");
-      throw Exception("Cards is null");
-    }
-
-    final PreferencesFlag elementMoved = cards!.keys.firstWhere((element) => cards![element] == oldIndex);
-
-    setOrder(elementMoved, newIndex);
-  }
-
-  void changeProgressBarText() => _sessionProgressUseCase.changeProgressBarText();
-
   @override
   void dispose() {
+    _controller?.dispose();
     _sessionProgressSubscription?.cancel();
     _sessionProgressUseCase.dispose();
     super.dispose();

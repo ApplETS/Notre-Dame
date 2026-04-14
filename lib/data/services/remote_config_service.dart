@@ -36,7 +36,6 @@ class RemoteConfigService {
   static const _helloApiUrl = "hello_api_url";
   static const _helloWebsiteUrl = "hello_website_url";
 
-  static const _scheduleListViewDefault = "schedule_list_view_default";
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{
     _serviceIsDown: false,
@@ -50,7 +49,6 @@ class RemoteConfigService {
     _dashboardMsgType: "",
     _signetsPasswordResetUrl: "",
     _privacyPolicyToggle: true,
-    _scheduleListViewDefault: true,
     _helloFeatureToggle: false,
     _helloApiUrl: "",
     _helloWebsiteUrl: "",
@@ -69,11 +67,6 @@ class RemoteConfigService {
   bool get dashboardMessageActive {
     fetch();
     return _remoteConfig.getBool(_dashboardMsgToggle);
-  }
-
-  bool get scheduleListViewDefault {
-    fetch();
-    return _remoteConfig.getBool(_scheduleListViewDefault);
   }
 
   bool get privacyPolicyToggle {

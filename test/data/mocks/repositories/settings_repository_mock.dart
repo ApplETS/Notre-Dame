@@ -7,72 +7,100 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
+import 'package:notredame/data/services/calendar_service.dart';
 import 'settings_repository_mock.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<SettingsRepository>()])
+final _dashboard = DashboardSettingsMock();
+final _schedule = ScheduleSettingsMock();
+final _rating = RatingSettingsMock();
+
+@GenerateNiceMocks([
+  MockSpec<SettingsRepository>(),
+  MockSpec<ScheduleSettings>(),
+  MockSpec<DashboardSettings>(),
+  MockSpec<RatingSettings>(),
+])
 class SettingsRepositoryMock extends MockSettingsRepository {
-  /// Stub the [getScheduleSettings] function of [mock], when called return [toReturn].
-  static void stubGetScheduleSettings(
-    SettingsRepositoryMock mock, {
-    Map<PreferencesFlag, dynamic> toReturn = const {},
-  }) {
-    when(mock.getScheduleSettings()).thenAnswer((_) async => toReturn);
+  @override
+  DashboardSettings get dashboard => _dashboard;
+
+  @override
+  ScheduleSettings get schedule => _schedule;
+
+  @override
+  RatingSettings get rating => _rating;
+
+  /// Stub the [dateTimeNow] getter
+  static void stubDateTimeNow(SettingsRepositoryMock mock, {required DateTime toReturn}) {
+    when(mock.dateTimeNow).thenReturn(toReturn);
   }
 
-  /// Stub the [getDashboard] function of [mock], when called return [toReturn].
-  static void stubGetDashboard(SettingsRepositoryMock mock, {Map<PreferencesFlag, int> toReturn = const {}}) {
-    when(mock.getDashboard()).thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the [setString] function of [mock], when called with [flag] return [toReturn].
-  static void stubSetString(SettingsRepositoryMock mock, PreferencesFlag flag, {bool toReturn = true}) {
-    when(mock.setString(flag, any)).thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the [getString] function of [mock], when called with [flag] return [toReturn].
-  static void stubGetString(SettingsRepositoryMock mock, PreferencesFlag flag, {String toReturn = 'test'}) {
-    when(mock.getString(flag)).thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the [getDynamicString] function of [mock], when called with [flag] return [toReturn].
-  static void stubGetDynamicString(
-    SettingsRepositoryMock mock,
-    PreferencesFlag flag,
-    String key, {
-    String toReturn = 'test',
-  }) {
-    when(mock.getDynamicString(flag, key)).thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the [getBool] function of [mock], when called with [flag] return [toReturn].
-  static void stubGetBool(SettingsRepositoryMock mock, PreferencesFlag flag, {bool? toReturn = false}) {
-    when(mock.getBool(flag)).thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the [setBool] function of [mock], when called with [flag] return [toReturn].
-  static void stubSetBool(SettingsRepositoryMock mock, PreferencesFlag flag, {bool toReturn = true}) {
-    when(mock.setBool(flag, any)).thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the [setInt] function of [mock], when called with [flag] return [toReturn].
-  static void stubSetInt(SettingsRepositoryMock mock, PreferencesFlag flag, {bool toReturn = true}) {
-    when(mock.setInt(flag, any)).thenAnswer((_) async => toReturn);
-  }
-
-  /// Stub the [locale] function of [mock], when called return [toReturn].
-  static void stubLocale(SettingsRepositoryMock mock, {Locale toReturn = const Locale('en')}) {
+  /// Stub the [locale] getter
+  static void stubLocale(SettingsRepositoryMock mock, {Locale toReturn = const Locale('fr')}) {
     when(mock.locale).thenReturn(toReturn);
   }
 
-  /// Stub the [themeMode] function of [mock], when called return [toReturn].
+  /// Stub the [isLocaleDefined] getter
+  static void stubIsLocaleDefined(SettingsRepositoryMock mock, {bool toReturn = true}) {
+    when(mock.isLocaleDefined).thenReturn(toReturn);
+  }
+
+  /// Stub the [themeMode] getter
   static void stubThemeMode(SettingsRepositoryMock mock, {ThemeMode toReturn = ThemeMode.system}) {
     when(mock.themeMode).thenReturn(toReturn);
   }
 
-  /// Stub the [dateTimeNow] function of [mock], when called return [toReturn].
-  static void stubDateTimeNow(SettingsRepositoryMock mock, {required DateTime toReturn}) {
-    // ignore: cast_nullable_to_non_nullable
-    when(mock.dateTimeNow).thenReturn(toReturn);
+  /// Stub the [isLoggedIn] getter
+  static void stubIsLoggedIn(SettingsRepositoryMock mock, {bool toReturn = false}) {
+    when(mock.isLoggedIn).thenReturn(toReturn);
+  }
+
+  /// Stub the [replacedDaysCacheExpiration] getter
+  static void stubReplacedDaysCacheExpiration(SettingsRepositoryMock mock, {DateTime? toReturn}) {
+    when(mock.replacedDaysCacheExpiration).thenReturn(toReturn);
+  }
+
+  /// Stub the [displayScheduleAsList] getter
+  static void stubDashboardScheduleAsList(SettingsRepositoryMock mock, {bool toReturn = false}) {
+    when(_dashboard.displayScheduleAsList).thenReturn(toReturn);
+  }
+
+  /// Stub the [calendarFormat] getter
+  static void stubScheduleCalendarFormat(
+    SettingsRepositoryMock mock, {
+    CalendarTimeFormat toReturn = CalendarTimeFormat.week,
+  }) {
+    when(_schedule.calendarFormat).thenReturn(toReturn);
+  }
+
+  /// Stub the [listView] getter
+  static void stubScheduleListView(SettingsRepositoryMock mock, {bool toReturn = false}) {
+    when(_schedule.listView).thenReturn(toReturn);
+  }
+
+  /// Stub the [todayButton] getter
+  static void stubTodayButton(SettingsRepositoryMock mock, {bool toReturn = true}) {
+    when(_schedule.todayButton).thenReturn(toReturn);
+  }
+
+  /// Stub the [getLaboratoryGroup] function
+  static void stubGetLaboratoryGroup(SettingsRepositoryMock mock, String courseAcronym, {String? toReturn}) {
+    when(_schedule.getLaboratoryGroup(courseAcronym)).thenReturn(toReturn);
+  }
+
+  /// Stub the [hasBeenRequested] getter
+  static void stubRatingHasBeenRequested(SettingsRepositoryMock mock, {bool toReturn = false}) {
+    when(mock.rating.hasBeenRequested).thenReturn(toReturn);
+  }
+
+  /// Stub the [timer] getter
+  static void stubRatingTimer(SettingsRepositoryMock mock, {DateTime? toReturn}) {
+    when(mock.rating.timer).thenReturn(toReturn);
   }
 }
+
+class DashboardSettingsMock extends MockDashboardSettings {}
+
+class ScheduleSettingsMock extends MockScheduleSettings {}
+
+class RatingSettingsMock extends MockRatingSettings {}
