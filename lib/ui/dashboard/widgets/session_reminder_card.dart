@@ -171,19 +171,19 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
     final intl = AppIntl.of(context)!;
 
     if (widget.loading) {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Skeletonizer(
           enabled: true,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Bone.icon(size: 24),
-              const Spacer(),
+              Bone.icon(size: 24),
+              Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
-                children: const [Bone.text(words: 2), SizedBox(height: 6), Bone.text(words: 3)],
+                children: [Bone.text(words: 2), SizedBox(height: 6), Bone.text(words: 3)],
               ),
             ],
           ),
@@ -246,7 +246,7 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
               LayoutBuilder(
                 builder: (context, constraints) {
                   final text = sessionReminderEventName(intl, reminder.type);
-                  final style = TextStyle(fontSize: _eventNameMaxFontSize, fontWeight: FontWeight.w700, height: 1.2);
+                  const style = TextStyle(fontSize: _eventNameMaxFontSize, fontWeight: FontWeight.w700, height: 1.2);
                   double fontSize = _eventNameMaxFontSize;
                   for (final maxLines in [1, 2]) {
                     final tp = TextPainter(

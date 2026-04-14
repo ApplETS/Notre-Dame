@@ -105,8 +105,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
               model.handleDateSelectedChanged(date);
             }),
           }),
-          scrollPhysics: showEntireDay ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
-          safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
+          scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+          safeAreaOption: const calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
           backgroundColor: widget.backgroundColor,
           initialDay: model.daySelected,
           minDay: widget.selectedDate,
@@ -128,7 +128,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   );
 
   Widget _buildListView(DayViewModel model) {
-    final int pageBufferSize = 10;
+    const int pageBufferSize = 10;
     PageController pageController = PageController(initialPage: pageBufferSize);
 
     pageController.addListener(() {
@@ -179,7 +179,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       // On the dashboard, we center the events
       shrinkWrap: (widget.selectedDate != null) ? true : false,
       // On the dashboard, the list should be scrollable only in case of overflow
@@ -197,7 +197,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     final Color defaultColor = context.theme.appColors.scheduleLine;
 
     return Container(
-      padding: EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(bottom: 4),
       color: context.theme.appColors.appBar,
       child: TableCalendar(
         key: const Key("TableCalendar"),

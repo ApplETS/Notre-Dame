@@ -75,7 +75,7 @@ void main() {
           (widget) =>
               widget is Container &&
               widget.decoration is BoxDecoration &&
-              (widget.decoration! as BoxDecoration).color == Color(0xff868383),
+              (widget.decoration! as BoxDecoration).color == const Color(0xff868383),
         ),
         findsOneWidget,
         reason: "The handle should be grey",

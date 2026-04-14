@@ -45,7 +45,7 @@ void main() {
     group('UI - ', () {
       testWidgets('has 1 listView and 8 listTiles when privacy policy disabled', (WidgetTester tester) async {
         RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
-        await tester.pumpWidget(localizedWidget(child: MoreView()));
+        await tester.pumpWidget(localizedWidget(child: const MoreView()));
         await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);
@@ -56,7 +56,7 @@ void main() {
       });
 
       testWidgets('has 1 listView and 9 listTiles when privacy policy enabled', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: MoreView()));
+        await tester.pumpWidget(localizedWidget(child: const MoreView()));
         await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);
@@ -69,7 +69,7 @@ void main() {
       group('navigation - ', () {
         testWidgets('about', (WidgetTester tester) async {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: const MoreView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -85,7 +85,7 @@ void main() {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock, toReturn: false);
 
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: const MoreView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -102,7 +102,7 @@ void main() {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
           InAppReviewServiceMock.stubIsAvailable(inAppReviewServiceMock);
 
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: const MoreView()));
           await tester.pumpAndSettle();
 
           // Tap the button.
@@ -118,7 +118,7 @@ void main() {
 
         testWidgets('contributors', (WidgetTester tester) async {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: const MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -132,7 +132,7 @@ void main() {
 
         testWidgets('licenses', (WidgetTester tester) async {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: const MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -148,7 +148,7 @@ void main() {
 
         testWidgets('need help', (WidgetTester tester) async {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: const MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -162,7 +162,7 @@ void main() {
 
         testWidgets('settings', (WidgetTester tester) async {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: const MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.
@@ -176,7 +176,7 @@ void main() {
 
         testWidgets('logout', (WidgetTester tester) async {
           RemoteConfigServiceMock.stubGetPrivacyPolicyEnabled(remoteConfigServiceMock, toReturn: false);
-          await tester.pumpWidget(localizedWidget(child: MoreView()));
+          await tester.pumpWidget(localizedWidget(child: const MoreView()));
           await tester.pumpAndSettle(const Duration(seconds: 1));
 
           // Tap the button.

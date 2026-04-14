@@ -84,7 +84,7 @@ void main() {
     });
 
     testWidgets('contains main info', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpWidget(localizedWidget(child: const ProfileView()));
       await tester.pumpAndSettle();
 
       expect(find.text("${profileStudent.firstName} ${profileStudent.lastName}"), findsOneWidget);
@@ -93,7 +93,7 @@ void main() {
     });
 
     testWidgets('contains personal info', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpWidget(localizedWidget(child: const ProfileView()));
       await tester.pumpAndSettle();
 
       expect(find.text(profileStudent.permanentCode), findsOneWidget);
@@ -105,7 +105,7 @@ void main() {
 
     testWidgets('copies personnal info', (WidgetTester tester) async {
       // Tap on the permanent code
-      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpWidget(localizedWidget(child: const ProfileView()));
       await tester.pumpAndSettle();
 
       await tester.tap(find.text(profileStudent.permanentCode));
@@ -117,7 +117,7 @@ void main() {
     });
 
     testWidgets('contains balance info', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpWidget(localizedWidget(child: const ProfileView()));
       await tester.pumpAndSettle();
 
       expect(find.text(profileStudent.balance), findsOneWidget);
@@ -126,7 +126,7 @@ void main() {
     });
 
     testWidgets('contains program completion', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpWidget(localizedWidget(child: const ProfileView()));
       await tester.pumpAndSettle();
 
       expect(find.text(intl.profile_program_completion), findsOneWidget);
@@ -135,7 +135,7 @@ void main() {
     });
 
     testWidgets('contains "other" programs section', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: ProfileView()));
+      await tester.pumpWidget(localizedWidget(child: const ProfileView()));
       await tester.pumpAndSettle();
 
       expect(find.text(intl.profile_other_programs), findsOneWidget);

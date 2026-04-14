@@ -33,7 +33,7 @@ void main() {
         SettingsRepositoryMock.stubThemeMode(settingsManagerMock);
         SettingsRepositoryMock.stubDashboardScheduleAsList(settingsManagerMock);
 
-        expect(viewModel.locale, Locale('fr'));
+        expect(viewModel.locale, const Locale('fr'));
         expect(viewModel.theme, ThemeMode.system);
         expect(viewModel.dashboardScheduleList, false);
 

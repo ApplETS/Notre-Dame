@@ -90,7 +90,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                   ),
                   AutoSizeText(
                     AppIntl.of(context)!.progress_bar,
-                    style: TextStyle(fontSize: 18, height: 1),
+                    style: const TextStyle(fontSize: 18, height: 1),
                     maxLines: 1,
                   ),
                 ],
@@ -143,11 +143,11 @@ class _CircularProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double strokeWidth = 12;
+    const double strokeWidth = 12;
     final Offset center = Offset(size.width / 2, size.height / 2);
     final double radius = (size.width / 2) - strokeWidth / 2;
-    final double startAngle = pi - pi / 4;
-    final double sweepAngle = pi + 2 * pi / 4 + pi / 20;
+    const double startAngle = pi - pi / 4;
+    const double sweepAngle = pi + 2 * pi / 4 + pi / 20;
     final double progressSweep = sweepAngle * value;
 
     // Paint background (gray)

@@ -28,7 +28,7 @@ void main() {
   DateTime sunday = DateTime.now().withoutTimeUtc.startOfWeek(start: WeekDays.sunday).withoutTime;
   DateTime saturday = DateTime.now().withoutTimeUtc
       .startOfWeek(start: WeekDays.sunday)
-      .add(Duration(days: 6))
+      .add(const Duration(days: 6))
       .withoutTime;
 
   Map<DateTime, List<EventData>> events = {
@@ -36,26 +36,26 @@ void main() {
       EventData(
         courseAcronym: "LOG100",
         group: "LOG100-01",
-        locations: ["D-2020"],
+        locations: const ["D-2020"],
         activityName: "Cours",
         courseName: "Programmation et réseautique en génie logiciel",
         teacherName: "John Doe",
         date: sunday,
-        startTime: sunday.add(Duration(hours: 9)),
-        endTime: sunday.add(Duration(hours: 12)),
+        startTime: sunday.add(const Duration(hours: 9)),
+        endTime: sunday.add(const Duration(hours: 12)),
       ),
     ],
     saturday: [
       EventData(
         courseAcronym: "ING150",
         group: "ING150-01",
-        locations: ["D-2020"],
+        locations: const ["D-2020"],
         activityName: "Cours",
         courseName: "Statique et dynamique",
         teacherName: "Jane Doe",
         date: saturday,
-        startTime: saturday.add(Duration(hours: 9)),
-        endTime: saturday.add(Duration(hours: 12)),
+        startTime: saturday.add(const Duration(hours: 9)),
+        endTime: saturday.add(const Duration(hours: 12)),
       ),
     ],
   };

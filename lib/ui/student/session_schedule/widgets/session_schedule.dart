@@ -74,8 +74,8 @@ class _SessionScheduleState extends State<SessionSchedule> {
         },
         liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
         weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
-        headerStyle: HeaderStyle(
-          headerTextStyle: const TextStyle(fontSize: 0),
+        headerStyle: const HeaderStyle(
+          headerTextStyle: TextStyle(fontSize: 0),
           leftIconConfig: null,
           rightIconConfig: null,
         ),

@@ -27,23 +27,23 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.startup:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
-        pageBuilder: (_, _, _) => StartUpView(),
+        pageBuilder: (_, _, _) => const StartUpView(),
       );
     case RouterPaths.serviceOutage:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => OutageView(),
+        builder: (_) => const OutageView(),
       );
     case RouterPaths.faq:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => FaqView(),
+        builder: (_) => const FaqView(),
       );
     case RouterPaths.root:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name, arguments: routeSettings.arguments),
         transitionsBuilder: (_, animation, _, child) => rootPagesAnimation(animation, child),
-        pageBuilder: (_, _, _) => RootView(),
+        pageBuilder: (_, _, _) => const RootView(),
       );
     case RouterPaths.defaultSchedule:
       return MaterialPageRoute(
@@ -58,7 +58,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.news:
       return PageRouteBuilder(
         settings: RouteSettings(name: routeSettings.name),
-        pageBuilder: (_, _, _) => NewsView(),
+        pageBuilder: (_, _, _) => const NewsView(),
       );
     case RouterPaths.newsDetails:
       return PageRouteBuilder(
@@ -73,17 +73,17 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.security:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => SecurityView(),
+        builder: (_) => const SecurityView(),
       );
     case RouterPaths.settings:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => SettingsView(),
+        builder: (_) => const SettingsView(),
       );
     case RouterPaths.map:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => MapView(),
+        builder: (_) => const MapView(),
       );
     case RouterPaths.contributors:
       return MaterialPageRoute(
@@ -93,12 +93,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case RouterPaths.about:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => AboutView(),
+        builder: (_) => const AboutView(),
       );
     case RouterPaths.chooseLanguage:
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
-        builder: (_) => ChooseLanguageView(),
+        builder: (_) => const ChooseLanguageView(),
       );
     default:
       return PageRouteBuilder(

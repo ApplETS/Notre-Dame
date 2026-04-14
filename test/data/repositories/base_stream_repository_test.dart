@@ -48,7 +48,7 @@ void main() {
       });
 
       // Adding a small delay to ensure the stream has time to emit
-      await Future.delayed(Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 10));
       expect(streamEvents, 1);
     });
 
@@ -106,7 +106,7 @@ void main() {
         await repository.getFromCache((json) => json);
 
         // Adding a small delay to ensure the stream has time to emit
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 10));
 
         expect(streamEvents, 0, reason: 'No stream event should be emitted');
         expect(streamErrors, 1, reason: 'An error should be emitted');
@@ -175,7 +175,7 @@ void main() {
         await repository.getFromApi(apiCall);
 
         // Adding a small delay to ensure the stream has time to emit
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 10));
         expect(streamEvents, 0);
         expect(streamErrors, 1);
         verify(authService.getToken()).called(4);
@@ -191,7 +191,7 @@ void main() {
         await repository.getFromApi(apiCall);
 
         // Adding a small delay to ensure the stream has time to emit
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 10));
         expect(streamEvents, 0);
         expect(streamErrors, 1);
       });
@@ -206,7 +206,7 @@ void main() {
 
         await repository.getFromApi(apiCall);
 
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 10));
         expect(streamEvents, 0);
         expect(streamErrors, 1);
         verifyNever(mockSecureStorage.write(key: 'test_cache_key', value: anyNamed("value")));
@@ -231,7 +231,7 @@ void main() {
 
         await repository.fetch(() async => apiResponse, (json) => json);
 
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 10));
 
         expect(streamEvents.length, 2);
         expect(streamEvents[0], [
@@ -257,7 +257,7 @@ void main() {
         // Second fetch should use cache
         await repository.fetch(() async => throw 'should not call', (json) => json);
 
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 10));
 
         expect(streamEvents.length, 1);
         expect(streamEvents[0], [
@@ -286,7 +286,7 @@ void main() {
         // Second fetch with force update
         await repository.fetch(() async => apiResponse2, (json) => json, forceUpdate: true);
 
-        await Future.delayed(Duration(milliseconds: 10));
+        await Future.delayed(const Duration(milliseconds: 10));
 
         expect(streamEvents.length, 2);
         expect(streamEvents[1], [

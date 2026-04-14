@@ -30,7 +30,7 @@ class WeekViewModel extends CalendarViewModel {
       if (DateTime.now().weekday == DateTime.saturday &&
           DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime == weekSelected &&
           calendarEventsFromDate(DateTime.now()).isEmpty) {
-        handleDateSelectedChanged(weekSelected.withoutTimeUtc.add(Duration(days: 7)).withoutTime);
+        handleDateSelectedChanged(weekSelected.withoutTimeUtc.add(const Duration(days: 7)).withoutTime);
         displayNextWeek = true;
       }
     }
@@ -48,8 +48,8 @@ class WeekViewModel extends CalendarViewModel {
   bool returnToCurrentDate() {
     DateTime dateToReturnTo = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
     if (DateTime.now().weekday == DateTime.saturday &&
-        calendarEventsFromDate(dateToReturnTo.withoutTimeUtc.add(Duration(days: 6)).withoutTime).isEmpty) {
-      dateToReturnTo = dateToReturnTo.withoutTimeUtc.add(Duration(days: 7)).withoutTime;
+        calendarEventsFromDate(dateToReturnTo.withoutTimeUtc.add(const Duration(days: 6)).withoutTime).isEmpty) {
+      dateToReturnTo = dateToReturnTo.withoutTimeUtc.add(const Duration(days: 7)).withoutTime;
     }
 
     final bool isThisWeekSelected = dateToReturnTo == weekSelected;

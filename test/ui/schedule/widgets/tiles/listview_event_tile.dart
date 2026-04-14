@@ -15,9 +15,9 @@ final EventData event = EventData(
   courseAcronym: 'GEN101',
   group: 'GEN101-01',
   activityName: 'TP',
-  locations: ['D-2020'],
-  startTime: date.add(Duration(hours: 18)),
-  endTime: date.add(Duration(hours: 20)),
+  locations: const ['D-2020'],
+  startTime: date.add(const Duration(hours: 18)),
+  endTime: date.add(const Duration(hours: 20)),
   courseName: 'Generic course',
   date: date,
 );
