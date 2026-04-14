@@ -16,6 +16,8 @@ import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/session_utils.dart';
 
+import '../../../core/ui/navigation_menu/navigation_menu.dart';
+
 class GradesView extends StatefulWidget {
   const GradesView({super.key});
 
@@ -36,10 +38,10 @@ class _GradesViewState extends State<GradesView> {
           onRefresh: () => model.refresh(),
           child: Stack(
             children: [
-              // This widget is here to make this widget a Scrollable. Needed
-              // by the RefreshIndicator
-              ListView(),
-              if (model.coursesBySession.isEmpty)
+              if (model.coursesBySession.isEmpty) ...{
+                // This widget is here to make this widget a Scrollable. Needed
+                // by the RefreshIndicator
+                ListView(),
                 Center(
                   child: Text(
                     AppIntl.of(context)!.grades_msg_no_grades,
@@ -47,9 +49,10 @@ class _GradesViewState extends State<GradesView> {
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 )
+              }
               else
                 ListView.builder(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: EdgeInsets.only(top: 8.0, bottom: NavigationMenu.overlapHeight(context)),
                   itemCount: model.coursesBySession.length,
                   itemBuilder: (BuildContext context, int index) => _buildSessionCourses(
                     index,

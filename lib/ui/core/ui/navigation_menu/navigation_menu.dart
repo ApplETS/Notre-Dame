@@ -23,6 +23,9 @@ class NavigationMenu extends StatefulWidget {
 
   static double systemNavBarInset(BuildContext context) => MediaQuery.viewPaddingOf(context).bottom;
 
+  // On root views, this value represents the space at the bottom that can be occupied by
+  static double overlapHeight(BuildContext context) => systemNavBarInset(context) + ((MediaQuery.of(context).orientation == Orientation.portrait) ? 32.0 : 0.0);
+
   @override
   State<NavigationMenu> createState() => _NavigationMenuState();
 }

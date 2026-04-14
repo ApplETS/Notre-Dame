@@ -50,7 +50,6 @@ class _RootViewState extends State<RootView> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // primary: false,
       extendBody: true,
       bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? menu : null,
       body: Column(

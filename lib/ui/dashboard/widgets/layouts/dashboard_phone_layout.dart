@@ -3,6 +3,7 @@ import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 
 // Package imports:
 import 'package:skeletonizer/skeletonizer.dart';
@@ -32,13 +33,14 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
 
   final double paddingAboveSchedule = 6.0;
   final double spacingBetweenGradesAndSchedule = 6.0;
-  final double paddingUnderGrades = 32.0;
+  late double paddingUnderGrades;
 
   double? _scheduleCardHeight;
 
   @override
   void initState() {
     super.initState();
+
     _schedulePostFrameUpdate();
   }
 
@@ -87,6 +89,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
     final textStyle = TextStyle(fontSize: fontSize, height: lineHeight, color: AppPalette.grey.white);
 
     final double twoLinesHeight = fontSize * lineHeight * 2;
+    paddingUnderGrades = NavigationMenu.overlapHeight(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

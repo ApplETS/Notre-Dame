@@ -24,8 +24,10 @@ class _SettingsViewState extends State<SettingsView> {
     builder: (context, model, child) => BaseScaffold(
       appBar: AppBar(title: Text(AppIntl.of(context)!.settings_title)),
       body: SafeArea(
+        top: false,
+        bottom: false,
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+          padding: EdgeInsets.only(top: 16.0, left: 8.0, right: 8.0, bottom: MediaQuery.viewPaddingOf(context).bottom),
           child: Column(
             spacing: 12.0,
             children: [

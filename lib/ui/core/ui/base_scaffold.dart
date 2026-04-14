@@ -14,6 +14,8 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 
+import 'navigation_menu/navigation_menu.dart';
+
 /// Basic Scaffold to avoid boilerplate code in the application.
 /// Contains a loader controlled by [_isLoading]
 class BaseScaffold extends StatefulWidget {
@@ -88,7 +90,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
         Column(
           children: [
             if (widget.appBar != null) widget.appBar!,
-            Expanded(child: SafeArea(bottom: false, top: false, left: false, child: widget.body!)),
+            Expanded(child: widget.body!),
           ],
         ),
         if (_isOffline) _buildOfflineBar(),
@@ -98,7 +100,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
 
   Widget _buildOfflineBar() {
     return Positioned(
-      bottom: 32,
+      bottom: NavigationMenu.overlapHeight(context),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(color: AppPalette.etsLightRed, borderRadius: BorderRadius.circular(12.0)),

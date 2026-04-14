@@ -93,7 +93,7 @@ class _FaqViewState extends State<FaqView> {
 
   Widget _getActions(FaqViewModel model) => Expanded(
     child: ListView(
-      padding: const EdgeInsets.only(bottom: 32.0),
+      padding: EdgeInsets.only(bottom: MediaQuery.viewPaddingOf(context).bottom),
       children: [
         ActionCard(
           title: AppIntl.of(context)!.faq_actions_reactivate_account_title,

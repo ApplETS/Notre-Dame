@@ -13,6 +13,8 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/ets/quick_links/view_model/quick_links_viewmodel.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/web_link_card.dart';
 
+import '../../../core/ui/navigation_menu/navigation_menu.dart';
+
 class QuickLinksView extends StatefulWidget {
   const QuickLinksView({super.key});
 
@@ -86,7 +88,7 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
 
     return ReorderableGridView.count(
       dragEnabled: !blockReorder,
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0, bottom: NavigationMenu.overlapHeight(context)),
       mainAxisSpacing: 2.0,
       crossAxisSpacing: 2.0,
       crossAxisCount: crossAxisCount,
