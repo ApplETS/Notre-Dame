@@ -27,7 +27,8 @@ class NavigationMenu extends StatefulWidget {
   static bool isPortrait(BuildContext context) => MediaQuery.of(context).orientation == Orientation.portrait;
 
   // On root views, this is the height that can be occupied by the top of the selected button or that is unsafe to use.
-  static double overlapHeight(BuildContext context) => isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
+  static double overlapHeight(BuildContext context) =>
+      isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
 
   @override
   State<NavigationMenu> createState() => _NavigationMenuState();
