@@ -80,10 +80,7 @@ class _RootViewState extends State<RootView> {
             ),
           ),
           if (MediaQuery.of(context).orientation == Orientation.portrait)
-            SizedBox(
-              // The same height as the menu bar
-              height: NavigationMenu.height(context),
-            ),
+            SizedBox(height: NavigationMenu.height(context)),
         ],
       ),
     );
