@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 
 // Package imports:
 import 'package:stacked/stacked.dart';
@@ -54,7 +55,7 @@ class _GradesViewState extends State<GradesView> {
               else
                 ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: EdgeInsets.only(top: 8.0, bottom: NavigationMenu.overlapHeight(context)),
                   itemCount: model.coursesBySession.length,
                   itemBuilder: (BuildContext context, int index) => _buildSessionCourses(
                     index,

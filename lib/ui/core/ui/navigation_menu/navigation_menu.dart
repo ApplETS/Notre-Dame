@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:io';
+import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
@@ -14,17 +15,17 @@ import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu_button.dart
 late GlobalKey<NavigationMenuButtonState> currentKey;
 
 class NavigationMenu extends StatefulWidget {
-  static const double height = 64.0;
+  static double height(BuildContext context) => max(76.0, 64.0 + MediaQuery.viewPaddingOf(context).bottom);
 
   final int selectedIndex;
   final ValueChanged<NavigationMenuCallback> indexChangedCallback;
 
   const NavigationMenu({super.key, required this.selectedIndex, required this.indexChangedCallback});
 
-  static double systemNavBarInset(BuildContext context) => MediaQuery.viewPaddingOf(context).bottom;
+  static bool isPortrait(BuildContext context) => MediaQuery.of(context).orientation == Orientation.portrait;
 
   // On root views, this value represents the space at the bottom that can be occupied by the selected button
-  static double overlapHeight(BuildContext context) => systemNavBarInset(context) + ((MediaQuery.of(context).orientation == Orientation.portrait) ? 32.0 : 0.0);
+  static double overlapHeight(BuildContext context) => isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
 
   @override
   State<NavigationMenu> createState() => _NavigationMenuState();
@@ -69,24 +70,14 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   Widget _bottomBar(Widget buttons) => Stack(
       children: [
-        Positioned.fill(
-          child: IgnorePointer(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.transparent, context.theme.scaffoldBackgroundColor],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-            ),
-          ),
-        ),
         Container(
-          height: NavigationMenu.height + NavigationMenu.systemNavBarInset(context),
+          height: NavigationMenu.height(context),
           decoration: BoxDecoration(
             color: context.theme.appColors.navBar,
-            boxShadow: const [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
+            boxShadow: [
+              BoxShadow(color: context.theme.scaffoldBackgroundColor, spreadRadius: 8.0, blurRadius: 8.0),
+              const BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0),
+            ],
           ),
         ),
         Positioned.fill(
