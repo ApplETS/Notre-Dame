@@ -16,7 +16,6 @@ import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import 'package:notredame/ui/student/profile/widgets/program_completion.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
 import 'package:notredame/utils/loading.dart';
-
 import '../../../core/ui/navigation_menu/navigation_menu.dart';
 
 class ProfileView extends StatefulWidget {
@@ -44,12 +43,12 @@ class _ProfileViewState extends State<ProfileView> {
         onRefresh: () => model.refresh(),
         child: SingleChildScrollView(
           padding: EdgeInsets.only(bottom: NavigationMenu.overlapHeight(context)),
-          child: (model.isBusy) ?
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: buildLoading(isInteractionLimitedWhileLoading: false),
-            ) :
-            buildPage(context, model),
+          child: (model.isBusy)
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: buildLoading(isInteractionLimitedWhileLoading: false),
+                )
+              : buildPage(context, model),
         ),
       );
     },

@@ -15,7 +15,6 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
-
 import '../../core/ui/navigation_menu/navigation_menu.dart';
 
 class MoreView extends StatefulWidget {

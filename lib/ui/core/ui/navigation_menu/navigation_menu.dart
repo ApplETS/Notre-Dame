@@ -25,7 +25,8 @@ class NavigationMenu extends StatefulWidget {
   static bool isPortrait(BuildContext context) => MediaQuery.of(context).orientation == Orientation.portrait;
 
   // On root views, this value represents the space at the bottom that can be occupied by the selected button
-  static double overlapHeight(BuildContext context) => isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
+  static double overlapHeight(BuildContext context) =>
+      isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
 
   @override
   State<NavigationMenu> createState() => _NavigationMenuState();
@@ -69,22 +70,22 @@ class _NavigationMenuState extends State<NavigationMenu> {
   }
 
   Widget _bottomBar(Widget buttons) => Stack(
-      children: [
-        Container(
-          height: NavigationMenu.height(context),
-          decoration: BoxDecoration(
-            color: context.theme.appColors.navBar,
-            boxShadow: [
-              BoxShadow(color: context.theme.scaffoldBackgroundColor, spreadRadius: 8.0, blurRadius: 8.0),
-              const BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0),
-            ],
-          ),
+    children: [
+      Container(
+        height: NavigationMenu.height(context),
+        decoration: BoxDecoration(
+          color: context.theme.appColors.navBar,
+          boxShadow: [
+            BoxShadow(color: context.theme.scaffoldBackgroundColor, spreadRadius: 8.0, blurRadius: 8.0),
+            const BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0),
+          ],
         ),
-        Positioned.fill(
-          child: Padding(padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0), child: buttons),
-        ),
-      ],
-    );
+      ),
+      Positioned.fill(
+        child: Padding(padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0), child: buttons),
+      ),
+    ],
+  );
 
   Widget _createButtons() {
     return Flex(

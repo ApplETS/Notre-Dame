@@ -131,8 +131,7 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
   void restartAnimation() {
     _buttonColorController.forward();
     _textOpacityController.forward();
-    _paddingController.forward().then((_) => setState(() => _isActive = true)
-    );
+    _paddingController.forward().then((_) => setState(() => _isActive = true));
   }
 }
 
