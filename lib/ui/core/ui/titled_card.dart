@@ -16,7 +16,7 @@ class TitledCard extends StatelessWidget {
     return Card(
       clipBehavior: Clip.hardEdge,
       color: context.theme.appColors.dashboardCard,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(12.0), bottom: Radius.circular(20.0)),
       ),
       child: Column(

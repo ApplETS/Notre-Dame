@@ -89,11 +89,11 @@ class _NavigationMenuState extends State<NavigationMenu> {
           height: NavigationMenu.height + bottomInset,
           decoration: BoxDecoration(
             color: context.theme.appColors.navBar,
-            boxShadow: [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
+            boxShadow: const [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
           ),
         ),
         Positioned.fill(
-          child: Padding(padding: EdgeInsets.fromLTRB(20.0, 0, 20.0, 0), child: buttons),
+          child: Padding(padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0), child: buttons),
         ),
       ],
     );

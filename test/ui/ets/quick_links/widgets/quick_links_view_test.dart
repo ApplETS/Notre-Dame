@@ -42,7 +42,7 @@ void main() {
 
     group('UI - ', () {
       testWidgets('has X cards', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: QuickLinksView(), useScaffold: false));
+        await tester.pumpWidget(localizedWidget(child: const QuickLinksView(), useScaffold: false));
         await tester.pumpAndSettle();
 
         expect(find.byType(WebLinkCard, skipOffstage: false), findsNWidgets(quickLinks(intl).length));

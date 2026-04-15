@@ -13,7 +13,6 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-
 import 'navigation_menu/navigation_menu.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
@@ -102,7 +101,7 @@ class _BaseScaffoldState extends State<BaseScaffold> {
     return Positioned(
       bottom: NavigationMenu.overlapHeight(context),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(color: AppPalette.etsLightRed, borderRadius: BorderRadius.circular(12.0)),
         child: Text(AppIntl.of(context)!.no_connectivity, textAlign: TextAlign.center),
       ),

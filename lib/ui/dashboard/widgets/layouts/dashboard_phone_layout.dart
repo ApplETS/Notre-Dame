@@ -3,7 +3,6 @@ import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 
 // Package imports:
 import 'package:skeletonizer/skeletonizer.dart';
@@ -15,6 +14,7 @@ import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 
 class DashboardPhoneLayout extends StatefulWidget {
   final DashboardViewModel model;
@@ -40,7 +40,6 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
   @override
   void initState() {
     super.initState();
-
     _schedulePostFrameUpdate();
   }
 
@@ -88,7 +87,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
 
     final textStyle = TextStyle(fontSize: fontSize, height: lineHeight, color: AppPalette.grey.white);
 
-    final double twoLinesHeight = fontSize * lineHeight * 2;
+    const double twoLinesHeight = fontSize * lineHeight * 2;
     paddingUnderGrades = NavigationMenu.overlapHeight(context);
 
     return Column(

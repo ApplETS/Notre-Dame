@@ -51,7 +51,7 @@ class GradeNotAvailable extends StatelessWidget {
             children: [
               if (isEvaluationPeriod)
                 FilledButton.icon(
-                  icon: Icon(Icons.star),
+                  icon: const Icon(Icons.star),
                   label: Text(AppIntl.of(context)!.grades_complete_evaluations),
                   onPressed: () => _launchUrlService.launchInBrowser(Urls.courseReviews),
                 ),
@@ -63,7 +63,7 @@ class GradeNotAvailable extends StatelessWidget {
                         foregroundColor: AppPalette.grey.white,
                       ),
                 onPressed: onPressed,
-                icon: Icon(Icons.refresh),
+                icon: const Icon(Icons.refresh),
                 label: Text(AppIntl.of(context)!.retry),
               ),
             ],

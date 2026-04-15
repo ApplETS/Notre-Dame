@@ -42,17 +42,17 @@ class _SettingsViewState extends State<SettingsView> {
                           ButtonSegment<ThemeMode>(
                             value: ThemeMode.light,
                             label: Text(AppIntl.of(context)!.light_theme),
-                            icon: Icon(Icons.wb_sunny),
+                            icon: const Icon(Icons.wb_sunny),
                           ),
                           ButtonSegment<ThemeMode>(
                             value: ThemeMode.dark,
                             label: Text(AppIntl.of(context)!.dark_theme),
-                            icon: Icon(Icons.nightlight_round),
+                            icon: const Icon(Icons.nightlight_round),
                           ),
                           ButtonSegment<ThemeMode>(
                             value: ThemeMode.system,
                             label: Text(AppIntl.of(context)!.system_theme),
-                            icon: Icon(Icons.brightness_auto),
+                            icon: const Icon(Icons.brightness_auto),
                           ),
                         ],
                         showSelectedIcon: false,
@@ -66,19 +66,19 @@ class _SettingsViewState extends State<SettingsView> {
                           });
                         },
                       ),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       Text(AppIntl.of(context)!.settings_dashboard_schedule_format),
                       SegmentedButton<bool>(
                         segments: <ButtonSegment<bool>>[
                           ButtonSegment<bool>(
                             value: false,
                             label: Text(AppIntl.of(context)!.settings_dashboard_schedule_format_calendar),
-                            icon: Icon(Icons.calendar_month),
+                            icon: const Icon(Icons.calendar_month),
                           ),
                           ButtonSegment<bool>(
                             value: true,
                             label: Text(AppIntl.of(context)!.settings_dashboard_schedule_format_list),
-                            icon: Icon(Icons.list),
+                            icon: const Icon(Icons.list),
                           ),
                         ],
                         selected: <bool>{model.dashboardScheduleList},

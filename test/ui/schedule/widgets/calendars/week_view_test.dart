@@ -13,7 +13,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
-import 'package:notredame/utils/date_utils.dart';
+import 'package:notredame/utils/date_extensions.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
 import '../../../../data/mocks/services/schedule_service_mock.dart';
@@ -25,31 +25,37 @@ void main() {
   late CourseRepositoryMock courseRepositoryMock;
   late ScheduleServiceMock scheduleServiceMock;
 
+  DateTime sunday = DateTime.now().withoutTimeUtc.startOfWeek(start: WeekDays.sunday).withoutTime;
+  DateTime saturday = DateTime.now().withoutTimeUtc
+      .startOfWeek(start: WeekDays.sunday)
+      .add(const Duration(days: 6))
+      .withoutTime;
+
   Map<DateTime, List<EventData>> events = {
-    DateUtils.getFirstdayOfWeek(DateTime.now()): [
+    sunday: [
       EventData(
         courseAcronym: "LOG100",
         group: "LOG100-01",
-        locations: ["D-2020"],
+        locations: const ["D-2020"],
         activityName: "Cours",
         courseName: "Programmation et réseautique en génie logiciel",
         teacherName: "John Doe",
-        date: DateUtils.getFirstdayOfWeek(DateTime.now()),
-        startTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 9)),
-        endTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(hours: 12)),
+        date: sunday,
+        startTime: sunday.add(const Duration(hours: 9)),
+        endTime: sunday.add(const Duration(hours: 12)),
       ),
     ],
-    DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 1)).withoutTime: [
+    saturday: [
       EventData(
         courseAcronym: "ING150",
         group: "ING150-01",
-        locations: ["D-2020"],
+        locations: const ["D-2020"],
         activityName: "Cours",
         courseName: "Statique et dynamique",
         teacherName: "Jane Doe",
-        date: DateUtils.getFirstdayOfWeek(DateTime.now()),
-        startTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 9)),
-        endTime: DateUtils.getFirstdayOfWeek(DateTime.now()).add(Duration(days: 6, hours: 12)),
+        date: saturday,
+        startTime: saturday.add(const Duration(hours: 9)),
+        endTime: saturday.add(const Duration(hours: 12)),
       ),
     ],
   };

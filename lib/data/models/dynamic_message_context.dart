@@ -2,7 +2,7 @@
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/utils/date_utils.dart';
+import 'package:notredame/utils/date_extensions.dart';
 import 'package:notredame/utils/replaced_day_analyzer.dart';
 import 'package:notredame/utils/schedule_analyzer.dart';
 
@@ -59,10 +59,10 @@ class DynamicMessageContext {
       replacedDays: replacedDays,
       now: now,
       nextSessionStartDate: nextSessionStartDate,
-      courseDaysRemaining: DateUtils.daysBetween(now, courseEndDate),
-      finalsDaysRemaining: lastFinalDate != null ? DateUtils.daysBetween(now, lastFinalDate) : null,
-      weeksCompleted: DateUtils.weeksCompleted(session.startDate, now),
-      courseWeeksRemaining: DateUtils.weeksRemaining(courseEndDate, now),
+      courseDaysRemaining: now.daysUntil(courseEndDate),
+      finalsDaysRemaining: lastFinalDate != null ? now.daysUntil(lastFinalDate) : null,
+      weeksCompleted: session.startDate.weeksUntil(now),
+      courseWeeksRemaining: now.weeksUntil(courseEndDate),
       courseDaysThisWeek: analyzer.courseDaysThisWeek,
     );
     context._scheduleAnalyzerCache = analyzer;
@@ -83,8 +83,7 @@ class DynamicMessageContext {
 
   bool get isFinalsOver => hasFinals ? finalsDaysRemaining! < 0 : isCoursesOver;
 
-  int? get daysUntilNextSession =>
-      nextSessionStartDate != null ? DateUtils.daysBetween(now, nextSessionStartDate!) : null;
+  int? get daysUntilNextSession => nextSessionStartDate != null ? now.daysUntil(nextSessionStartDate!) : null;
 
   bool get isLastCourseDayOfWeek => _scheduleAnalyzer.isLastCourseDayOfWeek;
 

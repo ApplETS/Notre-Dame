@@ -19,7 +19,7 @@ void main() {
 
     group('UI - ', () {
       testWidgets('has 7 images and 2 texts and 1 row', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: AboutView()));
+        await tester.pumpWidget(localizedWidget(child: const AboutView()));
         await tester.pumpAndSettle();
 
         final image = find.byType(Image);
@@ -37,7 +37,7 @@ void main() {
     });
 
     testWidgets('toggles easter egg when combination is performed', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: AboutView()));
+      await tester.pumpWidget(localizedWidget(child: const AboutView()));
       await tester.pumpAndSettle();
 
       final finder = find.byType(Image);

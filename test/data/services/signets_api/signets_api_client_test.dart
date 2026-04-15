@@ -243,7 +243,7 @@ void main() {
         const String session = "A2020";
         final startDate = DateTime(2020, 9, 3, 18);
         final endDate = DateTime(2020, 9, 3, 20);
-        final courseGroup = "GEN101-01";
+        const courseGroup = "GEN101-01";
 
         final queryParameters = {
           "session": session,

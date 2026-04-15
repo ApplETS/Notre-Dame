@@ -19,7 +19,7 @@ void main() {
 
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
       await tester.pumpWidget(
-        localizedWidget(child: ProgressBarCard(progressBarText: "45", progress: 0.5, loading: false)),
+        localizedWidget(child: const ProgressBarCard(progressBarText: "45", progress: 0.5, loading: false)),
       );
       await tester.pumpAndSettle();
 

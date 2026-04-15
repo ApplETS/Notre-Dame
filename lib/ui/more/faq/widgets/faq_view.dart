@@ -58,7 +58,7 @@ class _FaqViewState extends State<FaqView> {
   );
 
   Widget getSubtitle(String subtitle) => Padding(
-    padding: EdgeInsets.only(top: 18.0, bottom: 10.0),
+    padding: const EdgeInsets.only(top: 18.0, bottom: 10.0),
     child: Text(subtitle, style: Theme.of(context).textTheme.headlineSmall!),
   );
 
