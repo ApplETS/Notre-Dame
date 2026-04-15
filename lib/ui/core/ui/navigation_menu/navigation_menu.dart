@@ -15,6 +15,8 @@ import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu_button.dart
 late GlobalKey<NavigationMenuButtonState> currentKey;
 
 class NavigationMenu extends StatefulWidget {
+  // The minimum height for the menu bar is 76, but only the top 64 is visible.
+  // The rest is occupied by the text of unselected buttons. They have no opacity but still take the space.
   static double height(BuildContext context) => max(76.0, 64.0 + MediaQuery.viewPaddingOf(context).bottom);
 
   final int selectedIndex;
@@ -24,9 +26,8 @@ class NavigationMenu extends StatefulWidget {
 
   static bool isPortrait(BuildContext context) => MediaQuery.of(context).orientation == Orientation.portrait;
 
-  // On root views, this value represents the space at the bottom that can be occupied by the selected button
-  static double overlapHeight(BuildContext context) =>
-      isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
+  // On root views, this is the height that can be occupied by the top of the selected button or that is unsafe to use.
+  static double overlapHeight(BuildContext context) => isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
 
   @override
   State<NavigationMenu> createState() => _NavigationMenuState();
@@ -53,7 +54,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
   Widget build(BuildContext context) {
     Widget buttons = _createButtons();
 
-    return (MediaQuery.of(context).orientation == Orientation.portrait) ? _bottomBar(buttons) : _sideBar(buttons);
+    return NavigationMenu.isPortrait(context) ? _bottomBar(buttons) : _sideBar(buttons);
   }
 
   Widget _sideBar(Widget buttons) {
@@ -89,10 +90,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   Widget _createButtons() {
     return Flex(
-      mainAxisAlignment: (MediaQuery.of(context).orientation == Orientation.portrait)
-          ? MainAxisAlignment.spaceAround
-          : MainAxisAlignment.center,
-      direction: (MediaQuery.of(context).orientation == Orientation.portrait) ? Axis.horizontal : Axis.vertical,
+      mainAxisAlignment: NavigationMenu.isPortrait(context) ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
+      direction: NavigationMenu.isPortrait(context) ? Axis.horizontal : Axis.vertical,
       children: [
         NavigationMenuButton(
           key: keys[0],
