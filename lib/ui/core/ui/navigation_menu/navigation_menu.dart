@@ -67,10 +67,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
     );
   }
 
-  Widget _bottomBar(Widget buttons) {
-    final double bottomInset = NavigationMenu.systemNavBarInset(context);
-
-    return Stack(
+  Widget _bottomBar(Widget buttons) => Stack(
       children: [
         Positioned.fill(
           child: IgnorePointer(
@@ -86,7 +83,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           ),
         ),
         Container(
-          height: NavigationMenu.height + bottomInset,
+          height: NavigationMenu.height + NavigationMenu.systemNavBarInset(context),
           decoration: BoxDecoration(
             color: context.theme.appColors.navBar,
             boxShadow: const [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
@@ -97,7 +94,6 @@ class _NavigationMenuState extends State<NavigationMenu> {
         ),
       ],
     );
-  }
 
   Widget _createButtons() {
     return Flex(
