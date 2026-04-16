@@ -12,11 +12,11 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import 'package:notredame/ui/student/profile/widgets/program_completion.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
 import 'package:notredame/utils/loading.dart';
-import '../../../core/ui/navigation_menu/navigation_menu.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});

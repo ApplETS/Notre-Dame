@@ -10,9 +10,9 @@ import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/ets/quick_links/view_model/quick_links_viewmodel.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/web_link_card.dart';
-import '../../../core/ui/navigation_menu/navigation_menu.dart';
 
 class QuickLinksView extends StatefulWidget {
   const QuickLinksView({super.key});

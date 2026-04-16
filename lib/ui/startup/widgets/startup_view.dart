@@ -17,7 +17,6 @@ class StartUpView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Make Android's gesture bar transparent on older versions of Android (it is now the default behavior)
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(systemNavigationBarColor: context.theme.appColors.navBar),
     );
