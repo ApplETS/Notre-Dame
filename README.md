@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dca.etsmtl.applets.etsmobile%26l%3DPlay%2520Store%2520version%26m%3Dv%24version" alt="Play Store version"/>
     <img src="https://img.shields.io/itunes/v/557463461?label=App%20Store%20version&logo=appstore" alt="App Store version"/>
     <br/>
-    <a href="https://github.com/ApplETS/Notre-Dame/blob/master/README.md">🇫🇷 Français</a> • <a href="https://github.com/ApplETS/Notre-Dame/blob/master/CONTRIBUTING.md">Contribuer</a> • <a href="https://github.com/ApplETS/Notre-Dame/wiki">Wiki</a>
+    <a href="https://github.com/ApplETS/Notre-Dame/blob/master/README.fr.md">🇫🇷 Français</a> • <a href="https://github.com/ApplETS/Notre-Dame/blob/master/CONTRIBUTING.md">Contribuer</a> • <a href="https://github.com/ApplETS/Notre-Dame/wiki">Wiki</a>
   </p>
 </div>
 
