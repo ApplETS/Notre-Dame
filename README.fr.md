@@ -1,109 +1,101 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png" alt="ETS"/>
+  <img src="https://raw.githubusercontent.com/ApplETS/Notre-Dame/master/docs/images/ETS_logo.png"  alt="ETS"/>
   <p>
-    <br /><strong>Projet Notre-Dame</strong>
+    <br /><strong>Notre-Dame Project</strong>
     <br />
     <br />
     <a href="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml" style="text-decoration: none;">
-      <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml/badge.svg?branch=master" alt="Statut de la compilation"/>
+        <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml/badge.svg?branch=master" alt="Build Status"/>
     </a>
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/clubapplets-server/e51406de3b919a69f396642a2bcb413c/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
-    <br />
-    <img src="https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dca.etsmtl.applets.etsmobile%26l%3DPlay%2520Store%2520version%26m%3Dv%24version" alt="Play store version"/>
-    <br />
-    <img src="https://img.shields.io/itunes/v/557463461?label=App%20Store%20version&logo=appstore" alt="App store version"/>
-    <br />
+    <br/>
+    <img src="https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dca.etsmtl.applets.etsmobile%26l%3DPlay%2520Store%2520version%26m%3Dv%24version" alt="Play Store version"/>
+    <img src="https://img.shields.io/itunes/v/557463461?label=App%20Store%20version&logo=appstore" alt="App Store version"/>
+    <br/>
+    <a href="https://github.com/ApplETS/Notre-Dame/blob/master/README.md">🇬🇧 English</a> • <a href="https://github.com/ApplETS/Notre-Dame/blob/master/CONTRIBUTING.md">Contribuer</a> • <a href="https://github.com/ApplETS/Notre-Dame/wiki">Wiki</a>
   </p>
 </div>
 
-Ce projet concrétise la quatrième version de l'application mobile ÉTSMobile pour Android et iOS. Il
-s'agit du portail principal entre l'utilisateur et
-l'[École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/) sur appareils mobiles. ÉTSMobile
-est un projet open-source développé par les membres du club
-étudiant [ApplETS](https://clubapplets.ca/). L'application offre notamment :
+---
 
-* L'accès aux notes d'évaluations
-* L'accès aux horaires de cours
-* Et bien plus...
+## 📱 À Propos du Projet
 
-<ins>_Note: This guide is also available in: [English](README.md)_<ins/>
+**ÉTS Mobile** est la 4ème génération de l'application mobile officielle de l'[École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/). C'est le principal point d'accès entre les étudiants et l'institution sur les appareils mobiles.
 
-## Technologies utilisées
+Le projet est **open-source** et développé par les membres du club étudiant [ApplETS](https://clubapplets.ca/)
 
-* Flutter [[Accueil](https://docs.flutter.dev) |
-  [Téléchargement](https://docs.flutter.dev/get-started/install)]
+### ✨ Fonctionnalités Principales
 
-## Requis
+- 📅 **Gestion d'emploi du temps** - Visualiser les cours et activités académiques
+- 📊 **Consultation des notes** - Accéder aux résultats d'examen et notes finales
+- 👤 **Gestion de profil** - Consulter ses informations personnelles
+- 🌍 **Support bilingue** - Interface en français et anglais
+- 🔐 **Authentification sécurisée** - Via MSAL (Microsoft)
+- 📊 **Analytics et crash reporting** - Via Firebase
+- 🗺️ **Intégration cartographique** - Localisation sur campus
 
-- Flutter SDK v3.32.0 ou supérieure
-- Openssl v1.1.1g ou supérieure
-- Java sdk 17
+---
 
-## Configuration de Flutter
+## 🛠️ Stack Technologique
 
-- Télécharger le SDK Flutter à partir de la
-  section ["Technologies utilisées"](#Technologies-utilisées)
-  et suivre les instructions officielles.<br>
-  (Il est recommandé d'utiliser 7-Zip pour l'extraction du fichier)
-- Ouvrir le menu des paramètres et s'assurer que les extensions Flutter et Dart sont bien
-  installées.
-- Dans le menu des paramètres, se rendre dans la section "Languages & Frameworks".
-    - <ins>Flutter</ins>: Ajouter le chemin vers le dossier Flutter.
-    - <ins>Dart</ins>: Ajouter le chemin du dossier "flutter/bin/cache/dart-sdk" du dossier Flutter
-      et cocher Notre-Dame comme projet supporté.
+- **Framework** : [Flutter](https://flutter.dev) - Développement cross-platform (Android/iOS)
+- **Langage** : [Dart](https://dart.dev) 3.9+
+- **Cloud Services** : [Firebase](https://firebase.google.com) (Analytics, Crashlytics, RemoteConfig)
+---
 
-## Avant de démarrer le code
+## 📋 Prérequis
 
-- Pour avoir accès à certaines fonctionnalités vous allez avoir besoin du certificat de SignetsAPI,
-  la clef Google Drive, etc. Ces fichiers sont encryptés.
-  Pour les décrypter, vous allez devoir exécuter le script `env_variables.sh` (disponible uniquement
-  sur le Google Drive du club), puis exécuter les commandes suivantes à la racine du projet:
+### Système Requis
+- **OS** : macOS (pour iOS), Linux ou Windows (pour Android)
+- **Flutter SDK** : v3.9.0 ou supérieur [[Download](https://flutter.dev/docs/get-started/install)]
+- **Dart SDK** : v3.9+ (inclus avec Flutter)
+- **Java SDK** : 17 ou supérieur
+- **OpenSSL** : v1.1.1g ou supérieur
+- **Xcode** : 14+ (pour iOS sur macOS)
+- **Android Studio** : Arctic Fox ou supérieur (pour Android)
 
-### Linux
+### IDE Recommandés
+- [Android Studio](https://developer.android.com/studio) avec plugins Flutter et Dart
+- [VS Code](https://code.visualstudio.com) avec extensions Flutter et Dart
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 
-```sh
-chmod +x ./scripts/decrypt.sh
-chmod +x ./env_variables.sh
-./env_variables.sh
-```
+---
 
-### Windows
+## ⚙️ Installation et Configuration
 
-Dans une invite de commande GitBash
+[Wiki](https://github.com/ApplETS/Notre-Dame/wiki/Installation)
 
-```sh
-sh "env_variables.sh"
-```
+## Wiki
+[Wiki](https://github.com/ApplETS/Notre-Dame/wiki)
 
-## Démarrer le code
+---
 
-- Pour générer les classes pour l'internationalisation (l10n), exécuter les commandes suivantes:
+## 🤝 Contribuer
 
-```bash
-flutter pub get
-```
+Nous accueillons les contributions! Veuillez lire [CONTRIBUTING.md](CONTRIBUTING.md) pour:
 
-- Pour générer les mocks:
+- **Conventions de code** et normes de style
+- **Processus de contribution** complet
+- **Comment signaler des bugs**
+- **Standards de qualité** attendus
+- **Code of Conduct**
 
-```bash
-dart run build_runner build
-```
+---
 
-## Git hooks
+## 🔐 Certificats Apple
 
-Vous pouvez trouver dans le dossier `.githooks` l'ensemble des hooks pour git. Pour configurer git
-afin d'utiliser ce dossier, saisir la commande suivante:
+[Renouveler certificats Apple](https://github.com/ApplETS/Notre-Dame/wiki/Troubleshooting#renouveler-les-certificats-apple)
 
-```bash
-git config core.hooksPath .githooks
-```
+---
 
-## Comment renouveler les certificats Apple
+## 📞 Support et Contact
 
-Suivre la procédure de
-ce [répertoire](https://github.com/ApplETS/fastlane-ios-certificates/blob/master/README.md),
-accessible uniquement par les groupes admin et devops.
+- **Issues** : [GitHub Issues](https://github.com/ApplETS/Notre-Dame/issues)
+- **Email** : [applets@etsmtl.ca](mailto:applets@etsmtl.ca)
+- **Club ApplETS** : [clubapplets.ca](https://clubapplets.ca/)
 
-## Comment contribuer au projet
+---
 
-Vous pouvez contribuer au projet en suivant les instructions de ce [document](CONTRIBUTING.fr.md)
+## 📄 Licence
+
+Ce projet est sous licence [Apache 2.0](LICENSE.md).

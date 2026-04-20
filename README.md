@@ -8,101 +8,94 @@
         <img src="https://github.com/ApplETS/Notre-Dame/actions/workflows/master-workflow.yaml/badge.svg?branch=master" alt="Build Status"/>
     </a>
     <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/clubapplets-server/e51406de3b919a69f396642a2bcb413c/raw/notre_dame_master_badge_coverage.json" alt="Code coverage"/>
-    <br />
-    <img src="https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dca.etsmtl.applets.etsmobile%26l%3DPlay%2520Store%2520version%26m%3Dv%24version" alt="Play store version"/>
-    <br />
-    <img src="https://img.shields.io/itunes/v/557463461?label=App%20Store%20version&logo=appstore" alt="App store version"/>
-    <br />
+    <br/>
+    <img src="https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dca.etsmtl.applets.etsmobile%26l%3DPlay%2520Store%2520version%26m%3Dv%24version" alt="Play Store version"/>
+    <img src="https://img.shields.io/itunes/v/557463461?label=App%20Store%20version&logo=appstore" alt="App Store version"/>
+    <br/>
+    <a href="https://github.com/ApplETS/Notre-Dame/blob/master/README.md">🇫🇷 Français</a> • <a href="https://github.com/ApplETS/Notre-Dame/blob/master/CONTRIBUTING.md">Contribuer</a> • <a href="https://github.com/ApplETS/Notre-Dame/wiki">Wiki</a>
   </p>
 </div>
 
-This project is the placeholder for the fourth version of ÉTSMobile, a mobile application that
-is currently available for Android and iOS. ÉTSMobile is the main gateway between the user and
-the [École de technologie supérieure (ÉTS)](https://www.etsmtl.ca/) on mobile devices. ÉTSMobile is
-an open-source project and is developped by members of the student
-club [ApplETS](https://clubapplets.ca/). It offers:
+## 📱 About the Project
 
-* Access to evaluation grades
-* Access to the student's schedules
-* And many more...
+**ÉTS Mobile** is the 4th generation of the official mobile application of the École de technologie supérieure (ÉTS). It serves as the main access point between students and the institution on mobile devices.
 
-<ins>_Note: Ce guide est aussi disponible en: [Français](README.fr.md)_<ins/>
+The project is **open-source** and developed by members of the ApplETS student club.
 
-## Technologies used
+### ✨ Main Features
 
-* Flutter [[Home](https://docs.flutter.dev) |
-  [Download](https://docs.flutter.dev/get-started/install)]
+- 📅 **Schedule management** – View courses and academic activities  
+- 📊 **Grade consultation** – Access exam results and final grades  
+- 👤 **Profile management** – View personal information  
+- 🌍 **Bilingual support** – Interface available in French and English  
+- 🔐 **Secure authentication** – Via MSAL (Microsoft)  
+- 📊 **Analytics and crash reporting** – Via Firebase  
+- 🗺️ **Map integration** – Campus location services  
 
-## Requirements
+---
 
-- Flutter SDK v3.24.3 or higher
-- Openssl v1.1.1g or higher
-- Java sdk 17
+## 🛠️ Tech Stack
 
-## Setting up Flutter (Android Studio)
+- **Framework**: [Flutter](https://flutter.dev) – Cross-platform development (Android/iOS)  
+- **Language**: [Dart](https://dart.dev) 3.9+  
+- **Cloud Services**: [Firebase](https://firebase.google.com) (Analytics, Crashlytics, RemoteConfig)  
 
-- Download the Flutter SDK bundle from the ["Technologies used"](#technologies-used) section and
-  follow the official guide.<br>
-  (It is recommended to use 7-zip to extract the file)
-- Open the settings menu and make sure that both the Flutter and Dart plugins are
-  installed.
-- Open the settings menu and navigate to "Languages & Frameworks".
-  - <ins>Flutter</ins>: Add the path of the Flutter folder.
-  - <ins>Dart</ins>: Add the path of the folder "flutter/bin/cache/dart-sdk" from the Flutter folder
-    and add Notre-Dame as a supported project.
+---
 
-## Before running the code
+## 📋 Prerequisites
 
-- To access some features you will need the SignetsAPI certificate, these files are encrypted. To
-  decrypt them you will have to do two simple steps:
+### System Requirements
+- **OS**: macOS (for iOS), Linux, or Windows (for Android)  
+- **Flutter SDK**: v3.9.0 or higher [[Download](https://flutter.dev/docs/get-started/install)]  
+- **Dart SDK**: v3.9+ (included with Flutter)  
+- **Java SDK**: 17 or higher  
+- **OpenSSL**: v1.1.1g or higher  
+- **Xcode**: 14+ (for iOS on macOS)  
+- **Android Studio**: Arctic Fox or higher (for Android)  
 
-You need to copy the script `env_variables.sh` (only available on the Google Drive of the club) to
-the root folder of your project, then run:
+### Recommended IDEs
+- [Android Studio](https://developer.android.com/studio) with Flutter and Dart plugins  
+- [VS Code](https://code.visualstudio.com) with Flutter and Dart extensions  
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/)  
 
-### Linux and MacOS
+---
 
-```sh
-chmod +x ./scripts/decrypt.sh
-chmod +x ./env_variables.sh
-./env_variables.sh
-```
+## ⚙️ Installation and Setup
 
-### Windows
+[Wiki](https://github.com/ApplETS/Notre-Dame/wiki/Installation)
 
-In a GitBash command prompt
-```sh
-sh "env_variables.sh"
-```
+## Wiki
 
-## Run the code
+[Wiki](https://github.com/ApplETS/Notre-Dame/wiki)
 
-- After cloning the repo, you will have to get the packages and generate the l10n classes. To do
-  that run the following command:
+---
 
-```
-flutter pub get
-```
+## 🤝 Contributing
 
-- To generate the mocks:
-```
-dart run build_runner build
-```
+We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
-## Git hooks
+- **Code conventions** and style guidelines  
+- **Full contribution process**  
+- **How to report bugs**  
+- **Expected quality standards**  
+- **Code of Conduct**  
 
-You can find under the folder `.githooks` all the hooks needed for this project. To configure git to
-use this folder enter the following command:
+---
 
-```bash
-git config core.hooksPath .githooks
-```
+## 🔐 Apple Certificates
 
-## How to renew apple certificates:
+[Renew Apple certificates](https://github.com/ApplETS/Notre-Dame/wiki/Troubleshooting#renouveler-les-certificats-apple)
 
-Follow the procedure in
-this [repo](https://github.com/ApplETS/fastlane-ios-certificates/blob/master/README.md) available
-only by admin group and devops group:
+---
 
-## How to contribute to the project
+## 📞 Support and Contact
 
-You can contribute to the project by following these [instructions](CONTRIBUTING.md)
+- **Issues**: [GitHub Issues](https://github.com/ApplETS/Notre-Dame/issues)  
+- **Email**: [applets@etsmtl.ca](mailto:applets@etsmtl.ca)  
+- **ApplETS Club**: [clubapplets.ca](https://clubapplets.ca/)  
+
+---
+
+## 📄 License
+
+This project is licensed under the [Apache 2.0](LICENSE.md) License.
