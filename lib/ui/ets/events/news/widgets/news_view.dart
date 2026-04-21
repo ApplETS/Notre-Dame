@@ -121,7 +121,7 @@ class _NewsViewState extends State<NewsView> {
                         builderDelegate: PagedChildBuilderDelegate<News>(
                           itemBuilder: (context, item, index) => NewsCard(item),
                           firstPageProgressIndicatorBuilder: (context) => _buildSkeletonLoader(),
-                          newPageProgressIndicatorBuilder: (context) => NewsCardSkeleton(),
+                          newPageProgressIndicatorBuilder: (context) => const NewsCardSkeleton(),
                           noMoreItemsIndicatorBuilder: (context) => _buildNoMoreNewsCard(),
                           firstPageErrorIndicatorBuilder: (context) => _buildError(model.pagingController),
                         ),
@@ -140,7 +140,7 @@ class _NewsViewState extends State<NewsView> {
   );
 
   Widget _buildSkeletonLoader() {
-    final Widget skeleton = NewsCardSkeleton();
+    const Widget skeleton = NewsCardSkeleton();
     return Column(children: [for (var i = 0; i < _nbSkeletons; i++) skeleton]);
   }
 

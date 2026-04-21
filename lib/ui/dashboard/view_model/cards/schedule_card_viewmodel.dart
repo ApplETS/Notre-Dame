@@ -9,6 +9,7 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
 class ScheduleCardViewmodel extends FutureViewModel {
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -42,9 +43,8 @@ class ScheduleCardViewmodel extends FutureViewModel {
       await _courseRepository.getCoursesActivities();
 
       final nowDate = DateTime.now();
-      // The extra hours prevents daylight savings problems
-      final tomorrowDate = nowDate.withoutTime.add(const Duration(days: 1, hours: 1)).withoutTime;
-      final twoDaysFromNow = nowDate.withoutTime.add(const Duration(days: 2, hours: 1)).withoutTime;
+      final tomorrowDate = nowDate.withoutTimeUtc.add(const Duration(days: 1)).withoutTime;
+      final twoDaysFromNow = nowDate.withoutTimeUtc.add(const Duration(days: 2)).withoutTime;
 
       bool hasActivitiesTodayAfterNow =
           _courseRepository.coursesActivities?.any(

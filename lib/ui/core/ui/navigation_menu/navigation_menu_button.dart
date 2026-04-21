@@ -79,7 +79,7 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
                           ),
                         ],
                       ),
-                      duration: Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 200),
                     ),
                   ),
                 ),
@@ -114,7 +114,7 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
           ),
           FadeTransition(
             opacity: _textOpacityController,
-            child: Text(widget.label, style: TextStyle(fontSize: 14.0)),
+            child: Text(widget.label, style: const TextStyle(fontSize: 14.0)),
           ),
         ],
       ),

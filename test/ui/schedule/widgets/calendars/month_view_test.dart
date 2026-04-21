@@ -33,13 +33,13 @@ void main() {
       EventData(
         courseAcronym: "LOG100",
         group: "LOG100-01",
-        locations: ["D-2020"],
+        locations: const ["D-2020"],
         activityName: "Cours",
         courseName: "Programmation et réseautique en génie logiciel",
         teacherName: "John Doe",
         date: firstDayOfTheMonth,
-        startTime: firstDayOfTheMonth.add(Duration(hours: 9)),
-        endTime: firstDayOfTheMonth.add(Duration(hours: 12)),
+        startTime: firstDayOfTheMonth.add(const Duration(hours: 9)),
+        endTime: firstDayOfTheMonth.add(const Duration(hours: 12)),
       ),
     ],
   };

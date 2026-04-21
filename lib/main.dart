@@ -90,7 +90,7 @@ class ETSMobile extends StatelessWidget {
               supportedLocales: AppIntl.supportedLocales,
               navigatorKey: locator<NavigationService>().navigatorKey,
               navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver()],
-              home: outage ? OutageView() : StartUpView(),
+              home: outage ? const OutageView() : const StartUpView(),
               onGenerateRoute: generateRoute,
             ),
           );

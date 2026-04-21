@@ -1,6 +1,9 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+
 // Project imports:
 import 'package:notredame/ui/core/themes/app_colors_extension.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
@@ -23,12 +26,12 @@ class AppTheme with ChangeNotifier {
       tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xffeeebeb),
       cardTheme: defaultTheme.cardTheme.copyWith(
-        color: Color(0xfff8f8f8),
-        surfaceTintColor: Color(0xffffe6e6),
+        color: const Color(0xfff8f8f8),
+        surfaceTintColor: const Color(0xffffe6e6),
         elevation: 2,
       ),
       inputDecorationTheme: InputDecorationTheme(
-        fillColor: Color(0xfffffdfd),
+        fillColor: const Color(0xfffffdfd),
         labelStyle: TextStyle(color: AppPalette.grey.black),
       ),
       bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
@@ -39,8 +42,8 @@ class AppTheme with ChangeNotifier {
         backgroundColor: _lightAppColors.navBar,
         groupAlignment: 0,
         indicatorColor: Colors.transparent,
-        selectedLabelTextStyle: TextStyle(color: AppPalette.etsLightRed),
-        selectedIconTheme: IconThemeData(color: AppPalette.etsLightRed),
+        selectedLabelTextStyle: const TextStyle(color: AppPalette.etsLightRed),
+        selectedIconTheme: const IconThemeData(color: AppPalette.etsLightRed),
       ),
       colorScheme: defaultTheme.colorScheme.copyWith(
         primary: AppPalette.etsLightRed,
@@ -55,7 +58,31 @@ class AppTheme with ChangeNotifier {
           selectedBackgroundColor: AppPalette.etsLightRed.withAlpha(80),
         ),
       ),
-      extensions: [_lightAppColors],
+      extensions: [
+        _lightAppColors,
+        MonthViewThemeData.light().copyWith(
+          cellBorderColor: _lightAppColors.scheduleLine,
+          headerBackgroundColor: _lightAppColors.appBar,
+          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
+          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
+          weekDayTileColor: _lightAppColors.appBar,
+        ),
+        WeekViewThemeData.light().copyWith(
+          hourLineColor: _lightAppColors.scheduleLine,
+          verticalLinesColor: _lightAppColors.scheduleLine,
+          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
+          pageBackgroundColor: Colors.transparent,
+          headerBackgroundColor: _lightAppColors.appBar,
+          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
+          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
+          borderColor: _lightAppColors.scheduleLine,
+        ),
+        DayViewThemeData.light().copyWith(
+          hourLineColor: _lightAppColors.scheduleLine,
+          pageBackgroundColor: Colors.transparent,
+          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
+        ),
+      ],
     );
   }();
 
@@ -99,7 +126,7 @@ class AppTheme with ChangeNotifier {
       appBarTheme: AppBarTheme(backgroundColor: _darkAppColors.appBar),
       tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
-      cardTheme: defaultTheme.cardTheme.copyWith(color: Color(0xff242326)),
+      cardTheme: defaultTheme.cardTheme.copyWith(color: const Color(0xff242326)),
       bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
         selectedItemColor: AppPalette.etsLightRed,
         backgroundColor: _darkAppColors.navBar,
@@ -108,8 +135,8 @@ class AppTheme with ChangeNotifier {
         backgroundColor: _darkAppColors.navBar,
         groupAlignment: 0,
         indicatorColor: Colors.transparent,
-        selectedLabelTextStyle: TextStyle(color: AppPalette.etsLightRed),
-        selectedIconTheme: IconThemeData(color: AppPalette.etsLightRed),
+        selectedLabelTextStyle: const TextStyle(color: AppPalette.etsLightRed),
+        selectedIconTheme: const IconThemeData(color: AppPalette.etsLightRed),
       ),
       colorScheme: defaultTheme.colorScheme.copyWith(
         primary: AppPalette.etsLightRed,
@@ -125,7 +152,31 @@ class AppTheme with ChangeNotifier {
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(foregroundColor: AppPalette.grey.black)),
-      extensions: [_darkAppColors],
+      extensions: [
+        _darkAppColors,
+        MonthViewThemeData.dark().copyWith(
+          cellBorderColor: _darkAppColors.scheduleLine,
+          headerBackgroundColor: _darkAppColors.appBar,
+          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
+          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
+          weekDayTileColor: _darkAppColors.appBar,
+        ),
+        WeekViewThemeData.dark().copyWith(
+          hourLineColor: _darkAppColors.scheduleLine,
+          verticalLinesColor: _darkAppColors.scheduleLine,
+          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
+          pageBackgroundColor: Colors.transparent,
+          headerBackgroundColor: _darkAppColors.appBar,
+          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
+          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
+          borderColor: _darkAppColors.scheduleLine,
+        ),
+        DayViewThemeData.dark().copyWith(
+          hourLineColor: _darkAppColors.scheduleLine,
+          pageBackgroundColor: Colors.transparent,
+          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
+        ),
+      ],
     );
   }();
 

@@ -11,7 +11,7 @@ import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/utils/date_utils.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
 void main() {
   late DynamicMessagesService engine;
@@ -1536,7 +1536,7 @@ void main() {
           now: now,
         );
 
-        expect(context.courseWeeksRemaining, lessThan(DateUtils.weeksRemaining(session.endDate, now)));
+        expect(context.courseWeeksRemaining, lessThan(now.weeksUntil(session.endDate)));
       });
 
       test('falls back to session end when no activities', () {
@@ -1545,7 +1545,7 @@ void main() {
 
         final context = DynamicMessageContext.fromSession(session: session, activities: [], replacedDays: [], now: now);
 
-        expect(context.courseWeeksRemaining, DateUtils.weeksRemaining(session.endDate, now));
+        expect(context.courseWeeksRemaining, now.weeksUntil(session.endDate));
       });
 
       test('falls back to session end when only finals exist', () {
@@ -1564,7 +1564,7 @@ void main() {
           now: now,
         );
 
-        expect(context.courseWeeksRemaining, DateUtils.weeksRemaining(session.endDate, now));
+        expect(context.courseWeeksRemaining, now.weeksUntil(session.endDate));
       });
 
       test('finalsDaysRemaining is computed from last final exam date', () {
@@ -1644,7 +1644,7 @@ void main() {
         );
 
         expect(context.courseWeeksRemaining, lessThanOrEqualTo(4));
-        expect(DateUtils.weeksRemaining(session.endDate, now), greaterThan(4));
+        expect(now.weeksUntil(session.endDate), greaterThan(4));
 
         final message = engine.determineMessage(context);
         expect(message, isA<LessOneMonthRemainingMessage>());

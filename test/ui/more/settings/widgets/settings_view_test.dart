@@ -35,7 +35,7 @@ void main() {
 
     group('UI - ', () {
       testWidgets('contains two TitledCards with correct titles', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // Check that there are two TitledCards
@@ -47,7 +47,7 @@ void main() {
       });
 
       testWidgets('contains three SegmentedButtons (theme, dashboard format, language)', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // There should be three SegmentedButton widgets
@@ -60,7 +60,7 @@ void main() {
     group('Theme selection - ', () {
       testWidgets('changing theme to light updates the selected segment', (WidgetTester tester) async {
         SettingsRepositoryMock.stubThemeMode(settingsManagerMock, toReturn: ThemeMode.system);
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // Find the theme SegmentedButton
@@ -84,7 +84,7 @@ void main() {
 
       testWidgets('changing theme to dark updates the selected segment', (WidgetTester tester) async {
         SettingsRepositoryMock.stubThemeMode(settingsManagerMock, toReturn: ThemeMode.system);
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // Find the theme SegmentedButton
@@ -108,7 +108,7 @@ void main() {
 
       testWidgets('changing theme to system updates the selected segment', (WidgetTester tester) async {
         SettingsRepositoryMock.stubThemeMode(settingsManagerMock, toReturn: ThemeMode.light);
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // Find the theme SegmentedButton
@@ -134,7 +134,7 @@ void main() {
     group('Dashboard schedule format selection - ', () {
       testWidgets('list view', (WidgetTester tester) async {
         SettingsRepositoryMock.stubDashboardScheduleAsList(settingsManagerMock, toReturn: false);
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // Find the theme SegmentedButton
@@ -158,7 +158,7 @@ void main() {
 
       testWidgets('calendar view', (WidgetTester tester) async {
         SettingsRepositoryMock.stubDashboardScheduleAsList(settingsManagerMock, toReturn: true);
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // Find the theme SegmentedButton
@@ -183,8 +183,8 @@ void main() {
 
     group('Language selection - ', () {
       testWidgets('english', (WidgetTester tester) async {
-        SettingsRepositoryMock.stubLocale(settingsManagerMock, toReturn: Locale('fr'));
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        SettingsRepositoryMock.stubLocale(settingsManagerMock, toReturn: const Locale('fr'));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // Find the locale SegmentedButton
@@ -195,20 +195,20 @@ void main() {
         await tester.tap(find.text(intl.settings_english).first);
 
         // We simulate that the tap changed the setting in the repository
-        SettingsRepositoryMock.stubLocale(settingsManagerMock, toReturn: Locale('en'));
+        SettingsRepositoryMock.stubLocale(settingsManagerMock, toReturn: const Locale('en'));
         await tester.pump();
 
-        verify(settingsManagerMock.locale = Locale('en')).called(1);
+        verify(settingsManagerMock.locale = const Locale('en')).called(1);
 
         // Verify the selected now selects light mode
         final updatedButton = tester.widget<SegmentedButton<Locale>>(find.byType(SegmentedButton<Locale>).first);
-        expect(updatedButton.selected, contains(Locale('en')));
+        expect(updatedButton.selected, contains(const Locale('en')));
         expect(updatedButton.selected, isNot(equals(initialSelected)));
       });
 
       testWidgets('french', (WidgetTester tester) async {
-        SettingsRepositoryMock.stubLocale(settingsManagerMock, toReturn: Locale('en'));
-        await tester.pumpWidget(localizedWidget(child: SettingsView()));
+        SettingsRepositoryMock.stubLocale(settingsManagerMock, toReturn: const Locale('en'));
+        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
         // Find the locale SegmentedButton
@@ -219,14 +219,14 @@ void main() {
         await tester.tap(find.text(intl.settings_french).first);
 
         // We simulate that the tap changed the setting in the repository
-        SettingsRepositoryMock.stubLocale(settingsManagerMock, toReturn: Locale('fr'));
+        SettingsRepositoryMock.stubLocale(settingsManagerMock, toReturn: const Locale('fr'));
         await tester.pump();
 
-        verify(settingsManagerMock.locale = Locale('fr')).called(1);
+        verify(settingsManagerMock.locale = const Locale('fr')).called(1);
 
         // Verify the selected now selects light mode
         final updatedButton = tester.widget<SegmentedButton<Locale>>(find.byType(SegmentedButton<Locale>).first);
-        expect(updatedButton.selected, contains(Locale('fr')));
+        expect(updatedButton.selected, contains(const Locale('fr')));
         expect(updatedButton.selected, isNot(equals(initialSelected)));
       });
     });

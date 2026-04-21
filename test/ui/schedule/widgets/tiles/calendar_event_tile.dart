@@ -70,7 +70,7 @@ void main() {
                     endTime: end,
                     teacherName: "John Doe",
                     activityName: "Cours",
-                    locations: ["D-2020"],
+                    locations: const ["D-2020"],
                   ),
                 );
               },

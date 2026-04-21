@@ -97,7 +97,7 @@ void main() {
     testWidgets('Empty news', (WidgetTester tester) async {
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedEmptyNews);
 
-      await tester.pumpWidget(localizedWidget(child: NewsView()));
+      await tester.pumpWidget(localizedWidget(child: const NewsView()));
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.byType(RefreshIndicator), findsOneWidget);
@@ -110,7 +110,7 @@ void main() {
     testWidgets('List of news', (WidgetTester tester) async {
       NewsRepositoryMock.stubGetNews(newsRepository, toReturn: paginatedNews);
 
-      await tester.pumpWidget(localizedWidget(child: NewsView()));
+      await tester.pumpWidget(localizedWidget(child: const NewsView()));
       await tester.pumpAndSettle(const Duration(seconds: 5));
 
       expect(find.byType(RefreshIndicator), findsOneWidget);

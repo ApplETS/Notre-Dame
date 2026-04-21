@@ -118,7 +118,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
           return Card(
             color: widget.event.color,
             clipBehavior: Clip.hardEdge,
-            margin: EdgeInsets.all(3.0),
+            margin: const EdgeInsets.all(3.0),
             child: InkWell(
               onTap: _showTileInfo,
               child: Center(
@@ -140,7 +140,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
         return Card(
           color: widget.event.color,
           clipBehavior: Clip.hardEdge,
-          margin: EdgeInsets.all(3.0),
+          margin: const EdgeInsets.all(3.0),
           child: InkWell(
             onTap: _showTileInfo,
             child: Flex(
@@ -150,7 +150,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                 SizedBox(
                   width: wideLayout ? min(70, width / 2.5) : null,
                   child: DecoratedBox(
-                    decoration: BoxDecoration(color: const Color.fromRGBO(0, 0, 0, 0.2)),
+                    decoration: const BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.2)),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 6.0),
