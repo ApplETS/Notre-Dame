@@ -15,17 +15,17 @@ import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart';
 
-class DashboardPhoneLayout extends StatefulWidget {
+class DashboardPhoneHorizontalLayout extends StatefulWidget {
   final DashboardViewModel model;
   final double viewportHeight;
 
-  const DashboardPhoneLayout({super.key, required this.model, required this.viewportHeight});
+  const DashboardPhoneHorizontalLayout({super.key, required this.model, required this.viewportHeight});
 
   @override
-  State<DashboardPhoneLayout> createState() => _DashboardPhoneLayoutState();
+  State<DashboardPhoneHorizontalLayout> createState() => _DashboardPhoneHorizontalLayoutState();
 }
 
-class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
+class _DashboardPhoneHorizontalLayoutState extends State<DashboardPhoneHorizontalLayout> {
   final GlobalKey _titleKey = GlobalKey();
   final GlobalKey _rowKey = GlobalKey();
   final GlobalKey _gradesCardKey = GlobalKey();
@@ -43,7 +43,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
   }
 
   @override
-  void didUpdateWidget(DashboardPhoneLayout oldWidget) {
+  void didUpdateWidget(DashboardPhoneHorizontalLayout oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.viewportHeight != widget.viewportHeight) {
       _schedulePostFrameUpdate();
