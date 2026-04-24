@@ -12,6 +12,7 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import 'package:notredame/ui/student/profile/widgets/program_completion.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
@@ -41,17 +42,13 @@ class _ProfileViewState extends State<ProfileView> {
       return RefreshIndicator(
         onRefresh: () => model.refresh(),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (model.isBusy)
-                Padding(
+          padding: EdgeInsets.only(bottom: NavigationMenu.overlapHeight(context)),
+          child: (model.isBusy)
+              ? Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: buildLoading(isInteractionLimitedWhileLoading: false),
                 )
-              else
-                buildPage(context, model),
-            ],
-          ),
+              : buildPage(context, model),
         ),
       );
     },
