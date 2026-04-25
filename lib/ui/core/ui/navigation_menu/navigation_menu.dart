@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:io';
+import 'dart:math';
 
 // Flutter imports:
 import 'package:flutter/material.dart';
@@ -14,10 +15,20 @@ import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu_button.dart
 late GlobalKey<NavigationMenuButtonState> currentKey;
 
 class NavigationMenu extends StatefulWidget {
+  // The minimum height for the menu bar is 76, but only the top 64 is visible.
+  // The rest is occupied by the text of unselected buttons. They have no opacity but still take the space.
+  static double height(BuildContext context) => max(76.0, 64.0 + MediaQuery.viewPaddingOf(context).bottom);
+
   final int selectedIndex;
   final ValueChanged<NavigationMenuCallback> indexChangedCallback;
 
   const NavigationMenu({super.key, required this.selectedIndex, required this.indexChangedCallback});
+
+  static bool isPortrait(BuildContext context) => MediaQuery.of(context).orientation == Orientation.portrait;
+
+  // On root views, this is the height that can be occupied by the top of the selected button or that is unsafe to use.
+  static double overlapHeight(BuildContext context) =>
+      isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
 
   @override
   State<NavigationMenu> createState() => _NavigationMenuState();
@@ -44,7 +55,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
   Widget build(BuildContext context) {
     Widget buttons = _createButtons();
 
-    return (MediaQuery.of(context).orientation == Orientation.portrait) ? _bottomBar(buttons) : _sideBar(buttons);
+    return NavigationMenu.isPortrait(context) ? _bottomBar(buttons) : _sideBar(buttons);
   }
 
   Widget _sideBar(Widget buttons) {
@@ -60,42 +71,28 @@ class _NavigationMenuState extends State<NavigationMenu> {
     );
   }
 
-  Widget _bottomBar(Widget buttons) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: IgnorePointer(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.transparent, context.theme.scaffoldBackgroundColor],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-            ),
-          ),
+  Widget _bottomBar(Widget buttons) => Stack(
+    children: [
+      Container(
+        height: NavigationMenu.height(context),
+        decoration: BoxDecoration(
+          color: context.theme.appColors.navBar,
+          boxShadow: [
+            BoxShadow(color: context.theme.scaffoldBackgroundColor, spreadRadius: 8.0, blurRadius: 8.0),
+            const BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0),
+          ],
         ),
-        Container(
-          height: 80.0,
-          decoration: BoxDecoration(
-            color: context.theme.appColors.navBar,
-            boxShadow: const [BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0)],
-          ),
-        ),
-        Positioned.fill(
-          child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20.0), child: buttons),
-        ),
-      ],
-    );
-  }
+      ),
+      Positioned.fill(
+        child: Padding(padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0), child: buttons),
+      ),
+    ],
+  );
 
   Widget _createButtons() {
     return Flex(
-      mainAxisAlignment: (MediaQuery.of(context).orientation == Orientation.portrait)
-          ? MainAxisAlignment.spaceAround
-          : MainAxisAlignment.center,
-      direction: (MediaQuery.of(context).orientation == Orientation.portrait) ? Axis.horizontal : Axis.vertical,
+      mainAxisAlignment: NavigationMenu.isPortrait(context) ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
+      direction: NavigationMenu.isPortrait(context) ? Axis.horizontal : Axis.vertical,
       children: [
         NavigationMenuButton(
           key: keys[0],

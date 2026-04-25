@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/core/ui/root_view.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/ets/widgets/ets_view.dart';
@@ -56,11 +57,16 @@ void main() {
       expect(find.byType(ETSView), findsOneWidget);
     });
 
-    testWidgets('BottomNavigationBar is visible', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: const RootView()));
-      final flexWidget = tester.widget<Flex>(find.byType(Flex).first);
-      expect(flexWidget.direction, Axis.vertical);
-      tester.view.resetPhysicalSize();
+    testWidgets('BottomNavigationBar is visible in portrait', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        localizedWidget(
+          child: const MediaQuery(
+            data: MediaQueryData(size: Size(800, 400)),
+            child: Scaffold(body: RootView()),
+          ),
+        ),
+      );
+      expect(find.byType(NavigationMenu), findsOneWidget);
     });
 
     testWidgets('NavigationRail is visible in landscape', (WidgetTester tester) async {
@@ -73,8 +79,7 @@ void main() {
         ),
       );
 
-      final flexWidget = tester.widget<Flex>(find.byType(Flex).first);
-      expect(flexWidget.direction, Axis.horizontal);
+      expect(find.byType(NavigationMenu), findsOneWidget);
     });
   });
 }

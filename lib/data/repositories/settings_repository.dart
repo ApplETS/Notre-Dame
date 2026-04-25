@@ -54,7 +54,7 @@ class SettingsRepository with ChangeNotifier {
   }
 
   bool get isLoggedIn => _preferencesService.getBool(PreferencesFlag.isLoggedIn) ?? false;
-
+  
   set isLoggedIn(bool value) => _preferencesService.setBool(PreferencesFlag.isLoggedIn, value);
 
   DateTime? get replacedDaysCacheExpiration {

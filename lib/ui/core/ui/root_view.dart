@@ -50,7 +50,6 @@ class _RootViewState extends State<RootView> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // primary: false,
       extendBody: true,
       bottomNavigationBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? menu : null,
       body: Column(
@@ -81,7 +80,7 @@ class _RootViewState extends State<RootView> {
             ),
           ),
           if (MediaQuery.of(context).orientation == Orientation.portrait)
-            const SizedBox(height: 80.0), // The same height as the menu bar
+            SizedBox(height: NavigationMenu.height(context)),
         ],
       ),
     );

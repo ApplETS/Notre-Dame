@@ -262,7 +262,7 @@ class _GradesDetailsViewState extends State<GradesDetailsView> with TickerProvid
                     if (model.ignoredEvaluations.isNotEmpty) ...[
                       _buildIgnoredEvaluationsExpansionTile(model.ignoredEvaluations),
                     ],
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.viewPaddingOf(context).bottom),
                   ],
                 ),
               ],

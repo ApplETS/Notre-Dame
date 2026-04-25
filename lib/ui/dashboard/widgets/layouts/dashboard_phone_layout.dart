@@ -9,6 +9,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
@@ -32,7 +33,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
 
   final double paddingAboveSchedule = 6.0;
   final double spacingBetweenGradesAndSchedule = 6.0;
-  final double paddingUnderGrades = 32.0;
+  late double paddingUnderGrades;
 
   double? _scheduleCardHeight;
 
@@ -87,6 +88,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
     final textStyle = TextStyle(fontSize: fontSize, height: lineHeight, color: AppPalette.grey.white);
 
     const double twoLinesHeight = fontSize * lineHeight * 2;
+    paddingUnderGrades = NavigationMenu.overlapHeight(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
