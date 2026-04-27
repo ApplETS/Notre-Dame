@@ -29,7 +29,7 @@ class LoginViewModel extends BaseViewModel {
     AuthenticationResult? token;
 
     token = (await _authService.acquireToken()).$1;
-      if (token == null) {
+    if (token == null) {
       Fluttertoast.showToast(msg: _appIntl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
       await _analyticsService.logError('LoginViewmodel', 'Failed to acquire token');
       return false;
