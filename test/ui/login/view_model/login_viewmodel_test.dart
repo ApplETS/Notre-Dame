@@ -9,7 +9,6 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/login/view_model/login_viewmodel.dart';
@@ -51,7 +50,7 @@ void main() {
 
     test('silent sign in failed redirect to startup', () async {
       NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
-      SettingsRepositoryMock.stubGetBool(settingsRepositoryMock, PreferencesFlag.languageChoice, toReturn: true);
+      SettingsRepositoryMock.stubIsLocaleDefined(settingsRepositoryMock, toReturn: true);
       AuthServiceMock.stubCreatePublicClientApplication(authServiceMock);
       AuthServiceMock.stubAcquireTokenSilent(authServiceMock, success: false);
       AuthServiceMock.stubAcquireToken(authServiceMock, success: true);
@@ -60,7 +59,7 @@ void main() {
 
       verify(authServiceMock.acquireToken()).called(1);
       verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.startup));
-      verify(settingsRepositoryMock.setBool(PreferencesFlag.isLoggedIn, true)).called(1);
+      verify(settingsRepositoryMock.isLoggedIn = true).called(1);
     });
   });
 }

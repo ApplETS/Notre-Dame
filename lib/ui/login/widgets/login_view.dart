@@ -72,11 +72,15 @@ class _LoginViewState extends State<LoginView> {
                       alignment: Alignment.centerRight,
                       children: [
                         ElevatedButton.icon(
-                          onPressed: () {
+                          onPressed: () async {
                             setState(() {
                               _isLoading = true;
                             });
-                            model.authenticate();
+                            if (await model.authenticate() as bool == false) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
                           },
                           icon: const FaIcon(FontAwesomeIcons.lockOpen, color: Colors.white),
                           label: Text(

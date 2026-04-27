@@ -50,22 +50,6 @@ class StartUpViewModel extends BaseViewModel {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
     } else {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
-      AuthenticationResult? token;
-      int attempts = 0;
-      const maxAttempts = 3;
-
-      while (token == null && attempts < maxAttempts) {
-        attempts++;
-        token = (await _authService.acquireToken()).$1;
-        if (token == null && attempts >= maxAttempts) {
-          Fluttertoast.showToast(msg: intl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
-          await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
-          return;
-        }
-      }
-
-      _settingsManager.isLoggedIn = true;
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
     }
   }
 

@@ -10,7 +10,6 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -28,20 +27,15 @@ class LoginViewModel extends BaseViewModel {
 
   Future authenticate() async {
     AuthenticationResult? token;
-    int attempts = 0;
-    const maxAttempts = 3;
 
-    while (token == null && attempts < maxAttempts) {
-      attempts++;
-      token = (await _authService.acquireToken()).$1;
-      if (token == null && attempts >= maxAttempts) {
-        Fluttertoast.showToast(msg: _appIntl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
-        await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
-        return;
-      }
+    token = (await _authService.acquireToken()).$1;
+      if (token == null) {
+      Fluttertoast.showToast(msg: _appIntl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
+      await _analyticsService.logError('LoginViewmodel', 'Failed to acquire token');
+      return false;
     }
 
-    _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
+    _settingsManager.isLoggedIn = true;
 
     navigationService.pushNamedAndRemoveUntil(RouterPaths.startup);
   }
