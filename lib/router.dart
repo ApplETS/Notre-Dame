@@ -11,8 +11,6 @@ import 'package:notredame/ui/ets/events/author/widgets/author_view.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_view.dart';
 import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/security_view.dart';
-import 'package:notredame/ui/ets/quick_links/widgets/quick_links_view.dart';
-import 'package:notredame/ui/ets/widgets/ets_view.dart';
 import 'package:notredame/ui/login/widgets/login_view.dart';
 import 'package:notredame/ui/more/about/widgets/about_view.dart';
 import 'package:notredame/ui/more/contributors/widgets/contributors_view.dart';
