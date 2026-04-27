@@ -1,0 +1,359 @@
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:notredame/domain/models/signets-api/session.dart';
+import 'package:notredame/domain/session_reminder_type.dart';
+import 'package:notredame/utils/session_reminder_helper.dart';
+
+void main() {
+  late Session session;
+
+  setUp(() {
+    session = Session(
+      shortName: "H2025",
+      longName: "Hiver 2025",
+      startDate: DateTime(2025, 1, 6),
+      endDate: DateTime(2025, 4, 25),
+      endDateCourses: DateTime(2025, 4, 15),
+      startDateRegistration: DateTime(2025, 1, 10),
+      deadlineRegistration: DateTime(2025, 2, 5),
+      startDateCancellationWithRefund: DateTime(2025, 2, 10),
+      deadlineCancellationWithRefund: DateTime(2025, 3, 15),
+      deadlineCancellationWithRefundNewStudent: DateTime(2025, 3, 20),
+      startDateCancellationWithoutRefundNewStudent: DateTime(2025, 3, 21),
+      deadlineCancellationWithoutRefundNewStudent: DateTime(2025, 4, 10),
+      deadlineCancellationASEQ: DateTime(2025, 3, 25),
+    );
+  });
+
+  group("SessionReminderHelper -", () {
+    test("returns sessionStart when today is before session start", () {
+      final now = DateTime(2025, 1, 3);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.sessionStart);
+      expect(result.daysUntil, 3);
+    });
+
+    test("returns sessionStart when today is the session start date", () {
+      final now = DateTime(2025, 1, 6);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.sessionStart);
+      expect(result.daysUntil, 0);
+    });
+
+    test("returns registrationStart after session start has passed", () {
+      final now = DateTime(2025, 1, 7);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.registrationStart);
+    });
+
+    test("returns registrationDeadline after registration start has passed", () {
+      final now = DateTime(2025, 1, 11);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.registrationDeadline);
+    });
+
+    test("returns cancellationWithRefundStart after registration deadline passed", () {
+      final now = DateTime(2025, 2, 6);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.cancellationWithRefundStart);
+    });
+
+    test("returns cancellationWithRefundDeadline", () {
+      final now = DateTime(2025, 2, 11);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.cancellationWithRefundDeadline);
+    });
+
+    test("returns cancellationWithRefundNewStudentDeadline", () {
+      final now = DateTime(2025, 3, 16);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.cancellationWithRefundNewStudentDeadline);
+    });
+
+    test("returns cancellationWithoutRefundNewStudentStart", () {
+      final now = DateTime(2025, 3, 21);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.cancellationWithoutRefundNewStudentStart);
+    });
+
+    test("returns cancellationASEQDeadline", () {
+      final now = DateTime(2025, 3, 22);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.cancellationASEQDeadline);
+    });
+
+    test("returns cancellationWithoutRefundNewStudentDeadline", () {
+      final now = DateTime(2025, 3, 26);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.cancellationWithoutRefundNewStudentDeadline);
+    });
+
+    test("returns null when all dates have passed", () {
+      final now = DateTime(2025, 4, 26);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNull);
+    });
+
+    test("computes correct daysUntil for future event", () {
+      final now = DateTime(2025, 1, 3);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.daysUntil, 3);
+    });
+
+    test("daysUntil is 0 when event is today", () {
+      final now = DateTime(2025, 2, 5);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.registrationDeadline);
+      expect(result.daysUntil, 0);
+    });
+
+    test("ignores time component for date comparison", () {
+      final now = DateTime(2025, 1, 6, 23, 59, 59);
+      final result = SessionReminderHelper.getActiveReminder(session, now);
+
+      expect(result, isNotNull);
+      expect(result!.type, SessionReminderType.sessionStart);
+      expect(result.daysUntil, 0);
+    });
+  });
+
+  group("SessionReminderHelper.getAllUpcomingReminders -", () {
+    test("returns all reminders when all dates are in the future", () {
+      final now = DateTime(2025, 1, 1);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result.length, 10);
+      expect(result.first.type, SessionReminderType.sessionStart);
+      expect(result.last.type, SessionReminderType.sessionEnd);
+    });
+
+    test("returns only future reminders when mid-session", () {
+      final now = DateTime(2025, 2, 6);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result.length, 7);
+      expect(result.first.type, SessionReminderType.cancellationWithRefundStart);
+    });
+
+    test("returns empty list when all dates have passed", () {
+      final now = DateTime(2025, 4, 26);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result, isEmpty);
+    });
+
+    test("includes today's reminder", () {
+      final now = DateTime(2025, 2, 5);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result.any((r) => r.type == SessionReminderType.registrationDeadline && r.daysUntil == 0), isTrue);
+    });
+
+    test("results are sorted by date", () {
+      final now = DateTime(2025, 1, 1);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      for (int i = 1; i < result.length; i++) {
+        expect(
+          result[i].date.isAfter(result[i - 1].date) || result[i].date.isAtSameMomentAs(result[i - 1].date),
+          isTrue,
+        );
+      }
+    });
+  });
+
+  group("SessionReminderHelper.getAllUpcomingRemindersMultiSession -", () {
+    late Session nextSession;
+
+    setUp(() {
+      nextSession = Session(
+        shortName: "E2025",
+        longName: "Été 2025",
+        startDate: DateTime(2025, 5, 5),
+        endDate: DateTime(2025, 8, 20),
+        endDateCourses: DateTime(2025, 8, 10),
+        startDateRegistration: DateTime(2025, 3, 10),
+        deadlineRegistration: DateTime(2025, 4, 5),
+        startDateCancellationWithRefund: DateTime(2025, 5, 15),
+        deadlineCancellationWithRefund: DateTime(2025, 6, 15),
+        deadlineCancellationWithRefundNewStudent: DateTime(2025, 6, 20),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2025, 6, 21),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2025, 7, 10),
+        deadlineCancellationASEQ: DateTime(2025, 6, 25),
+      );
+    });
+
+    test("returns reminders from both sessions with sessionName set", () {
+      final now = DateTime(2025, 3, 16);
+      final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
+
+      final winterReminders = result.where((r) => r.sessionName == "H2025").toList();
+      final summerReminders = result.where((r) => r.sessionName == "E2025").toList();
+
+      expect(winterReminders, isNotEmpty);
+      expect(summerReminders, isNotEmpty);
+    });
+
+    test("preserves session order (first session reminders come first)", () {
+      final now = DateTime(2025, 3, 16);
+      final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
+
+      final firstSummerIndex = result.indexWhere((r) => r.sessionName == "E2025");
+      final lastWinterIndex = result.lastIndexWhere((r) => r.sessionName == "H2025");
+
+      expect(lastWinterIndex, lessThan(firstSummerIndex));
+    });
+
+    test("returns empty list when all sessions have no upcoming reminders", () {
+      final now = DateTime(2025, 9, 1);
+      final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
+
+      expect(result, isEmpty);
+    });
+
+    test("returns only one session's reminders when other has all passed", () {
+      final now = DateTime(2025, 4, 26);
+      final result = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session, nextSession], now);
+
+      expect(result.every((r) => r.sessionName == "E2025"), isTrue);
+    });
+
+    test("single session produces same results as getAllUpcomingReminders with sessionName", () {
+      final now = DateTime(2025, 1, 1);
+      final multi = SessionReminderHelper.getAllUpcomingRemindersMultiSession([session], now);
+      final single = SessionReminderHelper.getAllUpcomingReminders(session, now, sessionName: "H2025");
+
+      expect(multi.length, single.length);
+      for (int i = 0; i < multi.length; i++) {
+        expect(multi[i].type, single[i].type);
+        expect(multi[i].sessionName, single[i].sessionName);
+      }
+    });
+  });
+
+  group("SessionReminderHelper.getAllUpcomingReminders sessionName -", () {
+    test("sets sessionName on reminders when provided", () {
+      final now = DateTime(2025, 1, 1);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now, sessionName: "H2025");
+
+      expect(result.every((r) => r.sessionName == "H2025"), isTrue);
+    });
+
+    test("sessionName is null when not provided", () {
+      final now = DateTime(2025, 1, 1);
+      final result = SessionReminderHelper.getAllUpcomingReminders(session, now);
+
+      expect(result.every((r) => r.sessionName == null), isTrue);
+    });
+  });
+
+  group("SessionReminderHelper.getCarouselReminders -", () {
+    test("returns empty list when all dates have passed", () {
+      final now = DateTime(2025, 4, 26);
+      final result = SessionReminderHelper.getCarouselReminders(session, now);
+
+      expect(result, isEmpty);
+    });
+
+    test("always includes next event even if beyond threshold", () {
+      final now = DateTime(2024, 12, 20);
+      final result = SessionReminderHelper.getCarouselReminders(session, now);
+
+      expect(result, isNotEmpty);
+      expect(result.first.type, SessionReminderType.sessionStart);
+      expect(result.first.daysUntil, greaterThan(7));
+    });
+
+    test("threshold is relative to first event, not today", () {
+      final now = DateTime(2024, 12, 20);
+      final result = SessionReminderHelper.getCarouselReminders(session, now);
+
+      expect(result.length, greaterThanOrEqualTo(2));
+      expect(result[0].type, SessionReminderType.sessionStart);
+      expect(result[1].type, SessionReminderType.registrationStart);
+      expect(result[0].daysUntil, greaterThan(7));
+      expect(result[1].daysUntil, greaterThan(7));
+      expect(result[1].daysUntil - result[0].daysUntil, lessThanOrEqualTo(7));
+    });
+
+    test("includes additional events within threshold", () {
+      final now = DateTime(2025, 1, 5);
+      final result = SessionReminderHelper.getCarouselReminders(session, now);
+
+      expect(result.length, greaterThanOrEqualTo(2));
+      expect(result[0].type, SessionReminderType.sessionStart);
+      expect(result[1].type, SessionReminderType.registrationStart);
+    });
+
+    test("single result when only next event is within window", () {
+      final now = DateTime(2025, 1, 3);
+      final result = SessionReminderHelper.getCarouselReminders(session, now, thresholdDays: 3);
+
+      expect(result.length, 1);
+      expect(result.first.type, SessionReminderType.sessionStart);
+    });
+
+    test("custom threshold parameter works", () {
+      final now = DateTime(2025, 1, 1);
+
+      final result3 = SessionReminderHelper.getCarouselReminders(session, now, thresholdDays: 3);
+      expect(result3.length, 1);
+
+      final result10 = SessionReminderHelper.getCarouselReminders(session, now, thresholdDays: 10);
+      expect(result10.length, 2);
+    });
+
+    test("multiple same-day events within threshold", () {
+      final sessionWithCoincidingDates = Session(
+        shortName: "H2025",
+        longName: "Hiver 2025",
+        startDate: DateTime(2025, 1, 6),
+        endDate: DateTime(2025, 4, 25),
+        endDateCourses: DateTime(2025, 4, 15),
+        startDateRegistration: DateTime(2025, 1, 10),
+        deadlineRegistration: DateTime(2025, 1, 10),
+        startDateCancellationWithRefund: DateTime(2025, 2, 10),
+        deadlineCancellationWithRefund: DateTime(2025, 3, 15),
+        deadlineCancellationWithRefundNewStudent: DateTime(2025, 3, 20),
+        startDateCancellationWithoutRefundNewStudent: DateTime(2025, 3, 21),
+        deadlineCancellationWithoutRefundNewStudent: DateTime(2025, 4, 10),
+        deadlineCancellationASEQ: DateTime(2025, 3, 25),
+      );
+
+      final now = DateTime(2025, 1, 5);
+      final result = SessionReminderHelper.getCarouselReminders(sessionWithCoincidingDates, now);
+
+      expect(result.length, 3);
+      expect(result.any((r) => r.type == SessionReminderType.sessionStart), isTrue);
+      expect(result.any((r) => r.type == SessionReminderType.registrationStart), isTrue);
+      expect(result.any((r) => r.type == SessionReminderType.registrationDeadline), isTrue);
+    });
+  });
+}

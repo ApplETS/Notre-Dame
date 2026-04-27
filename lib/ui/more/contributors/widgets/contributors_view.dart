@@ -22,18 +22,16 @@ class ContributorsView extends StatelessWidget {
     viewModelBuilder: () => ContributorsViewModel(),
     builder: (context, model, child) {
       return BaseScaffold(
-        safeArea: false,
         appBar: AppBar(title: Text(AppIntl.of(context)!.more_contributors)),
-        showBottomBar: false,
         body: FutureBuilder<List<Contributor>>(
           future: model.contributors,
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if (snapshot.hasData) {
+              return contributorsList(snapshot.data!, context);
+            } else {
               // Populate the skeleton
               final fakeContributors = List.filled(30, Contributor(login: "Username"));
-              return Skeletonizer(child: contributorsList(fakeContributors));
-            } else {
-              return contributorsList(snapshot.data!);
+              return Skeletonizer(child: contributorsList(fakeContributors, context));
             }
           },
         ),
@@ -41,9 +39,9 @@ class ContributorsView extends StatelessWidget {
     },
   );
 
-  Widget contributorsList(List<Contributor> contributors) {
+  Widget contributorsList(List<Contributor> contributors, BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.only(bottom: 24),
+      padding: EdgeInsets.only(bottom: MediaQuery.viewPaddingOf(context).bottom),
       itemCount: contributors.length,
       itemBuilder: (context, index) => ListTile(
         title: Text(contributors[index].login ?? ''),

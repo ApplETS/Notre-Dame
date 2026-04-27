@@ -1,3 +1,6 @@
+// Dart imports:
+import 'dart:ui';
+
 // Package imports:
 import 'package:stacked/stacked.dart';
 
@@ -7,7 +10,6 @@ import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import '../../../domain/constants/preferences_flags.dart';
 
 class ChooseLanguageViewModel extends BaseViewModel {
   static const int english = 0;
@@ -32,10 +34,10 @@ class ChooseLanguageViewModel extends BaseViewModel {
   void changeLanguage(int index) {
     switch (index) {
       case english:
-        _settingsManager.setLocale('en');
+        _settingsManager.locale = const Locale('en');
         languageSelectedIndex = english;
       case french:
-        _settingsManager.setLocale('fr');
+        _settingsManager.locale = const Locale('fr');
         languageSelectedIndex = french;
       default:
         throw Exception('No valid language for the index $index passed in parameters');
@@ -43,7 +45,6 @@ class ChooseLanguageViewModel extends BaseViewModel {
 
     _navigationService.pop();
 
-    _settingsManager.setBool(PreferencesFlag.languageChoice, true);
     _navigationService.pushNamedAndRemoveUntil(RouterPaths.startup);
   }
 }

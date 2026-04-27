@@ -29,9 +29,6 @@ class _ScheduleDefaultViewState extends State<SessionScheduleView> {
     return ViewModelBuilder<SessionScheduleViewModel>.reactive(
       viewModelBuilder: () => SessionScheduleViewModel(sessionCode: widget.sessionCode),
       builder: (context, model, child) => BaseScaffold(
-        showBottomBar: false,
-        safeArea: false,
-        isLoading: model.busy(model.isLoadingEvents),
         appBar: AppBar(
           title: Text(_sessionName(widget.sessionCode!, AppIntl.of(context)!)),
           centerTitle: false,
@@ -43,17 +40,14 @@ class _ScheduleDefaultViewState extends State<SessionScheduleView> {
           ),
           titleSpacing: 0,
         ),
-        body: RefreshIndicator(
-          child: model.isBusy
-              ? const Center(child: CircularProgressIndicator())
-              : SessionSchedule(
-                  calendarEvents: model.calendarEvents,
-                  loaded: !model.busy(model.isLoadingEvents),
-                  displaySaturday: model.displaySaturday,
-                  displaySunday: model.displaySunday,
-                ),
-          onRefresh: () => model.refresh(),
-        ),
+        body: model.isBusy
+            ? const Center(child: CircularProgressIndicator())
+            : SessionSchedule(
+                calendarEvents: model.calendarEvents,
+                loaded: !model.busy(model.isLoadingEvents),
+                displaySaturday: model.displaySaturday,
+                displaySunday: model.displaySunday,
+              ),
       ),
     );
   }

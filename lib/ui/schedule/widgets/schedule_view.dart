@@ -7,7 +7,6 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
@@ -18,9 +17,11 @@ import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/month_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';
+import '../../core/themes/app_theme.dart';
 
 class ScheduleView extends StatefulWidget {
   final ScheduleController controller;
+
   const ScheduleView({super.key, required this.controller});
 
   @override
@@ -35,21 +36,14 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
   @override
   Widget build(BuildContext context) => ViewModelBuilder<ScheduleViewModel>.reactive(
     viewModelBuilder: () => ScheduleViewModel(),
-    onViewModelReady: (model) {
-      if (model.settings.isEmpty) {
-        model.loadSettings();
-      }
-    },
     builder: (context, model, child) => BaseScaffold(
-      isLoading: model.isBusy,
-      isInteractionLimitedWhileLoading: false,
       appBar: AppBar(
         title: Text(AppIntl.of(context)!.title_schedule),
         centerTitle: false,
         automaticallyImplyLeading: false,
-        actions: model.busy(model.settings) ? [] : _buildActionButtons(model),
+        actions: _buildActionButtons(model),
       ),
-      body: model.busy(model.settings) ? const SizedBox() : displaySchedule(model),
+      body: displaySchedule(model),
     ),
   );
 
@@ -60,25 +54,28 @@ class _ScheduleViewState extends State<ScheduleView> with TickerProviderStateMix
     if (model.calendarFormat == CalendarTimeFormat.week) {
       return WeekCalendar(controller: widget.controller);
     }
-    return DayCalendar(listView: model.calendarViewSetting, controller: widget.controller);
+    return DayCalendar(listView: model.listView, controller: widget.controller);
   }
 
   List<Widget> _buildActionButtons(ScheduleViewModel model) {
-    widget.controller.settingsUpdated = () => model.loadSettings();
+    widget.controller.settingsUpdated = () => setState(() {});
 
     return [
       IconButton(
         icon: const Icon(Icons.ios_share),
         tooltip: AppIntl.of(context)!.calendar_export,
         onPressed: () {
-          final translations = AppIntl.of(context)!;
-          showDialog(
+          showModalBottomSheet(
             context: context,
-            builder: (_) => CalendarSelectionWidget(translations: translations),
+            isScrollControlled: true,
+            backgroundColor: context.theme.scaffoldBackgroundColor,
+            builder: (context) {
+              return CalendarSelectionSheet(intl: AppIntl.of(context)!);
+            },
           );
         },
       ),
-      if ((model.settings[PreferencesFlag.scheduleShowTodayBtn] as bool))
+      if (model.showTodayButton)
         IconButton(
           icon: const Icon(Icons.today_outlined),
           tooltip: AppIntl.of(context)!.schedule_already_today_tooltip,

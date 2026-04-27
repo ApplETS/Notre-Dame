@@ -11,9 +11,11 @@ import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/student/grades/view_model/grades_viewmodel.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import 'package:notredame/utils/loading.dart';
+import 'package:notredame/utils/session_utils.dart';
 
 class GradesView extends StatefulWidget {
   const GradesView({super.key});
@@ -53,11 +55,11 @@ class _GradesViewState extends State<GradesView> {
               else
                 ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: EdgeInsets.only(top: 8.0, bottom: NavigationMenu.overlapHeight(context)),
                   itemCount: model.coursesBySession.length,
                   itemBuilder: (BuildContext context, int index) => _buildSessionCourses(
                     index,
-                    _sessionName(model.sessionOrder[index], AppIntl.of(context)!),
+                    localizedSessionName(AppIntl.of(context)!, model.sessionOrder[index]),
                     model.coursesBySession[model.sessionOrder[index]]!,
                     model,
                   ),
@@ -94,18 +96,4 @@ class _GradesViewState extends State<GradesView> {
       ],
     ),
   );
-
-  /// Build the complete name of the session for the user local.
-  String _sessionName(String shortName, AppIntl intl) {
-    switch (shortName[0]) {
-      case 'H':
-        return "${intl.session_winter} ${shortName.substring(1)}";
-      case 'A':
-        return "${intl.session_fall} ${shortName.substring(1)}";
-      case 'É':
-        return "${intl.session_summer} ${shortName.substring(1)}";
-      default:
-        return intl.session_without;
-    }
-  }
 }

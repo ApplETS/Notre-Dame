@@ -1,47 +1,64 @@
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Project imports:
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/week_calendar.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/date_extensions.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../../helpers.dart';
 
 void main() {
   SharedPreferences.setMockInitialValues({});
   late SettingsRepositoryMock settingsManagerMock;
   late CourseRepositoryMock courseRepositoryMock;
+  late ScheduleServiceMock scheduleServiceMock;
 
-  List<CourseActivity> activites = [
-    CourseActivity(
-      courseName: 'Lab',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(hours: 12)),
-      courseGroup: 'LOG100',
-      activityLocation: ['Room 102'],
-      activityName: 'Lab Session',
-      activityDescription: 'Regular',
-    ),
-    CourseActivity(
-      courseName: 'Lecture',
-      startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(days: 6, hours: 9)),
-      endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(days: 6, hours: 12)),
-      courseGroup: 'ING150-01',
-      activityLocation: ['Room 101'],
-      activityName: 'Lecture 1',
-      activityDescription: 'Regular',
-    ),
-  ];
+  DateTime sunday = DateTime.now().withoutTimeUtc.startOfWeek(start: WeekDays.sunday).withoutTime;
+  DateTime saturday = DateTime.now().withoutTimeUtc
+      .startOfWeek(start: WeekDays.sunday)
+      .add(const Duration(days: 6))
+      .withoutTime;
+
+  Map<DateTime, List<EventData>> events = {
+    sunday: [
+      EventData(
+        courseAcronym: "LOG100",
+        group: "LOG100-01",
+        locations: const ["D-2020"],
+        activityName: "Cours",
+        courseName: "Programmation et réseautique en génie logiciel",
+        teacherName: "John Doe",
+        date: sunday,
+        startTime: sunday.add(const Duration(hours: 9)),
+        endTime: sunday.add(const Duration(hours: 12)),
+      ),
+    ],
+    saturday: [
+      EventData(
+        courseAcronym: "ING150",
+        group: "ING150-01",
+        locations: const ["D-2020"],
+        activityName: "Cours",
+        courseName: "Statique et dynamique",
+        teacherName: "Jane Doe",
+        date: saturday,
+        startTime: saturday.add(const Duration(hours: 9)),
+        endTime: saturday.add(const Duration(hours: 12)),
+      ),
+    ],
+  };
 
   group("week calendar view - ", () {
     setUp(() async {
@@ -50,6 +67,7 @@ void main() {
       await setupAppIntl();
       setupNetworkingServiceMock();
       setupAnalyticsServiceMock();
+      scheduleServiceMock = setupScheduleServiceMock();
 
       SettingsRepositoryMock.stubLocale(settingsManagerMock);
       CourseRepositoryMock.stubGetScheduleActivities(courseRepositoryMock);
@@ -68,7 +86,7 @@ void main() {
 
     testWidgets("displays saturday and sunday", (WidgetTester tester) async {
       CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: activites);
+      ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
 
       await tester.runAsync(() async {
         await tester.pumpWidget(localizedWidget(child: WeekCalendar(controller: ScheduleController())));
@@ -76,9 +94,7 @@ void main() {
       });
 
       expect(find.text("LOG100"), findsOneWidget);
-      expect(find.text("Room 102\nLab Session"), findsOneWidget);
       expect(find.text("ING150"), findsOneWidget);
-      expect(find.text("Room 101\nLecture 1"), findsOneWidget);
       // Saturday and sunday displayed
       expect(find.text("S"), findsOneWidget);
       expect(find.text("D"), findsOneWidget);

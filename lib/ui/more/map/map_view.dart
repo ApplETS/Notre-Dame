@@ -28,9 +28,7 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) => BaseScaffold(
-    safeArea: false,
     appBar: AppBar(title: Text(AppIntl.of(context)!.more_map)),
-    showBottomBar: false,
     body: LayoutBuilder(
       builder: (context, constraints) {
         const minAspectRatio = 0.5;
@@ -85,7 +83,10 @@ class _MapViewState extends State<MapView> {
 
   Padding _legend(bool vertical, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: vertical ? 24.0 : 0.0, right: vertical ? 0.0 : 24.0),
+      padding: EdgeInsets.only(
+        bottom: vertical ? MediaQuery.viewPaddingOf(context).bottom + 24.0 : 0.0,
+        right: vertical ? 0.0 : MediaQuery.viewPaddingOf(context).right + 24.0,
+      ),
       child: AnimatedSlide(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,

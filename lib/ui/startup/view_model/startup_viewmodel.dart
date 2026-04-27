@@ -8,7 +8,6 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/domain/constants/preferences_flags.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -28,7 +27,7 @@ class StartUpViewModel extends BaseViewModel {
   Future handleStartUp() async {
     if (await handleConnectivityIssues()) return;
 
-    if (await _settingsManager.getBool(PreferencesFlag.languageChoice) == null) {
+    if (!_settingsManager.isLocaleDefined) {
       _navigationService.pushNamed(RouterPaths.chooseLanguage);
       return;
     }
@@ -47,10 +46,26 @@ class StartUpViewModel extends BaseViewModel {
     final bool isLogin = (await _authService.acquireTokenSilent()).$2 == null;
 
     if (isLogin) {
-      _settingsManager.setBool(PreferencesFlag.isLoggedIn, true);
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+      _settingsManager.isLoggedIn = true;
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
     } else {
       _navigationService.pushNamedAndRemoveUntil(RouterPaths.login);
+      AuthenticationResult? token;
+      int attempts = 0;
+      const maxAttempts = 3;
+
+      while (token == null && attempts < maxAttempts) {
+        attempts++;
+        token = (await _authService.acquireToken()).$1;
+        if (token == null && attempts >= maxAttempts) {
+          Fluttertoast.showToast(msg: intl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
+          await _analyticsService.logError('StartupViewmodel', 'Failed to acquire token after $maxAttempts attempts');
+          return;
+        }
+      }
+
+      _settingsManager.isLoggedIn = true;
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
     }
   }
 
@@ -60,9 +75,8 @@ class StartUpViewModel extends BaseViewModel {
   /// with the cached data
   Future<bool> handleConnectivityIssues() async {
     final hasConnectivityIssues = !await _networkingService.hasConnectivity();
-    final wasLoggedIn = (await _settingsManager.getBool(PreferencesFlag.isLoggedIn)) ?? false;
-    if (hasConnectivityIssues && wasLoggedIn) {
-      _navigationService.pushNamedAndRemoveUntil(RouterPaths.dashboard);
+    if (hasConnectivityIssues && _settingsManager.isLoggedIn) {
+      _navigationService.pushNamedAndRemoveUntil(RouterPaths.root);
       return true;
     }
     return false;

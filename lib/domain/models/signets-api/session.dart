@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 // Package imports:
+import 'package:calendar_view/calendar_view.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'session.freezed.dart';
@@ -57,6 +58,7 @@ abstract class Session with _$Session {
 
   factory Session.fromJson(Map<String, dynamic> json) => _$SessionFromJson(json);
 
-  int get daysCompleted => DateTime.now().difference(startDate).inDays;
-  int get totalDays => endDate.difference(startDate).inDays;
+  int get daysCompleted => DateTime.now().withoutTime.getDayDifference(startDate);
+
+  int get totalDays => endDate.getDayDifference(startDate);
 }

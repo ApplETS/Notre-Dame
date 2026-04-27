@@ -25,7 +25,7 @@ import 'package:notredame/ui/core/ui/calendar_selector.dart';
 import 'package:notredame/ui/ets/events/news_details/view_model/calendar_selection_viewmodel.dart';
 import 'package:notredame/ui/ets/events/news_details/view_model/news_details_viewmodel.dart';
 import 'package:notredame/ui/ets/events/report_news/widgets/report_news_widget.dart';
-import 'package:notredame/utils/utils.dart';
+import 'package:notredame/utils/grades_utils.dart';
 
 class NewsDetailsView extends StatefulWidget {
   final News news;
@@ -54,7 +54,6 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
   Widget build(BuildContext context) => ViewModelBuilder<NewsDetailsViewModel>.reactive(
     viewModelBuilder: () => NewsDetailsViewModel(news: widget.news),
     builder: (context, model, child) => BaseScaffold(
-      showBottomBar: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -158,12 +157,16 @@ class _NewsDetailsViewState extends State<NewsDetailsView> {
           ShareParams(text: "${_remoteConfigService.helloWebsiteUrl}/fr/dashboard/news?id=${news.id}"),
         );
       case Menu.export:
-        final translations = AppIntl.of(context)!;
-        final viewModel = CalendarSelectionViewModel(translations: translations);
+        final intl = AppIntl.of(context)!;
+        final viewModel = CalendarSelectionViewModel(intl: intl);
         viewModel.news = news;
-        showDialog(
+        showModalBottomSheet(
           context: context,
-          builder: (_) => CalendarSelectionWidget(translations: translations),
+          isScrollControlled: true,
+          backgroundColor: context.theme.scaffoldBackgroundColor,
+          builder: (context) {
+            return CalendarSelectionSheet(intl: intl);
+          },
         );
       case Menu.report:
         showModalBottomSheet(

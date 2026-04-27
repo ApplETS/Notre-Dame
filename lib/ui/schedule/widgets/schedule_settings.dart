@@ -185,8 +185,8 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
 
   Widget _buildToggleCalendarView(BuildContext context, ScheduleSettingsViewModel model) => ListTile(
     trailing: Switch(
-      value: model.toggleCalendarView,
-      onChanged: (value) => {model.toggleCalendarView = value},
+      value: model.listViewFormat,
+      onChanged: (value) => {model.listViewFormat = value},
       activeThumbColor: AppPalette.etsLightRed,
     ),
     title: Text(style: Theme.of(context).textTheme.bodyMedium, AppIntl.of(context)!.schedule_settings_list_view),

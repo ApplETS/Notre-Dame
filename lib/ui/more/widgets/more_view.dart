@@ -14,6 +14,7 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
 
 class MoreView extends StatefulWidget {
@@ -58,7 +59,7 @@ class _MoreViewState extends State<MoreView> {
         return BaseScaffold(
           appBar: AppBar(title: Text(AppIntl.of(context)!.title_more), automaticallyImplyLeading: false),
           body: ListView(
-            padding: EdgeInsets.zero,
+            padding: EdgeInsets.only(bottom: NavigationMenu.overlapHeight(context)),
             children: [
               ListTile(
                 title: Text(AppIntl.of(context)!.more_about_applets),

@@ -3,365 +3,358 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/domain/constants/preferences_flags.dart';
 import '../../helpers.dart';
-import '../mocks/services/analytics_service_mock.dart';
 import '../mocks/services/preferences_service_mock.dart';
-import '../mocks/services/remote_config_service_mock.dart';
 
 void main() {
-  late AnalyticsServiceMock analyticsServiceMock;
-  late RemoteConfigServiceMock remoteConfigServiceMock;
   late PreferencesServiceMock preferencesServiceMock;
-
   late SettingsRepository repository;
 
   group("SettingsRepository - ", () {
-    setUp(() async {
-      // Setting up mocks
-      setupLogger();
-      analyticsServiceMock = setupAnalyticsServiceMock();
+    setUp(() {
       preferencesServiceMock = setupPreferencesServiceMock();
-      remoteConfigServiceMock = setupRemoteConfigServiceMock();
-
-      await setupAppIntl();
-
       repository = SettingsRepository();
     });
 
-    tearDown(() {
-      unregister<PreferencesService>();
-    });
-
-    group("getScheduleSettings - ", () {
-      test("validate default behaviour", () async {
-        // Stubs the answer of the preferences services
-        PreferencesServiceMock.stubGetString(
-          preferencesServiceMock,
-          PreferencesFlag.scheduleCalendarFormat,
-          toReturn: null,
-        );
-        PreferencesServiceMock.stubGetBool(
-          preferencesServiceMock,
-          PreferencesFlag.scheduleShowTodayBtn,
-          toReturn: null,
-        );
-        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleListView, toReturn: null);
-        RemoteConfigServiceMock.stubGetCalendarViewEnabled(remoteConfigServiceMock);
-
-        final expected = {
-          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.week,
-          PreferencesFlag.scheduleShowTodayBtn: true,
-          PreferencesFlag.scheduleListView: getCalendarViewEnabled(),
-        };
-
-        final result = await repository.getScheduleSettings();
-
-        expect(result, expected);
-
-        verify(preferencesServiceMock.getString(PreferencesFlag.scheduleCalendarFormat)).called(1);
-        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleShowTodayBtn)).called(1);
-        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView)).called(1);
-
-        verifyNoMoreInteractions(preferencesServiceMock);
-        verifyNoMoreInteractions(analyticsServiceMock);
-      });
-
-      test("validate the loading of the settings", () async {
-        // Stubs the answer of the preferences services
-        PreferencesServiceMock.stubGetString(
-          preferencesServiceMock,
-          PreferencesFlag.scheduleCalendarFormat,
-          toReturn: CalendarTimeFormat.month.name,
-        );
-        PreferencesServiceMock.stubGetBool(
-          preferencesServiceMock,
-          PreferencesFlag.scheduleShowTodayBtn,
-          toReturn: false,
-        );
-        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleListView, toReturn: false);
-
-        final expected = {
-          PreferencesFlag.scheduleCalendarFormat: CalendarTimeFormat.month,
-          PreferencesFlag.scheduleShowTodayBtn: false,
-          PreferencesFlag.scheduleListView: false,
-        };
-
-        final result = await repository.getScheduleSettings();
-
-        expect(result, expected);
-
-        verify(preferencesServiceMock.getString(PreferencesFlag.scheduleCalendarFormat)).called(1);
-        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleShowTodayBtn)).called(1);
-        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView)).called(1);
-
-        verifyNoMoreInteractions(preferencesServiceMock);
-        verifyNoMoreInteractions(analyticsServiceMock);
-      });
-    });
-
     group("ThemeMode - ", () {
-      test("set light/dark/system mode", () async {
-        const flag = PreferencesFlag.theme;
-        repository.setThemeMode(ThemeMode.light);
+      test("set light/dark/system mode", () {
+        repository.themeMode = ThemeMode.light;
 
         verify(preferencesServiceMock.setString(PreferencesFlag.theme, ThemeMode.light.toString())).called(1);
 
-        verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-
-        repository.setThemeMode(ThemeMode.dark);
+        repository.themeMode = ThemeMode.dark;
 
         verify(preferencesServiceMock.setString(PreferencesFlag.theme, ThemeMode.dark.toString())).called(1);
 
-        verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-
-        repository.setThemeMode(ThemeMode.system);
+        repository.themeMode = ThemeMode.system;
 
         verify(preferencesServiceMock.setString(PreferencesFlag.theme, ThemeMode.system.toString())).called(1);
 
-        verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-
         verifyNoMoreInteractions(preferencesServiceMock);
-        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
-      test("validate default behaviour", () async {
-        const flag = PreferencesFlag.theme;
-        PreferencesServiceMock.stubGetString(preferencesServiceMock, flag, toReturn: ThemeMode.light.toString());
+      test("get", () {
+        PreferencesServiceMock.stubGetString(
+          preferencesServiceMock,
+          PreferencesFlag.theme,
+          toReturn: ThemeMode.light.toString(),
+        );
 
-        repository.themeMode;
-        await untilCalled(preferencesServiceMock.getString(flag));
+        ThemeMode result = repository.themeMode;
 
-        expect(repository.themeMode, ThemeMode.light);
+        expect(result, ThemeMode.light);
 
-        verify(preferencesServiceMock.getString(flag)).called(2);
+        verify(preferencesServiceMock.getString(PreferencesFlag.theme)).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
       });
     });
 
     group("Locale - ", () {
-      test("validate default behaviour", () async {
-        const flag = PreferencesFlag.locale;
-        PreferencesServiceMock.stubGetString(
-          preferencesServiceMock,
-          PreferencesFlag.locale,
-          toReturn: const Locale('fr').toString(),
-        );
+      test("validate default behaviour", () {
+        PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.locale, toReturn: 'fr');
 
-        repository.setLocale('fr');
+        repository.locale = const Locale('fr');
+
+        verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'fr')).called(1);
+
         repository.locale;
 
-        verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'fr')).called(1);
         verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
 
-        verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-
         verifyNoMoreInteractions(preferencesServiceMock);
-        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
-      test("set french/english", () async {
-        const flag = PreferencesFlag.locale;
-        repository.setLocale('fr');
+      test("set french/english", () {
+        repository.locale = const Locale('fr');
 
         verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'fr')).called(1);
 
-        untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
-
-        verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-
-        repository.setLocale('en');
+        repository.locale = const Locale('en');
 
         verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'en')).called(1);
 
-        untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
-
-        verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-
         verifyNoMoreInteractions(preferencesServiceMock);
-        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
       test("default locale isn't set", () {
         const flag = PreferencesFlag.locale;
-        when(preferencesServiceMock.getString(flag)).thenAnswer((_) async => null);
+        when(preferencesServiceMock.getString(flag)).thenAnswer((_) => null);
 
-        expect(repository.locale, const Locale('en'));
+        expect(repository.locale, const Locale('fr'));
 
         verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
-        verifyNoMoreInteractions(analyticsServiceMock);
       });
     });
 
-    test("fetch theme and locale", () async {
-      PreferencesServiceMock.stubGetString(
-        preferencesServiceMock,
-        PreferencesFlag.locale,
-        toReturn: const Locale('fr').toString(),
-      );
-      PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.theme, toReturn: 'ThemeMode.system');
+    group("DateTimeNow - ", () {
+      test("dateTimeNow returns current time", () {
+        final now = repository.dateTimeNow;
 
-      await repository.fetchLanguageAndThemeMode();
-
-      verify(preferencesServiceMock.getString(PreferencesFlag.theme)).called(1);
-      verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
-
-      verifyNoMoreInteractions(preferencesServiceMock);
-      verifyNoMoreInteractions(analyticsServiceMock);
+        expect(now, isA<DateTime>());
+      });
     });
 
-    test("reset language and theme", () async {
-      // Set local and theme
-      PreferencesServiceMock.stubGetString(
-        preferencesServiceMock,
-        PreferencesFlag.locale,
-        toReturn: const Locale('fr').toString(),
-      );
-      PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.theme, toReturn: 'ThemeMode.system');
+    group("isLocaleDefined - ", () {
+      test("isLocaleDefined true", () {
+        PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.locale, toReturn: 'fr');
 
-      await repository.fetchLanguageAndThemeMode();
+        expect(repository.isLocaleDefined, true);
 
-      expect(repository.themeMode, ThemeMode.system, reason: "Loaded theme mode should be system");
-      expect(repository.locale, const Locale('fr'), reason: "Loaded locale should be french");
+        verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
+      });
 
-      repository.resetLanguageAndThemeMode();
+      test("isLocaleDefined false", () {
+        when(preferencesServiceMock.getString(PreferencesFlag.locale)).thenReturn(null);
 
-      expect(repository.themeMode, null, reason: "Default theme mode should be null");
-      expect(
-        repository.locale,
-        Locale(Intl.systemLocale.split('_')[0]),
-        reason: "Default locale should be system language",
-      );
+        expect(repository.isLocaleDefined, false);
+
+        verify(preferencesServiceMock.getString(PreferencesFlag.locale)).called(1);
+      });
     });
 
-    test("setString", () async {
-      const flag = PreferencesFlag.scheduleCalendarFormat;
-      PreferencesServiceMock.stubSetString(preferencesServiceMock, flag);
+    group("replacedDaysCacheTimestamp - ", () {
+      test("set timestamp", () {
+        final date = DateTime(2025, 1, 1, 12, 30, 45);
 
-      expect(
-        await repository.setString(flag, "test"),
-        true,
-        reason: "setString should return true if the PreferenceService return true",
-      );
+        repository.replacedDaysCacheExpiration = date;
 
-      untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
-
-      verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-      verify(preferencesServiceMock.setString(flag, any));
-    });
-
-    test("setInt", () async {
-      const flag = PreferencesFlag.aboutUsCard;
-      PreferencesServiceMock.stubSetInt(preferencesServiceMock, flag);
-
-      expect(
-        await repository.setInt(flag, 0),
-        true,
-        reason: "setInt should return true if the PreferenceService return true",
-      );
-
-      untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
-
-      verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-      verify(preferencesServiceMock.setInt(flag, any));
-    });
-
-    test("getString", () async {
-      const flag = PreferencesFlag.scheduleCalendarFormat;
-      PreferencesServiceMock.stubGetString(preferencesServiceMock, flag);
-
-      expect(
-        await repository.getString(flag),
-        'test',
-        reason: "setString should return true if the PreferenceService return true",
-      );
-
-      untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
-
-      verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-      verify(preferencesServiceMock.getString(flag));
-    });
-
-    test("setBool", () async {
-      const flag = PreferencesFlag.scheduleCalendarFormat;
-      PreferencesServiceMock.stubSetBool(preferencesServiceMock, flag);
-
-      expect(
-        await repository.setBool(flag, true),
-        true,
-        reason: "setString should return true if the PreferenceService return true",
-      );
-
-      untilCalled(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any));
-
-      verify(analyticsServiceMock.logEvent("${SettingsRepository.tag}_${flag.name}", any)).called(1);
-      verify(preferencesServiceMock.setBool(flag, value: anyNamed("value")));
-    });
-
-    group("Dashboard - ", () {
-      test("validate default behaviour", () async {
-        PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.aboutUsCard, toReturn: null);
-        PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.scheduleCard, toReturn: null);
-        PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.progressBarCard, toReturn: null);
-        PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.gradesCard, toReturn: null);
-
-        // Cards
-        final Map<PreferencesFlag, int> expected = {
-          PreferencesFlag.aboutUsCard: 0,
-          PreferencesFlag.scheduleCard: 1,
-          PreferencesFlag.progressBarCard: 2,
-          PreferencesFlag.gradesCard: 3,
-        };
-
-        expect(await repository.getDashboard(), expected);
-
-        verify(preferencesServiceMock.getInt(PreferencesFlag.aboutUsCard)).called(1);
-        verify(preferencesServiceMock.getInt(PreferencesFlag.scheduleCard)).called(1);
-        verify(preferencesServiceMock.getInt(PreferencesFlag.progressBarCard)).called(1);
-        verify(preferencesServiceMock.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(
+          preferencesServiceMock.setString(PreferencesFlag.replacedDaysCacheExpiration, date.toIso8601String()),
+        ).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
-        verifyNoMoreInteractions(analyticsServiceMock);
       });
 
-      test("validate the loading of the cards", () async {
-        PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.aboutUsCard);
-        PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.scheduleCard, toReturn: 2);
-        PreferencesServiceMock.stubGetInt(
+      test("get timestamp parses DateTime", () {
+        final date = DateTime(2025, 1, 1, 12, 30, 45);
+
+        PreferencesServiceMock.stubGetString(
           preferencesServiceMock,
-          PreferencesFlag.progressBarCard,
-          // ignore: avoid_redundant_argument_values
-          toReturn: 0,
+          PreferencesFlag.replacedDaysCacheExpiration,
+          toReturn: date.toIso8601String(),
         );
-        PreferencesServiceMock.stubGetInt(preferencesServiceMock, PreferencesFlag.gradesCard, toReturn: 3);
 
-        // Cards
-        final Map<PreferencesFlag, int> expected = {
-          PreferencesFlag.aboutUsCard: 1,
-          PreferencesFlag.scheduleCard: 2,
-          PreferencesFlag.progressBarCard: 0,
-          PreferencesFlag.gradesCard: 3,
-        };
+        final result = repository.replacedDaysCacheExpiration;
 
-        expect(await repository.getDashboard(), expected);
+        expect(result, date);
 
-        verify(preferencesServiceMock.getInt(PreferencesFlag.aboutUsCard)).called(1);
-        verify(preferencesServiceMock.getInt(PreferencesFlag.scheduleCard)).called(1);
-        verify(preferencesServiceMock.getInt(PreferencesFlag.progressBarCard)).called(1);
-        verify(preferencesServiceMock.getInt(PreferencesFlag.gradesCard)).called(1);
+        verify(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheExpiration)).called(1);
 
         verifyNoMoreInteractions(preferencesServiceMock);
-        verifyNoMoreInteractions(analyticsServiceMock);
+      });
+
+      test("get timestamp returns null when not set", () {
+        when(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheExpiration)).thenReturn(null);
+
+        final result = repository.replacedDaysCacheExpiration;
+
+        expect(result, null);
+
+        verify(preferencesServiceMock.getString(PreferencesFlag.replacedDaysCacheExpiration)).called(1);
+
+        verifyNoMoreInteractions(preferencesServiceMock);
+      });
+    });
+
+    group("Login - ", () {
+      test("get isLoggedIn true", () {
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.isLoggedIn, toReturn: true);
+
+        expect(repository.isLoggedIn, true);
+
+        verify(preferencesServiceMock.getBool(PreferencesFlag.isLoggedIn)).called(1);
+      });
+
+      test("get isLoggedIn default false", () {
+        when(preferencesServiceMock.getBool(PreferencesFlag.isLoggedIn)).thenReturn(null);
+
+        expect(repository.isLoggedIn, false);
+
+        verify(preferencesServiceMock.getBool(PreferencesFlag.isLoggedIn)).called(1);
+      });
+
+      test("set isLoggedIn", () {
+        repository.isLoggedIn = true;
+
+        verify(preferencesServiceMock.setBool(PreferencesFlag.isLoggedIn, true)).called(1);
+      });
+    });
+
+    group("DashboardSettings - ", () {
+      test("displayScheduleAsList getter", () {
+        PreferencesServiceMock.stubGetBool(
+          preferencesServiceMock,
+          PreferencesFlag.dashboardScheduleList,
+          toReturn: true,
+        );
+
+        expect(repository.dashboard.displayScheduleAsList, true);
+
+        verify(preferencesServiceMock.getBool(PreferencesFlag.dashboardScheduleList)).called(1);
+      });
+
+      test("displayScheduleAsList setter", () {
+        repository.dashboard.displayScheduleAsList = true;
+
+        verify(preferencesServiceMock.setBool(PreferencesFlag.dashboardScheduleList, true)).called(1);
+      });
+    });
+
+    group("ScheduleSettings - ", () {
+      test("calendarFormat getter", () {
+        PreferencesServiceMock.stubGetString(
+          preferencesServiceMock,
+          PreferencesFlag.scheduleCalendarFormat,
+          toReturn: CalendarTimeFormat.day.name,
+        );
+
+        final result = repository.schedule.calendarFormat;
+
+        expect(result, CalendarTimeFormat.day);
+
+        verify(preferencesServiceMock.getString(PreferencesFlag.scheduleCalendarFormat)).called(1);
+      });
+
+      test("calendarFormat default", () {
+        when(preferencesServiceMock.getString(PreferencesFlag.scheduleCalendarFormat)).thenReturn(null);
+
+        final result = repository.schedule.calendarFormat;
+
+        expect(result, CalendarTimeFormat.week);
+
+        verify(preferencesServiceMock.getString(PreferencesFlag.scheduleCalendarFormat)).called(1);
+      });
+
+      test("calendarFormat setter", () {
+        repository.schedule.calendarFormat = CalendarTimeFormat.month;
+
+        verify(
+          preferencesServiceMock.setString(PreferencesFlag.scheduleCalendarFormat, CalendarTimeFormat.month.name),
+        ).called(1);
+      });
+
+      test("listView getter", () {
+        PreferencesServiceMock.stubGetBool(preferencesServiceMock, PreferencesFlag.scheduleListView, toReturn: true);
+
+        expect(repository.schedule.listView, true);
+
+        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleListView)).called(1);
+      });
+
+      test("listView setter", () {
+        repository.schedule.listView = true;
+
+        verify(preferencesServiceMock.setBool(PreferencesFlag.scheduleListView, true)).called(1);
+      });
+
+      test("todayButton getter", () {
+        PreferencesServiceMock.stubGetBool(
+          preferencesServiceMock,
+          PreferencesFlag.scheduleShowTodayBtn,
+          toReturn: false,
+        );
+
+        expect(repository.schedule.todayButton, false);
+
+        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleShowTodayBtn)).called(1);
+      });
+
+      test("todayButton default true", () {
+        when(preferencesServiceMock.getBool(PreferencesFlag.scheduleShowTodayBtn)).thenReturn(null);
+
+        expect(repository.schedule.todayButton, true);
+
+        verify(preferencesServiceMock.getBool(PreferencesFlag.scheduleShowTodayBtn)).called(1);
+      });
+
+      test("todayButton setter", () {
+        repository.schedule.todayButton = false;
+
+        verify(preferencesServiceMock.setBool(PreferencesFlag.scheduleShowTodayBtn, false)).called(1);
+      });
+
+      test("getLaboratoryGroup", () {
+        PreferencesServiceMock.stubGetDynamicString(
+          preferencesServiceMock,
+          PreferencesFlag.scheduleLaboratoryGroup,
+          'LOG121',
+          toReturn: 'A01',
+        );
+
+        final result = repository.schedule.getLaboratoryGroup('LOG121');
+
+        expect(result, 'A01');
+
+        verify(preferencesServiceMock.getDynamicString(PreferencesFlag.scheduleLaboratoryGroup, 'LOG121')).called(1);
+      });
+
+      test("setLaboratoryGroup", () async {
+        await repository.schedule.setLaboratoryGroup('LOG121', 'A02');
+
+        verify(
+          preferencesServiceMock.setDynamicString(PreferencesFlag.scheduleLaboratoryGroup, 'LOG121', 'A02'),
+        ).called(1);
+      });
+    });
+
+    group("RatingSettings - ", () {
+      test("timer getter returns date", () {
+        final now = DateTime.now();
+
+        PreferencesServiceMock.stubGetString(
+          preferencesServiceMock,
+          PreferencesFlag.ratingTimer,
+          toReturn: now.toIso8601String(),
+        );
+
+        final result = repository.rating.timer;
+
+        expect(result, now);
+
+        verify(preferencesServiceMock.getString(PreferencesFlag.ratingTimer)).called(1);
+      });
+
+      test("timer getter null", () {
+        when(preferencesServiceMock.getString(PreferencesFlag.ratingTimer)).thenReturn(null);
+
+        expect(repository.rating.timer, null);
+
+        verify(preferencesServiceMock.getString(PreferencesFlag.ratingTimer)).called(1);
+      });
+
+      test("timer setter", () {
+        final now = DateTime.now();
+
+        repository.rating.timer = now;
+
+        verify(preferencesServiceMock.setString(PreferencesFlag.ratingTimer, now.toIso8601String())).called(1);
+      });
+
+      test("hasBeenRequested getter", () {
+        PreferencesServiceMock.stubGetBool(
+          preferencesServiceMock,
+          PreferencesFlag.hasRatingBeenRequested,
+          toReturn: true,
+        );
+
+        expect(repository.rating.hasBeenRequested, true);
+
+        verify(preferencesServiceMock.getBool(PreferencesFlag.hasRatingBeenRequested)).called(1);
+      });
+
+      test("hasBeenRequested setter", () {
+        repository.rating.hasBeenRequested = true;
+
+        verify(preferencesServiceMock.setBool(PreferencesFlag.hasRatingBeenRequested, true)).called(1);
       });
     });
   });

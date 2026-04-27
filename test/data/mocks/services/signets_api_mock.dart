@@ -11,6 +11,7 @@ import 'package:notredame/data/services/signets-api/models/course_review.dart';
 import 'package:notredame/data/services/signets-api/models/course_summary.dart';
 import 'package:notredame/data/services/signets-api/models/profile_student.dart';
 import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
 import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/data/services/signets-api/signets_api_client.dart';
@@ -100,6 +101,20 @@ class SignetsAPIClientMock extends MockSignetsAPIClient {
   /// Throw [exceptionToThrow] when [getCourses]
   static void stubGetCoursesException(MockSignetsAPIClient mock, {ApiException exceptionToThrow = signetsException}) {
     when(mock.getCourses()).thenThrow(exceptionToThrow);
+  }
+
+  /// Stub the answer of the [getReplacedDays] when the [session] is used.
+  static void stubGetReplacedDays(MockSignetsAPIClient mock, String session, List<ReplacedDay> replacedDaysToReturn) {
+    when(mock.getReplacedDays(session: session)).thenAnswer((_) async => replacedDaysToReturn);
+  }
+
+  /// Throw [exceptionToThrow] when [getReplacedDays] with the [session] is used.
+  static void stubGetReplacedDaysException(
+    MockSignetsAPIClient mock,
+    String session, {
+    required ApiException exceptionToThrow,
+  }) {
+    when(mock.getReplacedDays(session: session)).thenThrow(exceptionToThrow);
   }
 
   /// Stub the answer of the [getCourseSummary] when the [course] is used.

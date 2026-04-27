@@ -166,6 +166,7 @@ void main() {
       courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsRepositoryMock();
       setupNetworkingServiceMock();
+      setupLaunchUrlServiceMock();
       intl = await setupAppIntl();
     });
 

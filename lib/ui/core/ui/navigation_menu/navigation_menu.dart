@@ -1,0 +1,140 @@
+// Dart imports:
+import 'dart:io';
+import 'dart:math';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:notredame/data/models/navigation_menu_callback.dart';
+import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu_button.dart';
+
+late GlobalKey<NavigationMenuButtonState> currentKey;
+
+class NavigationMenu extends StatefulWidget {
+  // The minimum height for the menu bar is 76, but only the top 64 is visible.
+  // The rest is occupied by the text of unselected buttons. They have no opacity but still take the space.
+  static double height(BuildContext context) => max(76.0, 64.0 + MediaQuery.viewPaddingOf(context).bottom);
+
+  final int selectedIndex;
+  final ValueChanged<NavigationMenuCallback> indexChangedCallback;
+
+  const NavigationMenu({super.key, required this.selectedIndex, required this.indexChangedCallback});
+
+  static bool isPortrait(BuildContext context) => MediaQuery.of(context).orientation == Orientation.portrait;
+
+  // On root views, this is the height that can be occupied by the top of the selected button or that is unsafe to use.
+  static double overlapHeight(BuildContext context) =>
+      isPortrait(context) ? 32.0 : MediaQuery.viewPaddingOf(context).bottom;
+
+  @override
+  State<NavigationMenu> createState() => _NavigationMenuState();
+}
+
+class _NavigationMenuState extends State<NavigationMenu> {
+  List<GlobalKey<NavigationMenuButtonState>> keys = [
+    GlobalKey<NavigationMenuButtonState>(),
+    GlobalKey<NavigationMenuButtonState>(),
+    GlobalKey<NavigationMenuButtonState>(),
+    GlobalKey<NavigationMenuButtonState>(),
+    GlobalKey<NavigationMenuButtonState>(),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    currentKey = keys[widget.selectedIndex];
+    WidgetsBinding.instance.addPostFrameCallback((_) => currentKey.currentState?.restartAnimation());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Widget buttons = _createButtons();
+
+    return NavigationMenu.isPortrait(context) ? _bottomBar(buttons) : _sideBar(buttons);
+  }
+
+  Widget _sideBar(Widget buttons) {
+    return Container(
+      padding: EdgeInsets.only(right: Platform.isIOS ? 12.0 : 0.0),
+      color: context.theme.appColors.navBar,
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        right: false,
+        child: Padding(padding: const EdgeInsets.only(top: 12.0), child: buttons),
+      ),
+    );
+  }
+
+  Widget _bottomBar(Widget buttons) => Stack(
+    children: [
+      Container(
+        height: NavigationMenu.height(context),
+        decoration: BoxDecoration(
+          color: context.theme.appColors.navBar,
+          boxShadow: [
+            BoxShadow(color: context.theme.scaffoldBackgroundColor, spreadRadius: 8.0, blurRadius: 8.0),
+            const BoxShadow(color: AppPalette.etsDarkRed, spreadRadius: 1.0, blurRadius: 8.0),
+          ],
+        ),
+      ),
+      Positioned.fill(
+        child: Padding(padding: const EdgeInsets.fromLTRB(20.0, 0, 20.0, 0), child: buttons),
+      ),
+    ],
+  );
+
+  Widget _createButtons() {
+    return Flex(
+      mainAxisAlignment: NavigationMenu.isPortrait(context) ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
+      direction: NavigationMenu.isPortrait(context) ? Axis.horizontal : Axis.vertical,
+      children: [
+        NavigationMenuButton(
+          key: keys[0],
+          label: AppIntl.of(context)!.title_dashboard,
+          activeIcon: Icons.dashboard,
+          inactiveIcon: Icons.dashboard_outlined,
+          onPressed: () => _setIndex(0),
+        ),
+        NavigationMenuButton(
+          key: keys[1],
+          label: AppIntl.of(context)!.title_schedule,
+          activeIcon: Icons.access_time_filled,
+          inactiveIcon: Icons.access_time,
+          onPressed: () => _setIndex(1),
+        ),
+        NavigationMenuButton(
+          key: keys[2],
+          label: AppIntl.of(context)!.title_student,
+          activeIcon: Icons.school,
+          inactiveIcon: Icons.school_outlined,
+          onPressed: () => _setIndex(2),
+        ),
+        NavigationMenuButton(
+          key: keys[3],
+          label: AppIntl.of(context)!.title_ets,
+          activeIcon: Icons.account_balance_sharp,
+          inactiveIcon: Icons.account_balance_outlined,
+          onPressed: () => _setIndex(3),
+        ),
+        NavigationMenuButton(
+          key: keys[4],
+          label: AppIntl.of(context)!.title_more,
+          activeIcon: Icons.menu,
+          inactiveIcon: Icons.menu,
+          onPressed: () => _setIndex(4),
+        ),
+      ],
+    );
+  }
+
+  void _setIndex(int newIndex) {
+    widget.indexChangedCallback(NavigationMenuCallback(newIndex, keys[newIndex], currentKey));
+    currentKey = keys[newIndex];
+  }
+}

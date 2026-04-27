@@ -3,56 +3,56 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
-import 'package:notredame/utils/utils.dart';
-import '../../../../data/mocks/repositories/course_repository_mock.dart';
+import 'package:notredame/utils/date_extensions.dart';
+import '../../../../data/mocks/services/schedule_service_mock.dart';
 import '../../../../helpers.dart';
-
-late CourseRepositoryMock courseRepositoryMock;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late WeekViewModel viewModel;
+  late ScheduleServiceMock scheduleServiceMock;
 
   setUp(() async {
     setupSettingsRepositoryMock();
-    courseRepositoryMock = setupCourseRepositoryMock();
-    setupSettingsRepositoryMock();
+    setupCourseRepositoryMock();
     setupFlutterToastMock();
+    scheduleServiceMock = setupScheduleServiceMock();
 
     viewModel = WeekViewModel(intl: await setupAppIntl());
   });
 
   group('return to current date', () {
     test('updates weekSelected', () {
-      viewModel.weekSelected = Utils.getFirstdayOfWeek(DateTime(2023, 10, 1));
+      viewModel.weekSelected = DateTime(2023, 10, 1).startOfWeek(start: WeekDays.sunday).withoutTime;
       final result = viewModel.returnToCurrentDate();
       expect(result, true);
     });
 
-    test('does not update weekSelected', () {
-      final CourseActivity saturdayCourse = CourseActivity(
-        courseGroup: 'PRE011',
-        courseName: 'PRE011',
-        activityName: 'PRE011',
-        activityDescription: 'PRE011',
-        activityLocation: ['PRE011'],
-        startDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(days: 6, hours: 12)),
-        endDateTime: Utils.getFirstdayOfWeek(DateTime.now()).add(const Duration(days: 6, hours: 16)),
-      );
+    test('does not update weekSelected', () async {
+      final DateTime saturday = DateTime.now()
+          .startOfWeek(start: WeekDays.sunday)
+          .add(const Duration(days: 6))
+          .withoutTime;
 
-      // Mocking the class to get our list of data back like a "real" request
-      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock, toReturn: [saturdayCourse]);
-      // Map the list of CourseActivity to add them in the viewModel
-      final Map<DateTime, List<CourseActivity>> coursesMapped = {};
-      final DateTime saturday = Utils.getFirstdayOfWeek(
-        DateTime.now(),
-      ).add(const Duration(days: 6, hours: 1)).withoutTime;
-      coursesMapped[saturday]?.add(saturdayCourse);
+      final Map<DateTime, List<EventData>> events = {
+        saturday: [
+          EventData(
+            courseAcronym: 'PRE011',
+            courseName: 'PRE011',
+            activityName: 'PRE011',
+            date: saturday,
+            startTime: saturday.add(const Duration(hours: 12)),
+            endTime: saturday.add(const Duration(hours: 16)),
+          ),
+        ],
+      };
 
-      viewModel.coursesActivities.addAll(coursesMapped);
-      viewModel.weekSelected = Utils.getFirstdayOfWeek(DateTime.now());
+      ScheduleServiceMock.stubEvents(scheduleServiceMock, events);
+      await viewModel.futureToRun();
+
+      viewModel.weekSelected = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
 
       final result = viewModel.returnToCurrentDate();
       expect(result, false);
@@ -63,7 +63,7 @@ void main() {
     test('handleDateSelectedChanged updates weekSelected', () {
       final newDate = DateTime(2023, 10, 10);
       viewModel.handleDateSelectedChanged(newDate);
-      expect(viewModel.weekSelected, Utils.getFirstdayOfWeek(newDate));
+      expect(viewModel.weekSelected, newDate.startOfWeek(start: WeekDays.sunday).withoutTime);
     });
   });
 }

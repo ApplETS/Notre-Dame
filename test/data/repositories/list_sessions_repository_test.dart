@@ -122,4 +122,28 @@ void main() {
       expect(activeSession, isNull);
     });
   });
+
+  group('getNextUpcomingSession', () {
+    test('should return null if value is null', () {
+      expect(repository.getNextUpcomingSession(), isNull);
+    });
+
+    test('should return the earliest future session', () {
+      // ignore: invalid_use_of_protected_member
+      repository.value = [passedSession, activeSession, futureSession];
+
+      final result = repository.getNextUpcomingSession();
+
+      expect(result, equals(futureSession));
+    });
+
+    test('should return null if no future sessions exist', () {
+      // ignore: invalid_use_of_protected_member
+      repository.value = [passedSession, activeSession];
+
+      final result = repository.getNextUpcomingSession();
+
+      expect(result, isNull);
+    });
+  });
 }

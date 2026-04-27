@@ -2,7 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/models/calendar_event_tile.dart';
+import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/session_schedule/widgets/session_schedule.dart';
 import '../../../../helpers.dart';
@@ -31,7 +31,15 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [
+              EventData(
+                date: DateTime(2024),
+                courseAcronym: '',
+                courseName: '',
+                startTime: DateTime(2024).add(const Duration(hours: 9)),
+                endTime: DateTime(2024).add(const Duration(hours: 12)),
+              ),
+            ],
             loaded: true,
             displaySaturday: true,
             displaySunday: false,
@@ -46,7 +54,15 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [
+              EventData(
+                date: DateTime(2024),
+                courseAcronym: '',
+                courseName: '',
+                startTime: DateTime(2024).add(const Duration(hours: 9)),
+                endTime: DateTime(2024).add(const Duration(hours: 12)),
+              ),
+            ],
             loaded: true,
             displaySaturday: false,
             displaySunday: true,
@@ -61,7 +77,15 @@ void main() {
       await tester.pumpWidget(
         localizedWidget(
           child: SessionSchedule(
-            calendarEvents: [CalendarEventTile(title: "My Event", date: DateTime(2024))],
+            calendarEvents: [
+              EventData(
+                date: DateTime(2024),
+                courseAcronym: '',
+                courseName: '',
+                startTime: DateTime(2024).add(const Duration(hours: 9)),
+                endTime: DateTime(2024).add(const Duration(hours: 12)),
+              ),
+            ],
             loaded: true,
             displaySaturday: false,
             displaySunday: false,

@@ -26,9 +26,7 @@ class _FaqViewState extends State<FaqView> {
     viewModelBuilder: () => FaqViewModel(),
     builder: (context, model, child) {
       return BaseScaffold(
-        safeArea: false,
         appBar: AppBar(title: Text(AppIntl.of(context)!.more_need_help)),
-        showBottomBar: false,
         body: (MediaQuery.of(context).orientation == Orientation.portrait)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,7 +93,7 @@ class _FaqViewState extends State<FaqView> {
 
   Widget _getActions(FaqViewModel model) => Expanded(
     child: ListView(
-      padding: const EdgeInsets.only(bottom: 32.0),
+      padding: EdgeInsets.only(bottom: MediaQuery.viewPaddingOf(context).bottom),
       children: [
         ActionCard(
           title: AppIntl.of(context)!.faq_actions_reactivate_account_title,

@@ -1,0 +1,115 @@
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+
+// Project imports:
+import 'package:notredame/data/models/session_reminder.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
+import 'package:notredame/domain/session_reminder_type.dart';
+import 'package:notredame/utils/date_extensions.dart';
+
+class SessionReminderHelper {
+  static List<MapEntry<DateTime, SessionReminderType>> _buildSortedEntries(Session session) {
+    final entries = <MapEntry<DateTime, SessionReminderType>>[
+      MapEntry(session.startDate, SessionReminderType.sessionStart),
+      // The Signets API currently returns registration start/deadline dates swapped.
+      // Use min/max to always assign the earlier date to "start" and the later to "deadline".
+      MapEntry(
+        session.startDateRegistration.isBefore(session.deadlineRegistration)
+            ? session.startDateRegistration
+            : session.deadlineRegistration,
+        SessionReminderType.registrationStart,
+      ),
+      MapEntry(
+        session.deadlineRegistration.isAfter(session.startDateRegistration)
+            ? session.deadlineRegistration
+            : session.startDateRegistration,
+        SessionReminderType.registrationDeadline,
+      ),
+      MapEntry(session.startDateCancellationWithRefund, SessionReminderType.cancellationWithRefundStart),
+      MapEntry(session.deadlineCancellationWithRefund, SessionReminderType.cancellationWithRefundDeadline),
+      MapEntry(
+        session.deadlineCancellationWithRefundNewStudent,
+        SessionReminderType.cancellationWithRefundNewStudentDeadline,
+      ),
+      MapEntry(
+        session.startDateCancellationWithoutRefundNewStudent,
+        SessionReminderType.cancellationWithoutRefundNewStudentStart,
+      ),
+      MapEntry(
+        session.deadlineCancellationWithoutRefundNewStudent,
+        SessionReminderType.cancellationWithoutRefundNewStudentDeadline,
+      ),
+      MapEntry(session.deadlineCancellationASEQ, SessionReminderType.cancellationASEQDeadline),
+      MapEntry(session.endDate, SessionReminderType.sessionEnd),
+    ];
+
+    entries.sort((a, b) => a.key.compareTo(b.key));
+    return entries;
+  }
+
+  /// Returns the next upcoming (or today's) session reminder, or null if all dates have passed.
+  static SessionReminder? getActiveReminder(Session session, DateTime now) {
+    final all = getAllUpcomingReminders(session, now);
+    return all.isEmpty ? null : all.first;
+  }
+
+  /// Returns all upcoming (including today's) session reminders, sorted by date.
+  static List<SessionReminder> getAllUpcomingReminders(Session session, DateTime now, {String? sessionName}) {
+    final today = now.withoutTimeUtc;
+    final entries = _buildSortedEntries(session);
+
+    final reminders = <SessionReminder>[];
+    for (final entry in entries) {
+      final entryDate = entry.key.withoutTimeUtc;
+      if (!entryDate.isBefore(today)) {
+        reminders.add(
+          SessionReminder(
+            type: entry.value,
+            date: entry.key,
+            daysUntil: entryDate.getDayDifference(today),
+            sessionName: sessionName,
+          ),
+        );
+      }
+    }
+
+    return reminders;
+  }
+
+  static List<SessionReminder> getAllUpcomingRemindersMultiSession(List<Session> sessions, DateTime now) {
+    final reminders = <SessionReminder>[];
+    for (final session in sessions) {
+      reminders.addAll(getAllUpcomingReminders(session, now, sessionName: session.shortName));
+    }
+    return reminders;
+  }
+
+  static bool hasMultipleSessions(List<SessionReminder> reminders) {
+    final names = reminders.map((r) => r.sessionName).whereType<String>().toSet();
+    return names.length > 1;
+  }
+
+  static const int defaultCarouselThresholdDays = 7;
+
+  /// Returns reminders for the carousel: always the next upcoming event (even if
+  /// beyond threshold), plus all additional events within [thresholdDays] of
+  /// the first event. Returns empty list if no upcoming reminders exist.
+  static List<SessionReminder> getCarouselReminders(
+    Session session,
+    DateTime now, {
+    int thresholdDays = defaultCarouselThresholdDays,
+  }) {
+    final all = getAllUpcomingReminders(session, now);
+    if (all.isEmpty) return [];
+
+    final result = <SessionReminder>[all.first];
+    final daysUntilFirstEvent = all.first.daysUntil;
+    for (int i = 1; i < all.length; i++) {
+      if (all[i].daysUntil - daysUntilFirstEvent <= thresholdDays) {
+        result.add(all[i]);
+      }
+    }
+
+    return result;
+  }
+}
