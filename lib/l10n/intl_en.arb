@@ -47,6 +47,7 @@
   "close_button_text": "Close",
 
   "startup_viewmodel_acquire_token_fail": "Connection failed after multiple attempts. Please try again.",
+  "login_viewmodel_acquire_token_fail": "Connection failed due to cancellation. Please try again.",
 
   "title_schedule": "Schedule",
   "title_student": "Student",

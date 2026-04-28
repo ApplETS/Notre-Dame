@@ -27,16 +27,18 @@ class LoginViewModel extends BaseViewModel {
 
   Future authenticate() async {
     AuthenticationResult? token;
-
     token = (await _authService.acquireToken()).$1;
-    if (token == null) {
-      Fluttertoast.showToast(msg: _appIntl.startup_viewmodel_acquire_token_fail, toastLength: Toast.LENGTH_LONG);
-      await _analyticsService.logError('LoginViewmodel', 'Failed to acquire token');
-      return false;
+
+    try {
+      if (token == null) {
+        throw const MsalUserCancelException(message: "", correlationId: null);
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: _appIntl.login_viewmodel_acquire_token_fail);
+      await _analyticsService.logError('LoginViewmodel', 'Failed to acquire token due to cancellation');
     }
 
     _settingsManager.isLoggedIn = true;
-
     navigationService.pushNamedAndRemoveUntil(RouterPaths.startup);
   }
 }
