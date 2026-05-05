@@ -260,6 +260,7 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
                   }
                   return AutoSizeText(
                     text,
+                    textScaleFactor: 1,
                     style: style.copyWith(fontSize: fontSize),
                     minFontSize: _eventNameMinFontSize,
                     maxLines: 3,
