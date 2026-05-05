@@ -1,6 +1,7 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:ui' as ui;
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
@@ -92,6 +93,17 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   Widget _buildCalendar(DayViewModel model) => Expanded(
     child: LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
+        final textStyle = Theme.of(context).textTheme.bodyLarge!;
+
+        // Used to get the dimensions of an hour. Supports scaling.
+        final textPainter = TextPainter(
+          text: TextSpan(text: "00:00", style: textStyle),
+          textDirection: ui.TextDirection.ltr,
+          textScaler: MediaQuery.of(context).textScaler,
+        );
+
+        textPainter.layout();
+
         final double heightPerMinute = showEntireDay
             ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
             : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(0.1, double.infinity);
@@ -120,6 +132,15 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             final locale = AppIntl.of(context)!.localeName;
             return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
           },
+          timeLineWidth: textPainter.width + 18.0,
+          timeLineOffset: textPainter.height / 2,
+          timeLineBuilder: (DateTime date) => Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 6.0),
+            child: Align(
+              alignment: AlignmentGeometry.topEnd,
+              child: Text(DateFormat('H:mm').format(date), style: textStyle),
+            ),
+          ),
           timeStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
           eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
         );
