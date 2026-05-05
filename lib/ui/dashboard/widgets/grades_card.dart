@@ -52,9 +52,11 @@ class GradesCard extends StatelessWidget {
 
   static Widget _buildGradesButton(List<Course> courses, BuildContext context, {bool loading = false}) => Skeletonizer(
     enabled: loading,
-    child: Container(
+    child: SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
       padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-      child: Wrap(
+      child: Row(
+        spacing: 10,
         children: courses.map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt)).toList(),
       ),
     ),
