@@ -87,8 +87,16 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
 
     final textStyle = TextStyle(fontSize: fontSize, height: lineHeight, color: AppPalette.grey.white);
 
-    const double twoLinesHeight = fontSize * lineHeight * 2;
     paddingUnderGrades = NavigationMenu.overlapHeight(context);
+    // Used to get the dimensions of the dynamic message.
+    final textPainter = TextPainter(
+      text: TextSpan(text: "\n", style: textStyle),
+      maxLines: 2,
+      textDirection: TextDirection.ltr,
+      textScaler: MediaQuery.of(context).textScaler,
+    );
+
+    textPainter.layout();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,6 +105,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
           key: _titleKey,
           animation: widget.model.titleAnimation,
           builder: (context, child) {
+            bool isLoading = widget.model.busy(widget.model.dynamicMessageText);
             return Padding(
               padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 80.0),
               child: Transform.translate(
@@ -104,11 +113,16 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                 child: Opacity(
                   opacity: widget.model.titleFadeOpacity,
                   child: SizedBox(
-                    height: twoLinesHeight,
+                    // Prevents the skeleton from overflowing.
+                    height: isLoading ? null : textPainter.height,
                     child: Center(
-                      child: widget.model.busy(widget.model.dynamicMessageText)
+                      child: isLoading
                           ? Skeletonizer(
-                              child: Bone.multiText(fontSize: fontSize, style: textStyle, lines: 2),
+                              child: Bone.multiText(
+                                fontSize: MediaQuery.of(context).textScaler.scale(fontSize),
+                                style: textStyle,
+                                lines: 2,
+                              ),
                             )
                           : Text(
                               widget.model.dynamicMessageText ?? '',
