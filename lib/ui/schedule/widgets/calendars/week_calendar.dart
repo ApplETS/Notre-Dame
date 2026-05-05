@@ -1,5 +1,6 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
@@ -58,6 +59,17 @@ class _WeekCalendarState extends State<WeekCalendar> {
       setState(() {});
     };
 
+    final textStyle = Theme.of(context).textTheme.bodyLarge!;
+
+    // Used to get the dimensions of an hour. Supports scaling.
+    final textPainter = TextPainter(
+      text: TextSpan(text: "00:00", style: textStyle),
+      textDirection: ui.TextDirection.ltr,
+      textScaler: MediaQuery.of(context).textScaler,
+    );
+
+    textPainter.layout();
+
     return WeekView(
       key: weekViewKey,
       weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
@@ -77,6 +89,15 @@ class _WeekCalendarState extends State<WeekCalendar> {
         WeekDays.friday,
         if (model.displaySaturday) WeekDays.saturday,
       ],
+      timeLineWidth: textPainter.width + 18.0,
+      timeLineOffset: textPainter.height / 2,
+      timeLineBuilder: (DateTime date) => Padding(
+        padding: const EdgeInsets.only(left: 12.0, right: 6.0),
+        child: Align(
+          alignment: AlignmentGeometry.topEnd,
+          child: Text(DateFormat('H:mm').format(date), style: textStyle),
+        ),
+      ),
       initialDay: model.weekSelected,
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,

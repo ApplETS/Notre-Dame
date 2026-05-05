@@ -217,8 +217,19 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     final Color todayColor = context.theme.appColors.dayIndicatorWeekView;
     final Color defaultColor = context.theme.appColors.scheduleLine;
 
+    final TextStyle textStyle = Theme.of(context).textTheme.bodyMedium!;
+
+    // Used to get the dimensions of an the weekday. Supports scaling.
+    final textPainter = TextPainter(
+      text: TextSpan(text: "00:00", style: textStyle),
+      textDirection: ui.TextDirection.ltr,
+      textScaler: MediaQuery.of(context).textScaler,
+    );
+
+    textPainter.layout();
+
     return Container(
-      padding: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 3.0),
       color: context.theme.appColors.appBar,
       child: TableCalendar(
         key: const Key("TableCalendar"),
@@ -226,6 +237,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         selectedDayPredicate: (day) {
           return isSameDay(model.daySelected, day);
         },
+        daysOfWeekHeight: textPainter.height,
+        daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: textStyle,
+            weekendStyle: textStyle.copyWith(color: context.theme.appColors.fadedText)
+        ),
         headerStyle: HeaderStyle(
           titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
           titleCentered: true,
@@ -248,11 +264,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             Color color = selectedColor;
 
             if (!isSelected) {
-              if (isToday) {
-                color = todayColor;
-              } else {
-                color = defaultColor;
-              }
+              color = isToday ? todayColor : defaultColor;
             }
 
             return _buildEventsMarker(events, color);
@@ -301,10 +313,17 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${date.day}', style: const TextStyle().copyWith(fontSize: 16.0, height: 1.2)),
+              Text(
+                  '${date.day}',
+                  textScaler: MediaQuery.of(context).textScaler.clamp(
+                    maxScaleFactor: 1.2,
+                  ),
+                  style: const TextStyle().copyWith(fontSize: 16.0, height: 1.2)
+              ),
               if (date.month != DateTime.now().month || date.year != DateTime.now().year)
                 Text(
                   DateFormat.MMM(AppIntl.of(context)!.localeName).format(date),
+                  textScaler: TextScaler.noScaling,
                   style: const TextStyle(fontSize: 10.0),
                 ),
             ],
@@ -327,6 +346,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           child: Text(
             '${events.length}',
             textAlign: TextAlign.center,
+            textScaler: TextScaler.noScaling,
             style: const TextStyle().copyWith(fontSize: 12.0),
           ),
         ),
