@@ -1,7 +1,9 @@
+// Dart imports:
+import 'dart:ui' as ui;
+
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:ui' as ui;
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
@@ -239,8 +241,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         },
         daysOfWeekHeight: textPainter.height,
         daysOfWeekStyle: DaysOfWeekStyle(
-            weekdayStyle: textStyle,
-            weekendStyle: textStyle.copyWith(color: context.theme.appColors.fadedText)
+          weekdayStyle: textStyle,
+          weekendStyle: textStyle.copyWith(color: context.theme.appColors.fadedText),
         ),
         headerStyle: HeaderStyle(
           titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
@@ -314,11 +316,9 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  '${date.day}',
-                  textScaler: MediaQuery.of(context).textScaler.clamp(
-                    maxScaleFactor: 1.2,
-                  ),
-                  style: const TextStyle().copyWith(fontSize: 16.0, height: 1.2)
+                '${date.day}',
+                textScaler: MediaQuery.of(context).textScaler.clamp(maxScaleFactor: 1.2),
+                style: const TextStyle().copyWith(fontSize: 16.0, height: 1.2),
               ),
               if (date.month != DateTime.now().month || date.year != DateTime.now().year)
                 Text(

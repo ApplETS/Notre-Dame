@@ -1,6 +1,8 @@
+// Dart imports:
+import 'dart:ui' as ui;
+
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
@@ -50,7 +52,6 @@ class _SessionScheduleState extends State<SessionSchedule> {
     }
     final double heightPerMinute = (MediaQuery.of(context).size.height / 1200).clamp(0.45, 1.0);
     // If there are events, display the calendar
-
 
     final textStyle = Theme.of(context).textTheme.bodyLarge!;
 

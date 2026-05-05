@@ -75,11 +75,9 @@ class ETSMobile extends StatelessWidget {
           return CalendarControllerProvider(
             controller: EventController(),
             child: MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                textScaler: MediaQuery.of(context).textScaler.clamp(
-                  maxScaleFactor: 1.3,
-                ),
-              ),
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: MediaQuery.of(context).textScaler.clamp(maxScaleFactor: 1.3)),
               child: MaterialApp(
                 title: 'ÉTS Mobile',
                 theme: AppTheme.light,

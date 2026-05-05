@@ -1,6 +1,8 @@
+// Dart imports:
+import 'dart:ui' as ui;
+
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
