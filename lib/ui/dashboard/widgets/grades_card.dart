@@ -37,25 +37,21 @@ class GradesCard extends StatelessWidget {
 
     return TitledCard(
       title: AppIntl.of(context)!.grades_title,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (courses.isEmpty && !loading)
-            _buildNoGradesContent(context)
-          else
-            _buildGradesButton(courses, context, loading: loading),
-        ],
-      ),
+      child: (courses.isEmpty && !loading) ?
+      _buildNoGradesContent(context) :
+      _buildGradesButton(courses, context, loading: loading),
     );
   }
 
-  static Widget _buildGradesButton(List<Course> courses, BuildContext context, {bool loading = false}) => Skeletonizer(
-    enabled: loading,
+  static Widget _buildGradesButton(List<Course> courses, BuildContext context, {
+    bool loading = false, Axis direction = Axis.horizontal
+  }) => Skeletonizer(
+  enabled: loading,
     child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
+      scrollDirection: direction,
       padding: const EdgeInsets.fromLTRB(17, 10, 15, 10),
-      child: Row(
+      child: Flex(
+        direction: direction,
         spacing: 10,
         children: courses.map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt)).toList(),
       ),
