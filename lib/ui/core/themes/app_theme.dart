@@ -114,7 +114,7 @@ class AppTheme with ChangeNotifier {
     dayIndicatorWeekView: const Color(0x83ef3e45),
     dayIndicatorDayView: AppPalette.grey.lightGrey,
     loginMain: AppPalette.etsLightRed,
-    loginAccent: AppPalette.grey.white,
+    splashScreenLogo: AppPalette.grey.white,
     inputError: Colors.amberAccent,
     mapLegend: const Color(0xfffffdfd),
   );
@@ -208,7 +208,7 @@ class AppTheme with ChangeNotifier {
     dayIndicatorWeekView: const Color(0x96ef3e45),
     dayIndicatorDayView: AppPalette.grey.darkGrey,
     loginMain: AppPalette.grey.white,
-    loginAccent: AppPalette.etsLightRed,
+    splashScreenLogo: AppPalette.etsLightRed,
     inputError: Colors.redAccent,
     mapLegend: const Color(0xff121212),
   );

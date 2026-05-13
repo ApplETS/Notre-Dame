@@ -10,7 +10,6 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/login/view_model/login_viewmodel.dart';
 
 class LoginView extends StatefulWidget {
@@ -28,15 +27,14 @@ class _LoginViewState extends State<LoginView> {
     return ViewModelBuilder<LoginViewModel>.reactive(
       viewModelBuilder: () => LoginViewModel(intl: AppIntl.of(context)!),
       builder: (context, model, child) => Scaffold(
-        backgroundColor: context.theme.appColors.backgroundVibrant,
         body: Container(
           width: double.infinity,
           height: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [context.theme.appColors.backgroundVibrant, AppPalette.etsDarkRed],
+              colors: [AppPalette.etsLightRed, AppPalette.etsDarkRed],
             ),
           ),
           child: Center(
@@ -55,7 +53,7 @@ class _LoginViewState extends State<LoginView> {
                         excludeFromSemantics: true,
                         width: 90,
                         height: 90,
-                        colorFilter: ColorFilter.mode(context.theme.appColors.loginAccent, BlendMode.srcIn),
+                        colorFilter: ColorFilter.mode(AppPalette.grey.white, BlendMode.srcIn),
                       ),
                     ),
                   ),
