@@ -55,11 +55,14 @@ class SessionProgressViewmodel extends FutureViewModel {
   }
 
   int _getDaysRemaining() {
-    final sessionDays = _listSessionsRepository.getActiveSession();
-    final elapsedDays = sessionDays?.daysCompleted ?? 0;
-    final totalDays = sessionDays?.totalDays ?? 0;
+    final session = _listSessionsRepository.getActiveSession();
+    final elapsedDays = session?.daysCompleted ?? 0;
+    final totalDays = session?.totalDays ?? 0;
+    int remainingDays = totalDays - elapsedDays;
 
-    return totalDays - elapsedDays;
+    remainingDays = remainingDays > totalDays ? totalDays : remainingDays;
+
+    return remainingDays >= 0 ? remainingDays : 0;
   }
 
   @override

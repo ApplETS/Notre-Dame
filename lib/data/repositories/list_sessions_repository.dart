@@ -38,4 +38,29 @@ class ListSessionsRepository extends BaseStreamRepository<List<Session>> {
       );
     }
   }
+
+  Session? getSessionForDate(DateTime date) {
+    final normalizedDate = DateTime(date.year, date.month, date.day);
+    return value?.firstWhereOrNull(
+      (session) =>
+          normalizedDate.isAfter(session.startDate) && normalizedDate.isBefore(session.endDate) ||
+          normalizedDate.isAtSameMomentAs(session.startDate) ||
+          normalizedDate.isAtSameMomentAs(session.endDate),
+    );
+  }
+
+  Session? getSessionForRange(DateTime startDate, DateTime endDate) {
+    if (value == null) {
+      return null;
+    }
+
+    final normalizedStart = DateTime(startDate.year, startDate.month, startDate.day);
+    final normalizedEnd = DateTime(endDate.year, endDate.month, endDate.day).subtract(const Duration(days: 1));
+
+    return value!.firstWhereOrNull((session) {
+      final sessionStart = DateTime(session.startDate.year, session.startDate.month, session.startDate.day);
+      final sessionEnd = DateTime(session.endDate.year, session.endDate.month, session.endDate.day);
+      return !normalizedEnd.isBefore(sessionStart) && !normalizedStart.isAfter(sessionEnd);
+    });
+  }
 }

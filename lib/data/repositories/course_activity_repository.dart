@@ -19,6 +19,9 @@ class CourseActivityRepository extends BaseStreamRepository<List<CourseActivity>
 
   CourseActivityRepository() : super(cacheKey);
 
+  /// Expose the in-memory course activities loaded by the repository.
+  List<CourseActivity>? get activities => value;
+
   /// Get the schedule for a given session, course group, and date range
   /// [session] Short session (H2025, E2025, A2025), long session (Hiver 2025, Été 2025, Automne 2025), or digital session (20251, 20252, 20253).
   /// [courseGroup] Group courses in the acronym-group format, for example CHM131-01. If not specified, retrieves all group courses. 
@@ -34,6 +37,9 @@ class CourseActivityRepository extends BaseStreamRepository<List<CourseActivity>
   }) async {
     String? startDateFormat = startDate != null ? _dateFormat.format(startDate) : null;
     String? endDateFormat = endDate != null ? _dateFormat.format(endDate) : null;
+
+
+
     CourseActivityFilter filter = CourseActivityFilter(
       courseGroup: courseGroup,
       startDate: startDate,
@@ -51,5 +57,7 @@ class CourseActivityRepository extends BaseStreamRepository<List<CourseActivity>
       _logger.d("$tag - getCourseActivities: ${value!.length} course activities loaded.");
     }
   }
+
+  
   
 }
