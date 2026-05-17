@@ -62,7 +62,7 @@ class _RootViewState extends State<RootView> {
                 Expanded(
                   child: PageTransitionSwitcher(
                     reverse: _selected.buttonIndex < _previous.buttonIndex,
-                    duration: Duration(milliseconds: 350),
+                    duration: const Duration(milliseconds: 350),
                     transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
                       _previous = _selected;
                       return SharedAxisTransition(
@@ -81,7 +81,7 @@ class _RootViewState extends State<RootView> {
             ),
           ),
           if (MediaQuery.of(context).orientation == Orientation.portrait)
-            SizedBox(height: 80.0), // The same height as the menu bar
+            const SizedBox(height: 80.0), // The same height as the menu bar
         ],
       ),
     );
@@ -106,11 +106,11 @@ class _RootViewState extends State<RootView> {
 
   Widget _getViewByIndex() {
     return switch (_selected) {
-      NavigationView.dashboard => DashboardView(),
+      NavigationView.dashboard => const DashboardView(),
       NavigationView.schedule => ScheduleView(controller: _scheduleController),
-      NavigationView.student => StudentView(),
-      NavigationView.ets => ETSView(),
-      NavigationView.more => MoreView(),
+      NavigationView.student => const StudentView(),
+      NavigationView.ets => const ETSView(),
+      NavigationView.more => const MoreView(),
     };
   }
 }

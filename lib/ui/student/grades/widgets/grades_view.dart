@@ -14,6 +14,7 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/student/grades/view_model/grades_viewmodel.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import 'package:notredame/utils/loading.dart';
+import 'package:notredame/utils/session_utils.dart';
 
 class GradesView extends StatefulWidget {
   const GradesView({super.key});
@@ -35,24 +36,29 @@ class _GradesViewState extends State<GradesView> {
           onRefresh: () => model.refresh(),
           child: Stack(
             children: [
-              // This widget is here to make this widget a Scrollable. Needed
-              // by the RefreshIndicator
-              ListView(),
               if (model.coursesBySession.isEmpty)
-                Center(
-                  child: Text(
-                    AppIntl.of(context)!.grades_msg_no_grades,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
+                CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          AppIntl.of(context)!.grades_msg_no_grades,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                    ),
+                  ],
                 )
               else
                 ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.only(top: 8.0),
                   itemCount: model.coursesBySession.length,
                   itemBuilder: (BuildContext context, int index) => _buildSessionCourses(
                     index,
-                    _sessionName(model.sessionOrder[index], AppIntl.of(context)!),
+                    localizedSessionName(AppIntl.of(context)!, model.sessionOrder[index]),
                     model.coursesBySession[model.sessionOrder[index]]!,
                     model,
                   ),
@@ -89,18 +95,4 @@ class _GradesViewState extends State<GradesView> {
       ],
     ),
   );
-
-  /// Build the complete name of the session for the user local.
-  String _sessionName(String shortName, AppIntl intl) {
-    switch (shortName[0]) {
-      case 'H':
-        return "${intl.session_winter} ${shortName.substring(1)}";
-      case 'A':
-        return "${intl.session_fall} ${shortName.substring(1)}";
-      case 'É':
-        return "${intl.session_summer} ${shortName.substring(1)}";
-      default:
-        return intl.session_without;
-    }
-  }
 }

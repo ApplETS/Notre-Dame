@@ -48,7 +48,7 @@ void main() {
     });
 
     testWidgets('Has card grades displayed - with no courses', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: GradesCard(courses: [], loading: false)));
+      await tester.pumpWidget(localizedWidget(child: const GradesCard(courses: [], loading: false)));
       await tester.pumpAndSettle();
 
       // Find grades card

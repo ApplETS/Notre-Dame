@@ -1,7 +1,9 @@
+// Package imports:
+import 'package:calendar_view/calendar_view.dart';
+
 // Project imports:
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/models/dynamic_message_context.dart';
-import 'package:notredame/utils/date_utils.dart';
 
 class DynamicMessagesService {
   static const int _maxDaysBeforeSessionMessage = 30;
@@ -11,7 +13,7 @@ class DynamicMessagesService {
       if (context.nextSessionStartDate != null && context.daysUntilNextSession! <= _maxDaysBeforeSessionMessage) {
         return SessionStartsSoonMessage(context.nextSessionStartDate!, context.daysUntilNextSession!);
       }
-      return SessionCompletedMessage();
+      return const SessionCompletedMessage();
     }
 
     if (context.isCoursesOver && context.hasFinals) {
@@ -27,7 +29,7 @@ class DynamicMessagesService {
     }
 
     if (context.isFirstDayBackFromBreak) {
-      return FirstDayBackAfterBreakMessage();
+      return const FirstDayBackAfterBreakMessage();
     }
 
     if (context.isInsideLongWeekend) {
@@ -45,7 +47,7 @@ class DynamicMessagesService {
         final daysUntilBreak = context.daysUntilBreakStart ?? 0;
         return UpcomingExtendedBreakMessage(daysUntilBreak);
       }
-      return LongWeekendIncomingMessage();
+      return const LongWeekendIncomingMessage();
     }
 
     final replacedDay = context.getUpcomingReplacedDay();
@@ -66,9 +68,9 @@ class DynamicMessagesService {
 
     if (context.weeksCompleted == 1) {
       if (isWeekDone) {
-        return FirstWeekCompletedMessage();
+        return const FirstWeekCompletedMessage();
       }
-      return FirstWeekOfSessionMessage();
+      return const FirstWeekOfSessionMessage();
     }
 
     if (isWeekDone) {
@@ -88,7 +90,7 @@ class DynamicMessagesService {
 
   DynamicMessage? determineMessageWithoutActiveSession({required DateTime now, DateTime? nextSessionStartDate}) {
     if (nextSessionStartDate != null) {
-      final daysRemaining = DateUtils.daysBetween(now, nextSessionStartDate);
+      final daysRemaining = nextSessionStartDate.getDayDifference(now);
       if (daysRemaining <= _maxDaysBeforeSessionMessage) {
         return SessionStartsSoonMessage(nextSessionStartDate, daysRemaining);
       }

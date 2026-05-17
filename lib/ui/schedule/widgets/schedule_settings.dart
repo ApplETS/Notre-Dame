@@ -50,7 +50,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                         width: 50,
                         decoration: BoxDecoration(
                           color: context.theme.appColors.modalHandle,
-                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                         ),
                       ),
                     ),
@@ -75,7 +75,7 @@ class _ScheduleSettingsState extends State<ScheduleSettings> {
                     margin: const EdgeInsets.all(0),
                     shape: const RoundedRectangleBorder(),
                     child: ListView(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       controller: scrollController,
                       key: const ValueKey("SettingsScrollingArea"),
                       children: _buildSettings(context, model),

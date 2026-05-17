@@ -16,7 +16,7 @@ class StudentView extends StatefulWidget {
 }
 
 class _StudentViewState extends State<StudentView> {
-  List<Widget> tabsView = [GradesView(), ProfileView()];
+  List<Widget> tabsView = [const GradesView(), const ProfileView()];
 
   @override
   Widget build(BuildContext context) {

@@ -12,6 +12,7 @@ import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/ui/modal_bottom_sheet_header.dart';
 
 class CalendarEventTile extends StatefulWidget {
   final EventData event;
@@ -43,38 +44,17 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(color: context.theme.appColors.modalTitle),
-                child: Column(
+              ModalBottomSheetHeader(
+                title: Column(
                   children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Container(
-                          height: 5,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: context.theme.appColors.modalHandle,
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          ),
-                        ),
-                      ),
+                    Text(
+                      widget.event.group ?? widget.event.courseAcronym,
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Column(
-                        children: [
-                          Text(
-                            widget.event.group ?? widget.event.courseAcronym,
-                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            widget.event.courseName,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
+                    Text(
+                      widget.event.courseName,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -83,7 +63,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                 left: false,
                 right: false,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 32.0, bottom: 32.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     spacing: 12.0,
@@ -138,7 +118,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
           return Card(
             color: widget.event.color,
             clipBehavior: Clip.hardEdge,
-            margin: EdgeInsets.all(3.0),
+            margin: const EdgeInsets.all(3.0),
             child: InkWell(
               onTap: _showTileInfo,
               child: Center(
@@ -160,7 +140,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
         return Card(
           color: widget.event.color,
           clipBehavior: Clip.hardEdge,
-          margin: EdgeInsets.all(3.0),
+          margin: const EdgeInsets.all(3.0),
           child: InkWell(
             onTap: _showTileInfo,
             child: Flex(
@@ -170,7 +150,7 @@ class _CalendarEventTileState extends State<CalendarEventTile> {
                 SizedBox(
                   width: wideLayout ? min(70, width / 2.5) : null,
                   child: DecoratedBox(
-                    decoration: BoxDecoration(color: const Color.fromRGBO(0, 0, 0, 0.2)),
+                    decoration: const BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.2)),
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 6.0),

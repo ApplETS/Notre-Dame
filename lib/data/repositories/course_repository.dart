@@ -390,11 +390,7 @@ class CourseRepository {
       rethrow;
     }
 
-    try {
-      fetchedCourseReviews.addAll(await _getCoursesReviews());
-    } on Exception catch (e) {
-      _logger.d("$tag - getCourses: $e during getCoursesEvaluations. Ignored");
-    }
+    fetchedCourseReviews.addAll(await _getCoursesReviews());
 
     _courses!.clear();
 
@@ -433,6 +429,7 @@ class CourseRepository {
   /// version of the course. Return the course with the summary set.
   Future<Course> getCourseSummary(Course course) async {
     CourseSummary? summary;
+    List<CourseReview>? reviews;
 
     // Don't try to update the summary when user has no connection
     if (!(await _networkingService.hasConnectivity())) {
@@ -456,6 +453,11 @@ class CourseRepository {
       _analyticsService.logError(tag, e.toString(), e, stacktrace);
       _logger.e("$tag - getCourseSummary: Exception raised $e");
       rethrow;
+    }
+
+    if (course.inReviewPeriod && !(course.allReviewsCompleted ?? true)) {
+      reviews = _getReviewsForCourse(course, await _getCoursesReviews());
+      course.reviews = reviews;
     }
 
     // Initialize the array if needed
@@ -586,7 +588,6 @@ class CourseRepository {
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, e.toString(), e, stacktrace);
       _logger.e("$tag - getCourseSummary: Exception raised $e");
-      rethrow;
     }
 
     return reviews;

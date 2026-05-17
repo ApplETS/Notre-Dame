@@ -27,7 +27,7 @@ void main() {
 
     group('UI - ', () {
       testWidgets('has an icon, title and subtitle', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: ChooseLanguageView()));
+        await tester.pumpWidget(localizedWidget(child: const ChooseLanguageView()));
         await tester.pumpAndSettle();
 
         expect(find.byIcon(Icons.language), findsOneWidget);
@@ -36,7 +36,7 @@ void main() {
       });
 
       testWidgets('has a listView', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: ChooseLanguageView()));
+        await tester.pumpWidget(localizedWidget(child: const ChooseLanguageView()));
         await tester.pumpAndSettle();
 
         final listview = find.byType(ListView);

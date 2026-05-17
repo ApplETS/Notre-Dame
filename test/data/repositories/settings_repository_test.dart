@@ -60,7 +60,7 @@ void main() {
       test("validate default behaviour", () {
         PreferencesServiceMock.stubGetString(preferencesServiceMock, PreferencesFlag.locale, toReturn: 'fr');
 
-        repository.locale = Locale('fr');
+        repository.locale = const Locale('fr');
 
         verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'fr')).called(1);
 
@@ -72,11 +72,11 @@ void main() {
       });
 
       test("set french/english", () {
-        repository.locale = Locale('fr');
+        repository.locale = const Locale('fr');
 
         verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'fr')).called(1);
 
-        repository.locale = Locale('en');
+        repository.locale = const Locale('en');
 
         verify(preferencesServiceMock.setString(PreferencesFlag.locale, 'en')).called(1);
 

@@ -14,6 +14,7 @@ import 'package:notredame/ui/dashboard/widgets/broadcast_message_component.dart'
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
+import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart';
 
 class DashboardPhoneLayout extends StatefulWidget {
   final DashboardViewModel model;
@@ -86,7 +87,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
 
     final textStyle = TextStyle(fontSize: fontSize, height: lineHeight, color: AppPalette.grey.white);
 
-    final double twoLinesHeight = fontSize * lineHeight * 2;
+    const double twoLinesHeight = fontSize * lineHeight * 2;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +131,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
           child: Row(
             spacing: 18.0,
             children: [
-              Expanded(child: AspectRatio(aspectRatio: 1, child: Card(child: null))),
+              const Expanded(child: SessionReminderCard()),
               Expanded(
                 child: ProgressBarCard(
                   progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",

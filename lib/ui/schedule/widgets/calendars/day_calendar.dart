@@ -96,27 +96,23 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
             : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(0.1, double.infinity);
         return calendar_view.DayView(
+          key: dayViewKey,
           showVerticalLine: false,
           dayTitleBuilder: calendar_view.DayHeader.hidden,
-          key: dayViewKey,
           controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
           onPageChange: (date, _) => ({
             setState(() {
               model.handleDateSelectedChanged(date);
             }),
           }),
-          scrollPhysics: showEntireDay ? AlwaysScrollableScrollPhysics() : NeverScrollableScrollPhysics(),
-          safeAreaOption: calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
-          backgroundColor: widget.backgroundColor ?? context.theme.scaffoldBackgroundColor,
+          scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+          safeAreaOption: const calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
+          backgroundColor: widget.backgroundColor,
           initialDay: model.daySelected,
           minDay: widget.selectedDate,
           maxDay: widget.selectedDate,
           startHour: showEntireDay ? 0 : model.getStartHour(),
           endHour: showEntireDay ? 24 : model.getEndHour(),
-          hourIndicatorSettings: calendar_view.HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
-          liveTimeIndicatorSettings: calendar_view.LiveTimeIndicatorSettings(
-            color: context.theme.textTheme.bodyMedium!.color!,
-          ),
           heightPerMinute: heightPerMinute,
           scrollOffset: showEntireDay ? heightPerMinute * 60 * model.getStartHour() : 0,
           keepScrollOffset: true,
@@ -124,19 +120,15 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             final locale = AppIntl.of(context)!.localeName;
             return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
           },
-          timeStringBuilder: (date, {secondaryDate}) {
-            return DateFormat('H:mm').format(date);
-          },
-          eventTileBuilder: (date, events, boundary, startDuration, endDuration) {
-            return _buildEventTile(events);
-          },
+          timeStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
+          eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
         );
       },
     ),
   );
 
   Widget _buildListView(DayViewModel model) {
-    final int pageBufferSize = 10;
+    const int pageBufferSize = 10;
     PageController pageController = PageController(initialPage: pageBufferSize);
 
     pageController.addListener(() {
@@ -187,7 +179,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   /// Build the list of the events for the selected day.
   Widget _buildEventList(List<dynamic> events) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       // On the dashboard, we center the events
       shrinkWrap: (widget.selectedDate != null) ? true : false,
       // On the dashboard, the list should be scrollable only in case of overflow
@@ -205,7 +197,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     final Color defaultColor = context.theme.appColors.scheduleLine;
 
     return Container(
-      padding: EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(bottom: 4),
       color: context.theme.appColors.appBar,
       child: TableCalendar(
         key: const Key("TableCalendar"),

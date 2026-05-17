@@ -5,11 +5,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/calendar_viewmodel.dart';
-import 'package:notredame/utils/date_utils.dart';
+import 'package:notredame/utils/date_extensions.dart';
 
 class WeekViewModel extends CalendarViewModel {
   // Sunday of current week
-  DateTime weekSelected = DateUtils.getFirstdayOfWeek(DateTime.now());
+  DateTime weekSelected = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
 
   // Display weekend days only if they contain events
   bool displaySunday = false;
@@ -24,20 +24,21 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   handleDateSelectedChanged(DateTime newDate) {
-    weekSelected = DateUtils.getFirstdayOfWeek(newDate);
-
+    weekSelected = newDate.withoutTimeUtc.startOfWeek(start: WeekDays.sunday).withoutTime;
     if (!isBusy && _firstLoad) {
       _firstLoad = false;
       if (DateTime.now().weekday == DateTime.saturday &&
-          DateUtils.getFirstdayOfWeek(DateTime.now()) == weekSelected &&
+          DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime == weekSelected &&
           calendarEventsFromDate(DateTime.now()).isEmpty) {
-        handleDateSelectedChanged(weekSelected.add(Duration(days: 7, hours: 1)));
+        handleDateSelectedChanged(weekSelected.withoutTimeUtc.add(const Duration(days: 7)).withoutTime);
         displayNextWeek = true;
       }
     }
 
     displaySunday = calendarEventsFromDate(weekSelected).isNotEmpty;
-    displaySaturday = calendarEventsFromDate(weekSelected.add(const Duration(days: 6, hours: 1))).isNotEmpty;
+    displaySaturday = calendarEventsFromDate(
+      weekSelected.withoutTimeUtc.add(const Duration(days: 6)).withoutTime,
+    ).isNotEmpty;
 
     eventController.removeWhere((event) => true);
     eventController.addAll(selectedWeekCalendarEvents());
@@ -45,10 +46,10 @@ class WeekViewModel extends CalendarViewModel {
 
   @override
   bool returnToCurrentDate() {
-    DateTime dateToReturnTo = DateUtils.getFirstdayOfWeek(DateTime.now());
+    DateTime dateToReturnTo = DateTime.now().startOfWeek(start: WeekDays.sunday).withoutTime;
     if (DateTime.now().weekday == DateTime.saturday &&
-        calendarEventsFromDate(dateToReturnTo.add(Duration(days: 6, hours: 1))).isEmpty) {
-      dateToReturnTo = dateToReturnTo.add(Duration(days: 7, hours: 1)).withoutTime;
+        calendarEventsFromDate(dateToReturnTo.withoutTimeUtc.add(const Duration(days: 6)).withoutTime).isEmpty) {
+      dateToReturnTo = dateToReturnTo.withoutTimeUtc.add(const Duration(days: 7)).withoutTime;
     }
 
     final bool isThisWeekSelected = dateToReturnTo == weekSelected;
