@@ -57,7 +57,11 @@ void main() {
           expect(find.byIcon(Icons.refresh), findsOneWidget);
           expect(find.text(intl.retry), findsOneWidget);
 
-          final elevatedButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+          // Use byWidgetPredicate for subtype matching
+          final elevatedButton = tester.widget<ElevatedButton>(
+            find.byWidgetPredicate((widget) => widget is ElevatedButton),
+          );
+
           final style = elevatedButton.style!.backgroundColor!.resolve(<WidgetState>{});
           expect(style, AppPalette.etsLightRed);
         });
@@ -106,7 +110,9 @@ void main() {
           expect(find.byIcon(Icons.refresh), findsOneWidget);
           expect(find.text(intl.retry), findsOneWidget);
 
-          final elevatedButton = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+          final elevatedButton = tester.widget<ElevatedButton>(
+            find.byWidgetPredicate((widget) => widget is ElevatedButton),
+          );
           // style is null when isEvaluationPeriod is true
           expect(elevatedButton.style, isNull);
         });
