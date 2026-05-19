@@ -5,9 +5,9 @@ import 'dart:ui';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/data/models/broadcast_message.dart';
 
 // Project imports:
+import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/locator.dart';
