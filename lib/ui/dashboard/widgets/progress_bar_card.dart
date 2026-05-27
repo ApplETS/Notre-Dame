@@ -14,10 +14,21 @@ import '../../core/themes/app_theme.dart';
 
 class ProgressBarCard extends StatefulWidget {
   final String progressBarText;
+  final String progressBarAltText;
   final double progress;
   final bool loading;
+  final bool showingPercentage;
+  final VoidCallback onToggle;
 
-  const ProgressBarCard({super.key, required this.progressBarText, required this.progress, required this.loading});
+  const ProgressBarCard({
+    super.key,
+    required this.progressBarText,
+    required this.progressBarAltText,
+    required this.progress,
+    required this.loading,
+    required this.showingPercentage,
+    required this.onToggle,
+  });
 
   @override
   State<ProgressBarCard> createState() => _ProgressBarCardState();
@@ -63,39 +74,44 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
   @override
   Widget build(BuildContext context) => AspectRatio(
     aspectRatio: 1,
-    child: Card(
-      color: context.theme.appColors.dashboardCard,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: (widget.loading || widget.progress >= 0.0)
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                spacing: 12.0,
-                children: [
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (BuildContext context, BoxConstraints constraints) {
-                        double size = constraints.maxHeight;
-                        return Transform.scale(
-                          scale: size / 100,
-                          alignment: Alignment.centerRight,
-                          child: AnimatedBuilder(
-                            animation: _animation,
-                            builder: (context, child) => _progress(_animation.value),
-                          ),
-                        );
-                      },
+    child: GestureDetector(
+      onTap: widget.onToggle,
+      child: Card(
+        color: context.theme.appColors.dashboardCard,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: (widget.loading || widget.progress >= 0.0)
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  spacing: 12.0,
+                  children: [
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (BuildContext context, BoxConstraints constraints) {
+                          double size = constraints.maxHeight;
+                          return Transform.scale(
+                            scale: size / 100,
+                            alignment: Alignment.centerRight,
+                            child: AnimatedBuilder(
+                              animation: _animation,
+                              builder: (context, child) => _progress(_animation.value),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  AutoSizeText(
-                    AppIntl.of(context)!.progress_bar,
-                    style: const TextStyle(fontSize: 18, height: 1),
-                    maxLines: 1,
-                  ),
-                ],
-              )
-            : Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center)),
+                    AutoSizeText(
+                      widget.showingPercentage
+                          ? AppIntl.of(context)!.progress_bar_percentage
+                          : AppIntl.of(context)!.progress_bar,
+                      style: const TextStyle(fontSize: 18, height: 1),
+                      maxLines: 1,
+                    ),
+                  ],
+                )
+              : Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center)),
+        ),
       ),
     ),
   );
@@ -122,7 +138,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
                   child: Skeletonizer(
                     enabled: widget.loading,
                     child: Text(
-                      widget.progressBarText,
+                      widget.showingPercentage ? widget.progressBarAltText : widget.progressBarText,
                       style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, height: 1),
                     ),
                   ),

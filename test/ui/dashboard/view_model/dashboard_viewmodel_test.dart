@@ -292,5 +292,22 @@ void main() {
         verify(launchUrlServiceMock.launchInBrowser(url)).called(1);
       });
     });
+
+    group("toggleProgressBarMode - ", () {
+      test("should toggle showingPercentage and save preference to settings", () async {
+        SettingsRepositoryMock.stubDashboardProgressBarPercentage(settingsManagerMock, toReturn: false);
+        expect(viewModel.showingPercentage, false);
+
+        // Toggle to true
+        viewModel.toggleProgressBarMode();
+        expect(viewModel.showingPercentage, true);
+        verify(settingsManagerMock.dashboard.displayProgressBarPercentage = true).called(1);
+
+        // toggle again to false
+        viewModel.toggleProgressBarMode();
+        expect(viewModel.showingPercentage, false);
+        verify(settingsManagerMock.dashboard.displayProgressBarPercentage = false).called(1);
+      });
+    });
   });
 }
