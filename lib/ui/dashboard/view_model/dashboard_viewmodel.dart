@@ -56,6 +56,11 @@ class DashboardViewModel extends FutureViewModel {
   /// Dynamic message text resolved from SessionContext
   String? dynamicMessageText;
 
+  /// if the progress bar is displaying the days remaining or another alternative
+  bool _showingPercentage = false;
+
+  bool get showingPercentage => _showingPercentage;
+
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
       _sessionProgressUseCase = SessionProgressUseCase(),
@@ -63,6 +68,9 @@ class DashboardViewModel extends FutureViewModel {
       /// if the animation has not been played, play it
       shouldPlayAnimation = !hasAnimationPlayed {
     hasAnimationPlayed = true;
+
+    /// Restore the progress bar display mode from preferences.
+    _showingPercentage = _settingsManager.dashboard.displayProgressBarPercentage;
   }
 
   static Future<bool> launchInAppReview() async {
@@ -277,6 +285,12 @@ class DashboardViewModel extends FutureViewModel {
     } finally {
       setBusyForObject(broadcastMessage, false);
     }
+  }
+
+  void toggleProgressBarMode() {
+    _showingPercentage = !_showingPercentage;
+    _settingsManager.dashboard.displayProgressBarPercentage = _showingPercentage;
+    notifyListeners();
   }
 
   @override
