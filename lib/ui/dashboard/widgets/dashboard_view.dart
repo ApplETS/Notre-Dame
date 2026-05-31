@@ -11,6 +11,9 @@ import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_vertical_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_horizontal_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_layout.dart';
+import 'package:logger/logger.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -18,6 +21,8 @@ class DashboardView extends StatefulWidget {
   @override
   State<DashboardView> createState() => _DashboardViewState();
 }
+
+final _logger = Logger();
 
 class _DashboardViewState extends State<DashboardView> with SingleTickerProviderStateMixin {
   @override
@@ -40,14 +45,27 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             onRefresh: model.futureToRun,
             child: LayoutBuilder(
               builder: (context, constraints) {
+                final width = constraints.maxWidth;
+                final isTablet = width >= 900;
+                final isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+                if (isTablet) {
+                  _logger.d('DashboardTabletLayout selected');
+                } else if (isLandscape) {
+                  _logger.d('DashboardPhoneHorizontalLayout selected');
+                } else {
+                  _logger.d('DashboardPhoneVerticalLayout selected');
+                } // TODO : Remove this logging after confirming the correct layout is selected
+
+                final Widget dashboardContentLayout = isTablet
+                    ? DashboardTabletLayout(model: model, viewportHeight: constraints.maxHeight)
+                    : (isLandscape
+                          ? DashboardPhoneHorizontalLayout(model: model, viewportHeight: constraints.maxHeight)
+                          : DashboardPhoneVerticalLayout(model: model, viewportHeight: constraints.maxHeight));
+
                 return SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: Stack(
-                    children: [
-                      _redCircle(model),
-                      DashboardPhoneVerticalLayout(model: model, viewportHeight: constraints.maxHeight),
-                    ],
-                  ),
+                  child: Stack(children: [_redCircle(model), dashboardContentLayout]),
                 );
               },
             ),
