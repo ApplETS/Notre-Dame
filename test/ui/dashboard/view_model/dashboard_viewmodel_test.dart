@@ -1,15 +1,18 @@
 // Dart imports:
 import 'dart:async';
+import 'dart:ui';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 // Project imports:
+import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
+import '../../../data/mocks/repositories/broadcast_message_repository_mock.mocks.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
 import '../../../data/mocks/repositories/settings_repository_mock.dart';
@@ -25,6 +28,7 @@ void main() {
   late InAppReviewServiceMock inAppReviewServiceMock;
   late ListSessionsRepositoryMock listSessionsRepositoryMock;
   late LaunchUrlServiceMock launchUrlServiceMock;
+  late MockBroadcastMessageRepository broadcastMessageRepositoryMock;
 
   late DashboardViewModel viewModel;
 
@@ -82,6 +86,7 @@ void main() {
       setupDynamicMessagesServiceMock();
       listSessionsRepositoryMock = setupListSessionsRepositoryMock();
       launchUrlServiceMock = setupLaunchUrlServiceMock();
+      broadcastMessageRepositoryMock = setupBroadcastMessageRepositoryMock();
 
       // Setup stubs for ListSessionsRepository
       ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: const Stream.empty());
@@ -307,6 +312,23 @@ void main() {
         viewModel.toggleProgressBarMode();
         expect(viewModel.showingPercentage, false);
         verify(settingsManagerMock.dashboard.displayProgressBarPercentage = false).called(1);
+      });
+    });
+
+    group('futureToRunBroadcast -', () {
+      test('uses broadcastMessage when repository returns message', () async {
+        final expectedMessage = BroadcastMessage(
+          message: 'Veuillez faire une mise à jour',
+          color: const Color(0x00000000),
+          url: 'https://example.com',
+        );
+
+        when(broadcastMessageRepositoryMock.getBroadcastMessage('en')).thenReturn(expectedMessage);
+
+        await viewModel.futureToRunBroadcast();
+
+        expect(viewModel.broadcastMessage, expectedMessage);
+        expect(viewModel.busy(viewModel.broadcastMessage), false);
       });
     });
   });
