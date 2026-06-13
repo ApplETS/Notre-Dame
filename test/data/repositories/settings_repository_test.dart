@@ -207,6 +207,24 @@ void main() {
 
         verify(preferencesServiceMock.setBool(PreferencesFlag.dashboardScheduleList, true)).called(1);
       });
+
+      test("displayProgressBarPercentage getter", () {
+        PreferencesServiceMock.stubGetBool(
+          preferencesServiceMock,
+          PreferencesFlag.dashboardProgressBarPercentage,
+          toReturn: true,
+        );
+
+        expect(repository.dashboard.displayProgressBarPercentage, true);
+
+        verify(preferencesServiceMock.getBool(PreferencesFlag.dashboardProgressBarPercentage)).called(1);
+      });
+
+      test("displayProgressBarPercentage setter", () {
+        repository.dashboard.displayProgressBarPercentage = true;
+
+        verify(preferencesServiceMock.setBool(PreferencesFlag.dashboardProgressBarPercentage, true)).called(1);
+      });
     });
 
     group("ScheduleSettings - ", () {
