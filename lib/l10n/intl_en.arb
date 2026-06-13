@@ -47,6 +47,7 @@
   "close_button_text": "Close",
 
   "startup_viewmodel_acquire_token_fail": "Connection failed after multiple attempts. Please try again.",
+  "login_viewmodel_acquire_token_fail": "Connection failed due to cancellation. Please try again.",
 
   "title_schedule": "Schedule",
   "title_student": "Student",
@@ -57,6 +58,7 @@
   "title_ets_mobile": "ÉTSMobile",
 
   "login_title": "Login",
+  "login_startup_title": "Please sign in to continue",
   "login_prompt_universal_code": "Universal Code",
   "login_prompt_password": "Password",
   "login_action_sign_in": "Sign in",

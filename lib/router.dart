@@ -11,6 +11,7 @@ import 'package:notredame/ui/ets/events/author/widgets/author_view.dart';
 import 'package:notredame/ui/ets/events/news/widgets/news_view.dart';
 import 'package:notredame/ui/ets/events/news_details/widgets/news_details_view.dart';
 import 'package:notredame/ui/ets/quick_links/security_info/widgets/security_view.dart';
+import 'package:notredame/ui/login/widgets/login_view.dart';
 import 'package:notredame/ui/more/about/widgets/about_view.dart';
 import 'package:notredame/ui/more/contributors/widgets/contributors_view.dart';
 import 'package:notredame/ui/more/faq/widgets/faq_view.dart';
@@ -99,6 +100,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: RouteSettings(name: routeSettings.name),
         builder: (_) => const ChooseLanguageView(),
+      );
+    case RouterPaths.login:
+      return MaterialPageRoute(
+        settings: RouteSettings(name: routeSettings.name),
+        builder: (_) => const LoginView(),
       );
     default:
       return PageRouteBuilder(

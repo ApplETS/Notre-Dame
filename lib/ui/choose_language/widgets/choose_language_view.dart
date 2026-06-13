@@ -53,7 +53,7 @@ class _ChooseLanguageViewState extends State<ChooseLanguageView> {
           child: ListView(
             shrinkWrap: true,
             children: <Widget>[
-              Icon(Icons.language, size: 80, color: context.theme.appColors.loginAccent),
+              Icon(Icons.language, size: 80, color: context.theme.appColors.splashScreenLogo),
               Padding(
                 padding: const EdgeInsets.only(left: 20, top: 60),
                 child: Align(

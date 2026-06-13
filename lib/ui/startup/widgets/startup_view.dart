@@ -41,7 +41,7 @@ class StartUpView extends StatelessWidget {
                     excludeFromSemantics: true,
                     width: 90,
                     height: 90,
-                    colorFilter: ColorFilter.mode(context.theme.appColors.loginAccent, BlendMode.srcIn),
+                    colorFilter: ColorFilter.mode(context.theme.appColors.splashScreenLogo, BlendMode.srcIn),
                   ),
                 ),
                 const SizedBox(height: 15),

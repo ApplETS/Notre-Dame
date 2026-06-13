@@ -46,6 +46,7 @@
   "close_button_text": "Fermer",
 
   "startup_viewmodel_acquire_token_fail": "Échec de la connexion après plusieurs tentatives. Veuillez réessayer.",
+  "login_viewmodel_acquire_token_fail": "Échec de la connexion à cause de l'annulation. Veuillez réessayer.",
 
   "title_schedule": "Horaire",
   "title_student": "Étudiant",
@@ -56,6 +57,7 @@
   "title_ets_mobile": "ÉTSMobile",
   
   "login_title": "Connexion",
+  "login_startup_title": "Veuillez vous authentifier pour continuer",
   "login_prompt_universal_code": "Code universel",
   "login_prompt_password": "Mot de passe",
   "login_action_sign_in": "Se connecter",

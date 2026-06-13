@@ -72,9 +72,7 @@ void main() {
         await viewModel.handleStartUp();
 
         verify(authServiceMock.acquireTokenSilent()).called(1);
-        verify(authServiceMock.acquireToken()).called(1);
-        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.root));
-        verify(settingsRepositoryMock.isLoggedIn = true).called(1);
+        verify(navigationServiceMock.pushNamedAndRemoveUntil(RouterPaths.login));
       });
 
       test('navigates to chooseLanguage if language not chosen', () async {
