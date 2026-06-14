@@ -13,9 +13,9 @@ import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/broadcast_message_component.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
-import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
-import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
-import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart';
 
 class DashboardPhoneLayout extends StatefulWidget {
   final DashboardViewModel model;

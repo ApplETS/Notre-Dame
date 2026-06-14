@@ -28,7 +28,6 @@ import 'package:notredame/logic/session_progress_use_case.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
-  static const String abandonedGradeCode = "XX";
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
@@ -176,7 +175,6 @@ class DashboardViewModel extends FutureViewModel {
   Future futureToRun() async {
     return Future.wait([
       futureToRunBroadcast(),
-      futureToRunGrades(),
       _sessionProgressUseCase.fetch(forceUpdate: true),
       loadDynamicMessage(),
     ]);
@@ -232,49 +230,6 @@ class DashboardViewModel extends FutureViewModel {
   @override
   void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
-  }
-
-  /// Get the list of courses for the Grades card.
-  Future<List<Course>> futureToRunGrades() async {
-    if (!busy(courses)) {
-      try {
-        setBusyForObject(courses, true);
-        if (_courseRepository.sessions == null || _courseRepository.sessions!.isEmpty) {
-          await _courseRepository.getSessions();
-        }
-
-        // Determine current sessions
-        if (_courseRepository.activeSessions.isEmpty) {
-          return [];
-        }
-        final currentSession = _courseRepository.activeSessions.first;
-
-        final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
-        courses.clear();
-        for (final Course course in coursesCached) {
-          if (course.session == currentSession.shortName && course.grade != abandonedGradeCode) {
-            courses.add(course);
-          }
-        }
-        notifyListeners();
-
-        final fetchedCourses = await _courseRepository.getCourses();
-        // Update the courses list
-        courses.clear();
-        for (final Course course in fetchedCourses) {
-          if (course.session == currentSession.shortName && course.grade != abandonedGradeCode) {
-            courses.add(course);
-          }
-        }
-        // Will remove duplicated courses in the list
-        courses = courses.toSet().toList();
-      } catch (e) {
-        onError(e, null);
-      } finally {
-        setBusyForObject(courses, false);
-      }
-    }
-    return courses;
   }
 
   Future<void> futureToRunBroadcast() async {

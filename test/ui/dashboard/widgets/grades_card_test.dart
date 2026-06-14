@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../helpers.dart';
 

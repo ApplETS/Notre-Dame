@@ -35,7 +35,7 @@ class OutageSocialSection extends StatelessWidget {
               onPressed: () => _launchUrlService.launchInBrowser(Urls.clubGithub),
             ),
             IconButton(
-              icon: FaIcon(Icons.mail_outline, color: AppPalette.grey.white),
+              icon: Icon(Icons.mail_outline, color: AppPalette.grey.white),
               tooltip: AppIntl.of(context)!.email_send,
               onPressed: () => _launchUrlService.writeEmail(Urls.clubEmail, ""),
             ),

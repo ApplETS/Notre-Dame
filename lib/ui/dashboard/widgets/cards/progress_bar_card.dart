@@ -10,7 +10,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import '../../core/themes/app_theme.dart';
+import '../../../core/themes/app_theme.dart';
 
 class ProgressBarCard extends StatefulWidget {
   final String progressBarText;

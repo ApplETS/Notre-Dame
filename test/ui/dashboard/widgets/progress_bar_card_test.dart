@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
 import '../../../helpers.dart';
 
 void main() {
