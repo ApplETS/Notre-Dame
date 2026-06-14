@@ -2,14 +2,16 @@
 import 'dart:async';
 
 // Package imports:
-import 'package:stacked/stacked.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:notredame/domain/models/session_progress.dart';
+import 'package:stacked/stacked.dart';
+
+// Project imports:
+import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/logic/session_progress_use_case.dart';
-import 'package:notredame/data/repositories/settings_repository.dart';
 
 class ProgressBarCardViewmodel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
@@ -30,11 +32,11 @@ class ProgressBarCardViewmodel extends FutureViewModel {
   bool get showingPercentage => _showingPercentage;
 
   ProgressBarCardViewmodel({required AppIntl intl})
-      : _appIntl = intl,
-        _sessionProgressUseCase = SessionProgressUseCase(),
+    : _appIntl = intl,
+      _sessionProgressUseCase = SessionProgressUseCase(),
 
-  /// if the animation has not been played, play it
-        shouldPlayAnimation = !hasAnimationPlayed {
+      /// if the animation has not been played, play it
+      shouldPlayAnimation = !hasAnimationPlayed {
     hasAnimationPlayed = true;
 
     /// Restore the progress bar display mode from preferences.
@@ -51,7 +53,7 @@ class ProgressBarCardViewmodel extends FutureViewModel {
   @override
   Future<void> futureToRun() async {
     _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
-          (sessionProgress) {
+      (sessionProgress) {
         this.sessionProgress = sessionProgress;
         notifyListeners();
       },

@@ -6,11 +6,11 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/titled_card.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
@@ -22,31 +22,31 @@ class GradesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesCardViewmodel>.reactive(
-        viewModelBuilder: () => GradesCardViewmodel(intl: AppIntl.of(context)!),
-        builder: (context, model, child) {
-          List<Course> displayedCourses = List.from(model.courses);
+      viewModelBuilder: () => GradesCardViewmodel(intl: AppIntl.of(context)!),
+      builder: (context, model, child) {
+        List<Course> displayedCourses = List.from(model.courses);
 
-          // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
-          // During that first stage, putting empty courses with no title allows for a smoother transition.
-          if (displayedCourses.isEmpty && loading) {
-            final Course skeletonCourse = Course(
-              acronym: " ",
-              title: "",
-              group: "",
-              session: "",
-              programCode: "",
-              numberOfCredits: 0,
-            );
-            displayedCourses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
-          }
-
-          return TitledCard(
-            title: AppIntl.of(context)!.grades_title,
-            child: (displayedCourses.isEmpty && !loading)
-                ? _buildNoGradesContent(context)
-                : _buildGradesButton(displayedCourses, context, loading: loading),
+        // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
+        // During that first stage, putting empty courses with no title allows for a smoother transition.
+        if (displayedCourses.isEmpty && loading) {
+          final Course skeletonCourse = Course(
+            acronym: " ",
+            title: "",
+            group: "",
+            session: "",
+            programCode: "",
+            numberOfCredits: 0,
           );
+          displayedCourses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
         }
+
+        return TitledCard(
+          title: AppIntl.of(context)!.grades_title,
+          child: (displayedCourses.isEmpty && !loading)
+              ? _buildNoGradesContent(context)
+              : _buildGradesButton(displayedCourses, context, loading: loading),
+        );
+      },
     );
   }
 

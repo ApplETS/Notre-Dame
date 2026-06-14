@@ -1,6 +1,6 @@
 // Package imports:
-import 'package:stacked/stacked.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';

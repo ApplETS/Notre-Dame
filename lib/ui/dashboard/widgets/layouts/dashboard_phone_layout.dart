@@ -12,9 +12,9 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/broadcast_message_component.dart';
-import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart';
 
 class DashboardPhoneLayout extends StatefulWidget {
