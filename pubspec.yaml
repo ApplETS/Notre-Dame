@@ -47,11 +47,11 @@ dependencies:
   shared_preferences: ^2.5.3
 
   # flutter community
-  package_info_plus: ^9.0.0
+  package_info_plus: ^10.1.0
   connectivity_plus: ^7.0.0
   flutter_svg: ^2.2.0
-  font_awesome_flutter: ^10.12.0
-  share_plus: ^12.0.1
+  font_awesome_flutter: ^11.0.0
+  share_plus: ^13.1.0
 
   # Other
   flutter_cache_manager: ^3.4.1
@@ -64,7 +64,7 @@ dependencies:
   infinite_scroll_pagination: ^5.1.1
   device_calendar: ^4.3.3
   http: ^1.5.0
-  xml: ^6.6.1
+  xml: ^7.0.1
   collection: ^1.19.1
   intl: ^0.20.2
   msal_auth: ^3.3.0
@@ -84,7 +84,7 @@ dev_dependencies:
   import_sorter: ^4.6.0
   flutter_lints: ^6.0.0
   json_serializable: ^6.9.5
-  freezed: ^3.0.6
+  freezed: ^4.0.0-dev.3
   retrofit_generator: ^10.2.0
   http_mock_adapter: ^0.6.1
 
