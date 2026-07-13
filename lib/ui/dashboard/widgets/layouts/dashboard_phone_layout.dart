@@ -96,7 +96,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
       children: [
         AnimatedBuilder(
           key: _titleKey,
-          animation: widget.model.titleAnimation,
+          animation: widget.model.progressBarModel.titleAnimation,
           builder: (context, child) {
             return Padding(
               padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 80.0),
@@ -136,14 +136,22 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
               const Expanded(child: SessionReminderCard()),
               Expanded(
                 child: ProgressBarCard(
-                  progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
-                  progressBarAltText: widget.model.sessionProgress != null
-                      ? (widget.model.sessionProgress!.percentage * 100).toStringAsFixed(0)
+                  // progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
+                  // progressBarAltText: widget.model.sessionProgress != null
+                  //     ? (widget.model.sessionProgress!.percentage * 100).toStringAsFixed(0)
+                  //     : "XX%",
+                  // progress: widget.model.sessionProgress?.percentage ?? 0.0,
+                  // loading: widget.model.sessionProgress == null,
+                  // showingPercentage: widget.model.showingPercentage,
+                  // onToggle: widget.model.progressBarModel.toggleProgressBarMode,
+                  progressBarText: widget.model.progressBarModel.sessionProgress?.daysRemaining.toString() ?? "XX",
+                  progressBarAltText: widget.model.progressBarModel.sessionProgress != null
+                      ? (widget.model.progressBarModel.sessionProgress!.percentage * 100).toStringAsFixed(0)
                       : "XX%",
-                  progress: widget.model.sessionProgress?.percentage ?? 0.0,
-                  loading: widget.model.sessionProgress == null,
-                  showingPercentage: widget.model.showingPercentage,
-                  onToggle: widget.model.toggleProgressBarMode,
+                  progress: widget.model.progressBarModel.sessionProgress?.percentage ?? 0.0,
+                  loading: widget.model.progressBarModel.sessionProgress == null,
+                  showingPercentage: widget.model.progressBarModel.showingPercentage,
+                  onToggle: widget.model.progressBarModel.toggleProgressBarMode,
                 ),
               ),
             ],

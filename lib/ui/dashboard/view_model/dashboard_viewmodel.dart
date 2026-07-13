@@ -9,13 +9,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/ui/dashboard/view_model/cards/progress_bar_card_viewmodel.dart';
 import 'package:notredame/data/models/broadcast_message.dart';
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/models/dynamic_message_context.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/analytics_service.dart';
+//import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -24,26 +25,26 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/logic/session_progress_use_case.dart';
+//import 'package:notredame/logic/session_progress_use_case.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
 
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
+  //final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
   final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
-  final SessionProgressUseCase _sessionProgressUseCase;
+  //final SessionProgressUseCase _sessionProgressUseCase;
 
-  StreamSubscription? _sessionProgressSubscription;
+  //StreamSubscription? _sessionProgressSubscription;
 
   /// Animation controller for the circle
   AnimationController? _controller;
-  late Animation<double> heightAnimation;
-  late Animation<double> opacityAnimation;
-  late Animation<double> titleAnimation;
+  //late Animation<double> heightAnimation;
+  //late Animation<double> opacityAnimation;
+  //late Animation<double> titleAnimation;
 
   /// Getter for the animation controller
   AnimationController get controller => _controller!;
@@ -58,20 +59,28 @@ class DashboardViewModel extends FutureViewModel {
   String? dynamicMessageText;
 
   /// if the progress bar is displaying the days remaining or another alternative
-  bool _showingPercentage = false;
+  //bool _showingPercentage = false;
 
-  bool get showingPercentage => _showingPercentage;
+  //bool get showingPercentage => _showingPercentage;
+  bool get showingPercentage => progressBarModel.showingPercentage;
 
-  DashboardViewModel({required AppIntl intl})
-    : _appIntl = intl,
-      _sessionProgressUseCase = SessionProgressUseCase(),
+  late final ProgressBarCardViewmodel progressBarModel;
 
-      /// if the animation has not been played, play it
-      shouldPlayAnimation = !hasAnimationPlayed {
-    hasAnimationPlayed = true;
+  // DashboardViewModel({required AppIntl intl})
+  //   : _appIntl = intl,
+  //     //_sessionProgressUseCase = SessionProgressUseCase(),
+  //
+  //     /// if the animation has not been played, play it
+  //     shouldPlayAnimation = !hasAnimationPlayed {
+  //   hasAnimationPlayed = true;
+  //
+  //   /// Restore the progress bar display mode from preferences.
+  //   _showingPercentage = _settingsManager.dashboard.displayProgressBarPercentage;
+  // }
 
-    /// Restore the progress bar display mode from preferences.
-    _showingPercentage = _settingsManager.dashboard.displayProgressBarPercentage;
+  DashboardViewModel({required AppIntl intl}) : _appIntl = intl {
+    progressBarModel = ProgressBarCardViewmodel(intl: intl);
+    progressBarModel.addListener(notifyListeners);
   }
 
   static Future<bool> launchInAppReview() async {
@@ -105,63 +114,72 @@ class DashboardViewModel extends FutureViewModel {
   static bool hasAnimationPlayed = false;
 
   /// Tracks if the animation should be played
-  final bool shouldPlayAnimation;
+  //final bool shouldPlayAnimation;
 
+  Animation<double> get heightAnimation => progressBarModel.heightAnimation;
+  Animation<double> get opacityAnimation => progressBarModel.opacityAnimation;
+  Animation<double> get titleAnimation => progressBarModel.titleAnimation;
   /// Slide offset for title and subtitle animations (slide from top)
   /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
-  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
+  //Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
+  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - progressBarModel.titleAnimation.value));
 
   /// Fade-in opacity based on title animation progress
-  double get titleFadeOpacity => titleAnimation.value;
+  //double get titleFadeOpacity => titleAnimation.value;
+  double get titleFadeOpacity => progressBarModel.titleAnimation.value;
 
-  Future<void> init(TickerProvider ticker) async {
-    initAnimationController(ticker);
-    await initSessionProgress();
-  }
+  // Future<void> init(TickerProvider ticker) async {
+  //   initAnimationController(ticker);
+  //   await initSessionProgress();
+  // }
 
-  /// Initialize the animation controller for the circle
-  void initAnimationController(TickerProvider ticker) {
-    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
+   Future<void> init(TickerProvider ticker) async {
+     progressBarModel.init(ticker);
+   }
 
-    heightAnimation = Tween<double>(
-      begin: 0,
-      end: 240,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
+  // /// Initialize the animation controller for the circle
+  // void initAnimationController(TickerProvider ticker) {
+  //   _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
+  //
+  //   heightAnimation = Tween<double>(
+  //     begin: 0,
+  //     end: 240,
+  //   ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
+  //
+  //   opacityAnimation = Tween<double>(
+  //     begin: 0.0,
+  //     end: 1.0,
+  //   ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+  //
+  //   titleAnimation = Tween<double>(
+  //     begin: 0.0,
+  //     end: 1.0,
+  //   ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+  //
+  //   if (shouldPlayAnimation) {
+  //     _controller!.forward();
+  //   } else {
+  //     _controller!.value = 1.0;
+  //   }
+  // }
 
-    opacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-
-    titleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-
-    if (shouldPlayAnimation) {
-      _controller!.forward();
-    } else {
-      _controller!.value = 1.0;
-    }
-  }
-
-  Future<void> initSessionProgress() async {
-    _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
-      (sessionProgress) {
-        this.sessionProgress = sessionProgress;
-        notifyListeners();
-      },
-      onError: (error) {
-        if (error is Exception) {
-          _analyticsService.logError(tag, "SessionProgressWidget error", error);
-        }
-        if (error is String) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      },
-    );
-    await _sessionProgressUseCase.init();
-  }
+  // Future<void> initSessionProgress() async {
+  //   _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
+  //     (sessionProgress) {
+  //       this.sessionProgress = sessionProgress;
+  //       notifyListeners();
+  //     },
+  //     onError: (error) {
+  //       if (error is Exception) {
+  //         _analyticsService.logError(tag, "SessionProgressWidget error", error);
+  //       }
+  //       if (error is String) {
+  //         Fluttertoast.showToast(msg: _appIntl.error);
+  //       }
+  //     },
+  //   );
+  //   await _sessionProgressUseCase.init();
+  // }
 
   static Future<void> launchBroadcastUrl(String url) async {
     final LaunchUrlService launchUrlService = locator<LaunchUrlService>();
@@ -175,7 +193,7 @@ class DashboardViewModel extends FutureViewModel {
   Future futureToRun() async {
     return Future.wait([
       futureToRunBroadcast(),
-      _sessionProgressUseCase.fetch(forceUpdate: true),
+      //_sessionProgressUseCase.fetch(forceUpdate: true),
       loadDynamicMessage(),
     ]);
   }
@@ -244,17 +262,24 @@ class DashboardViewModel extends FutureViewModel {
     }
   }
 
-  void toggleProgressBarMode() {
-    _showingPercentage = !_showingPercentage;
-    _settingsManager.dashboard.displayProgressBarPercentage = _showingPercentage;
-    notifyListeners();
-  }
+  // void toggleProgressBarMode() {
+  //   _showingPercentage = !_showingPercentage;
+  //   _settingsManager.dashboard.displayProgressBarPercentage = _showingPercentage;
+  //   notifyListeners();
+  // }
+
+  // @override
+  // void dispose() {
+  //   _controller?.dispose();
+  //   _sessionProgressSubscription?.cancel();
+  //   _sessionProgressUseCase.dispose();
+  //   super.dispose();
+  // }
 
   @override
   void dispose() {
-    _controller?.dispose();
-    _sessionProgressSubscription?.cancel();
-    _sessionProgressUseCase.dispose();
+    progressBarModel.removeListener(notifyListeners);
+    progressBarModel.dispose();
     super.dispose();
   }
 }

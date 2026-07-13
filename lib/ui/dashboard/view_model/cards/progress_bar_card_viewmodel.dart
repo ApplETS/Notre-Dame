@@ -1,6 +1,9 @@
 // Dart imports:
 import 'dart:async';
 
+// Flutter imports:
+import 'package:flutter/material.dart';
+
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stacked/stacked.dart';
@@ -21,6 +24,15 @@ class ProgressBarCardViewmodel extends FutureViewModel {
   final SessionProgressUseCase _sessionProgressUseCase;
 
   StreamSubscription? _sessionProgressSubscription;
+
+  /// Animation controller for the circle
+  AnimationController? _controller;
+  late Animation<double> heightAnimation;
+  late Animation<double> opacityAnimation;
+  late Animation<double> titleAnimation;
+
+  /// Getter for the animation controller
+  AnimationController get controller => _controller!;
 
   final AppIntl _appIntl;
 
@@ -49,9 +61,38 @@ class ProgressBarCardViewmodel extends FutureViewModel {
   /// Tracks if the animation should be played
   final bool shouldPlayAnimation;
 
-  /// Get the list of courses for the Grades card.
-  @override
-  Future<void> futureToRun() async {
+  Future<void> init(TickerProvider ticker) async {
+    initAnimationController(ticker);
+    await initSessionProgress();
+  }
+
+  /// Initialize the animation controller for the circle
+  void initAnimationController(TickerProvider ticker) {
+    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
+
+    heightAnimation = Tween<double>(
+      begin: 0,
+      end: 240,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
+
+    opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    titleAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
+
+    if (shouldPlayAnimation) {
+      _controller!.forward();
+    } else {
+      _controller!.value = 1.0;
+    }
+  }
+
+  Future<void> initSessionProgress() async {
     _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
       (sessionProgress) {
         this.sessionProgress = sessionProgress;
@@ -70,12 +111,26 @@ class ProgressBarCardViewmodel extends FutureViewModel {
   }
 
   @override
+  Future futureToRun() async {
+    return Future.wait([
+      _sessionProgressUseCase.fetch(forceUpdate: true),
+    ]);
+  }
+
+  @override
   void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
+  void toggleProgressBarMode() {
+    _showingPercentage = !_showingPercentage;
+    _settingsManager.dashboard.displayProgressBarPercentage = _showingPercentage;
+    notifyListeners();
+  }
+
   @override
   void dispose() {
+    _controller?.dispose();
     _sessionProgressSubscription?.cancel();
     _sessionProgressUseCase.dispose();
     super.dispose();
