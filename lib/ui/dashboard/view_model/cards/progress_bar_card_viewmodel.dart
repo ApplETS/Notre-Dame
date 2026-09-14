@@ -112,9 +112,12 @@ class ProgressBarCardViewmodel extends FutureViewModel {
 
   @override
   Future futureToRun() async {
-    return Future.wait([
-      _sessionProgressUseCase.fetch(forceUpdate: true),
-    ]);
+    return Future.wait([_sessionProgressUseCase.fetch(forceUpdate: true)]);
+  }
+
+  Future<void> refresh() async {
+    await _sessionProgressUseCase.fetch(forceUpdate: true);
+    notifyListeners();
   }
 
   @override

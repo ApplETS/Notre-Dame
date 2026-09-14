@@ -136,14 +136,6 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
               const Expanded(child: SessionReminderCard()),
               Expanded(
                 child: ProgressBarCard(
-                  // progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
-                  // progressBarAltText: widget.model.sessionProgress != null
-                  //     ? (widget.model.sessionProgress!.percentage * 100).toStringAsFixed(0)
-                  //     : "XX%",
-                  // progress: widget.model.sessionProgress?.percentage ?? 0.0,
-                  // loading: widget.model.sessionProgress == null,
-                  // showingPercentage: widget.model.showingPercentage,
-                  // onToggle: widget.model.progressBarModel.toggleProgressBarMode,
                   progressBarText: widget.model.progressBarModel.sessionProgress?.daysRemaining.toString() ?? "XX",
                   progressBarAltText: widget.model.progressBarModel.sessionProgress != null
                       ? (widget.model.progressBarModel.sessionProgress!.percentage * 100).toStringAsFixed(0)
