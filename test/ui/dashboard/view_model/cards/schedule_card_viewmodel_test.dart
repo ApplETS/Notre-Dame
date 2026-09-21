@@ -86,6 +86,7 @@ void main() {
 
       courseRepositoryMock = setupCourseRepositoryMock();
       setupSettingsRepositoryMock();
+      setupFlutterToastMock();
 
       viewModel = ScheduleCardViewmodel(intl: await setupAppIntl());
 
@@ -137,6 +138,14 @@ void main() {
 
       // Assert
       expect(viewModel.tomorrow, false);
+    });
+  });
+
+  group("schedule refresh", () {
+    test("should fetch course activities when refreshing", () async {
+      await viewModel.futureToRun();
+
+      verify(courseRepositoryMock.getCoursesActivities(),).called(greaterThanOrEqualTo(1));
     });
   });
 }

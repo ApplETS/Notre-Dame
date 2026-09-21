@@ -198,4 +198,12 @@ void main() {
       expect(viewModel.allSessionReminders, isNotEmpty);
     });
   });
+
+  group("session_reminder refresh", () {
+    test("should fetch sessions when refreshing", () async {
+      await viewModel.futureToRun();
+
+      verify(listSessionsRepositoryMock.getSessions(),).called(greaterThanOrEqualTo(1));
+    });
+  });
 }

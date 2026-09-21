@@ -23,8 +23,8 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/ui/dashboard/view_model/cards/progress_bar_card_viewmodel.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/progress_bar_card_viewmodel.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/schedule_card_viewmodel.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/session_reminder_card_viewmodel.dart';
 

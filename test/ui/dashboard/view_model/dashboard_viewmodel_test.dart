@@ -34,7 +34,6 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-
   // Session
   final Session session = Session(
     shortName: "É2020",

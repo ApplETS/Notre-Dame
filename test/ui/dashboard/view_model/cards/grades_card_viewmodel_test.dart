@@ -96,7 +96,6 @@ void main() {
 
       RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock);
       RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock, toReturn: "");
-
     });
 
     tearDown(() {
@@ -171,7 +170,11 @@ void main() {
         CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: []);
         CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: []);
 
-        expect(await viewModel.gradesModel.futureToRun(), [], reason: "Should return empty if there is no session active.");
+        expect(
+          await viewModel.gradesModel.futureToRun(),
+          [],
+          reason: "Should return empty if there is no session active.",
+        );
 
         await untilCalled(courseRepositoryMock.sessions);
 
@@ -215,6 +218,13 @@ void main() {
         expect(filteredCourses.any((c) => c.acronym == 'GEN103'), isFalse);
       });
     });
+  });
 
+  group("grades refresh", () {
+    test("should fetch courses when refreshing", () async {
+      await viewModel.gradesModel.futureToRun();
+
+      verify(courseRepositoryMock.getCourses(),).called(greaterThanOrEqualTo(1));
+    });
   });
 }

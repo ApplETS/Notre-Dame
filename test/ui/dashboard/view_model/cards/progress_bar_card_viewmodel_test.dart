@@ -26,7 +26,6 @@ void main() {
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
 
-
   // Session
   final Session session = Session(
     shortName: "É2020",
@@ -73,7 +72,6 @@ void main() {
 
       RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock);
       RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock, toReturn: "");
-
     });
 
     tearDown(() {
@@ -102,11 +100,8 @@ void main() {
       test("should fetch new sessions with every refresh", () async {
         await viewModel.progressBarModel.futureToRun();
 
-        verify(
-          listSessionsRepositoryMock.getSessions(forceUpdate: true),
-        ).called(1);
+        verify(listSessionsRepositoryMock.getSessions(forceUpdate: true)).called(1);
       });
     });
-
   });
 }
