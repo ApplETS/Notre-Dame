@@ -224,7 +224,7 @@ void main() {
     test("should fetch courses when refreshing", () async {
       await viewModel.gradesModel.futureToRun();
 
-      verify(courseRepositoryMock.getCourses(),).called(greaterThanOrEqualTo(1));
+      verify(courseRepositoryMock.getCourses()).called(greaterThanOrEqualTo(1));
     });
   });
 }

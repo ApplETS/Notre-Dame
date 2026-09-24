@@ -203,7 +203,7 @@ void main() {
     test("should fetch sessions when refreshing", () async {
       await viewModel.futureToRun();
 
-      verify(listSessionsRepositoryMock.getSessions(),).called(greaterThanOrEqualTo(1));
+      verify(listSessionsRepositoryMock.getSessions()).called(greaterThanOrEqualTo(1));
     });
   });
 }

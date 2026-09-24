@@ -145,7 +145,7 @@ void main() {
     test("should fetch course activities when refreshing", () async {
       await viewModel.futureToRun();
 
-      verify(courseRepositoryMock.getCoursesActivities(),).called(greaterThanOrEqualTo(1));
+      verify(courseRepositoryMock.getCoursesActivities()).called(greaterThanOrEqualTo(1));
     });
   });
 }
