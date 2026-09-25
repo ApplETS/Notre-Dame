@@ -14,10 +14,9 @@ import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.da
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
-  final List<Course> courses;
   final bool loading;
 
-  const GradesCard({super.key, required this.courses, required this.loading});
+  const GradesCard({super.key, required this.loading});
 
   @override
   Widget build(BuildContext context) {

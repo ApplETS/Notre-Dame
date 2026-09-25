@@ -157,7 +157,6 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
               if (_scheduleCardHeight != null) SizedBox(height: _scheduleCardHeight, child: const ScheduleCard()),
               GradesCard(
                 key: _gradesCardKey,
-                courses: widget.model.courses,
                 loading: widget.model.busy(widget.model.courses),
               ),
             ],
