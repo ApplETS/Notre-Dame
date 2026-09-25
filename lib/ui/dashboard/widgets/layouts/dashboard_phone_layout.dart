@@ -12,10 +12,10 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/broadcast_message_component.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
-import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
-import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
-import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart';
 
 class DashboardPhoneLayout extends StatefulWidget {
   final DashboardViewModel model;
@@ -96,7 +96,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
       children: [
         AnimatedBuilder(
           key: _titleKey,
-          animation: widget.model.titleAnimation,
+          animation: widget.model.progressBarModel.titleAnimation,
           builder: (context, child) {
             return Padding(
               padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 80.0),
@@ -136,14 +136,14 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
               const Expanded(child: SessionReminderCard()),
               Expanded(
                 child: ProgressBarCard(
-                  progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
-                  progressBarAltText: widget.model.sessionProgress != null
-                      ? (widget.model.sessionProgress!.percentage * 100).toStringAsFixed(0)
+                  progressBarText: widget.model.progressBarModel.sessionProgress?.daysRemaining.toString() ?? "XX",
+                  progressBarAltText: widget.model.progressBarModel.sessionProgress != null
+                      ? (widget.model.progressBarModel.sessionProgress!.percentage * 100).toStringAsFixed(0)
                       : "XX%",
-                  progress: widget.model.sessionProgress?.percentage ?? 0.0,
-                  loading: widget.model.sessionProgress == null,
-                  showingPercentage: widget.model.showingPercentage,
-                  onToggle: widget.model.toggleProgressBarMode,
+                  progress: widget.model.progressBarModel.sessionProgress?.percentage ?? 0.0,
+                  loading: widget.model.progressBarModel.sessionProgress == null,
+                  showingPercentage: widget.model.progressBarModel.showingPercentage,
+                  onToggle: widget.model.progressBarModel.toggleProgressBarMode,
                 ),
               ),
             ],
@@ -155,11 +155,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
             spacing: spacingBetweenGradesAndSchedule,
             children: [
               if (_scheduleCardHeight != null) SizedBox(height: _scheduleCardHeight, child: const ScheduleCard()),
-              GradesCard(
-                key: _gradesCardKey,
-                courses: widget.model.courses,
-                loading: widget.model.busy(widget.model.courses),
-              ),
+              GradesCard(key: _gradesCardKey, loading: widget.model.busy(widget.model.courses)),
             ],
           ),
         ),

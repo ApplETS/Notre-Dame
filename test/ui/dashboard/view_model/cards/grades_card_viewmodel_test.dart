@@ -1,0 +1,230 @@
+// Dart imports:
+import 'dart:async';
+
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+// Project imports:
+import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/locator.dart';
+import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
+import '../../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../../data/mocks/repositories/list_sessions_repository_mock.dart';
+import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../data/mocks/services/remote_config_service_mock.dart';
+import '../../../../helpers.dart';
+
+void main() {
+  late SettingsRepositoryMock settingsManagerMock;
+  late CourseRepositoryMock courseRepositoryMock;
+  late RemoteConfigServiceMock remoteConfigServiceMock;
+  late ListSessionsRepositoryMock listSessionsRepositoryMock;
+
+  late DashboardViewModel viewModel;
+
+  // Needed to support FlutterToast.
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  // Courses
+  final Course courseSummer = Course(
+    acronym: 'GEN101',
+    group: '02',
+    session: 'É2020',
+    programCode: '999',
+    grade: 'C+',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
+
+  final Course courseSummer2 = Course(
+    acronym: 'GEN106',
+    group: '02',
+    session: 'É2020',
+    programCode: '999',
+    grade: 'C+',
+    numberOfCredits: 3,
+    title: 'Cours générique',
+  );
+
+  final courses = [courseSummer, courseSummer2];
+
+  // Session
+  final Session session = Session(
+    shortName: "É2020",
+    name: "Ete 2020",
+    startDate: DateTime(2020).subtract(const Duration(days: 1)),
+    endDate: DateTime(2020).add(const Duration(days: 1)),
+    endDateCourses: DateTime(2022, 1, 10, 1, 1),
+    startDateRegistration: DateTime(2017, 1, 9, 1, 1),
+    deadlineRegistration: DateTime(2017, 1, 10, 1, 1),
+    startDateCancellationWithRefund: DateTime(2017, 1, 10, 1, 1),
+    deadlineCancellationWithRefund: DateTime(2017, 1, 11, 1, 1),
+    deadlineCancellationWithRefundNewStudent: DateTime(2017, 1, 11, 1, 1),
+    startDateCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
+    deadlineCancellationWithoutRefundNewStudent: DateTime(2017, 1, 12, 1, 1),
+    deadlineCancellationASEQ: DateTime(2017, 1, 11, 1, 1),
+  );
+
+  group("DashboardViewModel - ", () {
+    setUp(() async {
+      // Setting up mocks
+      courseRepositoryMock = setupCourseRepositoryMock();
+      remoteConfigServiceMock = setupRemoteConfigServiceMock();
+      settingsManagerMock = setupSettingsRepositoryMock();
+      setupAnalyticsServiceMock();
+      setupBroadcastMessageRepositoryMock();
+      setupDynamicMessagesServiceMock();
+      listSessionsRepositoryMock = setupListSessionsRepositoryMock();
+
+      // Setup stubs for ListSessionsRepository
+      ListSessionsRepositoryMock.stubGetStream(listSessionsRepositoryMock, stream: const Stream.empty());
+      ListSessionsRepositoryMock.stubGetActiveSession(listSessionsRepositoryMock, session: null);
+
+      viewModel = DashboardViewModel(intl: await setupAppIntl());
+      CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: false);
+      CourseRepositoryMock.stubGetReplacedDays(courseRepositoryMock, fromCacheOnly: true);
+      CourseRepositoryMock.stubReplacedDays(courseRepositoryMock);
+      CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
+      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+      CourseRepositoryMock.stubUpcomingSessions(courseRepositoryMock);
+      CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
+      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, fromCacheOnly: true);
+      CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock);
+      SettingsRepositoryMock.stubDateTimeNow(settingsManagerMock, toReturn: DateTime(2020));
+
+      RemoteConfigServiceMock.stubGetBroadcastEnabled(remoteConfigServiceMock);
+      RemoteConfigServiceMock.stubGetBroadcastEn(remoteConfigServiceMock, toReturn: "");
+    });
+
+    tearDown(() {
+      locator.reset();
+      viewModel.dispose();
+    });
+
+    group('futureToRunGrades -', () {
+      test('first load from cache than call SignetsAPI to get the courses', () async {
+        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses, fromCacheOnly: true);
+
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
+
+        expect(await viewModel.gradesModel.futureToRun(), courses);
+
+        await untilCalled(courseRepositoryMock.sessions);
+        await untilCalled(courseRepositoryMock.sessions);
+
+        expect(viewModel.gradesModel.courses, courses);
+
+        verifyInOrder([
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.activeSessions,
+          courseRepositoryMock.activeSessions,
+          courseRepositoryMock.getCourses(fromCacheOnly: true),
+          courseRepositoryMock.getCourses(),
+        ]);
+
+        verifyNoMoreInteractions(courseRepositoryMock);
+      });
+
+      test('Signets throw an error while trying to get courses', () async {
+        setupFlutterToastMock();
+        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses, fromCacheOnly: true);
+
+        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock);
+
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
+
+        expect(
+          await viewModel.gradesModel.futureToRun(),
+          courses,
+          reason: "Even if SignetsAPI call fails, should return the cache contents",
+        );
+
+        await untilCalled(courseRepositoryMock.sessions);
+        await untilCalled(courseRepositoryMock.sessions);
+
+        expect(viewModel.gradesModel.courses, courses);
+
+        verifyInOrder([
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.activeSessions,
+          courseRepositoryMock.activeSessions,
+          courseRepositoryMock.getCourses(fromCacheOnly: true),
+          courseRepositoryMock.getCourses(),
+        ]);
+
+        verifyNoMoreInteractions(courseRepositoryMock);
+      });
+
+      test('There is no session active', () async {
+        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: []);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: []);
+
+        expect(
+          await viewModel.gradesModel.futureToRun(),
+          [],
+          reason: "Should return empty if there is no session active.",
+        );
+
+        await untilCalled(courseRepositoryMock.sessions);
+
+        expect(viewModel.gradesModel.courses, []);
+
+        verifyInOrder([
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.sessions,
+          courseRepositoryMock.getSessions(),
+          courseRepositoryMock.activeSessions,
+        ]);
+
+        verifyNoMoreInteractions(courseRepositoryMock);
+      });
+
+      testWidgets('Course is not added when course is abandoned', (WidgetTester tester) async {
+        final Course abandonedCourse = Course(
+          acronym: 'GEN103',
+          group: '02',
+          session: 'É2020',
+          programCode: '999',
+          grade: 'XX',
+          numberOfCredits: 3,
+          title: 'Cours générique',
+        );
+
+        final List<Course> coursesWithAbandoned = [...courses, abandonedCourse];
+
+        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: coursesWithAbandoned, fromCacheOnly: true);
+        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: coursesWithAbandoned);
+
+        final List<Course> filteredCourses = await viewModel.gradesModel.futureToRun();
+
+        await untilCalled(courseRepositoryMock.sessions);
+
+        // Check if the course abandoned is not included
+        expect(filteredCourses, equals(courses));
+        expect(filteredCourses.any((c) => c.acronym == 'GEN103'), isFalse);
+      });
+    });
+  });
+
+  group("grades refresh", () {
+    test("should fetch courses when refreshing", () async {
+      await viewModel.gradesModel.futureToRun();
+
+      verify(courseRepositoryMock.getCourses()).called(greaterThanOrEqualTo(1));
+    });
+  });
+}

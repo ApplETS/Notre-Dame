@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import '../../core/themes/app_theme.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/progress_bar_card_viewmodel.dart';
+import '../../../core/themes/app_theme.dart';
 
 class ProgressBarCard extends StatefulWidget {
   final String progressBarText;
@@ -72,49 +74,56 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
   }
 
   @override
-  Widget build(BuildContext context) => AspectRatio(
-    aspectRatio: 1,
-    child: GestureDetector(
-      onTap: widget.onToggle,
-      child: Card(
-        color: context.theme.appColors.dashboardCard,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: (widget.loading || widget.progress >= 0.0)
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  spacing: 12.0,
-                  children: [
-                    Expanded(
-                      child: LayoutBuilder(
-                        builder: (BuildContext context, BoxConstraints constraints) {
-                          double size = constraints.maxHeight;
-                          return Transform.scale(
-                            scale: size / 100,
-                            alignment: Alignment.centerRight,
-                            child: AnimatedBuilder(
-                              animation: _animation,
-                              builder: (context, child) => _progress(_animation.value),
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<ProgressBarCardViewmodel>.reactive(
+      viewModelBuilder: () => ProgressBarCardViewmodel(intl: AppIntl.of(context)!),
+      builder: (context, model, child) {
+        return AspectRatio(
+          aspectRatio: 1,
+          child: GestureDetector(
+            onTap: widget.onToggle,
+            child: Card(
+              color: context.theme.appColors.dashboardCard,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: (widget.loading || widget.progress >= 0.0)
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        spacing: 12.0,
+                        children: [
+                          Expanded(
+                            child: LayoutBuilder(
+                              builder: (BuildContext context, BoxConstraints constraints) {
+                                double size = constraints.maxHeight;
+                                return Transform.scale(
+                                  scale: size / 100,
+                                  alignment: Alignment.centerRight,
+                                  child: AnimatedBuilder(
+                                    animation: _animation,
+                                    builder: (context, child) => _progress(_animation.value),
+                                  ),
+                                );
+                              },
                             ),
-                          );
-                        },
-                      ),
-                    ),
-                    AutoSizeText(
-                      widget.showingPercentage
-                          ? AppIntl.of(context)!.progress_bar_percentage
-                          : AppIntl.of(context)!.progress_bar,
-                      style: const TextStyle(fontSize: 18, height: 1),
-                      maxLines: 1,
-                    ),
-                  ],
-                )
-              : Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center)),
-        ),
-      ),
-    ),
-  );
+                          ),
+                          AutoSizeText(
+                            widget.showingPercentage
+                                ? AppIntl.of(context)!.progress_bar_percentage
+                                : AppIntl.of(context)!.progress_bar,
+                            style: const TextStyle(fontSize: 18, height: 1),
+                            maxLines: 1,
+                          ),
+                        ],
+                      )
+                    : Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center)),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   Widget _progress(double animatedProgress) => Transform.rotate(
     angle: -pi / 5,
