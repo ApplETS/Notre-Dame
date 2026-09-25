@@ -155,10 +155,7 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
             spacing: spacingBetweenGradesAndSchedule,
             children: [
               if (_scheduleCardHeight != null) SizedBox(height: _scheduleCardHeight, child: const ScheduleCard()),
-              GradesCard(
-                key: _gradesCardKey,
-                loading: widget.model.busy(widget.model.courses),
-              ),
+              GradesCard(key: _gradesCardKey, loading: widget.model.busy(widget.model.courses)),
             ],
           ),
         ),
