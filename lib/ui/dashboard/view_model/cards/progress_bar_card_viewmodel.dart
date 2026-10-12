@@ -115,11 +115,6 @@ class ProgressBarCardViewmodel extends FutureViewModel {
     return Future.wait([_sessionProgressUseCase.fetch(forceUpdate: true)]);
   }
 
-  Future<void> refresh() async {
-    await _sessionProgressUseCase.fetch(forceUpdate: true);
-    notifyListeners();
-  }
-
   @override
   void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
