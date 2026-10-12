@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notredame/data/repositories/course_repository.dart';
 
 // Project imports:
+import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
@@ -64,20 +64,11 @@ void main() {
       setupNavigationServiceMock();
       final courseRepositoryMock = setupCourseRepositoryMock();
 
-      CourseRepositoryMock.stubSessions(
-        courseRepositoryMock,
-        toReturn: [session],
-      );
+      CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
 
-      CourseRepositoryMock.stubGetSessions(
-        courseRepositoryMock,
-        toReturn: [session],
-      );
+      CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
 
-      CourseRepositoryMock.stubActiveSessions(
-        courseRepositoryMock,
-        toReturn: [session],
-      );
+      CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
     });
 
     tearDown(() {
@@ -103,27 +94,13 @@ void main() {
     });
 
     testWidgets('Has card grades displayed - with courses', (WidgetTester tester) async {
-      final courseRepositoryMock =
-      locator<CourseRepository>() as CourseRepositoryMock;
+      final courseRepositoryMock = locator<CourseRepository>() as CourseRepositoryMock;
 
-      CourseRepositoryMock.stubGetCourses(
-        courseRepositoryMock,
-        toReturn: courses,
-        fromCacheOnly: true,
-      );
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses, fromCacheOnly: true);
 
-      CourseRepositoryMock.stubGetCourses(
-        courseRepositoryMock,
-        toReturn: courses,
-      );
+      CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
 
-      await tester.pumpWidget(
-        localizedWidget(
-          child: const GradesCard(
-            loading: false,
-          ),
-        ),
-      );
+      await tester.pumpWidget(localizedWidget(child: const GradesCard(loading: false)));
 
       await tester.pumpWidget(localizedWidget(child: const GradesCard(loading: false)));
       await tester.pumpAndSettle();
