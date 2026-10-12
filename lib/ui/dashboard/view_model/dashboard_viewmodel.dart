@@ -15,7 +15,6 @@ import 'package:notredame/data/models/dynamic_message_context.dart';
 import 'package:notredame/data/repositories/broadcast_message_repository.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -24,27 +23,22 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
-import 'package:notredame/logic/session_progress_use_case.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/progress_bar_card_viewmodel.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/schedule_card_viewmodel.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/session_reminder_card_viewmodel.dart';
 
 class DashboardViewModel extends FutureViewModel {
   static const String tag = "DashboardViewModel";
-  static const String abandonedGradeCode = "XX";
 
-  final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
   final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
   final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
-  final SessionProgressUseCase _sessionProgressUseCase;
-
-  StreamSubscription? _sessionProgressSubscription;
 
   /// Animation controller for the circle
   AnimationController? _controller;
-  late Animation<double> heightAnimation;
-  late Animation<double> opacityAnimation;
-  late Animation<double> titleAnimation;
 
   /// Getter for the animation controller
   AnimationController get controller => _controller!;
@@ -59,20 +53,25 @@ class DashboardViewModel extends FutureViewModel {
   String? dynamicMessageText;
 
   /// if the progress bar is displaying the days remaining or another alternative
-  bool _showingPercentage = false;
+  bool get showingPercentage => progressBarModel.showingPercentage;
 
-  bool get showingPercentage => _showingPercentage;
+  late final ProgressBarCardViewmodel progressBarModel;
+  late final GradesCardViewmodel gradesModel;
+  late final ScheduleCardViewmodel scheduleModel;
+  late final SessionReminderCardViewmodel sessionReminderModel;
 
-  DashboardViewModel({required AppIntl intl})
-    : _appIntl = intl,
-      _sessionProgressUseCase = SessionProgressUseCase(),
+  DashboardViewModel({required AppIntl intl}) : _appIntl = intl {
+    progressBarModel = ProgressBarCardViewmodel(intl: intl);
+    progressBarModel.addListener(notifyListeners);
 
-      /// if the animation has not been played, play it
-      shouldPlayAnimation = !hasAnimationPlayed {
-    hasAnimationPlayed = true;
+    gradesModel = GradesCardViewmodel(intl: intl);
+    gradesModel.addListener(notifyListeners);
 
-    /// Restore the progress bar display mode from preferences.
-    _showingPercentage = _settingsManager.dashboard.displayProgressBarPercentage;
+    scheduleModel = ScheduleCardViewmodel(intl: intl);
+    scheduleModel.addListener(notifyListeners);
+
+    sessionReminderModel = SessionReminderCardViewmodel(intl: intl);
+    sessionReminderModel.addListener(notifyListeners);
   }
 
   static Future<bool> launchInAppReview() async {
@@ -105,63 +104,21 @@ class DashboardViewModel extends FutureViewModel {
   /// Static flag to track if the animation has been played
   static bool hasAnimationPlayed = false;
 
-  /// Tracks if the animation should be played
-  final bool shouldPlayAnimation;
+  Animation<double> get heightAnimation => progressBarModel.heightAnimation;
+  Animation<double> get opacityAnimation => progressBarModel.opacityAnimation;
+  Animation<double> get titleAnimation => progressBarModel.titleAnimation;
 
   /// Slide offset for title and subtitle animations (slide from top)
   /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
-  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
+  //Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
+  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - progressBarModel.titleAnimation.value));
 
   /// Fade-in opacity based on title animation progress
-  double get titleFadeOpacity => titleAnimation.value;
+  //double get titleFadeOpacity => titleAnimation.value;
+  double get titleFadeOpacity => progressBarModel.titleAnimation.value;
 
   Future<void> init(TickerProvider ticker) async {
-    initAnimationController(ticker);
-    await initSessionProgress();
-  }
-
-  /// Initialize the animation controller for the circle
-  void initAnimationController(TickerProvider ticker) {
-    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
-
-    heightAnimation = Tween<double>(
-      begin: 0,
-      end: 240,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
-
-    opacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-
-    titleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-
-    if (shouldPlayAnimation) {
-      _controller!.forward();
-    } else {
-      _controller!.value = 1.0;
-    }
-  }
-
-  Future<void> initSessionProgress() async {
-    _sessionProgressSubscription = _sessionProgressUseCase.stream.listen(
-      (sessionProgress) {
-        this.sessionProgress = sessionProgress;
-        notifyListeners();
-      },
-      onError: (error) {
-        if (error is Exception) {
-          _analyticsService.logError(tag, "SessionProgressWidget error", error);
-        }
-        if (error is String) {
-          Fluttertoast.showToast(msg: _appIntl.error);
-        }
-      },
-    );
-    await _sessionProgressUseCase.init();
+    progressBarModel.init(ticker);
   }
 
   static Future<void> launchBroadcastUrl(String url) async {
@@ -176,9 +133,11 @@ class DashboardViewModel extends FutureViewModel {
   Future futureToRun() async {
     return Future.wait([
       futureToRunBroadcast(),
-      futureToRunGrades(),
-      _sessionProgressUseCase.fetch(forceUpdate: true),
       loadDynamicMessage(),
+      progressBarModel.futureToRun(),
+      gradesModel.futureToRun(),
+      scheduleModel.futureToRun(),
+      sessionReminderModel.futureToRun(),
     ]);
   }
 
@@ -234,49 +193,6 @@ class DashboardViewModel extends FutureViewModel {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
 
-  /// Get the list of courses for the Grades card.
-  Future<List<Course>> futureToRunGrades() async {
-    if (!busy(courses)) {
-      try {
-        setBusyForObject(courses, true);
-        if (_courseRepository.sessions == null || _courseRepository.sessions!.isEmpty) {
-          await _courseRepository.getSessions();
-        }
-
-        // Determine current sessions
-        if (_courseRepository.activeSessions.isEmpty) {
-          return [];
-        }
-        final currentSession = _courseRepository.activeSessions.first;
-
-        final coursesCached = await _courseRepository.getCourses(fromCacheOnly: true);
-        courses.clear();
-        for (final Course course in coursesCached) {
-          if (course.session == currentSession.shortName && course.grade != abandonedGradeCode) {
-            courses.add(course);
-          }
-        }
-        notifyListeners();
-
-        final fetchedCourses = await _courseRepository.getCourses();
-        // Update the courses list
-        courses.clear();
-        for (final Course course in fetchedCourses) {
-          if (course.session == currentSession.shortName && course.grade != abandonedGradeCode) {
-            courses.add(course);
-          }
-        }
-        // Will remove duplicated courses in the list
-        courses = courses.toSet().toList();
-      } catch (e) {
-        onError(e, null);
-      } finally {
-        setBusyForObject(courses, false);
-      }
-    }
-    return courses;
-  }
-
   Future<void> futureToRunBroadcast() async {
     setBusyForObject(broadcastMessage, true);
 
@@ -289,17 +205,16 @@ class DashboardViewModel extends FutureViewModel {
     }
   }
 
-  void toggleProgressBarMode() {
-    _showingPercentage = !_showingPercentage;
-    _settingsManager.dashboard.displayProgressBarPercentage = _showingPercentage;
-    notifyListeners();
-  }
-
   @override
   void dispose() {
-    _controller?.dispose();
-    _sessionProgressSubscription?.cancel();
-    _sessionProgressUseCase.dispose();
+    progressBarModel.removeListener(notifyListeners);
+    progressBarModel.dispose();
+    gradesModel.removeListener(notifyListeners);
+    gradesModel.dispose();
+    scheduleModel.removeListener(notifyListeners);
+    scheduleModel.dispose();
+    sessionReminderModel.removeListener(notifyListeners);
+    sessionReminderModel.dispose();
     super.dispose();
   }
 }

@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/models/session_reminder.dart';
 import 'package:notredame/domain/session_reminder_type.dart';
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart' show SessionReminderCardContent;
+import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart' show SessionReminderCardContent;
 import '../../../helpers.dart';
 
 void main() {
