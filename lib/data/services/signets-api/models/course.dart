@@ -157,5 +157,5 @@ class Course {
       grade.hashCode ^
       numberOfCredits.hashCode ^
       summary.hashCode ^
-      ListEquality<CourseReview>().hash(reviews);
+      const ListEquality<CourseReview>().hash(reviews);
 }
