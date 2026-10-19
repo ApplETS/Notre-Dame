@@ -22,24 +22,43 @@ class WebLinkCard extends StatelessWidget {
         constraints: const BoxConstraints.expand(),
         child: Card(
           elevation: 4.0,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             onTap: () => model.onLinkClicked(_links),
             splashColor: AppPalette.etsLightRed.withAlpha(50),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Expanded(flex: 40, child: _links.image),
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(_links.name, style: const TextStyle(color: AppPalette.etsLightRed, fontSize: 18.0)),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: DecoratedBox(
+                    decoration: const BoxDecoration(color: AppPalette.etsLightRed),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 4.0),
+                      child: Center(
+                        child: Text(
+                          _links.name,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
                   ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _links.image,
+                  ),
+                ),
+              ],
+            ),
             ),
           ),
-        ),
       );
     },
   );
