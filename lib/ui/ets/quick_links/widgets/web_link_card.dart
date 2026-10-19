@@ -36,14 +36,19 @@ class WebLinkCard extends StatelessWidget {
                   child: DecoratedBox(
                     decoration: const BoxDecoration(color: AppPalette.etsLightRed),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 4.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 2.0),
                       child: Center(
                         child: Text(
                           _links.name,
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                            height: 0.9,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
