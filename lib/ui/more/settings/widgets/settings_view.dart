@@ -66,32 +66,6 @@ class _SettingsViewState extends State<SettingsView> {
                           });
                         },
                       ),
-                      const SizedBox(height: 16.0),
-                      Text(AppIntl.of(context)!.settings_dashboard_schedule_format),
-                      SegmentedButton<bool>(
-                        segments: <ButtonSegment<bool>>[
-                          ButtonSegment<bool>(
-                            value: false,
-                            label: Text(AppIntl.of(context)!.settings_dashboard_schedule_format_calendar),
-                            icon: const Icon(Icons.calendar_month),
-                          ),
-                          ButtonSegment<bool>(
-                            value: true,
-                            label: Text(AppIntl.of(context)!.settings_dashboard_schedule_format_list),
-                            icon: const Icon(Icons.list),
-                          ),
-                        ],
-                        selected: <bool>{model.dashboardScheduleList},
-                        showSelectedIcon: false,
-                        emptySelectionAllowed: true,
-                        onSelectionChanged: (Set<bool> value) {
-                          if (value.isNotEmpty) {
-                            setState(() {
-                              model.dashboardScheduleList = value.first;
-                            });
-                          }
-                        },
-                      ),
                     ],
                   ),
                 ),

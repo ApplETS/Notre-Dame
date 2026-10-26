@@ -53,13 +53,10 @@ class ScheduleCard extends StatelessWidget {
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 250),
                 transitionBuilder: (child, animation) {
-                  final isIncoming = child.key == ValueKey(model.listView);
-                  final from = model.listView ? const Offset(1, 0) : const Offset(-1, 0);
+                  final isList = (child.key as ValueKey<bool>).value;
+                  final offset = isList ? const Offset(1, 0) : const Offset(-1, 0);
                   return SlideTransition(
-                    position: Tween<Offset>(
-                      begin: isIncoming ? from : -from,
-                      end: Offset.zero,
-                    ).animate(animation),
+                    position: Tween<Offset>(begin: offset, end: Offset.zero,).animate(animation),
                     child: child,
                   );
                 },
