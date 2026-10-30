@@ -19,7 +19,5 @@ class SettingsViewModel extends BaseViewModel {
 
   set locale(Locale value) => _settingsManager.locale = value;
 
-  bool get dashboardScheduleList => _settingsManager.dashboard.displayScheduleAsList;
-
   set dashboardScheduleList(bool value) => _settingsManager.dashboard.displayScheduleAsList = value;
 }
