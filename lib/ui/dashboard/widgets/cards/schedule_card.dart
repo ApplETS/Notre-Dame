@@ -43,11 +43,31 @@ class ScheduleCard extends StatelessWidget {
                       color: context.theme.appColors.dashboardCard,
                     ),
                   )
-                : DayCalendar(
-                    listView: model.listView,
-                    controller: ScheduleController(),
-                    selectedDate: model.date,
-                    backgroundColor: context.theme.appColors.dashboardCard,
+                : GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onHorizontalDragEnd: (details) {
+                      final v = details.primaryVelocity ?? 0;
+                      if (v < -300) model.setListView(true);
+                      if (v > 300) model.setListView(false);
+                    },
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      transitionBuilder: (child, animation) {
+                        final isList = (child.key as ValueKey<bool>).value;
+                        final offset = isList ? const Offset(1, 0) : const Offset(-1, 0);
+                        return SlideTransition(
+                          position: Tween<Offset>(begin: offset, end: Offset.zero).animate(animation),
+                          child: child,
+                        );
+                      },
+                      child: DayCalendar(
+                        key: ValueKey(model.listView),
+                        listView: model.listView,
+                        controller: ScheduleController(),
+                        selectedDate: model.date,
+                        backgroundColor: context.theme.appColors.dashboardCard,
+                      ),
+                    ),
                   ),
           ),
         );

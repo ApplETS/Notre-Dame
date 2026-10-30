@@ -79,4 +79,9 @@ class ScheduleCardViewmodel extends FutureViewModel {
   void onError(error, StackTrace? stackTrace) {
     Fluttertoast.showToast(msg: _appIntl.error);
   }
+
+  void setListView(bool isListView) {
+    _settingsManager.dashboard.displayScheduleAsList = isListView;
+    notifyListeners();
+  }
 }
