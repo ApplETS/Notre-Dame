@@ -36,10 +36,7 @@ void main() {
         expect(viewModel.locale, const Locale('fr'));
         expect(viewModel.theme, ThemeMode.system);
 
-        verifyInOrder([
-          settingsManagerMock.locale,
-          settingsManagerMock.themeMode,
-        ]);
+        verifyInOrder([settingsManagerMock.locale, settingsManagerMock.themeMode]);
         verifyNoMoreInteractions(settingsManagerMock);
       });
     });
