@@ -1,0 +1,43 @@
+// Package imports:
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+// Project imports:
+import 'package:notredame/data/services/remote_config_service.dart';
+import 'remote_config_service_mock.mocks.dart';
+
+/// Mock for the [RemoteConfigService]
+@GenerateNiceMocks([MockSpec<RemoteConfigService>()])
+class RemoteConfigServiceMock extends MockRemoteConfigService {
+  static void stubGetBroadcastEnabled(RemoteConfigServiceMock mock, {bool toReturn = true}) {
+    when(mock.dashboardMessageActive).thenReturn(toReturn);
+  }
+
+  static void stubGetPrivacyPolicyEnabled(RemoteConfigServiceMock mock, {bool toReturn = true}) {
+    when(mock.privacyPolicyToggle).thenReturn(toReturn);
+  }
+
+  static void stubGetBroadcastColor(RemoteConfigServiceMock mock, {String toReturn = "0xffd48404"}) {
+    when(mock.dashboardMsgColor).thenReturn(toReturn);
+  }
+
+  static void stubGetBroadcastEn(RemoteConfigServiceMock mock, {String toReturn = "En"}) {
+    when(mock.dashboardMessageEn).thenReturn(toReturn);
+  }
+
+  static void stubGetBroadcastFr(RemoteConfigServiceMock mock, {String toReturn = "Fr"}) {
+    when(mock.dashboardMessageFr).thenReturn(toReturn);
+  }
+
+  static void stubGetBroadcastUrl(RemoteConfigServiceMock mock, {String toReturn = "https://clubapplets.ca/"}) {
+    when(mock.dashboardMsgUrl).thenReturn(toReturn);
+  }
+
+  static void stubGetHelloFeatureToggle(RemoteConfigServiceMock mock, {bool toReturn = true}) {
+    when(mock.helloFeatureToggle).thenReturn(toReturn);
+  }
+
+  static void stubGetQuickLinksValues(RemoteConfigServiceMock mock, {String toReturn = ""}) {
+    when(mock.quickLinksValues).thenReturn(toReturn);
+  }
+}
