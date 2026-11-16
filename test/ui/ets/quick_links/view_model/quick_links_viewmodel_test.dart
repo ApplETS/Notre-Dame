@@ -36,25 +36,33 @@ void main() {
       unregister<QuickLinkRepository>();
     });
 
-    group('getQuickLinks -', () {
-      test('Should get quick links from cache', () async {
-        QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(quickLinkRepositoryMock, toReturn: [quickLinkDataSample]);
+    group('getUserQuickLinks -', () {
+      test('Should apply the saved order on the available links', () async {
+        final anotherQuickLink = quickLinks(intl).last;
+        QuickLinkRepositoryMock.stubGetQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample, anotherQuickLink]);
+        QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(
+          quickLinkRepositoryMock,
+          toReturn: [QuickLinkData(id: anotherQuickLink.id, index: 0), QuickLinkData(id: quickLinkSample.id, index: 1)],
+        );
+        QuickLinkRepositoryMock.stubGetHiddenQuickLinkIdsFromCache(quickLinkRepositoryMock);
+        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: quickLinks(intl));
 
-        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample]);
+        final result = await viewModel.getUserQuickLinks();
 
-        final result = await viewModel.getQuickLinks();
-
-        expect(result, [quickLinkSample]);
+        expect(result.visible, [anotherQuickLink, quickLinkSample]);
+        expect(result.hidden, isEmpty);
       });
 
-      test('Should return default quick links if cache is not initialized', () async {
+      test('Should return the available links if the user never customized them', () async {
+        QuickLinkRepositoryMock.stubGetQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample]);
         QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(quickLinkRepositoryMock);
+        QuickLinkRepositoryMock.stubGetHiddenQuickLinkIdsFromCacheException(quickLinkRepositoryMock);
+        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: quickLinks(intl));
 
-        QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample]);
+        final result = await viewModel.getUserQuickLinks();
 
-        final result = await viewModel.getQuickLinks();
-
-        expect(result, [quickLinkSample]);
+        expect(result.visible, [quickLinkSample]);
+        expect(result.hidden, isEmpty);
       });
     });
 
@@ -93,8 +101,9 @@ void main() {
 
     group('futureToRun -', () {
       test('Should fetch and set quick links', () async {
+        QuickLinkRepositoryMock.stubGetQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample]);
         QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(quickLinkRepositoryMock, toReturn: [quickLinkDataSample]);
-
+        QuickLinkRepositoryMock.stubGetHiddenQuickLinkIdsFromCache(quickLinkRepositoryMock);
         QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample]);
 
         final result = await viewModel.futureToRun();
