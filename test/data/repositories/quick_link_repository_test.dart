@@ -89,7 +89,7 @@ void main() {
         expect(quickLinkRepository.updateQuickLinkDataToCache([quickLink]), throwsA(isInstanceOf<Exception>()));
       });
     });
-      group("getQuickLinks - ", () {
+    group("getQuickLinks - ", () {
       const remoteJson =
           '[{"id":"1","nameFr":"Sécurité","nameEn":"Security","icon":"shield-halved","link":"security"},'
           '{"id":42,"nameFr":"Nouveau","nameEn":"New","link":"https://etsmtl.ca"}]';

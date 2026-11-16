@@ -39,10 +39,16 @@ void main() {
     group('getUserQuickLinks -', () {
       test('Should apply the saved order on the available links', () async {
         final anotherQuickLink = quickLinks(intl).last;
-        QuickLinkRepositoryMock.stubGetQuickLinks(quickLinkRepositoryMock, toReturn: [quickLinkSample, anotherQuickLink]);
+        QuickLinkRepositoryMock.stubGetQuickLinks(
+          quickLinkRepositoryMock,
+          toReturn: [quickLinkSample, anotherQuickLink],
+        );
         QuickLinkRepositoryMock.stubGetQuickLinkDataFromCache(
           quickLinkRepositoryMock,
-          toReturn: [QuickLinkData(id: anotherQuickLink.id, index: 0), QuickLinkData(id: quickLinkSample.id, index: 1)],
+          toReturn: [
+            QuickLinkData(id: anotherQuickLink.id, index: 0),
+            QuickLinkData(id: quickLinkSample.id, index: 1),
+          ],
         );
         QuickLinkRepositoryMock.stubGetHiddenQuickLinkIdsFromCache(quickLinkRepositoryMock);
         QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: quickLinks(intl));
