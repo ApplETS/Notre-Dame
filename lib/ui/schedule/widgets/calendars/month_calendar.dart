@@ -14,10 +14,10 @@ import 'package:notredame/ui/core/ui/modal_bottom_sheet_header.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:notredame/utils/date_extensions.dart';
 
 class MonthCalendar extends StatefulWidget {
-  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
 
   const MonthCalendar({super.key, required this.controller});
@@ -64,7 +64,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
           dayIndex: value,
           displayBorder: false,
           textStyle: context.theme.textTheme.bodyMedium!,
-          weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
+          weekDayStringBuilder: (p0) => weekTitles[p0],
         ),
         headerStringBuilder: (date, {secondaryDate}) {
           final locale = AppIntl.of(context)!.localeName;

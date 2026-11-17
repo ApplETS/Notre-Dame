@@ -13,11 +13,11 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 bool isAnimating = false;
 
 class WeekCalendar extends StatefulWidget {
-  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
 
   const WeekCalendar({super.key, required this.controller});
@@ -58,6 +58,14 @@ class _WeekCalendarState extends State<WeekCalendar> {
       setState(() {});
     };
 
+    final textStyle = Theme.of(context).textTheme.bodyLarge!;
+
+    final Size timeDimensions = getTimeDimensions(
+      textStyle,
+      Directionality.of(context),
+      MediaQuery.of(context).textScaler,
+    );
+
     return WeekView(
       key: weekViewKey,
       weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
@@ -77,6 +85,15 @@ class _WeekCalendarState extends State<WeekCalendar> {
         WeekDays.friday,
         if (model.displaySaturday) WeekDays.saturday,
       ],
+      timeLineWidth: timeDimensions.width + 18.0,
+      timeLineOffset: timeDimensions.height / 2,
+      timeLineBuilder: (DateTime date) => Padding(
+        padding: const EdgeInsets.only(left: 12.0, right: 6.0),
+        child: Align(
+          alignment: AlignmentGeometry.topEnd,
+          child: Text(DateFormat('H:mm').format(date), style: textStyle),
+        ),
+      ),
       initialDay: model.weekSelected,
       heightPerMinute: heightPerMinute,
       scrollOffset: heightPerMinute * 60 * 7.5,
@@ -111,7 +128,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(WeekCalendar.weekTitles[date.weekday - 1]),
+                Text(weekTitles[date.weekday - 1]),
                 if (MediaQuery.of(context).orientation == Orientation.landscape) const SizedBox(width: 4),
                 Text(date.day.toString()),
               ],

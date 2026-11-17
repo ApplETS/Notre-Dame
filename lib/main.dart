@@ -74,24 +74,29 @@ class ETSMobile extends StatelessWidget {
         builder: (context, model, child) {
           return CalendarControllerProvider(
             controller: EventController(),
-            child: MaterialApp(
-              title: 'ÉTS Mobile',
-              theme: AppTheme.light,
-              darkTheme: AppTheme.dark,
-              themeMode: model.themeMode,
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: const [
-                AppIntl.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              locale: model.locale,
-              supportedLocales: AppIntl.supportedLocales,
-              navigatorKey: locator<NavigationService>().navigatorKey,
-              navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver()],
-              home: outage ? const OutageView() : const StartUpView(),
-              onGenerateRoute: generateRoute,
+            child: MediaQuery(
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: MediaQuery.of(context).textScaler.clamp(maxScaleFactor: 1.3)),
+              child: MaterialApp(
+                title: 'ÉTS Mobile',
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                themeMode: model.themeMode,
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: const [
+                  AppIntl.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                locale: model.locale,
+                supportedLocales: AppIntl.supportedLocales,
+                navigatorKey: locator<NavigationService>().navigatorKey,
+                navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver()],
+                home: outage ? const OutageView() : const StartUpView(),
+                onGenerateRoute: generateRoute,
+              ),
             ),
           );
         },
