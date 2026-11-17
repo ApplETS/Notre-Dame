@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
-import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -14,6 +13,7 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 bool isAnimating = false;
 

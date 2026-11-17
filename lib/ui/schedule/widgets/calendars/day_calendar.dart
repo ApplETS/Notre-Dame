@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:intl/intl.dart';
-import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -18,6 +17,7 @@ import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;
