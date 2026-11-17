@@ -16,7 +16,7 @@ import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import 'package:notredame/ui/student/profile/widgets/program_completion.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
-import 'package:notredame/utils/loading.dart';
+import 'package:notredame/ui/core/ui/loading.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});

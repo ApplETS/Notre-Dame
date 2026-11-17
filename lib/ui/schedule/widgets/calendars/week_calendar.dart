@@ -1,12 +1,10 @@
-// Dart imports:
-import 'dart:ui' as ui;
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -20,7 +18,6 @@ import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 bool isAnimating = false;
 
 class WeekCalendar extends StatefulWidget {
-  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
 
   const WeekCalendar({super.key, required this.controller});
@@ -63,14 +60,11 @@ class _WeekCalendarState extends State<WeekCalendar> {
 
     final textStyle = Theme.of(context).textTheme.bodyLarge!;
 
-    // Used to get the dimensions of an hour. Supports scaling.
-    final textPainter = TextPainter(
-      text: TextSpan(text: "00:00", style: textStyle),
-      textDirection: ui.TextDirection.ltr,
-      textScaler: MediaQuery.of(context).textScaler,
+    final Size timeDimensions = getTimeDimensions(
+      textStyle,
+      Directionality.of(context),
+      MediaQuery.of(context).textScaler,
     );
-
-    textPainter.layout();
 
     return WeekView(
       key: weekViewKey,
@@ -91,8 +85,8 @@ class _WeekCalendarState extends State<WeekCalendar> {
         WeekDays.friday,
         if (model.displaySaturday) WeekDays.saturday,
       ],
-      timeLineWidth: textPainter.width + 18.0,
-      timeLineOffset: textPainter.height / 2,
+      timeLineWidth: timeDimensions.width + 18.0,
+      timeLineOffset: timeDimensions.height / 2,
       timeLineBuilder: (DateTime date) => Padding(
         padding: const EdgeInsets.only(left: 12.0, right: 6.0),
         child: Align(
@@ -134,7 +128,7 @@ class _WeekCalendarState extends State<WeekCalendar> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(WeekCalendar.weekTitles[date.weekday - 1]),
+                Text(weekTitles[date.weekday - 1]),
                 if (MediaQuery.of(context).orientation == Orientation.landscape) const SizedBox(width: 4),
                 Text(date.day.toString()),
               ],

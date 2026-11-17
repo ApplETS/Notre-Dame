@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -17,7 +18,6 @@ import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/utils/date_extensions.dart';
 
 class MonthCalendar extends StatefulWidget {
-  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final ScheduleController controller;
 
   const MonthCalendar({super.key, required this.controller});
@@ -64,7 +64,7 @@ class _MonthCalendarState extends State<MonthCalendar> {
           dayIndex: value,
           displayBorder: false,
           textStyle: context.theme.textTheme.bodyMedium!,
-          weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
+          weekDayStringBuilder: (p0) => weekTitles[p0],
         ),
         headerStringBuilder: (date, {secondaryDate}) {
           final locale = AppIntl.of(context)!.localeName;

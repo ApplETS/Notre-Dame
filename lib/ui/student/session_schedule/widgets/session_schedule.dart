@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:ui' as ui;
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -13,6 +10,7 @@ import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class SessionSchedule extends StatefulWidget {
   final List<EventData> calendarEvents;
@@ -33,7 +31,6 @@ class SessionSchedule extends StatefulWidget {
 }
 
 class _SessionScheduleState extends State<SessionSchedule> {
-  static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
   final GlobalKey<WeekViewState> weekViewKey = GlobalKey<WeekViewState>();
 
   final eventController = EventController();
@@ -55,14 +52,11 @@ class _SessionScheduleState extends State<SessionSchedule> {
 
     final textStyle = Theme.of(context).textTheme.bodyLarge!;
 
-    // Used to get the dimensions of an hour. Supports scaling.
-    final textPainter = TextPainter(
-      text: TextSpan(text: "00:00", style: textStyle),
-      textDirection: ui.TextDirection.ltr,
-      textScaler: MediaQuery.of(context).textScaler,
+    final Size timeDimensions = getTimeDimensions(
+      textStyle,
+      Directionality.of(context),
+      MediaQuery.of(context).textScaler,
     );
-
-    textPainter.layout();
 
     return Scaffold(
       body: WeekView(
@@ -82,8 +76,8 @@ class _SessionScheduleState extends State<SessionSchedule> {
           WeekDays.friday,
           if (widget.displaySaturday) WeekDays.saturday,
         ],
-        timeLineWidth: textPainter.width + 18.0,
-        timeLineOffset: textPainter.height / 2,
+        timeLineWidth: timeDimensions.width + 18.0,
+        timeLineOffset: timeDimensions.height / 2,
         timeLineBuilder: (DateTime date) => Padding(
           padding: const EdgeInsets.only(left: 12.0, right: 6.0),
           child: Align(

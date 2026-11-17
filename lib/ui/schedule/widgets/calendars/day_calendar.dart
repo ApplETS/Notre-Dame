@@ -1,6 +1,3 @@
-// Dart imports:
-import 'dart:ui' as ui;
-
 // Flutter imports:
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +5,7 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:intl/intl.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -97,14 +95,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
       builder: (BuildContext context, BoxConstraints constraints) {
         final textStyle = Theme.of(context).textTheme.bodyLarge!;
 
-        // Used to get the dimensions of an hour. Supports scaling.
-        final textPainter = TextPainter(
-          text: TextSpan(text: "00:00", style: textStyle),
-          textDirection: ui.TextDirection.ltr,
-          textScaler: MediaQuery.of(context).textScaler,
+        final Size timeDimensions = getTimeDimensions(
+          textStyle,
+          Directionality.of(context),
+          MediaQuery.of(context).textScaler,
         );
-
-        textPainter.layout();
 
         final double heightPerMinute = showEntireDay
             ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
@@ -134,8 +129,8 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
             final locale = AppIntl.of(context)!.localeName;
             return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
           },
-          timeLineWidth: textPainter.width + 18.0,
-          timeLineOffset: textPainter.height / 2,
+          timeLineWidth: timeDimensions.width + 18.0,
+          timeLineOffset: timeDimensions.height / 2,
           timeLineBuilder: (DateTime date) => Padding(
             padding: const EdgeInsets.only(left: 12.0, right: 6.0),
             child: Align(
@@ -221,14 +216,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
 
     final TextStyle textStyle = Theme.of(context).textTheme.bodyMedium!;
 
-    // Used to get the dimensions of an the weekday. Supports scaling.
-    final textPainter = TextPainter(
-      text: TextSpan(text: "00:00", style: textStyle),
-      textDirection: ui.TextDirection.ltr,
-      textScaler: MediaQuery.of(context).textScaler,
+    final Size timeDimensions = getTimeDimensions(
+      textStyle,
+      Directionality.of(context),
+      MediaQuery.of(context).textScaler,
     );
-
-    textPainter.layout();
 
     return Container(
       padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 3.0),
@@ -239,7 +231,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         selectedDayPredicate: (day) {
           return isSameDay(model.daySelected, day);
         },
-        daysOfWeekHeight: textPainter.height,
+        daysOfWeekHeight: timeDimensions.height,
         daysOfWeekStyle: DaysOfWeekStyle(
           weekdayStyle: textStyle,
           weekendStyle: textStyle.copyWith(color: context.theme.appColors.fadedText),
