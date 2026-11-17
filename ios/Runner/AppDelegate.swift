@@ -3,7 +3,7 @@ import Flutter
 import MSAL
 
 @main
-@objc class AppDelegate: FlutterAppDelegate, @MainActor FlutterImplicitEngineDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
 
   override func application(
     _ application: UIApplication,
