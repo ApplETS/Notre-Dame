@@ -539,6 +539,7 @@
   "service_outage_refresh": "Rafraichir",
 
   "progress_bar": "jours restants",
+  "progress_bar_percentage": "pourcent",
 
   "universal_code_example": "Ex: AB12345",
   "my_tickets": "Mes billets",

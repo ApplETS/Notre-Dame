@@ -75,6 +75,12 @@ class DashboardSettings {
   bool get displayScheduleAsList => _preferencesService.getBool(PreferencesFlag.dashboardScheduleList) ?? false;
 
   set displayScheduleAsList(bool value) => _preferencesService.setBool(PreferencesFlag.dashboardScheduleList, value);
+
+  bool get displayProgressBarPercentage =>
+      _preferencesService.getBool(PreferencesFlag.dashboardProgressBarPercentage) ?? false;
+
+  set displayProgressBarPercentage(bool value) =>
+      _preferencesService.setBool(PreferencesFlag.dashboardProgressBarPercentage, value);
 }
 
 class ScheduleSettings {

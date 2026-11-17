@@ -11,6 +11,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
+import 'package:notredame/ui/dashboard/widgets/broadcast_message_component.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
@@ -116,7 +117,9 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
                     // Prevents the skeleton from overflowing.
                     height: isLoading ? null : textPainter.height,
                     child: Center(
-                      child: isLoading
+                      child: widget.model.remoteConfigService.dashboardMessageActive
+                          ? BroadcastMessageComponent(broadcastMessage: widget.model.broadcastMessage, style: textStyle)
+                          : isLoading
                           ? Skeletonizer(
                               child: Bone.multiText(
                                 fontSize: MediaQuery.of(context).textScaler.scale(fontSize),
@@ -148,8 +151,13 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
               Expanded(
                 child: ProgressBarCard(
                   progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
+                  progressBarAltText: widget.model.sessionProgress != null
+                      ? (widget.model.sessionProgress!.percentage * 100).toStringAsFixed(0)
+                      : "XX%",
                   progress: widget.model.sessionProgress?.percentage ?? 0.0,
                   loading: widget.model.sessionProgress == null,
+                  showingPercentage: widget.model.showingPercentage,
+                  onToggle: widget.model.toggleProgressBarMode,
                 ),
               ),
             ],

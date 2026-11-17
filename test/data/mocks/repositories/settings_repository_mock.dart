@@ -65,6 +65,11 @@ class SettingsRepositoryMock extends MockSettingsRepository {
     when(_dashboard.displayScheduleAsList).thenReturn(toReturn);
   }
 
+  /// Stub the [displayProgressBarPercentage] getter
+  static void stubDashboardProgressBarPercentage(SettingsRepositoryMock mock, {bool toReturn = false}) {
+    when(_dashboard.displayProgressBarPercentage).thenReturn(toReturn);
+  }
+
   /// Stub the [calendarFormat] getter
   static void stubScheduleCalendarFormat(
     SettingsRepositoryMock mock, {

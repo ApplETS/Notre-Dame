@@ -19,6 +19,7 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
 import 'package:notredame/data/services/in_app_review_service.dart';
 import 'package:notredame/data/services/launch_url_service.dart';
+import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/domain/models/session_progress.dart';
 import 'package:notredame/l10n/app_localizations.dart';
@@ -31,6 +32,7 @@ class DashboardViewModel extends FutureViewModel {
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final CourseRepository _courseRepository = locator<CourseRepository>();
+  final RemoteConfigService remoteConfigService = locator<RemoteConfigService>();
   final BroadcastMessageRepository _broadcastMessageRepository = locator<BroadcastMessageRepository>();
   final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
@@ -56,6 +58,11 @@ class DashboardViewModel extends FutureViewModel {
   /// Dynamic message text resolved from SessionContext
   String? dynamicMessageText;
 
+  /// if the progress bar is displaying the days remaining or another alternative
+  bool _showingPercentage = false;
+
+  bool get showingPercentage => _showingPercentage;
+
   DashboardViewModel({required AppIntl intl})
     : _appIntl = intl,
       _sessionProgressUseCase = SessionProgressUseCase(),
@@ -63,6 +70,9 @@ class DashboardViewModel extends FutureViewModel {
       /// if the animation has not been played, play it
       shouldPlayAnimation = !hasAnimationPlayed {
     hasAnimationPlayed = true;
+
+    /// Restore the progress bar display mode from preferences.
+    _showingPercentage = _settingsManager.dashboard.displayProgressBarPercentage;
   }
 
   static Future<bool> launchInAppReview() async {
@@ -277,6 +287,12 @@ class DashboardViewModel extends FutureViewModel {
     } finally {
       setBusyForObject(broadcastMessage, false);
     }
+  }
+
+  void toggleProgressBarMode() {
+    _showingPercentage = !_showingPercentage;
+    _settingsManager.dashboard.displayProgressBarPercentage = _showingPercentage;
+    notifyListeners();
   }
 
   @override

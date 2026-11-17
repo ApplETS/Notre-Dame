@@ -7,8 +7,6 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/locator.dart';
 
-//OTHERS
-
 /// Manage the analytics of the application
 class RemoteConfigService {
   static const String tag = "RemoteConfigService";
@@ -22,11 +20,8 @@ class RemoteConfigService {
   static const _dashboardMsgToggle = "dashboard_message_toggle";
   static const _dashboardMsgFr = "dashboard_message_fr";
   static const _dashboardMsgEn = "dashboard_message_en";
-  static const _dashboardMsgTitleFr = "dashboard_message_title_fr";
-  static const _dashboardMsgTitleEn = "dashboard_message_title_en";
   static const _dashboardMsgColor = "dashboard_message_color";
   static const _dashboardMsgUrl = "dashboard_message_url";
-  static const _dashboardMsgType = "dashboard_message_type";
 
   // links
   static const _signetsPasswordResetUrl = "signets_password_reset_url";
@@ -42,11 +37,8 @@ class RemoteConfigService {
     _privacyPolicyURL: "",
     _dashboardMsgFr: "",
     _dashboardMsgEn: "",
-    _dashboardMsgTitleFr: "",
-    _dashboardMsgTitleEn: "",
     _dashboardMsgColor: "",
     _dashboardMsgUrl: "",
-    _dashboardMsgType: "",
     _signetsPasswordResetUrl: "",
     _privacyPolicyToggle: true,
     _helloFeatureToggle: false,
@@ -89,16 +81,6 @@ class RemoteConfigService {
     return _remoteConfig.getString(_dashboardMsgEn);
   }
 
-  String get dashboardMessageTitleFr {
-    fetch();
-    return _remoteConfig.getString(_dashboardMsgTitleFr);
-  }
-
-  String get dashboardMessageTitleEn {
-    fetch();
-    return _remoteConfig.getString(_dashboardMsgTitleEn);
-  }
-
   String get dashboardMsgColor {
     fetch();
     return _remoteConfig.getString(_dashboardMsgColor);
@@ -107,11 +89,6 @@ class RemoteConfigService {
   String get dashboardMsgUrl {
     fetch();
     return _remoteConfig.getString(_dashboardMsgUrl);
-  }
-
-  String get dashboardMsgType {
-    fetch();
-    return _remoteConfig.getString(_dashboardMsgType);
   }
 
   String get signetsPasswordResetUrl {

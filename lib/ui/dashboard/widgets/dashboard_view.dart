@@ -67,7 +67,9 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
           child: PhysicalShape(
             clipper: CircleClipper(),
             elevation: 4.0,
-            color: AppPalette.etsLightRed,
+            color: model.remoteConfigService.dashboardMessageActive
+                ? model.broadcastMessage!.color
+                : AppPalette.etsLightRed,
             child: SizedBox(height: model.heightAnimation.value, width: double.infinity),
           ),
         );
