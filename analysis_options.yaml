@@ -15,5 +15,8 @@ analyzer:
   exclude:
     - "*.mocks.dart"
     - "lib/l10n"
+    - build/**
+    - android/**
+    - ios/**
 formatter:
   page_width: 120
