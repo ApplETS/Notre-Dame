@@ -191,3 +191,5 @@ local.properties
 *.dSYM.zip
 *.dSYM
 firebase_app_id_file.json
+# Widget Preview related
+.widget_preview/
