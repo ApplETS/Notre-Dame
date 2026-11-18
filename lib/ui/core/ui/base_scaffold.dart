@@ -13,6 +13,7 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'navigation_menu/navigation_menu.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
@@ -63,11 +64,14 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
-    body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-    floatingActionButton: widget.fab,
-    floatingActionButtonLocation: widget.fabPosition,
+  Widget build(BuildContext context) => SkeletonizerConfig(
+    data: SkeletonizerConfigData(brightness: Theme.of(context).brightness),
+    child: Scaffold(
+      appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
+      body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
+      floatingActionButton: widget.fab,
+      floatingActionButtonLocation: widget.fabPosition,
+    ),
   );
 
   Widget bodyPortraitMode() {
