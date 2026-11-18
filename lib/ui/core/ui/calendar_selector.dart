@@ -5,7 +5,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 
 // Package imports:
-import 'package:device_calendar/device_calendar.dart';
+import 'package:device_calendar_plus/device_calendar_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 // Project imports:
@@ -44,7 +44,7 @@ class _CalendarSelectionSheetState extends State<CalendarSelectionSheet> {
 
         final items = calendars.data!
             .map<DropdownMenuItem<String>>(
-              (calendar) => DropdownMenuItem(value: calendar.name, child: Text(calendar.name!)),
+              (calendar) => DropdownMenuItem(value: calendar.name, child: Text(calendar.name)),
             )
             .toList();
 

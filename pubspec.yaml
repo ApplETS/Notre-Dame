@@ -62,7 +62,7 @@ dependencies:
   calendar_view: ^2.0.0
   reorderable_grid_view: ^2.2.8
   infinite_scroll_pagination: ^5.1.1
-  device_calendar: ^4.3.3
+  device_calendar_plus: ^0.12.0
   http: ^1.5.0
   xml: ^6.6.1
   collection: ^1.19.1
