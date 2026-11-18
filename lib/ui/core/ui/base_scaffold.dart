@@ -7,13 +7,13 @@ import 'package:flutter/services.dart';
 // Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'navigation_menu/navigation_menu.dart';
 
 /// Basic Scaffold to avoid boilerplate code in the application.
