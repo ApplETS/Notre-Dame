@@ -38,10 +38,10 @@ runs:
 
     - name: Install Android dependencies
       if: ${{ inputs.target == 'Android' }}
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: '17'
+        java-version: '21'
 
     - name: Run flutter doctor
       shell: bash
