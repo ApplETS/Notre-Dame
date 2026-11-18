@@ -12,7 +12,6 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 // Material library, so the app has to expose a legacy theme to them.
 // ignore: deprecated_member_use
 
-
 /// Exposes the current `material_ui` theme and localizations to widgets of dependencies that
 /// still use `package:flutter/material.dart`, and adds the calendar_view theme extensions.
 class LegacyMaterialBridge extends StatelessWidget {
