@@ -31,17 +31,6 @@ class AppTheme with ChangeNotifier {
         fillColor: const Color(0xfffffdfd),
         labelStyle: TextStyle(color: AppPalette.grey.black),
       ),
-      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
-        selectedItemColor: AppPalette.etsLightRed,
-        backgroundColor: _lightAppColors.navBar,
-      ),
-      navigationRailTheme: NavigationRailThemeData(
-        backgroundColor: _lightAppColors.navBar,
-        groupAlignment: 0,
-        indicatorColor: Colors.transparent,
-        selectedLabelTextStyle: const TextStyle(color: AppPalette.etsLightRed),
-        selectedIconTheme: const IconThemeData(color: AppPalette.etsLightRed),
-      ),
       colorScheme: defaultTheme.colorScheme.copyWith(
         primary: AppPalette.etsLightRed,
         secondary: AppPalette.etsLightRed,
@@ -100,17 +89,6 @@ class AppTheme with ChangeNotifier {
       tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
       cardTheme: defaultTheme.cardTheme.copyWith(color: const Color(0xff242326)),
-      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
-        selectedItemColor: AppPalette.etsLightRed,
-        backgroundColor: _darkAppColors.navBar,
-      ),
-      navigationRailTheme: NavigationRailThemeData(
-        backgroundColor: _darkAppColors.navBar,
-        groupAlignment: 0,
-        indicatorColor: Colors.transparent,
-        selectedLabelTextStyle: const TextStyle(color: AppPalette.etsLightRed),
-        selectedIconTheme: const IconThemeData(color: AppPalette.etsLightRed),
-      ),
       colorScheme: defaultTheme.colorScheme.copyWith(
         primary: AppPalette.etsLightRed,
         secondary: AppPalette.etsLightRed,
