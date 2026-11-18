@@ -1,11 +1,4 @@
-// Flutter imports:
-// ignore: deprecated_member_use
-
-// Flutter imports:
-import 'package:flutter/material.dart' as legacy;
-
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
 import 'package:material_ui/material_ui.dart';
 
 // Project imports:
@@ -20,65 +13,6 @@ class AppTheme with ChangeNotifier {
   set themeMode(ThemeMode themeMode) {
     _themeMode = themeMode;
     notifyListeners();
-  }
-
-  /// Theme extensions of the calendar_view package.
-  ///
-  /// calendar_view still reads them from the legacy `package:flutter/material.dart` theme, which
-  /// can't hold them in a `material_ui` [ThemeData]. They are injected by [LegacyMaterialBridge].
-  static List<legacy.ThemeExtension<dynamic>> calendarExtensions(Brightness brightness) {
-    if (brightness == Brightness.dark) {
-      final defaultTheme = ThemeData.dark();
-      return [
-        MonthViewThemeData.dark().copyWith(
-          cellBorderColor: _darkAppColors.scheduleLine,
-          headerBackgroundColor: _darkAppColors.appBar,
-          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
-          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
-          weekDayTileColor: _darkAppColors.appBar,
-        ),
-        WeekViewThemeData.dark().copyWith(
-          hourLineColor: _darkAppColors.scheduleLine,
-          verticalLinesColor: _darkAppColors.scheduleLine,
-          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
-          pageBackgroundColor: Colors.transparent,
-          headerBackgroundColor: _darkAppColors.appBar,
-          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
-          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
-          borderColor: _darkAppColors.scheduleLine,
-        ),
-        DayViewThemeData.dark().copyWith(
-          hourLineColor: _darkAppColors.scheduleLine,
-          pageBackgroundColor: Colors.transparent,
-          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
-        ),
-      ];
-    }
-    final defaultTheme = ThemeData.light();
-    return [
-      MonthViewThemeData.light().copyWith(
-        cellBorderColor: _lightAppColors.scheduleLine,
-        headerBackgroundColor: _lightAppColors.appBar,
-        headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
-        headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
-        weekDayTileColor: _lightAppColors.appBar,
-      ),
-      WeekViewThemeData.light().copyWith(
-        hourLineColor: _lightAppColors.scheduleLine,
-        verticalLinesColor: _lightAppColors.scheduleLine,
-        liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
-        pageBackgroundColor: Colors.transparent,
-        headerBackgroundColor: _lightAppColors.appBar,
-        headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
-        headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
-        borderColor: _lightAppColors.scheduleLine,
-      ),
-      DayViewThemeData.light().copyWith(
-        hourLineColor: _lightAppColors.scheduleLine,
-        pageBackgroundColor: Colors.transparent,
-        liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
-      ),
-    ];
   }
 
   static final light = () {
