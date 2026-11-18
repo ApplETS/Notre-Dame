@@ -1,13 +1,11 @@
 // Dart imports:
 import 'dart:async';
 
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:

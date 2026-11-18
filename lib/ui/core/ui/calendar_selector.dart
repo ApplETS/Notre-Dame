@@ -1,12 +1,10 @@
 // Dart imports:
 import 'dart:collection';
 
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:device_calendar_plus/device_calendar_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';

@@ -2,8 +2,10 @@
 import 'dart:ui';
 
 // Flutter imports:
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/rendering.dart';
+
+// Package imports:
+import 'package:material_ui/material_ui.dart';
 
 class Carousel extends StatefulWidget {
   const Carousel({super.key, required this.controller, required this.children});

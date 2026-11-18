@@ -1,11 +1,11 @@
 // Flutter imports:
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/author_repository.dart';
@@ -17,7 +17,6 @@ import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
@@ -32,6 +31,7 @@ import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets_client.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'data/mocks/repositories/author_repository_mock.dart';
 import 'data/mocks/repositories/broadcast_message_repository_mock.dart';
 import 'data/mocks/repositories/course_repository_mock.dart';

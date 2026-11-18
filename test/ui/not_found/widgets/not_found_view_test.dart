@@ -1,8 +1,6 @@
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/ui/not_found/widgets/not_found_view.dart';

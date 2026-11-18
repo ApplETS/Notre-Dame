@@ -1,8 +1,6 @@
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:collection/collection.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/services/calendar_service.dart';

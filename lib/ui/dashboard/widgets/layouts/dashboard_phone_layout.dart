@@ -1,10 +1,8 @@
 // Dart imports:
 import 'dart:math';
 
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
+import 'package:material_ui/material_ui.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:

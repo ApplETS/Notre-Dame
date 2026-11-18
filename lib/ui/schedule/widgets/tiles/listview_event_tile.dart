@@ -1,8 +1,6 @@
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:

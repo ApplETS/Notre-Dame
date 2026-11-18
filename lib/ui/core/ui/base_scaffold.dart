@@ -2,11 +2,11 @@
 import 'dart:async';
 
 // Flutter imports:
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';

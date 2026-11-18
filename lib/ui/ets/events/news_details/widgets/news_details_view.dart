@@ -1,10 +1,8 @@
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:flutter_svg/svg.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';

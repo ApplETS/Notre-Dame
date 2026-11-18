@@ -1,4 +1,4 @@
-// Flutter imports:
+// Package imports:
 import 'package:cupertino_ui/cupertino_ui.dart';
 
 // Project imports:

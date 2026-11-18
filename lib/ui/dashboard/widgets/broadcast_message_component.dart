@@ -1,8 +1,6 @@
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';

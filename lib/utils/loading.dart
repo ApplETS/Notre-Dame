@@ -1,4 +1,4 @@
-// Flutter imports:
+// Package imports:
 import 'package:material_ui/material_ui.dart';
 
 Widget buildLoading({bool isInteractionLimitedWhileLoading = true}) => Stack(

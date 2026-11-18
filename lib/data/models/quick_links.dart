@@ -1,10 +1,10 @@
 // Flutter imports:
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/widgets.dart';
 
 // Package imports:
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/models/quick_link.dart';

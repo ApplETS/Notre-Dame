@@ -1,8 +1,6 @@
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+import 'package:material_ui/material_ui.dart';
 
 @immutable
 class EventData extends CalendarEventData {

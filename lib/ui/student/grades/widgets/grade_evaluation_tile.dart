@@ -1,11 +1,9 @@
 // Dart imports:
 import 'dart:math';
 
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';

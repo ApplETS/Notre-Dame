@@ -1,11 +1,13 @@
 // Flutter imports:
 // calendar_view still extends the legacy ThemeExtension class.
 // ignore: deprecated_member_use
+
+// Flutter imports:
 import 'package:flutter/material.dart' as legacy;
-import 'package:material_ui/material_ui.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_colors_extension.dart';

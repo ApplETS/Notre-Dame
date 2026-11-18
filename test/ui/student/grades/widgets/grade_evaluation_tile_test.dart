@@ -1,10 +1,8 @@
 // Flutter imports:
 
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';

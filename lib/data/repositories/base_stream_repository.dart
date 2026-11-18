@@ -2,10 +2,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-// Flutter imports:
-import 'package:cupertino_ui/cupertino_ui.dart';
-
 // Package imports:
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:github/github.dart';

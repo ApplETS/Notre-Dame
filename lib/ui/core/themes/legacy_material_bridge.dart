@@ -1,14 +1,17 @@
 // Flutter imports:
+import 'package:flutter/material.dart' as legacy;
+
+// Package imports:
 import 'package:material_ui/material_ui.dart';
+
+// Project imports:
+import 'package:notredame/ui/core/themes/app_theme.dart';
 
 // Package imports:
 // Several dependencies (calendar_view, table_calendar, skeletonizer, ...) still use the legacy
 // Material library, so the app has to expose a legacy theme to them.
 // ignore: deprecated_member_use
-import 'package:flutter/material.dart' as legacy;
 
-// Project imports:
-import 'package:notredame/ui/core/themes/app_theme.dart';
 
 /// Exposes the current `material_ui` theme and localizations to widgets of dependencies that
 /// still use `package:flutter/material.dart`, and adds the calendar_view theme extensions.

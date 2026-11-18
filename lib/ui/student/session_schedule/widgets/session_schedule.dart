@@ -1,16 +1,14 @@
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
-import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
+import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 
 class SessionSchedule extends StatefulWidget {
   final List<EventData> calendarEvents;

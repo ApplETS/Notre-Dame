@@ -1,11 +1,9 @@
 // Dart imports:
 import 'dart:convert';
 
-// Flutter imports:
-import 'package:material_ui/material_ui.dart';
-
 // Package imports:
 import 'package:logger/logger.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
