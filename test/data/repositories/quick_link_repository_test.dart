@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';

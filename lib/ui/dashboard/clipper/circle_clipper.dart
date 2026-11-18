@@ -1,5 +1,5 @@
 // Flutter imports:
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 class CircleClipper extends CustomClipper<Path> {
   /// Gets the path of the circle

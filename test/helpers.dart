@@ -1,9 +1,8 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
@@ -18,6 +17,7 @@ import 'package:notredame/data/repositories/quick_link_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:notredame/data/services/auth_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
@@ -70,13 +70,9 @@ Widget localizedWidget({
   double textScaleFactor = 0.9,
 }) => RepaintBoundary(
   child: MaterialApp(
-    localizationsDelegates: const [
-      AppIntl.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
+    localizationsDelegates: const [AppIntl.delegate, ...GlobalMaterialLocalizations.delegates],
     locale: Locale(locale),
+    builder: (context, child) => LegacyMaterialBridge(child: child!),
     home: useScaffold ? Scaffold(body: child) : child,
   ),
 );

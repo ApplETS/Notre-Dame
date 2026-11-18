@@ -2,7 +2,7 @@
 import 'dart:collection';
 
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Package imports:
 import 'package:device_calendar_plus/device_calendar_plus.dart';

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 // Flutter imports:
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 // Package imports:
 import 'package:dio/dio.dart';

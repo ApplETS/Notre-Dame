@@ -1,5 +1,5 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
@@ -15,6 +15,7 @@ import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/month_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 import 'package:notredame/utils/date_extensions.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 
 class MonthCalendar extends StatefulWidget {
   static final List<String> weekTitles = ["L", "M", "M", "J", "V", "S", "D"];
@@ -48,40 +49,42 @@ class _MonthCalendarState extends State<MonthCalendar> {
       setState(() {});
     };
 
-    return MonthView(
-      key: monthViewKey,
-      monthViewStyle: MonthViewStyle(
-        cellAspectRatio: 0.8,
-        safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
-        useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
-        startDay: WeekDays.sunday,
-        initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
-      ),
-      controller: model.eventController..addAll(model.selectedMonthEvents()),
-      monthViewBuilders: MonthViewBuilders(
-        onPageChange: (date, page) => model.handleDateSelectedChanged(date),
-        weekDayBuilder: (int value) => WeekDayTile(
-          dayIndex: value,
-          displayBorder: false,
-          textStyle: context.theme.textTheme.bodyMedium!,
-          weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
+    return LegacyMaterialScope(
+      child: MonthView(
+        key: monthViewKey,
+        monthViewStyle: MonthViewStyle(
+          cellAspectRatio: 0.8,
+          safeAreaOption: const SafeAreaOption(top: false, bottom: false, left: false),
+          useAvailableVerticalSpace: MediaQuery.of(context).size.height >= 500,
+          startDay: WeekDays.sunday,
+          initialMonth: DateTime(DateTime.now().year, DateTime.now().month),
         ),
-        headerStringBuilder: (date, {secondaryDate}) {
-          final locale = AppIntl.of(context)!.localeName;
-          return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
-        },
-        cellBuilder: (date, events, _, _, _) => FilledCell(
-          hideDaysNotInMonth: false,
-          titleColor: context.theme.textTheme.bodyMedium!.color!,
-          highlightColor: AppPalette.etsLightRed,
-          shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
-          date: date,
-          events: events,
-          backgroundColor: (date.firstDayOfMonth == model.monthSelected.firstDayOfMonth)
-              ? Colors.transparent
-              : Colors.grey.withValues(alpha: .06),
+        controller: model.eventController..addAll(model.selectedMonthEvents()),
+        monthViewBuilders: MonthViewBuilders(
+          onPageChange: (date, page) => model.handleDateSelectedChanged(date),
+          weekDayBuilder: (int value) => WeekDayTile(
+            dayIndex: value,
+            displayBorder: false,
+            textStyle: context.theme.textTheme.bodyMedium!,
+            weekDayStringBuilder: (p0) => MonthCalendar.weekTitles[p0],
+          ),
+          headerStringBuilder: (date, {secondaryDate}) {
+            final locale = AppIntl.of(context)!.localeName;
+            return '${DateFormat.MMMM(locale).format(date).characters.first.toUpperCase()}${DateFormat.MMMM(locale).format(date).substring(1)} ${date.year}';
+          },
+          cellBuilder: (date, events, _, _, _) => FilledCell(
+            hideDaysNotInMonth: false,
+            titleColor: context.theme.textTheme.bodyMedium!.color!,
+            highlightColor: AppPalette.etsLightRed,
+            shouldHighlight: date.getDayDifference(DateTime.now()) == 0,
+            date: date,
+            events: events,
+            backgroundColor: (date.firstDayOfMonth == model.monthSelected.firstDayOfMonth)
+                ? Colors.transparent
+                : Colors.grey.withValues(alpha: .06),
+          ),
+          onCellTap: (events, date) => _onDayTapped(context, date),
         ),
-        onCellTap: (events, date) => _onDayTapped(context, date),
       ),
     );
   }

@@ -74,6 +74,8 @@ dependencies:
   dio: ^5.8.0+1
   synchronized: ^3.3.1
   retry: ^3.1.2
+  material_ui: ^1.11.1
+  cupertino_ui: ^1.1.7
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +90,7 @@ dev_dependencies:
   retrofit_generator: ^10.2.0
   http_mock_adapter: ^0.6.1
 
+  listen: any
 flutter_icons:
   android: 'launcher_icon'
   ios: 'LaunchImage'

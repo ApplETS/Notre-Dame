@@ -1,5 +1,5 @@
 // Flutter imports:
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 // Project imports:
 import '../../ui/core/ui/navigation_menu/navigation_menu_button.dart';
