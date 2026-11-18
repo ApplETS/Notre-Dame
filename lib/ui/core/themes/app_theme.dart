@@ -1,8 +1,5 @@
 // Flutter imports:
-// calendar_view still extends the legacy ThemeExtension class.
 // ignore: deprecated_member_use
-
-// Flutter imports:
 import 'package:flutter/material.dart' as legacy;
 
 // Package imports:
