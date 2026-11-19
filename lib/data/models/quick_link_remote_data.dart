@@ -6,12 +6,12 @@ import 'dart:convert';
 /// Expected JSON for one link (either `icon` OR `svg`, never both):
 /// ```json
 /// {
-///   "id": 1,
-///   "nameFr": "Sécurité",
-///   "nameEn": "Security",
-///   "icon": "shield-halved",        // name from the Font Awesome library (see quick_link_icons.dart)
+///   "id": 3,
+///   "nameFr": "Bibliotech",
+///   "nameEn": "Bibliotech",
+///   "icon": "book",                 // FontAwesomeIcons constant name (see quickLinkIcons in quick_link_icons.dart)
 ///   "svg": "<svg ...>...</svg>",    // OR a raw SVG string
-///   "link": "security"              // "security" opens the in-app page, anything else is opened in the browser
+///   "link": "https://www.etsmtl.ca/Bibliotheque/Accueil"  // opened in the browser
 /// }
 /// ```
 /// If neither `icon` nor `svg` is usable, a placeholder icon is displayed.

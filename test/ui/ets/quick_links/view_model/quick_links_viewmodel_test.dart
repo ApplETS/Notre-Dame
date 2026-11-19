@@ -28,8 +28,8 @@ void main() {
       intl = await setupAppIntl();
 
       viewModel = QuickLinksViewModel(intl);
-      quickLinkDataSample = QuickLinkData(id: 1, index: 0);
       quickLinkSample = quickLinks(intl).first;
+      quickLinkDataSample = QuickLinkData(id: quickLinkSample.id, index: 0);
     });
 
     tearDown(() {

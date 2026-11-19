@@ -13,12 +13,6 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 
 List<QuickLink> quickLinks(AppIntl intl) => [
   QuickLink(
-    id: 1,
-    name: intl.ets_security_title,
-    image: const FittedBox(child: FaIcon(FontAwesomeIcons.shieldHalved, color: AppPalette.etsLightRed)),
-    link: 'security',
-  ),
-  QuickLink(
     id: 2,
     name: intl.ets_monets_title,
     image: Image.asset('assets/images/ic_monets_sans_nom_red.png', color: AppPalette.etsLightRed),

@@ -91,7 +91,7 @@ void main() {
     });
     group("getQuickLinks - ", () {
       const remoteJson =
-          '[{"id":"1","nameFr":"Sécurité","nameEn":"Security","icon":"shield-halved","link":"security"},'
+          '[{"id":"3","nameFr":"Bibliotech","nameEn":"Bibliotech","icon":"book","link":"https://www.etsmtl.ca"},'
           '{"id":42,"nameFr":"Nouveau","nameEn":"New","link":"https://etsmtl.ca"}]';
 
       test("Uses Remote Config when valid and saves it to cache.", () async {
@@ -99,7 +99,7 @@ void main() {
 
         final results = await quickLinkRepository.getQuickLinks(intl);
 
-        expect(results.map((e) => e.id), [1, 42]);
+        expect(results.map((e) => e.id), [3, 42]);
         expect(results[1].link, "https://etsmtl.ca");
         verify(cacheManagerMock.update(QuickLinkRepository.remoteQuickLinksCacheKey, remoteJson)).called(1);
       });
@@ -110,7 +110,7 @@ void main() {
 
         final results = await quickLinkRepository.getQuickLinks(intl);
 
-        expect(results.map((e) => e.id), [1, 42]);
+        expect(results.map((e) => e.id), [3, 42]);
       });
 
       test("Uses the cached copy when Remote Config is invalid JSON.", () async {
@@ -119,7 +119,7 @@ void main() {
 
         final results = await quickLinkRepository.getQuickLinks(intl);
 
-        expect(results.map((e) => e.id), [1, 42]);
+        expect(results.map((e) => e.id), [3, 42]);
         verifyNever(cacheManagerMock.update(QuickLinkRepository.remoteQuickLinksCacheKey, any));
       });
 
