@@ -8,8 +8,8 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import '../../../data/mocks/repositories/broadcast_message_repository_mock.mocks.dart';
@@ -36,7 +36,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   // Courses
-  final Course courseSummer = Course(
+  const Course courseSummer = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'É2020',
@@ -46,7 +46,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseSummer2 = Course(
+  const Course courseSummer2 = Course(
     acronym: 'GEN106',
     group: '02',
     session: 'É2020',
@@ -61,7 +61,7 @@ void main() {
   // Session
   final Session session = Session(
     shortName: "É2020",
-    name: "Ete 2020",
+    longName: "Ete 2020",
     startDate: DateTime(2020).subtract(const Duration(days: 1)),
     endDate: DateTime(2020).add(const Duration(days: 1)),
     endDateCourses: DateTime(2022, 1, 10, 1, 1),
@@ -199,7 +199,7 @@ void main() {
       });
 
       testWidgets('Course is not added when course is abandoned', (WidgetTester tester) async {
-        final Course abandonedCourse = Course(
+        const Course abandonedCourse = Course(
           acronym: 'GEN103',
           group: '02',
           session: 'É2020',

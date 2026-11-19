@@ -1,5 +1,5 @@
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
+import 'package:notredame/domain/models/signets-api/replaced_day.dart';
 import 'package:notredame/utils/date_extensions.dart';
 
 /// Analyzes replaced days to find upcoming schedule changes.

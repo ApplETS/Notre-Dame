@@ -11,16 +11,17 @@ import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/course_review.dart';
-import 'package:notredame/data/services/signets-api/models/course_summary.dart';
-import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/services/signets_client.dart';
 import 'package:notredame/domain/constants/semester_codes.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/course_review.dart';
+import 'package:notredame/domain/models/signets-api/course_summary.dart';
+import 'package:notredame/domain/models/signets-api/replaced_day.dart';
+import 'package:notredame/domain/models/signets-api/schedule_activity.dart';
+import 'package:notredame/domain/models/signets-api/schedule_and_teachers.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
+import 'package:notredame/domain/models/signets-api/signets_errors.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'package:notredame/utils/cache_exception.dart';
@@ -59,7 +60,7 @@ class CourseRepository {
   final NetworkingService _networkingService = locator<NetworkingService>();
 
   /// Used to access the Signets API
-  final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
+  final SignetsClient _signetsClient = locator<SignetsClient>();
 
   /// Used to access preferences for cache timestamps
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
@@ -130,7 +131,7 @@ class CourseRepository {
         _coursesActivities = responseCache.map((e) => CourseActivity.fromJson(e as Map<String, dynamic>)).toList();
         _logger.d("$tag - getCoursesActivities: ${_coursesActivities?.length ?? 0} activities loaded from cache");
         return _coursesActivities;
-      } on CacheException catch (_) {
+      } catch (_) {
         _logger.e("$tag - getCoursesActivities: exception raised while trying to load activities from cache.");
       }
     }
@@ -144,7 +145,7 @@ class CourseRepository {
       }
 
       for (final Session session in activeSessions) {
-        fetchedCoursesActivities.addAll(await _signetsApiClient.getCoursesActivities(session: session.shortName));
+        fetchedCoursesActivities.addAll((await _signetsClient.getCoursesActivities(session.shortName)).dataOr([]));
         _logger.d("$tag - getCoursesActivities: fetched ${fetchedCoursesActivities.length} activities.");
       }
     } on Exception catch (e, stacktrace) {
@@ -208,7 +209,8 @@ class CourseRepository {
       _logger.d(
         "$tag - getScheduleDefaultActivities: ${_scheduleDefaultActivities.length} activities loaded from cache",
       );
-    } on CacheException catch (_) {
+    } catch (_) {
+      _scheduleDefaultActivities = [];
       _logger.e("$tag - getDefaultScheduleActivities: exception raised while trying to load activities from cache.");
     }
 
@@ -218,7 +220,9 @@ class CourseRepository {
     final List<ScheduleActivity> fetchedScheduleActivities = [];
 
     try {
-      fetchedScheduleActivities.addAll(await _signetsApiClient.getScheduleActivities(session: session));
+      fetchedScheduleActivities.addAll(
+        (await _signetsClient.getScheduleActivities(session)).dataOr(const ScheduleAndTeachers()).activities,
+      );
       _logger.d("$tag - getDefaultScheduleActivities: fetched ${fetchedScheduleActivities.length} default activities.");
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, "Exception raised during getScheduleActivities: $e", e, stacktrace);
@@ -258,7 +262,8 @@ class CourseRepository {
         // Build list of activities loaded from the cache.
         _scheduleActivities = responseCache.map((e) => ScheduleActivity.fromJson(e as Map<String, dynamic>)).toList();
         _logger.d("$tag - getScheduleActivities: ${_scheduleActivities!.length} activities loaded from cache");
-      } on CacheException catch (_) {
+      } catch (_) {
+        _scheduleActivities = [];
         _logger.e("$tag - getScheduleActivities: exception raised while trying to load activities from cache.");
       }
     }
@@ -276,7 +281,11 @@ class CourseRepository {
       }
 
       for (final Session oneSession in activeSessions) {
-        fetchedScheduleActivities.addAll(await _signetsApiClient.getScheduleActivities(session: oneSession.shortName));
+        fetchedScheduleActivities.addAll(
+          (await _signetsClient.getScheduleActivities(
+            oneSession.shortName,
+          )).dataOr(const ScheduleAndTeachers()).activities,
+        );
         _logger.d("$tag - getScheduleActivities: fetched ${fetchedScheduleActivities.length} activities.");
       }
     } on Exception catch (e, stacktrace) {
@@ -317,7 +326,8 @@ class CourseRepository {
         // Build list of activities loaded from the cache.
         _sessions = sessionsCached.map((e) => Session.fromJson(e as Map<String, dynamic>)).toList();
         _logger.d("$tag - getSessions: ${_sessions?.length ?? 0} sessions loaded from cache.");
-      } on CacheException catch (_) {
+      } catch (_) {
+        _sessions = [];
         _logger.e("$tag - getSessions: exception raised while trying to load the sessions from cache.");
       }
     }
@@ -328,7 +338,7 @@ class CourseRepository {
     }
 
     try {
-      final List<Session> fetchedSession = await _signetsApiClient.getSessions();
+      final List<Session> fetchedSession = (await _signetsClient.getSessionList()).dataOr([]);
       _logger.d("$tag - getSessions: ${fetchedSession.length} sessions fetched.");
       for (final Session session in fetchedSession) {
         if (!_sessions!.contains(session)) {
@@ -367,7 +377,8 @@ class CourseRepository {
         // Build list of activities loaded from the cache.
         _courses = responseCache.map((e) => Course.fromJson(e as Map<String, dynamic>)).toList();
         _logger.d("$tag - getCourses: ${_courses!.length} courses loaded from cache");
-      } on CacheException catch (_) {
+      } catch (_) {
+        _courses = [];
         _logger.e("$tag - getCourses: exception raised while trying to load courses from cache.");
       }
     }
@@ -380,7 +391,7 @@ class CourseRepository {
     final Map<String, List<CourseReview>> fetchedCourseReviews = {};
 
     try {
-      fetchedCourses.addAll(await _signetsApiClient.getCourses());
+      fetchedCourses.addAll((await _signetsClient.getCourses()).dataOr([]));
       _logger.d("$tag - getCourses: fetched ${fetchedCourses.length} courses.");
     } on Exception catch (e, stacktrace) {
       _analyticsService.logError(tag, "Exception raised during getCourses: $e", e, stacktrace);
@@ -394,8 +405,8 @@ class CourseRepository {
 
     // If there isn't the grade yet, will fetch the summary.
     // We don't do this for every course to avoid losing time.
-    for (final course in fetchedCourses) {
-      course.reviews = _getReviewsForCourse(course, fetchedCourseReviews);
+    for (final fetchedCourse in fetchedCourses) {
+      final course = fetchedCourse.copyWith(reviews: _getReviewsForCourse(fetchedCourse, fetchedCourseReviews));
       if (course.grade == null) {
         try {
           await getCourseSummary(course);
@@ -427,7 +438,7 @@ class CourseRepository {
   /// version of the course. Return the course with the summary set.
   Future<Course> getCourseSummary(Course course) async {
     CourseSummary? summary;
-    List<CourseReview>? reviews;
+    Course updatedCourse = course;
 
     // Don't try to update the summary when user has no connection
     if (!(await _networkingService.hasConnectivity())) {
@@ -435,11 +446,7 @@ class CourseRepository {
     }
 
     try {
-      summary = await _signetsApiClient.getCourseSummary(
-        session: course.session,
-        acronym: course.acronym,
-        group: course.group,
-      );
+      summary = (await _signetsClient.getCourseSummary(course.session, course.acronym, course.group)).requireData();
       _logger.d("$tag - getCourseSummary: fetched ${course.acronym} summary.");
     } on Exception catch (e, stacktrace) {
       if (e is ApiException) {
@@ -454,8 +461,7 @@ class CourseRepository {
     }
 
     if (course.inReviewPeriod && !(course.allReviewsCompleted ?? true)) {
-      reviews = _getReviewsForCourse(course, await _getCoursesReviews());
-      course.reviews = reviews;
+      updatedCourse = updatedCourse.copyWith(reviews: _getReviewsForCourse(course, await _getCoursesReviews()));
     }
 
     // Initialize the array if needed
@@ -463,8 +469,8 @@ class CourseRepository {
 
     // Update courses list
     _courses!.removeWhere((element) => course.acronym == element.acronym && course.session == element.session);
-    course.summary = summary;
-    _courses!.add(course);
+    updatedCourse = updatedCourse.copyWith(summary: summary);
+    _courses!.add(updatedCourse);
 
     try {
       // Update cache
@@ -475,7 +481,7 @@ class CourseRepository {
       _logger.e("$tag - getCourseSummary: exception raised while trying to update the cache.");
     }
 
-    return course;
+    return updatedCourse;
   }
 
   /// [fromCacheOnly] - If true, only returns cached data without API call.
@@ -495,7 +501,8 @@ class CourseRepository {
         // Build list of replaced days loaded from the cache.
         _replacedDays = responseCache.map((e) => ReplacedDay.fromJson(e as Map<String, dynamic>)).toList();
         _logger.d("$tag - getReplacedDays: ${_replacedDays?.length ?? 0} replaced days loaded from cache");
-      } on CacheException catch (_) {
+      } catch (_) {
+        _replacedDays = [];
         _logger.e("$tag - getReplacedDays: exception raised while trying to load replaced days from cache.");
       }
     }
@@ -519,7 +526,7 @@ class CourseRepository {
       }
 
       for (final Session session in activeSessions) {
-        fetchedReplacedDays.addAll(await _signetsApiClient.getReplacedDays(session: session.shortName));
+        fetchedReplacedDays.addAll((await _signetsClient.getReplacedDays(session.shortName)).dataOr([]));
         _logger.d("$tag - getReplacedDays: fetched ${fetchedReplacedDays.length} replaced days.");
       }
     } on Exception catch (e, stacktrace) {
@@ -576,7 +583,7 @@ class CourseRepository {
       }
 
       for (final Session session in _sessions!) {
-        sessionReviews = await _signetsApiClient.getCourseReviews(session: session.shortName);
+        sessionReviews = (await _signetsClient.getCourseReviews(session.shortName)).dataOr([]);
         reviews.putIfAbsent(session.shortName, () => sessionReviews);
         _logger.d(
           "$tag - getCoursesEvaluations: fetched ${reviews[session.shortName]?.length ?? 0} "

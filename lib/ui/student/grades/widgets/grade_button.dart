@@ -4,7 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';

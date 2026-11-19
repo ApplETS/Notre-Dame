@@ -4,11 +4,11 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/replaced_day.dart';
+import 'package:notredame/domain/models/signets-api/schedule_activity.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'course_repository_mock.mocks.dart';
 

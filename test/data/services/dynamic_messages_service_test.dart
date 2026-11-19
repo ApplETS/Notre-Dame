@@ -8,9 +8,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notredame/data/models/dynamic_message.dart';
 import 'package:notredame/data/models/dynamic_message_context.dart';
 import 'package:notredame/data/services/dynamic_messages_service.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/replaced_day.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/utils/date_extensions.dart';
 
 void main() {
@@ -21,7 +21,7 @@ void main() {
   Session createSession({required DateTime startDate, required DateTime endDate}) {
     return Session(
       shortName: 'TEST',
-      name: 'Test Session',
+      longName: 'Test Session',
       startDate: startDate,
       endDate: endDate,
       endDateCourses: endDate,

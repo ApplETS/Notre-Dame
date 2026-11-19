@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/view_model/grades_viewmodel.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';
@@ -20,7 +20,7 @@ void main() {
 
   late GradesViewModel viewModel;
 
-  final Course courseSummer = Course(
+  const Course courseSummer = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'É2020',
@@ -30,7 +30,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseSummer2 = Course(
+  const Course courseSummer2 = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'É2019',
@@ -40,7 +40,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseWinter = Course(
+  const Course courseWinter = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'H2020',
@@ -50,7 +50,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseFall = Course(
+  const Course courseFall = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'A2020',
@@ -60,7 +60,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseWithoutSession = Course(
+  const Course courseWithoutSession = Course(
     acronym: 'GEN103',
     group: '01',
     session: 's.o.',

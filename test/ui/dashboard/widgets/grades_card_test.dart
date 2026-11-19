@@ -4,14 +4,14 @@ import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../helpers.dart';
 
 void main() {
-  final Course course1 = Course(
+  const Course course1 = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'É2020',
@@ -21,7 +21,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course course2 = Course(
+  const Course course2 = Course(
     acronym: 'GEN102',
     group: '02',
     session: 'É2020',

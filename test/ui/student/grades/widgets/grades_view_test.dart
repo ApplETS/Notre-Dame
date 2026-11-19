@@ -8,7 +8,7 @@ import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import 'package:notredame/ui/student/grades/widgets/grades_view.dart';
@@ -20,7 +20,7 @@ void main() {
   late CourseRepositoryMock courseRepositoryMock;
   late AppIntl intl;
 
-  final Course courseSummer = Course(
+  const Course courseSummer = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'É2020',
@@ -30,7 +30,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseSummer2 = Course(
+  const Course courseSummer2 = Course(
     acronym: 'GEN102',
     group: '02',
     session: 'É2020',
@@ -40,7 +40,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseWinter = Course(
+  const Course courseWinter = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'H2020',
@@ -50,7 +50,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseFall = Course(
+  const Course courseFall = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'A2020',

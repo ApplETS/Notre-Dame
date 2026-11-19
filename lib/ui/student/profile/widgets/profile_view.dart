@@ -7,7 +7,7 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/domain/models/signets-api/program.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';

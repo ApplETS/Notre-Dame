@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/domain/models/signets-api/schedule_activity.dart';
 import 'package:notredame/ui/student/session_schedule/view_model/session_schedule_viewmodel.dart';
 import '../../../../helpers.dart';
 

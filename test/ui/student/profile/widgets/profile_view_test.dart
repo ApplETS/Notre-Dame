@@ -4,8 +4,8 @@ import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/signets-api/models/profile_student.dart';
-import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/domain/models/signets-api/profile_student.dart';
+import 'package:notredame/domain/models/signets-api/program.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/profile/widgets/profile_view.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
@@ -17,7 +17,7 @@ void main() {
   late AppIntl intl;
   late UserRepositoryMock userRepositoryMock;
 
-  final profileStudent = ProfileStudent(
+  const profileStudent = ProfileStudent(
     firstName: "John",
     lastName: "Doe",
     permanentCode: "ABC123",
@@ -26,7 +26,7 @@ void main() {
   );
 
   final programList = [
-    Program(
+    const Program(
       name: 'Baccalauréat en génie logiciel ',
       code: '7084',
       average: '3.00',
@@ -37,7 +37,7 @@ void main() {
       equivalentCourses: '0',
       status: 'actif',
     ),
-    Program(
+    const Program(
       name: 'Microprogramme de 1er cycle en enseignement coopératif I',
       code: '0725',
       average: '',
@@ -48,7 +48,7 @@ void main() {
       equivalentCourses: '0',
       status: 'Dossier fermé',
     ),
-    Program(
+    const Program(
       name: 'Microprogramme de 1er cycle en enseignement coopératif II',
       code: '0726',
       average: '',

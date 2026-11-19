@@ -5,9 +5,9 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
-import 'package:notredame/data/services/signets-api/models/course_summary.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_evaluation.dart';
+import 'package:notredame/domain/models/signets-api/course_summary.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/grade_details/view_model/grades_details_viewmodel.dart';
 import '../../../../../data/mocks/repositories/course_repository_mock.dart';
@@ -73,7 +73,7 @@ void main() {
     summary: courseSummary,
   );
 
-  final Course courseWithoutSummary = Course(
+  const Course courseWithoutSummary = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'H2020',

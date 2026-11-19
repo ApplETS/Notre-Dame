@@ -5,7 +5,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/domain/models/signets-api/schedule_activity.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 

@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/domain/models/signets-api/schedule_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/schedule_settings.dart';

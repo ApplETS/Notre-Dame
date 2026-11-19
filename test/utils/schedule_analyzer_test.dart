@@ -2,7 +2,7 @@
 import 'package:flutter_test/flutter_test.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
 import 'package:notredame/utils/schedule_analyzer.dart';
 
 void main() {

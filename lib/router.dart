@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/models/hello/news.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/ui/choose_language/widgets/choose_language_view.dart';
 import 'package:notredame/ui/core/ui/root_view.dart';

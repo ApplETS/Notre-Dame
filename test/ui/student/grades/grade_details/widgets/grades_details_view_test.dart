@@ -7,10 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
-import 'package:notredame/data/services/signets-api/models/course_review.dart';
-import 'package:notredame/data/services/signets-api/models/course_summary.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_evaluation.dart';
+import 'package:notredame/domain/models/signets-api/course_review.dart';
+import 'package:notredame/domain/models/signets-api/course_summary.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/grade_details/widgets/grade_details_view.dart';
 import '../../../../../data/mocks/repositories/course_repository_mock.dart';
@@ -50,7 +50,7 @@ void main() {
     ],
   );
 
-  final CourseSummary courseSummary2 = CourseSummary(
+  const CourseSummary courseSummary2 = CourseSummary(
     currentMark: null,
     currentMarkInPercent: null,
     markOutOf: 100,
@@ -127,7 +127,7 @@ void main() {
     reviews: completedReviewList,
   );
 
-  final Course courseWithoutSummary = Course(
+  const Course courseWithoutSummary = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'H2020',
@@ -210,7 +210,7 @@ void main() {
           CourseRepositoryMock.stubGetCourseSummary(courseRepositoryMock, courseWithoutSummary, toReturn: course);
           await tester
               .runAsync(() async {
-                await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
+                await tester.pumpWidget(localizedWidget(child: const GradesDetailsView(course: courseWithoutSummary)));
                 await tester.pumpAndSettle();
               })
               .then((value) {
@@ -259,7 +259,7 @@ void main() {
 
         await tester
             .runAsync(() async {
-              await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
+              await tester.pumpWidget(localizedWidget(child: const GradesDetailsView(course: courseWithoutSummary)));
               await tester.pumpAndSettle();
             })
             .then((value) async {
@@ -281,7 +281,7 @@ void main() {
           toReturn: courseWithoutSummary,
         );
 
-        await tester.pumpWidget(localizedWidget(child: GradesDetailsView(course: courseWithoutSummary)));
+        await tester.pumpWidget(localizedWidget(child: const GradesDetailsView(course: courseWithoutSummary)));
         await tester.pumpAndSettle(const Duration(seconds: 1));
 
         expect(find.byKey(const Key("GradeNotAvailable")), findsOneWidget);

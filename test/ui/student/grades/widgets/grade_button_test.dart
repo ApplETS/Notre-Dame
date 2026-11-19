@@ -5,8 +5,8 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_summary.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_summary.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
@@ -17,7 +17,7 @@ void main() {
   late AppIntl intl;
   late NavigationServiceMock navigationServiceMock;
 
-  final Course courseWithGrade = Course(
+  const Course courseWithGrade = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'H2020',
@@ -27,7 +27,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseWithGrade2 = Course(
+  const Course courseWithGrade2 = Course(
     acronym: 'GEN102',
     group: '02',
     session: 'H2020',
@@ -37,7 +37,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course courseWithSummary = Course(
+  const Course courseWithSummary = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'H2020',
@@ -56,7 +56,7 @@ void main() {
     ),
   );
 
-  final Course courseWithSummary2 = Course(
+  const Course courseWithSummary2 = Course(
     acronym: 'GEN102',
     group: '02',
     session: 'H2020',
@@ -75,7 +75,7 @@ void main() {
     ),
   );
 
-  final Course gradesNotAvailable = Course(
+  const Course gradesNotAvailable = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'H2020',

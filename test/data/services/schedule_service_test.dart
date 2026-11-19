@@ -9,8 +9,8 @@ import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/schedule_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
 import '../../helpers.dart';
 import '../mocks/repositories/course_repository_mock.dart';
 import '../mocks/repositories/settings_repository_mock.dart';
@@ -60,7 +60,7 @@ void main() {
 
   final List<CourseActivity> activities = [activityGen101LabA, activityGen101LabB, activityGen102, activityGen103];
 
-  final Course courseGen101 = Course(
+  const Course courseGen101 = Course(
     acronym: 'GEN101',
     group: '01',
     session: 'Irrelevant',
@@ -68,7 +68,7 @@ void main() {
     numberOfCredits: 3,
     title: 'Cours générique',
   );
-  final Course courseGen102 = Course(
+  const Course courseGen102 = Course(
     acronym: 'GEN102',
     group: '01',
     session: 'Irrelevant',
@@ -76,7 +76,7 @@ void main() {
     numberOfCredits: 3,
     title: 'Cours générique',
   );
-  final Course courseGen103 = Course(
+  const Course courseGen103 = Course(
     acronym: 'GEN103',
     group: '01',
     session: 'Irrelevant',

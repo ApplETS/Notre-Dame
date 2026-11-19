@@ -25,8 +25,8 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/schedule_service.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets_client.dart';
+import 'package:notredame/data/services/signets_dio.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -44,9 +44,8 @@ void setupLocator() {
   locator.registerLazySingleton(() => ScheduleService());
   locator.registerLazySingleton(() => DynamicMessagesService());
 
-  Dio dio = Dio();
-  locator.registerLazySingleton(() => dio);
-  locator.registerLazySingleton(() => SignetsClient(dio));
+  locator.registerLazySingleton<Dio>(() => createSignetsDio());
+  locator.registerLazySingleton(() => SignetsClient(locator<Dio>()));
 
   // Repositories
   locator.registerLazySingleton(() => UserRepository());
@@ -60,7 +59,6 @@ void setupLocator() {
   locator.registerLazySingleton(() => ListSessionsRepository());
 
   // Other
-  locator.registerLazySingleton(() => SignetsAPIClient());
   locator.registerLazySingleton(() => HelloService());
   locator.registerLazySingleton(() => Logger());
 }

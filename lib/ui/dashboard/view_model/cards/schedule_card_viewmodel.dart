@@ -6,7 +6,7 @@ import 'package:stacked/stacked.dart';
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/utils/date_extensions.dart';

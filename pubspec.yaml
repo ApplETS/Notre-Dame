@@ -47,7 +47,7 @@ dependencies:
   table_calendar: ^3.3.0
   auto_size_text: ^3.0.0
   gpt_markdown: ^1.4.1
-  flutter_svg: ^2.4.0
+  flutter_svg: ^2.4.1
   font_awesome_flutter: ^11.0.0
   calendar_view: ^2.0.0
   reorderable_grid_view: ^2.2.8
@@ -68,7 +68,6 @@ dependencies:
   freezed_annotation: ^3.1.0
   retrofit: ^4.10.0
   connectivity_plus: ^7.3.2
-  xml: ^7.0.1
 
   # Storage
   shared_preferences: ^2.5.6
