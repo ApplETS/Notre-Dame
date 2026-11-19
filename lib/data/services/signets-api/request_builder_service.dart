@@ -1,5 +1,6 @@
+import 'dart:io';
+
 // Package imports:
-import 'package:github/github.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart';
 
@@ -35,7 +36,7 @@ mixin RequestBuilderService {
     final uri = Uri.https(Urls.signetsAPI, endpoint, queryParameters);
     final response = await client.get(uri, headers: _buildHeaders(token));
 
-    if (response.statusCode == StatusCodes.UNAUTHORIZED) {
+    if (response.statusCode == HttpStatus.unauthorized) {
       RequestBuilderService.retries++;
       if (retries > maxRetry) {
         retries = 0;

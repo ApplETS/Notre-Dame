@@ -16,6 +16,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  material_ui: ^1.11.1
+
   # Architecture
   get_it: ^8.2.0
   provider: ^6.1.5
@@ -33,49 +35,44 @@ dependencies:
   # Utils
   logger: ^2.8.0
   fluttertoast: ^10.0.2
+  share_plus: ^13.3.1
+  github: ^9.26.0
+  in_app_review: ^2.0.12
+  timeago: ^3.7.1
+  device_calendar_plus: ^0.12.0
+  collection: ^1.19.1
+  intl: ^0.20.3
 
   # Widgets
   table_calendar: ^3.3.0
   auto_size_text: ^3.0.0
   gpt_markdown: ^1.4.1
+  flutter_svg: ^2.4.0
+  font_awesome_flutter: ^11.0.0
+  calendar_view: ^2.0.0
+  reorderable_grid_view: ^2.2.8
+  infinite_scroll_pagination: ^5.1.1
 
   # Animations
   skeletonizer: ^3.0.0
   animations: ^3.0.0
 
-  # Google
-  shared_preferences: ^2.5.6
-
-  # flutter community
-  package_info_plus: ^10.2.2
-  connectivity_plus: ^7.3.2
-  flutter_svg: ^2.4.0
-  font_awesome_flutter: ^11.0.0
-  share_plus: ^13.3.1
-
-  # Other
-  flutter_cache_manager: ^3.5.0
-  flutter_secure_storage: ^11.2.0
-  github: ^9.26.0
-  in_app_review: ^2.0.12
-  timeago: ^3.7.1
-  calendar_view: ^2.0.0
-  reorderable_grid_view: ^2.2.8
-  infinite_scroll_pagination: ^5.1.1
-  device_calendar_plus: ^0.12.0
+  # Network
   http: ^1.6.0
-  xml: ^7.0.1
-  collection: ^1.19.1
-  intl: ^0.20.3
+  flutter_cache_manager: ^3.5.0
   msal_auth: ^3.5.3
-  json_annotation: ^4.12.0
-  freezed_annotation: ^3.1.0
-  retrofit: ^4.10.0
   dio: ^5.11.1
   synchronized: ^3.6.1+1
   retry: ^3.1.2
-  material_ui: ^1.11.1
-  cupertino_ui: ^1.1.7
+  json_annotation: ^4.12.0
+  freezed_annotation: ^3.1.0
+  retrofit: ^4.10.0
+  connectivity_plus: ^7.3.2
+  xml: ^7.0.1
+
+  # Storage
+  shared_preferences: ^2.5.6
+  flutter_secure_storage: ^11.2.0
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +100,7 @@ flutter:
   generate: true
 
   assets:
+    - pubspec.yaml
     - assets/images/
     - assets/markdown/
     - assets/icons/
