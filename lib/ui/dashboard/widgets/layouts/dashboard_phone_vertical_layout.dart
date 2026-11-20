@@ -3,6 +3,7 @@ import 'dart:math';
 
 // Package imports:
 import 'package:material_ui/material_ui.dart';
+import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
@@ -89,79 +90,107 @@ class _DashboardPhoneLayoutState extends State<DashboardPhoneLayout> {
     const double twoLinesHeight = fontSize * lineHeight * 2;
     paddingUnderGrades = NavigationMenu.overlapHeight(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Stack(
       children: [
-        AnimatedBuilder(
-          key: _titleKey,
-          animation: widget.model.titleAnimation,
-          builder: (context, child) {
-            return Padding(
-              padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 80.0),
-              child: Transform.translate(
-                offset: widget.model.titleSlideOffset,
-                child: Opacity(
-                  opacity: widget.model.titleFadeOpacity,
-                  child: SizedBox(
-                    height: twoLinesHeight,
-                    child: Center(
-                      child: widget.model.remoteConfigService.dashboardMessageActive
-                          ? BroadcastMessageComponent(broadcastMessage: widget.model.broadcastMessage, style: textStyle)
-                          : widget.model.busy(widget.model.dynamicMessageText)
-                          ? Skeletonizer(
-                              child: Bone.multiText(fontSize: fontSize, style: textStyle, lines: 2),
-                            )
-                          : Text(
-                              widget.model.dynamicMessageText ?? '',
-                              style: textStyle,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.start,
-                            ),
+        _redCircle(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AnimatedBuilder(
+              key: _titleKey,
+              animation: widget.model.titleAnimation,
+              builder: (context, child) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 80.0),
+                  child: Transform.translate(
+                    offset: widget.model.titleSlideOffset,
+                    child: Opacity(
+                      opacity: widget.model.titleFadeOpacity,
+                      child: SizedBox(
+                        height: twoLinesHeight,
+                        child: Center(
+                          child: widget.model.remoteConfigService.dashboardMessageActive
+                              ? BroadcastMessageComponent(
+                                  broadcastMessage: widget.model.broadcastMessage,
+                                  style: textStyle,
+                                )
+                              : widget.model.busy(widget.model.dynamicMessageText)
+                              ? Skeletonizer(
+                                  child: Bone.multiText(fontSize: fontSize, style: textStyle, lines: 2),
+                                )
+                              : Text(
+                                  widget.model.dynamicMessageText ?? '',
+                                  style: textStyle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.start,
+                                ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                );
+              },
+            ),
+            Container(
+              key: _rowKey,
+              padding: const EdgeInsets.fromLTRB(40.0, 16.0, 40.0, 0.0),
+              child: Row(
+                spacing: 18.0,
+                children: [
+                  const Expanded(child: SessionReminderCard()),
+                  Expanded(
+                    child: ProgressBarCard(
+                      progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
+                      progressBarAltText: widget.model.sessionProgress != null
+                          ? (widget.model.sessionProgress!.percentage * 100).toStringAsFixed(0)
+                          : "XX%",
+                      progress: widget.model.sessionProgress?.percentage ?? 0.0,
+                      loading: widget.model.sessionProgress == null,
+                      showingPercentage: widget.model.showingPercentage,
+                      onToggle: widget.model.toggleProgressBarMode,
+                    ),
+                  ),
+                ],
               ),
-            );
-          },
-        ),
-        Container(
-          key: _rowKey,
-          padding: const EdgeInsets.fromLTRB(40.0, 16.0, 40.0, 0.0),
-          child: Row(
-            spacing: 18.0,
-            children: [
-              const Expanded(child: SessionReminderCard()),
-              Expanded(
-                child: ProgressBarCard(
-                  progressBarText: widget.model.sessionProgress?.daysRemaining.toString() ?? "XX",
-                  progressBarAltText: widget.model.sessionProgress != null
-                      ? (widget.model.sessionProgress!.percentage * 100).toStringAsFixed(0)
-                      : "XX%",
-                  progress: widget.model.sessionProgress?.percentage ?? 0.0,
-                  loading: widget.model.sessionProgress == null,
-                  showingPercentage: widget.model.showingPercentage,
-                  onToggle: widget.model.toggleProgressBarMode,
-                ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(12.0, paddingAboveSchedule, 12.0, paddingUnderGrades),
+              child: Column(
+                spacing: spacingBetweenGradesAndSchedule,
+                children: [
+                  if (_scheduleCardHeight != null) SizedBox(height: _scheduleCardHeight, child: const ScheduleCard()),
+                  GradesCard(
+                    key: _gradesCardKey,
+                    courses: widget.model.courses,
+                    loading: widget.model.busy(widget.model.courses),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(12.0, paddingAboveSchedule, 12.0, paddingUnderGrades),
-          child: Column(
-            spacing: spacingBetweenGradesAndSchedule,
-            children: [
-              if (_scheduleCardHeight != null) SizedBox(height: _scheduleCardHeight, child: const ScheduleCard()),
-              GradesCard(
-                key: _gradesCardKey,
-                courses: widget.model.courses,
-                loading: widget.model.busy(widget.model.courses),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
+    );
+  }
+
+  /// Animated circle widget
+  Widget _redCircle() {
+    return AnimatedBuilder(
+      animation: widget.model.heightAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: widget.model.opacityAnimation.value,
+          child: PhysicalShape(
+            clipper: CircleClipper(),
+            elevation: 4.0,
+            color: widget.model.remoteConfigService.dashboardMessageActive
+                ? widget.model.broadcastMessage!.color
+                : AppPalette.etsLightRed,
+            child: SizedBox(height: widget.model.heightAnimation.value, width: double.infinity),
+          ),
+        );
+      },
     );
   }
 }
