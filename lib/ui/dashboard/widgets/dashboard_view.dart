@@ -1,6 +1,6 @@
 // Package imports:
 import 'package:material_ui/material_ui.dart';
-import 'package:notredame/ui/dashboard/widgets/scroll_physics/adaptative_always_scrollable_physics.dart';
+import 'package:notredame/ui/dashboard/scroll_physics/adaptative_always_scrollable_physics.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -9,7 +9,7 @@ import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_vertical_layout.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -41,14 +41,11 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
               builder: (context, constraints) {
                 return SingleChildScrollView(
                   physics: const AdaptiveAlwaysScrollablePhysics(),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: 20),
-                    child: Stack(
-                      children: [
-                        _redCircle(model),
-                        DashboardPhoneLayout(model: model, viewportHeight: constraints.maxHeight),
-                      ],
-                    ),
+                  child: Stack(
+                    children: [
+                      _redCircle(model),
+                      DashboardPhoneLayout(model: model, viewportHeight: constraints.maxHeight),
+                    ],
                   ),
                 );
               },
