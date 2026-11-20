@@ -41,7 +41,7 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
                   physics: const AdaptiveAlwaysScrollablePhysics(),
                   child: Stack(
                     children: [
-                      DashboardPhoneLayout(model: model, viewportHeight: constraints.maxHeight),
+                      DashboardPhoneVerticalLayout(model: model, viewportHeight: constraints.maxHeight),
                     ],
                   ),
                 );
