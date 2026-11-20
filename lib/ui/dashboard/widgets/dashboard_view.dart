@@ -1,5 +1,6 @@
 // Package imports:
 import 'package:material_ui/material_ui.dart';
+import 'package:notredame/ui/dashboard/widgets/scroll_physics/adaptative_always_scrollable_physics.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -39,12 +40,15 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Stack(
-                    children: [
-                      _redCircle(model),
-                      DashboardPhoneLayout(model: model, viewportHeight: constraints.maxHeight),
-                    ],
+                  physics: const AdaptiveAlwaysScrollablePhysics(),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 20),
+                    child: Stack(
+                      children: [
+                        _redCircle(model),
+                        DashboardPhoneLayout(model: model, viewportHeight: constraints.maxHeight),
+                      ],
+                    ),
                   ),
                 );
               },

@@ -2,7 +2,6 @@
 import 'package:material_ui/material_ui.dart';
 
 class CircleClipper extends CustomClipper<Path> {
-  /// Gets the path of the circle
   @override
   Path getClip(Size size) {
     final path = Path();
@@ -10,12 +9,13 @@ class CircleClipper extends CustomClipper<Path> {
     // Start of path at bottom left of container 60 pixels from bottom
     path.lineTo(0, size.height - 60);
 
-    // Creating a quadratic Bezier curve to the lower right corner
-    // With a control point located at the bottom center (width / 2, height)
+    // Creating a quadratic curve to the lower right corner
     path.quadraticBezierTo(size.width / 2, size.height, size.width, size.height - 60);
 
-    // Line to the upper right corner
-    path.lineTo(size.width, 0);
+    // Top corners. Negative spacing to account for BouncingScrollPhysics on iOS
+    path.lineTo(size.width, -2000);
+    path.lineTo(0, -2000);
+
     path.close();
 
     return path;
