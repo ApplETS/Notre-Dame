@@ -36,4 +36,8 @@ class RemoteConfigServiceMock extends MockRemoteConfigService {
   static void stubGetHelloFeatureToggle(RemoteConfigServiceMock mock, {bool toReturn = true}) {
     when(mock.helloFeatureToggle).thenReturn(toReturn);
   }
+
+  static void stubGetQuickLinksValues(RemoteConfigServiceMock mock, {String toReturn = ""}) {
+    when(mock.quickLinksValues).thenReturn(toReturn);
+  }
 }

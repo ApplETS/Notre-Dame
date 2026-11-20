@@ -31,6 +31,9 @@ class RemoteConfigService {
   static const _helloApiUrl = "hello_api_url";
   static const _helloWebsiteUrl = "hello_website_url";
 
+  // Quick links (JSON list, see QuickLinkRemoteData)
+  static const _quickLinksValues = "quicklinks_values";
+
   final FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   final defaults = <String, dynamic>{
     _serviceIsDown: false,
@@ -44,6 +47,7 @@ class RemoteConfigService {
     _helloFeatureToggle: false,
     _helloApiUrl: "",
     _helloWebsiteUrl: "",
+    _quickLinksValues: "",
   };
 
   Future initialize() async {
@@ -109,6 +113,13 @@ class RemoteConfigService {
   String get helloWebsiteUrl {
     fetch();
     return _remoteConfig.getString(_helloWebsiteUrl);
+  }
+
+  /// Raw JSON of the quick links. Returns the last activated value right away
+  /// (empty string if never fetched) and refreshes in the background, so the UI never waits on the network.
+  String get quickLinksValues {
+    fetch();
+    return _remoteConfig.getString(_quickLinksValues);
   }
 
   Future<String> get aadAndroidRedirectUri async {

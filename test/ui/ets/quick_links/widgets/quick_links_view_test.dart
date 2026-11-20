@@ -29,7 +29,9 @@ void main() {
       quickLinkRepositoryMock = setupQuickLinkRepositoryMock();
       QuickLinkRepositoryMock.stubGetDefaultQuickLinks(quickLinkRepositoryMock, toReturn: quickLinks(intl));
 
+      QuickLinkRepositoryMock.stubGetQuickLinks(quickLinkRepositoryMock, toReturn: quickLinks(intl));
       QuickLinkRepositoryMock.stubGetQuickLinkDataFromCacheException(quickLinkRepositoryMock);
+      QuickLinkRepositoryMock.stubGetHiddenQuickLinkIdsFromCacheException(quickLinkRepositoryMock);
     });
 
     tearDown(() {

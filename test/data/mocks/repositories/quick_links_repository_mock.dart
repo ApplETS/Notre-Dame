@@ -11,6 +11,24 @@ import 'quick_links_repository_mock.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<QuickLinkRepository>()])
 class QuickLinkRepositoryMock extends MockQuickLinkRepository {
+  /// Stub the function [getQuickLinks] of [mock] when called will return [toReturn].
+  static void stubGetQuickLinks(QuickLinkRepositoryMock mock, {List<QuickLink> toReturn = const []}) {
+    when(mock.getQuickLinks(any)).thenAnswer((_) async => toReturn);
+  }
+
+  /// Stub the function [getHiddenQuickLinkIdsFromCache] of [mock] when called will return [toReturn].
+  static void stubGetHiddenQuickLinkIdsFromCache(QuickLinkRepositoryMock mock, {List<int> toReturn = const []}) {
+    when(mock.getHiddenQuickLinkIdsFromCache()).thenAnswer((_) async => toReturn);
+  }
+
+  /// Stub the function [getHiddenQuickLinkIdsFromCache] of [mock] when called will throw [toThrow].
+  static void stubGetHiddenQuickLinkIdsFromCacheException(
+    QuickLinkRepositoryMock mock, {
+    Exception toThrow = const ApiException(prefix: 'ApiException'),
+  }) {
+    when(mock.getHiddenQuickLinkIdsFromCache()).thenAnswer((_) async => throw toThrow);
+  }
+
   /// Stub the function [getQuickLinkDataFromCache] of [mock] when called will return [toReturn].
   static void stubGetQuickLinkDataFromCache(QuickLinkRepositoryMock mock, {List<QuickLinkData> toReturn = const []}) {
     when(mock.getQuickLinkDataFromCache()).thenAnswer((_) async => toReturn);
