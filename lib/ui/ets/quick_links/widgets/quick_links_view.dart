@@ -129,8 +129,7 @@ class _QuickLinksViewState extends State<QuickLinksView> with SingleTickerProvid
         child: Stack(
           children: [
             WebLinkCard(quickLinks[index]),
-            if (_editMode)
-              Positioned(top: 0, left: 0, child: buildButtonFunction(model, index)),
+            if (_editMode) Positioned(top: 0, left: 0, child: buildButtonFunction(model, index)),
           ],
         ),
       ),
