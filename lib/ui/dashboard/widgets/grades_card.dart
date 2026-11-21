@@ -13,7 +13,10 @@ class GradesCard extends StatelessWidget {
   final List<Course> courses;
   final bool loading;
 
-  const GradesCard({super.key, required this.courses, required this.loading});
+  /// Scroll direction of the grades. When [Axis.vertical], the card must have a bounded height.
+  final Axis direction;
+
+  const GradesCard({super.key, required this.courses, required this.loading, this.direction = Axis.horizontal});
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +40,7 @@ class GradesCard extends StatelessWidget {
       title: AppIntl.of(context)!.grades_title,
       child: (courses.isEmpty && !loading)
           ? _buildNoGradesContent(context)
-          : _buildGradesButton(courses, context, loading: loading),
-    );
+          : _buildGradesButton(courses, context, loading: loading, direction: direction));
   }
 
   static Widget _buildGradesButton(

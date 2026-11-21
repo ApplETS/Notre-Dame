@@ -134,9 +134,11 @@ class _DashboardPhoneVerticalLayoutState extends State<DashboardPhoneVerticalLay
             ),
             Container(
               key: _rowKey,
+              constraints: const BoxConstraints(maxHeight: 200),
               padding: const EdgeInsets.fromLTRB(40.0, 16.0, 40.0, 0.0),
               child: Row(
                 spacing: 18.0,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   const Expanded(child: SessionReminderCard()),
                   Expanded(
@@ -187,7 +189,7 @@ class _DashboardPhoneVerticalLayoutState extends State<DashboardPhoneVerticalLay
             color: widget.model.remoteConfigService.dashboardMessageActive
                 ? widget.model.broadcastMessage!.color
                 : AppPalette.etsLightRed,
-            child: SizedBox(height: widget.model.heightAnimation.value, width: double.infinity),
+            child: SizedBox(height: widget.model.heightAnimation.value * 240, width: double.infinity),
           ),
         );
       },

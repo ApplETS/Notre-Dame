@@ -124,7 +124,7 @@ class DashboardViewModel extends FutureViewModel {
 
     heightAnimation = Tween<double>(
       begin: 0,
-      end: 240,
+      end: 1.0,
     ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
 
     opacityAnimation = Tween<double>(

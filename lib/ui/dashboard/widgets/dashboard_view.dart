@@ -7,6 +7,7 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_horizontal_layout.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_vertical_layout.dart';
 
 class DashboardView extends StatefulWidget {
@@ -41,7 +42,10 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
                   physics: const AdaptiveAlwaysScrollablePhysics(),
                   child: Stack(
                     children: [
-                      DashboardPhoneVerticalLayout(model: model, viewportHeight: constraints.maxHeight),
+                      if (MediaQuery.of(context).orientation == Orientation.portrait)
+                        DashboardPhoneVerticalLayout(model: model, viewportHeight: constraints.maxHeight)
+                      else
+                        DashboardPhoneHorizontalLayout(model: model, viewportHeight: constraints.maxHeight),
                     ],
                   ),
                 );
