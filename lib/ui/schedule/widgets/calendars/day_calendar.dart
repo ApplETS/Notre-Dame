@@ -232,50 +232,52 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     return Container(
       padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 3.0),
       color: context.theme.appColors.appBar,
-      child: TableCalendar(
-        key: const Key("TableCalendar"),
-        locale: AppIntl.of(context)!.localeName,
-        selectedDayPredicate: (day) {
-          return isSameDay(model.daySelected, day);
-        },
-        daysOfWeekHeight: timeDimensions.height,
-        daysOfWeekStyle: DaysOfWeekStyle(
-          weekdayStyle: textStyle,
-          weekendStyle: textStyle.copyWith(color: context.theme.appColors.fadedText),
-        ),
-        headerStyle: HeaderStyle(
-          titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
-          titleCentered: true,
-          formatButtonVisible: false,
-        ),
-        eventLoader: model.calendarEventsFromDate,
-        calendarFormat: CalendarFormat.week,
-        focusedDay: model.daySelected,
-        calendarBuilders: CalendarBuilders(
-          defaultBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-          outsideBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-          todayBuilder: (_, date, _) => _buildHeaderDay(date, todayColor, model, dayViewKey),
-          selectedBuilder: (_, date, _) => FadeTransition(
-            opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-            child: _buildHeaderDay(date, selectedColor, model, dayViewKey),
-          ),
-          markerBuilder: (_, date, events) {
-            final bool isSelected = isSameDay(date, model.daySelected);
-            final bool isToday = isSameDay(date, DateTime.now());
-            Color color = selectedColor;
-
-            if (!isSelected) {
-              color = isToday ? todayColor : defaultColor;
-            }
-
-            return _buildEventsMarker(events, color);
+      child: LegacyMaterialScope(
+        child: TableCalendar(
+          key: const Key("TableCalendar"),
+          locale: AppIntl.of(context)!.localeName,
+          selectedDayPredicate: (day) {
+            return isSameDay(model.daySelected, day);
           },
+          daysOfWeekHeight: timeDimensions.height,
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: textStyle,
+            weekendStyle: textStyle.copyWith(color: context.theme.appColors.fadedText),
+          ),
+          headerStyle: HeaderStyle(
+            titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
+            titleCentered: true,
+            formatButtonVisible: false,
+          ),
+          eventLoader: model.calendarEventsFromDate,
+          calendarFormat: CalendarFormat.week,
+          focusedDay: model.daySelected,
+          calendarBuilders: CalendarBuilders(
+            defaultBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
+            outsideBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
+            todayBuilder: (_, date, _) => _buildHeaderDay(date, todayColor, model, dayViewKey),
+            selectedBuilder: (_, date, _) => FadeTransition(
+              opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+              child: _buildHeaderDay(date, selectedColor, model, dayViewKey),
+            ),
+            markerBuilder: (_, date, events) {
+              final bool isSelected = isSameDay(date, model.daySelected);
+              final bool isToday = isSameDay(date, DateTime.now());
+              Color color = selectedColor;
+
+              if (!isSelected) {
+                color = isToday ? todayColor : defaultColor;
+              }
+
+              return _buildEventsMarker(events, color);
+            },
+          ),
+          // Those are now required by the package table_calendar ^3.0.0. In the doc,
+          // it is suggest to set them to values that won't affect user experience.
+          // Outside the range, the date are set to disable so no event can be loaded.
+          firstDay: DateTime.utc(2010, 12, 31),
+          lastDay: DateTime.utc(2100, 12, 31),
         ),
-        // Those are now required by the package table_calendar ^3.0.0. In the doc,
-        // it is suggest to set them to values that won't affect user experience.
-        // Outside the range, the date are set to disable so no event can be loaded.
-        firstDay: DateTime.utc(2010, 12, 31),
-        lastDay: DateTime.utc(2100, 12, 31),
       ),
     );
   }
