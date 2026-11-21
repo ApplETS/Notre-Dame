@@ -2,13 +2,13 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/week_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';

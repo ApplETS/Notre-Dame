@@ -6,7 +6,6 @@ import 'package:calendar_view/calendar_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -21,6 +20,7 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/router.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:notredame/ui/outage/widgets/outage_view.dart';
 import 'package:notredame/ui/startup/widgets/startup_view.dart';
 

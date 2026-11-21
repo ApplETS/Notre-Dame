@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -14,6 +13,7 @@ import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
@@ -117,7 +117,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
               }),
             }),
             scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
-            safeAreaOption: const calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
+            safeAreaOption: const calendar_view.SafeAreaOption(
+              maintainBottomViewPadding: true,
+              top: false,
+              left: false,
+            ),
             backgroundColor: widget.backgroundColor,
             initialDay: model.daySelected,
             minDay: widget.selectedDate,
