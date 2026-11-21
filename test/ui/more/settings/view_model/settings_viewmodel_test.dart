@@ -35,13 +35,8 @@ void main() {
 
         expect(viewModel.locale, const Locale('fr'));
         expect(viewModel.theme, ThemeMode.system);
-        expect(viewModel.dashboardScheduleList, false);
 
-        verifyInOrder([
-          settingsManagerMock.locale,
-          settingsManagerMock.themeMode,
-          settingsManagerMock.dashboard.displayScheduleAsList,
-        ]);
+        verifyInOrder([settingsManagerMock.locale, settingsManagerMock.themeMode]);
         verifyNoMoreInteractions(settingsManagerMock);
       });
     });

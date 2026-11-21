@@ -46,13 +46,12 @@ void main() {
         expect(find.text(intl.settings_language_pref), findsOneWidget);
       });
 
-      testWidgets('contains three SegmentedButtons (theme, dashboard format, language)', (WidgetTester tester) async {
+      testWidgets('contains two SegmentedButtons (theme, language)', (WidgetTester tester) async {
         await tester.pumpWidget(localizedWidget(child: const SettingsView()));
         await tester.pumpAndSettle();
 
-        // There should be three SegmentedButton widgets
+        // There should be two SegmentedButton widgets
         expect(find.byType(SegmentedButton<ThemeMode>), findsOneWidget);
-        expect(find.byType(SegmentedButton<bool>), findsOneWidget);
         expect(find.byType(SegmentedButton<Locale>), findsOneWidget);
       });
     });
@@ -127,56 +126,6 @@ void main() {
         // Verify the selected now selects light mode
         final updatedButton = tester.widget<SegmentedButton<ThemeMode>>(find.byType(SegmentedButton<ThemeMode>).first);
         expect(updatedButton.selected, contains(ThemeMode.system));
-        expect(updatedButton.selected, isNot(equals(initialSelected)));
-      });
-    });
-
-    group('Dashboard schedule format selection - ', () {
-      testWidgets('list view', (WidgetTester tester) async {
-        SettingsRepositoryMock.stubDashboardScheduleAsList(settingsManagerMock, toReturn: false);
-        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
-        await tester.pumpAndSettle();
-
-        // Find the theme SegmentedButton
-        final themeButton = tester.widget<SegmentedButton<bool>>(find.byType(SegmentedButton<bool>).first);
-        final initialSelected = themeButton.selected;
-
-        // Tap on the list segment
-        await tester.tap(find.text(intl.settings_dashboard_schedule_format_list).first);
-
-        // We simulate that the tap changed the setting in the repository
-        SettingsRepositoryMock.stubDashboardScheduleAsList(settingsManagerMock, toReturn: true);
-        await tester.pump();
-
-        verify(settingsManagerMock.dashboard.displayScheduleAsList = true).called(1);
-
-        // Verify the selected now selects light mode
-        final updatedButton = tester.widget<SegmentedButton<bool>>(find.byType(SegmentedButton<bool>).first);
-        expect(updatedButton.selected, contains(true));
-        expect(updatedButton.selected, isNot(equals(initialSelected)));
-      });
-
-      testWidgets('calendar view', (WidgetTester tester) async {
-        SettingsRepositoryMock.stubDashboardScheduleAsList(settingsManagerMock, toReturn: true);
-        await tester.pumpWidget(localizedWidget(child: const SettingsView()));
-        await tester.pumpAndSettle();
-
-        // Find the theme SegmentedButton
-        final themeButton = tester.widget<SegmentedButton<bool>>(find.byType(SegmentedButton<bool>).first);
-        final initialSelected = themeButton.selected;
-
-        // Tap on the list segment
-        await tester.tap(find.text(intl.settings_dashboard_schedule_format_calendar).first);
-
-        // We simulate that the tap changed the setting in the repository
-        SettingsRepositoryMock.stubDashboardScheduleAsList(settingsManagerMock, toReturn: false);
-        await tester.pump();
-
-        verify(settingsManagerMock.dashboard.displayScheduleAsList = false).called(1);
-
-        // Verify the selected now selects light mode
-        final updatedButton = tester.widget<SegmentedButton<bool>>(find.byType(SegmentedButton<bool>).first);
-        expect(updatedButton.selected, contains(false));
         expect(updatedButton.selected, isNot(equals(initialSelected)));
       });
     });
