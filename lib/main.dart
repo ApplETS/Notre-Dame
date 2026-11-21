@@ -1,14 +1,12 @@
 // Dart imports:
 import 'dart:async';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -84,16 +82,12 @@ class ETSMobile extends StatelessWidget {
                 darkTheme: AppTheme.dark,
                 themeMode: model.themeMode,
                 debugShowCheckedModeBanner: false,
-                localizationsDelegates: const [
-                  AppIntl.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
+                localizationsDelegates: const [AppIntl.delegate, ...GlobalMaterialLocalizations.delegates],
                 locale: model.locale,
                 supportedLocales: AppIntl.supportedLocales,
                 navigatorKey: locator<NavigationService>().navigatorKey,
                 navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver()],
+                builder: (context, child) => LegacyMaterialBridge(child: child!),
                 home: outage ? const OutageView() : const StartUpView(),
                 onGenerateRoute: generateRoute,
               ),

@@ -1,8 +1,8 @@
-// Flutter imports:
-import 'package:flutter/cupertino.dart';
+// Package imports:
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
-import '../../ui/core/ui/navigation_menu/navigation_menu_button.dart';
+import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu_button.dart';
 
 class NavigationMenuCallback {
   final int index;

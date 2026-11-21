@@ -1,15 +1,13 @@
 // Dart imports:
 import 'dart:async';
 import 'dart:convert';
-
-// Flutter imports:
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
 
 // Package imports:
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:github/github.dart';
 import 'package:logger/logger.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:retry/retry.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -70,7 +68,7 @@ class BaseStreamRepository<T> {
       maxAttempts: 5,
       retryIf: (e) async {
         _logger.e('Error while fetching data from API: $_cacheKey', error: e);
-        if (e is DioException && e.response?.statusCode == StatusCodes.UNAUTHORIZED) {
+        if (e is DioException && e.response?.statusCode == HttpStatus.unauthorized) {
           final authService = locator<AuthService>();
           await authService.getToken();
         }

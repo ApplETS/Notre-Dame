@@ -1,9 +1,7 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -161,7 +159,8 @@ void main() {
               await tester.pumpAndSettle();
             })
             .then((value) async {
-              expect(find.byType(IconButton), findsExactly(5));
+              // The calendar_view header arrows are legacy IconButtons and are not counted.
+              expect(find.byType(IconButton), findsExactly(3));
             });
       });
 
@@ -175,7 +174,8 @@ void main() {
               await tester.pumpAndSettle();
             })
             .then((value) async {
-              expect(find.byType(IconButton), findsExactly(4));
+              // The calendar_view header arrows are legacy IconButtons and are not counted.
+              expect(find.byType(IconButton), findsExactly(2));
             });
       });
     });

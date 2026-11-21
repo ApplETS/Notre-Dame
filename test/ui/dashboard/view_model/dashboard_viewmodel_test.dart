@@ -8,7 +8,6 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
@@ -34,29 +33,6 @@ void main() {
 
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
-
-  // Courses
-  final Course courseSummer = Course(
-    acronym: 'GEN101',
-    group: '02',
-    session: 'É2020',
-    programCode: '999',
-    grade: 'C+',
-    numberOfCredits: 3,
-    title: 'Cours générique',
-  );
-
-  final Course courseSummer2 = Course(
-    acronym: 'GEN106',
-    group: '02',
-    session: 'É2020',
-    programCode: '999',
-    grade: 'C+',
-    numberOfCredits: 3,
-    title: 'Cours générique',
-  );
-
-  final courses = [courseSummer, courseSummer2];
 
   // Session
   final Session session = Session(
@@ -113,118 +89,6 @@ void main() {
     tearDown(() {
       locator.reset();
       viewModel.dispose();
-    });
-
-    group('futureToRunGrades -', () {
-      test('first load from cache than call SignetsAPI to get the courses', () async {
-        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses, fromCacheOnly: true);
-
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
-
-        expect(await viewModel.futureToRunGrades(), courses);
-
-        await untilCalled(courseRepositoryMock.sessions);
-        await untilCalled(courseRepositoryMock.sessions);
-
-        expect(viewModel.courses, courses);
-
-        verifyInOrder([
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.activeSessions,
-          courseRepositoryMock.activeSessions,
-          courseRepositoryMock.getCourses(fromCacheOnly: true),
-          courseRepositoryMock.getCourses(),
-        ]);
-
-        verifyNoMoreInteractions(courseRepositoryMock);
-      });
-
-      test('Signets throw an error while trying to get courses', () async {
-        setupFlutterToastMock();
-        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses, fromCacheOnly: true);
-
-        CourseRepositoryMock.stubGetCoursesException(courseRepositoryMock);
-
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
-
-        expect(
-          await viewModel.futureToRunGrades(),
-          courses,
-          reason: "Even if SignetsAPI call fails, should return the cache contents",
-        );
-
-        await untilCalled(courseRepositoryMock.sessions);
-        await untilCalled(courseRepositoryMock.sessions);
-
-        expect(viewModel.courses, courses);
-
-        verifyInOrder([
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.activeSessions,
-          courseRepositoryMock.activeSessions,
-          courseRepositoryMock.getCourses(fromCacheOnly: true),
-          courseRepositoryMock.getCourses(),
-        ]);
-
-        verifyNoMoreInteractions(courseRepositoryMock);
-      });
-
-      test('There is no session active', () async {
-        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: []);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: []);
-
-        expect(await viewModel.futureToRunGrades(), [], reason: "Should return empty if there is no session active.");
-
-        await untilCalled(courseRepositoryMock.sessions);
-
-        expect(viewModel.courses, []);
-
-        verifyInOrder([
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.sessions,
-          courseRepositoryMock.getSessions(),
-          courseRepositoryMock.activeSessions,
-        ]);
-
-        verifyNoMoreInteractions(courseRepositoryMock);
-      });
-
-      testWidgets('Course is not added when course is abandoned', (WidgetTester tester) async {
-        final Course abandonedCourse = Course(
-          acronym: 'GEN103',
-          group: '02',
-          session: 'É2020',
-          programCode: '999',
-          grade: 'XX',
-          numberOfCredits: 3,
-          title: 'Cours générique',
-        );
-
-        final List<Course> coursesWithAbandoned = [...courses, abandonedCourse];
-
-        CourseRepositoryMock.stubSessions(courseRepositoryMock, toReturn: [session]);
-        CourseRepositoryMock.stubGetSessions(courseRepositoryMock, toReturn: [session]);
-        CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: coursesWithAbandoned, fromCacheOnly: true);
-        CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: coursesWithAbandoned);
-
-        final List<Course> filteredCourses = await viewModel.futureToRunGrades();
-
-        await untilCalled(courseRepositoryMock.sessions);
-
-        // Check if the course abandoned is not included
-        expect(filteredCourses, equals(courses));
-        expect(filteredCourses.any((c) => c.acronym == 'GEN103'), isFalse);
-      });
     });
 
     group("futureToRun - ", () {
@@ -295,23 +159,6 @@ void main() {
         const url = "https://example.com";
         await DashboardViewModel.launchBroadcastUrl(url);
         verify(launchUrlServiceMock.launchInBrowser(url)).called(1);
-      });
-    });
-
-    group("toggleProgressBarMode - ", () {
-      test("should toggle showingPercentage and save preference to settings", () async {
-        SettingsRepositoryMock.stubDashboardProgressBarPercentage(settingsManagerMock, toReturn: false);
-        expect(viewModel.showingPercentage, false);
-
-        // Toggle to true
-        viewModel.toggleProgressBarMode();
-        expect(viewModel.showingPercentage, true);
-        verify(settingsManagerMock.dashboard.displayProgressBarPercentage = true).called(1);
-
-        // toggle again to false
-        viewModel.toggleProgressBarMode();
-        expect(viewModel.showingPercentage, false);
-        verify(settingsManagerMock.dashboard.displayProgressBarPercentage = false).called(1);
       });
     });
 

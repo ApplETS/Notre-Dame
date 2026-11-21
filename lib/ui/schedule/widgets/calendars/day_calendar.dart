@@ -1,10 +1,11 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -104,42 +105,44 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
         final double heightPerMinute = showEntireDay
             ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
             : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(0.1, double.infinity);
-        return calendar_view.DayView(
-          key: dayViewKey,
-          showVerticalLine: false,
-          dayTitleBuilder: calendar_view.DayHeader.hidden,
-          controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
-          onPageChange: (date, _) => ({
-            setState(() {
-              model.handleDateSelectedChanged(date);
+        return LegacyMaterialScope(
+          child: calendar_view.DayView(
+            key: dayViewKey,
+            showVerticalLine: false,
+            dayTitleBuilder: calendar_view.DayHeader.hidden,
+            controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+            onPageChange: (date, _) => ({
+              setState(() {
+                model.handleDateSelectedChanged(date);
+              }),
             }),
-          }),
-          scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
-          safeAreaOption: const calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
-          backgroundColor: widget.backgroundColor,
-          initialDay: model.daySelected,
-          minDay: widget.selectedDate,
-          maxDay: widget.selectedDate,
-          startHour: showEntireDay ? 0 : model.getStartHour(),
-          endHour: showEntireDay ? 24 : model.getEndHour(),
-          heightPerMinute: heightPerMinute,
-          scrollOffset: showEntireDay ? heightPerMinute * 60 * model.getStartHour() : 0,
-          keepScrollOffset: true,
-          dateStringBuilder: (date, {secondaryDate}) {
-            final locale = AppIntl.of(context)!.localeName;
-            return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
-          },
-          timeLineWidth: timeDimensions.width + 18.0,
-          timeLineOffset: timeDimensions.height / 2,
-          timeLineBuilder: (DateTime date) => Padding(
-            padding: const EdgeInsets.only(left: 12.0, right: 6.0),
-            child: Align(
-              alignment: AlignmentGeometry.topEnd,
-              child: Text(DateFormat('H:mm').format(date), style: textStyle),
+            scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+            safeAreaOption: const calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
+            backgroundColor: widget.backgroundColor,
+            initialDay: model.daySelected,
+            minDay: widget.selectedDate,
+            maxDay: widget.selectedDate,
+            startHour: showEntireDay ? 0 : model.getStartHour(),
+            endHour: showEntireDay ? 24 : model.getEndHour(),
+            heightPerMinute: heightPerMinute,
+            scrollOffset: showEntireDay ? heightPerMinute * 60 * model.getStartHour() : 0,
+            keepScrollOffset: true,
+            dateStringBuilder: (date, {secondaryDate}) {
+              final locale = AppIntl.of(context)!.localeName;
+              return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
+            },
+            timeLineWidth: timeDimensions.width + 18.0,
+            timeLineOffset: timeDimensions.height / 2,
+            timeLineBuilder: (DateTime date) => Padding(
+              padding: const EdgeInsets.only(left: 12.0, right: 6.0),
+              child: Align(
+                alignment: AlignmentGeometry.topEnd,
+                child: Text(DateFormat('H:mm').format(date), style: textStyle),
+              ),
             ),
+            timeStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
+            eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
           ),
-          timeStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
-          eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
         );
       },
     ),

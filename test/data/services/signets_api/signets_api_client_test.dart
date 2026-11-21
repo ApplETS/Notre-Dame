@@ -1,8 +1,10 @@
 // FLUTTER / DART / THIRD-PARTIES
 
+// Dart imports:
+import 'dart:io';
+
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
-import 'package:github/github.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:intl/intl.dart';
@@ -254,7 +256,7 @@ void main() {
         AuthServiceMock.stubAcquireTokenSilent(authServiceMock, success: false);
 
         final uri = Uri.https(Urls.signetsAPI, GetCoursesActivitiesCommand.endpoint, queryParameters);
-        clientMock = HttpClientMockHelper.stubGet(uri.toString(), "", StatusCodes.UNAUTHORIZED);
+        clientMock = HttpClientMockHelper.stubGet(uri.toString(), "", HttpStatus.unauthorized);
         service = buildService(clientMock);
 
         try {

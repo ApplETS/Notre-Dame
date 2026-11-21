@@ -2,11 +2,9 @@
 import 'dart:math';
 import 'dart:ui';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:flutter_svg/svg.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';

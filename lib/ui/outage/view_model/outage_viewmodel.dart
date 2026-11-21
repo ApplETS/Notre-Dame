@@ -1,10 +1,8 @@
 // Dart imports:
 import 'dart:async';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
+import 'package:material_ui/material_ui.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
