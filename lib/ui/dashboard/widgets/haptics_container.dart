@@ -1,6 +1,8 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:material_ui/material_ui.dart';
 
 /// A wrapper widget to add haptic feedback on an existing widget.
 ///

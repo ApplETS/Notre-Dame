@@ -2,11 +2,12 @@
 import 'dart:async';
 
 // Flutter imports:
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 // Project imports:
 import 'package:notredame/data/services/networking_service.dart';
@@ -63,11 +64,14 @@ class _BaseScaffoldState extends State<BaseScaffold> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
-    body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
-    floatingActionButton: widget.fab,
-    floatingActionButtonLocation: widget.fabPosition,
+  Widget build(BuildContext context) => SkeletonizerConfig(
+    data: SkeletonizerConfigData(brightness: Theme.of(context).brightness),
+    child: Scaffold(
+      appBar: (MediaQuery.of(context).orientation == Orientation.portrait) ? widget.appBar : null,
+      body: (MediaQuery.of(context).orientation == Orientation.portrait) ? bodyPortraitMode() : bodyLandscapeMode(),
+      floatingActionButton: widget.fab,
+      floatingActionButtonLocation: widget.fabPosition,
+    ),
   );
 
   Widget bodyPortraitMode() {
