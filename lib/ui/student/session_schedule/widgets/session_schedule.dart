@@ -99,7 +99,8 @@ class _SessionScheduleState extends State<SessionSchedule> {
           ),
           heightPerMinute: heightPerMinute,
           eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events, context),
-          weekDayBuilder: (DateTime date) => Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date)),
+          weekDayBuilder: (DateTime date) =>
+              Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date)),
         ),
       ),
     );
