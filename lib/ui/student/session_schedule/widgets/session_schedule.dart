@@ -1,14 +1,13 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 import 'package:notredame/utils/calendar_utils.dart';
 
@@ -59,47 +58,49 @@ class _SessionScheduleState extends State<SessionSchedule> {
     );
 
     return Scaffold(
-      body: WeekView(
-        maxDay: DateTime.now(),
-        minDay: DateTime.now(),
-        key: weekViewKey,
-        safeAreaOption: const SafeAreaOption(bottom: false),
-        controller: eventController..addAll(widget.calendarEvents),
-        backgroundColor: context.theme.scaffoldBackgroundColor,
-        startDay: WeekDays.sunday,
-        weekDays: [
-          if (widget.displaySunday) WeekDays.sunday,
-          WeekDays.monday,
-          WeekDays.tuesday,
-          WeekDays.wednesday,
-          WeekDays.thursday,
-          WeekDays.friday,
-          if (widget.displaySaturday) WeekDays.saturday,
-        ],
-        timeLineWidth: timeDimensions.width + 18.0,
-        timeLineOffset: timeDimensions.height / 2,
-        timeLineBuilder: (DateTime date) => Padding(
-          padding: const EdgeInsets.only(left: 12.0, right: 6.0),
-          child: Align(
-            alignment: AlignmentGeometry.topEnd,
-            child: Text(DateFormat('H:mm').format(date), style: textStyle),
+      body: LegacyMaterialScope(
+        child: WeekView(
+          maxDay: DateTime.now(),
+          minDay: DateTime.now(),
+          key: weekViewKey,
+          safeAreaOption: const SafeAreaOption(bottom: false),
+          controller: eventController..addAll(widget.calendarEvents),
+          backgroundColor: context.theme.scaffoldBackgroundColor,
+          startDay: WeekDays.sunday,
+          weekDays: [
+            if (widget.displaySunday) WeekDays.sunday,
+            WeekDays.monday,
+            WeekDays.tuesday,
+            WeekDays.wednesday,
+            WeekDays.thursday,
+            WeekDays.friday,
+            if (widget.displaySaturday) WeekDays.saturday,
+          ],
+          timeLineWidth: timeDimensions.width + 18.0,
+          timeLineOffset: timeDimensions.height / 2,
+          timeLineBuilder: (DateTime date) => Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 6.0),
+            child: Align(
+              alignment: AlignmentGeometry.topEnd,
+              child: Text(DateFormat('H:mm').format(date), style: textStyle),
+            ),
           ),
+          hourIndicatorSettings: HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
+          scrollOffset: heightPerMinute * 60 * 7.5,
+          timeLineStringBuilder: (date, {secondaryDate}) {
+            return DateFormat('H:mm').format(date);
+          },
+          liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
+          weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
+          headerStyle: const HeaderStyle(
+            headerTextStyle: TextStyle(fontSize: 0),
+            leftIconConfig: null,
+            rightIconConfig: null,
+          ),
+          heightPerMinute: heightPerMinute,
+          eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events, context),
+          weekDayBuilder: (DateTime date) => Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date)),
         ),
-        hourIndicatorSettings: HourIndicatorSettings(color: context.theme.appColors.scheduleLine),
-        scrollOffset: heightPerMinute * 60 * 7.5,
-        timeLineStringBuilder: (date, {secondaryDate}) {
-          return DateFormat('H:mm').format(date);
-        },
-        liveTimeIndicatorSettings: LiveTimeIndicatorSettings.none(),
-        weekNumberBuilder: (date) => Container(color: context.theme.appColors.appBar),
-        headerStyle: const HeaderStyle(
-          headerTextStyle: TextStyle(fontSize: 0),
-          leftIconConfig: null,
-          rightIconConfig: null,
-        ),
-        heightPerMinute: heightPerMinute,
-        eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events, context),
-        weekDayBuilder: (DateTime date) => Container(color: context.theme.appColors.appBar, child: _buildWeekDay(date)),
       ),
     );
   }
