@@ -4,10 +4,10 @@ import 'dart:async';
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:notredame/domain/models/signets-api/course.dart';
-import 'package:notredame/domain/models/signets-api/session.dart';
 
 // Project imports:
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import '../../../../data/mocks/repositories/course_repository_mock.dart';

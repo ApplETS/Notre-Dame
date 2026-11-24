@@ -1,10 +1,10 @@
 // Package imports:
 import 'package:material_ui/material_ui.dart';
-import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
+import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/titled_card.dart';

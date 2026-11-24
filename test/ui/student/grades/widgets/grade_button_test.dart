@@ -5,9 +5,9 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
+import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:notredame/domain/models/signets-api/course_summary.dart';
-import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 import '../../../../data/mocks/services/navigation_service_mock.dart';
