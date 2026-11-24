@@ -1,5 +1,5 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
@@ -60,9 +60,9 @@ void main() {
         final Hero heroWidget = tester.widget(heroFinder);
         expect(heroWidget.tag, 'ets_logo');
         expect(find.text(appIntl.login_startup_title), findsOneWidget);
-        expect(find.byIcon(FontAwesomeIcons.lockOpen), findsOneWidget);
+        expect(find.byIcon(FontAwesomeIcons.lockOpen.data), findsOneWidget);
         expect(find.text(appIntl.login_action_sign_in), findsOneWidget);
-        expect(find.byIcon(FontAwesomeIcons.question), findsOneWidget);
+        expect(find.byIcon(FontAwesomeIcons.question.data), findsOneWidget);
         expect(find.text("FAQ"), findsOneWidget);
       });
 
@@ -73,7 +73,7 @@ void main() {
         await tester.pumpWidget(localizedWidget(child: const LoginView()));
         await tester.pumpAndSettle();
 
-        final signInButton = find.byIcon(FontAwesomeIcons.lockOpen);
+        final signInButton = find.byIcon(FontAwesomeIcons.lockOpen.data);
         await tester.tap(signInButton);
         await tester.pump();
         verify(authServiceMock.acquireToken()).called(1);
