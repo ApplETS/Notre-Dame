@@ -1,12 +1,10 @@
 // Dart imports:
 import 'dart:collection';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
-import 'package:device_calendar/device_calendar.dart';
+import 'package:device_calendar_plus/device_calendar_plus.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/models/hello/news.dart';
@@ -32,7 +30,7 @@ class CalendarSelectionViewModel {
     if (_calendars == null) return [];
     return _calendars!
         .map<DropdownMenuItem<String>>(
-          (Calendar value) => DropdownMenuItem<String>(value: value.name, child: Text(value.name ?? "")),
+          (Calendar value) => DropdownMenuItem<String>(value: value.name, child: Text(value.name)),
         )
         .toList();
   }

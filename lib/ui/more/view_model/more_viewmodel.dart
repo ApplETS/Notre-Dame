@@ -1,6 +1,8 @@
+// Flutter imports:
+import 'package:flutter/services.dart';
+
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -52,8 +54,8 @@ class MoreViewModel extends FutureViewModel {
   Future futureToRun() async {
     try {
       setBusy(true);
-      final packageInfo = await PackageInfo.fromPlatform();
-      _appVersion = packageInfo.version;
+      final pubspec = await rootBundle.loadString("pubspec.yaml");
+      _appVersion = pubspec.split("version: ")[1].split("\n")[0];
     } catch (e) {
       onError(e, null);
     } finally {

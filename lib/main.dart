@@ -1,14 +1,11 @@
 // Dart imports:
 import 'dart:async';
 
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:calendar_view/calendar_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 // Project imports:
@@ -23,6 +20,7 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/router.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:notredame/ui/outage/widgets/outage_view.dart';
 import 'package:notredame/ui/startup/widgets/startup_view.dart';
 
@@ -74,24 +72,25 @@ class ETSMobile extends StatelessWidget {
         builder: (context, model, child) {
           return CalendarControllerProvider(
             controller: EventController(),
-            child: MaterialApp(
-              title: 'ÉTS Mobile',
-              theme: AppTheme.light,
-              darkTheme: AppTheme.dark,
-              themeMode: model.themeMode,
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: const [
-                AppIntl.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              locale: model.locale,
-              supportedLocales: AppIntl.supportedLocales,
-              navigatorKey: locator<NavigationService>().navigatorKey,
-              navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver()],
-              home: outage ? const OutageView() : const StartUpView(),
-              onGenerateRoute: generateRoute,
+            child: MediaQuery(
+              data: MediaQuery.of(
+                context,
+              ).copyWith(textScaler: MediaQuery.of(context).textScaler.clamp(maxScaleFactor: 1.3)),
+              child: MaterialApp(
+                title: 'ÉTS Mobile',
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                themeMode: model.themeMode,
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: const [AppIntl.delegate, ...GlobalMaterialLocalizations.delegates],
+                locale: model.locale,
+                supportedLocales: AppIntl.supportedLocales,
+                navigatorKey: locator<NavigationService>().navigatorKey,
+                navigatorObservers: [locator<AnalyticsService>().getAnalyticsObserver()],
+                builder: (context, child) => LegacyMaterialBridge(child: child!),
+                home: outage ? const OutageView() : const StartUpView(),
+                onGenerateRoute: generateRoute,
+              ),
             ),
           );
         },

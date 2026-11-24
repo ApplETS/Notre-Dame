@@ -1,8 +1,6 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/data/services/launch_url_service.dart';
@@ -35,7 +33,7 @@ class OutageSocialSection extends StatelessWidget {
               onPressed: () => _launchUrlService.launchInBrowser(Urls.clubGithub),
             ),
             IconButton(
-              icon: FaIcon(Icons.mail_outline, color: AppPalette.grey.white),
+              icon: Icon(Icons.mail_outline, color: AppPalette.grey.white),
               tooltip: AppIntl.of(context)!.email_send,
               onPressed: () => _launchUrlService.writeEmail(Urls.clubEmail, ""),
             ),

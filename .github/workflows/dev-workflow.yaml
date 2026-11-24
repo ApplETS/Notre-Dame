@@ -22,7 +22,7 @@ jobs:
     name: Tests and checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.PTA }}
@@ -58,26 +58,24 @@ jobs:
       matrix:
         target: [ iOS, Android ]
         include:
-          - os: macos-15
+          - os: macos-latest
             target: iOS
             build_target: ios
             build_args: --no-codesign
             build_path: build/ios/iphoneos
             asset_extension: zip
-            asset_content_type: application/zip
           - os: ubuntu-latest
             target: Android
             build_target: apk
             build_args: ''
             build_path: build/app/outputs/apk/release
             asset_extension: apk
-            asset_content_type: application/zip
       # Disable fail-fast as we want results from all even if one fails.
       fail-fast: false
     needs:
       - testing
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.PTA }}
@@ -97,7 +95,6 @@ jobs:
           build-args: ${{ matrix.build_args }}
           build-path: ${{ matrix.build_path }}
           asset-extension: ${{ matrix.asset_extension }}
-          asset-content-type: ${{ matrix.asset_content_type }}
           app-name: ${{ env.APP_NAME }}
           app-path: ${{ github.workspace }}/${{ env.APP_NAME }}_${{ matrix.target }}.${{ matrix.asset_extension }}
           maps-api-key: ${{ secrets.MAPS_API_KEY }}
