@@ -1,8 +1,5 @@
-// Flutter imports:
-import 'package:flutter/material.dart';
-
 // Package imports:
-import 'package:calendar_view/calendar_view.dart';
+import 'package:material_ui/material_ui.dart';
 
 // Project imports:
 import 'package:notredame/ui/core/themes/app_colors_extension.dart';
@@ -34,17 +31,6 @@ class AppTheme with ChangeNotifier {
         fillColor: const Color(0xfffffdfd),
         labelStyle: TextStyle(color: AppPalette.grey.black),
       ),
-      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
-        selectedItemColor: AppPalette.etsLightRed,
-        backgroundColor: _lightAppColors.navBar,
-      ),
-      navigationRailTheme: NavigationRailThemeData(
-        backgroundColor: _lightAppColors.navBar,
-        groupAlignment: 0,
-        indicatorColor: Colors.transparent,
-        selectedLabelTextStyle: const TextStyle(color: AppPalette.etsLightRed),
-        selectedIconTheme: const IconThemeData(color: AppPalette.etsLightRed),
-      ),
       colorScheme: defaultTheme.colorScheme.copyWith(
         primary: AppPalette.etsLightRed,
         secondary: AppPalette.etsLightRed,
@@ -58,31 +44,7 @@ class AppTheme with ChangeNotifier {
           selectedBackgroundColor: AppPalette.etsLightRed.withAlpha(80),
         ),
       ),
-      extensions: [
-        _lightAppColors,
-        MonthViewThemeData.light().copyWith(
-          cellBorderColor: _lightAppColors.scheduleLine,
-          headerBackgroundColor: _lightAppColors.appBar,
-          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
-          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
-          weekDayTileColor: _lightAppColors.appBar,
-        ),
-        WeekViewThemeData.light().copyWith(
-          hourLineColor: _lightAppColors.scheduleLine,
-          verticalLinesColor: _lightAppColors.scheduleLine,
-          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
-          pageBackgroundColor: Colors.transparent,
-          headerBackgroundColor: _lightAppColors.appBar,
-          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
-          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
-          borderColor: _lightAppColors.scheduleLine,
-        ),
-        DayViewThemeData.light().copyWith(
-          hourLineColor: _lightAppColors.scheduleLine,
-          pageBackgroundColor: Colors.transparent,
-          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
-        ),
-      ],
+      extensions: [_lightAppColors],
     );
   }();
 
@@ -92,7 +54,7 @@ class AppTheme with ChangeNotifier {
     dashboardCard: const Color(0xfff3f3f3),
     backgroundAlt: const Color(0xffefefef),
     backgroundVibrant: AppPalette.etsLightRed,
-    scheduleLine: const Color(0xfff1f1f1),
+    scheduleLine: const Color(0x4f7e7979),
     tabBarLabel: Colors.black,
     tabBarIndicator: Colors.black26,
     shimmerHighlight: const Color.fromARGB(255, 228, 225, 225),
@@ -127,17 +89,6 @@ class AppTheme with ChangeNotifier {
       tabBarTheme: TabBarThemeData(labelColor: AppPalette.grey.white),
       scaffoldBackgroundColor: const Color(0xff121212),
       cardTheme: defaultTheme.cardTheme.copyWith(color: const Color(0xff242326)),
-      bottomNavigationBarTheme: defaultTheme.bottomNavigationBarTheme.copyWith(
-        selectedItemColor: AppPalette.etsLightRed,
-        backgroundColor: _darkAppColors.navBar,
-      ),
-      navigationRailTheme: NavigationRailThemeData(
-        backgroundColor: _darkAppColors.navBar,
-        groupAlignment: 0,
-        indicatorColor: Colors.transparent,
-        selectedLabelTextStyle: const TextStyle(color: AppPalette.etsLightRed),
-        selectedIconTheme: const IconThemeData(color: AppPalette.etsLightRed),
-      ),
       colorScheme: defaultTheme.colorScheme.copyWith(
         primary: AppPalette.etsLightRed,
         secondary: AppPalette.etsLightRed,
@@ -152,31 +103,7 @@ class AppTheme with ChangeNotifier {
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(style: FilledButton.styleFrom(foregroundColor: AppPalette.grey.black)),
-      extensions: [
-        _darkAppColors,
-        MonthViewThemeData.dark().copyWith(
-          cellBorderColor: _darkAppColors.scheduleLine,
-          headerBackgroundColor: _darkAppColors.appBar,
-          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
-          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
-          weekDayTileColor: _darkAppColors.appBar,
-        ),
-        WeekViewThemeData.dark().copyWith(
-          hourLineColor: _darkAppColors.scheduleLine,
-          verticalLinesColor: _darkAppColors.scheduleLine,
-          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
-          pageBackgroundColor: Colors.transparent,
-          headerBackgroundColor: _darkAppColors.appBar,
-          headerTextColor: defaultTheme.textTheme.bodyMedium!.color,
-          headerIconColor: defaultTheme.textTheme.bodyMedium!.color,
-          borderColor: _darkAppColors.scheduleLine,
-        ),
-        DayViewThemeData.dark().copyWith(
-          hourLineColor: _darkAppColors.scheduleLine,
-          pageBackgroundColor: Colors.transparent,
-          liveIndicatorColor: defaultTheme.textTheme.bodyMedium!.color,
-        ),
-      ],
+      extensions: [_darkAppColors],
     );
   }();
 
@@ -186,7 +113,7 @@ class AppTheme with ChangeNotifier {
     dashboardCard: const Color(0xff232325),
     backgroundAlt: const Color(0xff2c2c2c),
     backgroundVibrant: const Color(0xff121212),
-    scheduleLine: const Color(0xff2c2929),
+    scheduleLine: const Color(0x279f9c9c),
     tabBarLabel: AppPalette.grey.white,
     tabBarIndicator: AppPalette.grey.white,
     shimmerHighlight: const Color(0xff424242),

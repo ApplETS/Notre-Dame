@@ -191,6 +191,5 @@ local.properties
 *.dSYM.zip
 *.dSYM
 firebase_app_id_file.json
-
-# FVM Version Cache
-.fvm/
+# Widget Preview related
+.widget_preview/

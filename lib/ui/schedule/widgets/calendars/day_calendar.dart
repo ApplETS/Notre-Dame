@@ -1,10 +1,10 @@
 // Flutter imports:
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // Package imports:
 import 'package:calendar_view/calendar_view.dart' as calendar_view;
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:stacked/stacked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -13,10 +13,12 @@ import 'package:notredame/data/models/event_data.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/core/themes/legacy_material_bridge.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/calendars/day_viewmodel.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/calendar_event_tile.dart';
 import 'package:notredame/ui/schedule/widgets/tiles/listview_event_tile.dart';
+import 'package:notredame/utils/calendar_utils.dart';
 
 class DayCalendar extends StatefulWidget {
   final bool listView;
@@ -92,36 +94,59 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
   Widget _buildCalendar(DayViewModel model) => Expanded(
     child: LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
+        final textStyle = Theme.of(context).textTheme.bodyLarge!;
+
+        final Size timeDimensions = getTimeDimensions(
+          textStyle,
+          Directionality.of(context),
+          MediaQuery.of(context).textScaler,
+        );
+
         final double heightPerMinute = showEntireDay
             ? (constraints.maxHeight / 1000).clamp(0.4, 1.0)
             : (constraints.maxHeight / ((model.getEndHour() - model.getStartHour()) * 60)).clamp(0.1, double.infinity);
-        return calendar_view.DayView(
-          key: dayViewKey,
-          showVerticalLine: false,
-          dayTitleBuilder: calendar_view.DayHeader.hidden,
-          controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
-          onPageChange: (date, _) => ({
-            setState(() {
-              model.handleDateSelectedChanged(date);
+        return LegacyMaterialScope(
+          child: calendar_view.DayView(
+            key: dayViewKey,
+            showVerticalLine: false,
+            dayTitleBuilder: calendar_view.DayHeader.hidden,
+            controller: model.eventController..addAll(model.selectedDayCalendarEvents()),
+            onPageChange: (date, _) => ({
+              setState(() {
+                model.handleDateSelectedChanged(date);
+              }),
             }),
-          }),
-          scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
-          safeAreaOption: const calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false),
-          backgroundColor: widget.backgroundColor,
-          initialDay: model.daySelected,
-          minDay: widget.selectedDate,
-          maxDay: widget.selectedDate,
-          startHour: showEntireDay ? 0 : model.getStartHour(),
-          endHour: showEntireDay ? 24 : model.getEndHour(),
-          heightPerMinute: heightPerMinute,
-          scrollOffset: showEntireDay ? heightPerMinute * 60 * model.getStartHour() : 0,
-          keepScrollOffset: true,
-          dateStringBuilder: (date, {secondaryDate}) {
-            final locale = AppIntl.of(context)!.localeName;
-            return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
-          },
-          timeStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
-          eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
+            scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
+            safeAreaOption: const calendar_view.SafeAreaOption(
+              maintainBottomViewPadding: true,
+              top: false,
+              left: false,
+            ),
+            backgroundColor: widget.backgroundColor,
+            initialDay: model.daySelected,
+            minDay: widget.selectedDate,
+            maxDay: widget.selectedDate,
+            startHour: showEntireDay ? 0 : model.getStartHour(),
+            endHour: showEntireDay ? 24 : model.getEndHour(),
+            heightPerMinute: heightPerMinute,
+            scrollOffset: showEntireDay ? heightPerMinute * 60 * model.getStartHour() : 0,
+            keepScrollOffset: true,
+            dateStringBuilder: (date, {secondaryDate}) {
+              final locale = AppIntl.of(context)!.localeName;
+              return '${date.day} ${DateFormat.MMMM(locale).format(date)} ${date.year}';
+            },
+            timeLineWidth: timeDimensions.width + 18.0,
+            timeLineOffset: timeDimensions.height / 2,
+            timeLineBuilder: (DateTime date) => Padding(
+              padding: const EdgeInsets.only(left: 12.0, right: 6.0),
+              child: Align(
+                alignment: AlignmentGeometry.topEnd,
+                child: Text(DateFormat('H:mm').format(date), style: textStyle),
+              ),
+            ),
+            timeStringBuilder: (date, {secondaryDate}) => DateFormat('H:mm').format(date),
+            eventTileBuilder: (date, events, boundary, startDuration, endDuration) => _buildEventTile(events),
+          ),
         );
       },
     ),
@@ -196,52 +221,63 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
     final Color todayColor = context.theme.appColors.dayIndicatorWeekView;
     final Color defaultColor = context.theme.appColors.scheduleLine;
 
+    final TextStyle textStyle = Theme.of(context).textTheme.bodyMedium!;
+
+    final Size timeDimensions = getTimeDimensions(
+      textStyle,
+      Directionality.of(context),
+      MediaQuery.of(context).textScaler,
+    );
+
     return Container(
-      padding: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(left: 4.0, right: 4.0, bottom: 3.0),
       color: context.theme.appColors.appBar,
-      child: TableCalendar(
-        key: const Key("TableCalendar"),
-        locale: AppIntl.of(context)!.localeName,
-        selectedDayPredicate: (day) {
-          return isSameDay(model.daySelected, day);
-        },
-        headerStyle: HeaderStyle(
-          titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
-          titleCentered: true,
-          formatButtonVisible: false,
-        ),
-        eventLoader: model.calendarEventsFromDate,
-        calendarFormat: CalendarFormat.week,
-        focusedDay: model.daySelected,
-        calendarBuilders: CalendarBuilders(
-          defaultBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-          outsideBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
-          todayBuilder: (_, date, _) => _buildHeaderDay(date, todayColor, model, dayViewKey),
-          selectedBuilder: (_, date, _) => FadeTransition(
-            opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
-            child: _buildHeaderDay(date, selectedColor, model, dayViewKey),
-          ),
-          markerBuilder: (_, date, events) {
-            final bool isSelected = isSameDay(date, model.daySelected);
-            final bool isToday = isSameDay(date, DateTime.now());
-            Color color = selectedColor;
-
-            if (!isSelected) {
-              if (isToday) {
-                color = todayColor;
-              } else {
-                color = defaultColor;
-              }
-            }
-
-            return _buildEventsMarker(events, color);
+      child: LegacyMaterialScope(
+        child: TableCalendar(
+          key: const Key("TableCalendar"),
+          locale: AppIntl.of(context)!.localeName,
+          selectedDayPredicate: (day) {
+            return isSameDay(model.daySelected, day);
           },
+          daysOfWeekHeight: timeDimensions.height,
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: textStyle,
+            weekendStyle: textStyle.copyWith(color: context.theme.appColors.fadedText),
+          ),
+          headerStyle: HeaderStyle(
+            titleTextFormatter: (_, locale) => DateFormat.MMMMEEEEd(locale).format(model.daySelected),
+            titleCentered: true,
+            formatButtonVisible: false,
+          ),
+          eventLoader: model.calendarEventsFromDate,
+          calendarFormat: CalendarFormat.week,
+          focusedDay: model.daySelected,
+          calendarBuilders: CalendarBuilders(
+            defaultBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
+            outsideBuilder: (_, date, _) => _buildHeaderDay(date, defaultColor, model, dayViewKey),
+            todayBuilder: (_, date, _) => _buildHeaderDay(date, todayColor, model, dayViewKey),
+            selectedBuilder: (_, date, _) => FadeTransition(
+              opacity: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+              child: _buildHeaderDay(date, selectedColor, model, dayViewKey),
+            ),
+            markerBuilder: (_, date, events) {
+              final bool isSelected = isSameDay(date, model.daySelected);
+              final bool isToday = isSameDay(date, DateTime.now());
+              Color color = selectedColor;
+
+              if (!isSelected) {
+                color = isToday ? todayColor : defaultColor;
+              }
+
+              return _buildEventsMarker(events, color);
+            },
+          ),
+          // Those are now required by the package table_calendar ^3.0.0. In the doc,
+          // it is suggest to set them to values that won't affect user experience.
+          // Outside the range, the date are set to disable so no event can be loaded.
+          firstDay: DateTime.utc(2010, 12, 31),
+          lastDay: DateTime.utc(2100, 12, 31),
         ),
-        // Those are now required by the package table_calendar ^3.0.0. In the doc,
-        // it is suggest to set them to values that won't affect user experience.
-        // Outside the range, the date are set to disable so no event can be loaded.
-        firstDay: DateTime.utc(2010, 12, 31),
-        lastDay: DateTime.utc(2100, 12, 31),
       ),
     );
   }
@@ -280,10 +316,15 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${date.day}', style: const TextStyle().copyWith(fontSize: 16.0, height: 1.2)),
+              Text(
+                '${date.day}',
+                textScaler: MediaQuery.of(context).textScaler.clamp(maxScaleFactor: 1.2),
+                style: const TextStyle().copyWith(fontSize: 16.0, height: 1.2),
+              ),
               if (date.month != DateTime.now().month || date.year != DateTime.now().year)
                 Text(
                   DateFormat.MMM(AppIntl.of(context)!.localeName).format(date),
+                  textScaler: TextScaler.noScaling,
                   style: const TextStyle(fontSize: 10.0),
                 ),
             ],
@@ -306,6 +347,7 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
           child: Text(
             '${events.length}',
             textAlign: TextAlign.center,
+            textScaler: TextScaler.noScaling,
             style: const TextStyle().copyWith(fontSize: 12.0),
           ),
         ),
