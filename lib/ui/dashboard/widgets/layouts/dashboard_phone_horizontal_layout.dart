@@ -12,9 +12,9 @@ import 'package:notredame/ui/dashboard/clipper/swoosh_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/broadcast_message_component.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
-import 'package:notredame/ui/dashboard/widgets/grades_card.dart';
-import 'package:notredame/ui/dashboard/widgets/progress_bar_card.dart';
-import 'package:notredame/ui/dashboard/widgets/session_reminder_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart';
 
 class DashboardPhoneHorizontalLayout extends StatelessWidget {
   final DashboardViewModel model;
@@ -61,14 +61,10 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(4.0, _spacing, _spacing, 0.0),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(4.0, _spacing, _spacing, 0.0),
                     child: Expanded(
-                      child: GradesCard(
-                        courses: model.courses,
-                        loading: model.busy(model.courses),
-                        direction: Axis.vertical,
-                      ),
+                      child: GradesCard(),
                     ),
                   ),
                 ],
@@ -136,14 +132,14 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
                   children: [
                     const SessionReminderCard(),
                     ProgressBarCard(
-                      progressBarText: model.sessionProgress?.daysRemaining.toString() ?? "XX",
-                      progressBarAltText: model.sessionProgress != null
-                          ? (model.sessionProgress!.percentage * 100).toStringAsFixed(0)
+                      progressBarText: model.progressBarModel.sessionProgress?.daysRemaining.toString() ?? "XX",
+                      progressBarAltText: model.progressBarModel.sessionProgress != null
+                          ? (model.progressBarModel.sessionProgress!.percentage * 100).toStringAsFixed(0)
                           : "XX%",
-                      progress: model.sessionProgress?.percentage ?? 0.0,
-                      loading: model.sessionProgress == null,
-                      showingPercentage: model.showingPercentage,
-                      onToggle: model.toggleProgressBarMode,
+                      progress: model.progressBarModel.sessionProgress?.percentage ?? 0.0,
+                      loading: model.progressBarModel.sessionProgress == null,
+                      showingPercentage: model.progressBarModel.showingPercentage,
+                      onToggle: model.progressBarModel.toggleProgressBarMode,
                     ),
                   ],
                 ),

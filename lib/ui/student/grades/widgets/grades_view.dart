@@ -9,10 +9,10 @@ import 'package:notredame/domain/constants/router_paths.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/ui/loading.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/student/grades/view_model/grades_viewmodel.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import 'package:notredame/utils/loading.dart';
 import 'package:notredame/utils/session_utils.dart';
 
 class GradesView extends StatefulWidget {
