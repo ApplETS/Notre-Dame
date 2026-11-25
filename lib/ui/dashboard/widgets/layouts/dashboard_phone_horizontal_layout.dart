@@ -24,7 +24,8 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
 
   static const double _fontSize = 16;
   static const double _lineHeight = 1.2;
-  static const double _titleTopPadding = 20.0;
+  static const double _titleTopPadding = 16.0;
+  static const double _titleBottomPadding = 16.0;
   static const double _spacing = 12.0;
   static const double _bannerWidthFactor = 0.78;
   static const double _minContentHeight = 220.0;
@@ -32,20 +33,30 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = TextStyle(fontSize: _fontSize, height: _lineHeight, color: AppPalette.grey.white);
-    const double twoLinesHeight = _fontSize * _lineHeight * 2;
 
-    final double bottomPadding = max(_spacing, NavigationMenu.overlapHeight(context));
-    final double height = max(viewportHeight, _titleTopPadding + twoLinesHeight + _minContentHeight + bottomPadding);
+    // Used to get the dimensions of the dynamic message.
+    final textPainter = TextPainter(
+      text: TextSpan(text: "\n", style: textStyle),
+      maxLines: 2,
+      textDirection: TextDirection.ltr,
+      textScaler: MediaQuery.of(context).textScaler,
+    );
+
+    textPainter.layout();
+
+    final double bottomPadding = _spacing + NavigationMenu.overlapHeight(context);
+    final double height = max(
+      viewportHeight,
+      _titleTopPadding + textPainter.height + _minContentHeight + bottomPadding,
+    );
 
     return SizedBox(
       height: height,
       child: Stack(
         children: [
-          _redBanner(),
+          _redBanner(textPainter.height + MediaQuery.of(context).padding.top + _titleTopPadding + _titleBottomPadding),
           SafeArea(
             left: false,
-            top: false,
-            bottom: false,
             child: Padding(
               padding: EdgeInsets.only(bottom: bottomPadding),
               child: Row(
@@ -55,7 +66,7 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _title(textStyle, twoLinesHeight),
+                        _title(textStyle, model.busy(model.dynamicMessageText) ? null : textPainter.height),
                         const SizedBox(height: _spacing),
                         Expanded(child: _content()),
                       ],
@@ -63,9 +74,7 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
                   ),
                   const Padding(
                     padding: EdgeInsets.fromLTRB(4.0, _spacing, _spacing, 0.0),
-                    child: Expanded(
-                      child: GradesCard(),
-                    ),
+                    child: GradesCard(direction: Axis.vertical),
                   ),
                 ],
               ),
@@ -76,28 +85,29 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
     );
   }
 
-  Widget _title(TextStyle textStyle, double twoLinesHeight) {
+  Widget _title(TextStyle textStyle, double? twoLinesHeight) {
     return AnimatedBuilder(
       animation: model.titleAnimation,
       builder: (context, child) {
         return Padding(
-          padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: _titleTopPadding),
+          padding: const EdgeInsets.only(left: 24.0, right: 32.0, top: _titleTopPadding, bottom: _titleBottomPadding),
           child: Transform.translate(
             offset: model.titleSlideOffset,
             child: Opacity(
               opacity: model.titleFadeOpacity,
-              child: SizedBox(
-                height: twoLinesHeight,
-                child: Align(
-                  alignment: Alignment.centerLeft,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: FractionallySizedBox(
+                  widthFactor: 0.75,
                   child: model.remoteConfigService.dashboardMessageActive
                       ? BroadcastMessageComponent(broadcastMessage: model.broadcastMessage, style: textStyle)
                       : model.busy(model.dynamicMessageText)
                       ? Skeletonizer(
-                          child: Bone.multiText(fontSize: _fontSize, style: textStyle, lines: 2),
+                          child: Bone.multiText(fontSize: _fontSize, style: textStyle, lines: 1),
                         )
                       : Text(
-                          model.dynamicMessageText ?? '',
+                          // model.dynamicMessageText ?? '',
+                          "dsfskljdhfladsadklfdsjklfkdjlsafdjklasfdsfskljdhfladsadklfdsjklfkdjlsafdjklasfdsfskljdhfladsadklfdsjklfkdjlsafdjklasfdsfskljdhfladsadklfdsjklfkdjlsafdjklasfdsfskljdhfladsadklfdsjklfkdjlsafdjklasf",
                           style: textStyle,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -153,7 +163,7 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
   }
 
   /// Animated red banner behind the dynamic message
-  Widget _redBanner() {
+  Widget _redBanner(double height) {
     return FractionallySizedBox(
       alignment: Alignment.topLeft,
       widthFactor: _bannerWidthFactor,
@@ -168,8 +178,7 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
               color: model.remoteConfigService.dashboardMessageActive
                   ? model.broadcastMessage!.color
                   : AppPalette.etsLightRed,
-              // TODO ajust
-              child: SizedBox(height: 80 * model.heightAnimation.value),
+              child: SizedBox(height: height * model.heightAnimation.value),
             ),
           );
         },

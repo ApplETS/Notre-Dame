@@ -14,7 +14,7 @@ class SwooshClipper extends CustomClipper<Path> {
     path.lineTo(size.width, 0);
 
     // Curve from the top right corner down to the bottom left corner
-    path.cubicTo(size.width * 0.95, size.height * 0.75, size.width * 0.6, size.height * 0.88, 0, size.height);
+    path.cubicTo(size.width * 0.95, size.height, size.width * 0.85, size.height, 0, size.height);
 
     path.close();
 

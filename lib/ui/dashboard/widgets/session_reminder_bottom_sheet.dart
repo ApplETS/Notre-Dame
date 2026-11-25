@@ -20,7 +20,7 @@ class SessionReminderBottomSheet extends StatelessWidget {
     final intl = AppIntl.of(context)!;
     final grouped = SessionReminderHelper.hasMultipleSessions(reminders);
 
-    final double calculatedSize = (0.10 + (reminders.length * 0.10)).clamp(0.20, 0.55);
+    final double calculatedSize = (0.10 + (reminders.length * 0.10)).clamp(0.20, 0.75);
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),

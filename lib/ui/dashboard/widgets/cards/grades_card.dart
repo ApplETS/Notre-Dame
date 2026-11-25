@@ -12,7 +12,10 @@ import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.da
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
-  const GradesCard({super.key});
+  /// Scroll direction of the grades. When [Axis.vertical], the card must have a bounded height.
+  final Axis direction;
+
+  const GradesCard({super.key, this.direction = Axis.horizontal});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class GradesCard extends StatelessWidget {
           title: AppIntl.of(context)!.grades_title,
           child: (displayedCourses.isEmpty && !model.busy(model.courses))
               ? _buildNoGradesContent(context)
-              : _buildGradesButton(displayedCourses, context, loading: model.busy(model.courses)),
+              : _buildGradesButton(displayedCourses, context, loading: model.busy(model.courses), direction: direction),
         );
       },
     );
@@ -49,7 +52,7 @@ class GradesCard extends StatelessWidget {
     List<Course> courses,
     BuildContext context, {
     bool loading = false,
-    Axis direction = Axis.horizontal,
+    required Axis direction,
   }) => Skeletonizer(
     enabled: loading,
     child: SingleChildScrollView(

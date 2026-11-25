@@ -179,6 +179,7 @@ class DashboardViewModel extends FutureViewModel {
       dynamicMessageText = message.resolve(_appIntl);
       notifyListeners();
     } catch (e) {
+      // TODO fix type 'Null' is not a subtype of type 'String' in type cast
       dynamicMessageText = null;
       notifyListeners();
     } finally {
