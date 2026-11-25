@@ -95,24 +95,26 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
             offset: model.titleSlideOffset,
             child: Opacity(
               opacity: model.titleFadeOpacity,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: FractionallySizedBox(
-                  widthFactor: 0.75,
-                  child: model.remoteConfigService.dashboardMessageActive
-                      ? BroadcastMessageComponent(broadcastMessage: model.broadcastMessage, style: textStyle)
-                      : model.busy(model.dynamicMessageText)
-                      ? Skeletonizer(
-                          child: Bone.multiText(fontSize: _fontSize, style: textStyle, lines: 1),
-                        )
-                      : Text(
-                          // model.dynamicMessageText ?? '',
-                          "dsfskljdhfladsadklfdsjklfkdjlsafdjklasfdsfskljdhfladsadklfdsjklfkdjlsafdjklasfdsfskljdhfladsadklfdsjklfkdjlsafdjklasfdsfskljdhfladsadklfdsjklfkdjlsafdjklasfdsfskljdhfladsadklfdsjklfkdjlsafdjklasf",
-                          style: textStyle,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.start,
-                        ),
+              child: SizedBox(
+                height: twoLinesHeight,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: 0.75,
+                    child: model.remoteConfigService.dashboardMessageActive
+                        ? BroadcastMessageComponent(broadcastMessage: model.broadcastMessage, style: textStyle)
+                        : model.busy(model.dynamicMessageText)
+                        ? Skeletonizer(
+                            child: Bone.multiText(fontSize: _fontSize, style: textStyle, lines: 1),
+                          )
+                        : Text(
+                            model.dynamicMessageText ?? '',
+                            style: textStyle,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                          ),
+                  ),
                 ),
               ),
             ),
