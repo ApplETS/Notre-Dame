@@ -27,7 +27,6 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
   static const double _titleTopPadding = 16.0;
   static const double _titleBottomPadding = 16.0;
   static const double _spacing = 12.0;
-  static const double _bannerWidthFactor = 0.78;
   static const double _minContentHeight = 220.0;
 
   @override
@@ -50,20 +49,30 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
       _titleTopPadding + textPainter.height + _minContentHeight + bottomPadding,
     );
 
+    final double topPadding = MediaQuery.of(context).padding.top;
+
     return SizedBox(
       height: height,
-      child: Stack(
-        children: [
-          _redBanner(textPainter.height + MediaQuery.of(context).padding.top + _titleTopPadding + _titleBottomPadding),
-          SafeArea(
-            left: false,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: bottomPadding),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: Column(
+      child: SafeArea(
+        left: false,
+        bottom: false,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: Stack(
+                  fit: StackFit.expand,
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned(
+                      top: -topPadding,
+                      left: 0,
+                      right: 0,
+                      child: _redBanner(textPainter.height + topPadding + _titleTopPadding + _titleBottomPadding),
+                    ),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         _title(textStyle, model.busy(model.dynamicMessageText) ? null : textPainter.height),
@@ -71,16 +80,16 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
                         Expanded(child: _content()),
                       ],
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(4.0, _spacing, _spacing, 0.0),
-                    child: IntrinsicWidth(child: GradesCard(direction: Axis.vertical)),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(4.0, _spacing, _spacing, 0.0),
+                child: IntrinsicWidth(child: GradesCard(direction: Axis.vertical)),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -166,25 +175,21 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
 
   /// Animated red banner behind the dynamic message
   Widget _redBanner(double height) {
-    return FractionallySizedBox(
-      alignment: Alignment.topLeft,
-      widthFactor: _bannerWidthFactor,
-      child: AnimatedBuilder(
-        animation: model.heightAnimation,
-        builder: (context, child) {
-          return Opacity(
-            opacity: model.opacityAnimation.value,
-            child: PhysicalShape(
-              clipper: SwooshClipper(),
-              elevation: 4.0,
-              color: model.remoteConfigService.dashboardMessageActive
-                  ? model.broadcastMessage!.color
-                  : AppPalette.etsLightRed,
-              child: SizedBox(height: height * model.heightAnimation.value),
-            ),
-          );
-        },
-      ),
+    return AnimatedBuilder(
+      animation: model.heightAnimation,
+      builder: (context, child) {
+        return Opacity(
+          opacity: model.opacityAnimation.value,
+          child: PhysicalShape(
+            clipper: SwooshClipper(),
+            elevation: 4.0,
+            color: model.remoteConfigService.dashboardMessageActive
+                ? model.broadcastMessage!.color
+                : AppPalette.etsLightRed,
+            child: SizedBox(height: height * model.heightAnimation.value),
+          ),
+        );
+      },
     );
   }
 }
