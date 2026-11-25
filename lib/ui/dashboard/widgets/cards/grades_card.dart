@@ -38,11 +38,15 @@ class GradesCard extends StatelessWidget {
           displayedCourses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
         }
 
+        final Widget content = (displayedCourses.isEmpty && !model.busy(model.courses))
+            ? _buildNoGradesContent(context)
+            : _buildGradesButton(displayedCourses, context, loading: model.busy(model.courses), direction: direction);
+
         return TitledCard(
           title: AppIntl.of(context)!.grades_title,
-          child: (displayedCourses.isEmpty && !model.busy(model.courses))
-              ? _buildNoGradesContent(context)
-              : _buildGradesButton(displayedCourses, context, loading: model.busy(model.courses), direction: direction),
+          // In vertical mode, the scroll view must be constrained by the remaining height of the card's Column,
+          // otherwise it takes the full height of its content and overflows.
+          child: direction == Axis.vertical ? Flexible(child: content) : content,
         );
       },
     );

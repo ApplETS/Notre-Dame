@@ -74,7 +74,7 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
                   ),
                   const Padding(
                     padding: EdgeInsets.fromLTRB(4.0, _spacing, _spacing, 0.0),
-                    child: GradesCard(direction: Axis.vertical),
+                    child: IntrinsicWidth(child: GradesCard(direction: Axis.vertical)),
                   ),
                 ],
               ),
