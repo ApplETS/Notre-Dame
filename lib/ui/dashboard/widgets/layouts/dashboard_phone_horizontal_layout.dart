@@ -105,7 +105,7 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
                         ? BroadcastMessageComponent(broadcastMessage: model.broadcastMessage, style: textStyle)
                         : model.busy(model.dynamicMessageText)
                         ? Skeletonizer(
-                            child: Bone.multiText(fontSize: _fontSize, style: textStyle, lines: 1),
+                            child: Bone.multiText(fontSize: _fontSize, style: textStyle, lines: 2),
                           )
                         : Text(
                             model.dynamicMessageText ?? '',
