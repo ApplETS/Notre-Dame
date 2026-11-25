@@ -80,8 +80,6 @@ class _DashboardPhoneVerticalLayoutState extends State<DashboardPhoneVerticalLay
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("v" + MediaQuery.of(context).padding.toString());
-
     _schedulePostFrameUpdate();
 
     const double fontSize = 16;
