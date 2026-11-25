@@ -122,7 +122,7 @@ class DashboardTabletHorizontalLayout extends StatelessWidget {
                 ],
               ),
             ),
-            const Expanded(child: Card(color: Colors.yellow,)),
+            const Expanded(child: Card(color: Colors.yellow)),
           ],
         );
       },

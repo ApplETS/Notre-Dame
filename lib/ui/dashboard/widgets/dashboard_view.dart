@@ -10,6 +10,7 @@ import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_horizontal_layout.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_vertical_layout.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_horizontal_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_vertical_layout.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -19,9 +20,6 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> with SingleTickerProviderStateMixin {
-  /// Shortest side from which the device is considered a tablet.
-  static const double _tabletShortestSide = 600.0;
-
   @override
   void initState() {
     super.initState();
@@ -55,12 +53,16 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
   }
 
   Widget _layout(BuildContext context, DashboardViewModel model, double viewportHeight) {
-    if (MediaQuery.orientationOf(context) == Orientation.portrait) {
-      return DashboardPhoneVerticalLayout(model: model, viewportHeight: viewportHeight);
+    final bool isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
+    final bool isTablet = MediaQuery.sizeOf(context).shortestSide >= 600.0;
+
+    if (isTablet) {
+      return isPortrait
+          ? DashboardTabletVerticalLayout(model: model, viewportHeight: viewportHeight)
+          : DashboardTabletHorizontalLayout(model: model, viewportHeight: viewportHeight);
     }
-    if (MediaQuery.sizeOf(context).shortestSide >= _tabletShortestSide) {
-      return DashboardTabletHorizontalLayout(model: model, viewportHeight: viewportHeight);
-    }
-    return DashboardPhoneHorizontalLayout(model: model, viewportHeight: viewportHeight);
+    return isPortrait
+        ? DashboardPhoneVerticalLayout(model: model, viewportHeight: viewportHeight)
+        : DashboardPhoneHorizontalLayout(model: model, viewportHeight: viewportHeight);
   }
 }
