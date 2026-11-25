@@ -117,11 +117,11 @@ class _DayCalendarState extends State<DayCalendar> with TickerProviderStateMixin
               }),
             }),
             scrollPhysics: showEntireDay ? const AlwaysScrollableScrollPhysics() : const NeverScrollableScrollPhysics(),
-            safeAreaOption: const calendar_view.SafeAreaOption(
-              maintainBottomViewPadding: true,
-              top: false,
-              left: false,
-            ),
+            // On the dashboard, the card never touches the screen edges, so the safe area
+            // would only shrink the space used to compute heightPerMinute and clip the bottom.
+            safeAreaOption: showEntireDay
+                ? const calendar_view.SafeAreaOption(maintainBottomViewPadding: true, top: false, left: false)
+                : const calendar_view.SafeAreaOption(top: false, left: false, right: false, bottom: false),
             backgroundColor: widget.backgroundColor,
             initialDay: model.daySelected,
             minDay: widget.selectedDate,
