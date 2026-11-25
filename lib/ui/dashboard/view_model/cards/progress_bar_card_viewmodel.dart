@@ -3,7 +3,6 @@ import 'dart:async';
 
 // Package imports:
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -15,22 +14,13 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/logic/session_progress_use_case.dart';
 
 class ProgressBarCardViewmodel extends FutureViewModel {
-  static const String tag = "DashboardViewModel";
+  static const String tag = "ProgressBarCardViewmodel";
 
   final AnalyticsService _analyticsService = locator<AnalyticsService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
   final SessionProgressUseCase _sessionProgressUseCase;
 
   StreamSubscription? _sessionProgressSubscription;
-
-  /// Animation controller for the circle
-  AnimationController? _controller;
-  late Animation<double> heightAnimation;
-  late Animation<double> opacityAnimation;
-  late Animation<double> titleAnimation;
-
-  /// Getter for the animation controller
-  AnimationController get controller => _controller!;
 
   final AppIntl _appIntl;
 
@@ -41,53 +31,22 @@ class ProgressBarCardViewmodel extends FutureViewModel {
 
   bool get showingPercentage => _showingPercentage;
 
+  /// True until the first session progress is received.
+  bool get loading => sessionProgress == null;
+
+  double get progress => sessionProgress?.percentage ?? 0.0;
+
+  /// Number of days remaining in the session.
+  String get daysRemainingText => sessionProgress?.daysRemaining.toString() ?? "XX";
+
+  /// Percentage of the session completed.
+  String get percentageText => sessionProgress != null ? (sessionProgress!.percentage * 100).toStringAsFixed(0) : "XX";
+
   ProgressBarCardViewmodel({required AppIntl intl})
     : _appIntl = intl,
-      _sessionProgressUseCase = SessionProgressUseCase(),
-
-      /// if the animation has not been played, play it
-      shouldPlayAnimation = !hasAnimationPlayed {
-    hasAnimationPlayed = true;
-
+      _sessionProgressUseCase = SessionProgressUseCase() {
     /// Restore the progress bar display mode from preferences.
     _showingPercentage = _settingsManager.dashboard.displayProgressBarPercentage;
-  }
-
-  /// Static flag to track if the animation has been played
-  static bool hasAnimationPlayed = false;
-
-  /// Tracks if the animation should be played
-  final bool shouldPlayAnimation;
-
-  Future<void> init(TickerProvider ticker) async {
-    initAnimationController(ticker);
-    await initSessionProgress();
-  }
-
-  /// Initialize the animation controller for the circle
-  void initAnimationController(TickerProvider ticker) {
-    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
-
-    heightAnimation = Tween<double>(
-      begin: 0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.ease));
-
-    opacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-
-    titleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _controller!, curve: Curves.easeInOut));
-
-    if (shouldPlayAnimation) {
-      _controller!.forward();
-    } else {
-      _controller!.value = 1.0;
-    }
   }
 
   Future<void> initSessionProgress() async {
@@ -126,7 +85,6 @@ class ProgressBarCardViewmodel extends FutureViewModel {
 
   @override
   void dispose() {
-    _controller?.dispose();
     _sessionProgressSubscription?.cancel();
     _sessionProgressUseCase.dispose();
     super.dispose();

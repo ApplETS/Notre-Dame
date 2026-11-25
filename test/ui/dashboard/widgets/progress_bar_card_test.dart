@@ -20,7 +20,7 @@ void main() {
   late SettingsRepositoryMock settingsRepository;
   late ListSessionsRepositoryMock listSessionRepository;
 
-  group("ProgressBarCard - ", () {
+  group("ProgressBarCardContent - ", () {
     setUp(() async {
       intl = await setupAppIntl();
 
@@ -39,7 +39,7 @@ void main() {
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(
+          child: ProgressBarCardContent(
             progressBarText: "45",
             progressBarAltText: "60",
             progress: 0.5,
@@ -63,7 +63,7 @@ void main() {
     testWidgets('Shows percentage text when showingPercentage is true', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(
+          child: ProgressBarCardContent(
             progressBarText: "45",
             progressBarAltText: "60",
             progress: 0.5,
@@ -82,7 +82,7 @@ void main() {
     testWidgets('Shows days text when showingPercentage is false', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(
+          child: ProgressBarCardContent(
             progressBarText: "45",
             progressBarAltText: "60",
             progress: 0.5,
@@ -102,7 +102,7 @@ void main() {
       bool tapped = false;
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(
+          child: ProgressBarCardContent(
             progressBarText: "45",
             progressBarAltText: "60",
             progress: 0.5,
@@ -116,7 +116,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(ProgressBarCard));
+      await tester.tap(find.byType(ProgressBarCardContent));
 
       expect(tapped, true);
     });

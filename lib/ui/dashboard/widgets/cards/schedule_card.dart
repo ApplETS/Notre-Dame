@@ -12,14 +12,19 @@ import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/widgets/calendars/day_calendar.dart';
 
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({super.key});
+  /// Owned by the dashboard, so it is shared between layouts and refreshed with it.
+  final ScheduleCardViewmodel model;
+
+  const ScheduleCard({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
     String title = AppIntl.of(context)!.title_schedule;
 
     return ViewModelBuilder<ScheduleCardViewmodel>.reactive(
-      viewModelBuilder: () => ScheduleCardViewmodel(intl: AppIntl.of(context)!),
+      viewModelBuilder: () => model,
+      disposeViewModel: false,
+      initialiseSpecialViewModelsOnce: true,
       builder: (context, model, child) {
         if (model.tomorrow) {
           title += AppIntl.of(context)!.card_schedule_tomorrow;

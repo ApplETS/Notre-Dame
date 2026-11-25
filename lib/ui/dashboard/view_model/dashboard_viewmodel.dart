@@ -35,11 +35,18 @@ class DashboardViewModel extends FutureViewModel {
   final DynamicMessagesService _dynamicMessagesService = locator<DynamicMessagesService>();
   final SettingsRepository _settingsManager = locator<SettingsRepository>();
 
-  /// Animation controller for the circle
+  /// Animation controller for the header (red shape and dynamic message)
   AnimationController? _controller;
 
   /// Getter for the animation controller
   AnimationController get controller => _controller!;
+
+  late Animation<double> heightAnimation;
+  late Animation<double> opacityAnimation;
+  late Animation<double> titleAnimation;
+
+  /// Static flag to track if the animation has been played
+  static bool hasAnimationPlayed = false;
 
   /// Localization class of the application.
   final AppIntl _appIntl;
@@ -99,24 +106,32 @@ class DashboardViewModel extends FutureViewModel {
     return false;
   }
 
-  /// Static flag to track if the animation has been played
-  static bool hasAnimationPlayed = false;
-
-  Animation<double> get heightAnimation => progressBarModel.heightAnimation;
-  Animation<double> get opacityAnimation => progressBarModel.opacityAnimation;
-  Animation<double> get titleAnimation => progressBarModel.titleAnimation;
-
   /// Slide offset for title and subtitle animations (slide from top)
   /// Vertical slide offset from 0.0 (x), -15.0 (y) to 0 (y)
-  //Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
-  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - progressBarModel.titleAnimation.value));
+  Offset get titleSlideOffset => Offset(0.0, -15.0 * (1 - titleAnimation.value));
 
   /// Fade-in opacity based on title animation progress
-  //double get titleFadeOpacity => titleAnimation.value;
-  double get titleFadeOpacity => progressBarModel.titleAnimation.value;
+  double get titleFadeOpacity => titleAnimation.value;
 
-  Future<void> init(TickerProvider ticker) async {
-    progressBarModel.init(ticker);
+  void init(TickerProvider ticker) {
+    _initAnimationController(ticker);
+  }
+
+  /// Initialize the animation controller of the header
+  void _initAnimationController(TickerProvider ticker) {
+    _controller = AnimationController(vsync: ticker, duration: const Duration(milliseconds: 1250));
+
+    heightAnimation = CurvedAnimation(parent: _controller!, curve: Curves.ease);
+    opacityAnimation = CurvedAnimation(parent: _controller!, curve: Curves.easeInOut);
+    titleAnimation = CurvedAnimation(parent: _controller!, curve: Curves.easeInOut);
+
+    // Only play the animation the first time the dashboard is shown
+    if (hasAnimationPlayed) {
+      _controller!.value = 1.0;
+    } else {
+      hasAnimationPlayed = true;
+      _controller!.forward();
+    }
   }
 
   static Future<void> launchBroadcastUrl(String url) async {
@@ -127,11 +142,16 @@ class DashboardViewModel extends FutureViewModel {
   /// List of courses for the current session
   List<Course> courses = [];
 
+  /// Initial load of the dashboard's own data. Each card loads its own viewmodel when it is first shown.
   @override
   Future futureToRun() async {
-    return Future.wait([
-      futureToRunBroadcast(),
-      loadDynamicMessage(),
+    return Future.wait([futureToRunBroadcast(), loadDynamicMessage()]);
+  }
+
+  /// Reload the dashboard and every card (pull to refresh).
+  Future<void> refresh() async {
+    await Future.wait([
+      futureToRun(),
       progressBarModel.futureToRun(),
       gradesModel.futureToRun(),
       scheduleModel.futureToRun(),
@@ -206,6 +226,7 @@ class DashboardViewModel extends FutureViewModel {
 
   @override
   void dispose() {
+    _controller?.dispose();
     progressBarModel.removeListener(notifyListeners);
     progressBarModel.dispose();
     gradesModel.removeListener(notifyListeners);

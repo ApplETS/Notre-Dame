@@ -33,12 +33,17 @@ const _dotHeight = 6.0;
 const _dotInactiveAlpha = 0.5;
 
 class SessionReminderCard extends StatelessWidget {
-  const SessionReminderCard({super.key});
+  /// Owned by the dashboard, so it is shared between layouts and refreshed with it.
+  final SessionReminderCardViewmodel model;
+
+  const SessionReminderCard({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SessionReminderCardViewmodel>.reactive(
-      viewModelBuilder: () => SessionReminderCardViewmodel(intl: AppIntl.of(context)!),
+      viewModelBuilder: () => model,
+      disposeViewModel: false,
+      initialiseSpecialViewModelsOnce: true,
       builder: (context, model, child) {
         return SessionReminderCardContent(
           reminder: model.sessionReminder,

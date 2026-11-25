@@ -12,15 +12,20 @@ import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.da
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
+  /// Owned by the dashboard, so it is shared between layouts and refreshed with it.
+  final GradesCardViewmodel model;
+
   /// Scroll direction of the grades. When [Axis.vertical], the card must have a bounded height.
   final Axis direction;
 
-  const GradesCard({super.key, this.direction = Axis.horizontal});
+  const GradesCard({super.key, required this.model, this.direction = Axis.horizontal});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesCardViewmodel>.reactive(
-      viewModelBuilder: () => GradesCardViewmodel(intl: AppIntl.of(context)!),
+      viewModelBuilder: () => model,
+      disposeViewModel: false,
+      initialiseSpecialViewModelsOnce: true,
       builder: (context, model, child) {
         List<Course> displayedCourses = List.from(model.courses);
 
