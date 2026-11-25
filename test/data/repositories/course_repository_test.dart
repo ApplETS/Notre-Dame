@@ -14,15 +14,15 @@ import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
-import 'package:notredame/data/services/signets-api/models/course_review.dart';
-import 'package:notredame/data/services/signets-api/models/course_summary.dart';
-import 'package:notredame/data/services/signets-api/models/replaced_day.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/services/signets_client.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/course_evaluation.dart';
+import 'package:notredame/domain/models/signets-api/course_review.dart';
+import 'package:notredame/domain/models/signets-api/course_summary.dart';
+import 'package:notredame/domain/models/signets-api/replaced_day.dart';
+import 'package:notredame/domain/models/signets-api/schedule_activity.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/utils/api_exception.dart';
 import '../../helpers.dart';
 import '../mocks/repositories/settings_repository_mock.dart';
@@ -30,21 +30,21 @@ import '../mocks/repositories/user_repository_mock.dart';
 import '../mocks/services/analytics_service_mock.dart';
 import '../mocks/services/cache_service_mock.dart';
 import '../mocks/services/networking_service_mock.dart';
-import '../mocks/services/signets_api_mock.dart';
+import '../mocks/services/signets_client_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;
   late NetworkingServiceMock networkingServiceMock;
   late UserRepositoryMock userRepositoryMock;
   late CacheServiceMock cacheManagerMock;
-  late SignetsAPIClientMock signetsApiMock;
+  late SignetsClientMock signetsApiMock;
   late SettingsRepositoryMock settingsManagerMock;
 
   late CourseRepository manager;
 
   final Session session = Session(
     shortName: 'NOW',
-    name: 'now',
+    longName: 'now',
     startDate: DateTime(2020),
     endDate: DateTime.now().add(const Duration(days: 10)),
     endDateCourses: DateTime(2020),
@@ -62,7 +62,7 @@ void main() {
     setUp(() {
       // Setup needed services and managers
       analyticsServiceMock = setupAnalyticsServiceMock();
-      signetsApiMock = setupSignetsApiMock();
+      signetsApiMock = setupSignetsClientMock();
       userRepositoryMock = setupUserRepositoryMock();
       cacheManagerMock = setupCacheManagerMock();
       networkingServiceMock = setupNetworkingServiceMock();
@@ -76,7 +76,7 @@ void main() {
       clearInteractions(analyticsServiceMock);
       unregister<AnalyticsService>();
       clearInteractions(signetsApiMock);
-      unregister<SignetsAPIClient>();
+      unregister<SignetsClient>();
       clearInteractions(userRepositoryMock);
       unregister<UserRepository>();
       clearInteractions(cacheManagerMock);
@@ -103,7 +103,7 @@ void main() {
       setUp(() {
         // Stub some sessions
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode([]));
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, [session]);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, [session]);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -114,7 +114,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
         expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities(fromCacheOnly: true);
@@ -148,7 +148,7 @@ void main() {
         CacheServiceMock.stubGetException(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey);
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
         expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
@@ -158,11 +158,11 @@ void main() {
         expect(manager.coursesActivities, isEmpty, reason: "The list of activities should be empty");
 
         verifyInOrder([
-          signetsApiMock.getCoursesActivities(session: session.shortName),
+          signetsApiMock.getCoursesActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any),
         ]);
 
-        verify(signetsApiMock.getSessions()).called(1);
+        verify(signetsApiMock.getSessionList()).called(1);
       });
 
       test("Doesn't retrieve sessions if they are already loaded", () async {
@@ -170,7 +170,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
         // Stub the SignetsAPI to return 1 activities
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, activities);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, activities);
 
         // Load the sessions
         await manager.getSessions();
@@ -187,7 +187,7 @@ void main() {
         expect(manager.coursesActivities, activities, reason: "The list of activities should not be empty");
 
         verifyInOrder([
-          signetsApiMock.getCoursesActivities(session: session.shortName),
+          signetsApiMock.getCoursesActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, any),
         ]);
 
@@ -197,13 +197,13 @@ void main() {
       test("getSessions fails", () async {
         // Stub SignetsApi to throw an exception
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock);
+        SignetsClientMock.stubGetSessionListException(signetsApiMock);
 
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
         expect(manager.coursesActivities, []);
         expect(manager.getCoursesActivities(), throwsA(isInstanceOf<ApiException>()));
@@ -231,7 +231,7 @@ void main() {
         );
 
         // Stub the SignetsAPI to return 2 activities
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [activity, courseActivity]);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [activity, courseActivity]);
 
         expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
@@ -244,7 +244,7 @@ void main() {
         ], reason: "The list of activities should not be empty");
 
         verifyInOrder([
-          signetsApiMock.getCoursesActivities(session: session.shortName),
+          signetsApiMock.getCoursesActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([activity, courseActivity])),
         ]);
       });
@@ -254,7 +254,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
         // Stub the SignetsAPI to return the same activity as the cache
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, activities);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, activities);
 
         expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
@@ -264,7 +264,7 @@ void main() {
         expect(manager.coursesActivities, activities, reason: "The list of activities should not have duplicata");
 
         verifyInOrder([
-          signetsApiMock.getCoursesActivities(session: session.shortName),
+          signetsApiMock.getCoursesActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities)),
         ]);
       });
@@ -291,7 +291,7 @@ void main() {
         );
 
         // Stub the SignetsAPI to return the same activity as the cache
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [changedActivity]);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, [changedActivity]);
 
         expect(manager.coursesActivities, []);
         final List<CourseActivity>? results = await manager.getCoursesActivities();
@@ -301,7 +301,7 @@ void main() {
         expect(manager.coursesActivities, [changedActivity], reason: "The list of activities should be updated");
 
         verifyInOrder([
-          signetsApiMock.getCoursesActivities(session: session.shortName),
+          signetsApiMock.getCoursesActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.coursesActivitiesCacheKey, jsonEncode([changedActivity])),
         ]);
       });
@@ -311,7 +311,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode([]));
 
         // Stub the SignetsAPI to throw an exception
-        SignetsAPIClientMock.stubGetCoursesActivitiesException(
+        SignetsClientMock.stubGetCoursesActivitiesException(
           signetsApiMock,
           session.shortName,
           exceptionToThrow: const ApiException(prefix: CourseRepository.tag),
@@ -326,7 +326,7 @@ void main() {
         await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
-          signetsApiMock.getCoursesActivities(session: session.shortName),
+          signetsApiMock.getCoursesActivities(session.shortName),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
       });
@@ -336,7 +336,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey, jsonEncode(activities));
 
         // Stub the SignetsAPI to return 1 activity
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, activities);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, activities);
 
         CacheServiceMock.stubUpdateException(cacheManagerMock, CourseRepository.coursesActivitiesCacheKey);
 
@@ -347,7 +347,7 @@ void main() {
         expect(results, activities);
         expect(manager.coursesActivities, activities, reason: "The list of activities should not be empty");
 
-        verifyInOrder([signetsApiMock.getCoursesActivities(session: session.shortName)]);
+        verifyInOrder([signetsApiMock.getCoursesActivities(session.shortName)]);
       });
 
       test("Should force fromCacheOnly mode when user has no connectivity", () async {
@@ -366,7 +366,7 @@ void main() {
     group("getScheduleActivities - ", () {
       final Session session = Session(
         shortName: 'NOW',
-        name: 'now',
+        longName: 'now',
         startDate: DateTime(2020),
         endDate: DateTime.now().add(const Duration(days: 10)),
         endDateCourses: DateTime(2020),
@@ -394,7 +394,7 @@ void main() {
       setUp(() {
         // Stub some sessions
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode([]));
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, [session]);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, [session]);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -409,7 +409,7 @@ void main() {
         );
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
 
         expect(manager.coursesActivities, []);
         final List<ScheduleActivity> results = await manager.getScheduleActivities();
@@ -420,7 +420,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
-          signetsApiMock.getScheduleActivities(session: session.shortName),
+          signetsApiMock.getScheduleActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any),
         ]);
       });
@@ -451,7 +451,7 @@ void main() {
         CacheServiceMock.stubGetException(cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey);
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
 
         expect(manager.scheduleActivities, isNull);
         final List<ScheduleActivity> results = await manager.getScheduleActivities();
@@ -462,11 +462,11 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
-          signetsApiMock.getScheduleActivities(session: session.shortName),
+          signetsApiMock.getScheduleActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any),
         ]);
 
-        verify(signetsApiMock.getSessions()).called(1);
+        verify(signetsApiMock.getSessionList()).called(1);
       });
 
       test("Doesn't retrieve sessions if they are already loaded", () async {
@@ -478,7 +478,7 @@ void main() {
         );
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
 
         // Load the sessions
         await manager.getSessions();
@@ -496,7 +496,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
-          signetsApiMock.getScheduleActivities(session: session.shortName),
+          signetsApiMock.getScheduleActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, any),
         ]);
 
@@ -506,7 +506,7 @@ void main() {
       test("getSessions fails", () async {
         // Stub SignetsApi to throw an exception
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock);
+        SignetsClientMock.stubGetSessionListException(signetsApiMock);
 
         // Stub the cache to return 1 activity
         CacheServiceMock.stubGet(
@@ -516,7 +516,7 @@ void main() {
         );
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, []);
 
         expect(manager.scheduleActivities, isNull);
         expect(manager.getScheduleActivities(), throwsA(isInstanceOf<ApiException>()));
@@ -541,7 +541,7 @@ void main() {
         );
 
         // Stub the SignetsAPI to return the same activity as the cache
-        SignetsAPIClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, scheduleActivities);
+        SignetsClientMock.stubGetScheduleActivities(signetsApiMock, session.shortName, scheduleActivities);
 
         expect(manager.scheduleActivities, isNull);
         final List<ScheduleActivity> results = await manager.getScheduleActivities();
@@ -556,7 +556,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
-          signetsApiMock.getScheduleActivities(session: session.shortName),
+          signetsApiMock.getScheduleActivities(session.shortName),
           cacheManagerMock.update(CourseRepository.scheduleActivitiesCacheKey, jsonEncode(scheduleActivities)),
         ]);
       });
@@ -566,7 +566,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.scheduleActivitiesCacheKey, jsonEncode([]));
 
         // Stub the SignetsAPI to throw an exception
-        SignetsAPIClientMock.stubGetScheduleActivitiesException(
+        SignetsClientMock.stubGetScheduleActivitiesException(
           signetsApiMock,
           session.shortName,
           exceptionToThrow: const ApiException(prefix: CourseRepository.tag),
@@ -582,7 +582,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.scheduleActivitiesCacheKey),
-          signetsApiMock.getScheduleActivities(session: session.shortName),
+          signetsApiMock.getScheduleActivities(session.shortName),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
       });
@@ -592,7 +592,7 @@ void main() {
       final List<Session> sessions = [
         Session(
           shortName: 'H2018',
-          name: 'Hiver 2018',
+          longName: 'Hiver 2018',
           startDate: DateTime(2018, 1, 4),
           endDate: DateTime(2018, 4, 23),
           endDateCourses: DateTime(2018, 4, 11),
@@ -612,7 +612,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode(sessions));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, []);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, []);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -628,7 +628,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
-          signetsApiMock.getSessions(),
+          signetsApiMock.getSessionList(),
           cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions)),
         ]);
       });
@@ -647,7 +647,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
-          signetsApiMock.getSessions(),
+          signetsApiMock.getSessionList(),
           cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode([])),
         ]);
       });
@@ -659,7 +659,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, sessions);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, sessions);
 
         expect(manager.sessions, isNull);
         final results = await manager.getSessions();
@@ -670,7 +670,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
-          signetsApiMock.getSessions(),
+          signetsApiMock.getSessionList(),
           cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions)),
         ]);
       });
@@ -678,7 +678,7 @@ void main() {
       test("SignetsAPI return a session that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, sessions);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, sessions);
 
         expect(manager.sessions, isNull);
         final results = await manager.getSessions();
@@ -689,7 +689,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
-          signetsApiMock.getSessions(),
+          signetsApiMock.getSessionList(),
           cacheManagerMock.update(CourseRepository.sessionsCacheKey, jsonEncode(sessions)),
         ]);
       });
@@ -700,7 +700,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock);
+        SignetsClientMock.stubGetSessionListException(signetsApiMock);
 
         expect(manager.sessions, isNull);
         expect(manager.getSessions(), throwsA(isInstanceOf<ApiException>()));
@@ -710,7 +710,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.sessionsCacheKey),
-          signetsApiMock.getSessions(),
+          signetsApiMock.getSessionList(),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
@@ -726,7 +726,7 @@ void main() {
         CacheServiceMock.stubUpdateException(cacheManagerMock, CourseRepository.sessionsCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, sessions);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, sessions);
 
         expect(manager.sessions, isNull);
         final results = await manager.getSessions();
@@ -735,14 +735,14 @@ void main() {
         expect(results, sessions);
         expect(manager.sessions, sessions, reason: 'The sessions list should now be loaded even if the caching fails.');
 
-        verifyInOrder([cacheManagerMock.get(CourseRepository.sessionsCacheKey), signetsApiMock.getSessions()]);
+        verifyInOrder([cacheManagerMock.get(CourseRepository.sessionsCacheKey), signetsApiMock.getSessionList()]);
       });
 
       test("UserRepository return an exception", () async {
         // Stub to simulate presence of session cache
         reset(cacheManagerMock);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode([]));
-        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock);
+        SignetsClientMock.stubGetSessionListException(signetsApiMock);
 
         expect(manager.sessions, isNull);
         expect(manager.getSessions(), throwsA(isInstanceOf<ApiException>()));
@@ -767,7 +767,7 @@ void main() {
 
         final sessionsCache = await manager.getSessions();
         expect(sessionsCache, sessions);
-        verifyNever(signetsApiMock.getSessions());
+        verifyNever(signetsApiMock.getSessionList());
       });
     });
 
@@ -776,7 +776,7 @@ void main() {
 
       final Session oldSession = Session(
         shortName: 'H2018',
-        name: 'Hiver 2018',
+        longName: 'Hiver 2018',
         startDate: DateTime(2018, 1, 4),
         endDate: DateTime(2018, 4, 23),
         endDateCourses: DateTime(2018, 4, 11),
@@ -793,7 +793,7 @@ void main() {
       test("current session ends today", () async {
         final Session active = Session(
           shortName: 'NOW',
-          name: 'now',
+          longName: 'now',
           startDate: DateTime(2020),
           endDate: DateTime(now.year, now.month, now.day),
           endDateCourses: DateTime(2020),
@@ -809,7 +809,7 @@ void main() {
 
         final sessions = [oldSession, active];
 
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, sessions);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, sessions);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode(sessions));
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
@@ -821,7 +821,7 @@ void main() {
       test("current session ended yesterday", () async {
         final Session old = Session(
           shortName: 'NOW',
-          name: 'now',
+          longName: 'now',
           startDate: DateTime(2020),
           endDate: DateTime(now.year, now.month, now.day).subtract(const Duration(days: 1)),
           endDateCourses: DateTime(2020),
@@ -837,7 +837,7 @@ void main() {
 
         final sessions = [oldSession, old];
 
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, sessions);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, sessions);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode(sessions));
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
@@ -849,7 +849,7 @@ void main() {
       test("current session ends tomorrow", () async {
         final Session active = Session(
           shortName: 'NOW',
-          name: 'now',
+          longName: 'now',
           startDate: DateTime(2020),
           endDate: DateTime(now.year, now.month, now.day).add(const Duration(days: 1)),
           endDateCourses: DateTime(2020),
@@ -865,7 +865,7 @@ void main() {
 
         final sessions = [oldSession, active];
 
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, sessions);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, sessions);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode(sessions));
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
@@ -875,7 +875,7 @@ void main() {
       });
 
       test("there is no session", () async {
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, []);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, []);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode([]));
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
 
@@ -910,7 +910,7 @@ void main() {
           ),
         ],
       );
-      final Course courseWithGradeDuplicate = Course(
+      const Course courseWithGradeDuplicate = Course(
         acronym: 'GEN101',
         group: '02',
         session: 'É2020',
@@ -920,7 +920,7 @@ void main() {
         title: 'Cours générique',
       );
 
-      final Course courseWithoutGrade = Course(
+      const Course courseWithoutGrade = Course(
         acronym: 'GEN101',
         group: '02',
         session: 'H2020',
@@ -948,7 +948,7 @@ void main() {
           ],
         ),
       );
-      final Course courseWithoutGradeAndSummaryAndEvaluation = Course(
+      const Course courseWithoutGradeAndSummaryAndEvaluation = Course(
         acronym: 'GEN101',
         group: '02',
         session: 'H2020',
@@ -959,7 +959,7 @@ void main() {
 
       setUp(() {
         // Stub some sessions
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, [session]);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, [session]);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode([]));
 
         // Stub to simulate that the user has an active internet connection
@@ -967,20 +967,22 @@ void main() {
       });
 
       test("Courses are loaded from cache and cache is updated", () async {
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseWithGrade]);
-        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock);
+        SignetsClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseWithGrade]);
+        SignetsClientMock.stubGetCourseReviews(signetsApiMock);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
+        // The reviews come from Signets, which has no review for this course.
+        final courseWithoutReviews = courseWithGrade.copyWith(reviews: null);
 
         expect(results, isInstanceOf<List<Course>>());
-        expect(results, [courseWithGrade]);
-        expect(manager.courses, [courseWithGrade], reason: 'The courses list should now be loaded.');
+        expect(results, [courseWithoutReviews]);
+        expect(manager.courses, [courseWithoutReviews], reason: 'The courses list should now be loaded.');
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade])),
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseWithoutReviews])),
         ]);
       });
 
@@ -1009,7 +1011,7 @@ void main() {
       });
 
       test("Signets return a updated version of a course", () async {
-        final Course courseFetched = Course(
+        const Course courseFetched = Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1024,8 +1026,8 @@ void main() {
           CourseRepository.coursesCacheKey,
           jsonEncode([courseWithGrade, courseWithGradeDuplicate]),
         );
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched, courseWithGradeDuplicate]);
-        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock);
+        SignetsClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched, courseWithGradeDuplicate]);
+        SignetsClientMock.stubGetCourseReviews(signetsApiMock);
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
@@ -1049,7 +1051,7 @@ void main() {
 
       test("Trying to recover courses from cache failed (exception raised)", () async {
         expect(manager.courses, isNull);
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock);
+        SignetsClientMock.stubGetCourses(signetsApiMock);
         CacheServiceMock.stubGetException(cacheManagerMock, CourseRepository.coursesCacheKey);
 
         final results = await manager.getCourses(fromCacheOnly: true);
@@ -1066,7 +1068,7 @@ void main() {
 
       test("Signets raised an exception while trying to recover courses", () async {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
-        SignetsAPIClientMock.stubGetCoursesException(signetsApiMock);
+        SignetsClientMock.stubGetCoursesException(signetsApiMock);
 
         expect(manager.courses, isNull);
 
@@ -1090,7 +1092,7 @@ void main() {
 
       test("Student dropped out of a course, the course should disappear", () async {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([courseWithoutGrade]));
-        SignetsAPIClientMock.stubGetCoursesException(signetsApiMock);
+        SignetsClientMock.stubGetCoursesException(signetsApiMock);
 
         expect(manager.courses, isNull);
 
@@ -1113,7 +1115,7 @@ void main() {
       });
 
       test("Courses don't have grade so getCourseSummary is called", () async {
-        final Course courseFetched = Course(
+        const Course courseFetched = Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1121,7 +1123,7 @@ void main() {
           numberOfCredits: 3,
           title: 'Cours générique',
         );
-        final CourseSummary summary = CourseSummary(
+        const CourseSummary summary = CourseSummary(
           currentMark: 5,
           currentMarkInPercent: 50,
           markOutOf: 10,
@@ -1131,7 +1133,7 @@ void main() {
           percentileRank: 99,
           evaluations: [],
         );
-        final Course courseUpdated = Course(
+        const Course courseUpdated = Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1141,9 +1143,9 @@ void main() {
           summary: summary,
         );
 
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock);
-        SignetsAPIClientMock.stubGetCourseSummary(signetsApiMock, courseFetched, summaryToReturn: summary);
+        SignetsClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
+        SignetsClientMock.stubGetCourseReviews(signetsApiMock);
+        SignetsClientMock.stubGetCourseSummary(signetsApiMock, courseFetched, summaryToReturn: summary);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
@@ -1156,17 +1158,13 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          signetsApiMock.getCourseSummary(
-            session: courseFetched.session,
-            acronym: courseFetched.acronym,
-            group: courseFetched.group,
-          ),
+          signetsApiMock.getCourseSummary(courseFetched.session, courseFetched.acronym, courseFetched.group),
           cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated])),
         ]);
       });
 
       test("getCourseSummary fails", () async {
-        final Course courseFetched = Course(
+        const Course courseFetched = Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1175,9 +1173,9 @@ void main() {
           title: 'Cours générique',
         );
 
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock);
-        SignetsAPIClientMock.stubGetCourseSummaryException(signetsApiMock, courseFetched);
+        SignetsClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
+        SignetsClientMock.stubGetCourseReviews(signetsApiMock);
+        SignetsClientMock.stubGetCourseSummaryException(signetsApiMock, courseFetched);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
@@ -1190,34 +1188,32 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          signetsApiMock.getCourseSummary(
-            session: courseFetched.session,
-            acronym: courseFetched.acronym,
-            group: courseFetched.group,
-          ),
+          signetsApiMock.getCourseSummary(courseFetched.session, courseFetched.acronym, courseFetched.group),
           cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched])),
         ]);
       });
 
       test("Cache update fails, should still return the list of courses", () async {
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseWithGrade]);
-        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock);
+        SignetsClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseWithGrade]);
+        SignetsClientMock.stubGetCourseReviews(signetsApiMock);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade]));
         CacheServiceMock.stubUpdateException(cacheManagerMock, CourseRepository.coursesCacheKey);
 
         expect(manager.courses, isNull);
         final results = await manager.getCourses();
+        // The reviews come from Signets, which has no review for this course.
+        final courseWithoutReviews = courseWithGrade.copyWith(reviews: null);
 
         expect(results, isInstanceOf<List<Course>>());
-        expect(results, [courseWithGrade]);
+        expect(results, [courseWithoutReviews]);
         expect(manager.courses, [
-          courseWithGrade,
+          courseWithoutReviews,
         ], reason: 'The courses list should now be loaded even if the caching fails.');
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseWithGrade])),
+          cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseWithoutReviews])),
         ]);
       });
 
@@ -1225,7 +1221,7 @@ void main() {
         // Stub to simulate presence of session cache
         reset(cacheManagerMock);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
-        SignetsAPIClientMock.stubGetCoursesException(signetsApiMock);
+        SignetsClientMock.stubGetCoursesException(signetsApiMock);
 
         expect(manager.sessions, isNull);
         expect(manager.getCourses(), throwsA(isInstanceOf<ApiException>()));
@@ -1256,7 +1252,7 @@ void main() {
       });
 
       test("there is no evaluation for a course, should return null", () async {
-        final Course courseFetched = Course(
+        const Course courseFetched = Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1266,8 +1262,8 @@ void main() {
           title: 'Cours générique',
         );
 
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(signetsApiMock, session: session);
+        SignetsClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
+        SignetsClientMock.stubGetCourseReviews(signetsApiMock, session: session);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
@@ -1280,13 +1276,13 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          signetsApiMock.getCourseReviews(session: session.shortName),
+          signetsApiMock.getCourseReviews(session.shortName),
           cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched])),
         ]);
       });
 
       test("there is an evaluation for a course, course should be updated", () async {
-        final Course courseFetched = Course(
+        const Course courseFetched = Course(
           acronym: 'GEN101',
           group: '02',
           session: 'NOW',
@@ -1319,12 +1315,8 @@ void main() {
           reviews: courseReviews,
         );
 
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviews(
-          signetsApiMock,
-          session: session,
-          reviewsToReturn: [courseReviews[0]],
-        );
+        SignetsClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
+        SignetsClientMock.stubGetCourseReviews(signetsApiMock, session: session, reviewsToReturn: [courseReviews[0]]);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
@@ -1337,13 +1329,13 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          signetsApiMock.getCourseReviews(session: session.shortName),
+          signetsApiMock.getCourseReviews(session.shortName),
           cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([updated])),
         ]);
       });
 
       test("_getCourseReviews fails", () async {
-        final Course courseFetched = Course(
+        const Course courseFetched = Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1353,8 +1345,8 @@ void main() {
           title: 'Cours générique',
         );
 
-        SignetsAPIClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
-        SignetsAPIClientMock.stubGetCourseReviewsException(signetsApiMock, session: session);
+        SignetsClientMock.stubGetCourses(signetsApiMock, coursesToReturn: [courseFetched]);
+        SignetsClientMock.stubGetCourseReviewsException(signetsApiMock, session: session);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
 
         expect(manager.courses, isNull);
@@ -1367,7 +1359,7 @@ void main() {
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.coursesCacheKey),
           signetsApiMock.getCourses(),
-          signetsApiMock.getCourseReviews(session: session.shortName),
+          signetsApiMock.getCourseReviews(session.shortName),
           cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseFetched])),
         ]);
       });
@@ -1380,7 +1372,7 @@ void main() {
 
       setUp(() {
         // Reset models
-        course = Course(
+        course = const Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1388,7 +1380,7 @@ void main() {
           numberOfCredits: 3,
           title: 'Cours générique',
         );
-        courseUpdated = Course(
+        courseUpdated = const Course(
           acronym: 'GEN101',
           group: '02',
           session: 'H2020',
@@ -1422,7 +1414,7 @@ void main() {
       });
 
       test("CourseSummary is fetched and cache is updated", () async {
-        SignetsAPIClientMock.stubGetCourseSummary(signetsApiMock, course, summaryToReturn: courseUpdated.summary);
+        SignetsClientMock.stubGetCourseSummary(signetsApiMock, course, summaryToReturn: courseUpdated.summary);
 
         expect(manager.courses, isNull);
         final results = await manager.getCourseSummary(course);
@@ -1432,14 +1424,14 @@ void main() {
         expect(manager.courses, [courseUpdated], reason: 'The courses list should now be loaded.');
 
         verifyInOrder([
-          signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+          signetsApiMock.getCourseSummary(course.session, course.acronym, course.group),
           cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated])),
         ]);
       });
 
       test("Course is updated on the repository", () async {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([course]));
-        SignetsAPIClientMock.stubGetCourseSummary(signetsApiMock, course, summaryToReturn: courseUpdated.summary);
+        SignetsClientMock.stubGetCourseSummary(signetsApiMock, course, summaryToReturn: courseUpdated.summary);
 
         // Load a course
         await manager.getCourses(fromCacheOnly: true);
@@ -1457,13 +1449,13 @@ void main() {
         expect(manager.courses, [courseUpdated], reason: 'The courses list should now be updated.');
 
         verifyInOrder([
-          signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+          signetsApiMock.getCourseSummary(course.session, course.acronym, course.group),
           cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated])),
         ]);
       });
 
       test("Signets raised an exception while trying to recover summary", () async {
-        SignetsAPIClientMock.stubGetCourseSummaryException(signetsApiMock, course);
+        SignetsClientMock.stubGetCourseSummaryException(signetsApiMock, course);
 
         expect(manager.courses, isNull);
 
@@ -1473,7 +1465,7 @@ void main() {
         await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
-          signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+          signetsApiMock.getCourseSummary(course.session, course.acronym, course.group),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
@@ -1483,7 +1475,7 @@ void main() {
       });
 
       test("Cache update fails, should still return the course with its summary", () async {
-        SignetsAPIClientMock.stubGetCourseSummary(signetsApiMock, course, summaryToReturn: courseUpdated.summary);
+        SignetsClientMock.stubGetCourseSummary(signetsApiMock, course, summaryToReturn: courseUpdated.summary);
         CacheServiceMock.stubUpdateException(cacheManagerMock, CourseRepository.coursesCacheKey);
 
         expect(manager.courses, isNull);
@@ -1496,7 +1488,7 @@ void main() {
         ], reason: 'The courses list should now be loaded even if the caching fails.');
 
         verifyInOrder([
-          signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+          signetsApiMock.getCourseSummary(course.session, course.acronym, course.group),
           cacheManagerMock.update(CourseRepository.coursesCacheKey, jsonEncode([courseUpdated])),
         ]);
       });
@@ -1505,7 +1497,7 @@ void main() {
         // Stub to simulate presence of session cache
         reset(cacheManagerMock);
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.coursesCacheKey, jsonEncode([]));
-        SignetsAPIClientMock.stubGetCourseSummaryException(signetsApiMock, course);
+        SignetsClientMock.stubGetCourseSummaryException(signetsApiMock, course);
 
         expect(manager.sessions, isNull);
         expect(manager.getCourseSummary(course), throwsA(isInstanceOf<ApiException>()));
@@ -1514,7 +1506,7 @@ void main() {
         await untilCalled(analyticsServiceMock.logError(CourseRepository.tag, any, any, any));
 
         verifyInOrder([
-          signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
+          signetsApiMock.getCourseSummary(course.session, course.acronym, course.group),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
 
@@ -1529,9 +1521,7 @@ void main() {
 
         final results = await manager.getCourseSummary(course);
         expect(results, course);
-        verifyNever(
-          signetsApiMock.getCourseSummary(session: course.session, acronym: course.acronym, group: course.group),
-        );
+        verifyNever(signetsApiMock.getCourseSummary(course.session, course.acronym, course.group));
       });
     });
 
@@ -1547,7 +1537,7 @@ void main() {
       setUp(() {
         // Stub some sessions
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.sessionsCacheKey, jsonEncode([]));
-        SignetsAPIClientMock.stubGetSessions(signetsApiMock, [session]);
+        SignetsClientMock.stubGetSessionList(signetsApiMock, [session]);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -1558,7 +1548,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
         // Stub the SignetsAPI to return 0 replaced days
-        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, []);
 
         expect(manager.replacedDays, isNull);
         final List<ReplacedDay>? results = await manager.getReplacedDays(fromCacheOnly: true);
@@ -1592,7 +1582,7 @@ void main() {
         CacheServiceMock.stubGetException(cacheManagerMock, CourseRepository.replacedDaysCacheKey);
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, []);
 
         expect(manager.replacedDays, isNull);
         final List<ReplacedDay>? results = await manager.getReplacedDays();
@@ -1603,11 +1593,11 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
-          signetsApiMock.getReplacedDays(session: session.shortName),
+          signetsApiMock.getReplacedDays(session.shortName),
           cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, any),
         ]);
 
-        verify(signetsApiMock.getSessions()).called(1);
+        verify(signetsApiMock.getSessionList()).called(1);
       });
 
       test("Doesn't retrieve sessions if they are already loaded", () async {
@@ -1615,7 +1605,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
         // Stub the SignetsAPI to return 1 activities
-        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+        SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
         // Load the sessions
         await manager.getSessions();
@@ -1633,7 +1623,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
-          signetsApiMock.getReplacedDays(session: session.shortName),
+          signetsApiMock.getReplacedDays(session.shortName),
           cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, any),
         ]);
 
@@ -1643,13 +1633,13 @@ void main() {
       test("Throws ApiException when getSessions fails during getReplacedDays", () async {
         // Stub SignetsApi to throw an exception
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetSessionsException(signetsApiMock);
+        SignetsClientMock.stubGetSessionListException(signetsApiMock);
 
         // Stub the cache to return 1 replaced day
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
         // Stub the SignetsAPI to return 0 activities
-        SignetsAPIClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
+        SignetsClientMock.stubGetCoursesActivities(signetsApiMock, session.shortName, []);
 
         expect(manager.replacedDays, isNull);
         expect(manager.getReplacedDays(), throwsA(isInstanceOf<ApiException>()));
@@ -1676,7 +1666,7 @@ void main() {
         );
 
         // Stub the SignetsAPI to return 2 replaced days
-        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, [replacedDay, replacedDayNew]);
+        SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, [replacedDay, replacedDayNew]);
 
         expect(manager.replacedDays, isNull);
         final List<ReplacedDay>? results = await manager.getReplacedDays();
@@ -1690,7 +1680,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
-          signetsApiMock.getReplacedDays(session: session.shortName),
+          signetsApiMock.getReplacedDays(session.shortName),
           cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, jsonEncode([replacedDay, replacedDayNew])),
         ]);
       });
@@ -1700,7 +1690,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
         // Stub the SignetsAPI to return the same replaced day as the cache
-        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+        SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
         expect(manager.replacedDays, isNull);
         final List<ReplacedDay>? results = await manager.getReplacedDays();
@@ -1711,7 +1701,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
-          signetsApiMock.getReplacedDays(session: session.shortName),
+          signetsApiMock.getReplacedDays(session.shortName),
           cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays)),
         ]);
       });
@@ -1734,7 +1724,7 @@ void main() {
         );
 
         // Stub the SignetsAPI to return the same replaced days as the cache
-        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, [changedReplacedDay]);
+        SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, [changedReplacedDay]);
 
         expect(manager.replacedDays, isNull);
         final List<ReplacedDay>? results = await manager.getReplacedDays();
@@ -1745,7 +1735,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
-          signetsApiMock.getReplacedDays(session: session.shortName),
+          signetsApiMock.getReplacedDays(session.shortName),
           cacheManagerMock.update(CourseRepository.replacedDaysCacheKey, jsonEncode([changedReplacedDay])),
         ]);
       });
@@ -1755,7 +1745,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode([]));
 
         // Stub the SignetsAPI to throw an exception
-        SignetsAPIClientMock.stubGetReplacedDaysException(
+        SignetsClientMock.stubGetReplacedDaysException(
           signetsApiMock,
           session.shortName,
           exceptionToThrow: const ApiException(prefix: CourseRepository.tag),
@@ -1771,7 +1761,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
-          signetsApiMock.getReplacedDays(session: session.shortName),
+          signetsApiMock.getReplacedDays(session.shortName),
           analyticsServiceMock.logError(CourseRepository.tag, any, any, any),
         ]);
       });
@@ -1781,7 +1771,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, CourseRepository.replacedDaysCacheKey, jsonEncode(replacedDays));
 
         // Stub the SignetsAPI to return 1 replaced day
-        SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+        SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
         CacheServiceMock.stubUpdateException(cacheManagerMock, CourseRepository.replacedDaysCacheKey);
 
@@ -1794,7 +1784,7 @@ void main() {
 
         verifyInOrder([
           cacheManagerMock.get(CourseRepository.replacedDaysCacheKey),
-          signetsApiMock.getReplacedDays(session: session.shortName),
+          signetsApiMock.getReplacedDays(session.shortName),
         ]);
       });
 
@@ -1829,7 +1819,7 @@ void main() {
           expect(manager.replacedDays, replacedDays);
 
           // Verify no API call was made (only checked for sessions, not replaced days)
-          verifyNever(signetsApiMock.getReplacedDays(session: session.shortName));
+          verifyNever(signetsApiMock.getReplacedDays(session.shortName));
         });
 
         test("Fetches from API when cache is expired", () async {
@@ -1843,7 +1833,7 @@ void main() {
           );
 
           // Stub the SignetsAPI to return the same replaced days
-          SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+          SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
           expect(manager.replacedDays, isNull);
           final List<ReplacedDay>? results = await manager.getReplacedDays();
@@ -1852,7 +1842,7 @@ void main() {
           expect(results, replacedDays);
 
           // Verify API call was made
-          verify(signetsApiMock.getReplacedDays(session: session.shortName)).called(1);
+          verify(signetsApiMock.getReplacedDays(session.shortName)).called(1);
         });
 
         test("Fetches from API when forceRefresh is true", () async {
@@ -1866,7 +1856,7 @@ void main() {
           );
 
           // Stub the SignetsAPI to return the same replaced days
-          SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+          SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
           expect(manager.replacedDays, isNull);
           final List<ReplacedDay>? results = await manager.getReplacedDays(forceRefresh: true);
@@ -1875,7 +1865,7 @@ void main() {
           expect(results, replacedDays);
 
           // Verify API call was made despite valid cache
-          verify(signetsApiMock.getReplacedDays(session: session.shortName)).called(1);
+          verify(signetsApiMock.getReplacedDays(session.shortName)).called(1);
         });
 
         test("Fetches from API when no timestamp exists", () async {
@@ -1886,7 +1876,7 @@ void main() {
           SettingsRepositoryMock.stubReplacedDaysCacheExpiration(settingsManagerMock, toReturn: null);
 
           // Stub the SignetsAPI to return the same replaced days
-          SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+          SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
           expect(manager.replacedDays, isNull);
           final List<ReplacedDay>? results = await manager.getReplacedDays();
@@ -1895,7 +1885,7 @@ void main() {
           expect(results, replacedDays);
 
           // Verify API call was made
-          verify(signetsApiMock.getReplacedDays(session: session.shortName)).called(1);
+          verify(signetsApiMock.getReplacedDays(session.shortName)).called(1);
         });
 
         test("Updates cache timestamp after successful API fetch", () async {
@@ -1906,7 +1896,7 @@ void main() {
           SettingsRepositoryMock.stubReplacedDaysCacheExpiration(settingsManagerMock, toReturn: null);
 
           // Stub the SignetsAPI to return the same replaced days
-          SignetsAPIClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
+          SignetsClientMock.stubGetReplacedDays(signetsApiMock, session.shortName, replacedDays);
 
           await manager.getReplacedDays();
 

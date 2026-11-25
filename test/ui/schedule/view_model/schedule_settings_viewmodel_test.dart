@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notredame/data/models/activity_code.dart';
 import 'package:notredame/data/repositories/settings_repository.dart';
 import 'package:notredame/data/services/calendar_service.dart';
-import 'package:notredame/data/services/signets-api/models/schedule_activity.dart';
+import 'package:notredame/domain/models/signets-api/schedule_activity.dart';
 import 'package:notredame/ui/schedule/schedule_controller.dart';
 import 'package:notredame/ui/schedule/view_model/schedule_settings_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';

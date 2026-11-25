@@ -3,12 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/domain/models/signets-api/program.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/student/widgets/student_program.dart';
 import '../../../helpers.dart';
 
-final _program = Program(
+const _program = Program(
   name: 'Bac',
   average: '3.01/4.30',
   status: 'Actif',
@@ -32,7 +32,7 @@ void main() {
 
     group('has all categories - ', () {
       testWidgets('contains one expansion tile', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: StudentProgram(_program)));
+        await tester.pumpWidget(localizedWidget(child: const StudentProgram(_program)));
         await tester.pumpAndSettle();
 
         expect(find.byType(ExpansionTile), findsOneWidget);
@@ -41,7 +41,7 @@ void main() {
       });
 
       testWidgets('contains infos', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: StudentProgram(_program)));
+        await tester.pumpWidget(localizedWidget(child: const StudentProgram(_program)));
         await tester.pumpAndSettle();
 
         // Find the ExpansionTile and tap it to expand
@@ -61,7 +61,7 @@ void main() {
       });
 
       testWidgets('contains 17 Text fields', (WidgetTester tester) async {
-        await tester.pumpWidget(localizedWidget(child: StudentProgram(_program)));
+        await tester.pumpWidget(localizedWidget(child: const StudentProgram(_program)));
         await tester.pumpAndSettle();
 
         // Find the ExpansionTile and tap it to expand

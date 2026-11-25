@@ -6,8 +6,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_evaluation.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';

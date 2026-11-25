@@ -3,7 +3,7 @@ import 'package:calendar_view/calendar_view.dart';
 
 // Project imports:
 import 'package:notredame/data/models/activity_code.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
 import 'package:notredame/utils/date_extensions.dart';
 
 /// Analyzes course activity schedules to determine patterns and gaps.

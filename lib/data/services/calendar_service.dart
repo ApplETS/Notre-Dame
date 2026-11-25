@@ -6,7 +6,7 @@ import 'package:device_calendar_plus/device_calendar_plus.dart';
 
 // Project imports:
 import 'package:notredame/data/models/hello/news.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
 
 /// Formats that the calendar can display.
 enum CalendarTimeFormat { month, week, day }

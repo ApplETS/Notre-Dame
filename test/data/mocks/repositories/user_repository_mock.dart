@@ -4,8 +4,8 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/user_repository.dart';
-import 'package:notredame/data/services/signets-api/models/profile_student.dart';
-import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/domain/models/signets-api/profile_student.dart';
+import 'package:notredame/domain/models/signets-api/program.dart';
 import 'package:notredame/utils/api_exception.dart';
 import 'user_repository_mock.mocks.dart';
 

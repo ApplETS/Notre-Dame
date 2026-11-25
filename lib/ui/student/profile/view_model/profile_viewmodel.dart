@@ -6,8 +6,8 @@ import 'package:stacked/stacked.dart';
 import 'package:notredame/data/models/programs_credits.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
-import 'package:notredame/data/services/signets-api/models/profile_student.dart';
-import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/domain/models/signets-api/profile_student.dart';
+import 'package:notredame/domain/models/signets-api/program.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 
@@ -24,7 +24,7 @@ class ProfileViewModel extends FutureViewModel<List<Program>> {
   List<Program> _programList = List.empty();
 
   /// Student's profile
-  final ProfileStudent _student = ProfileStudent(
+  final ProfileStudent _student = const ProfileStudent(
     balance: "",
     firstName: "",
     lastName: "",

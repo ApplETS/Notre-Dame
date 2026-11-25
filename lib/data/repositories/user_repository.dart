@@ -9,9 +9,9 @@ import 'package:material_ui/material_ui.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/signets-api/models/profile_student.dart';
-import 'package:notredame/data/services/signets-api/models/program.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/services/signets_client.dart';
+import 'package:notredame/domain/models/signets-api/profile_student.dart';
+import 'package:notredame/domain/models/signets-api/program.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/utils/cache_exception.dart';
 
@@ -37,7 +37,7 @@ class UserRepository {
   final CacheService _cacheManager = locator<CacheService>();
 
   /// Used to access the Signets API
-  final SignetsAPIClient _signetsApiClient = locator<SignetsAPIClient>();
+  final SignetsClient _signetsClient = locator<SignetsClient>();
 
   /// Information for the student profile
   ProfileStudent? _info;
@@ -79,7 +79,7 @@ class UserRepository {
     }
 
     try {
-      _programs = await _signetsApiClient.getPrograms();
+      _programs = (await _signetsClient.getPrograms()).dataOr([]);
       _logger.d("$tag - getPrograms: ${_programs!.length} programs fetched.");
 
       // Update cache
@@ -123,7 +123,7 @@ class UserRepository {
     }
 
     try {
-      final fetchedInfo = await _signetsApiClient.getStudentInfo();
+      final fetchedInfo = (await _signetsClient.getStudentInfo()).requireData();
 
       _logger.d("$tag - getInfo: $fetchedInfo info fetched.");
 

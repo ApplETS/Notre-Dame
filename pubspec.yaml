@@ -68,7 +68,6 @@ dependencies:
   freezed_annotation: ^3.1.0
   retrofit: ^4.10.0
   connectivity_plus: ^7.3.2
-  xml: ^7.0.1
 
   # Storage
   shared_preferences: ^2.5.6

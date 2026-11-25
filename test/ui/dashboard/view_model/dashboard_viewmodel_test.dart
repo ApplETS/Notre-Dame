@@ -8,7 +8,7 @@ import 'package:mockito/mockito.dart';
 
 // Project imports:
 import 'package:notredame/data/models/broadcast_message.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import '../../../data/mocks/repositories/broadcast_message_repository_mock.mocks.dart';
@@ -37,7 +37,7 @@ void main() {
   // Session
   final Session session = Session(
     shortName: "É2020",
-    name: "Ete 2020",
+    longName: "Ete 2020",
     startDate: DateTime(2020).subtract(const Duration(days: 1)),
     endDate: DateTime(2020).add(const Duration(days: 1)),
     endDateCourses: DateTime(2022, 1, 10, 1, 1),

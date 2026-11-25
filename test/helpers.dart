@@ -27,7 +27,6 @@ import 'package:notredame/data/services/networking_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
 import 'package:notredame/data/services/schedule_service.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
 import 'package:notredame/data/services/signets_client.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
@@ -52,7 +51,6 @@ import 'data/mocks/services/networking_service_mock.dart';
 import 'data/mocks/services/preferences_service_mock.dart';
 import 'data/mocks/services/remote_config_service_mock.dart';
 import 'data/mocks/services/schedule_service_mock.dart';
-import 'data/mocks/services/signets_api_mock.dart';
 import 'data/mocks/services/signets_client_mock.dart';
 
 /// Unregister the service [T] from GetIt
@@ -76,16 +74,6 @@ Widget localizedWidget({
     home: useScaffold ? Scaffold(body: child) : child,
   ),
 );
-
-/// Load a mock of the [SignetsAPIClient]
-SignetsAPIClientMock setupSignetsApiMock() {
-  unregister<SignetsAPIClient>();
-  final service = SignetsAPIClientMock();
-
-  locator.registerSingleton<SignetsAPIClient>(service);
-
-  return service;
-}
 
 /// Load a mock of the [NewsRepository]
 NewsRepositoryMock setupNewsRepositoryMock() {

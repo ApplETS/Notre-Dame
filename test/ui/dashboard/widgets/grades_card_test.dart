@@ -5,8 +5,8 @@ import 'package:material_ui/material_ui.dart';
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
 import 'package:notredame/data/services/navigation_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
@@ -15,7 +15,7 @@ import '../../../data/mocks/repositories/course_repository_mock.dart';
 import '../../../helpers.dart';
 
 void main() {
-  final Course course1 = Course(
+  const Course course1 = Course(
     acronym: 'GEN101',
     group: '02',
     session: 'É2020',
@@ -25,7 +25,7 @@ void main() {
     title: 'Cours générique',
   );
 
-  final Course course2 = Course(
+  const Course course2 = Course(
     acronym: 'GEN102',
     group: '02',
     session: 'É2020',
@@ -38,7 +38,7 @@ void main() {
   // Session
   final Session session = Session(
     shortName: "É2020",
-    name: "Ete 2020",
+    longName: "Ete 2020",
     startDate: DateTime(2020).subtract(const Duration(days: 1)),
     endDate: DateTime(2020).add(const Duration(days: 1)),
     endDateCourses: DateTime(2022, 1, 10, 1, 1),

@@ -11,20 +11,20 @@ import 'package:notredame/data/repositories/user_repository.dart';
 import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/networking_service.dart';
-import 'package:notredame/data/services/signets-api/models/profile_student.dart';
-import 'package:notredame/data/services/signets-api/models/program.dart';
-import 'package:notredame/data/services/signets-api/signets_api_client.dart';
+import 'package:notredame/data/services/signets_client.dart';
+import 'package:notredame/domain/models/signets-api/profile_student.dart';
+import 'package:notredame/domain/models/signets-api/program.dart';
 import 'package:notredame/utils/api_exception.dart';
 import '../../helpers.dart';
 import '../mocks/services/analytics_service_mock.dart';
 import '../mocks/services/cache_service_mock.dart';
 import '../mocks/services/networking_service_mock.dart';
-import '../mocks/services/signets_api_mock.dart';
+import '../mocks/services/signets_client_mock.dart';
 
 void main() {
   late AnalyticsServiceMock analyticsServiceMock;
   late CacheServiceMock cacheManagerMock;
-  late SignetsAPIClientMock signetsApiMock;
+  late SignetsClientMock signetsApiMock;
   late NetworkingServiceMock networkingServiceMock;
 
   late UserRepository manager;
@@ -34,7 +34,7 @@ void main() {
       // Setup needed service
       analyticsServiceMock = setupAnalyticsServiceMock();
       cacheManagerMock = setupCacheManagerMock();
-      signetsApiMock = setupSignetsApiMock();
+      signetsApiMock = setupSignetsClientMock();
       networkingServiceMock = setupNetworkingServiceMock();
       setupLogger();
 
@@ -47,13 +47,13 @@ void main() {
       clearInteractions(cacheManagerMock);
       unregister<CacheService>();
       clearInteractions(signetsApiMock);
-      unregister<SignetsAPIClient>();
+      unregister<SignetsClient>();
       unregister<NetworkingService>();
     });
 
     group("getPrograms - ", () {
       final List<Program> programs = [
-        Program(
+        const Program(
           name: 'Genie',
           code: '9999',
           average: '3',
@@ -71,7 +71,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, UserRepository.programsCacheKey, jsonEncode(programs));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetPrograms(signetsApiMock, []);
+        SignetsClientMock.stubGetPrograms(signetsApiMock, []);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -112,7 +112,7 @@ void main() {
 
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetPrograms(signetsApiMock, programs);
+        SignetsClientMock.stubGetPrograms(signetsApiMock, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -131,7 +131,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, UserRepository.programsCacheKey, jsonEncode([]));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetProgramsException(signetsApiMock);
+        SignetsClientMock.stubGetProgramsException(signetsApiMock);
 
         expect(manager.programs, isNull);
         expect(manager.getPrograms(), throwsA(isInstanceOf<ApiException>()));
@@ -156,7 +156,7 @@ void main() {
         CacheServiceMock.stubUpdateException(cacheManagerMock, UserRepository.programsCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetPrograms(signetsApiMock, programs);
+        SignetsClientMock.stubGetPrograms(signetsApiMock, programs);
 
         expect(manager.programs, isNull);
         final results = await manager.getPrograms();
@@ -177,14 +177,14 @@ void main() {
     });
 
     group("getInfo - ", () {
-      final ProfileStudent info = ProfileStudent(
+      const ProfileStudent info = ProfileStudent(
         balance: '99.99',
         firstName: 'John',
         lastName: 'Doe',
         permanentCode: 'DOEJ00000000',
         universalCode: 'AA00000',
       );
-      final ProfileStudent defaultInfo = ProfileStudent(
+      const ProfileStudent defaultInfo = ProfileStudent(
         balance: '',
         firstName: '',
         lastName: '',
@@ -197,7 +197,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetInfo(signetsApiMock, defaultInfo);
+        SignetsClientMock.stubGetInfo(signetsApiMock, defaultInfo);
 
         // Stub to simulate that the user has an active internet connection
         NetworkingServiceMock.stubHasConnectivity(networkingServiceMock);
@@ -237,7 +237,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        final ProfileStudent anotherInfo = ProfileStudent(
+        const ProfileStudent anotherInfo = ProfileStudent(
           balance: '0.0',
           firstName: 'Johnny',
           lastName: 'Doe',
@@ -245,7 +245,7 @@ void main() {
           universalCode: 'AA00000',
         );
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetInfo(signetsApiMock, anotherInfo);
+        SignetsClientMock.stubGetInfo(signetsApiMock, anotherInfo);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -261,7 +261,7 @@ void main() {
       test("SignetsAPI return a info that already exists", () async {
         // Stub SignetsApi answer to test only the cache retrieving
         reset(signetsApiMock);
-        SignetsAPIClientMock.stubGetInfo(signetsApiMock, info);
+        SignetsClientMock.stubGetInfo(signetsApiMock, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();
@@ -280,7 +280,7 @@ void main() {
         CacheServiceMock.stubGet(cacheManagerMock, UserRepository.infoCacheKey, jsonEncode(info));
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetInfoException(signetsApiMock);
+        SignetsClientMock.stubGetInfoException(signetsApiMock);
 
         expect(manager.info, isNull);
         expect(manager.getInfo(), throwsA(isInstanceOf<ApiException>()));
@@ -303,7 +303,7 @@ void main() {
         CacheServiceMock.stubUpdateException(cacheManagerMock, UserRepository.infoCacheKey);
 
         // Stub SignetsApi answer to test only the cache retrieving
-        SignetsAPIClientMock.stubGetInfo(signetsApiMock, info);
+        SignetsClientMock.stubGetInfo(signetsApiMock, info);
 
         expect(manager.info, isNull);
         final results = await manager.getInfo();

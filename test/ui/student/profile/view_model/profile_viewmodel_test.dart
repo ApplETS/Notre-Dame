@@ -5,8 +5,8 @@ import 'package:mockito/mockito.dart';
 // Project imports:
 import 'package:notredame/data/models/programs_credits.dart';
 import 'package:notredame/data/repositories/user_repository.dart';
-import 'package:notredame/data/services/signets-api/models/profile_student.dart';
-import 'package:notredame/data/services/signets-api/models/program.dart';
+import 'package:notredame/domain/models/signets-api/profile_student.dart';
+import 'package:notredame/domain/models/signets-api/program.dart';
 import 'package:notredame/ui/student/profile/view_model/profile_viewmodel.dart';
 import '../../../../data/mocks/repositories/user_repository_mock.dart';
 import '../../../../helpers.dart';
@@ -18,7 +18,7 @@ void main() {
 
   // Needed to support FlutterToast.
   TestWidgetsFlutterBinding.ensureInitialized();
-  final Program program1 = Program(
+  const Program program1 = Program(
     name: 'program1',
     code: '0000',
     average: '0.00',
@@ -29,7 +29,7 @@ void main() {
     equivalentCourses: '0',
     status: 'Actif',
   );
-  final Program program2 = Program(
+  const Program program2 = Program(
     name: 'program2',
     code: '0001',
     average: '0.00',
@@ -40,7 +40,7 @@ void main() {
     equivalentCourses: '0',
     status: 'Actif',
   );
-  final Program program3 = Program(
+  const Program program3 = Program(
     name: 'program3',
     code: '0002',
     average: '0.00',
@@ -54,7 +54,7 @@ void main() {
 
   final List<Program> programs = [program1, program2, program3];
 
-  final ProfileStudent info = ProfileStudent(
+  const ProfileStudent info = ProfileStudent(
     balance: '99.99',
     firstName: 'John',
     lastName: 'Doe',
@@ -140,7 +140,7 @@ void main() {
       test("calculates program progression correctly", () {
         // Create a list of programs for testing
         final List<Program> programsWithKnownCodes = [
-          Program(
+          const Program(
             name: 'Program A',
             code: '7625', // Program code with matching entry in ProgramCredits
             average: '3.50',
@@ -151,7 +151,7 @@ void main() {
             equivalentCourses: '0',
             status: 'Actif',
           ),
-          Program(
+          const Program(
             name: 'Program B',
             code: '7694', // Program code with matching entry in ProgramCredits
             average: '3.20',
@@ -182,7 +182,7 @@ void main() {
       test("handles no matching program code", () {
         // Create a list of programs with no matching program code
         final List<Program> programWithUnknownCode = [
-          Program(
+          const Program(
             name: 'Program X',
             code: '9999', // Program code with no matching entry in ProgramCredits
             average: '3.00',
@@ -224,7 +224,7 @@ void main() {
     group('Programs with "Microprogramme [...] enseignement cooperatif" should not be the default program', () {
       test('Bac program with no internships (microprogramme)', () async {
         final List<Program> bacProgramOnly = [
-          Program(
+          const Program(
             name: 'Baccalauréat en génie logiciel ',
             code: '7084',
             average: '3.00',
@@ -244,7 +244,7 @@ void main() {
 
       test('Bac program with 1 active internship (microprogramme)', () async {
         final List<Program> bacProgramWithActiveInternship = [
-          Program(
+          const Program(
             name: 'Baccalauréat en génie logiciel ',
             code: '7084',
             average: '3.00',
@@ -255,7 +255,7 @@ void main() {
             equivalentCourses: '0',
             status: 'actif',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif I',
             code: '0725',
             average: '',
@@ -275,7 +275,7 @@ void main() {
 
       test('Bac program with 1 active internship (microprogramme) and 1 completed', () async {
         final List<Program> bacProgramWithMixedInternships = [
-          Program(
+          const Program(
             name: 'Baccalauréat en génie logiciel ',
             code: '7084',
             average: '3.00',
@@ -286,7 +286,7 @@ void main() {
             equivalentCourses: '0',
             status: 'actif',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif I',
             code: '0725',
             average: '',
@@ -297,7 +297,7 @@ void main() {
             equivalentCourses: '0',
             status: 'Dossier fermé',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif II',
             code: '0726',
             average: '',
@@ -317,7 +317,7 @@ void main() {
 
       test('Maitrise program with 3 completed internships', () async {
         final List<Program> maitriseWithCompletedInternships = [
-          Program(
+          const Program(
             name: 'Baccalauréat en génie logiciel ',
             code: '7084',
             average: '3.00',
@@ -328,7 +328,7 @@ void main() {
             equivalentCourses: '0',
             status: 'Diplome',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif I',
             code: '0725',
             average: '',
@@ -339,7 +339,7 @@ void main() {
             equivalentCourses: '0',
             status: 'Dossier fermé',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif II',
             code: '0726',
             average: '',
@@ -350,7 +350,7 @@ void main() {
             equivalentCourses: '0',
             status: 'Dossier fermé',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif III',
             code: '0727',
             average: '',
@@ -361,7 +361,7 @@ void main() {
             equivalentCourses: '0',
             status: 'Dossier fermé',
           ),
-          Program(
+          const Program(
             name: 'Maîtrise en génie logiciel',
             code: '1822',
             average: '3.00',
@@ -383,7 +383,7 @@ void main() {
     group('getCurrentProgram', () {
       test('should prioritize "diplômé" over other non-active statuses', () async {
         final List<Program> programsWithMixedStatuses = [
-          Program(
+          const Program(
             name: 'Baccalauréat en informatique',
             code: '7084',
             average: '3.00',
@@ -394,7 +394,7 @@ void main() {
             equivalentCourses: '0',
             status: 'suspendu',
           ),
-          Program(
+          const Program(
             name: 'Baccalauréat en génie logiciel',
             code: '7625',
             average: '3.50',
@@ -405,7 +405,7 @@ void main() {
             equivalentCourses: '0',
             status: 'diplômé',
           ),
-          Program(
+          const Program(
             name: 'Certificat en programmation',
             code: '4000',
             average: '2.80',
@@ -425,7 +425,7 @@ void main() {
 
       test('should return last program when multiple active programs exist', () async {
         final List<Program> multipleActivePrograms = [
-          Program(
+          const Program(
             name: 'Baccalauréat en informatique',
             code: '7084',
             average: '3.00',
@@ -436,7 +436,7 @@ void main() {
             equivalentCourses: '0',
             status: 'actif',
           ),
-          Program(
+          const Program(
             name: 'Certificat en programmation',
             code: '4000',
             average: '3.20',
@@ -447,7 +447,7 @@ void main() {
             equivalentCourses: '0',
             status: 'actif',
           ),
-          Program(
+          const Program(
             name: 'Baccalauréat en Génie Logiciel',
             code: '4264',
             average: '3.10',
@@ -467,7 +467,7 @@ void main() {
 
       test('should return last program when multiple graduated programs exist', () async {
         final List<Program> multipleGraduatedPrograms = [
-          Program(
+          const Program(
             name: 'Baccalauréat en informatique',
             code: '7084',
             average: '3.00',
@@ -478,7 +478,7 @@ void main() {
             equivalentCourses: '0',
             status: 'diplômé',
           ),
-          Program(
+          const Program(
             name: 'Certificat en programmation',
             code: '4000',
             average: '3.50',
@@ -498,7 +498,7 @@ void main() {
 
       test('should fallback to last program with any status when no active or graduated programs exist', () async {
         final List<Program> programsWithNonActiveStatuses = [
-          Program(
+          const Program(
             name: 'Baccalauréat en informatique',
             code: '7084',
             average: '2.50',
@@ -509,7 +509,7 @@ void main() {
             equivalentCourses: '0',
             status: 'suspendu',
           ),
-          Program(
+          const Program(
             name: 'Certificat en programmation',
             code: '4000',
             average: '2.80',
@@ -520,7 +520,7 @@ void main() {
             equivalentCourses: '0',
             status: 'abandonné',
           ),
-          Program(
+          const Program(
             name: 'Maîtrise en génie logiciel',
             code: '1822',
             average: '3.50',
@@ -540,7 +540,7 @@ void main() {
 
       test('should correctly filter out internship programs with different cycle numbers', () async {
         final List<Program> programsWithMultiCycleInternships = [
-          Program(
+          const Program(
             name: 'Maîtrise en génie logiciel',
             code: '1822',
             average: '3.50',
@@ -551,7 +551,7 @@ void main() {
             equivalentCourses: '0',
             status: 'actif',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 2e cycle en enseignement coopératif',
             code: '0825',
             average: '',
@@ -562,7 +562,7 @@ void main() {
             equivalentCourses: '0',
             status: 'actif',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 3e cycle en enseignement coopératif',
             code: '0925',
             average: '',
@@ -582,7 +582,7 @@ void main() {
 
       test('should return active internship if no active non-internship programs exist', () async {
         final List<Program> onlyInternshipPrograms = [
-          Program(
+          const Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif I',
             code: '0725',
             average: '',
@@ -593,7 +593,7 @@ void main() {
             equivalentCourses: '0',
             status: 'actif',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 2e cycle en enseignement coopératif II',
             code: '0726',
             average: '',
@@ -613,7 +613,7 @@ void main() {
 
       test('should correctly filter out internship programs with different cycle numbers', () async {
         final List<Program> onlyCompletedInternships = [
-          Program(
+          const Program(
             name: 'Microprogramme de 1er cycle en enseignement coopératif I',
             code: '0725',
             average: '',
@@ -624,7 +624,7 @@ void main() {
             equivalentCourses: '0',
             status: 'gradué',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 2e cycle en enseignement coopératif',
             code: '0825',
             average: '',
@@ -635,7 +635,7 @@ void main() {
             equivalentCourses: '0',
             status: 'gradué',
           ),
-          Program(
+          const Program(
             name: 'Microprogramme de 3e cycle en enseignement coopératif',
             code: '0925',
             average: '',

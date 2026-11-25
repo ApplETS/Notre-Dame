@@ -4,7 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
-import 'package:notredame/data/services/signets-api/models/course.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/titled_card.dart';
@@ -26,7 +26,7 @@ class GradesCard extends StatelessWidget {
         // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
         // During that first stage, putting empty courses with no title allows for a smoother transition.
         if (displayedCourses.isEmpty && loading) {
-          final Course skeletonCourse = Course(
+          const Course skeletonCourse = Course(
             acronym: " ",
             title: "",
             group: "",

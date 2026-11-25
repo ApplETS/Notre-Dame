@@ -12,10 +12,10 @@ import 'package:notredame/data/services/cache_service.dart';
 import 'package:notredame/data/services/navigation_service.dart';
 import 'package:notredame/data/services/preferences_service.dart';
 import 'package:notredame/data/services/remote_config_service.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_activity.dart';
-import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/domain/constants/router_paths.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_activity.dart';
+import 'package:notredame/domain/models/signets-api/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/more/view_model/more_viewmodel.dart';
 import '../../../data/mocks/repositories/course_repository_mock.dart';
@@ -48,7 +48,7 @@ void main() {
 
   final List<Session> sessions = [
     Session(
-      name: 'Hivers 2XXX',
+      longName: 'Hivers 2XXX',
       shortName: 'H1',
       deadlineCancellationASEQ: now,
       deadlineCancellationWithoutRefundNewStudent: now,
@@ -77,7 +77,7 @@ void main() {
   ];
 
   final List<Course> courses = [
-    Course(
+    const Course(
       acronym: "ABC123",
       title: "testCourse",
       group: "09",

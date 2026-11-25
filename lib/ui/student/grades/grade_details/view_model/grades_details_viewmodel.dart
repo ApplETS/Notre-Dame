@@ -4,9 +4,9 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/repositories/course_repository.dart';
-import 'package:notredame/data/services/signets-api/models/course.dart';
-import 'package:notredame/data/services/signets-api/models/course_evaluation.dart';
-import 'package:notredame/data/services/signets-api/models/signets_errors.dart';
+import 'package:notredame/domain/models/signets-api/course.dart';
+import 'package:notredame/domain/models/signets-api/course_evaluation.dart';
+import 'package:notredame/domain/models/signets-api/signets_errors.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/utils/api_exception.dart';
