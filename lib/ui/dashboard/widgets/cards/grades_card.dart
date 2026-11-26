@@ -66,7 +66,7 @@ class GradesCard extends StatelessWidget {
       child: Flex(
         direction: direction,
         spacing: 10,
-        children: courses.map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt)).toList(),
+        children: courses.map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt, headerColor: context.theme.appColors.dashboardChildCard)).toList(),
       ),
     ),
   );
