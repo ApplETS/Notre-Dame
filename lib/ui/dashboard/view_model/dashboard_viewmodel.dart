@@ -67,16 +67,9 @@ class DashboardViewModel extends FutureViewModel {
 
   DashboardViewModel({required AppIntl intl}) : _appIntl = intl {
     progressBarModel = ProgressBarCardViewmodel(intl: intl);
-    progressBarModel.addListener(notifyListeners);
-
     gradesModel = GradesCardViewmodel(intl: intl);
-    gradesModel.addListener(notifyListeners);
-
     scheduleModel = ScheduleCardViewmodel(intl: intl);
-    scheduleModel.addListener(notifyListeners);
-
     sessionReminderModel = SessionReminderCardViewmodel(intl: intl);
-    sessionReminderModel.addListener(notifyListeners);
   }
 
   static Future<bool> launchInAppReview() async {
@@ -199,7 +192,6 @@ class DashboardViewModel extends FutureViewModel {
       dynamicMessageText = message.resolve(_appIntl);
       notifyListeners();
     } catch (e) {
-      // TODO fix type 'Null' is not a subtype of type 'String' in type cast
       dynamicMessageText = null;
       notifyListeners();
     } finally {
@@ -227,13 +219,9 @@ class DashboardViewModel extends FutureViewModel {
   @override
   void dispose() {
     _controller?.dispose();
-    progressBarModel.removeListener(notifyListeners);
     progressBarModel.dispose();
-    gradesModel.removeListener(notifyListeners);
     gradesModel.dispose();
-    scheduleModel.removeListener(notifyListeners);
     scheduleModel.dispose();
-    sessionReminderModel.removeListener(notifyListeners);
     sessionReminderModel.dispose();
     super.dispose();
   }
