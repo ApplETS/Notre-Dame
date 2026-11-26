@@ -101,10 +101,13 @@ class _ProgressBarCardContentState extends State<ProgressBarCardContent> with Si
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
-      child: GestureDetector(
-        onTap: widget.onToggle,
-        child: Card(
-          color: context.theme.appColors.dashboardCard,
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        color: context.theme.appColors.dashboardCard,
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          onTap: widget.onToggle,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: (widget.loading || widget.progress >= 0.0)
