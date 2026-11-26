@@ -10,6 +10,7 @@ import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
+import 'package:notredame/ui/dashboard/widgets/cards/quick_links_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_banner.dart';
@@ -43,7 +44,6 @@ class DashboardTabletHorizontalLayout extends StatelessWidget {
     return SizedBox(
       height: height,
       child: Stack(
-        clipBehavior: Clip.none,
         children: [
           DashboardBanner(
             model: model,
@@ -100,7 +100,6 @@ class DashboardTabletHorizontalLayout extends StatelessWidget {
     );
   }
 
-  /// Progress and session reminder cards stacked on the left, upcoming feature on the right.
   Widget _sideCards() {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -122,7 +121,7 @@ class DashboardTabletHorizontalLayout extends StatelessWidget {
                 ],
               ),
             ),
-            const Expanded(child: Card(color: Colors.yellow)),
+            const Expanded(child: QuickLinksCard()),
           ],
         );
       },
