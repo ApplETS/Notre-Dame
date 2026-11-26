@@ -32,15 +32,11 @@ class GradesCard extends StatelessWidget {
         // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
         // During that first stage, putting empty courses with no title allows for a smoother transition.
         if (displayedCourses.isEmpty && model.busy(model.courses)) {
-          final Course skeletonCourse = Course(
-            acronym: " ",
-            title: "",
-            group: "",
-            session: "",
-            programCode: "",
-            numberOfCredits: 0,
-          );
-          displayedCourses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
+          for (var i = 0; i <= 4; i++) {
+            displayedCourses.add(
+              Course(acronym: i.toString(), title: "", group: "", session: "", programCode: "", numberOfCredits: 0),
+            );
+          }
         }
 
         final Widget content = (displayedCourses.isEmpty && !model.busy(model.courses))
