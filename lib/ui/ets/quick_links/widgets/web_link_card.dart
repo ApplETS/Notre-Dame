@@ -9,8 +9,9 @@ import 'package:notredame/ui/ets/quick_links/view_model/web_link_card_viewmodel.
 
 class WebLinkCard extends StatelessWidget {
   final QuickLink _links;
+  final Color? backgroundColor;
 
-  const WebLinkCard(this._links, {super.key});
+  const WebLinkCard(this._links, {super.key, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) => ViewModelBuilder<WebLinkCardViewModel>.reactive(
@@ -19,6 +20,7 @@ class WebLinkCard extends StatelessWidget {
       return ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: Card(
+          color: backgroundColor,
           elevation: 4.0,
           child: InkWell(
             borderRadius: const BorderRadius.all(Radius.circular(10)),

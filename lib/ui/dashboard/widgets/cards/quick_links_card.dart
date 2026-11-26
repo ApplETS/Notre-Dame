@@ -4,6 +4,7 @@ import 'dart:math';
 
 // Package imports:
 import 'package:material_ui/material_ui.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
@@ -51,7 +52,7 @@ class QuickLinksCard extends StatelessWidget {
                   final int linksPerRow = max(1, (constraints.maxWidth / _tileWidth).floor());
                   return carousel
                       ? _QuickLinksCarousel(links: model.quickLinkList, linksPerPage: linksPerRow)
-                      : _grid(model.quickLinkList, linksPerRow);
+                      : _grid(model.quickLinkList, linksPerRow, context.theme.appColors.backgroundAlt);
                 },
               ),
             ),
@@ -61,13 +62,13 @@ class QuickLinksCard extends StatelessWidget {
     );
   }
 
-  Widget _grid(List<QuickLink> links, int crossAxisCount) {
+  Widget _grid(List<QuickLink> links, int crossAxisCount, Color backgroundColor) {
     return GridView.count(
       padding: const EdgeInsets.all(_padding),
       mainAxisSpacing: _tileSpacing,
       crossAxisSpacing: _tileSpacing,
       crossAxisCount: crossAxisCount,
-      children: links.map((link) => WebLinkCard(link, key: ValueKey(link.id))).toList(),
+      children: links.map((link) => WebLinkCard(link, key: ValueKey(link.id), backgroundColor: backgroundColor)).toList(),
     );
   }
 }
@@ -184,7 +185,7 @@ class _QuickLinksCarouselState extends State<_QuickLinksCarousel> with WidgetsBi
     return Row(
       spacing: _tileSpacing,
       children: [
-        ...pageLinks.map((link) => Expanded(child: WebLinkCard(link, key: ValueKey(link.id)))),
+        ...pageLinks.map((link) => Expanded(child: WebLinkCard(link, key: ValueKey(link.id), backgroundColor: context.theme.appColors.backgroundAlt))),
         // Keep tiles the same width on the last, partially filled page.
         for (int i = pageLinks.length; i < widget.linksPerPage; i++) const Expanded(child: SizedBox()),
       ],
