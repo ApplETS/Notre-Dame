@@ -110,6 +110,7 @@ class DashboardTabletHorizontalLayout extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           spacing: _spacing,
           children: [
+            const Expanded(child: QuickLinksCard()),
             SizedBox(
               width: sideCardSize,
               child: Column(
@@ -121,7 +122,6 @@ class DashboardTabletHorizontalLayout extends StatelessWidget {
                 ],
               ),
             ),
-            const Expanded(child: QuickLinksCard()),
           ],
         );
       },
