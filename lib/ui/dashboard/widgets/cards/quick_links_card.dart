@@ -15,8 +15,6 @@ import 'package:notredame/ui/core/ui/titled_card.dart';
 import 'package:notredame/ui/ets/quick_links/view_model/quick_links_viewmodel.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/web_link_card.dart';
 
-const _carouselMaxHeight = 160.0;
-
 const _tileWidth = 95.0;
 const _padding = 8.0;
 const _tileSpacing = 2.0;
@@ -41,23 +39,22 @@ class QuickLinksCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<QuickLinksViewModel>.reactive(
       viewModelBuilder: () => QuickLinksViewModel(AppIntl.of(context)!),
-      builder: (context, model, child) => LayoutBuilder(
-        builder: (context, cardConstraints) {
-          final bool carousel = cardConstraints.maxHeight < _carouselMaxHeight;
-          return TitledCard(
-            title: AppIntl.of(context)!.useful_link_title,
-            child: Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final int linksPerRow = max(1, (constraints.maxWidth / _tileWidth).floor());
-                  return carousel
-                      ? _QuickLinksCarousel(links: model.quickLinkList, linksPerPage: linksPerRow)
-                      : _grid(model.quickLinkList, linksPerRow, context.theme.appColors.backgroundAlt);
-                },
-              ),
-            ),
-          );
-        },
+      builder: (context, model, child) => TitledCard(
+        title: AppIntl.of(context)!.useful_link_title,
+        child: Expanded(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final int linksPerRow = max(1, (constraints.maxWidth / _tileWidth).floor());
+              final int numberOfVisibleLinksInGrid = linksPerRow * (constraints.maxHeight/_tileWidth).floor();
+
+              final bool carousel = numberOfVisibleLinksInGrid <= linksPerRow;
+
+              return carousel
+                  ? _QuickLinksCarousel(links: model.quickLinkList, linksPerPage: linksPerRow)
+                  : _grid(model.quickLinkList, linksPerRow, context.theme.appColors.backgroundAlt);
+            },
+          ),
+        ),
       ),
     );
   }
@@ -68,7 +65,9 @@ class QuickLinksCard extends StatelessWidget {
       mainAxisSpacing: _tileSpacing,
       crossAxisSpacing: _tileSpacing,
       crossAxisCount: crossAxisCount,
-      children: links.map((link) => WebLinkCard(link, key: ValueKey(link.id), backgroundColor: backgroundColor)).toList(),
+      children: links
+          .map((link) => WebLinkCard(link, key: ValueKey(link.id), backgroundColor: backgroundColor))
+          .toList(),
     );
   }
 }
@@ -185,7 +184,11 @@ class _QuickLinksCarouselState extends State<_QuickLinksCarousel> with WidgetsBi
     return Row(
       spacing: _tileSpacing,
       children: [
-        ...pageLinks.map((link) => Expanded(child: WebLinkCard(link, key: ValueKey(link.id), backgroundColor: context.theme.appColors.backgroundAlt))),
+        ...pageLinks.map(
+          (link) => Expanded(
+            child: WebLinkCard(link, key: ValueKey(link.id), backgroundColor: context.theme.appColors.backgroundAlt),
+          ),
+        ),
         // Keep tiles the same width on the last, partially filled page.
         for (int i = pageLinks.length; i < widget.linksPerPage; i++) const Expanded(child: SizedBox()),
       ],
