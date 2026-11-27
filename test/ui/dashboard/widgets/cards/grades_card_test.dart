@@ -12,8 +12,8 @@ import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import '../../../data/mocks/repositories/course_repository_mock.dart';
-import '../../../helpers.dart';
+import '../../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   final Course course1 = Course(

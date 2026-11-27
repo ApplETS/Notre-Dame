@@ -9,10 +9,10 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
-import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
-import '../../../data/mocks/repositories/settings_repository_mock.dart';
-import '../../../data/mocks/services/analytics_service_mock.dart';
-import '../../../helpers.dart';
+import '../../../../data/mocks/repositories/list_sessions_repository_mock.dart';
+import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   late AppIntl intl;
