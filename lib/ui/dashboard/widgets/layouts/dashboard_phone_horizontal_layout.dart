@@ -96,8 +96,11 @@ class DashboardPhoneHorizontalLayout extends StatelessWidget {
       padding: const EdgeInsets.only(left: 24.0),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Both cards are square, so the column width follows the available height.
-          final double sideCardSize = min((constraints.maxHeight - _spacing) / 2, 180);
+          // At most 40% of the width available
+          final double sideCardSize = min(
+            (constraints.maxHeight - _spacing) / 2,
+            (constraints.maxWidth - _spacing) / 2.5,
+          );
           return Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             spacing: _spacing,

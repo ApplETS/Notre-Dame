@@ -86,42 +86,45 @@ class _DashboardPhoneVerticalLayoutState extends State<DashboardPhoneVerticalLay
     return Stack(
       children: [
         DashboardBanner(model: widget.model, clipper: CircleClipper(), height: 240),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              key: _titleKey,
-              padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 80.0),
-              child: DashboardMessage(model: widget.model),
-            ),
-            Container(
-              key: _rowKey,
-              constraints: const BoxConstraints(maxHeight: 200),
-              padding: const EdgeInsets.fromLTRB(40.0, 16.0, 40.0, 0.0),
-              child: Row(
-                spacing: 18.0,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(child: SessionReminderCard(model: widget.model.sessionReminderModel)),
-                  Expanded(child: ProgressBarCard(model: widget.model.progressBarModel)),
-                ],
+        SafeArea(
+          bottom: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                key: _titleKey,
+                padding: const EdgeInsets.only(left: 32.0, right: 32.0, top: 80.0),
+                child: DashboardMessage(model: widget.model),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(12.0, paddingAboveSchedule, 12.0, paddingUnderGrades),
-              child: Column(
-                spacing: spacingBetweenGradesAndSchedule,
-                children: [
-                  if (_scheduleCardHeight != null)
-                    SizedBox(
-                      height: _scheduleCardHeight,
-                      child: ScheduleCard(model: widget.model.scheduleModel),
-                    ),
-                  GradesCard(key: _gradesCardKey, model: widget.model.gradesModel),
-                ],
+              Container(
+                key: _rowKey,
+                constraints: const BoxConstraints(maxHeight: 200),
+                padding: const EdgeInsets.fromLTRB(40.0, 16.0, 40.0, 0.0),
+                child: Row(
+                  spacing: 18.0,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(child: SessionReminderCard(model: widget.model.sessionReminderModel)),
+                    Expanded(child: ProgressBarCard(model: widget.model.progressBarModel)),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.fromLTRB(12.0, paddingAboveSchedule, 12.0, paddingUnderGrades),
+                child: Column(
+                  spacing: spacingBetweenGradesAndSchedule,
+                  children: [
+                    if (_scheduleCardHeight != null)
+                      SizedBox(
+                        height: _scheduleCardHeight,
+                        child: ScheduleCard(model: widget.model.scheduleModel),
+                      ),
+                    GradesCard(key: _gradesCardKey, model: widget.model.gradesModel),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );

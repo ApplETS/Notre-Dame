@@ -17,7 +17,7 @@ import 'package:notredame/ui/ets/quick_links/widgets/web_link_card.dart';
 
 const _carouselMaxHeight = 160.0;
 
-const _tileWidth = 100.0;
+const _tileWidth = 95.0;
 const _padding = 8.0;
 const _tileSpacing = 2.0;
 
