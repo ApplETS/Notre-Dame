@@ -31,7 +31,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     required this.dayIndicatorWeekView,
     required this.dayIndicatorDayView,
     required this.loginMain,
-    required this.loginAccent,
+    required this.splashScreenLogo,
     required this.inputError,
     required this.mapLegend,
   });
@@ -64,7 +64,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
   final Color dayIndicatorWeekView;
   final Color dayIndicatorDayView;
   final Color loginMain;
-  final Color loginAccent;
+  final Color splashScreenLogo;
   final Color inputError;
   final Color mapLegend;
 
@@ -98,7 +98,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
     Color? dayIndicatorWeekView,
     Color? dayIndicatorDayView,
     Color? loginMain,
-    Color? loginAccent,
+    Color? splashScreenLogo,
     Color? inputError,
     Color? mapLegend,
   }) {
@@ -131,7 +131,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       dayIndicatorWeekView: dayIndicatorWeekView ?? this.dayIndicatorWeekView,
       dayIndicatorDayView: dayIndicatorDayView ?? this.dayIndicatorDayView,
       loginMain: loginMain ?? this.loginMain,
-      loginAccent: loginAccent ?? this.loginAccent,
+      splashScreenLogo: splashScreenLogo ?? this.splashScreenLogo,
       inputError: inputError ?? this.inputError,
       mapLegend: mapLegend ?? this.mapLegend,
     );
@@ -174,7 +174,7 @@ class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
       dayIndicatorWeekView: _lerp(dayIndicatorWeekView, other.dayIndicatorWeekView, t),
       dayIndicatorDayView: _lerp(dayIndicatorDayView, other.dayIndicatorDayView, t),
       loginMain: _lerp(loginMain, other.loginMain, t),
-      loginAccent: _lerp(loginAccent, other.loginAccent, t),
+      splashScreenLogo: _lerp(splashScreenLogo, other.splashScreenLogo, t),
       inputError: _lerp(inputError, other.inputError, t),
       mapLegend: _lerp(mapLegend, other.mapLegend, t),
     );
