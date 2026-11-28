@@ -69,7 +69,7 @@ class _DashboardPhoneVerticalLayoutState extends State<DashboardPhoneVerticalLay
         paddingUnderGrades +
         spacingBetweenGradesAndSchedule;
 
-    final remaining = viewportHeight - totalFixed;
+    final remaining = viewportHeight - totalFixed - MediaQuery.of(context).padding.top;
     final scheduleHeight = max(250.0, remaining);
 
     if (scheduleHeight != _scheduleCardHeight) {

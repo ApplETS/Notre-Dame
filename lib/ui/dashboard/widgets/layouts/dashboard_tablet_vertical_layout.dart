@@ -81,10 +81,10 @@ class DashboardTabletVerticalLayout extends StatelessWidget {
       padding: const EdgeInsets.only(left: _horizontalPadding, right: _horizontalPadding, top: _circleHeight),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final double sideCardSize = min(constraints.maxWidth * 0.25, 200.0);
+          final double sideCardSize = min(constraints.maxWidth * 0.25, 180.0);
           return Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: _spacing * 2,
+            spacing: _spacing,
             children: [
               Expanded(
                 child: Column(

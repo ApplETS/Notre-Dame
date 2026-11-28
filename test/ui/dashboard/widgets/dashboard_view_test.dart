@@ -4,7 +4,6 @@ import 'package:material_ui/material_ui.dart';
 import 'package:notredame/locator.dart';
 
 // Project imports:
-import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_horizontal_layout.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_vertical_layout.dart';
