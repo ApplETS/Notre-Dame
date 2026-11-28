@@ -72,7 +72,7 @@ class QuickLinksCard extends StatelessWidget {
   }
 }
 
-/// One row of links per page, auto-scrolling like the session reminder carousel.
+/// One row of links per page, auto-scrolling
 class _QuickLinksCarousel extends StatefulWidget {
   final List<QuickLink> links;
   final int linksPerPage;

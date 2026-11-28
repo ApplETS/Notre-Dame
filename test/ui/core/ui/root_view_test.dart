@@ -29,6 +29,7 @@ void main() {
       setupListSessionsRepositoryMock();
       analyticsServiceMock = setupAnalyticsServiceMock();
       setupInAppReviewServiceMock();
+      setupNavigationServiceMock();
       setupQuickLinkRepositoryMock();
       setupScheduleServiceMock();
 

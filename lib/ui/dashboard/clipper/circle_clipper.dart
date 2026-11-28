@@ -2,26 +2,21 @@
 import 'package:material_ui/material_ui.dart';
 
 class CircleClipper extends CustomClipper<Path> {
+  static const double curveDepth = 40.0;
+
   @override
   Path getClip(Size size) {
-    final path = Path();
+    final sideY = size.height - curveDepth;
 
-    // Start of path at bottom left of container 60 pixels from bottom
-    path.lineTo(0, size.height - 60);
-
-    // Creating a quadratic curve to the lower right corner
-    path.quadraticBezierTo(size.width / 2, size.height, size.width, size.height - 60);
-
-    // Top corners. Negative spacing to account for BouncingScrollPhysics on iOS
-    path.lineTo(size.width, -2000);
-    path.lineTo(0, -2000);
-
-    path.close();
-
-    return path;
+    return Path()
+      ..lineTo(0, sideY)
+      ..quadraticBezierTo(size.width / 2, size.height + curveDepth, size.width, sideY)
+      // Top corners. Negative spacing to account for BouncingScrollPhysics on iOS
+      ..lineTo(size.width, -2000)
+      ..lineTo(0, -2000)
+      ..close();
   }
 
-  // Indicates whether the clip should be calculated
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

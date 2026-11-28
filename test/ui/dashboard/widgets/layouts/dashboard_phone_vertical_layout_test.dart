@@ -45,9 +45,7 @@ void main() {
 
       await tester.pumpWidget(
         localizedWidget(
-          child: SingleChildScrollView(
-            child: DashboardPhoneVerticalLayout(model: model, viewportHeight: tester.view.physicalSize.height),
-          ),
+          child: DashboardPhoneVerticalLayout(model: model, viewportHeight: tester.view.physicalSize.height),
         ),
       );
       await tester.pump();
