@@ -16,7 +16,7 @@ import '../../../../helpers.dart';
 void main() {
   late DashboardViewModel model;
 
-  group("DashboardTabletVerticalLayout - ", () {
+  group("DashboardTabletPortraitLayout - ", () {
     setUp(() async {
       final intl = await setupAppIntl();
 
@@ -46,7 +46,7 @@ void main() {
 
       await tester.pumpWidget(
         localizedWidget(
-          child: DashboardTabletVerticalLayout(model: model, viewportHeight: tester.view.physicalSize.height),
+          child: DashboardTabletPortraitLayout(model: model, viewportHeight: tester.view.physicalSize.height),
         ),
       );
 

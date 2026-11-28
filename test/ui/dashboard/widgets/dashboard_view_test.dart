@@ -33,10 +33,10 @@ void main() {
     });
 
     final layouts = <String, (Size, Type)>{
-      'phone portrait': (const Size(390, 844), DashboardPhoneVerticalLayout),
-      'phone landscape': (const Size(844, 390), DashboardPhoneHorizontalLayout),
-      'tablet portrait': (const Size(820, 1180), DashboardTabletVerticalLayout),
-      'tablet landscape': (const Size(1180, 820), DashboardTabletHorizontalLayout),
+      'phone portrait': (const Size(390, 844), DashboardPhonePortraitLayout),
+      'phone landscape': (const Size(844, 390), DashboardPhoneLandscapeLayout),
+      'tablet portrait': (const Size(820, 1180), DashboardTabletPortraitLayout),
+      'tablet landscape': (const Size(1180, 820), DashboardTabletLandscapeLayout),
     };
 
     final allLayouts = layouts.values.map((layout) => layout.$2).toList();

@@ -16,11 +16,11 @@ import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart'
 import 'package:notredame/ui/dashboard/widgets/dashboard_banner.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_message.dart';
 
-class DashboardTabletVerticalLayout extends StatelessWidget {
+class DashboardTabletPortraitLayout extends StatelessWidget {
   final DashboardViewModel model;
   final double viewportHeight;
 
-  const DashboardTabletVerticalLayout({super.key, required this.model, required this.viewportHeight});
+  const DashboardTabletPortraitLayout({super.key, required this.model, required this.viewportHeight});
 
   static const double _titleTopPadding = 24.0;
   static const double _titleBottomPadding = 24.0;

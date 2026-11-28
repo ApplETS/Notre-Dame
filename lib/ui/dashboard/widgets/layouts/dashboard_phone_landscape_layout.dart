@@ -15,11 +15,11 @@ import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart'
 import 'package:notredame/ui/dashboard/widgets/dashboard_banner.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_message.dart';
 
-class DashboardPhoneHorizontalLayout extends StatelessWidget {
+class DashboardPhoneLandscapeLayout extends StatelessWidget {
   final DashboardViewModel model;
   final double viewportHeight;
 
-  const DashboardPhoneHorizontalLayout({super.key, required this.model, required this.viewportHeight});
+  const DashboardPhoneLandscapeLayout({super.key, required this.model, required this.viewportHeight});
 
   static const double _titleTopPadding = 16.0;
   static const double _titleBottomPadding = 16.0;

@@ -17,7 +17,7 @@ import '../../../../helpers.dart';
 void main() {
   late DashboardViewModel model;
 
-  group("DashboardPhoneHorizontalLayout - ", () {
+  group("DashboardPhoneLandscapeLayout - ", () {
     setUp(() async {
       final intl = await setupAppIntl();
 
@@ -46,7 +46,7 @@ void main() {
 
       await tester.pumpWidget(
         localizedWidget(
-          child: DashboardPhoneHorizontalLayout(model: model, viewportHeight: tester.view.physicalSize.height),
+          child: DashboardPhoneLandscapeLayout(model: model, viewportHeight: tester.view.physicalSize.height),
         ),
       );
 

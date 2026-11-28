@@ -58,11 +58,11 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
 
     if (isTablet) {
       return isPortrait
-          ? DashboardTabletVerticalLayout(model: model, viewportHeight: viewportHeight)
-          : DashboardTabletHorizontalLayout(model: model, viewportHeight: viewportHeight);
+          ? DashboardTabletPortraitLayout(model: model, viewportHeight: viewportHeight)
+          : DashboardTabletLandscapeLayout(model: model, viewportHeight: viewportHeight);
     }
     return isPortrait
-        ? DashboardPhoneVerticalLayout(model: model, viewportHeight: viewportHeight)
-        : DashboardPhoneHorizontalLayout(model: model, viewportHeight: viewportHeight);
+        ? DashboardPhonePortraitLayout(model: model, viewportHeight: viewportHeight)
+        : DashboardPhoneLandscapeLayout(model: model, viewportHeight: viewportHeight);
   }
 }
