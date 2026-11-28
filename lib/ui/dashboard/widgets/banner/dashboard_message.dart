@@ -5,7 +5,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 // Project imports:
 import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
-import 'package:notredame/ui/dashboard/widgets/broadcast_message_component.dart';
+import 'package:notredame/ui/dashboard/widgets/banner/broadcast_message_component.dart';
 
 /// Animated message shown at the top of the dashboard: the broadcast message when one is active,
 /// otherwise the dynamic message. Once loaded, it always takes the height of [maxLines] lines,

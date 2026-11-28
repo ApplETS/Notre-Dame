@@ -12,8 +12,8 @@ import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart';
-import 'package:notredame/ui/dashboard/widgets/dashboard_banner.dart';
-import 'package:notredame/ui/dashboard/widgets/dashboard_message.dart';
+import 'package:notredame/ui/dashboard/widgets/banner/dashboard_banner.dart';
+import 'package:notredame/ui/dashboard/widgets/banner/dashboard_message.dart';
 
 class DashboardPhonePortraitLayout extends StatelessWidget {
   final DashboardViewModel model;
