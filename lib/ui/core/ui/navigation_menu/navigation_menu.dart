@@ -53,7 +53,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
 
   @override
   Widget build(BuildContext context) {
-    Widget buttons = _createButtons();
+    bool compactButtons = MediaQuery.of(context).size.shortestSide < 400;
+    Widget buttons = _createButtons(compactButtons);
 
     return NavigationMenu.isPortrait(context) ? _bottomBar(buttons) : _sideBar(buttons);
   }
@@ -89,7 +90,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
     ],
   );
 
-  Widget _createButtons() {
+  Widget _createButtons(bool compact) {
     return Flex(
       mainAxisAlignment: NavigationMenu.isPortrait(context) ? MainAxisAlignment.spaceAround : MainAxisAlignment.center,
       direction: NavigationMenu.isPortrait(context) ? Axis.horizontal : Axis.vertical,
@@ -100,6 +101,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           activeIcon: Icons.dashboard,
           inactiveIcon: Icons.dashboard_outlined,
           onPressed: () => _setIndex(0),
+          compact: compact,
         ),
         NavigationMenuButton(
           key: keys[1],
@@ -107,6 +109,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           activeIcon: Icons.access_time_filled,
           inactiveIcon: Icons.access_time,
           onPressed: () => _setIndex(1),
+          compact: compact,
         ),
         NavigationMenuButton(
           key: keys[2],
@@ -114,6 +117,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           activeIcon: Icons.school,
           inactiveIcon: Icons.school_outlined,
           onPressed: () => _setIndex(2),
+          compact: compact,
         ),
         NavigationMenuButton(
           key: keys[3],
@@ -121,6 +125,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           activeIcon: Icons.account_balance_sharp,
           inactiveIcon: Icons.account_balance_outlined,
           onPressed: () => _setIndex(3),
+          compact: compact,
         ),
         NavigationMenuButton(
           key: keys[4],
@@ -128,6 +133,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
           activeIcon: Icons.menu,
           inactiveIcon: Icons.menu,
           onPressed: () => _setIndex(4),
+          compact: compact,
         ),
       ],
     );

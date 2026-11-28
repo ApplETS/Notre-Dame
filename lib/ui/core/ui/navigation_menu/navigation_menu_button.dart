@@ -10,6 +10,7 @@ class NavigationMenuButton extends StatefulWidget {
   final IconData activeIcon;
   final IconData inactiveIcon;
   final VoidCallback onPressed;
+  final bool compact;
 
   const NavigationMenuButton({
     super.key,
@@ -17,6 +18,7 @@ class NavigationMenuButton extends StatefulWidget {
     required this.activeIcon,
     required this.inactiveIcon,
     required this.onPressed,
+    this.compact = false
   });
 
   @override
@@ -56,7 +58,9 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
     return AnimatedBuilder(
       animation: _paddingController,
       builder: (BuildContext context, Widget? child) {
-        double offset = portrait ? 32.0 : 8.0;
+        double offset = portrait
+            ? widget.compact ? 29.0 : 32.0
+            : widget.compact ? 4.0 : 8.0;
         return Transform.translate(offset: Offset(0.0, _paddingController.value * -offset), child: child);
       },
       child: Column(
@@ -84,7 +88,7 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
                   ),
                 ),
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: EdgeInsets.only(top: widget.compact ? 2.0 : 8.0),
                 child: AnimatedBuilder(
                   animation: _buttonColorController,
                   builder: (BuildContext context, Widget? child) {
@@ -103,7 +107,7 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
                       ),
                       child: Icon(
                         _isActive ? widget.activeIcon : widget.inactiveIcon,
-                        size: 24.0,
+                        size: widget.compact ? 20.0 : 24.0,
                         color: _isActive ? Colors.white : context.theme.textTheme.bodyMedium!.color,
                       ),
                     );
