@@ -12,36 +12,42 @@ import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.da
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
 
 class GradesCard extends StatelessWidget {
-  final bool loading;
+  /// Owned by the dashboard, so it is shared between layouts and refreshed with it.
+  final GradesCardViewmodel model;
 
-  const GradesCard({super.key, required this.loading});
+  /// Scroll direction of the grades. When [Axis.vertical], the card must have a bounded height.
+  final Axis direction;
+
+  const GradesCard({super.key, required this.model, this.direction = Axis.horizontal});
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GradesCardViewmodel>.reactive(
-      viewModelBuilder: () => GradesCardViewmodel(intl: AppIntl.of(context)!),
+      viewModelBuilder: () => model,
+      disposeViewModel: false,
+      initialiseSpecialViewModelsOnce: true,
       builder: (context, model, child) {
         List<Course> displayedCourses = List.from(model.courses);
 
         // When loading courses, there are 2 stages. First, the courses of user are fetched, then, grades are fetched.
         // During that first stage, putting empty courses with no title allows for a smoother transition.
-        if (displayedCourses.isEmpty && loading) {
-          final Course skeletonCourse = Course(
-            acronym: " ",
-            title: "",
-            group: "",
-            session: "",
-            programCode: "",
-            numberOfCredits: 0,
-          );
-          displayedCourses = [skeletonCourse, skeletonCourse, skeletonCourse, skeletonCourse];
+        if (displayedCourses.isEmpty && model.busy(model.courses)) {
+          for (var i = 0; i < 4; i++) {
+            displayedCourses.add(
+              Course(acronym: " ", title: "", group: "", session: i.toString(), programCode: "", numberOfCredits: 0),
+            );
+          }
         }
+
+        final Widget content = (displayedCourses.isEmpty && !model.busy(model.courses))
+            ? _buildNoGradesContent(context)
+            : _buildGradesButton(displayedCourses, context, loading: model.busy(model.courses), direction: direction);
 
         return TitledCard(
           title: AppIntl.of(context)!.grades_title,
-          child: (displayedCourses.isEmpty && !loading)
-              ? _buildNoGradesContent(context)
-              : _buildGradesButton(displayedCourses, context, loading: loading),
+          // In vertical mode, the scroll view must be constrained by the remaining height of the card's Column,
+          // otherwise it takes the full height of its content and overflows.
+          child: direction == Axis.vertical ? Flexible(child: content) : content,
         );
       },
     );
@@ -51,7 +57,7 @@ class GradesCard extends StatelessWidget {
     List<Course> courses,
     BuildContext context, {
     bool loading = false,
-    Axis direction = Axis.horizontal,
+    required Axis direction,
   }) => Skeletonizer(
     enabled: loading,
     child: SingleChildScrollView(
@@ -60,7 +66,15 @@ class GradesCard extends StatelessWidget {
       child: Flex(
         direction: direction,
         spacing: 10,
-        children: courses.map((course) => GradeButton(course, color: context.theme.appColors.backgroundAlt)).toList(),
+        children: courses
+            .map(
+              (course) => GradeButton(
+                course,
+                color: context.theme.appColors.backgroundAlt,
+                headerColor: context.theme.appColors.dashboardChildCard,
+              ),
+            )
+            .toList(),
       ),
     ),
   );

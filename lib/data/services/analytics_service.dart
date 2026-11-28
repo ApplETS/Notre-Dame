@@ -25,8 +25,9 @@ class AnalyticsService {
 
   /// Log a event. [prefix] should be the service where the event was triggered.
   Future logEvent(String prefix, String message) async {
-    final mesTruncated = message.length > 100 ? message.substring(0, 99) : message;
-    await _analytics.logEvent(name: prefix, parameters: {'message': mesTruncated});
+    final prefixTruncated = prefix.length > 40 ? prefix.substring(0, 40) : prefix;
+    final messageTruncated = message.length > 100 ? message.substring(0, 99) : message;
+    await _analytics.logEvent(name: prefixTruncated, parameters: {'message': messageTruncated});
   }
 
   /// Set user properties to identify the user against firebase app.

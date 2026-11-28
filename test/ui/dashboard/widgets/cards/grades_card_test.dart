@@ -9,10 +9,11 @@ import 'package:notredame/data/services/signets-api/models/course.dart';
 import 'package:notredame/data/services/signets-api/models/session.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/grades_card_viewmodel.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
 import 'package:notredame/ui/student/grades/widgets/grade_button.dart';
-import '../../../data/mocks/repositories/course_repository_mock.dart';
-import '../../../helpers.dart';
+import '../../../../data/mocks/repositories/course_repository_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   final Course course1 = Course(
@@ -75,7 +76,11 @@ void main() {
     });
 
     testWidgets('Has card grades displayed - with no courses', (WidgetTester tester) async {
-      await tester.pumpWidget(localizedWidget(child: const GradesCard(loading: false)));
+      await tester.pumpWidget(
+        localizedWidget(
+          child: GradesCard(model: GradesCardViewmodel(intl: intl)),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Find grades card
@@ -98,9 +103,11 @@ void main() {
 
       CourseRepositoryMock.stubGetCourses(courseRepositoryMock, toReturn: courses);
 
-      await tester.pumpWidget(localizedWidget(child: const GradesCard(loading: false)));
-
-      await tester.pumpWidget(localizedWidget(child: const GradesCard(loading: false)));
+      await tester.pumpWidget(
+        localizedWidget(
+          child: GradesCard(model: GradesCardViewmodel(intl: intl)),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Find grades card

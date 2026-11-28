@@ -4,11 +4,13 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/core/themes/app_palette.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
-import 'package:notredame/ui/dashboard/clipper/circle_clipper.dart';
+import 'package:notredame/ui/dashboard/scroll_physics/adaptative_always_scrollable_physics.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_landscape_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_portrait_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_landscape_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_portrait_layout.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -35,17 +37,12 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
       builder: (context, model, child) {
         return BaseScaffold(
           body: RefreshIndicator(
-            onRefresh: model.futureToRun,
+            onRefresh: model.refresh,
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Stack(
-                    children: [
-                      _redCircle(model),
-                      DashboardPhoneLayout(model: model, viewportHeight: constraints.maxHeight),
-                    ],
-                  ),
+                  physics: const AdaptiveAlwaysScrollablePhysics(),
+                  child: _layout(context, model, constraints.maxHeight),
                 );
               },
             ),
@@ -55,23 +52,17 @@ class _DashboardViewState extends State<DashboardView> with SingleTickerProvider
     );
   }
 
-  /// Animated circle widget
-  Widget _redCircle(DashboardViewModel model) {
-    return AnimatedBuilder(
-      animation: model.heightAnimation,
-      builder: (context, child) {
-        return Opacity(
-          opacity: model.opacityAnimation.value,
-          child: PhysicalShape(
-            clipper: CircleClipper(),
-            elevation: 4.0,
-            color: model.remoteConfigService.dashboardMessageActive
-                ? model.broadcastMessage!.color
-                : AppPalette.etsLightRed,
-            child: SizedBox(height: model.heightAnimation.value, width: double.infinity),
-          ),
-        );
-      },
-    );
+  Widget _layout(BuildContext context, DashboardViewModel model, double viewportHeight) {
+    final bool isPortrait = MediaQuery.orientationOf(context) == Orientation.portrait;
+    final bool isTablet = MediaQuery.sizeOf(context).shortestSide >= 600.0;
+
+    if (isTablet) {
+      return isPortrait
+          ? DashboardTabletPortraitLayout(model: model, viewportHeight: viewportHeight)
+          : DashboardTabletLandscapeLayout(model: model, viewportHeight: viewportHeight);
+    }
+    return isPortrait
+        ? DashboardPhonePortraitLayout(model: model, viewportHeight: viewportHeight)
+        : DashboardPhoneLandscapeLayout(model: model, viewportHeight: viewportHeight);
   }
 }

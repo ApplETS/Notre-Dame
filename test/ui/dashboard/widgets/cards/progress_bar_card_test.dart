@@ -9,10 +9,10 @@ import 'package:notredame/data/services/analytics_service.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
-import '../../../data/mocks/repositories/list_sessions_repository_mock.dart';
-import '../../../data/mocks/repositories/settings_repository_mock.dart';
-import '../../../data/mocks/services/analytics_service_mock.dart';
-import '../../../helpers.dart';
+import '../../../../data/mocks/repositories/list_sessions_repository_mock.dart';
+import '../../../../data/mocks/repositories/settings_repository_mock.dart';
+import '../../../../data/mocks/services/analytics_service_mock.dart';
+import '../../../../helpers.dart';
 
 void main() {
   late AppIntl intl;
@@ -20,7 +20,7 @@ void main() {
   late SettingsRepositoryMock settingsRepository;
   late ListSessionsRepositoryMock listSessionRepository;
 
-  group("ProgressBarCard - ", () {
+  group("ProgressBarCardContent - ", () {
     setUp(() async {
       intl = await setupAppIntl();
 
@@ -39,7 +39,7 @@ void main() {
     testWidgets('Has card progressBar displayed', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(
+          child: ProgressBarCardContent(
             progressBarText: "45",
             progressBarAltText: "60",
             progress: 0.5,
@@ -63,7 +63,7 @@ void main() {
     testWidgets('Shows percentage text when showingPercentage is true', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(
+          child: ProgressBarCardContent(
             progressBarText: "45",
             progressBarAltText: "60",
             progress: 0.5,
@@ -82,7 +82,7 @@ void main() {
     testWidgets('Shows days text when showingPercentage is false', (WidgetTester tester) async {
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(
+          child: ProgressBarCardContent(
             progressBarText: "45",
             progressBarAltText: "60",
             progress: 0.5,
@@ -102,7 +102,7 @@ void main() {
       bool tapped = false;
       await tester.pumpWidget(
         localizedWidget(
-          child: ProgressBarCard(
+          child: ProgressBarCardContent(
             progressBarText: "45",
             progressBarAltText: "60",
             progress: 0.5,
@@ -116,7 +116,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(ProgressBarCard));
+      await tester.tap(find.byType(ProgressBarCardContent));
 
       expect(tapped, true);
     });

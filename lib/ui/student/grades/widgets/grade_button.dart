@@ -14,11 +14,12 @@ import 'package:notredame/ui/core/themes/app_theme.dart';
 class GradeButton extends StatelessWidget {
   final Course course;
   final Color? color;
+  final Color headerColor;
 
   /// Used to redirect on the dashboard.
   final NavigationService _navigationService = locator<NavigationService>();
 
-  GradeButton(this.course, {super.key, this.color});
+  GradeButton(this.course, {super.key, this.color, this.headerColor = AppPalette.etsLightRed});
 
   @override
   Widget build(BuildContext context) => Card(
@@ -59,9 +60,12 @@ class GradeButton extends StatelessWidget {
                   tag: 'course_acronym_${course.acronym}_${course.session}',
                   child: Material(
                     child: DecoratedBox(
-                      decoration: const BoxDecoration(
-                        color: AppPalette.etsLightRed,
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(2.5), topRight: Radius.circular(2.5)),
+                      decoration: BoxDecoration(
+                        color: headerColor,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(2.5),
+                          topRight: Radius.circular(2.5),
+                        ),
                       ),
                       child: Center(
                         child: Padding(
@@ -71,7 +75,11 @@ class GradeButton extends StatelessWidget {
                             child: Skeleton.keep(
                               child: Text(
                                 course.acronym,
-                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppPalette.grey.white),
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  color: headerColor.computeLuminance() > 0.5
+                                      ? AppPalette.grey.black
+                                      : AppPalette.grey.white,
+                                ),
                               ),
                             ),
                           ),

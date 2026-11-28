@@ -91,8 +91,8 @@ void main() {
       viewModel.dispose();
     });
 
-    group("futureToRun - ", () {
-      test("The initial cards are correctly loaded", () async {
+    group("refresh - ", () {
+      test("The cards are reloaded", () async {
         setupFlutterToastMock();
         CourseRepositoryMock.stubGetCoursesActivities(courseRepositoryMock, fromCacheOnly: true);
         CourseRepositoryMock.stubGetCourses(courseRepositoryMock, fromCacheOnly: true);
@@ -101,7 +101,7 @@ void main() {
         CourseRepositoryMock.stubActiveSessions(courseRepositoryMock, toReturn: [session]);
         CourseRepositoryMock.stubCoursesActivities(courseRepositoryMock);
 
-        await viewModel.futureToRun();
+        await viewModel.refresh();
 
         verify(listSessionsRepositoryMock.getSessions(forceUpdate: true)).called(1);
       });

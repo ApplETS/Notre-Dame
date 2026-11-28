@@ -9,10 +9,36 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/dashboard/view_model/cards/progress_bar_card_viewmodel.dart';
-import '../../../core/themes/app_theme.dart';
 
-class ProgressBarCard extends StatefulWidget {
+class ProgressBarCard extends StatelessWidget {
+  /// Owned by the dashboard, so it is shared between layouts and refreshed with it.
+  final ProgressBarCardViewmodel model;
+
+  const ProgressBarCard({super.key, required this.model});
+
+  @override
+  Widget build(BuildContext context) {
+    return ViewModelBuilder<ProgressBarCardViewmodel>.reactive(
+      viewModelBuilder: () => model,
+      disposeViewModel: false,
+      initialiseSpecialViewModelsOnce: true,
+      fireOnViewModelReadyOnce: true,
+      onViewModelReady: (model) => model.initSessionProgress(),
+      builder: (context, model, child) => ProgressBarCardContent(
+        progressBarText: model.daysRemainingText,
+        progressBarAltText: model.percentageText,
+        progress: model.progress,
+        loading: model.loading,
+        showingPercentage: model.showingPercentage,
+        onToggle: model.toggleProgressBarMode,
+      ),
+    );
+  }
+}
+
+class ProgressBarCardContent extends StatefulWidget {
   final String progressBarText;
   final String progressBarAltText;
   final double progress;
@@ -20,7 +46,7 @@ class ProgressBarCard extends StatefulWidget {
   final bool showingPercentage;
   final VoidCallback onToggle;
 
-  const ProgressBarCard({
+  const ProgressBarCardContent({
     super.key,
     required this.progressBarText,
     required this.progressBarAltText,
@@ -31,10 +57,10 @@ class ProgressBarCard extends StatefulWidget {
   });
 
   @override
-  State<ProgressBarCard> createState() => _ProgressBarCardState();
+  State<ProgressBarCardContent> createState() => _ProgressBarCardContentState();
 }
 
-class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProviderStateMixin {
+class _ProgressBarCardContentState extends State<ProgressBarCardContent> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -52,7 +78,7 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
   }
 
   @override
-  void didUpdateWidget(covariant ProgressBarCard oldWidget) {
+  void didUpdateWidget(covariant ProgressBarCardContent oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.progress != widget.progress) {
       _animation = Tween<double>(
@@ -73,53 +99,50 @@ class _ProgressBarCardState extends State<ProgressBarCard> with SingleTickerProv
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<ProgressBarCardViewmodel>.reactive(
-      viewModelBuilder: () => ProgressBarCardViewmodel(intl: AppIntl.of(context)!),
-      builder: (context, model, child) {
-        return AspectRatio(
-          aspectRatio: 1,
-          child: GestureDetector(
-            onTap: widget.onToggle,
-            child: Card(
-              color: context.theme.appColors.dashboardCard,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: (widget.loading || widget.progress >= 0.0)
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        spacing: 12.0,
-                        children: [
-                          Expanded(
-                            child: LayoutBuilder(
-                              builder: (BuildContext context, BoxConstraints constraints) {
-                                double size = constraints.maxHeight;
-                                return Transform.scale(
-                                  scale: size / 100,
-                                  alignment: Alignment.centerRight,
-                                  child: AnimatedBuilder(
-                                    animation: _animation,
-                                    builder: (context, child) => _progress(_animation.value),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          AutoSizeText(
-                            widget.showingPercentage
-                                ? AppIntl.of(context)!.progress_bar_percentage
-                                : AppIntl.of(context)!.progress_bar,
-                            style: const TextStyle(fontSize: 18, height: 1),
-                            maxLines: 1,
-                          ),
-                        ],
-                      )
-                    : Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center)),
-              ),
-            ),
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        color: context.theme.appColors.dashboardCard,
+        clipBehavior: Clip.hardEdge,
+        child: InkWell(
+          onTap: widget.onToggle,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: (widget.loading || widget.progress >= 0.0)
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    spacing: 12.0,
+                    children: [
+                      Expanded(
+                        child: LayoutBuilder(
+                          builder: (BuildContext context, BoxConstraints constraints) {
+                            return Transform.scale(
+                              scale: constraints.maxHeight / 100,
+                              alignment: Alignment.centerRight,
+                              child: AnimatedBuilder(
+                                animation: _animation,
+                                builder: (context, child) => _progress(_animation.value),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      AutoSizeText(
+                        widget.showingPercentage
+                            ? AppIntl.of(context)!.progress_bar_percentage
+                            : AppIntl.of(context)!.progress_bar,
+                        style: const TextStyle(fontSize: 18, height: 1),
+                        maxLines: 1,
+                      ),
+                    ],
+                  )
+                : Center(child: Text(AppIntl.of(context)!.session_without, textAlign: TextAlign.center)),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
