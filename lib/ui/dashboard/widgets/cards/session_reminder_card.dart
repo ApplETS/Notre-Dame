@@ -1,5 +1,6 @@
 // Dart imports:
 import 'dart:async';
+import 'dart:math' as math;
 
 // Package imports:
 import 'package:auto_size_text/auto_size_text.dart';
@@ -242,44 +243,75 @@ class _SessionReminderCardContentState extends State<SessionReminderCardContent>
         Icon(reminder.type.icon, size: iconSize, color: AppPalette.etsLightRed),
         const SizedBox(height: 4),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Spacer(flex: 3),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final text = sessionReminderEventName(intl, reminder.type);
-                  const style = TextStyle(fontSize: _eventNameMaxFontSize, fontWeight: FontWeight.w700, height: 1.2);
-                  double fontSize = _eventNameMaxFontSize;
-                  for (final maxLines in [1, 2]) {
-                    final tp = TextPainter(
-                      text: TextSpan(text: text, style: style),
-                      maxLines: maxLines,
-                      textDirection: TextDirection.ltr,
-                    )..layout(maxWidth: constraints.maxWidth);
-                    if (tp.didExceedMaxLines) {
-                      fontSize = _eventNameMaxFontSize - (maxLines + 1);
-                    }
-                  }
-                  return AutoSizeText(
-                    text,
-                    textScaleFactor: 1,
-                    style: style.copyWith(fontSize: fontSize),
-                    minFontSize: _eventNameMinFontSize,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  );
-                },
-              ),
-              const Spacer(flex: 1),
-              Text(
-                sessionReminderTimingText(intl, context, reminder),
-                style: TextStyle(fontSize: _subtitleFontSize, color: Theme.of(context).textTheme.bodySmall?.color),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final width = constraints.maxWidth;
+              final defaultStyle = DefaultTextStyle.of(context).style;
+              final title = sessionReminderEventName(intl, reminder.type);
+              final subtitle = sessionReminderTimingText(intl, context, reminder);
+              final subtitleStyle = TextStyle(
+                fontSize: _subtitleFontSize,
+                color: Theme.of(context).textTheme.bodySmall?.color,
+              );
+
+              const baseTitleStyle = TextStyle(
+                fontSize: _eventNameMaxFontSize,
+                fontWeight: FontWeight.w700,
+                height: 1.2,
+              );
+              double fontSize = _eventNameMaxFontSize;
+              for (final maxLines in [1, 2]) {
+                final tp = TextPainter(
+                  text: TextSpan(text: title, style: defaultStyle.merge(baseTitleStyle)),
+                  maxLines: maxLines,
+                  textDirection: TextDirection.ltr,
+                )..layout(maxWidth: width);
+                if (tp.didExceedMaxLines) {
+                  fontSize = _eventNameMaxFontSize - (maxLines + 1);
+                }
+              }
+              final titleStyle = baseTitleStyle.copyWith(fontSize: fontSize);
+
+              // If it does not fit, scale the whole block down instead of overflowing.
+              final titleHeight = (TextPainter(
+                text: TextSpan(text: title, style: defaultStyle.merge(titleStyle)),
+                maxLines: 3,
+                textDirection: TextDirection.ltr,
+              )..layout(maxWidth: width)).height;
+              final subtitleHeight = (TextPainter(
+                text: TextSpan(text: subtitle, style: defaultStyle.merge(subtitleStyle)),
                 maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const Spacer(flex: 2),
-            ],
+                textScaler: MediaQuery.textScalerOf(context),
+                textDirection: TextDirection.ltr,
+              )..layout(maxWidth: width)).height;
+              final contentHeight = math.max(constraints.maxHeight, titleHeight + subtitleHeight);
+
+              return FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                  width: width,
+                  height: contentHeight,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Spacer(flex: 3),
+                      AutoSizeText(
+                        title,
+                        textScaleFactor: 1,
+                        style: titleStyle,
+                        minFontSize: _eventNameMinFontSize,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const Spacer(flex: 1),
+                      Text(subtitle, style: subtitleStyle, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      const Spacer(flex: 2),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ],
