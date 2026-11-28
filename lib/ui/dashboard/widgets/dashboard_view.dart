@@ -7,10 +7,10 @@ import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/ui/base_scaffold.dart';
 import 'package:notredame/ui/dashboard/scroll_physics/adaptative_always_scrollable_physics.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_horizontal_layout.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_vertical_layout.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_horizontal_layout.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_vertical_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_landscape_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_portrait_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_landscape_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_portrait_layout.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});

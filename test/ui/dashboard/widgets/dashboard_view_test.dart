@@ -5,10 +5,10 @@ import 'package:notredame/locator.dart';
 
 // Project imports:
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_horizontal_layout.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_vertical_layout.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_horizontal_layout.dart';
-import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_vertical_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_landscape_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_portrait_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_landscape_layout.dart';
+import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_tablet_portrait_layout.dart';
 import '../../../helpers.dart';
 
 void main() {
