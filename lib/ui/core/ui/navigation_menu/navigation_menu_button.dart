@@ -18,7 +18,7 @@ class NavigationMenuButton extends StatefulWidget {
     required this.activeIcon,
     required this.inactiveIcon,
     required this.onPressed,
-    this.compact = false
+    this.compact = false,
   });
 
   @override
@@ -59,8 +59,12 @@ class NavigationMenuButtonState extends State<NavigationMenuButton> with TickerP
       animation: _paddingController,
       builder: (BuildContext context, Widget? child) {
         double offset = portrait
-            ? widget.compact ? 29.0 : 32.0
-            : widget.compact ? 4.0 : 8.0;
+            ? widget.compact
+                  ? 29.0
+                  : 32.0
+            : widget.compact
+            ? 4.0
+            : 8.0;
         return Transform.translate(offset: Offset(0.0, _paddingController.value * -offset), child: child);
       },
       child: Column(

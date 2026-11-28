@@ -9,8 +9,8 @@ import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/l10n/app_localizations.dart';
-import 'package:notredame/ui/dashboard/view_model/cards/progress_bar_card_viewmodel.dart';
 import 'package:notredame/ui/core/themes/app_theme.dart';
+import 'package:notredame/ui/dashboard/view_model/cards/progress_bar_card_viewmodel.dart';
 
 class ProgressBarCard extends StatelessWidget {
   /// Owned by the dashboard, so it is shared between layouts and refreshed with it.

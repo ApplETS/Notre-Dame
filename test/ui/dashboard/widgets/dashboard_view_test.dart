@@ -1,9 +1,9 @@
 // Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:notredame/locator.dart';
 
 // Project imports:
+import 'package:notredame/locator.dart';
 import 'package:notredame/ui/dashboard/widgets/dashboard_view.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_landscape_layout.dart';
 import 'package:notredame/ui/dashboard/widgets/layouts/dashboard_phone_portrait_layout.dart';

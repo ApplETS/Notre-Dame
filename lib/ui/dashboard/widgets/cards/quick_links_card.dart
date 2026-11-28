@@ -4,13 +4,13 @@ import 'dart:math';
 
 // Package imports:
 import 'package:material_ui/material_ui.dart';
-import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:stacked/stacked.dart';
 
 // Project imports:
 import 'package:notredame/data/models/quick_link.dart';
 import 'package:notredame/l10n/app_localizations.dart';
 import 'package:notredame/ui/core/themes/app_palette.dart';
+import 'package:notredame/ui/core/themes/app_theme.dart';
 import 'package:notredame/ui/core/ui/titled_card.dart';
 import 'package:notredame/ui/ets/quick_links/view_model/quick_links_viewmodel.dart';
 import 'package:notredame/ui/ets/quick_links/widgets/web_link_card.dart';
@@ -45,7 +45,7 @@ class QuickLinksCard extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               final int linksPerRow = max(1, (constraints.maxWidth / _tileWidth).floor());
-              final int numberOfVisibleLinksInGrid = linksPerRow * (constraints.maxHeight/_tileWidth).floor();
+              final int numberOfVisibleLinksInGrid = linksPerRow * (constraints.maxHeight / _tileWidth).floor();
 
               final bool carousel = numberOfVisibleLinksInGrid <= linksPerRow;
 

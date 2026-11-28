@@ -8,12 +8,12 @@ import 'package:material_ui/material_ui.dart';
 import 'package:notredame/ui/core/ui/navigation_menu/navigation_menu.dart';
 import 'package:notredame/ui/dashboard/clipper/swoosh_clipper.dart';
 import 'package:notredame/ui/dashboard/view_model/dashboard_viewmodel.dart';
+import 'package:notredame/ui/dashboard/widgets/banner/dashboard_banner.dart';
+import 'package:notredame/ui/dashboard/widgets/banner/dashboard_message.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/grades_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/progress_bar_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/schedule_card.dart';
 import 'package:notredame/ui/dashboard/widgets/cards/session_reminder_card.dart';
-import 'package:notredame/ui/dashboard/widgets/banner/dashboard_banner.dart';
-import 'package:notredame/ui/dashboard/widgets/banner/dashboard_message.dart';
 
 class DashboardPhoneLandscapeLayout extends StatelessWidget {
   final DashboardViewModel model;
